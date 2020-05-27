@@ -1,6 +1,13 @@
 language: node_js
 node_js:
 - lts/*
+addons:
+  sonarcloud:
+    organization: molgenis
+    token:
+      secure: bvQjauRVvqCZ++Fl2PxE873ykehRkG1+ngpDHp9K/Af1/hJUU4XNwZKYA9BeHOSxD+hELOLuYZracTzIPQ+ctWKhcQWlWmNHg3VKg6um9aUT/qMaT57tN8VoECZ54QxMY+I4Kv3f92/tdEfc/O0McCCPRmdY2pYIV/MzaMXcu3iCvEiRUk4uYO7SI/HquYdbC6WgBY5sGaC2db+wpmjrMVvol2OFylGQUHuy3fPouNsjfbAzFMNEpNEHErUVcEK/4yEw8dqT1d8eFzN9H4OM/SG9v0jMaTF+5H6zkQ3gnUUao87EEpeuh0XGrRQeGS+aMfEJjpZwFWOgrZ4vnGJwbLUyVHJIpzKXthJyvDCcreU+73gJ+gd9UJEik27koAz2ynGpbk6Y6WvATzE9fnI2FVbkw829XhO0vknwxu0R+82DKV+0JWBbKqZkDbNZ43QHRE4r5jHE4l6FWVrilBw+uBh+mOoyEGpJV3VXnwIL54A+mldwbhQNULfdfrLLty5QThKRO6erSap0gYYUJ6mSsIjro/Gtz7H/d511zeAtpgvWkbxcRXAvNI+Di0XC4INrUvnS9XdCsX3m28WKo2NCHqybnuHoyzaTD3s+vzWNua0acCmVapG3AQWDcfUQZKnYkTeoOoSe6xLDTsbD8oVk0BJ+ntPZfisquvdGGKiIM7k=
+script:
+  - sonar-scanner
 deploy:
   provider: npm
   api_token:
