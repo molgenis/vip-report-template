@@ -1,0 +1,19 @@
+{
+  "variantWarning": "The first {0} variants are available out of a total of {1}.",
+  "sampleWarning": "The first {0} samples are available out of a total of {1}.",
+  "chr": "Chromosome",
+  "pos": "Position",
+  "id": "Identifiers",
+  "ref": "Reference",
+  "alt": "Alternates",
+  "qual": "Quality",
+  "filter": "Filters",
+  "type": "Type",
+  "noSearchResults": "No Search Results",
+  "emptyTableMessage": "There are no records to show",
+  "clear": "Clear",
+  "search": "Search",
+  "sample": "Sample",
+  "father": "Father",
+  "mother": "Mother"
+}

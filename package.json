@@ -1,0 +1,70 @@
+{
+  "name": "@molgenis/vip-report-template",
+  "version": "0.0.1",
+  "description": "Report Template for Variant Call Format (VCF) Report Generator",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/molgenis/vip-report-template.git"
+  },
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/molgenis/vip-report-template/issues"
+  },
+  "homepage": "https://github.com/molgenis/vip-report-template#readme",
+  "dependencies": {
+    "@molgenis/vip-report-api": "0.0.1",
+    "bootstrap-vue": "^2.1.0",
+    "core-js": "^3.6.4",
+    "html-webpack-plugin": "latest",
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.17.3",
+    "vue-select": "^3.10.3"
+  },
+  "devDependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "babel-eslint": "^10.1.0",
+    "bootstrap": "^4.3.1",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "mutationobserver-shim": "^0.3.3",
+    "popper.js": "^1.16.0",
+    "portal-vue": "^2.1.6",
+    "sass": "^1.19.0",
+    "sass-loader": "^8.0.0",
+    "vue-cli-plugin-bootstrap-vue": "~0.6.0",
+    "vue-cli-plugin-i18n": "~1.0.1",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
