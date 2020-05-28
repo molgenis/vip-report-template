@@ -21,7 +21,7 @@ deploy:
   - provider: releases
     token:
       secure: kWHX+ZVa4I+CGHKDYbSnuIYY2DoTbWsaxPAhONb2Iv0AIJE7TPN/RLxW1czMozYOS302SEpSKuOI7JR7akoV691ZWJFbSuQXeEWsosRZdruraf3hKQVGCLSexXKjCypkI4DRWPYOP1o+iExF3Et+JToY4IIdpeLOq12LGJctmytycFn3WAaaIcvW7eIbngPPt701r2zgDiW06POx6Tizuc/nPrhVk0ldfSSE8/+tMIFvTG1P6q2+VQ6z0tVIcZh+Q/4oVRI9bDncdep1q6aJYnAOK0ck9SN+EHu9VLwVXLjyKPZiO4bSaC9TDn9JqyrLb70MbPnJex6VnSRtJoE0yQ0qmtQeU32wba34mazatp+ze68oM6/UMOApoYC7I/DI7QlAB4ZzjrCQGrCcXLAjNkDHfZSgRaKxzx9ncSmgn3gQnSY0EnnTgEWJlstG4znreKnnBJOWUc/RoWQXbjgEoH3C7X0lpdnIOPhpnqaLoUhhinYAu69kpIVSJHbc6yrHH9COUA8aHLjQysQXtA3la7cozy2jdpUyQoiF5M8Vm3IbqUHCIYXbB50N0+DS5wrzNZwH2kvdQnTGFBAiuygQajmYatbnSuUDOUyYzpSftKu4PFtacFCWZwKOLNzotHLUjmo6qBu4J/uXbziIm/8p18i6ZzfPp4V+9k2K5tThSrk=
-    file: dist/vip-report-default.html
+    file: dist/vip-report-template.html
     on:
       tags: true
     edge: true # opt in to dpl v2
