@@ -65,24 +65,24 @@
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
-                <span v-for="(alt, index) in data.item.s[sample.id].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.individual_idx].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.id].gt.a.length - 1"> {{ data.item.s[sample.id].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.individual_idx].gt.a.length - 1"> {{ data.item.s[sample.individual_idx].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
-                <span v-for="(alt, index) in data.item.s[sample.father].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.paternal_idx].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.father].gt.a.length - 1"> {{ data.item.s[sample.father].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.paternal_idx].gt.a.length - 1"> {{ data.item.s[sample.paternal_idx].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
-                <span v-for="(alt, index) in data.item.s[sample.mother].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.maternal_idx].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.mother].gt.a.length - 1"> {{ data.item.s[sample.mother].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.maternal_idx].gt.a.length - 1"> {{ data.item.s[sample.maternal_idx].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(qual)="data">
@@ -130,8 +130,8 @@
                     {key: 'id', label: 'id'},
                     {key: 'ref', label: 'ref'},
                     this.sample ? {key: 'sample', label: 'sample'} : {key: 'alt', label: 'alt'},
-                    this.sample && this.sample.father ? {key: 'father', label: 'father'} : null,
-                    this.sample && this.sample.mother ? {key: 'mother', label: 'mother'} : null,
+                    this.sample && this.sample.paternal_id !== '0' ? {key: 'father', label: 'father'} : null,
+                    this.sample && this.sample.maternal_id !== '0' ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
             }
@@ -146,11 +146,12 @@
                 }
                 if (this.sample) {
                     params.query = {
-                        selector: ['s', this.sample.id, 'gt', 't'],
+                        selector: ['s', this.sample.individual_idx, 'gt', 't'],
                         operator: '!in',
                         args: ['hom_r', 'miss']
                     }
                 }
+
                 return this.$api.get('records', params).then(records => {
                     this.page.totalRows = records.page.totalElements
                     this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage)

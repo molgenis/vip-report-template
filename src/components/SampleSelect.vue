@@ -5,8 +5,8 @@
             :options="samples"
             :value="sample"
             v-model="selectedSample"
-            :get-option-key="sample => sample.id"
-            :get-option-label="sample => sample.label"
+            :get-option-key="sample => sample.individual_idx"
+            :get-option-label="sample => sample.individual_id"
             @input="$emit('change', $event)"
     />
 </template>

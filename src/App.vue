@@ -31,7 +31,7 @@
             this.reportRecords = records.page.totalElements
             this.totalRecords = records.total
 
-            const samples = await this.$api.get('samples', {size: 0})
+            const samples = await this.$api.get('persons', {size: 0})
             this.reportSamples = samples.page.totalElements
             this.totalSamples = samples.total
         }
