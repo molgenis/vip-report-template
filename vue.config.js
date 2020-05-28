@@ -12,7 +12,7 @@ module.exports = {
         if (process.env.NODE_ENV === 'production') {
             config.plugin('html')
                 .tap(args => {
-                    args[0].filename = './vip-report-default.html';
+                    args[0].filename = './vip-report-template.html';
                     args[0].inlineSource = '.(js|css)$' // embed all javascript and css inline
                     return args
                 })
