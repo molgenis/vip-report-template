@@ -5,9 +5,14 @@
                 <SampleSelect :samples="samples" :sample="sample" @change="sample = $event"/>
             </b-col>
         </b-row>
-        <b-row>
+        <b-row v-if="sample">
             <b-col>
-                <RecordTable v-if="sample" :sample="sample"/>
+                <SampleInfo :sample="sample"/>
+            </b-col>
+        </b-row>
+        <b-row v-if="sample">
+            <b-col>
+                <RecordTable :sample="sample"/>
             </b-col>
         </b-row>
     </div>
@@ -16,10 +21,11 @@
 <script>
     import RecordTable from "./RecordTable";
     import SampleSelect from "./SampleSelect";
+    import SampleInfo from "./SampleInfo";
 
     export default {
         name: 'Report',
-        components: {SampleSelect, RecordTable},
+        components: {SampleInfo, SampleSelect, RecordTable},
         data: function () {
             return {
                 samples: null,
