@@ -130,8 +130,8 @@
                     {key: 'id', label: 'id'},
                     {key: 'ref', label: 'ref'},
                     this.sample ? {key: 'sample', label: 'sample'} : {key: 'alt', label: 'alt'},
-                    this.sample && this.sample.paternal_id !== '0' ? {key: 'father', label: 'father'} : null,
-                    this.sample && this.sample.maternal_id !== '0' ? {key: 'mother', label: 'mother'} : null,
+                    this.sample && this.sample.paternalId !== '0' ? {key: 'father', label: 'father'} : null,
+                    this.sample && this.sample.maternalId !== '0' ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
             }
@@ -151,7 +151,7 @@
                         args: ['hom_r', 'miss']
                     }
                 }
-
+                console.log(params)
                 return this.$api.get('records', params).then(records => {
                     this.page.totalRows = records.page.totalElements
                     this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage)

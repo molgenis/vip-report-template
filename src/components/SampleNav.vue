@@ -35,14 +35,14 @@
             this.$api.get('persons').then(samples => {
                 let sampleIndex = {}
                 samples.items.forEach((sample, index) => {
-                    sampleIndex[sample.individual_id] = index
+                    sampleIndex[sample.individualId] = index
                 })
 
                 this.samples = samples.items.map(sample => ({
                     ...sample, ...{
-                        individual_idx: sampleIndex[sample.individual_id],
-                        paternal_idx: sampleIndex[sample.paternal_id],
-                        maternal_idx: sampleIndex[sample.maternal_id]
+                        individual_idx: sampleIndex[sample.individualId],
+                        paternal_idx: sampleIndex[sample.paternalId],
+                        maternal_idx: sampleIndex[sample.maternalId]
                     }
                 }))
             })
