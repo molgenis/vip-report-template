@@ -119,7 +119,7 @@
                 sortDesc: false,
                 page: {
                     currentPage: 1,
-                    perPage: 200
+                    perPage: 20
                 }
             }
         },
