@@ -1,9 +1,9 @@
 <template>
     <div id="app">
-        <Header/>
+        <Header :samples="samples" :sample="sample" @change="sample = $event" />
         <b-container fluid>
             <Alerts v-if="nrAlerts > 0" class="mt-3" :report-records="reportRecords" :total-records="totalRecords" :report-samples="reportSamples" :total-samples="totalSamples"/>
-            <Report class="mt-3" />
+            <Report class="mt-3" :samples="samples" :sample="sample" />
             <Footer v-if="metadata" class="mt-3" :metadata="metadata" />
         </b-container>
     </div>
@@ -21,6 +21,8 @@
         data: function () {
             return {
                 metadata: null,
+                samples: null,
+                sample: null,
                 reportRecords: null,
                 totalRecords: null,
                 reportSamples: null,
@@ -46,9 +48,23 @@
             this.reportRecords = records.page.totalElements
             this.totalRecords = records.total
 
-            const samples = await this.$api.get('persons', {size: 0})
-            this.reportSamples = samples.page.totalElements
-            this.totalSamples = samples.total
+            const persons = await this.$api.get('persons')
+
+            let personIndex = {}
+            persons.items.forEach((person, index) => {
+                personIndex[person.individualId] = index
+            })
+
+            this.samples = persons.items.map(person => ({
+                ...person, ...{
+                    individual_idx: personIndex[person.individualId],
+                    paternal_idx: personIndex[person.paternalId],
+                    maternal_idx: personIndex[person.maternalId]
+                }
+            }))
+
+            this.reportSamples = persons.page.totalElements
+            this.totalSamples = persons.total
         }
     }
 </script>
