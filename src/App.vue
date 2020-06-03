@@ -4,7 +4,7 @@
         <b-container fluid>
             <Alerts v-if="nrAlerts > 0" class="mt-3" :report-records="reportRecords" :total-records="totalRecords" :report-samples="reportSamples" :total-samples="totalSamples"/>
             <Report class="mt-3" />
-            <Footer class="mt-3" :metadata="metadata" />
+            <Footer v-if="metadata" class="mt-3" :metadata="metadata" />
         </b-container>
     </div>
 </template>
@@ -20,6 +20,7 @@
         components: {Header, Alerts, Report, Footer},
         data: function () {
             return {
+                metadata: null,
                 reportRecords: null,
                 totalRecords: null,
                 reportSamples: null,
