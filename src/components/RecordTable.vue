@@ -38,7 +38,7 @@
                 :current-page="page.currentPage"
                 :per-page="page.perPage"
                 :empty-text="$t('emptyTableMessage')"
-                :key="sample"
+                :key="sample.familyId + sample.individualId"
         >
             <template v-slot:head()="data">
                 {{ $t(data.label) }}
@@ -151,7 +151,6 @@
                         args: ['hom_r', 'miss']
                     }
                 }
-                console.log(params)
                 return this.$api.get('records', params).then(records => {
                     this.page.totalRows = records.page.totalElements
                     this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage)
