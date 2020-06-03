@@ -1,23 +1,23 @@
 <template>
     <div id="app">
+        <Header/>
         <b-container fluid>
-            <b-alert v-if="reportRecords < totalRecords" show dismissible variant="warning">
-                {{ $t('variantWarning', [reportRecords, totalRecords]) }}
-            </b-alert>
-            <b-alert v-if="reportSamples < totalSamples" show dismissible variant="warning">
-                {{ $t('sampleWarning', [reportSamples, totalSamples]) }}
-            </b-alert>
-            <SampleNav/>
+            <Alerts v-if="nrAlerts > 0" class="mt-3" :report-records="reportRecords" :total-records="totalRecords" :report-samples="reportSamples" :total-samples="totalSamples"/>
+            <Report class="mt-3" />
+            <Footer class="mt-3" :metadata="metadata" />
         </b-container>
     </div>
 </template>
 
 <script>
-    import SampleNav from "./components/SampleNav";
+    import Header from "./components/Header";
+    import Alerts from "./components/Alerts";
+    import Report from "./components/Report";
+    import Footer from "./components/Footer";
 
     export default {
         name: 'App',
-        components: {SampleNav},
+        components: {Header, Alerts, Report, Footer},
         data: function () {
             return {
                 reportRecords: null,
@@ -26,7 +26,21 @@
                 totalSamples: null
             }
         },
+        computed: {
+            nrAlerts: function () {
+                let nrAlerts = 0
+                if(this.reportRecords < this.totalRecords) {
+                    ++nrAlerts
+                }
+                if(this.reportSamples < this.totalSamples) {
+                    ++nrAlerts
+                }
+                return nrAlerts
+            }
+        },
         async created() {
+            this.metadata = await this.$api.getMeta()
+
             const records = await this.$api.get('records', {size: 0})
             this.reportRecords = records.page.totalElements
             this.totalRecords = records.total

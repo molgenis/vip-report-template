@@ -18,7 +18,7 @@
     import SampleSelect from "./SampleSelect";
 
     export default {
-        name: 'SampleNav',
+        name: 'Report',
         components: {SampleSelect, RecordTable},
         data: function () {
             return {
