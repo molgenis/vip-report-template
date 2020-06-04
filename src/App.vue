@@ -62,7 +62,7 @@
                     maternal_idx: personIndex[person.maternalId]
                 }
             }))
-
+            this.sample = this.samples.length > 0 ? this.samples[0] : null
             this.reportSamples = persons.page.totalElements
             this.totalSamples = persons.total
         }
