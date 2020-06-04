@@ -45,7 +45,7 @@
             </template>
             <template v-slot:cell(pos)="data">
                 <a :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
-                    {{ data.item.c + ':' + data.item.p }}
+                    {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
                     <b-icon-box-arrow-in-up-right class="ml-1" />
                 </a>
             </template>
@@ -163,6 +163,11 @@
             clearSearch() {
                 this.filter = ''
                 this.$refs.search.focus()
+            },
+            numberWithCommas(x) {
+                let parts = x.toString().split(".");
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return parts.join(".");
             }
         },
         watch: {
