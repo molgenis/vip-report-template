@@ -44,7 +44,10 @@
                 {{ $t(data.label) }}
             </template>
             <template v-slot:cell(pos)="data">
-                {{ data.item.c + ':' + data.item.p }}
+                <a :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
+                    {{ data.item.c + ':' + data.item.p }}
+                    <b-icon-box-arrow-in-up-right class="ml-1" />
+                </a>
             </template>
             <template v-slot:cell(id)="data">
                 <span v-for="(id, index) in data.item.i" :key="id">

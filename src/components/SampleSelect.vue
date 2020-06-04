@@ -2,6 +2,7 @@
     <v-select
             id="sampleSelect"
             :filterable="false"
+            :clearable="false"
             :options="samples"
             :value="sample"
             v-model="selectedSample"
