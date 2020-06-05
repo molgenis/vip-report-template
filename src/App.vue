@@ -3,8 +3,8 @@
         <Header :samples="samples" :sample="sample" @change="sample = $event" />
         <b-container fluid>
             <Alerts v-if="nrAlerts > 0" class="mt-3" :report-records="reportRecords" :total-records="totalRecords" :report-samples="reportSamples" :total-samples="totalSamples"/>
-            <Report class="mt-3" :samples="samples" :sample="sample" />
-            <Footer v-if="metadata" class="mt-3" :metadata="metadata" />
+            <Report class="mt-3" :samples="samples" :sample="sample" :metadata="metadata" />
+            <Footer class="mt-3" :app="metadata.app" />
         </b-container>
     </div>
 </template>
@@ -48,23 +48,23 @@
             this.reportRecords = records.page.totalElements
             this.totalRecords = records.total
 
-            const persons = await this.$api.get('persons')
+            const samples = await this.$api.get('samples')
 
-            let personIndex = {}
-            persons.items.forEach((person, index) => {
-                personIndex[person.individualId] = index
+            let sampleIndex = {}
+            samples.items.forEach(sample => {
+                sampleIndex[sample.person.individualId] = sample.index
             })
 
-            this.samples = persons.items.map(person => ({
-                ...person, ...{
-                    individual_idx: personIndex[person.individualId],
-                    paternal_idx: personIndex[person.paternalId],
-                    maternal_idx: personIndex[person.maternalId]
+            this.samples = samples.items.filter(sample => sample.index !== -1).map(sample => ({
+                ...sample.person, ...{
+                    individual_idx: sampleIndex[sample.person.individualId],
+                    paternal_idx: sampleIndex[sample.person.paternalId],
+                    maternal_idx: sampleIndex[sample.person.maternalId]
                 }
             }))
             this.sample = this.samples.length > 0 ? this.samples[0] : null
-            this.reportSamples = persons.page.totalElements
-            this.totalSamples = persons.total
+            this.reportSamples = samples.page.totalElements
+            this.totalSamples = samples.total
         }
     }
 </script>

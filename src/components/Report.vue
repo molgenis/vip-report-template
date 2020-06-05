@@ -7,7 +7,7 @@
         </b-row>
         <b-row v-if="sample">
             <b-col>
-                <RecordTable :sample="sample"/>
+                <RecordTable :sample="sample" :genome-assembly="metadata.htsFile.genomeAssembly" />
             </b-col>
         </b-row>
     </div>
@@ -21,6 +21,7 @@
         name: 'Report',
         components: {SampleInfo, RecordTable},
         props: {
+            metadata: Object,
             samples: Array,
             sample: Object
         }

@@ -44,10 +44,11 @@
                 {{ $t(data.label) }}
             </template>
             <template v-slot:cell(pos)="data">
-                <a :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
+                <a v-if="genomeBrowserDb" :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
                     {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
                     <b-icon-box-arrow-in-up-right class="ml-1" />
                 </a>
+                <span v-else>{{ data.item.c + ':' + numberWithCommas(data.item.p) }}</span>
             </template>
             <template v-slot:cell(id)="data">
                 <span v-for="(id, index) in data.item.i" :key="id">
@@ -112,6 +113,7 @@
     export default {
         name: 'RecordTable',
         props: {
+            genomeAssembly: String,
             sample: Object
         },
         data: function () {
@@ -137,6 +139,31 @@
                     this.sample && this.sample.maternalId !== '0' ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
+            },
+            genomeBrowserDb: function () {
+                let genomeBrowserDb
+                switch (this.genomeAssembly) {
+                    case 'NCBI34':
+                        genomeBrowserDb = 'hg16'
+                        break
+                    case 'NCBI35':
+                        genomeBrowserDb = 'hg17'
+                        break
+                    case 'NCBI36':
+                        genomeBrowserDb = 'hg18'
+                        break
+                    case 'GRCh37':
+                        genomeBrowserDb = 'hg19'
+                        break
+                    case 'GRCh38':
+                        genomeBrowserDb = 'hg38'
+                        break
+                    case 'UNKNOWN':
+                    default:
+                        genomeBrowserDb = null
+                        break
+                }
+                return genomeBrowserDb
             }
         },
         methods: {
