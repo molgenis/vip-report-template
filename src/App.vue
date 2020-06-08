@@ -4,7 +4,7 @@
         <b-container fluid>
             <Alerts v-if="nrAlerts > 0" class="mt-3" :report-records="reportRecords" :total-records="totalRecords" :report-samples="reportSamples" :total-samples="totalSamples"/>
             <Report class="mt-3" :samples="samples" :sample="sample" :metadata="metadata" />
-            <Footer class="mt-3" :app="metadata.app" />
+            <Footer v-if="metadata" class="mt-3" :app="metadata.app" />
         </b-container>
     </div>
 </template>

@@ -5,7 +5,7 @@
                 <span>{{ $tc('phenotype', 2) }}:</span>
             </b-col>
             <b-col>
-                <SamplePheno :phenotype="phenotype" />
+                <SamplePheno :phenotype="phenotype"/>
             </b-col>
         </b-row>
     </div>
@@ -25,8 +25,8 @@
                 phenotype: null,
             }
         },
-        watch: {
-            sample: async function() {
+        methods: {
+            loadPhenotypes: async function () {
                 const params = {
                     query: {
                         selector: ['subject', 'id'],
@@ -36,6 +36,14 @@
                 }
                 const phenotypes = await this.$api.get('phenotypes', params)
                 this.phenotype = phenotypes.items.length > 0 ? phenotypes.items[0] : null
+            }
+        },
+        mounted() {
+            this.loadPhenotypes(this.sample)
+        },
+        watch: {
+            sample: function (sample) {
+                this.loadPhenotypes(sample)
             }
         }
     }
