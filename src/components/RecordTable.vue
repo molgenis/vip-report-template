@@ -38,13 +38,17 @@
                 :current-page="page.currentPage"
                 :per-page="page.perPage"
                 :empty-text="$t('emptyTableMessage')"
-                :key="sample"
+                :key="sample.familyId + sample.individualId"
         >
             <template v-slot:head()="data">
                 {{ $t(data.label) }}
             </template>
             <template v-slot:cell(pos)="data">
-                {{ data.item.c + ':' + data.item.p }}
+                <a v-if="genomeBrowserDb" :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
+                    {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
+                    <b-icon-box-arrow-in-up-right class="ml-1" />
+                </a>
+                <span v-else>{{ data.item.c + ':' + numberWithCommas(data.item.p) }}</span>
             </template>
             <template v-slot:cell(id)="data">
                 <span v-for="(id, index) in data.item.i" :key="id">
@@ -65,24 +69,24 @@
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
-                <span v-for="(alt, index) in data.item.s[sample.id].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.individual_idx].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.id].gt.a.length - 1"> {{ data.item.s[sample.id].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.individual_idx].gt.a.length - 1"> {{ data.item.s[sample.individual_idx].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
-                <span v-for="(alt, index) in data.item.s[sample.father].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.paternal_idx].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.father].gt.a.length - 1"> {{ data.item.s[sample.father].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.paternal_idx].gt.a.length - 1"> {{ data.item.s[sample.paternal_idx].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
-                <span v-for="(alt, index) in data.item.s[sample.mother].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.maternal_idx].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.mother].gt.a.length - 1"> {{ data.item.s[sample.mother].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.maternal_idx].gt.a.length - 1"> {{ data.item.s[sample.maternal_idx].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(qual)="data">
@@ -109,6 +113,7 @@
     export default {
         name: 'RecordTable',
         props: {
+            genomeAssembly: String,
             sample: Object
         },
         data: function () {
@@ -119,7 +124,7 @@
                 sortDesc: false,
                 page: {
                     currentPage: 1,
-                    perPage: 200
+                    perPage: 20
                 }
             }
         },
@@ -130,10 +135,35 @@
                     {key: 'id', label: 'id'},
                     {key: 'ref', label: 'ref'},
                     this.sample ? {key: 'sample', label: 'sample'} : {key: 'alt', label: 'alt'},
-                    this.sample && this.sample.father ? {key: 'father', label: 'father'} : null,
-                    this.sample && this.sample.mother ? {key: 'mother', label: 'mother'} : null,
+                    this.sample && this.sample.paternalId !== '0' ? {key: 'father', label: 'father'} : null,
+                    this.sample && this.sample.maternalId !== '0' ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
+            },
+            genomeBrowserDb: function () {
+                let genomeBrowserDb
+                switch (this.genomeAssembly) {
+                    case 'NCBI34':
+                        genomeBrowserDb = 'hg16'
+                        break
+                    case 'NCBI35':
+                        genomeBrowserDb = 'hg17'
+                        break
+                    case 'NCBI36':
+                        genomeBrowserDb = 'hg18'
+                        break
+                    case 'GRCh37':
+                        genomeBrowserDb = 'hg19'
+                        break
+                    case 'GRCh38':
+                        genomeBrowserDb = 'hg38'
+                        break
+                    case 'UNKNOWN':
+                    default:
+                        genomeBrowserDb = null
+                        break
+                }
+                return genomeBrowserDb
             }
         },
         methods: {
@@ -146,7 +176,7 @@
                 }
                 if (this.sample) {
                     params.query = {
-                        selector: ['s', this.sample.id, 'gt', 't'],
+                        selector: ['s', this.sample.individual_idx, 'gt', 't'],
                         operator: '!in',
                         args: ['hom_r', 'miss']
                     }
@@ -160,6 +190,11 @@
             clearSearch() {
                 this.filter = ''
                 this.$refs.search.focus()
+            },
+            numberWithCommas(x) {
+                let parts = x.toString().split(".");
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return parts.join(".");
             }
         },
         watch: {

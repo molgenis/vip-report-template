@@ -1,4 +1,6 @@
 {
+  "brand": "VCF Report",
+  "footer": "Report generated with {0} {1} (arguments: {2})",
   "variantWarning": "The first {0} variants are available out of a total of {1}.",
   "sampleWarning": "The first {0} samples are available out of a total of {1}.",
   "chr": "Chromosome",
@@ -15,5 +17,7 @@
   "search": "Search",
   "sample": "Sample",
   "father": "Father",
-  "mother": "Mother"
+  "mother": "Mother",
+  "phenotype": "Phenotype | Phenotypes",
+  "vibe": "VIBE"
 }
