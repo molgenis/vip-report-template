@@ -11,6 +11,12 @@ Vue.config.productionTip = false
 
 Vue.component('v-select', vSelect)
 
+declare global {
+  interface Window {
+    api: any;
+  }
+}
+
 Vue.prototype.$api = new Api(window.api)
 
 new Vue({
