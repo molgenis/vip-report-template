@@ -18,6 +18,7 @@
     "vue-class-component": "^7.2.3",
     "vue-i18n": "^8.17.3",
     "vue-property-decorator": "^8.4.2",
+    "vue-router": "^3.2.0",
     "vue-select": "^3.10.3"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "@typescript-eslint/parser": "^2.26.0",
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-plugin-router": "^4.4.1",
     "@vue/cli-plugin-typescript": "^4.4.1",
     "@vue/cli-service": "~4.3.0",
     "@vue/eslint-config-typescript": "^5.0.2",
