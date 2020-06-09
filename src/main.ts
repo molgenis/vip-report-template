@@ -7,6 +7,7 @@ import i18n from './i18n'
 import vSelect from "vue-select";
 import Api from "@molgenis/vip-report-api"
 import router from './router'
+import store from './store'
 
 Vue.config.productionTip = false
 
@@ -23,5 +24,6 @@ Vue.prototype.$api = new Api(window.api)
 new Vue({
   i18n,
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
