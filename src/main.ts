@@ -7,7 +7,7 @@ import i18n from './i18n'
 import vSelect from "vue-select";
 import Api from "@molgenis/vip-report-api"
 import router from './router'
-import store from './store'
+import store from './store/store'
 
 Vue.config.productionTip = false
 
