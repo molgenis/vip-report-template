@@ -9,7 +9,7 @@ const routes: Array<RouteConfig> = [
     {
         path: '/',
         name: 'home',
-        redirect: { name: 'samples' }
+        redirect: {name: 'samples'}
     },
     {
         path: '/samples/:id?',
@@ -20,6 +20,9 @@ const routes: Array<RouteConfig> = [
         path: '/about',
         name: 'about',
         component: About
+    },
+    {
+        path: '*', redirect: '/'
     }
 ]
 
