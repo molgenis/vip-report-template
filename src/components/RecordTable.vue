@@ -115,7 +115,6 @@
     export default {
         name: 'RecordTable',
         props: {
-            genomeAssembly: String,
             sample: Object
         },
         data: function () {
@@ -132,7 +131,10 @@
         },
         computed: {
             ...mapGetters(['getSampleById']),
-            ...mapState(['records']),
+            ...mapState(['metadata', 'records']),
+            genomeAssembly() {
+                return this.metadata.htsFile.genomeAssembly
+            },
             samplePaternal() {
                 const paternalId = this.sample.person.paternalId
                 return paternalId !== '0' ? this.getSampleById(paternalId) : null

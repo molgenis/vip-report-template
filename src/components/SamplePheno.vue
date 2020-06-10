@@ -1,6 +1,6 @@
 <template>
-    <div v-if="phenotypes.items.length > 0 && phenotypes.items.phenotypicFeaturesList.length > 0">
-        <span v-for="(phenotypicFeature, index) in phenotypes.items.phenotypicFeaturesList" :key="index">
+    <div v-if="phenotypes.items.length === 1 && phenotypes.items[0].phenotypicFeaturesList.length > 0">
+        <span v-for="(phenotypicFeature, index) in phenotypes.items[0].phenotypicFeaturesList" :key="index">
             <span class="mr-1">
                 <a v-if="phenotypicFeature.type.id.startsWith('HP:')"
                    :href="'https://hpo.jax.org/app/browse/term/' + phenotypicFeature.type.id" target="_blank">
@@ -37,7 +37,7 @@
         computed: {
             hpoTerms: function () {
                 let hpoTerms = []
-                for (let phenotypicFeature of this.phenotypes.items.phenotypicFeaturesList) {
+                for (let phenotypicFeature of this.phenotypes.items[0].phenotypicFeaturesList) {
                     if (phenotypicFeature.type.id.startsWith("HP:")) {
                         hpoTerms.push(phenotypicFeature.type.id)
                     }

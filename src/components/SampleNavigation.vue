@@ -1,6 +1,5 @@
 <template>
-    <b-nav vertical>
-        <b-nav-text>{{ $t('samples') }}</b-nav-text>
+    <b-nav pills vertical>
         <b-nav-item
                 v-for="sample in samples"
                 :key="getId(sample)"
