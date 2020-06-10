@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <TopNavigationBar/>
+        <NavigationBar/>
         <b-container fluid>
             <router-view/>
         </b-container>
@@ -8,12 +8,12 @@
 </template>
 
 <script>
-    import TopNavigationBar from '@/components/NavigationBar.vue'
+    import NavigationBar from '@/components/NavigationBar.vue'
 
     export default {
         name: 'App',
         components: {
-            TopNavigationBar
+            NavigationBar
         }
     }
 </script>
