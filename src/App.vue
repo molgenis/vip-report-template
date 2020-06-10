@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import TopNavigationBar from './components/NavigationBar.vue'
+    import TopNavigationBar from '@/components/NavigationBar.vue'
 
     export default {
         name: 'App',
