@@ -9,6 +9,7 @@ import {State} from '@/types/State'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    strict: process.env.NODE_ENV !== 'production',
     state: state as State,
     getters,
     mutations,
