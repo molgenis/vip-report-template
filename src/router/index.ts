@@ -12,7 +12,7 @@ const routes: Array<RouteConfig> = [
         redirect: { name: 'samples' }
     },
     {
-        path: '/samples/:sampleId?',
+        path: '/samples/:id?',
         name: 'samples',
         component: Samples
     },

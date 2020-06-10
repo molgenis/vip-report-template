@@ -21,5 +21,6 @@
   "father": "Father",
   "mother": "Mother",
   "phenotype": "Phenotype | Phenotypes",
+  "phenotypesUnavailable": "no phenotype information available",
   "vibe": "VIBE"
 }

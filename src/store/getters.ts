@@ -17,10 +17,7 @@ export default {
             return 0;
         });
     },
-    sample: (state: State): any => {
-        if(state.samples === null) {
-            return null
-        }
-        console.log(state.route)
+    getSampleById: (state: State) => (id: string) => {
+        return state.samples.items.find((sample: any) => sample.person.individualId === id)
     }
 }

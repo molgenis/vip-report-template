@@ -38,7 +38,7 @@
                 :current-page="page.currentPage"
                 :per-page="page.perPage"
                 :empty-text="$t('emptyTableMessage')"
-                :key="sample.familyId + sample.individualId"
+                :key="sample.index"
         >
             <template v-slot:head()="data">
                 {{ $t(data.label) }}
@@ -69,24 +69,24 @@
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
-                <span v-for="(alt, index) in data.item.s[sample.individual_idx].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.individual_idx].gt.a.length - 1"> {{ data.item.s[sample.individual_idx].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sample.index].gt.a.length - 1"> {{ data.item.s[sample.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
-                <span v-for="(alt, index) in data.item.s[sample.paternal_idx].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.paternal_idx].gt.a.length - 1"> {{ data.item.s[sample.paternal_idx].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1"> {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
-                <span v-for="(alt, index) in data.item.s[sample.maternal_idx].gt.a" :key="index">
+                <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
                           :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
-                    <span v-if="index < data.item.s[sample.maternal_idx].gt.a.length - 1"> {{ data.item.s[sample.maternal_idx].gt.p ? '|' : '/'}} </span>
+                    <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"> {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(qual)="data">
@@ -110,6 +110,8 @@
 </template>
 
 <script>
+    import {mapActions, mapGetters, mapState} from "vuex";
+
     export default {
         name: 'RecordTable',
         props: {
@@ -129,14 +131,24 @@
             }
         },
         computed: {
+            ...mapGetters(['getSampleById']),
+            ...mapState(['records']),
+            samplePaternal() {
+                const paternalId = this.sample.person.paternalId
+                return paternalId !== '0' ? this.getSampleById(paternalId) : null
+            },
+            sampleMaternal() {
+              const maternalId = this.sample.person.maternalId
+              return maternalId !== '0' ? this.getSampleById(maternalId) : null
+            },
             fields: function () {
                 return [
                     {key: 'pos', label: 'pos', sortable: true},
                     {key: 'id', label: 'id'},
                     {key: 'ref', label: 'ref'},
                     this.sample ? {key: 'sample', label: 'sample'} : {key: 'alt', label: 'alt'},
-                    this.sample && this.sample.paternalId !== '0' ? {key: 'father', label: 'father'} : null,
-                    this.sample && this.sample.maternalId !== '0' ? {key: 'mother', label: 'mother'} : null,
+                    this.sample && this.samplePaternal ? {key: 'father', label: 'father'} : null,
+                    this.sample && this.sampleMaternal ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
             },
@@ -167,6 +179,7 @@
             }
         },
         methods: {
+            ...mapActions(['loadRecords']),
             provider(ctx) {
                 const params = {
                     page: ctx.currentPage - 1,
@@ -176,12 +189,13 @@
                 }
                 if (this.sample) {
                     params.query = {
-                        selector: ['s', this.sample.individual_idx, 'gt', 't'],
+                        selector: ['s', this.sample.index, 'gt', 't'],
                         operator: '!in',
                         args: ['hom_r', 'miss']
                     }
                 }
-                return this.$api.get('records', params).then(records => {
+                return this.loadRecords(params).then(() => {
+                    const records = this.records
                     this.page.totalRows = records.page.totalElements
                     this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage)
                     return records.items

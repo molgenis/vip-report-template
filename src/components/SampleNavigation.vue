@@ -1,27 +1,30 @@
 <template>
     <b-nav vertical>
         <b-nav-text>{{ $t('samples') }}</b-nav-text>
-        <div v-if="samples !== null">
-            <b-nav-item
-                    v-for="aSample in samples"
-                    :key="getId(aSample)"
-                    :active="sample !== null && (getId(aSample) === getId(sample))"
-                    :disabled="isDisabled(aSample)"
-                    :to="{name: 'samples', params: { id: getId(aSample) }}">
-                {{ getLabel(aSample) }}
-            </b-nav-item>
-        </div>
+        <b-nav-item
+                v-for="sample in samples"
+                :key="getId(sample)"
+                :active="isActive(sample)"
+                :disabled="isDisabled(sample)"
+                :to="{params: { id: getId(sample) }}">
+            {{ getLabel(sample) }}
+        </b-nav-item>
     </b-nav>
 </template>
 
 <script lang="ts">
     import Vue from 'vue'
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapState} from 'vuex'
 
     export default Vue.extend({
         name: 'SampleNavigation',
+        computed: {
+            ...mapState(['selectedSample']),
+        },
+        props: {
+            samples: Array
+        },
         methods: {
-            ...mapActions(['loadSamples']),
             getId(sample: any) {
                 return sample.person.individualId
             },
@@ -29,17 +32,11 @@
                 return sample.person.individualId
             },
             isActive(sample: any) {
-                return this.sample !== null && (this.getId(sample) === this.getId(this.sample))
+                return this.selectedSample !== null && (this.getId(sample) === this.getId(this.selectedSample))
             },
             isDisabled(sample: any) {
-                return sample.index !== -1
+                return sample.index === -1
             }
-        },
-        computed: {
-            ...mapGetters(['samples', 'sample'])
-        },
-        async created() {
-            this.loadSamples()
-        },
+        }
     })
 </script>

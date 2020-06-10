@@ -1,4 +1,7 @@
 export type State = {
     metadata: any,
-    samples: any
+    samples: any,
+    selectedSample: any | null,
+    selectedSamplePhenotypes: any | null,
+    records: any | null
 }
