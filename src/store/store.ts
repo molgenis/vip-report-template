@@ -4,13 +4,12 @@ import state from '@/store/state'
 import actions from '@/store/actions'
 import getters from '@/store/getters'
 import mutations from '@/store/mutations'
-import {State} from '@/types/State'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
-    state: state as State,
+    state,
     getters,
     mutations,
     actions
