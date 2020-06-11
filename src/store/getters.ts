@@ -18,6 +18,9 @@ export default {
         });
     },
     getSampleById: (state: State) => (id: string) => {
-        return state.samples.items.find((sample: any) => sample.person.individualId === id)
+        if(state.samples === null) {
+            return null
+        }
+        return state.samples.items.find((sample: any) => sample.person.individualId === id) || null
     }
 }
