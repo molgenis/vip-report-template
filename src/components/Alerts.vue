@@ -11,7 +11,6 @@
 
 <script>
     export default {
-        name: 'Alerts',
         props: {
             reportRecords: Number,
             totalRecords: Number,

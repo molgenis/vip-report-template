@@ -18,7 +18,6 @@
     import SampleInfo from "./SampleInfo";
 
     export default {
-        name: 'Report',
         components: {SampleInfo, RecordTable},
         props: {
             metadata: Object,

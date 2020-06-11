@@ -16,7 +16,6 @@
     import {mapActions, mapGetters, mapState} from "vuex";
 
     export default Vue.extend({
-        name: 'Samples',
         components: {SampleNavigation, SampleReport},
         computed: {
             ...mapGetters(['samples', 'getSampleById']),
