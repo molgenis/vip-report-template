@@ -14,6 +14,7 @@
     import SampleNavigation from "@/components/SampleNavigation.vue";
     import SampleReport from "@/components/SampleReport.vue";
     import {mapActions, mapGetters, mapState} from "vuex";
+    import {Sample} from "@/types/Sample";
 
     export default Vue.extend({
         components: {SampleNavigation, SampleReport},
@@ -23,7 +24,7 @@
         },
         methods: {
             ...mapActions(['loadMetadata', 'loadSamples', 'selectSample']),
-            getId(sample: any) {
+            getId(sample: Sample) {
                 return sample.person.individualId
             }
         },
@@ -34,7 +35,7 @@
                 const sample = this.getSampleById(this.$route.params.id)
                 this.selectSample(sample)
             } else {
-                const sample = this.samples.find((sample: any) => sample.index !== -1)
+                const sample = this.samples.find((sample: Sample) => sample.index !== -1)
                 if (sample !== null) {
                     await this.$router.push({params: {id: this.getId(sample)}})
                 }

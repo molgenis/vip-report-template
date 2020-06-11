@@ -1,4 +1,5 @@
 import Api from "@molgenis/vip-report-api";
+import {Sample} from "@/types/Sample";
 
 declare global {
     interface Window {
@@ -17,7 +18,7 @@ export default {
         const response = await api.get('samples')
         commit('setSamples', response)
     },
-    async selectSample({commit}: any, sample: any) {
+    async selectSample({commit}: any, sample: Sample) {
         const response = await api.get('phenotypes', {
             query: {
                 selector: ['subject', 'id'],

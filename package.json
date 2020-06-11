@@ -56,6 +56,7 @@
       "node": true
     },
     "extends": [
+      "plugin:@typescript-eslint/eslint-recommended",
       "plugin:vue/essential",
       "eslint:recommended",
       "@vue/typescript"
