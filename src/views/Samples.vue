@@ -14,6 +14,7 @@
     import SampleNavigation from "@/components/SampleNavigation.vue";
     import SampleReport from "@/components/SampleReport.vue";
     import {mapActions, mapGetters, mapState} from "vuex";
+    // eslint-disable-next-line no-unused-vars
     import {Sample} from "@/types/Sample";
 
     export default Vue.extend({

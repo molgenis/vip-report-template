@@ -14,6 +14,7 @@
 <script lang="ts">
     import Vue from 'vue'
     import {mapState} from 'vuex'
+    // eslint-disable-next-line no-unused-vars
     import {Sample} from "@/types/Sample";
 
     export default Vue.extend({

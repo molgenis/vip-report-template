@@ -264,6 +264,7 @@
     }
 </script>
 
+<!--suppress CssUnusedSymbol -->
 <style scoped>
     .nuc {
         padding: 0.2rem;
