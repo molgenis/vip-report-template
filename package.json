@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
@@ -22,15 +23,18 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.10.1",
+    "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-plugin-router": "^4.4.1",
     "@vue/cli-plugin-typescript": "^4.4.1",
+    "@vue/cli-plugin-unit-jest": "^4.4.1",
     "@vue/cli-plugin-vuex": "^4.4.1",
     "@vue/cli-service": "~4.3.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.3.1",
     "eslint": "^6.7.2",
@@ -59,7 +63,18 @@
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

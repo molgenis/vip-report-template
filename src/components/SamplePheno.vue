@@ -30,7 +30,6 @@
 
 <script>
     export default {
-        name: 'SamplePheno',
         props: {
             phenotypes: Object
         },

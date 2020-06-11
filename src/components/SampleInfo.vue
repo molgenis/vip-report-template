@@ -13,7 +13,6 @@
     import SamplePheno from "./SamplePheno";
 
     export default {
-        name: 'SampleInfo',
         components: {SamplePheno},
         props: {
             sample: Object,

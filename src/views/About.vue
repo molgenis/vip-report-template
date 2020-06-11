@@ -7,7 +7,6 @@
     import {mapActions, mapState} from 'vuex'
 
     export default Vue.extend({
-        name: 'About',
         methods: mapActions(['loadMetadata']),
         computed: {
             ...mapState(['metadata'])

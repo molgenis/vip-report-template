@@ -41,12 +41,19 @@
                 :key="sample.index"
         >
             <template v-slot:head()="data">
-                {{ $t(data.label) }}
+                {{ data.label ? $t(data.label) : '' }}
+            </template>
+            <template v-slot:cell(actions)="data">
+                <b-button class="btn-xs" @click="info(data.item, data.index, $event.target)" mr="3">
+                    <b-icon-search />
+                </b-button>
             </template>
             <template v-slot:cell(pos)="data">
-                <a v-if="genomeBrowserDb" :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
+                <a v-if="genomeBrowserDb"
+                   :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
+                   target="_blank">
                     {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
-                    <b-icon-box-arrow-in-up-right class="ml-1" />
+                    <b-icon-box-arrow-in-up-right class="ml-1"/>
                 </a>
                 <span v-else>{{ data.item.c + ':' + numberWithCommas(data.item.p) }}</span>
             </template>
@@ -59,33 +66,33 @@
             </template>
             <template v-slot:cell(ref)="data">
                 <span v-for="(nuc, index) in data.item.r.split('')" :key="index"
-                      :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                      :class="getNucClass(nuc)">{{ nuc }}</span>
             </template>
             <template v-slot:cell(alt)="data">
                 <span v-for="(alt, index) in data.item.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.a.length - 1">, </span>
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
                 <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.s[sample.index].gt.a.length - 1"> {{ data.item.s[sample.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
                 <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1"> {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
                 <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"> {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
@@ -106,6 +113,19 @@
                       align="center"
                       aria-controls="classifier-table"
         ></b-pagination>
+
+        <b-modal
+                :id="infoModal.id"
+                size="xl"
+                :title="$t('recordDetails')"
+                no-fade
+                ok-only
+                @hide="resetInfoModal">
+            <template v-slot:modal-ok>
+                {{ $t('ok') }}
+            </template>
+            <pre>{{ infoModal.content }}</pre>
+        </b-modal>
     </div>
 </template>
 
@@ -113,7 +133,6 @@
     import {mapActions, mapGetters, mapState} from "vuex";
 
     export default {
-        name: 'RecordTable',
         props: {
             sample: Object
         },
@@ -126,6 +145,11 @@
                 page: {
                     currentPage: 1,
                     perPage: 20
+                },
+                infoModal: {
+                    id: 'info-modal',
+                    title: '',
+                    content: ''
                 }
             }
         },
@@ -140,11 +164,12 @@
                 return paternalId !== '0' ? this.getSampleById(paternalId) : null
             },
             sampleMaternal() {
-              const maternalId = this.sample.person.maternalId
-              return maternalId !== '0' ? this.getSampleById(maternalId) : null
+                const maternalId = this.sample.person.maternalId
+                return maternalId !== '0' ? this.getSampleById(maternalId) : null
             },
             fields: function () {
                 return [
+                    {key: 'actions', label: '', class: ['compact', 'align-middle']},
                     {key: 'pos', label: 'pos', sortable: true},
                     {key: 'id', label: 'id'},
                     {key: 'ref', label: 'ref'},
@@ -207,14 +232,32 @@
                 this.filter = ''
                 this.$refs.search.focus()
             },
+            getNucClass(nuc) {
+                return {
+                    'nuc': true,
+                    'nuc-a': nuc === 'A',
+                    'nuc-c': nuc === 'C',
+                    'nuc-t': nuc === 'T',
+                    'nuc-g': nuc === 'G'
+                }
+            },
             numberWithCommas(x) {
                 let parts = x.toString().split(".");
                 parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 return parts.join(".");
-            }
+            },
+            info(item, index, button) {
+                this.infoModal.title = `Row index: ${index}`
+                this.infoModal.content = JSON.stringify(item, null, 2)
+                this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+            },
+            resetInfoModal() {
+                this.infoModal.title = ''
+                this.infoModal.content = ''
+            },
         },
         watch: {
-            sample: function() {
+            sample: function () {
                 this.$refs.table.refresh()
             }
         }

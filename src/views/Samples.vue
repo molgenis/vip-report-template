@@ -1,6 +1,6 @@
 <template>
     <b-row>
-        <b-col cols="2">
+        <b-col cols="1">
             <SampleNavigation v-if="samples" :samples="samples"/>
         </b-col>
         <b-col>
@@ -16,7 +16,6 @@
     import {mapActions, mapGetters, mapState} from "vuex";
 
     export default Vue.extend({
-        name: 'Samples',
         components: {SampleNavigation, SampleReport},
         computed: {
             ...mapGetters(['samples', 'getSampleById']),

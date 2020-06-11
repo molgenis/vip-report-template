@@ -20,7 +20,6 @@
     import SampleInfo from "./SampleInfo";
 
     export default {
-        name: 'SampleReport',
         components: {SampleInfo, RecordTable},
         props: {
             sample: Object,

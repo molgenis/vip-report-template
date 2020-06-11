@@ -9,9 +9,3 @@
         </b-collapse>
     </b-navbar>
 </template>
-
-<script>
-    export default {
-        name: 'NavigationBar'
-    }
-</script>
