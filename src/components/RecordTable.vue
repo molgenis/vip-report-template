@@ -44,9 +44,11 @@
                 {{ $t(data.label) }}
             </template>
             <template v-slot:cell(pos)="data">
-                <a v-if="genomeBrowserDb" :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))" target="_blank">
+                <a v-if="genomeBrowserDb"
+                   :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
+                   target="_blank">
                     {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
-                    <b-icon-box-arrow-in-up-right class="ml-1" />
+                    <b-icon-box-arrow-in-up-right class="ml-1"/>
                 </a>
                 <span v-else>{{ data.item.c + ':' + numberWithCommas(data.item.p) }}</span>
             </template>
@@ -59,33 +61,33 @@
             </template>
             <template v-slot:cell(ref)="data">
                 <span v-for="(nuc, index) in data.item.r.split('')" :key="index"
-                      :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                      :class="getNucClass(nuc)">{{ nuc }}</span>
             </template>
             <template v-slot:cell(alt)="data">
                 <span v-for="(alt, index) in data.item.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.a.length - 1">, </span>
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
                 <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.s[sample.index].gt.a.length - 1"> {{ data.item.s[sample.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
                 <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1"> {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
                 <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
                     <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="{'nuc': true, 'nuc-a': nuc === 'A', 'nuc-c': nuc === 'C', 'nuc-t': nuc === 'T', 'nuc-g': nuc === 'G'}">{{ nuc }}</span>
+                          :class="getNucClass(nuc)">{{ nuc }}</span>
                     <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"> {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
@@ -139,8 +141,8 @@
                 return paternalId !== '0' ? this.getSampleById(paternalId) : null
             },
             sampleMaternal() {
-              const maternalId = this.sample.person.maternalId
-              return maternalId !== '0' ? this.getSampleById(maternalId) : null
+                const maternalId = this.sample.person.maternalId
+                return maternalId !== '0' ? this.getSampleById(maternalId) : null
             },
             fields: function () {
                 return [
@@ -206,6 +208,15 @@
                 this.filter = ''
                 this.$refs.search.focus()
             },
+            getNucClass(nuc) {
+                return {
+                    'nuc': true,
+                    'nuc-a': nuc === 'A',
+                    'nuc-c': nuc === 'C',
+                    'nuc-t': nuc === 'T',
+                    'nuc-g': nuc === 'G'
+                }
+            },
             numberWithCommas(x) {
                 let parts = x.toString().split(".");
                 parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -213,7 +224,7 @@
             }
         },
         watch: {
-            sample: function() {
+            sample: function () {
                 this.$refs.table.refresh()
             }
         }
