@@ -11,19 +11,19 @@ export interface HtsFileMetadata {
 }
 
 export enum InfoType {
-    CHARACTER,
-    INTEGER,
-    FLAG,
-    FLOAT,
-    STRING
+    CHARACTER = "CHARACTER",
+    INTEGER = "INTEGER",
+    FLAG = "FLAG",
+    FLOAT = "FLOAT",
+    STRING = "STRING"
 }
 
 export enum NumberType {
-    NUMBER,
-    PER_ALT,
-    PER_ALT_AND_REF,
-    PER_GENOTYPE,
-    OTHER
+    NUMBER = "NUMBER",
+    PER_ALT = "PER_ALT",
+    PER_ALT_AND_REF = "PER_ALT_AND_REF",
+    PER_GENOTYPE = "PER_GENOTYPE",
+    OTHER = "OTHER"
 }
 
 export interface InfoNumberMetadata {
