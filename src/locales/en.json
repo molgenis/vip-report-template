@@ -1,5 +1,6 @@
 {
   "brand": "VCF Report",
+  "about": "About",
   "footer": "Report generated with {0} {1} (arguments: {2})",
   "variantWarning": "The first {0} variants are available out of a total of {1}.",
   "sampleWarning": "The first {0} samples are available out of a total of {1}.",
@@ -16,8 +17,11 @@
   "clear": "Clear",
   "search": "Search",
   "sample": "Sample",
+  "samples": "Samples",
   "father": "Father",
   "mother": "Mother",
-  "phenotype": "Phenotype | Phenotypes",
+  "phenotype": "Phenotype",
+  "phenotypes": "Phenotypes",
+  "phenotypesUnavailable": "no phenotype information available",
   "vibe": "VIBE"
 }

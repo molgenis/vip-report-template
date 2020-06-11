@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <span v-for="(phenotypicFeature, index) in phenotype.phenotypicFeaturesList" :key="index">
+    <div v-if="phenotypes.items.length === 1 && phenotypes.items[0].phenotypicFeaturesList.length > 0">
+        <span v-for="(phenotypicFeature, index) in phenotypes.items[0].phenotypicFeaturesList" :key="index">
             <span class="mr-1">
                 <a v-if="phenotypicFeature.type.id.startsWith('HP:')"
                    :href="'https://hpo.jax.org/app/browse/term/' + phenotypicFeature.type.id" target="_blank">
@@ -23,18 +23,21 @@
             <b-icon-box-arrow-in-up-right class="ml-1" />
         </b-button>
     </div>
+    <div v-else>
+        <span class="font-italic">{{ $t('phenotypesUnavailable') }}</span>
+    </div>
 </template>
 
 <script>
     export default {
         name: 'SamplePheno',
         props: {
-            phenotype: Object
+            phenotypes: Object
         },
         computed: {
             hpoTerms: function () {
                 let hpoTerms = []
-                for (let phenotypicFeature of this.phenotype.phenotypicFeaturesList) {
+                for (let phenotypicFeature of this.phenotypes.items[0].phenotypicFeaturesList) {
                     if (phenotypicFeature.type.id.startsWith("HP:")) {
                         hpoTerms.push(phenotypicFeature.type.id)
                     }
