@@ -1,6 +1,5 @@
 import {State} from '@/types/State'
 import {Sample} from "@/types/Sample";
-import {Items} from "@/types/Items";
 
 export default {
     samples: (state: State): Array<Sample> => {
