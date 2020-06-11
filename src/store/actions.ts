@@ -7,7 +7,7 @@ declare global {
     }
 }
 
-const api = new Api(window.api)
+let api: any = new Api(window.api)
 
 export default {
     async loadMetadata({commit}: any) {
@@ -34,4 +34,9 @@ export default {
         const response = await api.get('records', params)
         commit('setRecords', response)
     },
+}
+
+// testability
+export function setTestApi(testApi: any) {
+    api = testApi
 }
