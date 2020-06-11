@@ -1,6 +1,6 @@
 <template>
     <b-row>
-        <b-col cols="2">
+        <b-col cols="1">
             <SampleNavigation v-if="samples" :samples="samples"/>
         </b-col>
         <b-col>
