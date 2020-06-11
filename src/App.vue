@@ -16,3 +16,14 @@
         }
     }
 </script>
+
+<style>
+    .btn-xs {
+        padding: .125rem .375rem;
+        font-size: .75rem;
+    }
+    td.compact {
+        padding: 0rem;
+        width: 0;
+    }
+</style>

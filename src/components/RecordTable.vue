@@ -41,7 +41,12 @@
                 :key="sample.index"
         >
             <template v-slot:head()="data">
-                {{ $t(data.label) }}
+                {{ data.label ? $t(data.label) : '' }}
+            </template>
+            <template v-slot:cell(actions)="data">
+                <b-button class="btn-xs" @click="info(data.item, data.index, $event.target)" mr="3">
+                    <b-icon-search />
+                </b-button>
             </template>
             <template v-slot:cell(pos)="data">
                 <a v-if="genomeBrowserDb"
@@ -108,6 +113,19 @@
                       align="center"
                       aria-controls="classifier-table"
         ></b-pagination>
+
+        <b-modal
+                :id="infoModal.id"
+                size="xl"
+                :title="$t('recordDetails')"
+                no-fade
+                ok-only
+                @hide="resetInfoModal">
+            <template v-slot:modal-ok>
+                {{ $t('ok') }}
+            </template>
+            <pre>{{ infoModal.content }}</pre>
+        </b-modal>
     </div>
 </template>
 
@@ -127,6 +145,11 @@
                 page: {
                     currentPage: 1,
                     perPage: 20
+                },
+                infoModal: {
+                    id: 'info-modal',
+                    title: '',
+                    content: ''
                 }
             }
         },
@@ -146,6 +169,7 @@
             },
             fields: function () {
                 return [
+                    {key: 'actions', label: '', class: ['compact', 'align-middle']},
                     {key: 'pos', label: 'pos', sortable: true},
                     {key: 'id', label: 'id'},
                     {key: 'ref', label: 'ref'},
@@ -221,7 +245,16 @@
                 let parts = x.toString().split(".");
                 parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 return parts.join(".");
-            }
+            },
+            info(item, index, button) {
+                this.infoModal.title = `Row index: ${index}`
+                this.infoModal.content = JSON.stringify(item, null, 2)
+                this.$root.$emit('bv::show::modal', this.infoModal.id, button)
+            },
+            resetInfoModal() {
+                this.infoModal.title = ''
+                this.infoModal.content = ''
+            },
         },
         watch: {
             sample: function () {

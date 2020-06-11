@@ -23,5 +23,7 @@
   "phenotype": "Phenotype",
   "phenotypes": "Phenotypes",
   "phenotypesUnavailable": "no phenotype information available",
-  "vibe": "VIBE"
+  "vibe": "VIBE",
+  "recordDetails": "Record Details",
+  "ok": "Ok"
 }
