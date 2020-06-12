@@ -14,6 +14,8 @@
 <script lang="ts">
     import Vue from 'vue'
     import {mapState} from 'vuex'
+    // eslint-disable-next-line no-unused-vars
+    import {Sample} from "@/types/Sample";
 
     export default Vue.extend({
         computed: {
@@ -23,16 +25,16 @@
             samples: Array
         },
         methods: {
-            getId(sample: any) {
+            getId(sample: Sample) {
                 return sample.person.individualId
             },
-            getLabel(sample: any) {
+            getLabel(sample: Sample) {
                 return sample.person.individualId
             },
-            isActive(sample: any) {
+            isActive(sample: Sample) {
                 return this.selectedSample !== null && (this.getId(sample) === this.getId(this.selectedSample))
             },
-            isDisabled(sample: any) {
+            isDisabled(sample: Sample) {
                 return sample.index === -1
             }
         }

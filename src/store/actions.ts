@@ -1,4 +1,5 @@
 import Api from "@molgenis/vip-report-api";
+import {Sample} from "@/types/Sample";
 
 declare global {
     interface Window {
@@ -6,7 +7,7 @@ declare global {
     }
 }
 
-const api = new Api(window.api)
+let api: any = new Api(window.api)
 
 export default {
     async loadMetadata({commit}: any) {
@@ -17,7 +18,7 @@ export default {
         const response = await api.get('samples')
         commit('setSamples', response)
     },
-    async selectSample({commit}: any, sample: any) {
+    async selectSample({commit}: any, sample: Sample) {
         const response = await api.get('phenotypes', {
             query: {
                 selector: ['subject', 'id'],
@@ -33,4 +34,9 @@ export default {
         const response = await api.get('records', params)
         commit('setRecords', response)
     },
+}
+
+// testability
+export function setTestApi(testApi: any) {
+    api = testApi
 }
