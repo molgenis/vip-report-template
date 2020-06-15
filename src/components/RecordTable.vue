@@ -1,3 +1,4 @@
+f
 <template>
     <div>
         <b-row>
@@ -129,28 +130,35 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
     import {mapActions, mapGetters, mapState} from 'vuex'
+    import Vue from 'vue'
+    // eslint-disable-next-line no-unused-vars
+    import {BButton, BFormInput, BTable, BvTableCtxObject} from 'bootstrap-vue'
+    // eslint-disable-next-line no-unused-vars
+    import {Items} from '@/types/Items'
+    // eslint-disable-next-line no-unused-vars
+    import {Record} from '@/types/Record'
 
-    export default {
+    export default Vue.extend({
         props: {
             sample: Object
         },
         data: function () {
             return {
-                filter: '',
-                isTableBusy: false,
-                sortBy: null,
-                sortDesc: false,
+                filter: '' as string,
+                isTableBusy: false as boolean,
+                sortBy: null as string | null,
+                sortDesc: false as boolean,
                 page: {
                     currentPage: 1,
                     perPage: 20
-                },
+                } as object,
                 infoModal: {
                     id: 'info-modal',
                     title: '',
                     content: ''
-                }
+                } as object
             }
         },
         computed: {
@@ -182,8 +190,8 @@
         },
         methods: {
             ...mapActions(['loadRecords']),
-            provider(ctx) {
-                const params = {
+            provider(ctx: BvTableCtxObject) {
+                const params: any = {
                     page: ctx.currentPage - 1,
                     size: ctx.perPage,
                     sort: ctx.sortBy ? ctx.sortBy : undefined,
@@ -196,18 +204,23 @@
                         args: ['hom_r', 'miss']
                     }
                 }
+                // @ts-ignore
                 return this.loadRecords(params).then(() => {
-                    const records = this.records
+                    const records = this.records as Items<Record>
+                    // @ts-ignore
                     this.page.totalRows = records.page.totalElements
+                    // @ts-ignore
                     this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage)
                     return records.items
                 })
             },
             clearSearch() {
+                // @ts-ignore
                 this.filter = ''
-                this.$refs.search.focus()
+                const searchElement = this.$refs.search as BFormInput
+                searchElement.focus()
             },
-            getNucClass(nuc) {
+            getNucClass(nuc: string) {
                 return {
                     'nuc': true,
                     'nuc-a': nuc === 'A',
@@ -216,27 +229,32 @@
                     'nuc-g': nuc === 'G'
                 }
             },
-            numberWithCommas(x) {
-                let parts = x.toString().split(".")
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                return parts.join(".")
+            numberWithCommas(x: number) {
+                let parts = x.toString().split('.')
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                return parts.join('.')
             },
-            info(item, index, button) {
+            info(item: Record, index: number, button: BButton) {
+                // @ts-ignore
                 this.infoModal.title = `Row index: ${index}`
+                // @ts-ignore
                 this.infoModal.content = JSON.stringify(item, null, 2)
+                // @ts-ignore
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
             resetInfoModal() {
+                // @ts-ignore
                 this.infoModal.title = ''
+                // @ts-ignore
                 this.infoModal.content = ''
-            },
+            }
         },
         watch: {
             sample: function () {
-                this.$refs.table.refresh()
+                (this.$refs.table as BTable).refresh()
             }
         }
-    }
+    })
 </script>
 
 <!--suppress CssUnusedSymbol -->
