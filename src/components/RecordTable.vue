@@ -45,7 +45,7 @@
             </template>
             <template v-slot:cell(actions)="data">
                 <b-button class="btn-xs" @click="info(data.item, data.index, $event.target)" mr="3">
-                    <b-icon-search />
+                    <b-icon-search/>
                 </b-button>
             </template>
             <template v-slot:cell(pos)="data">
@@ -154,7 +154,7 @@
             }
         },
         computed: {
-            ...mapGetters(['getSampleById']),
+            ...mapGetters(['getSampleById', 'genomeBrowserDb']),
             ...mapState(['metadata', 'records']),
             genomeAssembly() {
                 return this.metadata.htsFile.genomeAssembly
@@ -178,31 +178,6 @@
                     this.sample && this.sampleMaternal ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
-            },
-            genomeBrowserDb: function () {
-                let genomeBrowserDb
-                switch (this.genomeAssembly) {
-                    case 'NCBI34':
-                        genomeBrowserDb = 'hg16'
-                        break
-                    case 'NCBI35':
-                        genomeBrowserDb = 'hg17'
-                        break
-                    case 'NCBI36':
-                        genomeBrowserDb = 'hg18'
-                        break
-                    case 'GRCh37':
-                        genomeBrowserDb = 'hg19'
-                        break
-                    case 'GRCh38':
-                        genomeBrowserDb = 'hg38'
-                        break
-                    case 'UNKNOWN':
-                    default:
-                        genomeBrowserDb = null
-                        break
-                }
-                return genomeBrowserDb
             }
         },
         methods: {
