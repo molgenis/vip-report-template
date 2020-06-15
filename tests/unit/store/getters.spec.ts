@@ -3,7 +3,7 @@ import getters from '@/store/getters'
 import {State} from '@/types/State'
 import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
 import {mock} from 'ts-mockito'
-import {AffectedStatus, HtsFileMetadata, Metadata, Sample, Sex} from '@molgenis/vip-report-api'
+import {HtsFileMetadata, Metadata, Sample} from '@molgenis/vip-report-api'
 test('samples returns empty array in case of no samples', () => {
     const testState: State = {...initialState}
     expect(getters.samples(testState)).toStrictEqual([])
@@ -16,8 +16,8 @@ test('samples returns array sorted by sample id', () => {
             individualId: 'personC',
             paternalId: '0',
             maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
+            sex: 'MALE',
+            affectedStatus: 'AFFECTED'
         },
         index: -1
     }
@@ -27,8 +27,8 @@ test('samples returns array sorted by sample id', () => {
             individualId: 'personA',
             paternalId: '0',
             maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
+            sex: 'MALE',
+            affectedStatus: 'AFFECTED'
         },
         index: -1
     }
@@ -38,8 +38,8 @@ test('samples returns array sorted by sample id', () => {
             individualId: 'personB',
             paternalId: '0',
             maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
+            sex: 'MALE',
+            affectedStatus: 'AFFECTED'
         },
         index: -1
     }
@@ -59,8 +59,8 @@ test('get sample by id returns null in case of unknown sample', () => {
             individualId: 'MySampleId',
             paternalId: '0',
             maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
+            sex: 'MALE',
+            affectedStatus: 'AFFECTED'
         },
         index: -1
     }
@@ -75,8 +75,8 @@ test('get sample by id returns sample in case of known sample', () => {
             individualId: 'MySampleId',
             paternalId: '0',
             maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
+            sex: 'MALE',
+            affectedStatus: 'AFFECTED'
         },
         index: -1
     }

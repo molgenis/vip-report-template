@@ -1,6 +1,6 @@
 import actions, {setTestApi} from '@/store/actions'
 import {mock, when} from 'ts-mockito'
-import Api, {AffectedStatus, Items, Metadata, Phenotype, Record, Sample, Sex} from '@molgenis/vip-report-api'
+import Api, {Items, Metadata, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
 
 const api: any = mock(Api)
 setTestApi(mock(Api))
@@ -54,8 +54,8 @@ test('select sample and load sample phenotypes', async (done) => {
             individualId: 'personC',
             paternalId: '0',
             maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
+            sex: 'MALE',
+            affectedStatus: 'AFFECTED'
         },
         index: -1
     }
