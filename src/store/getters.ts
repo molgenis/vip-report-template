@@ -26,7 +26,6 @@ export default {
         return state.samples.items.find(sample => sample.person.individualId === id) || null
     },
     genomeBrowserDb: (state: State): GenomeBrowserDb | null => {
-        console.log(state.metadata)
         if(state.metadata === null) {
             return null
         }
