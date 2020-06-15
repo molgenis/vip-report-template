@@ -1,11 +1,6 @@
 import actions, {setTestApi} from '@/store/actions'
 import {mock, when} from 'ts-mockito'
-import Api from '@molgenis/vip-report-api'
-import {Metadata} from '@/types/Metadata'
-import {Record} from '@/types/Record'
-import {AffectedStatus, Sample, Sex} from '@/types/Sample'
-import {Items} from '@/types/Items'
-import {Phenotype} from '@/types/Phenotype'
+import Api, {AffectedStatus, Items, Metadata, Phenotype, Record, Sample, Sex} from '@molgenis/vip-report-api'
 
 const api: any = mock(Api)
 setTestApi(mock(Api))

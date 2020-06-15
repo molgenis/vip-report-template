@@ -1,6 +1,6 @@
 import {State} from '@/types/State'
-import {Sample} from '@/types/Sample'
 import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
+import {Sample} from '@molgenis/vip-report-api'
 
 export default {
     samples: (state: State): Array<Sample> => {

@@ -1,11 +1,9 @@
 import initialState from '@/store/state'
 import getters from '@/store/getters'
 import {State} from '@/types/State'
-import {AffectedStatus, Sample, Sex} from '@/types/Sample'
 import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
 import {mock} from 'ts-mockito'
-import {HtsFileMetadata, Metadata} from '@/types/Metadata'
-
+import {AffectedStatus, HtsFileMetadata, Metadata, Sample, Sex} from '@molgenis/vip-report-api'
 test('samples returns empty array in case of no samples', () => {
     const testState: State = {...initialState}
     expect(getters.samples(testState)).toStrictEqual([])

@@ -1,9 +1,5 @@
 import {State} from '@/types/State'
-import {Metadata} from '@/types/Metadata'
-import {Record} from '@/types/Record'
-import {Sample} from '@/types/Sample'
-import {Items} from '@/types/Items'
-import {Phenotype} from '@/types/Phenotype'
+import {Items, Metadata, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
 
 export default {
     setMetadata(state: State, metadata: Metadata) {

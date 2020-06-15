@@ -1,5 +1,4 @@
-import Api from '@molgenis/vip-report-api'
-import {Sample} from '@/types/Sample'
+import Api, {Sample} from '@molgenis/vip-report-api'
 
 declare global {
     interface Window {
@@ -7,7 +6,7 @@ declare global {
     }
 }
 
-let api: any = new Api(window.api)
+let api = new Api(window.api)
 
 export default {
     async loadMetadata({commit}: any) {

@@ -1,12 +1,8 @@
 import initialState from '@/store/state'
 import mutations from '@/store/mutations'
 import {State} from '@/types/State'
-import {Metadata} from '@/types/Metadata'
 import {mock} from 'ts-mockito'
-import {Record} from '@/types/Record'
-import {Sample} from '@/types/Sample'
-import {Items} from '@/types/Items'
-import {Phenotype} from '@/types/Phenotype'
+import {Items, Metadata, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
 
 test('set metadata', () => {
     const testState: State = { ...initialState }
