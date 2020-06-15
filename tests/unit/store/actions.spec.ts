@@ -1,8 +1,8 @@
 import actions, {setTestApi} from '@/store/actions'
 import {mock, when} from 'ts-mockito'
-import Api, {Items, Metadata, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
+import Api, {Items, Metadata, Params, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
 
-const api: any = mock(Api)
+const api: Api = mock(Api)
 setTestApi(mock(Api))
 
 test('load metadata', async (done) => {
@@ -27,7 +27,7 @@ test('load samples', async (done) => {
 
 test('load records without params', async (done) => {
     const records = mock<Items<Record>>()
-    when(api.get('records', null)).thenReturn(new Promise(() => records))
+    when(api.get('records')).thenReturn(new Promise(() => records))
 
     const commit = jest.fn()
     await actions.loadRecords({commit}, null)
@@ -59,7 +59,7 @@ test('select sample and load sample phenotypes', async (done) => {
         },
         index: -1
     }
-    const params = {
+    const params:Params = {
         query: {
             selector: ['subject', 'id'],
             operator: '==',
