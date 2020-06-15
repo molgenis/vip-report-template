@@ -9,14 +9,15 @@
     </b-row>
 </template>
 
-<script>
-    import SamplePheno from "./SamplePheno";
+<script lang="ts">
+    import SamplePheno from '@/components/SamplePheno.vue'
+    import Vue from 'vue'
 
-    export default {
+    export default Vue.extend({
         components: {SamplePheno},
         props: {
             sample: Object,
             phenotypes: Object
         }
-    }
+    })
 </script>

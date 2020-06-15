@@ -1,6 +1,6 @@
 import {State} from '@/types/State'
-import {Sample} from "@/types/Sample";
-import {GenomeBrowserDb} from "@/types/GenomeBrowserDb";
+import {Sample} from '@/types/Sample'
+import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
 
 export default {
     samples: (state: State): Array<Sample> => {
@@ -11,13 +11,13 @@ export default {
         const items = state.samples.items.slice()
         return items.sort(function (thisSample, thatSample) {
             if (thisSample.person.individualId < thatSample.person.individualId) {
-                return -1;
+                return -1
             }
             if (thisSample.person.individualId > thatSample.person.individualId) {
-                return 1;
+                return 1
             }
-            return 0;
-        });
+            return 0
+        })
     },
     getSampleById: (state: State) => (id: string): Sample | null => {
         if(state.samples === null) {

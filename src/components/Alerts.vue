@@ -9,13 +9,15 @@
     </div>
 </template>
 
-<script>
-    export default {
+<script lang="ts">
+    import Vue from 'vue'
+
+    export default Vue.extend({
         props: {
             reportRecords: Number,
             totalRecords: Number,
             reportSamples: Number,
             totalSamples: Number
         },
-    }
+    })
 </script>

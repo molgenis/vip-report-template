@@ -130,7 +130,7 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters, mapState} from "vuex";
+    import {mapActions, mapGetters, mapState} from 'vuex'
 
     export default {
         props: {
@@ -217,9 +217,9 @@
                 }
             },
             numberWithCommas(x) {
-                let parts = x.toString().split(".");
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return parts.join(".");
+                let parts = x.toString().split(".")
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                return parts.join(".")
             },
             info(item, index, button) {
                 this.infoModal.title = `Row index: ${index}`

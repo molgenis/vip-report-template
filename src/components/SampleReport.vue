@@ -15,15 +15,16 @@
     </b-row>
 </template>
 
-<script>
-    import RecordTable from "./RecordTable";
-    import SampleInfo from "./SampleInfo";
+<script lang="ts">
+    import RecordTable from '@/components/RecordTable.vue'
+    import SampleInfo from '@/components/SampleInfo.vue'
+    import Vue from 'vue'
 
-    export default {
+    export default Vue.extend({
         components: {SampleInfo, RecordTable},
         props: {
             sample: Object,
             phenotypes: Object
         }
-    }
+    })
 </script>

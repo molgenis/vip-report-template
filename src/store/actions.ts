@@ -1,9 +1,9 @@
-import Api from "@molgenis/vip-report-api";
-import {Sample} from "@/types/Sample";
+import Api from '@molgenis/vip-report-api'
+import {Sample} from '@/types/Sample'
 
 declare global {
     interface Window {
-        api: any;
+        api: any
     }
 }
 
