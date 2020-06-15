@@ -1,3 +1,4 @@
+f
 <template>
     <div>
         <b-row>
@@ -45,17 +46,17 @@
             </template>
             <template v-slot:cell(actions)="data">
                 <b-button class="btn-xs" @click="info(data.item, data.index, $event.target)" mr="3">
-                    <b-icon-search />
+                    <b-icon-search/>
                 </b-button>
             </template>
             <template v-slot:cell(pos)="data">
                 <a v-if="genomeBrowserDb"
                    :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
                    target="_blank">
-                    {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
+                    {{ data.item.c }}:{{ data.item.p | numberWithCommas }}
                     <b-icon-box-arrow-in-up-right class="ml-1"/>
                 </a>
-                <span v-else>{{ data.item.c + ':' + numberWithCommas(data.item.p) }}</span>
+                <span v-else>{{ data.item.c }}:{{ data.item.p | numberWithCommas }}</span>
             </template>
             <template v-slot:cell(id)="data">
                 <span v-for="(id, index) in data.item.i" :key="id">
@@ -129,32 +130,41 @@
     </div>
 </template>
 
-<script>
-    import {mapActions, mapGetters, mapState} from "vuex";
+<script lang="ts">
+    import {getNucClasses} from '@/globals/utils'
+    import {mapActions, mapGetters, mapState} from 'vuex'
+    import Vue from 'vue'
+    // eslint-disable-next-line no-unused-vars
+    import {BButton, BFormInput, BTable, BvTableCtxObject} from 'bootstrap-vue'
+    // eslint-disable-next-line no-unused-vars
+    import {Items} from '@/types/Items'
+    // eslint-disable-next-line no-unused-vars
+    import {Record} from '@/types/Record'
+    import {numberWithCommas} from '@/globals/filters'
 
-    export default {
+    export default Vue.extend({
         props: {
             sample: Object
         },
         data: function () {
             return {
-                filter: '',
-                isTableBusy: false,
-                sortBy: null,
-                sortDesc: false,
+                filter: '' as string,
+                isTableBusy: false as boolean,
+                sortBy: null as string | null,
+                sortDesc: false as boolean,
                 page: {
                     currentPage: 1,
                     perPage: 20
-                },
+                } as object,
                 infoModal: {
                     id: 'info-modal',
                     title: '',
                     content: ''
-                }
+                } as object
             }
         },
         computed: {
-            ...mapGetters(['getSampleById']),
+            ...mapGetters(['getSampleById', 'genomeBrowserDb']),
             ...mapState(['metadata', 'records']),
             genomeAssembly() {
                 return this.metadata.htsFile.genomeAssembly
@@ -178,37 +188,12 @@
                     this.sample && this.sampleMaternal ? {key: 'mother', label: 'mother'} : null,
                     {key: 'qual', label: 'qual', sortable: true},
                     {key: 'filter', label: 'filter'}]
-            },
-            genomeBrowserDb: function () {
-                let genomeBrowserDb
-                switch (this.genomeAssembly) {
-                    case 'NCBI34':
-                        genomeBrowserDb = 'hg16'
-                        break
-                    case 'NCBI35':
-                        genomeBrowserDb = 'hg17'
-                        break
-                    case 'NCBI36':
-                        genomeBrowserDb = 'hg18'
-                        break
-                    case 'GRCh37':
-                        genomeBrowserDb = 'hg19'
-                        break
-                    case 'GRCh38':
-                        genomeBrowserDb = 'hg38'
-                        break
-                    case 'UNKNOWN':
-                    default:
-                        genomeBrowserDb = null
-                        break
-                }
-                return genomeBrowserDb
             }
         },
         methods: {
             ...mapActions(['loadRecords']),
-            provider(ctx) {
-                const params = {
+            provider(ctx: BvTableCtxObject) {
+                const params: any = {
                     page: ctx.currentPage - 1,
                     size: ctx.perPage,
                     sort: ctx.sortBy ? ctx.sortBy : undefined,
@@ -221,68 +206,43 @@
                         args: ['hom_r', 'miss']
                     }
                 }
+                // @ts-ignore
                 return this.loadRecords(params).then(() => {
-                    const records = this.records
+                    const records = this.records as Items<Record>
+                    // @ts-ignore
                     this.page.totalRows = records.page.totalElements
+                    // @ts-ignore
                     this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage)
                     return records.items
                 })
             },
             clearSearch() {
+                // @ts-ignore
                 this.filter = ''
-                this.$refs.search.focus()
+                const searchElement = this.$refs.search as BFormInput
+                searchElement.focus()
             },
-            getNucClass(nuc) {
-                return {
-                    'nuc': true,
-                    'nuc-a': nuc === 'A',
-                    'nuc-c': nuc === 'C',
-                    'nuc-t': nuc === 'T',
-                    'nuc-g': nuc === 'G'
-                }
-            },
-            numberWithCommas(x) {
-                let parts = x.toString().split(".");
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return parts.join(".");
-            },
-            info(item, index, button) {
+            info(item: Record, index: number, button: BButton) {
+                // @ts-ignore
                 this.infoModal.title = `Row index: ${index}`
+                // @ts-ignore
                 this.infoModal.content = JSON.stringify(item, null, 2)
+                // @ts-ignore
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
             resetInfoModal() {
+                // @ts-ignore
                 this.infoModal.title = ''
+                // @ts-ignore
                 this.infoModal.content = ''
             },
+            getNucClass: getNucClasses
         },
+        filters: {numberWithCommas},
         watch: {
             sample: function () {
-                this.$refs.table.refresh()
+                (this.$refs.table as BTable).refresh()
             }
         }
-    }
+    })
 </script>
-
-<!--suppress CssUnusedSymbol -->
-<style scoped>
-    .nuc {
-        padding: 0.2rem;
-    }
-
-    .nuc-a {
-        background-color: #90ee90;
-    }
-
-    .nuc-c {
-        background-color: #b0c4de;
-    }
-
-    .nuc-t {
-        background-color: #eea2ad;
-    }
-
-    .nuc-g {
-        background-color: #ffec8b;
-    }
-</style>
