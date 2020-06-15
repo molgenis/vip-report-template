@@ -53,10 +53,10 @@ f
                 <a v-if="genomeBrowserDb"
                    :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
                    target="_blank">
-                    {{ data.item.c + ':' + numberWithCommas(data.item.p) }}
+                    {{ data.item.c }}:{{ data.item.p | numberWithCommas }}
                     <b-icon-box-arrow-in-up-right class="ml-1"/>
                 </a>
-                <span v-else>{{ data.item.c + ':' + numberWithCommas(data.item.p) }}</span>
+                <span v-else>{{ data.item.c }}:{{ data.item.p | numberWithCommas }}</span>
             </template>
             <template v-slot:cell(id)="data">
                 <span v-for="(id, index) in data.item.i" :key="id">
@@ -131,6 +131,7 @@ f
 </template>
 
 <script lang="ts">
+    import {getNucClasses} from '@/globals/utils'
     import {mapActions, mapGetters, mapState} from 'vuex'
     import Vue from 'vue'
     // eslint-disable-next-line no-unused-vars
@@ -139,6 +140,7 @@ f
     import {Items} from '@/types/Items'
     // eslint-disable-next-line no-unused-vars
     import {Record} from '@/types/Record'
+    import {numberWithCommas} from '@/globals/filters'
 
     export default Vue.extend({
         props: {
@@ -220,20 +222,6 @@ f
                 const searchElement = this.$refs.search as BFormInput
                 searchElement.focus()
             },
-            getNucClass(nuc: string) {
-                return {
-                    'nuc': true,
-                    'nuc-a': nuc === 'A',
-                    'nuc-c': nuc === 'C',
-                    'nuc-t': nuc === 'T',
-                    'nuc-g': nuc === 'G'
-                }
-            },
-            numberWithCommas(x: number) {
-                let parts = x.toString().split('.')
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                return parts.join('.')
-            },
             info(item: Record, index: number, button: BButton) {
                 // @ts-ignore
                 this.infoModal.title = `Row index: ${index}`
@@ -247,8 +235,10 @@ f
                 this.infoModal.title = ''
                 // @ts-ignore
                 this.infoModal.content = ''
-            }
+            },
+            getNucClass: getNucClasses
         },
+        filters: {numberWithCommas},
         watch: {
             sample: function () {
                 (this.$refs.table as BTable).refresh()
@@ -256,26 +246,3 @@ f
         }
     })
 </script>
-
-<!--suppress CssUnusedSymbol -->
-<style scoped>
-    .nuc {
-        padding: 0.2rem;
-    }
-
-    .nuc-a {
-        background-color: #90ee90;
-    }
-
-    .nuc-c {
-        background-color: #b0c4de;
-    }
-
-    .nuc-t {
-        background-color: #eea2ad;
-    }
-
-    .nuc-g {
-        background-color: #ffec8b;
-    }
-</style>
