@@ -2,7 +2,8 @@
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 module.exports = {
-    productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
+    filenameHashing: false,
+    productionSourceMap: process.env.NODE_ENV !== 'production',
 
     configureWebpack: {
         plugins: [
@@ -14,6 +15,8 @@ module.exports = {
         if (process.env.NODE_ENV === 'production') {
             config.plugins.delete('preload')
             config.plugins.delete('prefetch')
+
+            config.optimization.splitChunks({chunks: "all"})
 
             config.plugin('html')
                 .tap(args => {
