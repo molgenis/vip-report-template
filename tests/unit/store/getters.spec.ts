@@ -1,10 +1,9 @@
 import initialState from '@/store/state'
 import getters from '@/store/getters'
 import {State} from '@/types/State'
-import {AffectedStatus, Sample, Sex} from '@/types/Sample'
 import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
 import {mock} from 'ts-mockito'
-import {HtsFileMetadata, Metadata} from '@/types/Metadata'
+import {HtsFileMetadata, Items, Metadata, Person, Sample} from '@molgenis/vip-report-api'
 
 test('samples returns empty array in case of no samples', () => {
     const testState: State = {...initialState}
@@ -12,41 +11,24 @@ test('samples returns empty array in case of no samples', () => {
 })
 
 test('samples returns array sorted by sample id', () => {
-    const sample0: Sample = {
-        person: {
-            familyId: 'MyFamilyId',
-            individualId: 'personC',
-            paternalId: '0',
-            maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
-        },
-        index: -1
-    }
-    const sample1: Sample = {
-        person: {
-            familyId: 'MyFamilyId',
-            individualId: 'personA',
-            paternalId: '0',
-            maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
-        },
-        index: -1
-    }
-    const sample2: Sample = {
-        person: {
-            familyId: 'MyFamilyId',
-            individualId: 'personB',
-            paternalId: '0',
-            maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
-        },
-        index: -1
-    }
-    const testState: State = {...initialState, samples: {items: [sample2, sample0, sample1, sample2], total: 4}}
-    expect(getters.samples(testState)).toStrictEqual([sample1, sample2, sample2, sample0])
+    const person0: Person = mock<Person>()
+    person0.individualId = 'personC'
+    const sample0: Sample = mock<Sample>()
+    sample0.person = person0
+    const person1: Person = mock<Person>()
+    person1.individualId = 'personA'
+    const sample1: Sample = mock<Sample>()
+    sample1.person = person1
+    const person2: Person = mock<Person>()
+    person2.individualId = 'personB'
+    const sample2: Sample = mock<Sample>()
+    sample2.person = person2
+
+    const samples: Items<Sample> = mock<Items<Sample>>()
+    samples.items = [sample2, sample0, sample1, sample2]
+
+    const testState: State = {...initialState, samples}
+    expect(getters.samples(testState).map(sample => sample.person.individualId)).toEqual(['personA', 'personB', 'personB', 'personC'])
 })
 
 test('get sample by id returns null in case of no samples', () => {
@@ -55,34 +37,28 @@ test('get sample by id returns null in case of no samples', () => {
 })
 
 test('get sample by id returns null in case of unknown sample', () => {
-    const sample0: Sample = {
-        person: {
-            familyId: 'MyFamilyId',
-            individualId: 'MySampleId',
-            paternalId: '0',
-            maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
-        },
-        index: -1
-    }
-    const testState: State = {...initialState, samples: {items: [sample0], total: 1}}
+    const person0: Person = mock<Person>()
+    person0.individualId = 'MySampleId'
+    const sample0: Sample = mock<Sample>()
+    sample0.person = person0
+
+    const samples: Items<Sample> = mock<Items<Sample>>()
+    samples.items = [sample0]
+
+    const testState: State = {...initialState, samples}
     expect(getters.getSampleById(testState)('UnknownSampleId')).toBe(null)
 })
 
 test('get sample by id returns sample in case of known sample', () => {
-    const sample0: Sample = {
-        person: {
-            familyId: 'MyFamilyId',
-            individualId: 'MySampleId',
-            paternalId: '0',
-            maternalId: '0',
-            sex: Sex.MALE,
-            affectedStatus: AffectedStatus.AFFECTED
-        },
-        index: -1
-    }
-    const testState: State = {...initialState, samples: {items: [sample0], total: 1}}
+    const person0: Person = mock<Person>()
+    person0.individualId = 'MySampleId'
+    const sample0: Sample = mock<Sample>()
+    sample0.person = person0
+
+    const samples: Items<Sample> = mock<Items<Sample>>()
+    samples.items = [sample0]
+
+    const testState: State = {...initialState, samples}
     expect(getters.getSampleById(testState)('MySampleId')).toBe(sample0)
 })
 

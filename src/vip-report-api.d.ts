@@ -1,1 +1,0 @@
-declare module '@molgenis/vip-report-api'

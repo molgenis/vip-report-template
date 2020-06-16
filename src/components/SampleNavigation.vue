@@ -15,7 +15,7 @@
     import Vue from 'vue'
     import {mapState} from 'vuex'
     // eslint-disable-next-line no-unused-vars
-    import {Sample} from '@/types/Sample'
+    import {Sample} from '@molgenis/vip-report-api'
 
     export default Vue.extend({
         computed: {
