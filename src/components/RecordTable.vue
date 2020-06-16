@@ -137,9 +137,7 @@ f
     // eslint-disable-next-line no-unused-vars
     import {BButton, BFormInput, BTable, BvTableCtxObject} from 'bootstrap-vue'
     // eslint-disable-next-line no-unused-vars
-    import {Items} from '@/types/Items'
-    // eslint-disable-next-line no-unused-vars
-    import {Record} from '@/types/Record'
+    import {Items, Record} from '@molgenis/vip-report-api'
     import {numberWithCommas} from '@/globals/filters'
 
     export default Vue.extend({

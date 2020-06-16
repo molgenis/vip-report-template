@@ -1,6 +1,6 @@
 import {State} from '@/types/State'
-import {Sample} from '@/types/Sample'
 import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
+import {Sample} from '@molgenis/vip-report-api'
 
 export default {
     samples: (state: State): Array<Sample> => {
@@ -26,7 +26,6 @@ export default {
         return state.samples.items.find(sample => sample.person.individualId === id) || null
     },
     genomeBrowserDb: (state: State): GenomeBrowserDb | null => {
-        console.log(state.metadata)
         if(state.metadata === null) {
             return null
         }
