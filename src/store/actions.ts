@@ -1,11 +1,6 @@
 import Api, {Sample} from '@molgenis/vip-report-api'
 
-declare global {
-    interface Window {
-        api: any
-    }
-}
-
+// @ts-ignore
 let api = new Api(window.api)
 
 export default {
