@@ -2,7 +2,7 @@
   "brand": "VCF Report",
   "about": "About",
   "footer": "Report generated with {0} {1} (arguments: {2})",
-  "variantWarning": "The first {0} variants are available out of a total of {1}.",
+  "recordWarning": "The first {0} records are available out of a total of {1}.",
   "sampleWarning": "The first {0} samples are available out of a total of {1}.",
   "chr": "Chromosome",
   "pos": "Position",
