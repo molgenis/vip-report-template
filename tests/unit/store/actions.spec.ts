@@ -30,7 +30,7 @@ test('load records without params', async (done) => {
     when(api.get('records')).thenReturn(new Promise(() => records))
 
     const commit = jest.fn()
-    await actions.loadRecords({commit}, null)
+    await actions.loadRecords({commit})
     expect(commit).toHaveBeenCalledWith('setRecords', records)
     done()
 })
