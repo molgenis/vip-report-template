@@ -1,21 +1,33 @@
 <template>
     <div id="app">
-        <NavigationBar/>
+        <NavigationBar class="mb-3" />
         <!--suppress HtmlUnknownBooleanAttribute -->
         <b-container fluid>
+            <Alerts/>
             <router-view/>
         </b-container>
     </div>
 </template>
 
-<script>
-    import NavigationBar from '@/components/NavigationBar.vue'
+<script lang="ts">
+    import {mapActions} from 'vuex'
 
-    export default {
+    import Alerts from '@/components/Alerts.vue'
+    import NavigationBar from '@/components/NavigationBar.vue'
+    import Vue from 'vue'
+
+    export default Vue.extend({
         components: {
-            NavigationBar
+            Alerts, NavigationBar
+        },
+        methods: {
+            ...mapActions(['validateRecords', 'validateSamples'])
+        },
+        async created() {
+            await this.validateRecords()
+            await this.validateSamples()
         }
-    }
+    })
 </script>
 
 <!--suppress CssUnusedSymbol -->

@@ -1,23 +1,21 @@
 <template>
-    <div>
-        <b-alert v-if="reportRecords < totalRecords" show dismissible variant="warning">
-            {{ $t('variantWarning', [reportRecords, totalRecords]) }}
-        </b-alert>
-        <b-alert v-if="reportSamples < totalSamples" show dismissible variant="warning">
-            {{ $t('sampleWarning', [reportSamples, totalSamples]) }}
+    <div v-if="alerts.length > 0">
+        <b-alert v-for="(alert, index) in alerts" :key="index" show dismissible :variant="alert.type" @dismissed="removeAlert(alert)">
+            {{ $t(alert.messageId, alert.messageArgs) }}
         </b-alert>
     </div>
 </template>
 
 <script lang="ts">
     import Vue from 'vue'
+    import {mapActions, mapState} from 'vuex'
 
     export default Vue.extend({
-        props: {
-            reportRecords: Number,
-            totalRecords: Number,
-            reportSamples: Number,
-            totalSamples: Number
+        computed: {
+            ...mapState(['alerts']),
         },
+        methods: {
+            ...mapActions(['removeAlert'])
+        }
     })
 </script>
