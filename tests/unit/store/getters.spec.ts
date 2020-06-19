@@ -3,7 +3,7 @@ import getters from '@/store/getters'
 import {State} from '@/types/State'
 import {GenomeBrowserDb} from '@/types/GenomeBrowserDb'
 import {mock} from 'ts-mockito'
-import {HtsFileMetadata, Items, Metadata, Person, Sample} from '@molgenis/vip-report-api'
+import {HtsFileMetadata, Metadata, PagedItems, Person, Sample} from '@molgenis/vip-report-api'
 
 test('samples returns empty array in case of no samples', () => {
     const testState: State = {...initialState}
@@ -24,7 +24,7 @@ test('samples returns array sorted by sample id', () => {
     const sample2: Sample = mock<Sample>()
     sample2.person = person2
 
-    const samples: Items<Sample> = mock<Items<Sample>>()
+    const samples: PagedItems<Sample> = mock<PagedItems<Sample>>()
     samples.items = [sample2, sample0, sample1, sample2]
 
     const testState: State = {...initialState, samples}
@@ -42,7 +42,7 @@ test('get sample by id returns null in case of unknown sample', () => {
     const sample0: Sample = mock<Sample>()
     sample0.person = person0
 
-    const samples: Items<Sample> = mock<Items<Sample>>()
+    const samples: PagedItems<Sample> = mock<PagedItems<Sample>>()
     samples.items = [sample0]
 
     const testState: State = {...initialState, samples}
@@ -55,7 +55,7 @@ test('get sample by id returns sample in case of known sample', () => {
     const sample0: Sample = mock<Sample>()
     sample0.person = person0
 
-    const samples: Items<Sample> = mock<Items<Sample>>()
+    const samples: PagedItems<Sample> = mock<PagedItems<Sample>>()
     samples.items = [sample0]
 
     const testState: State = {...initialState, samples}

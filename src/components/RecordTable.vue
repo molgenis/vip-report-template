@@ -137,7 +137,7 @@ f
     // eslint-disable-next-line no-unused-vars
     import {BButton, BFormInput, BTable, BvTableCtxObject} from 'bootstrap-vue'
     // eslint-disable-next-line no-unused-vars
-    import {Items, Record} from '@molgenis/vip-report-api'
+    import {PagedItems, Record} from '@molgenis/vip-report-api'
     import {numberWithCommas} from '@/globals/filters'
 
     export default Vue.extend({
@@ -206,7 +206,7 @@ f
                 }
                 // @ts-ignore
                 return this.loadRecords(params).then(() => {
-                    const records = this.records as Items<Record>
+                    const records = this.records as PagedItems<Record>
                     // @ts-ignore
                     this.page.totalRows = records.page.totalElements
                     // @ts-ignore
