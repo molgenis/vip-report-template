@@ -48,11 +48,11 @@
                     <Identifiers :identifiers="data.item.val" />
                 </span>
                 <span v-else-if="data.item.key === 'r'">
-                    <Bases :bases="data.item.val" />
+                    <Allele :allele="data.item.val"/>
                 </span>
                 <span v-else-if="data.item.key === 'a'">
                     <span v-for="(alt, index) in data.item.val" :key="index">
-                        <Bases :bases="alt" />
+                        <Allele :allele="alt"/>
                         <span v-if="index < data.item.val.length - 1">, </span>
                     </span>
                 </span>
@@ -78,12 +78,12 @@
     import Vue, {PropType} from 'vue'
     // eslint-disable-next-line no-unused-vars
     import {Record, RecordsMetadata, Sample} from '@molgenis/vip-report-api'
-    import Bases from '@/components/Bases.vue'
+    import Allele from '@/components/Allele.vue'
     import Identifiers from '@/components/Identifiers.vue'
     import RecordInfoDetails from '@/components/RecordInfoDetails.vue'
 
     export default Vue.extend({
-        components: {Bases, Identifiers, RecordInfoDetails},
+        components: {Allele, Identifiers, RecordInfoDetails},
         props: {
             metadata: Object as PropType<RecordsMetadata>,
             record: Object as PropType<Record>,

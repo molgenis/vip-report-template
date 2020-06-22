@@ -62,29 +62,29 @@ f
                 <Identifiers :identifiers="data.item.i"/>
             </template>
             <template v-slot:cell(ref)="data">
-                <Bases :bases="data.item.r"/>
+                <Allele :allele="data.item.r"/>
             </template>
             <template v-slot:cell(alt)="data">
                 <span v-for="(alt, index) in data.item.a" :key="index">
-                    <Bases :bases="alt"/>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.a.length - 1">, </span>
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
                 <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
-                    <Bases :bases="alt"/>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[sample.index].gt.a.length - 1"> {{ data.item.s[sample.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
                 <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
-                    <Bases :bases="alt"/>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1"> {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
                 <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
-                    <Bases :bases="alt"/>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"> {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
@@ -134,10 +134,10 @@ f
     import {numberWithCommas} from '@/globals/filters'
     import RecordDetails from '@/components/RecordDetails.vue'
     import Identifiers from '@/components/Identifiers.vue'
-    import Bases from '@/components/Bases.vue'
+    import Allele from '@/components/Allele.vue'
 
     export default Vue.extend({
-        components: {Bases, Identifiers, RecordDetails},
+        components: {Allele, Identifiers, RecordDetails},
         props: {
             sample: Object as PropType<Sample>
         },

@@ -1,8 +1,8 @@
 <template>
     <span>
-        <span v-if="bases.startsWith('<') && bases.endsWith('>')">{{ bases }}</span>
-        <span v-else v-for="(base, index) in bases.split('')" :key="index"
-              :class="getBaseClass(base)">{{ base }}</span>
+        <span v-if="allele.startsWith('<') && allele.endsWith('>') || allele.indexOf(']') !== -1 || allele.indexOf('[') !== -1">{{ allele }}</span>
+        <span v-else v-for="(base, index) in allele.split('')" :key="index"
+              :class="getAlleleClasses(base)">{{ base }}</span>
     </span>
 </template>
 
@@ -12,10 +12,10 @@
 
     export default Vue.extend({
         props: {
-            bases: String
+            allele: String
         },
         methods: {
-            getBaseClass(base: string): object {
+            getAlleleClasses(base: string): object {
                 const classes: object = {nuc: true}
                 // @ts-ignore
                 classes['nuc-' + base.toLocaleLowerCase()] = true
