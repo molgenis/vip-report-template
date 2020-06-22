@@ -37,6 +37,10 @@
         font-size: .75rem;
     }
 
+    td {
+        white-space: nowrap
+    }
+
     td.compact {
         padding: 0;
         width: 0;
@@ -60,5 +64,9 @@
 
     .nuc-g {
         background-color: #ffec8b;
+    }
+
+    .modal-container {
+        overflow: auto
     }
 </style>

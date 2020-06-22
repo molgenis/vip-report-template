@@ -11,6 +11,8 @@
   "alt": "Alternates",
   "qual": "Quality",
   "filter": "Filters",
+  "info": "Info",
+  "format": "Format",
   "type": "Type",
   "noSearchResults": "No Search Results",
   "emptyTableMessage": "There are no records to show",
@@ -25,5 +27,7 @@
   "phenotypesUnavailable": "no phenotype information available",
   "vibe": "VIBE",
   "recordDetails": "Record Details",
-  "ok": "Ok"
+  "ok": "Ok",
+  "prop": "Property",
+  "value": "Value"
 }
