@@ -1,13 +1,14 @@
 <template>
     <span>
-        <span v-for="(base, index) in bases.split('')" :key="index"
+        <span v-if="bases.startsWith('<') && bases.endsWith('>')">{{ bases }}</span>
+        <span v-else v-for="(base, index) in bases.split('')" :key="index"
               :class="getBaseClass(base)">{{ base }}</span>
     </span>
 </template>
 
 <script lang="ts">
     // eslint-disable-next-line no-unused-vars
-    import Vue, {PropType} from 'vue'
+    import Vue from 'vue'
 
     export default Vue.extend({
         props: {
