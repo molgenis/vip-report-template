@@ -66,7 +66,7 @@
                     <RecordInfoDetails :metadata="metadata.info" :info="data.item.val" />
                 </span>
                 <span v-else-if="data.item.key === 's'">
-                    {{ data.item.val }}
+                    {{ data.item.val[sample.index] }}
                 </span>
             </template>
         </b-table>

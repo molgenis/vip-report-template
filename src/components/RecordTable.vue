@@ -117,7 +117,7 @@ f
                 {{ $t('ok') }}
             </template>
             <div class="modal-container">
-                <RecordDetails :metadata="metadata.records" :record="infoModal.record"/>
+                <RecordDetails :metadata="metadata.records" :record="infoModal.record" :sample="sample "/>
             </div>
         </b-modal>
     </div>
