@@ -1,6 +1,6 @@
 import actions, {setTestApi} from '@/store/actions'
 import {mock, when} from 'ts-mockito'
-import Api, {Items, Metadata, Params, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
+import Api, {Metadata, PagedItems, Params, Phenotype, Record, Sample} from '@molgenis/vip-report-api'
 
 const api: Api = mock(Api)
 setTestApi(mock(Api))
@@ -16,7 +16,7 @@ test('load metadata', async (done) => {
 })
 
 test('load samples', async (done) => {
-    const samples = mock<Items<Sample>>()
+    const samples = mock<PagedItems<Sample>>()
     when(api.get('samples')).thenReturn(new Promise(() => samples))
 
     const commit = jest.fn()
@@ -26,7 +26,7 @@ test('load samples', async (done) => {
 })
 
 test('load records without params', async (done) => {
-    const records = mock<Items<Record>>()
+    const records = mock<PagedItems<Record>>()
     when(api.get('records')).thenReturn(new Promise(() => records))
 
     const commit = jest.fn()
@@ -36,7 +36,7 @@ test('load records without params', async (done) => {
 })
 
 test('load records with params', async (done) => {
-    const records = mock<Items<Record>>()
+    const records = mock<PagedItems<Record>>()
     const params = {}
     when(api.get('records', params)).thenReturn(new Promise(() => records))
 
@@ -47,7 +47,7 @@ test('load records with params', async (done) => {
 })
 
 test('select sample and load sample phenotypes', async (done) => {
-    const phenotypes = mock<Items<Phenotype>>()
+    const phenotypes = mock<PagedItems<Phenotype>>()
     const sample: Sample = {
         person: {
             familyId: 'MyFamilyId',

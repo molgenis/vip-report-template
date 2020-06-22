@@ -59,41 +59,32 @@ f
                 <span v-else>{{ data.item.c }}:{{ data.item.p | numberWithCommas }}</span>
             </template>
             <template v-slot:cell(id)="data">
-                <span v-for="(id, index) in data.item.i" :key="id">
-                    <a v-if="id.startsWith('rs')" :href="'https://www.ncbi.nlm.nih.gov/snp/' + id" target="_blank">{{ id }}</a>
-                    <span v-else>{{ id }}</span>
-                    <span v-if="index < data.item.i.length - 1">, </span>
-                </span>
+                <Identifiers :identifiers="data.item.i"/>
             </template>
             <template v-slot:cell(ref)="data">
-                <span v-for="(nuc, index) in data.item.r.split('')" :key="index"
-                      :class="getNucClass(nuc)">{{ nuc }}</span>
+                <Allele :allele="data.item.r"/>
             </template>
             <template v-slot:cell(alt)="data">
                 <span v-for="(alt, index) in data.item.a" :key="index">
-                    <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="getNucClass(nuc)">{{ nuc }}</span>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.a.length - 1">, </span>
                 </span>
             </template>
             <template v-slot:cell(sample)="data">
                 <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
-                    <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="getNucClass(nuc)">{{ nuc }}</span>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[sample.index].gt.a.length - 1"> {{ data.item.s[sample.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(father)="data">
                 <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
-                    <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="getNucClass(nuc)">{{ nuc }}</span>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1"> {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
             <template v-slot:cell(mother)="data">
                 <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
-                    <span v-for="(nuc, index) in alt.split('')" :key="index"
-                          :class="getNucClass(nuc)">{{ nuc }}</span>
+                    <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"> {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
@@ -125,24 +116,30 @@ f
             <template v-slot:modal-ok>
                 {{ $t('ok') }}
             </template>
-            <pre>{{ infoModal.content }}</pre>
+            <div class="modal-container">
+                <RecordDetails :metadata="metadata.records" :record="infoModal.record" :sample="sample"/>
+            </div>
         </b-modal>
     </div>
 </template>
 
 <script lang="ts">
-    import {getNucClasses} from '@/globals/utils'
     import {mapActions, mapGetters, mapState} from 'vuex'
-    import Vue from 'vue'
+    // eslint-disable-next-line no-unused-vars
+    import Vue, {PropType} from 'vue'
     // eslint-disable-next-line no-unused-vars
     import {BButton, BFormInput, BTable, BvTableCtxObject} from 'bootstrap-vue'
     // eslint-disable-next-line no-unused-vars
-    import {Items, Record} from '@molgenis/vip-report-api'
+    import {PagedItems, Record, Sample} from '@molgenis/vip-report-api'
     import {numberWithCommas} from '@/globals/filters'
+    import RecordDetails from '@/components/RecordDetails.vue'
+    import Identifiers from '@/components/Identifiers.vue'
+    import Allele from '@/components/Allele.vue'
 
     export default Vue.extend({
+        components: {Allele, Identifiers, RecordDetails},
         props: {
-            sample: Object
+            sample: Object as PropType<Sample>
         },
         data: function () {
             return {
@@ -157,7 +154,7 @@ f
                 infoModal: {
                     id: 'info-modal',
                     title: '',
-                    content: ''
+                    record: null
                 } as object
             }
         },
@@ -206,7 +203,7 @@ f
                 }
                 // @ts-ignore
                 return this.loadRecords(params).then(() => {
-                    const records = this.records as Items<Record>
+                    const records = this.records as PagedItems<Record>
                     // @ts-ignore
                     this.page.totalRows = records.page.totalElements
                     // @ts-ignore
@@ -220,11 +217,11 @@ f
                 const searchElement = this.$refs.search as BFormInput
                 searchElement.focus()
             },
-            info(item: Record, index: number, button: BButton) {
+            info(record: Record, index: number, button: BButton) {
                 // @ts-ignore
                 this.infoModal.title = `Row index: ${index}`
                 // @ts-ignore
-                this.infoModal.content = JSON.stringify(item, null, 2)
+                this.infoModal.record = record
                 // @ts-ignore
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
@@ -233,8 +230,7 @@ f
                 this.infoModal.title = ''
                 // @ts-ignore
                 this.infoModal.content = ''
-            },
-            getNucClass: getNucClasses
+            }
         },
         filters: {numberWithCommas},
         watch: {

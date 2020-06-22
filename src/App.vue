@@ -32,9 +32,17 @@
 
 <!--suppress CssUnusedSymbol -->
 <style>
+    html {
+        font-size: 14px
+    }
+
     .btn-xs {
         padding: .125rem .375rem;
         font-size: .75rem;
+    }
+
+    td {
+        white-space: nowrap
     }
 
     td.compact {
@@ -60,5 +68,9 @@
 
     .nuc-g {
         background-color: #ffec8b;
+    }
+
+    .modal-container {
+        overflow: auto
     }
 </style>
