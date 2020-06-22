@@ -17,8 +17,10 @@
         methods: {
             getAlleleClasses(base: string): object {
                 const classes: object = {nuc: true}
-                // @ts-ignore
-                classes['nuc-' + base.toLocaleLowerCase()] = true
+                if(base !== '*') {
+                    // @ts-ignore
+                    classes['nuc-' + base.toLocaleLowerCase()] = true
+                }
                 return classes
             }
         }
