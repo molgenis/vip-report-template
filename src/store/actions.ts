@@ -21,7 +21,8 @@ export default {
         }
     },
     async loadSamples({commit}: any) {
-        const response = await api.get('samples')
+        const params: Params = {size: Number.MAX_VALUE}
+        const response = await api.get('samples', params)
         commit('setSamples', response)
     },
     async selectSample({commit}: any, sample: Sample) {
