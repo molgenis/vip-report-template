@@ -1,7 +1,13 @@
 <template>
     <div>
         <span v-for="(id, index) in identifiers" :key="id">
+            <!-- dbSNP ID -->
             <a v-if="id.startsWith('rs')" :href="'https://www.ncbi.nlm.nih.gov/snp/' + encodeURIComponent(id)" target="_blank">
+                {{ id }}
+                <b-icon-box-arrow-in-up-right class="ml-1"/>
+            </a>
+            <!-- dbVar ID -->
+            <a v-else-if="id.startsWith('esv') || id.startsWith('nsv')" :href="'https://www.ncbi.nlm.nih.gov/dbvar/variants/' + encodeURIComponent(id)" target="_blank">
                 {{ id }}
                 <b-icon-box-arrow-in-up-right class="ml-1"/>
             </a>
