@@ -1,7 +1,8 @@
 f
 <template>
     <div>
-        <b-row>
+        <!-- hidden, see note in methods.provider -->
+        <b-row style="display: none; visibility: hidden">
             <b-col md="4">
                 <b-form-group>
                     <b-input-group class="mt-3">
@@ -189,6 +190,7 @@ f
         methods: {
             ...mapActions(['loadRecords']),
             provider(ctx: BvTableCtxObject) {
+                // todo: translate filter param to query
                 const params: any = {
                     page: ctx.currentPage - 1,
                     size: ctx.perPage,
