@@ -179,7 +179,7 @@ f
                     {key: 'p', label: 'pos', sortable: true},
                     {key: 'i', label: 'id'},
                     {key: 'r', label: 'ref'},
-                    this.sample ? {key: 'sample', label: 'sample'} : {key: 'a', label: 'alt'},
+                    this.sample ? {key: 's', label: 'sample'} : {key: 'a', label: 'alt'},
                     this.sample && this.samplePaternal ? {key: 'father', label: 'father'} : null,
                     this.sample && this.sampleMaternal ? {key: 'mother', label: 'mother'} : null,
                     {key: 'q', label: 'qual', sortable: true},
