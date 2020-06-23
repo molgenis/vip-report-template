@@ -40,7 +40,10 @@
                 const fields = []
                 let index = 0
                 for (const info of this.metadata) {
-                    fields.push({key: info.id, label: info.description, index: index, metadata: info})
+                    // @ts-ignore
+                    if(this.hasData(index)) {
+                        fields.push({key: info.id, label: info.description, index: index, metadata: info})
+                    }
                     ++index
                 }
                 return fields
@@ -50,12 +53,15 @@
             }
         },
         methods: {
-            getInfoMetadata(key: string): InfoMetadata {
-                const infoMetadata = this.metadata.find(item => item.id === key)
-                if (infoMetadata === undefined) {
-                    throw new Error('missing info metadata for \'' + key + '\'')
+            hasData(index: number): boolean {
+                for (let item of this.info) {
+                    // @ts-ignore
+                    if(!(item[index] === null || (Array.isArray(item[index]) && item[index].length === 0))) {
+                        return true
+                    }
                 }
-                return infoMetadata
+
+                return false
             }
         }
     })

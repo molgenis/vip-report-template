@@ -47,8 +47,11 @@
                 const items: object[] = []
                 for (let metadata of this.metadata) {
                     // @ts-ignore
-                    const item = {key: metadata.id, val: this.info[metadata.id], metadata: metadata}
-                    items.push(item)
+                    if(this.info[metadata.id] !== undefined) {
+                        // @ts-ignore
+                        const item = {key: metadata.id, val: this.info[metadata.id], metadata: metadata}
+                        items.push(item)
+                    }
                 }
                 items.sort(function (thisItem, thatItem) {
                     // @ts-ignore
