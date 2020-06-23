@@ -2,10 +2,10 @@
     <div>
         <RecordInfoUnnestedDetails :metadata="unnestedMetadata" :info="info" />
         <div v-for="metadata in nestedMetadata" :key="metadata.key">
-            <h5>
+            <h4>
                 {{ metadata.id }}
                 <InfoButton :info="metadata.description" />
-            </h5>
+            </h4>
             <RecordInfoNestedDetails :metadata="metadata.nested" :info="getNestedInfo(metadata)" />
         </div>
     </div>
