@@ -1,21 +1,13 @@
 <template>
     <div>
-        <b-table
-                small
-                responsive=true
-                :fields="fields"
-                :items="items">
-            <template v-slot:head()="data">
-                {{ $t(data.label) }}
-            </template>
-            <template v-slot:cell(key)="data">
-                <!-- todo: show description in addition to key: {{ getInfoMetadata(data.item.key).description }} -->
-                {{ data.item.key }}
-            </template>
-            <template v-slot:cell(val)="data">
-                <RecordInfoDetailsItem :metadata="getInfoMetadata(data.item.key)" :value="data.item.val"/>
-            </template>
-        </b-table>
+        <RecordInfoUnnestedDetails :metadata="unnestedMetadata" :info="info" />
+        <div v-for="metadata in nestedMetadata" :key="metadata.key">
+            <h5>
+                {{ metadata.id }}
+                <InfoButton :info="metadata.description" />
+            </h5>
+            <RecordInfoNestedDetails :metadata="metadata.nested" :info="getNestedInfo(metadata)" />
+        </div>
     </div>
 </template>
 
@@ -24,40 +16,42 @@
     import Vue, {PropType} from 'vue'
     // eslint-disable-next-line no-unused-vars
     import {InfoMetadata} from '@molgenis/vip-report-api'
-    import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue'
+    import RecordInfoNestedDetails from '@/components/RecordInfoNestedDetails.vue'
+    import RecordInfoUnnestedDetails from '@/components/RecordInfoUnnestedDetails.vue'
+    import InfoButton from '@/components/InfoButton.vue'
 
     export default Vue.extend({
-        components: {RecordInfoDetailsItem},
+        components: {InfoButton, RecordInfoNestedDetails, RecordInfoUnnestedDetails},
         props: {
             metadata: Array as PropType<InfoMetadata[]>,
             info: Object as PropType<object>
         },
         computed: {
-            fields: function () {
-                return [
-                    {key: 'key', label: 'prop'},
-                    {key: 'val', label: 'value'}]
+            unnestedMetadata: function () {
+                const unnestedMetadata = this.metadata.filter(infoMetadata => infoMetadata.type !== 'NESTED')
+                unnestedMetadata.sort(this.sortMetadata)
+                return unnestedMetadata
             },
-            items() {
-                const items = []
-                for (let key in this.info) {
-                    // fix for invalid VCF
-                    if (key !== '') {
-                        // @ts-ignore
-                        const item = {key: key, val: this.info[key]}
-                        items.push(item)
-                    }
-                }
-                return items
+            nestedMetadata: function () {
+                const nestedMetadata = this.metadata.filter(infoMetadata => infoMetadata.type === 'NESTED')
+                nestedMetadata.sort(this.sortMetadata)
+                return nestedMetadata
             }
         },
         methods: {
-            getInfoMetadata(key: string): InfoMetadata {
-                const infoMetadata = this.metadata.find(item => item.id === key)
-                if (infoMetadata === undefined) {
-                    throw new Error('missing info metadata for \'' + key + '\'')
+            sortMetadata(thisItem: InfoMetadata, thatItem: InfoMetadata): number {
+                return thisItem.id.localeCompare(thatItem.id)
+            },
+            getNestedInfo(metadata: InfoMetadata): object[] {
+                let nestedInfo: object[]
+                if(metadata.number && metadata.number.count === 1) {
+                    // @ts-ignore
+                    nestedInfo = [this.info[metadata.id]]
+                } else {
+                    // @ts-ignore
+                    nestedInfo = this.info[metadata.id]
                 }
-                return infoMetadata
+                return nestedInfo
             }
         }
     })
