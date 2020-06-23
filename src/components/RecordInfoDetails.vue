@@ -8,12 +8,14 @@
             <template v-slot:head()="data">
                 {{ $t(data.label) }}
             </template>
+            <template v-slot:cell(actions)="data">
+                <b-icon-question-circle class="mr-1" v-b-tooltip.click :title="data.item.metadata.description"/>
+            </template>
             <template v-slot:cell(key)="data">
-                <!-- todo: show description in addition to key: {{ getInfoMetadata(data.item.key).description }} -->
                 {{ data.item.key }}
             </template>
             <template v-slot:cell(val)="data">
-                <RecordInfoDetailsItem :metadata="getInfoMetadata(data.item.key)" :value="data.item.val"/>
+                <RecordInfoDetailsItem :metadata="data.item.metadata" :value="data.item.val"/>
             </template>
         </b-table>
     </div>
@@ -35,6 +37,7 @@
         computed: {
             fields: function () {
                 return [
+                    {key: 'actions', label: '', class: ['compact', 'align-middle']},
                     {key: 'key', label: 'prop'},
                     {key: 'val', label: 'value'}]
             },
@@ -44,7 +47,7 @@
                     // fix for invalid VCF
                     if (key !== '') {
                         // @ts-ignore
-                        const item = {key: key, val: this.info[key]}
+                        const item = {key: key, val: this.info[key], metadata: this.getInfoMetadata(key)}
                         items.push(item)
                     }
                 }
