@@ -5,7 +5,7 @@
                 :fields="fields"
                 :items="items">
             <template v-slot:head()="data">
-                {{ $t(data.label) }}
+                {{ data.label }}
             </template>
             <template v-slot:cell()="data">
                 <span v-if="data.field.metadata.number === undefined">
