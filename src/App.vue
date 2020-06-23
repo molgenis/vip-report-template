@@ -71,6 +71,10 @@
     }
 
     .modal-container {
-        overflow: auto
+        overflow: auto;
+    }
+
+    .nav-link {
+        word-break: break-all;
     }
 </style>
