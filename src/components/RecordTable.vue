@@ -49,7 +49,7 @@ f
                     <b-icon-search/>
                 </b-button>
             </template>
-            <template v-slot:cell(pos)="data">
+            <template v-slot:cell(p)="data">
                 <a v-if="genomeBrowserDb"
                    :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
                    target="_blank">
@@ -58,19 +58,19 @@ f
                 </a>
                 <span v-else>{{ data.item.c }}:{{ data.item.p | numberWithCommas }}</span>
             </template>
-            <template v-slot:cell(id)="data">
+            <template v-slot:cell(i)="data">
                 <Identifiers :identifiers="data.item.i"/>
             </template>
-            <template v-slot:cell(ref)="data">
+            <template v-slot:cell(r)="data">
                 <Allele :allele="data.item.r"/>
             </template>
-            <template v-slot:cell(alt)="data">
+            <template v-slot:cell(a)="data">
                 <span v-for="(alt, index) in data.item.a" :key="index">
                     <Allele :allele="alt"/>
                     <span v-if="index < data.item.a.length - 1">, </span>
                 </span>
             </template>
-            <template v-slot:cell(sample)="data">
+            <template v-slot:cell(s)="data">
                 <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
                     <Allele :allele="alt"/>
                     <span v-if="index < data.item.s[sample.index].gt.a.length - 1"> {{ data.item.s[sample.index].gt.p ? '|' : '/'}} </span>
@@ -88,10 +88,10 @@ f
                     <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"> {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/'}} </span>
                 </span>
             </template>
-            <template v-slot:cell(qual)="data">
+            <template v-slot:cell(q)="data">
                 {{ data.item.q }}
             </template>
-            <template v-slot:cell(filter)="data">
+            <template v-slot:cell(f)="data">
                 <span v-for="(filter, index) in data.item.f" :key="filter">
                     <span>{{ filter }}</span>
                     <span v-if="index < data.item.f.length - 1">, </span>
@@ -173,16 +173,17 @@ f
                 return maternalId !== '0' ? this.getSampleById(maternalId) : null
             },
             fields: function () {
+                // field keys must much report api field ids
                 return [
                     {key: 'actions', label: '', class: ['compact', 'align-middle']},
-                    {key: 'pos', label: 'pos', sortable: true},
-                    {key: 'id', label: 'id'},
-                    {key: 'ref', label: 'ref'},
-                    this.sample ? {key: 'sample', label: 'sample'} : {key: 'alt', label: 'alt'},
+                    {key: 'p', label: 'pos', sortable: true},
+                    {key: 'i', label: 'id'},
+                    {key: 'r', label: 'ref'},
+                    this.sample ? {key: 'sample', label: 'sample'} : {key: 'a', label: 'alt'},
                     this.sample && this.samplePaternal ? {key: 'father', label: 'father'} : null,
                     this.sample && this.sampleMaternal ? {key: 'mother', label: 'mother'} : null,
-                    {key: 'qual', label: 'qual', sortable: true},
-                    {key: 'filter', label: 'filter'}]
+                    {key: 'q', label: 'qual', sortable: true},
+                    {key: 'f', label: 'filter'}]
             }
         },
         methods: {
