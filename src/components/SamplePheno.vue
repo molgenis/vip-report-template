@@ -2,11 +2,9 @@
     <div v-if="phenotypes.items.length === 1 && phenotypes.items[0].phenotypicFeaturesList.length > 0">
         <span v-for="(phenotypicFeature, index) in phenotypes.items[0].phenotypicFeaturesList" :key="index">
             <span class="mr-1">
-                <a v-if="phenotypicFeature.type.id.startsWith('HP:')"
-                   :href="'https://hpo.jax.org/app/browse/term/' + phenotypicFeature.type.id" target="_blank">
-                    {{ phenotypicFeature.type.label }}
-                    <b-icon-box-arrow-in-up-right class="ml-1" />
-                </a>
+                <Anchor v-if="phenotypicFeature.type.id.startsWith('HP:')"
+                        :href="'https://hpo.jax.org/app/browse/term/' + encodeURIComponent(phenotypicFeature.type.id)"
+                        :text="phenotypicFeature.type.label"/>
                 <span v-else>
                     {{ phenotypicFeature.type.label }}
                 </span>
@@ -20,7 +18,7 @@
                   :href="'https://molgenis102.gcc.rug.nl?phenotypes=' + hpoTerms.join(',')"
                   target="_blank">
             {{ $t('vibe') }}
-            <b-icon-box-arrow-in-up-right class="ml-1" />
+            <b-icon-box-arrow-in-up-right class="ml-1"/>
         </b-button>
     </div>
     <div v-else>
@@ -30,8 +28,10 @@
 
 <script lang="ts">
     import Vue from 'vue'
+    import Anchor from '@/components/Anchor.vue'
 
     export default Vue.extend({
+        components: {Anchor},
         props: {
             phenotypes: Object
         },
@@ -39,7 +39,7 @@
             hpoTerms: function () {
                 let hpoTerms = []
                 for (let phenotypicFeature of this.phenotypes.items[0].phenotypicFeaturesList) {
-                    if (phenotypicFeature.type.id.startsWith("HP:")) {
+                    if (phenotypicFeature.type.id.startsWith('HP:')) {
                         hpoTerms.push(phenotypicFeature.type.id)
                     }
                 }

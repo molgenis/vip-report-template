@@ -4,7 +4,7 @@
         <h4>Info</h4>
         <RecordInfoDetails :metadata="metadata.info" :info="record.n" />
         <h4>Sample</h4>
-        <RecordSampleDetails :data="record.s[sample.index]" />
+        <RecordSampleDetails :metadata="metadata.format" :data="record.s[sample.index]" />
     </div>
 </template>
 
