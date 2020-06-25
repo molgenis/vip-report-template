@@ -2,11 +2,11 @@
     <div>
         <div>
             <span v-for="(alt, index) in data.gt.a" :key="index">
-                <Allele :allele="alt"/>
+                <Allele :allele="alt" abbreviate="false"/>
                 <span v-if="index < data.gt.a.length - 1"> {{ data.gt.p ? '|' : '/'}} </span>
             </span>
         </div>
-        <RecordInfoDetails :metadata="metadata" :info="data.f" />
+        <RecordInfoDetails :metadata="metadata" :info="data.f"/>
     </div>
 </template>
 

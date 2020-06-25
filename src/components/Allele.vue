@@ -1,8 +1,8 @@
 <template>
     <span>
         <span v-if="allele.startsWith('<') && allele.endsWith('>') || allele.indexOf(']') !== -1 || allele.indexOf('[') !== -1">{{ allele }}</span>
-        <span v-else v-for="(base, index) in allele.split('')" :key="index"
-              :class="getAlleleClasses(base)">{{ base }}</span>
+        <span v-else v-for="(nuc, index) in nucs" :key="index"
+              :class="getNucClasses(nuc)">{{ nuc }}</span>
     </span>
 </template>
 
@@ -12,12 +12,28 @@
 
     export default Vue.extend({
         props: {
-            allele: String
+            allele: String,
+            abbreviate: {
+                type: Boolean,
+                default: true
+            }
+        },
+        computed: {
+            nucs() {
+                let nucleotides = this.allele.split('')
+                if (this.abbreviate && nucleotides.length > 5) {
+                    const lastNuc = nucleotides[nucleotides.length - 1]
+                    nucleotides = nucleotides.slice(0, 3)
+                    nucleotides.push('\u2026') // ellipsis
+                    nucleotides.push(lastNuc)
+                }
+                return nucleotides
+            }
         },
         methods: {
-            getAlleleClasses(base: string): object {
+            getNucClasses(base: string): object {
                 const classes: object = {nuc: true}
-                if(base !== '*') {
+                if (base !== '*' && base !== '\u2026') { // ellipsis
                     // @ts-ignore
                     classes['nuc-' + base.toLocaleLowerCase()] = true
                 }
