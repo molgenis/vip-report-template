@@ -51,13 +51,9 @@ f
                 </b-button>
             </template>
             <template v-slot:cell(p)="data">
-                <a v-if="genomeBrowserDb"
-                   :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
-                   target="_blank">
-                    {{ data.item.c }}:{{ data.item.p | numberWithCommas }}
-                    <b-icon-box-arrow-in-up-right class="ml-1"/>
-                </a>
-                <span v-else>{{ data.item.c }}:{{ data.item.p | numberWithCommas }}</span>
+                <Anchor v-if="genomeBrowserDb"
+                        :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
+                        :text="data.item.c + ':' + data.item.p | numberWithCommas"/>
             </template>
             <template v-slot:cell(i)="data">
                 <Identifiers :identifiers="data.item.i"/>
@@ -136,9 +132,10 @@ f
     import RecordDetails from '@/components/RecordDetails.vue'
     import Identifiers from '@/components/Identifiers.vue'
     import Allele from '@/components/Allele.vue'
+    import Anchor from '@/components/Anchor.vue'
 
     export default Vue.extend({
-        components: {Allele, Identifiers, RecordDetails},
+        components: {Allele, Anchor, Identifiers, RecordDetails},
         props: {
             sample: Object as PropType<Sample>
         },

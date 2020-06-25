@@ -1,0 +1,18 @@
+<template>
+    <a :href="href" target="_blank">
+        {{ text }}
+        <b-icon-box-arrow-in-up-right class="ml-1"/>
+    </a>
+</template>
+
+<script lang="ts">
+    // eslint-disable-next-line no-unused-vars
+    import Vue, {PropType} from 'vue'
+
+    export default Vue.extend({
+        props: {
+            href: String as PropType<string>,
+            text: [String, Number, Boolean] as PropType<string | number | boolean>
+        }
+    })
+</script>
