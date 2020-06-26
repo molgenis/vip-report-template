@@ -82,15 +82,15 @@ export default Vue.extend({
         { key: "c", val: this.record["c"] },
         { key: "p", val: this.record["p"] }
       ];
-                if(this.record.hasOwnProperty('i')) {
+      if (Object.prototype.hasOwnProperty.call(this.record, "i")) {
         items.push({ key: "i", val: this.record["i"] });
       }
       items.push({ key: "r", val: this.record["r"] });
       items.push({ key: "a", val: this.record["a"] });
-                if(this.record.hasOwnProperty('q')) {
+      if (Object.prototype.hasOwnProperty.call(this.record, "q")) {
         items.push({ key: "q", val: this.record["q"] });
       }
-                if(this.record.hasOwnProperty('f')) {
+      if (Object.prototype.hasOwnProperty.call(this.record, "f")) {
         items.push({ key: "f", val: this.record["f"] });
       }
       return items;

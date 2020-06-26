@@ -1,4 +1,5 @@
 // vue.config.js
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 
 module.exports = {
