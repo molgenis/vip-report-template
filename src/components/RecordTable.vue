@@ -54,6 +54,7 @@ f
                 <Anchor v-if="genomeBrowserDb"
                         :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
                         :text="data.item.p | formatNumber(true) | append(data.item.c + ':')"/>
+                <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
             </template>
             <template v-slot:cell(i)="data">
                 <Identifiers :identifiers="data.item.i"/>
@@ -86,7 +87,7 @@ f
                 </span>
             </template>
             <template v-slot:cell(q)="data">
-                {{ data.item.q | formatNumber }}
+                <span v-if="data.item.q">{{ data.item.q | formatNumber }}</span>
             </template>
             <template v-slot:cell(f)="data">
                 <span v-for="(filter, index) in data.item.f" :key="filter">
@@ -197,8 +198,8 @@ f
                 if (this.sample) {
                     params.query = {
                         selector: ['s', this.sample.index, 'gt', 't'],
-                        operator: '!in',
-                        args: ['hom_r', 'miss']
+                        operator: 'in',
+                        args: ['het', 'hom_a', 'part']
                     }
                 }
                 // @ts-ignore
