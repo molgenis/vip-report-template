@@ -10,7 +10,6 @@ const numberFormatWithoutGrouping = new Intl.NumberFormat('en-US', {
 })
 
 export const formatNumber = function (x: number, grouping: boolean = false): string {
-    console.log(x)
     const numberFormat = grouping ? numberFormatWithGrouping : numberFormatWithoutGrouping
     return numberFormat.format(x)
 }
