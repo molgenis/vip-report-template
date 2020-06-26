@@ -13,8 +13,6 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "webpack",
-      "webpack-env",
       "jest"
     ],
     "paths": {
