@@ -87,7 +87,7 @@ f
                 </span>
             </template>
             <template v-slot:cell(q)="data">
-                {{ data.item.q | formatNumber }}
+                <span v-if="data.item.q">{{ data.item.q | formatNumber }}</span>
             </template>
             <template v-slot:cell(f)="data">
                 <span v-for="(filter, index) in data.item.f" :key="filter">
