@@ -1,82 +1,83 @@
 <template>
-    <div id="app">
-        <NavigationBar class="mb-3" />
-        <!--suppress HtmlUnknownBooleanAttribute -->
-        <b-container fluid>
-            <Alerts/>
-            <router-view/>
-        </b-container>
-    </div>
+  <div id="app">
+    <NavigationBar class="mb-3" />
+    <!--suppress HtmlUnknownBooleanAttribute -->
+    <b-container fluid>
+      <Alerts />
+      <router-view />
+    </b-container>
+  </div>
 </template>
 
 <script lang="ts">
-    import {mapActions} from 'vuex'
+import { mapActions } from "vuex";
 
-    import Alerts from '@/components/Alerts.vue'
-    import NavigationBar from '@/components/NavigationBar.vue'
-    import Vue from 'vue'
+import Alerts from "@/components/Alerts.vue";
+import NavigationBar from "@/components/NavigationBar.vue";
+import Vue from "vue";
 
-    export default Vue.extend({
-        components: {
-            Alerts, NavigationBar
-        },
-        methods: {
-            ...mapActions(['validateRecords', 'validateSamples'])
-        },
-        async created() {
-            await this.validateRecords()
-            await this.validateSamples()
-        }
-    })
+export default Vue.extend({
+  components: {
+    Alerts,
+    NavigationBar
+  },
+  methods: {
+    ...mapActions(["validateRecords", "validateSamples"])
+  },
+  async created() {
+    await this.validateRecords();
+    await this.validateSamples();
+  }
+});
 </script>
 
 <!--suppress CssUnusedSymbol -->
 <style>
-    html {
-        font-size: 14px
-    }
+html {
+  font-size: 14px;
+}
 
-    .btn-xs {
-        padding: .125rem .375rem;
-        font-size: .75rem;
-    }
+.btn-xs {
+  padding: 0.125rem 0.375rem;
+  font-size: 0.75rem;
+}
 
-    td {
-        white-space: nowrap
-    }
+td {
+  white-space: nowrap;
+}
 
-    td.compact {
-        padding: 0;
-        width: 0;
-    }
+td.compact {
+  padding: 0;
+  width: 0;
+}
 
-    .nuc {
-        width: 0.9rem;
-        display: inline-block;
-        text-align: center;
-    }
+.nuc {
+  width: 0.9rem;
+  display: inline-block;
+  text-align: center;
+}
 
-    .nuc-a {
-        background-color: #90ee90;
-    }
+.nuc-a {
+  background-color: #90ee90;
+}
 
-    .nuc-c {
-        background-color: #b0c4de;
-    }
+.nuc-c {
+  background-color: #b0c4de;
+}
 
-    .nuc-t {
-        background-color: #eea2ad;
-    }
+.nuc-t {
+  background-color: #eea2ad;
+}
 
-    .nuc-g {
-        background-color: #ffec8b;
-    }
+.nuc-g {
+  background-color: #ffec8b;
+}
 
-    .modal-container {
-        overflow: auto;
-    }
+.modal-container {
+  overflow: auto;
+}
 
-    .nav-link {
-        word-break: break-all;
-    }
+.nav-link {
+  word-break: break-all;
+}
 </style>
