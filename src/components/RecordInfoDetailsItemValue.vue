@@ -15,13 +15,9 @@
         <Anchor v-else-if="isEnsemblFeatureId()"
                 :href="'http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' + encodeURIComponent(value)"
                 :text="value"/>
-        <span v-else>
-            {{ value }}
-        </span>
+        <span v-else>{{ value }}</span>
     </span>
-    <span v-else>
-        {{ value }}
-    </span>
+    <span v-else>{{ value }}</span>
 </template>
 
 <script lang="ts">
