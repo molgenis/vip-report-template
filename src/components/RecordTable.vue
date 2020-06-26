@@ -54,6 +54,7 @@ f
                 <Anchor v-if="genomeBrowserDb"
                         :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
                         :text="data.item.p | formatNumber(true) | append(data.item.c + ':')"/>
+                <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
             </template>
             <template v-slot:cell(i)="data">
                 <Identifiers :identifiers="data.item.i"/>
