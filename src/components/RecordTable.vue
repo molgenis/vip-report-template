@@ -198,8 +198,8 @@ f
                 if (this.sample) {
                     params.query = {
                         selector: ['s', this.sample.index, 'gt', 't'],
-                        operator: '!in',
-                        args: ['hom_r', 'miss']
+                        operator: 'in',
+                        args: ['het', 'hom_a', 'part']
                     }
                 }
                 // @ts-ignore
