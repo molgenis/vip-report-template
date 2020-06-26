@@ -15,9 +15,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { InfoMetadata } from "@molgenis/vip-report-api";
 import RecordInfoNestedDetails from "@/components/RecordInfoNestedDetails.vue";
 import RecordInfoUnnestedDetails from "@/components/RecordInfoUnnestedDetails.vue";
@@ -56,10 +54,8 @@ export default Vue.extend({
     getNestedInfo(metadata: InfoMetadata): object[] {
       let nestedInfo: object[];
       if (metadata.number && metadata.number.count === 1) {
-        // @ts-ignore
         nestedInfo = [this.info[metadata.id]];
       } else {
-        // @ts-ignore
         nestedInfo = this.info[metadata.id];
       }
       return nestedInfo;

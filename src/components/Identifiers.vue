@@ -23,7 +23,6 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
 import Anchor from "@/components/Anchor.vue";
 

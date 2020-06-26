@@ -21,9 +21,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { InfoMetadata } from "@molgenis/vip-report-api";
 import RecordInfoDetailsItem from "@/components/RecordInfoDetailsItem.vue";
 import InfoButton from "@/components/InfoButton.vue";
@@ -45,9 +43,7 @@ export default Vue.extend({
     items() {
       const items: object[] = [];
       for (const metadata of this.metadata) {
-        // @ts-ignore
         if (this.info[metadata.id] !== undefined) {
-          // @ts-ignore
           const item = {
             key: metadata.id,
             val: this.info[metadata.id],
@@ -57,7 +53,6 @@ export default Vue.extend({
         }
       }
       items.sort(function(thisItem, thatItem) {
-        // @ts-ignore
         return thisItem.key.localeCompare(thatItem.key);
       });
       return items;

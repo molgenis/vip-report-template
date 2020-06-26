@@ -15,9 +15,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { InfoMetadata } from "@molgenis/vip-report-api";
 import RecordInfoDetailsItem from "@/components/RecordInfoDetailsItem.vue";
 
@@ -32,7 +30,6 @@ export default Vue.extend({
       const fields = [];
       let index = 0;
       for (const info of this.metadata) {
-        // @ts-ignore
         if (this.hasData(index)) {
           fields.push({
             key: info.id,
@@ -52,7 +49,6 @@ export default Vue.extend({
   methods: {
     hasData(index: number): boolean {
       for (const item of this.info) {
-        // @ts-ignore
         if (
           !(
             item[index] === null ||

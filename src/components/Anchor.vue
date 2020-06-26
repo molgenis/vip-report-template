@@ -6,7 +6,6 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
 
 export default Vue.extend({

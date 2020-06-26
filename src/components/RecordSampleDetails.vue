@@ -13,9 +13,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { FormatMetadata } from "@molgenis/vip-report-api";
 import RecordInfoDetails from "@/components/RecordInfoDetails.vue";
 import Allele from "@/components/Allele.vue";

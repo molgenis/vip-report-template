@@ -60,9 +60,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { Record } from "@molgenis/vip-report-api";
 import Allele from "@/components/Allele.vue";
 import Identifiers from "@/components/Identifiers.vue";
@@ -84,17 +82,14 @@ export default Vue.extend({
         { key: "c", val: this.record["c"] },
         { key: "p", val: this.record["p"] }
       ];
-      // eslint-disable-next-line
                 if(this.record.hasOwnProperty('i')) {
         items.push({ key: "i", val: this.record["i"] });
       }
       items.push({ key: "r", val: this.record["r"] });
       items.push({ key: "a", val: this.record["a"] });
-      // eslint-disable-next-line
                 if(this.record.hasOwnProperty('q')) {
         items.push({ key: "q", val: this.record["q"] });
       }
-      // eslint-disable-next-line
                 if(this.record.hasOwnProperty('f')) {
         items.push({ key: "f", val: this.record["f"] });
       }

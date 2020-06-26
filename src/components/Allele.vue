@@ -19,7 +19,6 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue from "vue";
 
 export default Vue.extend({
@@ -45,9 +44,8 @@ export default Vue.extend({
   methods: {
     getNucClasses(base: string): object {
       const classes: object = { nuc: true };
+      // ellipsis
       if (base !== "*" && base !== "\u2026") {
-        // ellipsis
-        // @ts-ignore
         classes["nuc-" + base.toLocaleLowerCase()] = true;
       }
       return classes;

@@ -170,11 +170,8 @@ f
 
 <script lang="ts">
 import { mapActions, mapGetters, mapState } from "vuex";
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { BButton, BFormInput, BTable, BvTableCtxObject } from "bootstrap-vue";
-// eslint-disable-next-line no-unused-vars
 import { PagedItems, Record, Sample } from "@molgenis/vip-report-api";
 import { append, formatNumber } from "@/globals/filters";
 import RecordDetails from "@/components/RecordDetails.vue";
@@ -256,12 +253,9 @@ export default Vue.extend({
           args: ["het", "hom_a", "part"]
         };
       }
-      // @ts-ignore
       return this.loadRecords(params).then(() => {
         const records = this.records as PagedItems<Record>;
-        // @ts-ignore
         this.page.totalRows = records.page.totalElements;
-        // @ts-ignore
         this.page.totalPages = Math.ceil(
           records.page.totalElements / ctx.perPage
         );
@@ -269,23 +263,17 @@ export default Vue.extend({
       });
     },
     clearSearch() {
-      // @ts-ignore
       this.filter = "";
       const searchElement = this.$refs.search as BFormInput;
       searchElement.focus();
     },
     info(record: Record, index: number, button: BButton) {
-      // @ts-ignore
       this.infoModal.title = `Row index: ${index}`;
-      // @ts-ignore
       this.infoModal.record = record;
-      // @ts-ignore
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     resetInfoModal() {
-      // @ts-ignore
       this.infoModal.title = "";
-      // @ts-ignore
       this.infoModal.content = "";
     }
   },

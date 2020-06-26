@@ -34,9 +34,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from "vue";
-// eslint-disable-next-line no-unused-vars
 import { InfoMetadata } from "@molgenis/vip-report-api";
 import RecordInfoDetailsItemValue from "@/components/RecordInfoDetailsItemValue.vue";
 

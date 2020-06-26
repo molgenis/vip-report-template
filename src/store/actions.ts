@@ -1,7 +1,6 @@
 import Api, { Params, Sample } from "@molgenis/vip-report-api";
 import { Alert } from "@/types/Alert";
 
-// @ts-ignore
 let api = new Api(window.api);
 
 export default {
