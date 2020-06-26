@@ -53,7 +53,7 @@ f
             <template v-slot:cell(p)="data">
                 <Anchor v-if="genomeBrowserDb"
                         :href="'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' + encodeURIComponent(genomeBrowserDb) + '&position=' + encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, (data.item.p - 500)) + '-' + (data.item.p + 500))"
-                        :text="data.item.c + ':' + data.item.p | numberWithCommas"/>
+                        :text="data.item.p | formatNumber(true) | append(data.item.c + ':')"/>
             </template>
             <template v-slot:cell(i)="data">
                 <Identifiers :identifiers="data.item.i"/>
@@ -86,7 +86,7 @@ f
                 </span>
             </template>
             <template v-slot:cell(q)="data">
-                {{ data.item.q }}
+                {{ data.item.q | formatNumber }}
             </template>
             <template v-slot:cell(f)="data">
                 <span v-for="(filter, index) in data.item.f" :key="filter">
@@ -128,7 +128,7 @@ f
     import {BButton, BFormInput, BTable, BvTableCtxObject} from 'bootstrap-vue'
     // eslint-disable-next-line no-unused-vars
     import {PagedItems, Record, Sample} from '@molgenis/vip-report-api'
-    import {numberWithCommas} from '@/globals/filters'
+    import {append, formatNumber} from '@/globals/filters'
     import RecordDetails from '@/components/RecordDetails.vue'
     import Identifiers from '@/components/Identifiers.vue'
     import Allele from '@/components/Allele.vue'
@@ -232,7 +232,7 @@ f
                 this.infoModal.content = ''
             }
         },
-        filters: {numberWithCommas},
+        filters: {append, formatNumber},
         watch: {
             sample: function () {
                 (this.$refs.table as BTable).refresh()

@@ -43,11 +43,11 @@
                     <Identifiers :identifiers="data.item.val" />
                 </span>
                 <span v-else-if="data.item.key === 'r'">
-                    <Allele :allele="data.item.val"/>
+                    <Allele :allele="data.item.val" :abbreviate="false"/>
                 </span>
                 <span v-else-if="data.item.key === 'a'">
                     <span v-for="(alt, index) in data.item.val" :key="index">
-                        <Allele :allele="alt"/>
+                        <Allele :allele="alt" :abbreviate="false" />
                         <span v-if="index < data.item.val.length - 1">, </span>
                     </span>
                 </span>
@@ -55,7 +55,9 @@
                     {{ data.item.val }}
                 </span>
                 <span v-else-if="data.item.key === 'f'">
-                    {{ data.item.val }}
+                    <span v-for="(val, index) in data.item.val" :key="index">
+                        {{ val }}<span v-if="index < data.item.val.length - 1">, </span>
+                    </span>
                 </span>
             </template>
         </b-table>

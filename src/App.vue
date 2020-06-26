@@ -51,7 +51,9 @@
     }
 
     .nuc {
-        padding: 0.2rem;
+        width: 0.9rem;
+        display: inline-block;
+        text-align: center;
     }
 
     .nuc-a {
