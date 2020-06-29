@@ -15,7 +15,15 @@
 import Vue, { PropType } from 'vue';
 import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
-import {Info} from '@/types/Info'
+import { Info } from '@/types/Info';
+import { BvTableField, BvTableFieldArray } from 'bootstrap-vue/src/components/table';
+
+interface RecordInfoBvTableField extends BvTableField {
+  index: number;
+  metadata: InfoMetadata;
+}
+
+type RecordInfoBvTableFieldArray = Array<string | ({ key: string } & RecordInfoBvTableField)>;
 
 export default Vue.extend({
   components: { RecordInfoDetailsItem },
@@ -24,7 +32,7 @@ export default Vue.extend({
     info: Array as PropType<Info[]>
   },
   computed: {
-    fields(): any[] {
+    fields(): RecordInfoBvTableFieldArray {
       const fields = [];
       let index = 0;
       for (const info of this.metadata) {

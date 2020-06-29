@@ -19,7 +19,7 @@ import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoNestedDetails from '@/components/RecordInfoNestedDetails.vue';
 import RecordInfoUnnestedDetails from '@/components/RecordInfoUnnestedDetails.vue';
 import InfoButton from '@/components/InfoButton.vue';
-import {Info} from '@/types/Info'
+import { Info } from '@/types/Info';
 
 export default Vue.extend({
   components: {

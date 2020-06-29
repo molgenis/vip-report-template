@@ -64,6 +64,7 @@ import Vue, { PropType } from 'vue';
 import { Record } from '@molgenis/vip-report-api';
 import Allele from '@/components/Allele.vue';
 import Identifiers from '@/components/Identifiers.vue';
+import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
 
 export default Vue.extend({
   components: { Allele, Identifiers },
@@ -71,13 +72,13 @@ export default Vue.extend({
     record: Object as PropType<Record>
   },
   computed: {
-    fields: function() {
+    fields(): BvTableFieldArray {
       return [
         { key: 'key', label: 'key' },
         { key: 'val', label: 'value' }
       ];
     },
-    items() {
+    items(): any[] {
       const items: object[] = [
         { key: 'c', val: this.record['c'] },
         { key: 'p', val: this.record['p'] }

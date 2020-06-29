@@ -126,7 +126,7 @@ f
 <script lang="ts">
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Vue, { PropType } from 'vue';
-import { BButton, BFormInput, BTable, BvTableCtxObject } from 'bootstrap-vue';
+import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
 import { PagedItems, Record, Sample } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
@@ -183,19 +183,24 @@ export default Vue.extend({
       const maternalId = this.sample.person.maternalId;
       return maternalId !== '0' ? this.getSampleById(maternalId) : null;
     },
-    fields(): any[] {
+    fields(): BvTableFieldArray {
       // field keys must much report api field ids
-      return [
-        { key: 'actions', label: '', class: ['compact', 'align-middle'] },
-        { key: 'p', label: 'pos', sortable: true },
-        { key: 'i', label: 'id' },
-        { key: 'r', label: 'ref' },
-        this.sample ? { key: 's', label: 'sample' } : { key: 'a', label: 'alt' },
-        this.sample && this.samplePaternal ? { key: 'father', label: 'father' } : null,
-        this.sample && this.sampleMaternal ? { key: 'mother', label: 'mother' } : null,
-        { key: 'q', label: 'qual', sortable: true },
-        { key: 'f', label: 'filter' }
-      ];
+      const fields = [];
+      fields.push({ key: 'actions', label: '', class: ['compact', 'align-middle'] });
+      fields.push({ key: 'actions', label: '', class: ['compact', 'align-middle'] });
+      fields.push({ key: 'p', label: 'pos', sortable: true });
+      fields.push({ key: 'i', label: 'id' });
+      fields.push({ key: 'r', label: 'ref' });
+      fields.push(this.sample ? { key: 's', label: 'sample' } : { key: 'a', label: 'alt' });
+      if (this.sample && this.samplePaternal) {
+        fields.push({ key: 'father', label: 'father' });
+      }
+      if (this.sample && this.sampleMaternal) {
+        fields.push({ key: 'mother', label: 'mother' });
+      }
+      fields.push({ key: 'q', label: 'qual', sortable: true });
+      fields.push({ key: 'f', label: 'filter' });
+      return fields;
     }
   },
   methods: {

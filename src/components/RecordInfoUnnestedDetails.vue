@@ -23,6 +23,7 @@ import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 import InfoButton from '@/components/InfoButton.vue';
 import { Info } from '@/types/Info';
+import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
 
 interface Item {
   key: string;
@@ -36,7 +37,7 @@ export default Vue.extend({
     info: Object as PropType<Info>
   },
   computed: {
-    fields(): any[] {
+    fields(): BvTableFieldArray {
       return [
         { key: 'actions', label: '', class: ['compact', 'align-middle'] },
         { key: 'key', label: 'key' },
