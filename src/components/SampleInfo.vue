@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="1">
-      <span>{{ $t("phenotypes") }}:</span>
+      <span>{{ $t('phenotypes') }}:</span>
     </b-col>
     <b-col>
       <SamplePheno :phenotypes="phenotypes" />
@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-import SamplePheno from "@/components/SamplePheno.vue";
-import Vue from "vue";
+import SamplePheno from '@/components/SamplePheno.vue';
+import Vue from 'vue';
 
 export default Vue.extend({
   components: { SamplePheno },

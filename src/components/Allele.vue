@@ -2,24 +2,16 @@
   <span>
     <span
       v-if="
-        (allele.startsWith('<') && allele.endsWith('>')) ||
-          allele.indexOf(']') !== -1 ||
-          allele.indexOf('[') !== -1
+        (allele.startsWith('<') && allele.endsWith('>')) || allele.indexOf(']') !== -1 || allele.indexOf('[') !== -1
       "
       >{{ allele }}</span
     >
-    <span
-      v-else
-      v-for="(nuc, index) in nucs"
-      :key="index"
-      :class="getNucClasses(nuc)"
-      >{{ nuc }}</span
-    >
+    <span v-else v-for="(nuc, index) in nucs" :key="index" :class="getNucClasses(nuc)">{{ nuc }}</span>
   </span>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
   props: {
@@ -31,11 +23,11 @@ export default Vue.extend({
   },
   computed: {
     nucs() {
-      let nucleotides = this.allele.split("");
+      let nucleotides = this.allele.split('');
       if (this.abbreviate && nucleotides.length > 5) {
         const lastNuc = nucleotides[nucleotides.length - 1];
         nucleotides = nucleotides.slice(0, 3);
-        nucleotides.push("\u2026"); // ellipsis
+        nucleotides.push('\u2026'); // ellipsis
         nucleotides.push(lastNuc);
       }
       return nucleotides;
@@ -45,8 +37,8 @@ export default Vue.extend({
     getNucClasses(base: string): object {
       const classes: { [index: string]: boolean } = { nuc: true };
       // ellipsis
-      if (base !== "*" && base !== "\u2026") {
-        classes["nuc-" + base.toLocaleLowerCase()] = true;
+      if (base !== '*' && base !== '\u2026') {
+        classes['nuc-' + base.toLocaleLowerCase()] = true;
       }
       return classes;
     }

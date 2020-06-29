@@ -1,11 +1,5 @@
-import {
-  Metadata,
-  PagedItems,
-  Phenotype,
-  Record,
-  Sample
-} from "@molgenis/vip-report-api";
-import { Alert } from "@/types/Alert";
+import { Metadata, PagedItems, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
+import { Alert } from '@/types/Alert';
 
 export type State = {
   alerts: Array<Alert>;

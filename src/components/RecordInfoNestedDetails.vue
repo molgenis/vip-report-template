@@ -5,23 +5,20 @@
         {{ data.label }}
       </template>
       <template v-slot:cell()="data">
-        <RecordInfoDetailsItem
-          :metadata="data.field.metadata"
-          :value="data.item[data.field.index]"
-        />
+        <RecordInfoDetailsItem :metadata="data.field.metadata" :value="data.item[data.field.index]" />
       </template>
     </b-table>
   </div>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
-import { InfoMetadata } from "@molgenis/vip-report-api";
-import RecordInfoDetailsItem from "@/components/RecordInfoDetailsItem.vue";
+import Vue, { PropType } from 'vue';
+import { InfoMetadata } from '@molgenis/vip-report-api';
+import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 
 // TODO: move type to vip-report-api
 interface Info {
-  [index: string]: string | string[] | number | number[] | boolean | Info  | Info[];
+  [index: string]: string | string[] | number | number[] | boolean | Info | Info[];
 }
 
 export default Vue.extend({

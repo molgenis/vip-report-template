@@ -14,15 +14,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapActions, mapState } from "vuex";
+import Vue from 'vue';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapState(["alerts"])
+    ...mapState(['alerts'])
   },
   methods: {
-    ...mapActions(["removeAlert"])
+    ...mapActions(['removeAlert'])
   }
 });
 </script>

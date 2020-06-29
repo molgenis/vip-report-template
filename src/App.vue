@@ -10,11 +10,11 @@
 </template>
 
 <script lang="ts">
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
-import Alerts from "@/components/Alerts.vue";
-import NavigationBar from "@/components/NavigationBar.vue";
-import Vue from "vue";
+import Alerts from '@/components/Alerts.vue';
+import NavigationBar from '@/components/NavigationBar.vue';
+import Vue from 'vue';
 
 export default Vue.extend({
   components: {
@@ -22,7 +22,7 @@ export default Vue.extend({
     NavigationBar
   },
   methods: {
-    ...mapActions(["validateRecords", "validateSamples"])
+    ...mapActions(['validateRecords', 'validateSamples'])
   },
   async created() {
     await this.validateRecords();

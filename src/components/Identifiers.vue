@@ -10,10 +10,7 @@
       <!-- dbVar ID -->
       <Anchor
         v-else-if="id.startsWith('esv') || id.startsWith('nsv')"
-        :href="
-          'https://www.ncbi.nlm.nih.gov/dbvar/variants/' +
-            encodeURIComponent(id)
-        "
+        :href="'https://www.ncbi.nlm.nih.gov/dbvar/variants/' + encodeURIComponent(id)"
         :text="id"
       />
       <span v-else>{{ id }}</span>
@@ -23,8 +20,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
-import Anchor from "@/components/Anchor.vue";
+import Vue, { PropType } from 'vue';
+import Anchor from '@/components/Anchor.vue';
 
 export default Vue.extend({
   components: { Anchor },

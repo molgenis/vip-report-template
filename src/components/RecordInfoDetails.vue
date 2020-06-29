@@ -6,26 +6,23 @@
         {{ metadata.id }}
         <InfoButton :info="metadata.description" />
       </h4>
-      <RecordInfoNestedDetails
-        :metadata="metadata.nested"
-        :info="getNestedInfo(metadata)"
-      />
+      <RecordInfoNestedDetails :metadata="metadata.nested" :info="getNestedInfo(metadata)" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 // eslint-disable-next-line no-unused-vars
-import Vue, { PropType } from "vue";
+import Vue, { PropType } from 'vue';
 // eslint-disable-next-line no-unused-vars
-import { InfoMetadata } from "@molgenis/vip-report-api";
-import RecordInfoNestedDetails from "@/components/RecordInfoNestedDetails.vue";
-import RecordInfoUnnestedDetails from "@/components/RecordInfoUnnestedDetails.vue";
-import InfoButton from "@/components/InfoButton.vue";
+import { InfoMetadata } from '@molgenis/vip-report-api';
+import RecordInfoNestedDetails from '@/components/RecordInfoNestedDetails.vue';
+import RecordInfoUnnestedDetails from '@/components/RecordInfoUnnestedDetails.vue';
+import InfoButton from '@/components/InfoButton.vue';
 
 // TODO: move type to vip-report-api
 interface Info {
-  [index: string]: string | string[] | number | number[] | boolean | Info  | Info[];
+  [index: string]: string | string[] | number | number[] | boolean | Info | Info[];
 }
 
 export default Vue.extend({
@@ -40,16 +37,12 @@ export default Vue.extend({
   },
   computed: {
     unnestedMetadata: function() {
-      const unnestedMetadata = this.metadata.filter(
-        infoMetadata => infoMetadata.type !== "NESTED"
-      );
+      const unnestedMetadata = this.metadata.filter(infoMetadata => infoMetadata.type !== 'NESTED');
       unnestedMetadata.sort(this.sortMetadata);
       return unnestedMetadata;
     },
     nestedMetadata: function() {
-      const nestedMetadata = this.metadata.filter(
-        infoMetadata => infoMetadata.type === "NESTED"
-      );
+      const nestedMetadata = this.metadata.filter(infoMetadata => infoMetadata.type === 'NESTED');
       nestedMetadata.sort(this.sortMetadata);
       return nestedMetadata;
     }

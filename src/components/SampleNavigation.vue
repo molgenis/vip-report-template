@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState } from "vuex";
-import { Sample } from "@molgenis/vip-report-api";
+import Vue from 'vue';
+import { mapState } from 'vuex';
+import { Sample } from '@molgenis/vip-report-api';
 
 export default Vue.extend({
   computed: {
-    ...mapState(["selectedSample"])
+    ...mapState(['selectedSample'])
   },
   props: {
     samples: Array
@@ -32,10 +32,7 @@ export default Vue.extend({
       return sample.person.individualId;
     },
     isActive(sample: Sample) {
-      return (
-        this.selectedSample !== null &&
-        this.getId(sample) === this.getId(this.selectedSample)
-      );
+      return this.selectedSample !== null && this.getId(sample) === this.getId(this.selectedSample);
     },
     isDisabled(sample: Sample) {
       return sample.index === -1;

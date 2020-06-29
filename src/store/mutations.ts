@@ -1,12 +1,6 @@
-import { State } from "@/types/State";
-import {
-  Metadata,
-  PagedItems,
-  Phenotype,
-  Record,
-  Sample
-} from "@molgenis/vip-report-api";
-import { Alert } from "@/types/Alert";
+import { State } from '@/types/State';
+import { Metadata, PagedItems, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
+import { Alert } from '@/types/Alert';
 
 export default {
   setMetadata(state: State, metadata: Metadata) {

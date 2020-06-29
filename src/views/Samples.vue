@@ -4,30 +4,26 @@
       <SampleNavigation v-if="samples" :samples="samples" />
     </b-col>
     <b-col>
-      <SampleReport
-        v-if="selectedSample"
-        :sample="selectedSample"
-        :phenotypes="selectedSamplePhenotypes"
-      />
+      <SampleReport v-if="selectedSample" :sample="selectedSample" :phenotypes="selectedSamplePhenotypes" />
     </b-col>
   </b-row>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import SampleNavigation from "@/components/SampleNavigation.vue";
-import SampleReport from "@/components/SampleReport.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
-import { Sample } from "@molgenis/vip-report-api";
+import Vue from 'vue';
+import SampleNavigation from '@/components/SampleNavigation.vue';
+import SampleReport from '@/components/SampleReport.vue';
+import { mapActions, mapGetters, mapState } from 'vuex';
+import { Sample } from '@molgenis/vip-report-api';
 
 export default Vue.extend({
   components: { SampleNavigation, SampleReport },
   computed: {
-    ...mapGetters(["samples", "getSampleById"]),
-    ...mapState(["selectedSample", "selectedSamplePhenotypes"])
+    ...mapGetters(['samples', 'getSampleById']),
+    ...mapState(['selectedSample', 'selectedSamplePhenotypes'])
   },
   methods: {
-    ...mapActions(["loadMetadata", "loadSamples", "selectSample"]),
+    ...mapActions(['loadMetadata', 'loadSamples', 'selectSample']),
     getId(sample: Sample) {
       return sample.person.individualId;
     }

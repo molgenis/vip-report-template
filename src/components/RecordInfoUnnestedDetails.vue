@@ -2,7 +2,7 @@
   <div>
     <b-table small responsive="true" borderless :fields="fields" :items="items">
       <template v-slot:head()>
-        {{ "" }}
+        {{ '' }}
       </template>
       <template v-slot:cell(actions)="data">
         <InfoButton :info="data.item.metadata.description" />
@@ -11,30 +11,27 @@
         {{ data.item.key }}
       </template>
       <template v-slot:cell(val)="data">
-        <RecordInfoDetailsItem
-          :metadata="data.item.metadata"
-          :value="data.item.val"
-        />
+        <RecordInfoDetailsItem :metadata="data.item.metadata" :value="data.item.val" />
       </template>
     </b-table>
   </div>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
-import { InfoMetadata } from "@molgenis/vip-report-api";
-import RecordInfoDetailsItem from "@/components/RecordInfoDetailsItem.vue";
-import InfoButton from "@/components/InfoButton.vue";
+import Vue, { PropType } from 'vue';
+import { InfoMetadata } from '@molgenis/vip-report-api';
+import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
+import InfoButton from '@/components/InfoButton.vue';
 
 // TODO: move type to vip-report-api
 interface Info {
-  [index: string]: string | string[] | number | number[] | boolean
+  [index: string]: string | string[] | number | number[] | boolean;
 }
 
 interface Item {
-  key: string
-  val: string | string[] | number | number[] | boolean
-  metadata: InfoMetadata
+  key: string;
+  val: string | string[] | number | number[] | boolean;
+  metadata: InfoMetadata;
 }
 export default Vue.extend({
   components: { InfoButton, RecordInfoDetailsItem },
@@ -45,9 +42,9 @@ export default Vue.extend({
   computed: {
     fields(): any[] {
       return [
-        { key: "actions", label: "", class: ["compact", "align-middle"] },
-        { key: "key", label: "key" },
-        { key: "val", label: "value" }
+        { key: 'actions', label: '', class: ['compact', 'align-middle'] },
+        { key: 'key', label: 'key' },
+        { key: 'val', label: 'value' }
       ];
     },
     items(): Item[] {

@@ -1,6 +1,6 @@
-import { State } from "@/types/State";
-import { GenomeBrowserDb } from "@/types/GenomeBrowserDb";
-import { Sample } from "@molgenis/vip-report-api";
+import { State } from '@/types/State';
+import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
+import { Sample } from '@molgenis/vip-report-api';
 
 export default {
   samples: (state: State): Array<Sample> => {
@@ -23,10 +23,7 @@ export default {
     if (state.samples === null) {
       return null;
     }
-    return (
-      state.samples.items.find(sample => sample.person.individualId === id) ||
-      null
-    );
+    return state.samples.items.find(sample => sample.person.individualId === id) || null;
   },
   genomeBrowserDb: (state: State): GenomeBrowserDb | null => {
     if (state.metadata === null) {
@@ -35,22 +32,22 @@ export default {
 
     let genomeBrowserDb: GenomeBrowserDb | null;
     switch (state.metadata.htsFile.genomeAssembly) {
-      case "NCBI34":
+      case 'NCBI34':
         genomeBrowserDb = GenomeBrowserDb.hg16;
         break;
-      case "NCBI35":
+      case 'NCBI35':
         genomeBrowserDb = GenomeBrowserDb.hg17;
         break;
-      case "NCBI36":
+      case 'NCBI36':
         genomeBrowserDb = GenomeBrowserDb.hg18;
         break;
-      case "GRCh37":
+      case 'GRCh37':
         genomeBrowserDb = GenomeBrowserDb.hg19;
         break;
-      case "GRCh38":
+      case 'GRCh38':
         genomeBrowserDb = GenomeBrowserDb.hg38;
         break;
-      case "UNKNOWN":
+      case 'UNKNOWN':
       default:
         genomeBrowserDb = null;
         break;

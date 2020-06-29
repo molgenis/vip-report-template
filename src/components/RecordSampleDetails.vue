@@ -4,7 +4,7 @@
       <span v-for="(alt, index) in data.gt.a" :key="index">
         <Allele :allele="alt" :abbreviate="false" />
         <span v-if="index < data.gt.a.length - 1">
-          {{ data.gt.p ? "|" : "/" }}
+          {{ data.gt.p ? '|' : '/' }}
         </span>
       </span>
     </div>
@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
-import { FormatMetadata } from "@molgenis/vip-report-api";
-import RecordInfoDetails from "@/components/RecordInfoDetails.vue";
-import Allele from "@/components/Allele.vue";
+import Vue, { PropType } from 'vue';
+import { FormatMetadata } from '@molgenis/vip-report-api';
+import RecordInfoDetails from '@/components/RecordInfoDetails.vue';
+import Allele from '@/components/Allele.vue';
 
 export default Vue.extend({
   components: { Allele, RecordInfoDetails },

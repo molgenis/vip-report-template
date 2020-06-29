@@ -16,9 +16,9 @@
 </template>
 
 <script lang="ts">
-import RecordTable from "@/components/RecordTable.vue";
-import SampleInfo from "@/components/SampleInfo.vue";
-import Vue from "vue";
+import RecordTable from '@/components/RecordTable.vue';
+import SampleInfo from '@/components/SampleInfo.vue';
+import Vue from 'vue';
 
 export default Vue.extend({
   components: { SampleInfo, RecordTable },

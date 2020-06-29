@@ -8,19 +8,11 @@ f
           <b-input-group class="mt-3">
             <template v-slot:append>
               <b-button variant="outline-secondary">
-                <span v-if="filter" @click="clearSearch">{{
-                  $t("clear")
-                }}</span>
-                <span v-else>{{ $t("search") }}</span>
+                <span v-if="filter" @click="clearSearch">{{ $t('clear') }}</span>
+                <span v-else>{{ $t('search') }}</span>
               </b-button>
             </template>
-            <b-form-input
-              ref="search"
-              id="searchInput"
-              v-model="filter"
-              type="text"
-              debounce="100"
-            ></b-form-input>
+            <b-form-input ref="search" id="searchInput" v-model="filter" type="text" debounce="100"></b-form-input>
           </b-input-group>
         </b-form-group>
       </b-col>
@@ -45,14 +37,10 @@ f
       :key="sample.index"
     >
       <template v-slot:head()="data">
-        {{ data.label ? $t(data.label) : "" }}
+        {{ data.label ? $t(data.label) : '' }}
       </template>
       <template v-slot:cell(actions)="data">
-        <b-button
-          class="btn-xs"
-          @click="info(data.item, data.index, $event.target)"
-          mr="3"
-        >
+        <b-button class="btn-xs" @click="info(data.item, data.index, $event.target)" mr="3">
           <b-icon-search />
         </b-button>
       </template>
@@ -63,20 +51,11 @@ f
             'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' +
               encodeURIComponent(genomeBrowserDb) +
               '&position=' +
-              encodeURIComponent(
-                'chr' +
-                  data.item.c +
-                  ':' +
-                  Math.max(0, data.item.p - 500) +
-                  '-' +
-                  (data.item.p + 500)
-              )
+              encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, data.item.p - 500) + '-' + (data.item.p + 500))
           "
           :text="data.item.p | formatNumber(true) | append(data.item.c + ':')"
         />
-        <span v-else>{{
-          data.item.p | formatNumber(true) | append(data.item.c + ":")
-        }}</span>
+        <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
       </template>
       <template v-slot:cell(i)="data">
         <Identifiers :identifiers="data.item.i" />
@@ -91,39 +70,26 @@ f
         </span>
       </template>
       <template v-slot:cell(s)="data">
-        <span
-          v-for="(alt, index) in data.item.s[sample.index].gt.a"
-          :key="index"
-        >
+        <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
           <Allele :allele="alt" />
           <span v-if="index < data.item.s[sample.index].gt.a.length - 1">
-            {{ data.item.s[sample.index].gt.p ? "|" : "/" }}
+            {{ data.item.s[sample.index].gt.p ? '|' : '/' }}
           </span>
         </span>
       </template>
       <template v-slot:cell(father)="data">
-        <span
-          v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a"
-          :key="index"
-        >
+        <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
           <Allele :allele="alt" />
-          <span
-            v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1"
-          >
-            {{ data.item.s[samplePaternal.index].gt.p ? "|" : "/" }}
+          <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1">
+            {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/' }}
           </span>
         </span>
       </template>
       <template v-slot:cell(mother)="data">
-        <span
-          v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a"
-          :key="index"
-        >
+        <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
           <Allele :allele="alt" />
-          <span
-            v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1"
-          >
-            {{ data.item.s[sampleMaternal.index].gt.p ? "|" : "/" }}
+          <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1">
+            {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/' }}
           </span>
         </span>
       </template>
@@ -146,50 +112,39 @@ f
       aria-controls="classifier-table"
     ></b-pagination>
 
-    <b-modal
-      :id="infoModal.id"
-      size="xl"
-      :title="$t('recordDetails')"
-      no-fade
-      ok-only
-      @hide="resetInfoModal"
-    >
+    <b-modal :id="infoModal.id" size="xl" :title="$t('recordDetails')" no-fade ok-only @hide="resetInfoModal">
       <template v-slot:modal-ok>
-        {{ $t("ok") }}
+        {{ $t('ok') }}
       </template>
       <div class="modal-container">
-        <RecordDetails
-          :metadata="metadata.records"
-          :record="infoModal.record"
-          :sample="sample"
-        />
+        <RecordDetails :metadata="metadata.records" :record="infoModal.record" :sample="sample" />
       </div>
     </b-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { mapActions, mapGetters, mapState } from "vuex";
-import Vue, { PropType } from "vue";
-import { BButton, BFormInput, BTable, BvTableCtxObject } from "bootstrap-vue";
-import { PagedItems, Record, Sample } from "@molgenis/vip-report-api";
-import { append, formatNumber } from "@/globals/filters";
-import RecordDetails from "@/components/RecordDetails.vue";
-import Identifiers from "@/components/Identifiers.vue";
-import Allele from "@/components/Allele.vue";
-import Anchor from "@/components/Anchor.vue";
+import { mapActions, mapGetters, mapState } from 'vuex';
+import Vue, { PropType } from 'vue';
+import { BButton, BFormInput, BTable, BvTableCtxObject } from 'bootstrap-vue';
+import { PagedItems, Record, Sample } from '@molgenis/vip-report-api';
+import { append, formatNumber } from '@/globals/filters';
+import RecordDetails from '@/components/RecordDetails.vue';
+import Identifiers from '@/components/Identifiers.vue';
+import Allele from '@/components/Allele.vue';
+import Anchor from '@/components/Anchor.vue';
 
 interface Page {
-  currentPage: number
-  perPage: number
-  totalRows: number
-  totalPages: number
+  currentPage: number;
+  perPage: number;
+  totalRows: number;
+  totalPages: number;
 }
 
 interface InfoModal {
-  id: string
-  title: string
-  record: Record | null
+  id: string;
+  title: string;
+  record: Record | null;
 }
 
 export default Vue.extend({
@@ -199,7 +154,7 @@ export default Vue.extend({
   },
   data: function() {
     return {
-      filter: "" as string,
+      filter: '' as string,
       isTableBusy: false as boolean,
       sortBy: null as string | null,
       sortDesc: false as boolean,
@@ -208,49 +163,43 @@ export default Vue.extend({
         perPage: 20
       } as Page,
       infoModal: {
-        id: "info-modal",
-        title: "",
+        id: 'info-modal',
+        title: '',
         record: null
       } as InfoModal
     };
   },
   computed: {
-    ...mapGetters(["getSampleById", "genomeBrowserDb"]),
-    ...mapState(["metadata", "records"]),
+    ...mapGetters(['getSampleById', 'genomeBrowserDb']),
+    ...mapState(['metadata', 'records']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
     samplePaternal(): Sample | null {
       const paternalId = this.sample.person.paternalId;
-      return paternalId !== "0" ? this.getSampleById(paternalId) : null;
+      return paternalId !== '0' ? this.getSampleById(paternalId) : null;
     },
     sampleMaternal(): Sample | null {
       const maternalId = this.sample.person.maternalId;
-      return maternalId !== "0" ? this.getSampleById(maternalId) : null;
+      return maternalId !== '0' ? this.getSampleById(maternalId) : null;
     },
     fields(): any[] {
       // field keys must much report api field ids
       return [
-        { key: "actions", label: "", class: ["compact", "align-middle"] },
-        { key: "p", label: "pos", sortable: true },
-        { key: "i", label: "id" },
-        { key: "r", label: "ref" },
-        this.sample
-          ? { key: "s", label: "sample" }
-          : { key: "a", label: "alt" },
-        this.sample && this.samplePaternal
-          ? { key: "father", label: "father" }
-          : null,
-        this.sample && this.sampleMaternal
-          ? { key: "mother", label: "mother" }
-          : null,
-        { key: "q", label: "qual", sortable: true },
-        { key: "f", label: "filter" }
+        { key: 'actions', label: '', class: ['compact', 'align-middle'] },
+        { key: 'p', label: 'pos', sortable: true },
+        { key: 'i', label: 'id' },
+        { key: 'r', label: 'ref' },
+        this.sample ? { key: 's', label: 'sample' } : { key: 'a', label: 'alt' },
+        this.sample && this.samplePaternal ? { key: 'father', label: 'father' } : null,
+        this.sample && this.sampleMaternal ? { key: 'mother', label: 'mother' } : null,
+        { key: 'q', label: 'qual', sortable: true },
+        { key: 'f', label: 'filter' }
       ];
     }
   },
   methods: {
-    ...mapActions(["loadRecords"]),
+    ...mapActions(['loadRecords']),
     provider(ctx: BvTableCtxObject) {
       // todo: translate filter param to query
       const params: any = {
@@ -261,32 +210,30 @@ export default Vue.extend({
       };
       if (this.sample) {
         params.query = {
-          selector: ["s", this.sample.index, "gt", "t"],
-          operator: "in",
-          args: ["het", "hom_a", "part"]
+          selector: ['s', this.sample.index, 'gt', 't'],
+          operator: 'in',
+          args: ['het', 'hom_a', 'part']
         };
       }
       return this.loadRecords(params).then(() => {
         const records = this.records as PagedItems<Record>;
         this.page.totalRows = records.page.totalElements;
-        this.page.totalPages = Math.ceil(
-          records.page.totalElements / ctx.perPage
-        );
+        this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage);
         return records.items;
       });
     },
     clearSearch(): void {
-      this.filter = "";
+      this.filter = '';
       const searchElement = this.$refs.search as BFormInput;
       searchElement.focus();
     },
     info(record: Record, index: number, button: BButton): void {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.record = record;
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+      this.$root.$emit('bv::show::modal', this.infoModal.id, button);
     },
     resetInfoModal(): void {
-      this.infoModal.title = "";
+      this.infoModal.title = '';
       this.infoModal.record = null;
     }
   },
