@@ -66,6 +66,11 @@ import Allele from '@/components/Allele.vue';
 import Identifiers from '@/components/Identifiers.vue';
 import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
 
+interface Item {
+  key: string;
+  val?: string | string[] | number | number[] | boolean;
+}
+
 export default Vue.extend({
   components: { Allele, Identifiers },
   props: {
@@ -78,8 +83,8 @@ export default Vue.extend({
         { key: 'val', label: 'value' }
       ];
     },
-    items(): any[] {
-      const items: object[] = [
+    items(): Item[] {
+      const items: Item[] = [
         { key: 'c', val: this.record['c'] },
         { key: 'p', val: this.record['p'] }
       ];

@@ -16,7 +16,7 @@ import Vue, { PropType } from 'vue';
 import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 import { Info } from '@/types/Info';
-import { BvTableField, BvTableFieldArray } from 'bootstrap-vue/src/components/table';
+import { BvTableField } from 'bootstrap-vue/src/components/table';
 
 interface RecordInfoBvTableField extends BvTableField {
   index: number;

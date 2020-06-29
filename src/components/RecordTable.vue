@@ -127,7 +127,7 @@ f
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Vue, { PropType } from 'vue';
 import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
-import { PagedItems, Record, Sample } from '@molgenis/vip-report-api';
+import { PagedItems, Params, Record, Sample } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
 import Identifiers from '@/components/Identifiers.vue';
@@ -207,7 +207,7 @@ export default Vue.extend({
     ...mapActions(['loadRecords']),
     provider(ctx: BvTableCtxObject) {
       // todo: translate filter param to query
-      const params: any = {
+      const params: Params = {
         page: ctx.currentPage - 1,
         size: ctx.perPage,
         sort: ctx.sortBy ? ctx.sortBy : undefined,
@@ -215,7 +215,8 @@ export default Vue.extend({
       };
       if (this.sample) {
         params.query = {
-          selector: ['s', this.sample.index, 'gt', 't'],
+          // todo: remove as unknown as string after Query type fix in vip-report-api
+          selector: ['s', (this.sample.index as unknown) as string, 'gt', 't'],
           operator: 'in',
           args: ['het', 'hom_a', 'part']
         };
