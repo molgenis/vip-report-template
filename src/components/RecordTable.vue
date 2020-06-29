@@ -70,28 +70,13 @@ f
         </span>
       </template>
       <template v-slot:cell(s)="data">
-        <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
-          <Allele :allele="alt" />
-          <span v-if="index < data.item.s[sample.index].gt.a.length - 1">
-            {{ data.item.s[sample.index].gt.p ? '|' : '/' }}
-          </span>
-        </span>
+        <Genotype :genotype="data.item.s[sample.index].gt" />
       </template>
       <template v-slot:cell(father)="data">
-        <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
-          <Allele :allele="alt" />
-          <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1">
-            {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/' }}
-          </span>
-        </span>
+        <Genotype :genotype="data.item.s[samplePaternal.index].gt" />
       </template>
       <template v-slot:cell(mother)="data">
-        <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
-          <Allele :allele="alt" />
-          <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1">
-            {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/' }}
-          </span>
-        </span>
+        <Genotype :genotype="data.item.s[sampleMaternal.index].gt" />
       </template>
       <template v-slot:cell(q)="data">
         <span v-if="data.item.q">{{ data.item.q | formatNumber }}</span>
@@ -133,6 +118,7 @@ import RecordDetails from '@/components/RecordDetails.vue';
 import Identifiers from '@/components/Identifiers.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
+import Genotype from '@/components/Genotype.vue';
 
 interface Page {
   currentPage: number;
@@ -148,7 +134,7 @@ interface InfoModal {
 }
 
 export default Vue.extend({
-  components: { Allele, Anchor, Identifiers, RecordDetails },
+  components: { Allele, Anchor, Genotype, Identifiers, RecordDetails },
   props: {
     sample: Object as PropType<Sample>
   },
