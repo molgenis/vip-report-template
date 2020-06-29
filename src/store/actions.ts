@@ -1,5 +1,7 @@
 import Api, { ApiData, Params, Sample } from '@molgenis/vip-report-api';
 import { Alert } from '@/types/Alert';
+import { ActionContext } from 'vuex';
+import { State } from '@/types/State';
 
 declare global {
   interface Window {
@@ -10,11 +12,11 @@ declare global {
 let api = new Api(window.api);
 
 export default {
-  async loadMetadata({ commit }: any) {
+  async loadMetadata({ commit }: ActionContext<State, State>) {
     const response = await api.getMeta();
     commit('setMetadata', response);
   },
-  async validateSamples({ commit }: any) {
+  async validateSamples({ commit }: ActionContext<State, State>) {
     const params: Params = { size: 0 };
     const response = await api.get('samples', params);
     if (response.total > response.page.totalElements) {
@@ -25,12 +27,12 @@ export default {
       });
     }
   },
-  async loadSamples({ commit }: any) {
+  async loadSamples({ commit }: ActionContext<State, State>) {
     const params: Params = { size: Number.MAX_VALUE };
     const response = await api.get('samples', params);
     commit('setSamples', response);
   },
-  async selectSample({ commit }: any, sample: Sample) {
+  async selectSample({ commit }: ActionContext<State, State>, sample: Sample) {
     const response = await api.get('phenotypes', {
       query: {
         selector: ['subject', 'id'],
@@ -42,7 +44,7 @@ export default {
     commit('setSelectedSample', sample);
     commit('setSelectedSamplePhenotypes', response);
   },
-  async validateRecords({ commit }: any) {
+  async validateRecords({ commit }: ActionContext<State, State>) {
     const response = await api.get('records', { size: 0 });
     if (response.total > response.page.totalElements) {
       commit('addAlert', {
@@ -52,16 +54,16 @@ export default {
       });
     }
   },
-  async loadRecords({ commit, state }: any, params?: Params) {
+  async loadRecords({ commit }: ActionContext<State, State>, params?: Params) {
     const response = await api.get('records', params);
     commit('setRecords', response);
   },
-  removeAlert({ commit }: any, alert: Alert) {
+  removeAlert({ commit }: ActionContext<State, State>, alert: Alert) {
     commit('removeAlert', alert);
   }
 };
 
 // testability
-export function setTestApi(testApi: any) {
+export function setTestApi(testApi: Api) {
   api = testApi;
 }
