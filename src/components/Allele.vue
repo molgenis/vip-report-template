@@ -43,7 +43,7 @@ export default Vue.extend({
   },
   methods: {
     getNucClasses(base: string): object {
-      const classes: object = { nuc: true };
+      const classes: { [index: string]: boolean } = { nuc: true };
       // ellipsis
       if (base !== "*" && base !== "\u2026") {
         classes["nuc-" + base.toLocaleLowerCase()] = true;

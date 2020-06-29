@@ -1,5 +1,11 @@
-import Api, { Params, Sample } from "@molgenis/vip-report-api";
+import Api, {ApiData, Params, Sample} from '@molgenis/vip-report-api'
 import { Alert } from "@/types/Alert";
+
+declare global {
+  interface Window {
+    api:ApiData;
+  }
+}
 
 let api = new Api(window.api);
 

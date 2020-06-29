@@ -19,14 +19,19 @@ import Vue, { PropType } from "vue";
 import { InfoMetadata } from "@molgenis/vip-report-api";
 import RecordInfoDetailsItem from "@/components/RecordInfoDetailsItem.vue";
 
+// TODO: move type to vip-report-api
+interface Info {
+  [index: string]: string | string[] | number | number[] | boolean | Info  | Info[];
+}
+
 export default Vue.extend({
   components: { RecordInfoDetailsItem },
   props: {
     metadata: Array as PropType<InfoMetadata[]>,
-    info: Array as PropType<object[]>
+    info: Array as PropType<Info[]>
   },
   computed: {
-    fields: function() {
+    fields(): any[] {
       const fields = [];
       let index = 0;
       for (const info of this.metadata) {
@@ -42,7 +47,7 @@ export default Vue.extend({
       }
       return fields;
     },
-    items() {
+    items(): Info[] {
       return this.info;
     }
   },
@@ -52,7 +57,7 @@ export default Vue.extend({
         if (
           !(
             item[index] === null ||
-            (Array.isArray(item[index]) && item[index].length === 0)
+            (Array.isArray(item[index]) && (item[index] as string[] | number[] | Info[]).length === 0)
           )
         ) {
           return true;

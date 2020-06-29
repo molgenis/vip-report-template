@@ -179,6 +179,19 @@ import Identifiers from "@/components/Identifiers.vue";
 import Allele from "@/components/Allele.vue";
 import Anchor from "@/components/Anchor.vue";
 
+interface Page {
+  currentPage: number
+  perPage: number
+  totalRows: number
+  totalPages: number
+}
+
+interface InfoModal {
+  id: string
+  title: string
+  record: Record | null
+}
+
 export default Vue.extend({
   components: { Allele, Anchor, Identifiers, RecordDetails },
   props: {
@@ -193,29 +206,29 @@ export default Vue.extend({
       page: {
         currentPage: 1,
         perPage: 20
-      } as object,
+      } as Page,
       infoModal: {
         id: "info-modal",
         title: "",
         record: null
-      } as object
+      } as InfoModal
     };
   },
   computed: {
     ...mapGetters(["getSampleById", "genomeBrowserDb"]),
     ...mapState(["metadata", "records"]),
-    genomeAssembly() {
+    genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
-    samplePaternal() {
+    samplePaternal(): Sample | null {
       const paternalId = this.sample.person.paternalId;
       return paternalId !== "0" ? this.getSampleById(paternalId) : null;
     },
-    sampleMaternal() {
+    sampleMaternal(): Sample | null {
       const maternalId = this.sample.person.maternalId;
       return maternalId !== "0" ? this.getSampleById(maternalId) : null;
     },
-    fields: function() {
+    fields(): any[] {
       // field keys must much report api field ids
       return [
         { key: "actions", label: "", class: ["compact", "align-middle"] },
@@ -262,24 +275,24 @@ export default Vue.extend({
         return records.items;
       });
     },
-    clearSearch() {
+    clearSearch(): void {
       this.filter = "";
       const searchElement = this.$refs.search as BFormInput;
       searchElement.focus();
     },
-    info(record: Record, index: number, button: BButton) {
+    info(record: Record, index: number, button: BButton): void {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.record = record;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
-    resetInfoModal() {
+    resetInfoModal(): void {
       this.infoModal.title = "";
-      this.infoModal.content = "";
+      this.infoModal.record = null;
     }
   },
   filters: { append, formatNumber },
   watch: {
-    sample: function() {
+    sample() {
       (this.$refs.table as BTable).refresh();
     }
   }

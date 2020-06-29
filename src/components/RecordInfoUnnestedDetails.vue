@@ -26,22 +26,32 @@ import { InfoMetadata } from "@molgenis/vip-report-api";
 import RecordInfoDetailsItem from "@/components/RecordInfoDetailsItem.vue";
 import InfoButton from "@/components/InfoButton.vue";
 
+// TODO: move type to vip-report-api
+interface Info {
+  [index: string]: string | string[] | number | number[] | boolean
+}
+
+interface Item {
+  key: string
+  val: string | string[] | number | number[] | boolean
+  metadata: InfoMetadata
+}
 export default Vue.extend({
   components: { InfoButton, RecordInfoDetailsItem },
   props: {
     metadata: Array as PropType<InfoMetadata[]>,
-    info: Object as PropType<object>
+    info: Object as PropType<Info>
   },
   computed: {
-    fields: function() {
+    fields(): any[] {
       return [
         { key: "actions", label: "", class: ["compact", "align-middle"] },
         { key: "key", label: "key" },
         { key: "val", label: "value" }
       ];
     },
-    items() {
-      const items: object[] = [];
+    items(): Item[] {
+      const items: Item[] = [];
       for (const metadata of this.metadata) {
         if (this.info[metadata.id] !== undefined) {
           const item = {
