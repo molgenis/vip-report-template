@@ -1,11 +1,25 @@
-# npm
+.DS_Store
 node_modules
-npm-debug.log
 /dist
 
-# ide
-/.idea/
+# local env files
+.env.local
+.env.*.local
 
-# misc
-package-lock.json
-/coverage/
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Misc
+coverage

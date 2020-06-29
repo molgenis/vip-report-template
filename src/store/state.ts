@@ -1,12 +1,12 @@
-import {State} from '@/types/State'
+import { State } from '@/types/State';
 
 const state: State = {
-    alerts: [],
-    metadata: null,
-    samples: null,
-    selectedSample: null,
-    selectedSamplePhenotypes: null,
-    records: null
-}
+  alerts: [],
+  metadata: null,
+  samples: null,
+  selectedSample: null,
+  selectedSamplePhenotypes: null,
+  records: null
+};
 
-export default state
+export default state;
