@@ -1,4 +1,7 @@
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
-  collectCoverage: true
+  collectCoverage: true,
+  transformIgnorePatterns: [
+    "node_modules/(?!(@molgenis)/)"
+  ]
 };
