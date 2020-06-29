@@ -22,11 +22,7 @@ import Vue, { PropType } from 'vue';
 import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 import InfoButton from '@/components/InfoButton.vue';
-
-// TODO: move type to vip-report-api
-interface Info {
-  [index: string]: string | string[] | number | number[] | boolean;
-}
+import { Info } from '@/types/Info';
 
 interface Item {
   key: string;
@@ -53,7 +49,7 @@ export default Vue.extend({
         if (this.info[metadata.id] !== undefined) {
           const item = {
             key: metadata.id,
-            val: this.info[metadata.id],
+            val: this.info[metadata.id] as string | string[] | number | number[] | boolean,
             metadata: metadata
           };
           items.push(item);
@@ -63,15 +59,6 @@ export default Vue.extend({
         return thisItem.key.localeCompare(thatItem.key);
       });
       return items;
-    }
-  },
-  methods: {
-    getInfoMetadata(key: string): InfoMetadata {
-      const infoMetadata = this.metadata.find(item => item.id === key);
-      if (infoMetadata === undefined) {
-        throw new Error("missing info metadata for '" + key + "'");
-      }
-      return infoMetadata;
     }
   }
 });

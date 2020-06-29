@@ -19,11 +19,7 @@ import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoNestedDetails from '@/components/RecordInfoNestedDetails.vue';
 import RecordInfoUnnestedDetails from '@/components/RecordInfoUnnestedDetails.vue';
 import InfoButton from '@/components/InfoButton.vue';
-
-// TODO: move type to vip-report-api
-interface Info {
-  [index: string]: string | string[] | number | number[] | boolean | Info | Info[];
-}
+import {Info} from '@/types/Info'
 
 export default Vue.extend({
   components: {
