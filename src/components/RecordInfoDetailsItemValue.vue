@@ -55,7 +55,6 @@ export default Vue.extend({
       } else {
         isRefSeqFeatureId = false;
       }
-      console.log(this.value, isRefSeqFeatureId);
       return isRefSeqFeatureId;
     },
     isEnsemblFeatureId(): boolean {

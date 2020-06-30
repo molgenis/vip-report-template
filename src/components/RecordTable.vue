@@ -70,28 +70,13 @@ f
         </span>
       </template>
       <template v-slot:cell(s)="data">
-        <span v-for="(alt, index) in data.item.s[sample.index].gt.a" :key="index">
-          <Allele :allele="alt" />
-          <span v-if="index < data.item.s[sample.index].gt.a.length - 1">
-            {{ data.item.s[sample.index].gt.p ? '|' : '/' }}
-          </span>
-        </span>
+        <Genotype :genotype="data.item.s[sample.index].gt" />
       </template>
       <template v-slot:cell(father)="data">
-        <span v-for="(alt, index) in data.item.s[samplePaternal.index].gt.a" :key="index">
-          <Allele :allele="alt" />
-          <span v-if="index < data.item.s[samplePaternal.index].gt.a.length - 1">
-            {{ data.item.s[samplePaternal.index].gt.p ? '|' : '/' }}
-          </span>
-        </span>
+        <Genotype :genotype="data.item.s[samplePaternal.index].gt" />
       </template>
       <template v-slot:cell(mother)="data">
-        <span v-for="(alt, index) in data.item.s[sampleMaternal.index].gt.a" :key="index">
-          <Allele :allele="alt" />
-          <span v-if="index < data.item.s[sampleMaternal.index].gt.a.length - 1">
-            {{ data.item.s[sampleMaternal.index].gt.p ? '|' : '/' }}
-          </span>
-        </span>
+        <Genotype :genotype="data.item.s[sampleMaternal.index].gt" />
       </template>
       <template v-slot:cell(q)="data">
         <span v-if="data.item.q">{{ data.item.q | formatNumber }}</span>
@@ -101,6 +86,41 @@ f
           <span>{{ filter }}</span>
           <span v-if="index < data.item.f.length - 1">, </span>
         </span>
+      </template>
+      <template v-slot:cell(expand)="data">
+        <b-button
+          v-if="data.item.effect.items.length > 1"
+          class="btn-xs"
+          @click="data.item.expand = !data.item.expand"
+          mr="3"
+        >
+          <b-icon-chevron-up v-if="data.item.expand" />
+          <b-icon-chevron-down v-else />
+        </b-button>
+      </template>
+      <template v-slot:cell(effect)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.effect.metadata"
+          :values="data.item.expand ? data.item.effect.items : data.item.effect.items.slice(0, 1)"
+        />
+      </template>
+      <template v-slot:cell(symbol)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.symbol.metadata"
+          :values="data.item.expand ? data.item.symbol.items : data.item.symbol.items.slice(0, 1)"
+        />
+      </template>
+      <template v-slot:cell(hgvsC)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.hgvsC.metadata"
+          :values="data.item.expand ? data.item.hgvsC.items : data.item.hgvsC.items.slice(0, 1)"
+        />
+      </template>
+      <template v-slot:cell(hgvsP)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.hgvsP.metadata"
+          :values="data.item.expand ? data.item.hgvsP.items : data.item.hgvsP.items.slice(0, 1)"
+        />
       </template>
     </b-table>
     <b-pagination
@@ -127,12 +147,16 @@ f
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Vue, { PropType } from 'vue';
 import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
-import { PagedItems, Params, Record, Sample } from '@molgenis/vip-report-api';
+import { PagedItems, Params, Record, RecordSample, Sample } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
 import Identifiers from '@/components/Identifiers.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
+import Genotype from '@/components/Genotype.vue';
+import { getConsequences } from '@/globals/utils';
+import { Consequences } from '@/types/Consequence';
+import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
 
 interface Page {
   currentPage: number;
@@ -147,8 +171,24 @@ interface InfoModal {
   record: Record | null;
 }
 
+interface Row {
+  c: string;
+  p: number;
+  i?: string[];
+  r: string;
+  a: string[];
+  q?: number;
+  f?: string[];
+  s?: RecordSample[];
+  effect?: any;
+  symbol?: any;
+  hgvsC?: any;
+  hgvsP?: any;
+  expand?: boolean;
+}
+
 export default Vue.extend({
-  components: { Allele, Anchor, Identifiers, RecordDetails },
+  components: { Allele, Anchor, Genotype, Identifiers, RecordDetails, RecordInfoDetailsItemMultiline },
   props: {
     sample: Object as PropType<Sample>
   },
@@ -170,7 +210,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(['getSampleById', 'genomeBrowserDb']),
+    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences']),
     ...mapState(['metadata', 'records']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
@@ -186,8 +226,7 @@ export default Vue.extend({
     fields(): BvTableFieldArray {
       // field keys must much report api field ids
       const fields = [];
-      fields.push({ key: 'actions', label: '', class: ['compact', 'align-middle'] });
-      fields.push({ key: 'actions', label: '', class: ['compact', 'align-middle'] });
+      fields.push({ key: 'actions', label: '', class: ['compact', 'align-top'] });
       fields.push({ key: 'p', label: 'pos', sortable: true });
       fields.push({ key: 'i', label: 'id' });
       fields.push({ key: 'r', label: 'ref' });
@@ -200,12 +239,19 @@ export default Vue.extend({
       }
       fields.push({ key: 'q', label: 'qual', sortable: true });
       fields.push({ key: 'f', label: 'filter' });
+      if (this.hasConsequences) {
+        fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
+        fields.push({ key: 'effect' });
+        fields.push({ key: 'symbol' });
+        fields.push({ key: 'hgvsC' });
+        fields.push({ key: 'hgvsP' });
+      }
       return fields;
     }
   },
   methods: {
     ...mapActions(['loadRecords']),
-    provider(ctx: BvTableCtxObject) {
+    provider(ctx: BvTableCtxObject): Promise<Row[]> {
       // todo: translate filter param to query
       const params: Params = {
         page: ctx.currentPage - 1,
@@ -225,7 +271,30 @@ export default Vue.extend({
         const records = this.records as PagedItems<Record>;
         this.page.totalRows = records.page.totalElements;
         this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage);
-        return records.items;
+        return records.items.map(record => {
+          const row: Row = { ...record };
+          if (this.hasConsequences) {
+            const consequences: Consequences = getConsequences(record, this.metadata.records);
+            row.effect = {
+              metadata: consequences.metadata.effect,
+              items: consequences.items.map(consequence => consequence.effect)
+            };
+            row.symbol = {
+              metadata: consequences.metadata.symbol,
+              items: consequences.items.map(consequence => consequence.symbol)
+            };
+            row.hgvsC = {
+              metadata: consequences.metadata.hgvsC,
+              items: consequences.items.map(consequence => consequence.hgvsC)
+            };
+            row.hgvsP = {
+              metadata: consequences.metadata.hgvsP,
+              items: consequences.items.map(consequence => consequence.hgvsP)
+            };
+            row.expand = false;
+          }
+          return row;
+        });
       });
     },
     clearSearch(): void {

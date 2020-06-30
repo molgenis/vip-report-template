@@ -54,5 +54,11 @@ export default {
     }
 
     return genomeBrowserDb;
+  },
+  hasConsequences: (state: State): boolean => {
+    return (
+      state.metadata !== null &&
+      state.metadata.records.info.find(item => item.id === 'CSQ' || item.id === 'ANN') !== undefined
+    );
   }
 };

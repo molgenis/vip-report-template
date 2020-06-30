@@ -1,8 +1,8 @@
 import actions, { setTestApi } from '@/store/actions';
 import { mock, when } from 'ts-mockito';
 import Api, { Metadata, PagedItems, Params, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
-import {ActionContext, Commit} from 'vuex'
-import {State} from '@/types/State'
+import { ActionContext, Commit } from 'vuex';
+import { State } from '@/types/State';
 
 const api: Api = mock(Api);
 setTestApi(mock(Api));

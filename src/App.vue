@@ -47,7 +47,7 @@ td {
 }
 
 td.compact {
-  padding: 0;
+  padding: 0.25rem;
   width: 0;
 }
 

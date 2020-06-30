@@ -3,7 +3,15 @@ import getters from '@/store/getters';
 import { State } from '@/types/State';
 import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
 import { mock } from 'ts-mockito';
-import { HtsFileMetadata, Metadata, PagedItems, Person, Sample } from '@molgenis/vip-report-api';
+import {
+  HtsFileMetadata,
+  InfoMetadata,
+  Metadata,
+  PagedItems,
+  Person,
+  RecordsMetadata,
+  Sample
+} from '@molgenis/vip-report-api';
 
 test('samples returns empty array in case of no samples', () => {
   const testState: State = { ...initialState };
@@ -124,4 +132,32 @@ test('get genomeBrowserDb for UNKNOWN assembly', () => {
 test('get genomeBrowserDb when no metadata available', () => {
   const testState: State = { ...initialState };
   expect(getters.genomeBrowserDb(testState)).toBe(null);
+});
+
+test('metadata has consequences', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'CSQ';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasConsequences(testState)).toBe(true);
+});
+
+test('metadata has no consequences', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'NO_CSQ';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasConsequences(testState)).toBe(false);
 });
