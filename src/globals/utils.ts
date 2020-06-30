@@ -2,6 +2,36 @@ import { Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { Consequence } from '@/types/Consequence';
 import { Info } from '@/types/Info';
 
+function createConsequence(
+  info: Info,
+  effectIndex: number | undefined,
+  symbolIndex: number | undefined,
+  hgvsCIndex: number | undefined,
+  hgvsPIndex: number | undefined
+): Consequence {
+  return {
+    effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
+    symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
+    hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
+    hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null
+  };
+}
+
+function createConsequences(
+  info: Info[],
+  effectIndex: number | undefined,
+  symbolIndex: number | undefined,
+  hgvsCIndex: number | undefined,
+  hgvsPIndex: number | undefined
+): Consequence[] {
+  const consequences = [];
+  for (const item of info) {
+    const consequence = createConsequence(item, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
+    consequences.push(consequence);
+  }
+  return consequences;
+}
+
 function hasVepConsequences(metadata: RecordsMetadata): boolean {
   const csqInfo = metadata.info.find(item => item.id === 'CSQ');
   return csqInfo !== undefined;
@@ -36,17 +66,7 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
   }
 
   const info = (record.n as Info)['CSQ'] as Info[];
-  const consequences = [];
-  for (const item of info) {
-    const consequence: Consequence = {
-      effect: effectIndex !== undefined ? (item[effectIndex] as string[]) : [],
-      symbol: symbolIndex !== undefined ? (item[symbolIndex] as string | null) : null,
-      hgvsC: hgvsCIndex !== undefined ? (item[hgvsCIndex] as string | null) : null,
-      hgvsP: hgvsPIndex !== undefined ? (item[hgvsPIndex] as string | null) : null
-    };
-    consequences.push(consequence);
-  }
-  return consequences;
+  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
@@ -83,19 +103,14 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
   }
 
   const info = (record.n as Info)['ANN'] as Info[];
-  const consequences = [];
-  for (const item of info) {
-    const consequence: Consequence = {
-      effect: effectIndex !== undefined ? (item[effectIndex] as string[]) : [],
-      symbol: symbolIndex !== undefined ? (item[symbolIndex] as string | null) : null,
-      hgvsC: hgvsCIndex !== undefined ? (item[hgvsCIndex] as string | null) : null,
-      hgvsP: hgvsPIndex !== undefined ? (item[hgvsPIndex] as string | null) : null
-    };
-    consequences.push(consequence);
-  }
-  return consequences;
+  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
 }
 
+/**
+ * Based on:
+ * - http://grch37.ensembl.org/info/genome/variation/prediction/predicted_data.html#consequences
+ * - http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf
+ */
 /* eslint-disable @typescript-eslint/camelcase */
 const soTermRank: { [index: string]: number } = {
   transcript_ablation: 0,
@@ -157,12 +172,7 @@ const soTermRank: { [index: string]: number } = {
 
 function sortConsequences(thisConsequence: Consequence, thatConsequence: Consequence): number {
   let thisRank = Number.MAX_VALUE;
-  if (!Array.isArray(thisConsequence.effect)) {
-    console.log(typeof thisConsequence.effect, thisConsequence.effect);
-  }
-  if (!Array.isArray(thatConsequence.effect)) {
-    console.log(typeof thatConsequence.effect, thatConsequence.effect);
-  }
+
   for (const soTerm of thisConsequence.effect) {
     const rank = soTermRank[soTerm];
     if (rank < thisRank) {
@@ -176,13 +186,6 @@ function sortConsequences(thisConsequence: Consequence, thatConsequence: Consequ
     if (rank < thatRank) {
       thatRank = rank;
     }
-  }
-
-  if (thisRank === Number.MAX_VALUE) {
-    console.log(thisConsequence.effect);
-  }
-  if (thatRank === Number.MAX_VALUE) {
-    console.log(thatConsequence.effect);
   }
 
   return thisRank - thatRank;
