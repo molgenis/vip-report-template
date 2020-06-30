@@ -190,6 +190,9 @@ function sortConsequences(thisConsequence: Consequence, thatConsequence: Consequ
   return thisRank - thatRank;
 }
 
+/**
+ * Returns consequences extracted from various info fields
+ */
 export function getConsequences(record: Record, recordMetadata: RecordsMetadata): Consequences {
   const consequences: Consequence[] = [];
   if (hasVepConsequences(recordMetadata)) {
