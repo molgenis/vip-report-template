@@ -20,6 +20,7 @@
       variant="info"
       :href="'https://molgenis102.gcc.rug.nl?phenotypes=' + hpoTerms.join(',')"
       target="_blank"
+      rel="noopener"
     >
       {{ $t('vibe') }}
       <b-icon-box-arrow-in-up-right class="ml-1" />
