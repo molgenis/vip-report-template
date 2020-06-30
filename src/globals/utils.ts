@@ -1,4 +1,4 @@
-import { Record, RecordsMetadata } from '@molgenis/vip-report-api';
+import { InfoMetadata, Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
 import { Info } from '@/types/Info';
 
@@ -40,14 +40,15 @@ function createConsequences(
   return items;
 }
 
-function hasVepConsequences(metadata: RecordsMetadata): boolean {
-  const csqInfo = metadata.info.find(item => item.id === 'CSQ');
-  return csqInfo !== undefined;
-}
-
-function getVepConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
-  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
-  if (infoMetadata === undefined || infoMetadata.nested === undefined) {
+function getInfoConsequences(
+  infoMetadata: InfoMetadata,
+  info: Info[],
+  effectId: string,
+  symbolId: string,
+  hgvsCId: string,
+  hgvsPId: string
+): Consequence[] {
+  if (infoMetadata.nested === undefined) {
     return [];
   }
 
@@ -55,16 +56,16 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
-      case 'Consequence':
+      case effectId:
         effectIndex = index;
         break;
-      case 'SYMBOL':
+      case symbolId:
         symbolIndex = index;
         break;
-      case 'HGVSc':
+      case hgvsCId:
         hgvsCIndex = index;
         break;
-      case 'HGVSp':
+      case hgvsPId:
         hgvsPIndex = index;
         break;
       default:
@@ -73,8 +74,21 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     ++index;
   }
 
-  const info = (record.n as Info)['CSQ'] as Info[];
   return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
+}
+
+function hasVepConsequences(metadata: RecordsMetadata): boolean {
+  const csqInfo = metadata.info.find(item => item.id === 'CSQ');
+  return csqInfo !== undefined;
+}
+
+function getVepConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
+  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
+  if (infoMetadata === undefined) {
+    return [];
+  }
+  const info = (record.n as Info)['CSQ'] as Info[];
+  return getInfoConsequences(infoMetadata, info, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp');
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
@@ -84,34 +98,11 @@ function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
 
 function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
   const infoMetadata = metadata.info.find(item => item.id === 'ANN');
-  if (infoMetadata === undefined || infoMetadata.nested === undefined) {
+  if (infoMetadata === undefined) {
     return [];
   }
-
-  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex;
-  let index = 0;
-  for (const nestedInfoMetadata of infoMetadata.nested) {
-    switch (nestedInfoMetadata.id) {
-      case 'Annotation':
-        effectIndex = index;
-        break;
-      case 'Gene_Name':
-        symbolIndex = index;
-        break;
-      case 'HGVS.c':
-        hgvsCIndex = index;
-        break;
-      case 'HGVS.p':
-        hgvsPIndex = index;
-        break;
-      default:
-        break;
-    }
-    ++index;
-  }
-
   const info = (record.n as Info)['ANN'] as Info[];
-  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
+  return getInfoConsequences(infoMetadata, info, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p');
 }
 
 /**
