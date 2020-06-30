@@ -2,7 +2,7 @@ import { Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
 import { Info } from '@/types/Info';
 
-const metadata: ConsequenceMetadata = {
+const consequenceMetadata: ConsequenceMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
@@ -208,5 +208,5 @@ export function getConsequences(record: Record, recordMetadata: RecordsMetadata)
     consequences.push(...getSnpEffConsequences(record, recordMetadata));
   }
   consequences.sort(sortConsequences);
-  return { metadata: metadata, items: consequences };
+  return { metadata: consequenceMetadata, items: consequences };
 }
