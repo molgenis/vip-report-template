@@ -155,7 +155,7 @@ import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
 import { getConsequences } from '@/globals/utils';
-import { Consequence } from '@/types/Consequence';
+import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
 
 interface Page {
@@ -274,22 +274,22 @@ export default Vue.extend({
         return records.items.map(record => {
           const row: Row = { ...record };
           if (this.hasConsequences) {
-            const consequences: Consequence[] = getConsequences(record, this.metadata.records);
+            const consequences: Consequences = getConsequences(record, this.metadata.records);
             row.effect = {
-              metadata: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
-              items: consequences.map(consequence => consequence.effect)
+              metadata: consequences.metadata.effect,
+              items: consequences.items.map(consequence => consequence.effect)
             };
             row.symbol = {
-              metadata: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
-              items: consequences.map(consequence => consequence.symbol)
+              metadata: consequences.metadata.symbol,
+              items: consequences.items.map(consequence => consequence.symbol)
             };
             row.hgvsC = {
-              metadata: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
-              items: consequences.map(consequence => consequence.hgvsC)
+              metadata: consequences.metadata.hgvsC,
+              items: consequences.items.map(consequence => consequence.hgvsC)
             };
             row.hgvsP = {
-              metadata: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
-              items: consequences.map(consequence => consequence.hgvsP)
+              metadata: consequences.metadata.hgvsP,
+              items: consequences.items.map(consequence => consequence.hgvsP)
             };
             row.expand = false;
           }

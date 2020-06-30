@@ -1,7 +1,13 @@
 import { Record, RecordsMetadata } from '@molgenis/vip-report-api';
-import { Consequence } from '@/types/Consequence';
+import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
 import { Info } from '@/types/Info';
 
+const metadata: ConsequenceMetadata = {
+  effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
+  symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
+  hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
+  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' }
+};
 function createConsequence(
   info: Info,
   effectIndex: number | undefined,
@@ -24,12 +30,13 @@ function createConsequences(
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined
 ): Consequence[] {
-  const consequences = [];
+  const items = [];
   for (const item of info) {
     const consequence = createConsequence(item, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
-    consequences.push(consequence);
+    items.push(consequence);
   }
-  return consequences;
+
+  return items;
 }
 
 function hasVepConsequences(metadata: RecordsMetadata): boolean {
@@ -191,14 +198,14 @@ function sortConsequences(thisConsequence: Consequence, thatConsequence: Consequ
   return thisRank - thatRank;
 }
 
-export function getConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
+export function getConsequences(record: Record, recordMetadata: RecordsMetadata): Consequences {
   const consequences: Consequence[] = [];
-  if (hasVepConsequences(metadata)) {
-    consequences.push(...getVepConsequences(record, metadata));
+  if (hasVepConsequences(recordMetadata)) {
+    consequences.push(...getVepConsequences(record, recordMetadata));
   }
-  if (hasSnpEffConsequences(metadata)) {
-    consequences.push(...getSnpEffConsequences(record, metadata));
+  if (hasSnpEffConsequences(recordMetadata)) {
+    consequences.push(...getSnpEffConsequences(record, recordMetadata));
   }
   consequences.sort(sortConsequences);
-  return consequences;
+  return { metadata: metadata, items: consequences };
 }
