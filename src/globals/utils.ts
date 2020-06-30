@@ -8,6 +8,7 @@ const metadata: ConsequenceMetadata = {
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
   hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' }
 };
+
 function createConsequence(
   info: Info,
   effectIndex: number | undefined,
