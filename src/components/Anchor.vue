@@ -1,7 +1,7 @@
 <template>
-  <a :href="href" target="_blank">
+  <a :href="href" target="_blank" rel="noopener">
+    <b-icon-box-arrow-in-up-right class="mr-1" />
     {{ text }}
-    <b-icon-box-arrow-in-up-right class="ml-1" />
   </a>
 </template>
 
