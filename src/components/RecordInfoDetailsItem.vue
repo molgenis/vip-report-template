@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <span v-if="metadata.number === undefined">
-      <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" />
+  <span v-if="metadata.number === undefined">
+    <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" />
+  </span>
+  <span v-else-if="metadata.number && metadata.number.type === 'NUMBER' && metadata.number.count === 1">
+    <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" />
+  </span>
+  <span v-else>
+    <span v-for="(item, index) in value" :key="index">
+      <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="item" />
+      <span v-if="index < value.length - 1">, </span>
     </span>
-    <span v-else-if="metadata.number && metadata.number.type === 'NUMBER' && metadata.number.count === 1">
-      <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" />
-    </span>
-    <span v-else>
-      <span v-for="(item, index) in value" :key="index">
-        <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="item" />
-        <span v-if="index < value.length - 1">, </span>
-      </span>
-    </span>
-  </div>
+  </span>
 </template>
 
 <script lang="ts">
