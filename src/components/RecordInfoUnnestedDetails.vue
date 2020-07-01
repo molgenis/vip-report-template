@@ -19,10 +19,9 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { InfoMetadata } from '@molgenis/vip-report-api';
+import { Info, InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 import InfoButton from '@/components/InfoButton.vue';
-import { Info } from '@/types/Info';
 import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
 
 interface Item {

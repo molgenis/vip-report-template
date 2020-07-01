@@ -15,11 +15,10 @@
 // eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from 'vue';
 // eslint-disable-next-line no-unused-vars
-import { InfoMetadata } from '@molgenis/vip-report-api';
+import { Info, InfoMetadata, InfoValue } from '@molgenis/vip-report-api';
 import RecordInfoNestedDetails from '@/components/RecordInfoNestedDetails.vue';
 import RecordInfoUnnestedDetails from '@/components/RecordInfoUnnestedDetails.vue';
 import InfoButton from '@/components/InfoButton.vue';
-import { Info } from '@/types/Info';
 
 export default Vue.extend({
   components: {
@@ -47,12 +46,12 @@ export default Vue.extend({
     sortMetadata(thisItem: InfoMetadata, thatItem: InfoMetadata): number {
       return thisItem.id.localeCompare(thatItem.id);
     },
-    getNestedInfo(metadata: InfoMetadata): Info[] {
-      let nestedInfo: Info[];
+    getNestedInfo(metadata: InfoMetadata): InfoValue[] {
+      let nestedInfo: InfoValue[][];
       if (metadata.number && metadata.number.count === 1) {
-        nestedInfo = [this.info[metadata.id]] as Info[];
+        nestedInfo = [this.info[metadata.id] as InfoValue[]];
       } else {
-        nestedInfo = this.info[metadata.id] as Info[];
+        nestedInfo = this.info[metadata.id] as InfoValue[][];
       }
       return nestedInfo;
     }
