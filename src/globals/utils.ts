@@ -1,6 +1,5 @@
-import { InfoMetadata, Record, RecordsMetadata } from '@molgenis/vip-report-api';
+import { InfoMetadata, InfoValue, Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
-import { Info } from '@/types/Info';
 
 const consequenceMetadata: ConsequenceMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
@@ -10,7 +9,7 @@ const consequenceMetadata: ConsequenceMetadata = {
 };
 
 function createConsequence(
-  info: Info,
+  info: InfoValue[],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
   hgvsCIndex: number | undefined,
@@ -25,7 +24,7 @@ function createConsequence(
 }
 
 function createConsequences(
-  info: Info[],
+  info: InfoValue[][],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
   hgvsCIndex: number | undefined,
@@ -42,7 +41,7 @@ function createConsequences(
 
 function getInfoConsequences(
   infoMetadata: InfoMetadata,
-  info: Info[],
+  info: InfoValue[][],
   effectId: string,
   symbolId: string,
   hgvsCId: string,
@@ -84,11 +83,15 @@ function hasVepConsequences(metadata: RecordsMetadata): boolean {
 
 function getVepConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
   const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
-  if (infoMetadata === undefined) {
+  if (infoMetadata === undefined || record.n === undefined) {
     return [];
   }
-  const info = (record.n as Info)['CSQ'] as Info[];
-  return getInfoConsequences(infoMetadata, info, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp');
+  const info = record.n;
+  if (!Object.prototype.hasOwnProperty.call(info, 'CSQ') && info.CSQ !== null) {
+    return [];
+  }
+  const csqInfo = info.CSQ as InfoValue[][];
+  return getInfoConsequences(infoMetadata, csqInfo, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp');
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
@@ -98,11 +101,15 @@ function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
 
 function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
   const infoMetadata = metadata.info.find(item => item.id === 'ANN');
-  if (infoMetadata === undefined) {
+  if (infoMetadata === undefined || record.n === undefined) {
     return [];
   }
-  const info = (record.n as Info)['ANN'] as Info[];
-  return getInfoConsequences(infoMetadata, info, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p');
+  const info = record.n;
+  if (!Object.prototype.hasOwnProperty.call(info, 'ANN') && info.ANN !== null) {
+    return [];
+  }
+  const annInfo = info.ANN as InfoValue[][];
+  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p');
 }
 
 /**

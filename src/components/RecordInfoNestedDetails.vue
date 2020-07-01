@@ -13,9 +13,8 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { InfoMetadata } from '@molgenis/vip-report-api';
+import { Info, InfoMetadata, InfoValue } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
-import { Info } from '@/types/Info';
 import { BvTableField } from 'bootstrap-vue/src/components/table';
 
 interface RecordInfoBvTableField extends BvTableField {
@@ -29,7 +28,7 @@ export default Vue.extend({
   components: { RecordInfoDetailsItem },
   props: {
     metadata: Array as PropType<InfoMetadata[]>,
-    info: Array as PropType<Info[]>
+    info: Array as PropType<InfoValue[][]>
   },
   computed: {
     fields(): RecordInfoBvTableFieldArray {
@@ -48,7 +47,7 @@ export default Vue.extend({
       }
       return fields;
     },
-    items(): Info[] {
+    items(): InfoValue[] {
       return this.info;
     }
   },
