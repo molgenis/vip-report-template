@@ -2,6 +2,7 @@ import Api, { ApiData, Params, Sample } from '@molgenis/vip-report-api';
 import { Alert } from '@/types/Alert';
 import { ActionContext } from 'vuex';
 import { State } from '@/types/State';
+import { apiData } from '@/mocks/apiDataMock';
 
 declare global {
   interface Window {
@@ -9,7 +10,8 @@ declare global {
   }
 }
 
-let api = new Api(window.api);
+const inputData = process.env.NODE_ENV === 'development' ? apiData : window.api;
+let api = new Api(inputData);
 
 export default {
   async loadMetadata({ commit }: ActionContext<State, State>) {
