@@ -5,7 +5,8 @@ const consequenceMetadata: ConsequenceMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
-  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' }
+  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
+  pubMed: { id: 'PUBMED', type: 'INTEGER', number: { type: 'OTHER' }, description: 'PubMed' }
 };
 
 function createConsequence(
@@ -13,13 +14,15 @@ function createConsequence(
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
   hgvsCIndex: number | undefined,
-  hgvsPIndex: number | undefined
+  hgvsPIndex: number | undefined,
+  pubMedIndex: number | undefined
 ): Consequence {
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
     symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
-    hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null
+    hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
+    pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : []
   };
 }
 
@@ -28,11 +31,12 @@ function createConsequences(
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
   hgvsCIndex: number | undefined,
-  hgvsPIndex: number | undefined
+  hgvsPIndex: number | undefined,
+  pubMedIndex: number | undefined
 ): Consequence[] {
   const items = [];
   for (const item of info) {
-    const consequence = createConsequence(item, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
+    const consequence = createConsequence(item, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex);
     items.push(consequence);
   }
 
@@ -45,13 +49,14 @@ function getInfoConsequences(
   effectId: string,
   symbolId: string,
   hgvsCId: string,
-  hgvsPId: string
+  hgvsPId: string,
+  pubMedId: string | null
 ): Consequence[] {
   if (infoMetadata.nested === undefined) {
     return [];
   }
 
-  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex;
+  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex;
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
@@ -67,13 +72,16 @@ function getInfoConsequences(
       case hgvsPId:
         hgvsPIndex = index;
         break;
+      case pubMedId:
+        pubMedIndex = index;
+        break;
       default:
         break;
     }
     ++index;
   }
 
-  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex);
+  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex);
 }
 
 function hasVepConsequences(metadata: RecordsMetadata): boolean {
@@ -91,7 +99,7 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     return [];
   }
   const csqInfo = info.CSQ as InfoValue[][];
-  return getInfoConsequences(infoMetadata, csqInfo, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp');
+  return getInfoConsequences(infoMetadata, csqInfo, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp', 'PUBMED');
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
@@ -109,7 +117,7 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
     return [];
   }
   const annInfo = info.ANN as InfoValue[][];
-  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p');
+  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p', null);
 }
 
 /**

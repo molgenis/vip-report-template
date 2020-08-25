@@ -6,7 +6,8 @@ const expectedMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
-  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' }
+  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
+  pubMed: { id: 'PUBMED', type: 'INTEGER', number: { type: 'OTHER' }, description: 'PubMed' }
 };
 
 function createCsqInfoMetadata(): InfoMetadata {
@@ -24,6 +25,17 @@ function createCsqInfoMetadata(): InfoMetadata {
   infoMetadata.nested = [effectInfoMetadata, hgvsCInfoMetadata, hgvsPInfoMetadata, symbolInfoMetadata];
 
   return infoMetadata;
+}
+
+function createCsqInfoMetadataWithPubMed(): InfoMetadata {
+  const pubMedMetadata = mock<InfoMetadata>();
+  pubMedMetadata.id = 'PUBMED';
+
+  const csqInfoMetadata = createCsqInfoMetadata();
+  if (csqInfoMetadata.nested !== undefined) {
+    csqInfoMetadata.nested.push(pubMedMetadata);
+  }
+  return csqInfoMetadata;
 }
 
 function createAnnInfoMetadata(): InfoMetadata {
@@ -82,8 +94,40 @@ test('get consequences in case of CSQ info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1' },
-      { effect: ['intergenic_variant'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0' }
+      { effect: ['frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1', pubMed: [] },
+      { effect: ['intergenic_variant'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [] }
+    ]
+  });
+});
+
+test('get consequences in case of CSQ info with PUBMED', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadataWithPubMed()];
+
+  const record = mock<Record>();
+  record.n = {
+    CSQ: [
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678']],
+      [['frameshift_variant'], 'hgvsC1', 'hgvsP1', 'symbol1', ['12345678', '23456789']]
+    ]
+  };
+  expect(getConsequences(record, recordMetadata)).toEqual({
+    metadata: expectedMetadata,
+    items: [
+      {
+        effect: ['frameshift_variant'],
+        symbol: 'symbol1',
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: ['12345678', '23456789']
+      },
+      {
+        effect: ['intergenic_variant'],
+        symbol: 'symbol0',
+        hgvsC: 'hgvsC0',
+        hgvsP: 'hgvsP0',
+        pubMed: ['12345678']
+      }
     ]
   });
 });
@@ -102,8 +146,14 @@ test('get consequences in case of ANN info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['missense_variant', 'frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1' },
-      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0' }
+      {
+        effect: ['missense_variant', 'frameshift_variant'],
+        symbol: 'symbol1',
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: []
+      },
+      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [] }
     ]
   });
 });
@@ -123,9 +173,15 @@ test('get consequences in case of CSQ and ANN info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['missense_variant', 'frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1' },
-      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0' },
-      { effect: ['intergenic_variant'], symbol: 'symbol2', hgvsC: 'hgvsC2', hgvsP: 'hgvsP2' }
+      {
+        effect: ['missense_variant', 'frameshift_variant'],
+        symbol: 'symbol1',
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: []
+      },
+      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [] },
+      { effect: ['intergenic_variant'], symbol: 'symbol2', hgvsC: 'hgvsC2', hgvsP: 'hgvsP2', pubMed: [] }
     ]
   });
 });
