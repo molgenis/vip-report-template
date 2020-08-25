@@ -6,6 +6,7 @@ export interface ConsequenceMetadata {
   hgvsC: InfoMetadata;
   hgvsP: InfoMetadata;
   pubMed: InfoMetadata;
+  clinVar: InfoMetadata;
 }
 
 export interface Consequence {
@@ -14,6 +15,7 @@ export interface Consequence {
   hgvsC: string | null;
   hgvsP: string | null;
   pubMed: number[];
+  clinVar: string[];
 }
 
 export interface Consequences {

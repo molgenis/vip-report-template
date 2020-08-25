@@ -6,7 +6,18 @@ const consequenceMetadata: ConsequenceMetadata = {
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
   hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
-  pubMed: { id: 'PUBMED', type: 'INTEGER', number: { type: 'OTHER' }, description: 'PubMed' }
+  pubMed: {
+    id: 'PUBMED',
+    type: 'INTEGER',
+    number: { type: 'OTHER' },
+    description: 'Pubmed ID(s) of publications that cite existing variant'
+  },
+  clinVar: {
+    id: 'CLIN_SIG',
+    type: 'STRING',
+    number: { type: 'OTHER' },
+    description: 'ClinVar clinical significance of the dbSNP variant'
+  }
 };
 
 function createConsequence(
@@ -15,14 +26,16 @@ function createConsequence(
   symbolIndex: number | undefined,
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
-  pubMedIndex: number | undefined
+  pubMedIndex: number | undefined,
+  clinVarIndex: number | undefined
 ): Consequence {
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
     symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
-    pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : []
+    pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],
+    clinVar: clinVarIndex !== undefined ? (info[clinVarIndex] as string[]) : []
   };
 }
 
@@ -32,11 +45,20 @@ function createConsequences(
   symbolIndex: number | undefined,
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
-  pubMedIndex: number | undefined
+  pubMedIndex: number | undefined,
+  clinVarIndex: number | undefined
 ): Consequence[] {
   const items = [];
   for (const item of info) {
-    const consequence = createConsequence(item, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex);
+    const consequence = createConsequence(
+      item,
+      effectIndex,
+      symbolIndex,
+      hgvsCIndex,
+      hgvsPIndex,
+      pubMedIndex,
+      clinVarIndex
+    );
     items.push(consequence);
   }
 
@@ -50,13 +72,14 @@ function getInfoConsequences(
   symbolId: string,
   hgvsCId: string,
   hgvsPId: string,
-  pubMedId: string | null
+  pubMedId: string | null,
+  clinVarId: string | null
 ): Consequence[] {
   if (infoMetadata.nested === undefined) {
     return [];
   }
 
-  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex;
+  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex;
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
@@ -75,13 +98,16 @@ function getInfoConsequences(
       case pubMedId:
         pubMedIndex = index;
         break;
+      case clinVarId:
+        clinVarIndex = index;
+        break;
       default:
         break;
     }
     ++index;
   }
 
-  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex);
+  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex);
 }
 
 function hasVepConsequences(metadata: RecordsMetadata): boolean {
@@ -99,7 +125,7 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     return [];
   }
   const csqInfo = info.CSQ as InfoValue[][];
-  return getInfoConsequences(infoMetadata, csqInfo, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp', 'PUBMED');
+  return getInfoConsequences(infoMetadata, csqInfo, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp', 'PUBMED', 'CLIN_SIG');
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
@@ -117,7 +143,7 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
     return [];
   }
   const annInfo = info.ANN as InfoValue[][];
-  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p', null);
+  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p', null, null);
 }
 
 /**

@@ -28,6 +28,7 @@
     />
     <span v-else>{{ value }}</span>
   </span>
+  <span v-else-if="metadataId === 'CLIN_SIG'">{{ getClass(value) }}</span>
   <span v-else>{{ value }}</span>
 </template>
 
@@ -65,6 +66,29 @@ export default Vue.extend({
         isEnsemblFeatureId = false;
       }
       return isEnsemblFeatureId;
+    },
+    getClass(value: string): string {
+      let vClass;
+      switch (value) {
+        case 'benign':
+          vClass = 'B';
+          break;
+        case 'likely_benign':
+          vClass = 'LB';
+          break;
+        case 'uncertain_significance':
+          vClass = 'VUS';
+          break;
+        case 'likely_pathogenic':
+          vClass = 'LP';
+          break;
+        case 'pathogenic':
+          vClass = 'P';
+          break;
+        default:
+          vClass = value;
+      }
+      return vClass;
     }
   }
 });
