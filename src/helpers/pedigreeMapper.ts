@@ -1,10 +1,9 @@
-import { PagedItems, Person, Sample } from '@molgenis/vip-report-api';
-import { Families, Family, Depths } from '@/types/Pedigree';
+import { Person } from '@molgenis/vip-report-api';
+import { Family, Depths } from '@/types/Pedigree';
 import { max } from './utils';
 
-let depths: Depths;
 let parents: Array<string> = [];
-let couples: { [key: string]: Array<string> };
+let couples: { [key: string]: Array<string> } = {};
 
 export const isOrphan = (person: Person) => {
   return person.maternalId === '0' && person.paternalId === '0';
@@ -68,6 +67,7 @@ const determineDepth = (depth: number, person_id: string, possible_depth: Array<
 };
 
 export const calculateDepthPerPerson = (family: Family) => {
+  let depths: Depths = {};
   Object.keys(family).map((person_id: string) => {
     const depth = determineDepth(1, person_id, [], family, null)
     if (!(depth in depths)) {
@@ -76,4 +76,11 @@ export const calculateDepthPerPerson = (family: Family) => {
       depths[depth].push(person_id)
     }
   });
+  return depths;
 };
+
+export const getPeopleWithoutChildren = (family: Family, parents: Array<string>) => {
+  return Object.keys(family).filter((person)=> {
+    return !parents.includes(person)
+  })
+}

@@ -179,10 +179,10 @@ interface Row {
   q?: number;
   f?: string[];
   s?: RecordSample[];
-  effect?: any;
-  symbol?: any;
-  hgvsC?: any;
-  hgvsP?: any;
+  effect?: unknown;
+  symbol?: unknown;
+  hgvsC?: unknown;
+  hgvsP?: unknown;
   expand?: boolean;
 }
 

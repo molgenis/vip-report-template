@@ -3,7 +3,7 @@ import { Family } from '@/types/Pedigree';
 
 describe('PedigreeMapper', () => {
   const family: Family = {
-    1: {
+    '1': {
       familyId: '1',
       individualId: '1',
       paternalId: '3',
@@ -11,7 +11,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    2: {
+    '2': {
       familyId: '1',
       individualId: '2',
       paternalId: '5',
@@ -19,7 +19,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    3: {
+    '3': {
       familyId: '1',
       individualId: '3',
       paternalId: '6',
@@ -27,7 +27,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    4: {
+    '4': {
       familyId: '1',
       individualId: '4',
       paternalId: '0',
@@ -35,7 +35,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    5: {
+    '5': {
       familyId: '1',
       individualId: '5',
       paternalId: '0',
@@ -43,7 +43,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    6: {
+    '6': {
       familyId: '1',
       individualId: '6',
       paternalId: '0',
@@ -51,7 +51,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    7: {
+    '7': {
       familyId: '1',
       individualId: '7',
       paternalId: '10',
@@ -59,7 +59,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    8: {
+    '8': {
       familyId: '1',
       individualId: '8',
       paternalId: '10',
@@ -67,7 +67,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    9: {
+    '9': {
       familyId: '1',
       individualId: '9',
       paternalId: '11',
@@ -75,7 +75,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    10: {
+    '10': {
       familyId: '1',
       individualId: '10',
       paternalId: '0',
@@ -83,7 +83,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    11: {
+    '11': {
       familyId: '1',
       individualId: '11',
       paternalId: '17',
@@ -91,7 +91,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    12: {
+    '12': {
       familyId: '1',
       individualId: '12',
       paternalId: '3',
@@ -99,7 +99,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    13: {
+    '13': {
       familyId: '1',
       individualId: '13',
       paternalId: '0',
@@ -107,7 +107,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    14: {
+    '14': {
       familyId: '1',
       individualId: '14',
       paternalId: '0',
@@ -115,7 +115,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    15: {
+    '15': {
       familyId: '1',
       individualId: '15',
       paternalId: '14',
@@ -123,7 +123,7 @@ describe('PedigreeMapper', () => {
       sex: 'FEMALE',
       affectedStatus: 'MISSING'
     },
-    16: {
+    '16': {
       familyId: '1',
       individualId: '16',
       paternalId: '6',
@@ -131,7 +131,7 @@ describe('PedigreeMapper', () => {
       sex: 'MALE',
       affectedStatus: 'MISSING'
     },
-    17: {
+    '17': {
       familyId: '1',
       individualId: '17',
       paternalId: '0',
@@ -148,6 +148,24 @@ describe('PedigreeMapper', () => {
     it('should return false when at least one of the parents is defined', () => {
       const isOrphan = pedigreeMapper.isOrphan(family['1']);
       expect(isOrphan).toBe(false)
+    });
+  });
+  describe('calculateDepthPerPerson', () => {
+    it('should return the correct generation for persons without children', () => {
+      const depths = pedigreeMapper.calculateDepthPerPerson(family);
+      expect(depths['3']).toContain('8')
+      expect(depths['4']).toContain('15')
+      expect(depths['4']).toContain('16')
+      expect(depths['5']).toContain('1')
+      expect(depths['5']).toContain('12')
+    });
+  });
+  describe('getPeopleWithoutChildren', () => {
+    it('should return the people without children', () => {
+      const parents = ['2', '3', '4', '5', '6', '7', '9','10', '11', '13', '14', '17']
+      const peopleWithoutChildren = pedigreeMapper.getPeopleWithoutChildren(family, parents);
+      const expected = ['1', '8', '12', '15', '16'];
+      expect(peopleWithoutChildren).toEqual(expected);
     });
   });
 });
