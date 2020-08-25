@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ApiData } from '@molgenis/vip-report-api';
 
 export const apiData: ApiData = {
