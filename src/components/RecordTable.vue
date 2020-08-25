@@ -112,6 +112,12 @@
           :values="data.item.expand ? data.item.hgvsP.items : data.item.hgvsP.items.slice(0, 1)"
         />
       </template>
+      <template v-slot:cell(pubMed)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.pubMed.metadata"
+          :values="data.item.expand ? data.item.pubMed.items : data.item.pubMed.items.slice(0, 1)"
+        />
+      </template>
     </b-table>
     <b-pagination
       v-if="page.totalPages > 1"
@@ -174,6 +180,7 @@ interface Row {
   symbol?: unknown;
   hgvsC?: unknown;
   hgvsP?: unknown;
+  pubMed?: unknown;
   expand?: boolean;
 }
 
@@ -233,6 +240,7 @@ export default Vue.extend({
         fields.push({ key: 'symbol' });
         fields.push({ key: 'hgvsC' });
         fields.push({ key: 'hgvsP' });
+        fields.push({ key: 'pubMed', label: 'Literature' });
       }
       return fields;
     }
@@ -278,6 +286,10 @@ export default Vue.extend({
             row.hgvsP = {
               metadata: consequences.metadata.hgvsP,
               items: consequences.items.map(consequence => consequence.hgvsP)
+            };
+            row.pubMed = {
+              metadata: consequences.metadata.pubMed,
+              items: consequences.items.map(consequence => consequence.pubMed)
             };
             row.expand = false;
           }

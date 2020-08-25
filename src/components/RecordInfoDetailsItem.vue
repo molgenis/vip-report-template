@@ -6,9 +6,14 @@
     <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" />
   </span>
   <span v-else>
-    <span v-for="(item, index) in value" :key="index">
-      <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="item" />
-      <span v-if="index < value.length - 1">, </span>
+    <span v-if="metadata.id === 'PUBMED'">
+      <PubMedAnchor v-if="value.length > 0" :pubMedIds="value" />
+    </span>
+    <span v-else>
+      <span v-for="(item, index) in value" :key="index">
+        <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="item" />
+        <span v-if="index < value.length - 1">, </span>
+      </span>
     </span>
   </span>
 </template>
@@ -17,9 +22,10 @@
 import Vue, { PropType } from 'vue';
 import { InfoMetadata } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItemValue from '@/components/RecordInfoDetailsItemValue.vue';
+import PubMedAnchor from '@/components/PubMedAnchor.vue';
 
 export default Vue.extend({
-  components: { RecordInfoDetailsItemValue },
+  components: { PubMedAnchor, RecordInfoDetailsItemValue },
   props: {
     metadata: Object as PropType<InfoMetadata>,
     value: [String, Number, Boolean, Array, Object] as PropType<
