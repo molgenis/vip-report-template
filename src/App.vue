@@ -80,4 +80,10 @@ td.compact {
 .nav-link {
   word-break: break-all;
 }
+
+.nav-vertical {
+  max-height: calc(100vh - 9rem);
+  overflow-y: auto;
+  flex-wrap: nowrap;
+}
 </style>
