@@ -6,7 +6,8 @@ import {
   BIconChevronDown,
   BIconChevronUp,
   BIconQuestionCircle,
-  BIconSearch
+  BIconSearch,
+  BIconDiagram3
 } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -18,3 +19,4 @@ Vue.component('BIconChevronDown', BIconChevronDown);
 Vue.component('BIconChevronUp', BIconChevronUp);
 Vue.component('BIconQuestionCircle', BIconQuestionCircle);
 Vue.component('BIconSearch', BIconSearch);
+Vue.component('BIconDiagram3', BIconDiagram3);

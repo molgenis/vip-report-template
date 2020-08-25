@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import About from '@/views/About.vue';
+import Pedigree from '@/views/Pedigree.vue';
 import Samples from '@/views/Samples.vue';
 
 Vue.use(VueRouter);
@@ -20,6 +21,11 @@ const routes: Array<RouteConfig> = [
     path: '/about',
     name: 'about',
     component: About
+  },
+  {
+    path: '/pedigree',
+    name: 'pedigree',
+    component: Pedigree
   },
   {
     path: '*',

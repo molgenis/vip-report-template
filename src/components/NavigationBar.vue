@@ -4,6 +4,7 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav class="ml-auto">
+        <b-nav-item :to="{ name: 'pedigree' }"><b-icon-diagram3></b-icon-diagram3></b-nav-item>
         <b-nav-item :to="{ name: 'about' }">{{ $t('about') }}</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
