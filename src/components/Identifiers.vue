@@ -5,13 +5,13 @@
       <Anchor
         v-if="id.startsWith('rs')"
         :href="'https://www.ncbi.nlm.nih.gov/snp/' + encodeURIComponent(id)"
-        :text="id"
+        text="dbSNP"
       />
       <!-- dbVar ID -->
       <Anchor
         v-else-if="id.startsWith('esv') || id.startsWith('nsv')"
         :href="'https://www.ncbi.nlm.nih.gov/dbvar/variants/' + encodeURIComponent(id)"
-        :text="id"
+        text="dbVar"
       />
       <span v-else>{{ id }}</span>
       <span v-if="index < identifiers.length - 1">, </span>
