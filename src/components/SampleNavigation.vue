@@ -1,5 +1,5 @@
 <template>
-  <b-nav pills vertical>
+  <b-nav pills vertical class="nav-vertical">
     <b-nav-item
       v-for="sample in samples"
       :key="getId(sample)"

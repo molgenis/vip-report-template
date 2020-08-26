@@ -77,15 +77,6 @@
       <template v-slot:cell(mother)="data">
         <Genotype :genotype="data.item.s[sampleMaternal.index].gt" />
       </template>
-      <template v-slot:cell(q)="data">
-        <span v-if="data.item.q">{{ data.item.q | formatNumber }}</span>
-      </template>
-      <template v-slot:cell(f)="data">
-        <span v-for="(filter, index) in data.item.f" :key="filter">
-          <span>{{ filter }}</span>
-          <span v-if="index < data.item.f.length - 1">, </span>
-        </span>
-      </template>
       <template v-slot:cell(expand)="data">
         <b-button
           v-if="data.item.effect.items.length > 1"
@@ -119,6 +110,18 @@
         <RecordInfoDetailsItemMultiline
           :metadata="data.item.hgvsP.metadata"
           :values="data.item.expand ? data.item.hgvsP.items : data.item.hgvsP.items.slice(0, 1)"
+        />
+      </template>
+      <template v-slot:cell(clinVar)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.clinVar.metadata"
+          :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
+        />
+      </template>
+      <template v-slot:cell(pubMed)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.pubMed.metadata"
+          :values="data.item.expand ? data.item.pubMed.items : data.item.pubMed.items.slice(0, 1)"
         />
       </template>
     </b-table>
@@ -183,6 +186,8 @@ interface Row {
   symbol?: unknown;
   hgvsC?: unknown;
   hgvsP?: unknown;
+  pubMed?: unknown;
+  clinVar?: unknown;
   expand?: boolean;
 }
 
@@ -236,14 +241,14 @@ export default Vue.extend({
       if (this.sample && this.sampleMaternal) {
         fields.push({ key: 'mother', label: 'mother' });
       }
-      fields.push({ key: 'q', label: 'qual', sortable: true });
-      fields.push({ key: 'f', label: 'filter' });
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
         fields.push({ key: 'effect' });
         fields.push({ key: 'symbol' });
         fields.push({ key: 'hgvsC' });
         fields.push({ key: 'hgvsP' });
+        fields.push({ key: 'clinVar', label: 'ClinVar' });
+        fields.push({ key: 'pubMed', label: 'Literature' });
       }
       return fields;
     }
@@ -289,6 +294,14 @@ export default Vue.extend({
             row.hgvsP = {
               metadata: consequences.metadata.hgvsP,
               items: consequences.items.map(consequence => consequence.hgvsP)
+            };
+            row.clinVar = {
+              metadata: consequences.metadata.clinVar,
+              items: consequences.items.map(consequence => consequence.clinVar)
+            };
+            row.pubMed = {
+              metadata: consequences.metadata.pubMed,
+              items: consequences.items.map(consequence => consequence.pubMed)
             };
             row.expand = false;
           }

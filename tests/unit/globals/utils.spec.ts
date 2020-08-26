@@ -6,7 +6,19 @@ const expectedMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
-  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' }
+  hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
+  pubMed: {
+    id: 'PUBMED',
+    type: 'INTEGER',
+    number: { type: 'OTHER' },
+    description: 'Pubmed ID(s) of publications that cite existing variant'
+  },
+  clinVar: {
+    id: 'CLIN_SIG',
+    type: 'STRING',
+    number: { type: 'OTHER' },
+    description: 'ClinVar clinical significance of the dbSNP variant'
+  }
 };
 
 function createCsqInfoMetadata(): InfoMetadata {
@@ -24,6 +36,20 @@ function createCsqInfoMetadata(): InfoMetadata {
   infoMetadata.nested = [effectInfoMetadata, hgvsCInfoMetadata, hgvsPInfoMetadata, symbolInfoMetadata];
 
   return infoMetadata;
+}
+
+function createCsqInfoMetadataExtended(): InfoMetadata {
+  const pubMedMetadata = mock<InfoMetadata>();
+  pubMedMetadata.id = 'PUBMED';
+  const clinSigMetadata = mock<InfoMetadata>();
+  clinSigMetadata.id = 'CLIN_SIG';
+
+  const csqInfoMetadata = createCsqInfoMetadata();
+  if (csqInfoMetadata.nested !== undefined) {
+    csqInfoMetadata.nested.push(pubMedMetadata);
+    csqInfoMetadata.nested.push(clinSigMetadata);
+  }
+  return csqInfoMetadata;
 }
 
 function createAnnInfoMetadata(): InfoMetadata {
@@ -82,8 +108,49 @@ test('get consequences in case of CSQ info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1' },
-      { effect: ['intergenic_variant'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0' }
+      { effect: ['frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1', pubMed: [], clinVar: [] },
+      { effect: ['intergenic_variant'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [], clinVar: [] }
+    ]
+  });
+});
+
+test('get consequences in case of CSQ info with extended info', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadataExtended()];
+
+  const record = mock<Record>();
+  record.n = {
+    CSQ: [
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign']],
+      [
+        ['frameshift_variant'],
+        'hgvsC1',
+        'hgvsP1',
+        'symbol1',
+        ['12345678', '23456789'],
+        ['likely_pathogenic', 'pathogenic']
+      ]
+    ]
+  };
+  expect(getConsequences(record, recordMetadata)).toEqual({
+    metadata: expectedMetadata,
+    items: [
+      {
+        effect: ['frameshift_variant'],
+        symbol: 'symbol1',
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: ['12345678', '23456789'],
+        clinVar: ['likely_pathogenic', 'pathogenic']
+      },
+      {
+        effect: ['intergenic_variant'],
+        symbol: 'symbol0',
+        hgvsC: 'hgvsC0',
+        hgvsP: 'hgvsP0',
+        pubMed: ['12345678'],
+        clinVar: ['benign']
+      }
     ]
   });
 });
@@ -102,8 +169,15 @@ test('get consequences in case of ANN info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['missense_variant', 'frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1' },
-      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0' }
+      {
+        effect: ['missense_variant', 'frameshift_variant'],
+        symbol: 'symbol1',
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: [],
+        clinVar: []
+      },
+      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [], clinVar: [] }
     ]
   });
 });
@@ -123,9 +197,16 @@ test('get consequences in case of CSQ and ANN info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['missense_variant', 'frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1' },
-      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0' },
-      { effect: ['intergenic_variant'], symbol: 'symbol2', hgvsC: 'hgvsC2', hgvsP: 'hgvsP2' }
+      {
+        effect: ['missense_variant', 'frameshift_variant'],
+        symbol: 'symbol1',
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: [],
+        clinVar: []
+      },
+      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [], clinVar: [] },
+      { effect: ['intergenic_variant'], symbol: 'symbol2', hgvsC: 'hgvsC2', hgvsP: 'hgvsP2', pubMed: [], clinVar: [] }
     ]
   });
 });
