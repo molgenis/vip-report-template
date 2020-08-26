@@ -1,4 +1,4 @@
-import { max } from '@/helpers/utils';
+import { max } from '@/helpers/numberUtils';
 
 describe('utils', () => {
   describe('max', () => {

@@ -1,6 +1,6 @@
 import { Person } from '@molgenis/vip-report-api';
-import { Family, Depths } from '@/types/Pedigree';
-import { max } from './utils';
+import { Family, Generations } from '@/types/Pedigree';
+import { max } from './numberUtils';
 
 let parents: Array<string> = [];
 let couples: { [key: string]: Array<string> } = {};
@@ -67,7 +67,7 @@ const determineDepth = (depth: number, person_id: string, possible_depth: Array<
 };
 
 export const calculateDepthPerPerson = (family: Family) => {
-  let depths: Depths = {};
+  let depths: Generations = {};
   Object.keys(family).map((person_id: string) => {
     const depth = determineDepth(1, person_id, [], family, null)
     if (!(depth in depths)) {
@@ -83,4 +83,56 @@ export const getPeopleWithoutChildren = (family: Family, parents: Array<string>)
   return Object.keys(family).filter((person)=> {
     return !parents.includes(person)
   })
+}
+
+const getGenerationForPersonWithoutChildren = (person_id: string, depths: Generations) => {
+  let generation = 0;
+  Object.keys(depths).map((depth) => {
+    if ( depths[parseInt(depth)].includes(person_id)) {
+      generation = parseInt(depth)
+    }
+  })
+  return generation
+}
+
+const assignNextGeneration = (parent: string, generation: number, couples_per_generation: Generations, family: Family) => {
+  if (parent !== '0' && generation > 1) {
+    const mother = family[parent].maternalId
+    const father = family[parent].paternalId
+    assignGeneration(mother, father, generation, couples_per_generation, family)
+  }
+}
+
+export const assignGeneration = (mother: string, father: string, generation: number, couples_per_generation: Generations, family: Family) => {
+  generation = generation - 1
+  const couple = mother + '-' + father
+  if (couple !== '0-0') {
+    const generations = Object.keys(couples_per_generation).map((key) => parseInt(key))
+    if (!generations.includes(generation)) {
+      couples_per_generation[generation] = [couple]
+    }
+    if (!couples_per_generation[generation].includes(couple)) {
+      couples_per_generation[generation].push(couple)
+    }
+    assignNextGeneration(mother, generation, couples_per_generation, family)
+    assignNextGeneration(father, generation, couples_per_generation, family)
+  }
+}
+
+export const assignGenerations = (people_without_children: Array<string>, family: Family, depths: Generations) => {
+  const generations = Object.keys(depths).map((key) => parseInt(key))
+  const couples_per_generation: Generations = generations.reduce((obj, key) => ({...obj, [key]: []}), {})
+  people_without_children.map( (person) => {
+    const gen = getGenerationForPersonWithoutChildren(person, depths)
+    const generation = gen ? gen: 0
+    assignGeneration(family[person].maternalId, family[person].paternalId, generation, couples_per_generation, family)
+  })
+  return couples_per_generation
+}
+
+export const mapGenerationsFromFamily = (family: Family) => {
+  const depths = calculateDepthPerPerson(family)
+  const people_without_children = getPeopleWithoutChildren(family, parents)
+  const generations = assignGenerations(people_without_children, family, depths);
+  return { couples, generations }
 }

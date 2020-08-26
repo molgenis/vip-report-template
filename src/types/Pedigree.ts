@@ -8,4 +8,6 @@ export interface Families {
   [key: string]: Family;
 }
 
-export interface Depths  { [key: string]: Array<string> };
+export interface Generations  {
+  [key: number]: Array<string>;
+}
