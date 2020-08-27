@@ -1,6 +1,7 @@
 import { State } from '@/types/State';
 import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
 import { Sample } from '@molgenis/vip-report-api';
+import { Family } from '@/types/Pedigree';
 
 export default {
   samples: (state: State): Array<Sample> => {
@@ -60,5 +61,10 @@ export default {
       state.metadata !== null &&
       state.metadata.records.info.find(item => item.id === 'CSQ' || item.id === 'ANN') !== undefined
     );
+  },
+  getFamily: (state: State) => {
+    const people = state && state.samples ? state.samples.items.map(sample => sample.person) : [];
+    const family: Family = people.reduce((obj, person) => ({ ...obj, [person.individualId]: person }), {});
+    return family;
   }
 };

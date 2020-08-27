@@ -8,6 +8,6 @@ export interface Families {
   [key: string]: Family;
 }
 
-export interface Generations  {
+export interface Generations {
   [key: number]: Array<string>;
 }

@@ -475,18 +475,18 @@ export const apiData: ApiData = {
       items: [
         {
           person: {
-            familyId: 'MISSING_0',
+            familyId: '1',
             individualId: 'Patient',
             paternalId: 'Father',
             maternalId: 'Mother',
-            sex: 'UNKNOWN_SEX',
+            sex: 'FEMALE',
             affectedStatus: 'AFFECTED'
           },
           index: 0
         },
         {
           person: {
-            familyId: 'MISSING_1',
+            familyId: '1',
             individualId: 'Mother',
             paternalId: '0',
             maternalId: '0',
@@ -497,12 +497,12 @@ export const apiData: ApiData = {
         },
         {
           person: {
-            familyId: 'MISSING_2',
+            familyId: '1',
             individualId: 'Father',
             paternalId: '0',
             maternalId: '0',
-            sex: 'FEMALE',
-            affectedStatus: 'MISSING'
+            sex: 'MALE',
+            affectedStatus: 'UNAFFECTED'
           },
           index: 2
         }

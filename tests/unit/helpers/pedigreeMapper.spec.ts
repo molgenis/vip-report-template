@@ -1,6 +1,5 @@
 import * as pedigreeMapper from '@/helpers/pedigreeMapper';
 import { Family } from '@/types/Pedigree';
-import { assignGenerations } from '@/helpers/pedigreeMapper';
 
 describe('PedigreeMapper', () => {
   const family: Family = {
@@ -143,12 +142,12 @@ describe('PedigreeMapper', () => {
   };
   describe('isOrphan', () => {
     it('should return true when parents are both 0', () => {
-      const is_orphan = pedigreeMapper.isOrphan(family['17']);
-      expect(is_orphan).toBe(true);
+      const isOrphan = pedigreeMapper.isOrphan(family['17']);
+      expect(isOrphan).toBe(true);
     });
     it('should return false when at least one of the parents is defined', () => {
-      const is_orphan = pedigreeMapper.isOrphan(family['1']);
-      expect(is_orphan).toBe(false);
+      const isOrphan = pedigreeMapper.isOrphan(family['1']);
+      expect(isOrphan).toBe(false);
     });
   });
   describe('calculateDepthPerPerson', () => {
@@ -164,14 +163,14 @@ describe('PedigreeMapper', () => {
   describe('getPeopleWithoutChildren', () => {
     it('should return the people without children', () => {
       const parents = ['2', '3', '4', '5', '6', '7', '9', '10', '11', '13', '14', '17'];
-      const people_without_children = pedigreeMapper.getPeopleWithoutChildren(family, parents);
+      const peopleWithoutChildren = pedigreeMapper.getPeopleWithoutChildren(family, parents);
       const expected = ['1', '8', '12', '15', '16'];
-      expect(people_without_children).toEqual(expected);
+      expect(peopleWithoutChildren).toEqual(expected);
     });
   });
   describe('assignGenerations', () => {
     it('should assign correct generation to each person in family', () => {
-      const people_without_children = ['1', '8', '12', '15', '16'];
+      const peopleWithoutChildren = ['1', '8', '12', '15', '16'];
       const depths = {
         1: ['4', '5', '6', '13', '14', '17'],
         2: ['2', '10', '11'],
@@ -179,7 +178,7 @@ describe('PedigreeMapper', () => {
         4: ['3', '15', '16'],
         5: ['1', '12']
       };
-      const generations = pedigreeMapper.assignGenerations(people_without_children, family, depths);
+      const generations = pedigreeMapper.assignGenerations(peopleWithoutChildren, family, depths);
       const expected = {
         1: ['0-17', '13-0'],
         2: ['11-10'],
