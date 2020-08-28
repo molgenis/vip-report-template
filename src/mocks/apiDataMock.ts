@@ -559,7 +559,7 @@ export const apiData: ApiData = {
                 6.27e-5,
                 3.647e-4,
                 0.0,
-                ['pathogenic'],
+                ['pathogenic', 'likely_pathogenic/pathogenic'],
                 [],
                 [1, 1]
               ],

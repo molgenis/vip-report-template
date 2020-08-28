@@ -68,27 +68,32 @@ export default Vue.extend({
       return isEnsemblFeatureId;
     },
     getClass(value: string): string {
-      let vClass;
-      switch (value) {
-        case 'benign':
-          vClass = 'B';
-          break;
-        case 'likely_benign':
-          vClass = 'LB';
-          break;
-        case 'uncertain_significance':
-          vClass = 'VUS';
-          break;
-        case 'likely_pathogenic':
-          vClass = 'LP';
-          break;
-        case 'pathogenic':
-          vClass = 'P';
-          break;
-        default:
-          vClass = value;
+      const tokens = value.split('/');
+      const vClasses = [];
+      for (const token of tokens) {
+        let vClass;
+        switch (token) {
+          case 'benign':
+            vClass = 'B';
+            break;
+          case 'likely_benign':
+            vClass = 'LB';
+            break;
+          case 'uncertain_significance':
+            vClass = 'VUS';
+            break;
+          case 'likely_pathogenic':
+            vClass = 'LP';
+            break;
+          case 'pathogenic':
+            vClass = 'P';
+            break;
+          default:
+            vClass = value;
+        }
+        vClasses.push(vClass);
       }
-      return vClass;
+      return vClasses.join('/');
     }
   }
 });
