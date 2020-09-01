@@ -30,7 +30,22 @@
   </span>
   <span v-else-if="metadataId === 'hgvsC' || metadataId === 'HGVSc'">
     <span v-if="details">{{ value }}</span>
-    <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
+    <span v-else>
+      <Anchor
+        v-if="isRefSeqFeatureId()"
+        :href="'https://www.ncbi.nlm.nih.gov/nuccore/' + encodeURIComponent(value.substring(0, value.indexOf(':')))"
+        :text="value.substring(value.indexOf(':') + 1)"
+      />
+      <Anchor
+        v-else-if="isEnsemblFeatureId()"
+        :href="
+          'http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+            encodeURIComponent(value.substring(0, value.indexOf(':')))
+        "
+        :text="value.substring(value.indexOf(':') + 1)"
+      />
+      <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
+    </span>
   </span>
   <span v-else-if="metadataId === 'hgvsP' || metadataId === 'HGVSp'">
     <span v-if="details">{{ value }}</span>
