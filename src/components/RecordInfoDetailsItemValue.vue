@@ -6,7 +6,7 @@
           encodeURIComponent(value) +
           '&release=current_release'
       "
-      :text="value"
+      :text="details ? value : value.replace(/_variant$/, '')"
     />
   </span>
   <span v-else-if="metadataId === 'SYMBOL' || metadataId === 'Gene_Name'">
@@ -22,11 +22,41 @@
       :text="value"
     />
     <Anchor
-      v-else-if="isEnsemblFeatureId()"
-      :href="'http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' + encodeURIComponent(value)"
+      v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
+      :href="
+        'http://' +
+          (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
+          '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+          encodeURIComponent(value)
+      "
       :text="value"
     />
     <span v-else>{{ value }}</span>
+  </span>
+  <span v-else-if="metadataId === 'hgvsC' || metadataId === 'HGVSc'">
+    <span v-if="details">{{ value }}</span>
+    <span v-else>
+      <Anchor
+        v-if="isRefSeqFeatureId()"
+        :href="'https://www.ncbi.nlm.nih.gov/nuccore/' + encodeURIComponent(value.substring(0, value.indexOf(':')))"
+        :text="value.substring(value.indexOf(':') + 1)"
+      />
+      <Anchor
+        v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
+        :href="
+          'http://' +
+            (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
+            '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+            encodeURIComponent(value.substring(0, value.indexOf(':')))
+        "
+        :text="value.substring(value.indexOf(':') + 1)"
+      />
+      <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
+    </span>
+  </span>
+  <span v-else-if="metadataId === 'hgvsP' || metadataId === 'HGVSp'">
+    <span v-if="details">{{ value }}</span>
+    <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
   </span>
   <span v-else-if="metadataId === 'CLIN_SIG'">{{ getClass(value) }}</span>
   <span v-else>{{ value }}</span>
@@ -35,12 +65,23 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import Anchor from '@/components/Anchor.vue';
+import { mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   components: { Anchor },
   props: {
     metadataId: String as PropType<string>,
-    value: [String, Number, Boolean] as PropType<string | number | boolean>
+    value: [String, Number, Boolean] as PropType<string | number | boolean>,
+    details: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
+  },
+  computed: {
+    ...mapState(['metadata']),
+    genomeAssembly(): string {
+      return this.metadata.htsFile.genomeAssembly;
+    }
   },
   methods: {
     isRefSeqFeatureId(): boolean {
