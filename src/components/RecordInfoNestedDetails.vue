@@ -5,7 +5,7 @@
         {{ data.label }}
       </template>
       <template v-slot:cell()="data">
-        <RecordInfoDetailsItem :metadata="data.field.metadata" :value="data.item[data.field.index]" />
+        <RecordInfoDetailsItem :metadata="data.field.metadata" :value="data.item[data.field.index]" :details="true" />
       </template>
     </b-table>
   </div>

@@ -6,7 +6,7 @@
           encodeURIComponent(value) +
           '&release=current_release'
       "
-      :text="value"
+      :text="details ? value : value.replace(/_variant$/, '')"
     />
   </span>
   <span v-else-if="metadataId === 'SYMBOL' || metadataId === 'Gene_Name'">
@@ -28,6 +28,14 @@
     />
     <span v-else>{{ value }}</span>
   </span>
+  <span v-else-if="metadataId === 'hgvsC' || metadataId === 'HGVSc'">
+    <span v-if="details">{{ value }}</span>
+    <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
+  </span>
+  <span v-else-if="metadataId === 'hgvsP' || metadataId === 'HGVSp'">
+    <span v-if="details">{{ value }}</span>
+    <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
+  </span>
   <span v-else-if="metadataId === 'CLIN_SIG'">{{ getClass(value) }}</span>
   <span v-else>{{ value }}</span>
 </template>
@@ -40,7 +48,11 @@ export default Vue.extend({
   components: { Anchor },
   props: {
     metadataId: String as PropType<string>,
-    value: [String, Number, Boolean] as PropType<string | number | boolean>
+    value: [String, Number, Boolean] as PropType<string | number | boolean>,
+    details: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
   },
   methods: {
     isRefSeqFeatureId(): boolean {

@@ -1,7 +1,7 @@
 <template>
   <span>
     <span v-for="(value, index) in values" :key="index">
-      <RecordInfoDetailsItem :metadata="metadata" :value="value" />
+      <RecordInfoDetailsItem :metadata="metadata" :value="value" :details="details" />
       <br v-if="index < values.length - 1" />
     </span>
   </span>
@@ -16,7 +16,11 @@ export default Vue.extend({
   components: { RecordInfoDetailsItem },
   props: {
     metadata: Object as PropType<InfoMetadata>,
-    values: Array as PropType<(string | number | boolean | object | string[] | number[] | boolean[] | object[])[]>
+    values: Array as PropType<(string | number | boolean | object | string[] | number[] | boolean[] | object[])[]>,
+    details: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
   }
 });
 </script>

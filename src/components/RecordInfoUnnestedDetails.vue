@@ -11,7 +11,7 @@
         {{ data.item.key }}
       </template>
       <template v-slot:cell(val)="data">
-        <RecordInfoDetailsItem :metadata="data.item.metadata" :value="data.item.val" />
+        <RecordInfoDetailsItem :metadata="data.item.metadata" :value="data.item.val" :details="true" />
       </template>
     </b-table>
   </div>
