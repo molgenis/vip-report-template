@@ -22,8 +22,13 @@
       :text="value"
     />
     <Anchor
-      v-else-if="isEnsemblFeatureId()"
-      :href="'http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' + encodeURIComponent(value)"
+      v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
+      :href="
+        'http://' +
+          (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
+          '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+          encodeURIComponent(value)
+      "
       :text="value"
     />
     <span v-else>{{ value }}</span>
@@ -37,9 +42,11 @@
         :text="value.substring(value.indexOf(':') + 1)"
       />
       <Anchor
-        v-else-if="isEnsemblFeatureId()"
+        v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
         :href="
-          'http://www.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+          'http://' +
+            (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
+            '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
             encodeURIComponent(value.substring(0, value.indexOf(':')))
         "
         :text="value.substring(value.indexOf(':') + 1)"
@@ -58,6 +65,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import Anchor from '@/components/Anchor.vue';
+import { mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   components: { Anchor },
@@ -67,6 +75,12 @@ export default Vue.extend({
     details: {
       type: Boolean as PropType<boolean>,
       default: false
+    }
+  },
+  computed: {
+    ...mapState(['metadata']),
+    genomeAssembly(): string {
+      return this.metadata.htsFile.genomeAssembly;
     }
   },
   methods: {
