@@ -133,6 +133,9 @@
           :values="data.item.expand ? data.item.pubMed.items : data.item.pubMed.items.slice(0, 1)"
         />
       </template>
+      <template v-slot:cell(capice)="data">
+        {{ data.item.n['CAP'] !== undefined ? data.item.n['CAP'].toFixed(4) : undefined }}
+      </template>
     </b-table>
     <b-pagination
       v-if="page.totalPages > 1"
@@ -224,7 +227,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasVkgl']),
+    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasVkgl', 'hasCapice']),
     ...mapState(['metadata', 'records']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
@@ -251,20 +254,23 @@ export default Vue.extend({
       if (this.sample && this.sampleMaternal) {
         fields.push({ key: 'mother', label: 'mother' });
       }
+      if (this.hasCapice) {
+        fields.push({ key: 'capice', label: 'capice', sortable: true });
+      }
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
         fields.push({ key: 'effect' });
         fields.push({ key: 'symbol' });
-        fields.push({ key: 'hgvsC' });
-        fields.push({ key: 'hgvsP' });
-        fields.push({ key: 'gnomAD', label: 'gnomAD' });
+        fields.push({ key: 'hgvsC', label: 'hgvsc' });
+        fields.push({ key: 'hgvsP', label: 'hgvsp' });
+        fields.push({ key: 'gnomAD', label: 'gnomad' });
       }
       if (this.hasVkgl) {
-        fields.push({ key: 'vkgl', label: 'VKGL' });
+        fields.push({ key: 'vkgl', label: 'vkgl' });
       }
       if (this.hasConsequences) {
-        fields.push({ key: 'clinVar', label: 'ClinVar' });
-        fields.push({ key: 'pubMed', label: 'Literature' });
+        fields.push({ key: 'clinVar', label: 'clinvar' });
+        fields.push({ key: 'pubMed', label: 'pubmed' });
       }
       return fields;
     }

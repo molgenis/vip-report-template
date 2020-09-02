@@ -189,3 +189,31 @@ test('metadata has no vkgl', () => {
   const testState: State = { ...initialState, metadata: metadata };
   expect(getters.hasVkgl(testState)).toBe(false);
 });
+
+test('metadata has CAPICE', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'CAP';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasCapice(testState)).toBe(true);
+});
+
+test('metadata has no CAPICE', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'NO_CAP';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasCapice(testState)).toBe(false);
+});
