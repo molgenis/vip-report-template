@@ -55,6 +55,9 @@ export default {
 
     return genomeBrowserDb;
   },
+  hasCapice: (state: State): boolean => {
+    return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'CAP') !== undefined;
+  },
   hasVkgl: (state: State): boolean => {
     return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'VKGL') !== undefined;
   },
