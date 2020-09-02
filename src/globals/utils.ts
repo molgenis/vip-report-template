@@ -17,6 +17,12 @@ const consequenceMetadata: ConsequenceMetadata = {
     type: 'STRING',
     number: { type: 'OTHER' },
     description: 'ClinVar clinical significance of the dbSNP variant'
+  },
+  gnomAD: {
+    id: 'gnomAD_AF',
+    type: 'FLOAT',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'Frequency of existing variant in gnomAD exomes combined population'
   }
 };
 
@@ -27,7 +33,8 @@ function createConsequence(
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
   pubMedIndex: number | undefined,
-  clinVarIndex: number | undefined
+  clinVarIndex: number | undefined,
+  gnomADIndex: number | undefined
 ): Consequence {
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
@@ -35,7 +42,8 @@ function createConsequence(
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
     pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],
-    clinVar: clinVarIndex !== undefined ? (info[clinVarIndex] as string[]) : []
+    clinVar: clinVarIndex !== undefined ? (info[clinVarIndex] as string[]) : [],
+    gnomAD: gnomADIndex !== undefined ? (info[gnomADIndex] as number) : null
   };
 }
 
@@ -46,7 +54,8 @@ function createConsequences(
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
   pubMedIndex: number | undefined,
-  clinVarIndex: number | undefined
+  clinVarIndex: number | undefined,
+  gnomADIndex: number | undefined
 ): Consequence[] {
   const items = [];
   for (const item of info) {
@@ -57,7 +66,8 @@ function createConsequences(
       hgvsCIndex,
       hgvsPIndex,
       pubMedIndex,
-      clinVarIndex
+      clinVarIndex,
+      gnomADIndex
     );
     items.push(consequence);
   }
@@ -73,13 +83,14 @@ function getInfoConsequences(
   hgvsCId: string,
   hgvsPId: string,
   pubMedId: string | null,
-  clinVarId: string | null
+  clinVarId: string | null,
+  gnomADId: string | null
 ): Consequence[] {
   if (infoMetadata.nested === undefined) {
     return [];
   }
 
-  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex;
+  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex, gnomADIndex;
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
@@ -101,13 +112,25 @@ function getInfoConsequences(
       case clinVarId:
         clinVarIndex = index;
         break;
+      case gnomADId:
+        gnomADIndex = index;
+        break;
       default:
         break;
     }
     ++index;
   }
 
-  return createConsequences(info, effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex);
+  return createConsequences(
+    info,
+    effectIndex,
+    symbolIndex,
+    hgvsCIndex,
+    hgvsPIndex,
+    pubMedIndex,
+    clinVarIndex,
+    gnomADIndex
+  );
 }
 
 function hasVepConsequences(metadata: RecordsMetadata): boolean {
@@ -125,7 +148,17 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     return [];
   }
   const csqInfo = info.CSQ as InfoValue[][];
-  return getInfoConsequences(infoMetadata, csqInfo, 'Consequence', 'SYMBOL', 'HGVSc', 'HGVSp', 'PUBMED', 'CLIN_SIG');
+  return getInfoConsequences(
+    infoMetadata,
+    csqInfo,
+    'Consequence',
+    'SYMBOL',
+    'HGVSc',
+    'HGVSp',
+    'PUBMED',
+    'CLIN_SIG',
+    'gnomAD_AF'
+  );
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
@@ -143,7 +176,7 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
     return [];
   }
   const annInfo = info.ANN as InfoValue[][];
-  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p', null, null);
+  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p', null, null, null);
 }
 
 /**

@@ -112,6 +112,12 @@
           :values="data.item.expand ? data.item.hgvsP.items : data.item.hgvsP.items.slice(0, 1)"
         />
       </template>
+      <template v-slot:cell(gnomAD)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.gnomAD.metadata"
+          :values="data.item.expand ? data.item.gnomAD.items : data.item.gnomAD.items.slice(0, 1)"
+        />
+      </template>
       <template v-slot:cell(clinVar)="data">
         <RecordInfoDetailsItemMultiline
           :metadata="data.item.clinVar.metadata"
@@ -188,6 +194,7 @@ interface Row {
   hgvsP?: unknown;
   pubMed?: unknown;
   clinVar?: unknown;
+  gnomAD?: unknown;
   expand?: boolean;
 }
 
@@ -247,6 +254,7 @@ export default Vue.extend({
         fields.push({ key: 'symbol' });
         fields.push({ key: 'hgvsC' });
         fields.push({ key: 'hgvsP' });
+        fields.push({ key: 'gnomAD', label: 'gnomAD' });
         fields.push({ key: 'clinVar', label: 'ClinVar' });
         fields.push({ key: 'pubMed', label: 'Literature' });
       }
@@ -294,6 +302,10 @@ export default Vue.extend({
             row.hgvsP = {
               metadata: consequences.metadata.hgvsP,
               items: consequences.items.map(consequence => consequence.hgvsP)
+            };
+            row.gnomAD = {
+              metadata: consequences.metadata.gnomAD,
+              items: consequences.items.map(consequence => consequence.gnomAD)
             };
             row.clinVar = {
               metadata: consequences.metadata.clinVar,

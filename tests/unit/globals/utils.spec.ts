@@ -18,6 +18,12 @@ const expectedMetadata = {
     type: 'STRING',
     number: { type: 'OTHER' },
     description: 'ClinVar clinical significance of the dbSNP variant'
+  },
+  gnomAD: {
+    id: 'gnomAD_AF',
+    type: 'FLOAT',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'Frequency of existing variant in gnomAD exomes combined population'
   }
 };
 
@@ -43,11 +49,14 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
   pubMedMetadata.id = 'PUBMED';
   const clinSigMetadata = mock<InfoMetadata>();
   clinSigMetadata.id = 'CLIN_SIG';
+  const gnomADMetadata = mock<InfoMetadata>();
+  gnomADMetadata.id = 'gnomAD_AF';
 
   const csqInfoMetadata = createCsqInfoMetadata();
   if (csqInfoMetadata.nested !== undefined) {
     csqInfoMetadata.nested.push(pubMedMetadata);
     csqInfoMetadata.nested.push(clinSigMetadata);
+    csqInfoMetadata.nested.push(gnomADMetadata);
   }
   return csqInfoMetadata;
 }
@@ -108,8 +117,24 @@ test('get consequences in case of CSQ info', () => {
   expect(getConsequences(record, recordMetadata)).toEqual({
     metadata: expectedMetadata,
     items: [
-      { effect: ['frameshift_variant'], symbol: 'symbol1', hgvsC: 'hgvsC1', hgvsP: 'hgvsP1', pubMed: [], clinVar: [] },
-      { effect: ['intergenic_variant'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [], clinVar: [] }
+      {
+        effect: ['frameshift_variant'],
+        symbol: 'symbol1',
+        gnomAD: null,
+        hgvsC: 'hgvsC1',
+        hgvsP: 'hgvsP1',
+        pubMed: [],
+        clinVar: []
+      },
+      {
+        effect: ['intergenic_variant'],
+        symbol: 'symbol0',
+        gnomAD: null,
+        hgvsC: 'hgvsC0',
+        hgvsP: 'hgvsP0',
+        pubMed: [],
+        clinVar: []
+      }
     ]
   });
 });
@@ -121,14 +146,15 @@ test('get consequences in case of CSQ info with extended info', () => {
   const record = mock<Record>();
   record.n = {
     CSQ: [
-      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign']],
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345],
       [
         ['frameshift_variant'],
         'hgvsC1',
         'hgvsP1',
         'symbol1',
         ['12345678', '23456789'],
-        ['likely_pathogenic', 'pathogenic']
+        ['likely_pathogenic', 'pathogenic'],
+        0.1234
       ]
     ]
   };
@@ -138,6 +164,7 @@ test('get consequences in case of CSQ info with extended info', () => {
       {
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
+        gnomAD: 0.1234,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: ['12345678', '23456789'],
@@ -146,6 +173,7 @@ test('get consequences in case of CSQ info with extended info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
+        gnomAD: 0.2345,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
         pubMed: ['12345678'],
@@ -172,12 +200,21 @@ test('get consequences in case of ANN info', () => {
       {
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
+        gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: [],
         clinVar: []
       },
-      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [], clinVar: [] }
+      {
+        effect: ['start_lost'],
+        symbol: 'symbol0',
+        gnomAD: null,
+        hgvsC: 'hgvsC0',
+        hgvsP: 'hgvsP0',
+        pubMed: [],
+        clinVar: []
+      }
     ]
   });
 });
@@ -200,13 +237,30 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
+        gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: [],
         clinVar: []
       },
-      { effect: ['start_lost'], symbol: 'symbol0', hgvsC: 'hgvsC0', hgvsP: 'hgvsP0', pubMed: [], clinVar: [] },
-      { effect: ['intergenic_variant'], symbol: 'symbol2', hgvsC: 'hgvsC2', hgvsP: 'hgvsP2', pubMed: [], clinVar: [] }
+      {
+        effect: ['start_lost'],
+        symbol: 'symbol0',
+        gnomAD: null,
+        hgvsC: 'hgvsC0',
+        hgvsP: 'hgvsP0',
+        pubMed: [],
+        clinVar: []
+      },
+      {
+        effect: ['intergenic_variant'],
+        symbol: 'symbol2',
+        gnomAD: null,
+        hgvsC: 'hgvsC2',
+        hgvsP: 'hgvsP2',
+        pubMed: [],
+        clinVar: []
+      }
     ]
   });
 });
