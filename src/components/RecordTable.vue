@@ -118,6 +118,9 @@
           :values="data.item.expand ? data.item.gnomAD.items : data.item.gnomAD.items.slice(0, 1)"
         />
       </template>
+      <template v-slot:cell(vkgl)="data">
+        {{ data.item.n['VKGL'] }}
+      </template>
       <template v-slot:cell(clinVar)="data">
         <RecordInfoDetailsItemMultiline
           :metadata="data.item.clinVar.metadata"
@@ -221,7 +224,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences']),
+    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasVkgl']),
     ...mapState(['metadata', 'records']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
@@ -255,6 +258,11 @@ export default Vue.extend({
         fields.push({ key: 'hgvsC' });
         fields.push({ key: 'hgvsP' });
         fields.push({ key: 'gnomAD', label: 'gnomAD' });
+      }
+      if (this.hasVkgl) {
+        fields.push({ key: 'vkgl', label: 'VKGL' });
+      }
+      if (this.hasConsequences) {
         fields.push({ key: 'clinVar', label: 'ClinVar' });
         fields.push({ key: 'pubMed', label: 'Literature' });
       }

@@ -161,3 +161,31 @@ test('metadata has no consequences', () => {
   const testState: State = { ...initialState, metadata: metadata };
   expect(getters.hasConsequences(testState)).toBe(false);
 });
+
+test('metadata has vkgl', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'VKGL';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasVkgl(testState)).toBe(true);
+});
+
+test('metadata has no vkgl', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'NO_VKGL';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasVkgl(testState)).toBe(false);
+});

@@ -55,6 +55,9 @@ export default {
 
     return genomeBrowserDb;
   },
+  hasVkgl: (state: State): boolean => {
+    return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'VKGL') !== undefined;
+  },
   hasConsequences: (state: State): boolean => {
     return (
       state.metadata !== null &&
