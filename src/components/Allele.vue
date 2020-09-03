@@ -1,7 +1,8 @@
 <template>
   <span>
+    <span v-if="allele === ''" :class="getNucClasses('m')">?</span>
     <span
-      v-if="
+      v-else-if="
         (allele.startsWith('<') && allele.endsWith('>')) || allele.indexOf(']') !== -1 || allele.indexOf('[') !== -1
       "
       >{{ allele }}</span

@@ -73,6 +73,11 @@ td.compact {
   background-color: #ffec8b;
 }
 
+/* missing */
+.nuc-m {
+  background-color: #e3e3e3;
+}
+
 .modal-container {
   overflow: auto;
 }
