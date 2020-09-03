@@ -58,6 +58,10 @@
     <span v-if="details">{{ value }}</span>
     <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
   </span>
+  <span v-else-if="metadataId === 'gnomAD_AF'">
+    <span v-if="details">{{ value }}</span>
+    <span v-else>{{ value.toFixed(5) }}</span>
+  </span>
   <span v-else-if="metadataId === 'CLIN_SIG'">{{ getClass(value) }}</span>
   <span v-else>{{ value }}</span>
 </template>
@@ -65,7 +69,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import Anchor from '@/components/Anchor.vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default Vue.extend({
   components: { Anchor },
