@@ -975,7 +975,7 @@ export const apiData: ApiData = {
             },
             {
               gt: {
-                a: ['C', 'C'],
+                a: ['', ''],
                 p: true,
                 t: 'hom_r'
               },
@@ -985,7 +985,7 @@ export const apiData: ApiData = {
             },
             {
               gt: {
-                a: ['C', 'C'],
+                a: ['', ''],
                 p: true,
                 t: 'hom_r'
               },
@@ -28084,7 +28084,7 @@ export const apiData: ApiData = {
               }
             },
             {
-              gtÒ: {
+              gt: {
                 a: ['T', 'A'],
                 p: false,
                 t: 'het'
