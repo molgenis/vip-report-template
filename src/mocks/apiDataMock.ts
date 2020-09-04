@@ -23,10 +23,9 @@ export const apiData: ApiData = {
           description: 'Clinical significance for this single variant (from /apps/data/ClinVar/clinvar_20200224.vcf.gz)'
         },
         {
-          id: 'CS',
+          id: 'CAP',
           number: {
-            type: 'NUMBER',
-            count: 1
+            type: 'PER_ALT'
           },
           type: 'FLOAT',
           description: 'CAPICE score (from input/vcfanno/capice.vcf.gz)'
@@ -521,7 +520,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['T'],
           n: {
-            CS: 0.0022043,
+            CAP: [0.0022043],
             CSQ: [
               [
                 'T',
@@ -1002,7 +1001,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.7896,
+            CAP: [0.7896],
             CSQ: [
               [
                 'A',
@@ -1324,7 +1323,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['G'],
           n: {
-            CS: 0.9898,
+            CAP: [0.9898],
             CSQ: [
               [
                 'G',
@@ -1983,7 +1982,7 @@ export const apiData: ApiData = {
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
             MVL: 'P',
-            CS: 0.9808,
+            CAP: [0.9808],
             VKGL: 'LP',
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Likely_pathogenic'],
@@ -2038,7 +2037,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['T'],
           n: {
-            CS: 0.9879,
+            CAP: [0.9879],
             CSQ: [
               [
                 'T',
@@ -2399,7 +2398,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['T'],
           n: {
-            CS: 0.9848,
+            CAP: [0.9848],
             CSQ: [
               [
                 'T',
@@ -2756,7 +2755,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.9819,
+            CAP: [0.9819],
             CSQ: [
               [
                 'A',
@@ -3615,7 +3614,7 @@ export const apiData: ApiData = {
             ],
             GADO: ['ENSG00000131238|PPT1|53026|-1.719'],
             MVL: 'P',
-            CS: 0.9416,
+            CAP: [0.9416],
             VKGL: 'LP',
             VKGL_NR: 3,
             CLINVAR_SIGNIFICANCE: ['Pathogenic/Likely_pathogenic'],
@@ -6128,7 +6127,7 @@ export const apiData: ApiData = {
             ],
             GADO: ['ENSG00000186603|HPDL|15035|0.586', 'ENSG00000132781|MUTYH|13946|0.648'],
             MVL: 'P',
-            CS: 0.9719,
+            CAP: [0.9719],
             VKGL: 'LP',
             VKGL_NR: 4,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
@@ -6183,7 +6182,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.9877,
+            CAP: [0.9877],
             CSQ: [
               [
                 'A',
@@ -11362,7 +11361,7 @@ export const apiData: ApiData = {
             ],
             GADO: ['ENSG00000160789|LMNA|1298|3.0'],
             MVL: 'VUS',
-            CS: 0.9735,
+            CAP: [0.9735],
             VKGL: 'VUS',
             VKGL_NR: 4,
             CLINVAR_SIGNIFICANCE: ['Conflicting_interpretations_of_pathogenicity'],
@@ -13115,7 +13114,7 @@ export const apiData: ApiData = {
             ],
             GADO: ['ENSG00000095002|MSH2|1979|2.539'],
             MVL: 'VUS',
-            CS: 0.3964,
+            CAP: [0.3964],
             VKGL: 'VUS',
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Uncertain_significance'],
@@ -13170,7 +13169,7 @@ export const apiData: ApiData = {
           r: 'TCA',
           a: ['T'],
           n: {
-            CS: 0.9994,
+            CAP: [0.9994],
             CSQ: [
               [
                 '-',
@@ -13571,7 +13570,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.7101,
+            CAP: [0.7101],
             CSQ: [
               [
                 'A',
@@ -14492,7 +14491,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['T'],
           n: {
-            CS: 0.4905,
+            CAP: [0.4905],
             CSQ: [
               [
                 'T',
@@ -14932,7 +14931,7 @@ export const apiData: ApiData = {
           r: 'GACTC',
           a: ['G'],
           n: {
-            CS: 0.9912,
+            CAP: [0.9912],
             CSQ: [
               [
                 '-',
@@ -15332,7 +15331,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.9759,
+            CAP: [0.9759],
             CSQ: [
               [
                 'A',
@@ -15772,7 +15771,7 @@ export const apiData: ApiData = {
           r: 'CAG',
           a: ['C'],
           n: {
-            CS: 0.9733,
+            CAP: [0.9733],
             CSQ: [
               [
                 '-',
@@ -16733,7 +16732,7 @@ export const apiData: ApiData = {
           r: 'AAAGAT',
           a: ['A'],
           n: {
-            CS: 0.3378,
+            CAP: [0.3378],
             CSQ: [
               [
                 '-',
@@ -17173,7 +17172,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['C'],
           n: {
-            CS: 0.9334,
+            CAP: [0.9334],
             CSQ: [
               [
                 'C',
@@ -17974,7 +17973,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.7461,
+            CAP: [0.7461],
             CSQ: [
               [
                 'A',
@@ -18495,7 +18494,7 @@ export const apiData: ApiData = {
           r: 'G',
           a: ['A'],
           n: {
-            CS: 0.9622,
+            CAP: [0.9622],
             CSQ: [
               [
                 'A',
@@ -18776,7 +18775,7 @@ export const apiData: ApiData = {
           r: 'TG',
           a: ['T'],
           n: {
-            CS: 0.9203,
+            CAP: [0.9203],
             CSQ: [
               [
                 '-',
@@ -19816,7 +19815,7 @@ export const apiData: ApiData = {
           r: 'T',
           a: ['G'],
           n: {
-            CS: 0.0975,
+            CAP: [0.0975],
             CSQ: [
               [
                 'G',
@@ -20336,7 +20335,7 @@ export const apiData: ApiData = {
           r: 'AC',
           a: ['A'],
           n: {
-            CS: 0.9992,
+            CAP: [0.9992],
             CSQ: [
               [
                 '-',
@@ -20976,7 +20975,7 @@ export const apiData: ApiData = {
           r: 'T',
           a: ['G'],
           n: {
-            CS: 0.6723,
+            CAP: [0.6723],
             CSQ: [
               [
                 'G',
@@ -21816,7 +21815,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['G'],
           n: {
-            CS: 0.9951,
+            CAP: [0.9951],
             CSQ: [
               [
                 'G',
@@ -22617,7 +22616,7 @@ export const apiData: ApiData = {
           r: 'GA',
           a: ['G'],
           n: {
-            CS: 0.9838,
+            CAP: [0.9838],
             CSQ: [
               [
                 '-',
@@ -24097,7 +24096,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['T'],
           n: {
-            CS: 0.0016603,
+            CAP: [0.0016603],
             CSQ: [
               [
                 'T',
@@ -26502,7 +26501,7 @@ export const apiData: ApiData = {
           r: 'A',
           a: ['T'],
           n: {
-            CS: 0.9763,
+            CAP: [0.9763],
             CSQ: [
               [
                 'T',
@@ -28102,7 +28101,7 @@ export const apiData: ApiData = {
           r: 'C',
           a: ['G'],
           n: {
-            CS: 0.0017782,
+            CAP: [0.0017782],
             CSQ: [
               [
                 'G',
