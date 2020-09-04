@@ -134,7 +134,12 @@
         />
       </template>
       <template v-slot:cell(capice)="data">
-        {{ data.item.n['CAP'] !== undefined ? data.item.n['CAP'].toFixed(4) : undefined }}
+        <span v-if="data.item.n['CAP'] !== undefined">
+          <span v-for="(score, index) in data.item.n['CAP']" :key="index">
+            <span>{{ score.toFixed(4) }}</span>
+            <span v-if="index < score.length - 1">, </span>
+          </span>
+        </span>
       </template>
     </b-table>
     <b-pagination
