@@ -42,7 +42,8 @@ export const apiData: ApiData = {
             {
               id: 'Allele',
               number: {
-                type: 'OTHER'
+                type: 'NUMBER',
+                count: 1
               },
               type: 'STRING',
               description: 'Allele'
