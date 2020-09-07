@@ -119,7 +119,12 @@
         />
       </template>
       <template v-slot:cell(vkgl)="data">
-        <span v-if="data.item.n !== undefined && data.item.n['VKGL'] !== undefined">{{ data.item.n['VKGL'] }}</span>
+        <span v-if="data.item.n !== undefined && data.item.n['VKGL'] !== undefined">
+          <span v-for="(vkgl, index) in data.item.n['VKGL']" :key="index">
+            <span>{{ vkgl }}</span>
+            <span v-if="index < data.item.n['VKGL'].length - 1">, </span>
+          </span>
+        </span>
       </template>
       <template v-slot:cell(clinVar)="data">
         <RecordInfoDetailsItemMultiline
@@ -137,7 +142,7 @@
         <span v-if="data.item.n !== undefined && data.item.n['CAP'] !== undefined">
           <span v-for="(score, index) in data.item.n['CAP']" :key="index">
             <span>{{ score.toFixed(4) }}</span>
-            <span v-if="index < score.length - 1">, </span>
+            <span v-if="index < data.item.n['CAP'].length - 1">, </span>
           </span>
         </span>
       </template>

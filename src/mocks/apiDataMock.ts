@@ -390,8 +390,7 @@ export const apiData: ApiData = {
         {
           id: 'VKGL',
           number: {
-            type: 'NUMBER',
-            count: 1
+            type: 'PER_ALT'
           },
           type: 'STRING',
           description:
@@ -924,7 +923,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -1245,7 +1244,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -1607,7 +1606,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -1983,7 +1982,7 @@ export const apiData: ApiData = {
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
             MVL: 'P',
             CAP: [0.9808],
-            VKGL: 'LP',
+            VKGL: ['LP'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Likely_pathogenic'],
             FILTER_LABELS: ['P', 'PLP', 'Classification:P'],
@@ -2321,7 +2320,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -2682,7 +2681,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             FILTER_ROUTE: [
               'genotype:TRUE',
               'P:MISSING',
@@ -3039,7 +3038,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -3615,7 +3614,7 @@ export const apiData: ApiData = {
             GADO: ['ENSG00000131238|PPT1|53026|-1.719'],
             MVL: 'P',
             CAP: [0.9416],
-            VKGL: 'LP',
+            VKGL: ['LP'],
             VKGL_NR: 3,
             CLINVAR_SIGNIFICANCE: ['Pathogenic/Likely_pathogenic'],
             FILTER_LABELS: ['P', 'AR', 'PLP', 'Classification:P'],
@@ -6128,7 +6127,7 @@ export const apiData: ApiData = {
             GADO: ['ENSG00000186603|HPDL|15035|0.586', 'ENSG00000132781|MUTYH|13946|0.648'],
             MVL: 'P',
             CAP: [0.9719],
-            VKGL: 'LP',
+            VKGL: ['LP'],
             VKGL_NR: 4,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['P', 'AR', 'PLP', 'Classification:P'],
@@ -8626,7 +8625,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -9986,7 +9985,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LB',
+            VKGL: ['LB'],
             FILTER_ROUTE: [
               'genotype:TRUE',
               'P:MISSING',
@@ -11362,7 +11361,7 @@ export const apiData: ApiData = {
             GADO: ['ENSG00000160789|LMNA|1298|3.0'],
             MVL: 'VUS',
             CAP: [0.9735],
-            VKGL: 'VUS',
+            VKGL: ['VUS'],
             VKGL_NR: 4,
             CLINVAR_SIGNIFICANCE: ['Conflicting_interpretations_of_pathogenicity'],
             FILTER_LABELS: ['AR', 'AD', 'VUS'],
@@ -12699,7 +12698,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LB',
+            VKGL: ['LB'],
             FILTER_ROUTE: [
               'genotype:TRUE',
               'P:MISSING',
@@ -13115,7 +13114,7 @@ export const apiData: ApiData = {
             GADO: ['ENSG00000095002|MSH2|1979|2.539'],
             MVL: 'VUS',
             CAP: [0.3964],
-            VKGL: 'VUS',
+            VKGL: ['VUS'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Uncertain_significance'],
             FILTER_LABELS: ['VUS'],
@@ -13493,7 +13492,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -14414,7 +14413,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -14855,7 +14854,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -15255,7 +15254,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -15695,7 +15694,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -16655,7 +16654,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -17096,7 +17095,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -17896,7 +17895,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -18417,7 +18416,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -18698,7 +18697,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -19739,7 +19738,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -20259,7 +20258,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -20899,7 +20898,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -21739,7 +21738,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -22539,7 +22538,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -24020,7 +24019,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -26420,7 +26419,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -28025,7 +28024,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
@@ -28345,7 +28344,7 @@ export const apiData: ApiData = {
               ]
             ],
             '': true,
-            VKGL: 'LP',
+            VKGL: ['LP'],
             INHERITANCE_LABELS: ['IF1:MVLorVKGL'],
             FILTER_ROUTE: [
               'genotype:TRUE',
