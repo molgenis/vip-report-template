@@ -171,7 +171,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Vue, { PropType } from 'vue';
 import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
-import { PagedItems, Params, Record, RecordSample, Sample } from '@molgenis/vip-report-api';
+import { PagedItems, Params, Record, RecordSample, Sample, SortOrder } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
 import Identifiers from '@/components/Identifiers.vue';
@@ -265,7 +265,7 @@ export default Vue.extend({
         fields.push({ key: 'mother', label: 'mother' });
       }
       if (this.hasCapice) {
-        fields.push({ key: 'capice', label: 'capice', sortable: false });
+        fields.push({ key: 'capice', label: 'capice', sortable: true });
       }
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
@@ -289,11 +289,45 @@ export default Vue.extend({
     ...mapActions(['loadRecords']),
     provider(ctx: BvTableCtxObject): Promise<Row[]> {
       // todo: translate filter param to query
+      let sort: SortOrder | undefined;
+      if (ctx.sortBy) {
+        switch (ctx.sortBy) {
+          case 'capice':
+            sort = {
+              property: ['n', 'CAP'],
+              compare: ctx.sortDesc
+                ? (a, b) => {
+                    if (a === null) {
+                      return b === null ? 0 : 1;
+                    } else if (b === null) {
+                      return -1;
+                    } else {
+                      return Math.max(...(b as number[])) - Math.max(...(a as number[]));
+                    }
+                  }
+                : (a, b) => {
+                    if (a === null) {
+                      return b === null ? 0 : -1;
+                    } else if (b === null) {
+                      return 1;
+                    } else {
+                      return Math.max(...(a as number[])) - Math.max(...(b as number[]));
+                    }
+                  }
+            };
+            break;
+          default:
+            sort = { property: ctx.sortBy, compare: ctx.sortDesc ? 'desc' : 'asc' };
+            break;
+        }
+      } else {
+        sort = undefined;
+      }
+
       const params: Params = {
         page: ctx.currentPage - 1,
         size: ctx.perPage,
-        sort: ctx.sortBy ? ctx.sortBy : undefined,
-        desc: ctx.sortDesc
+        sort: sort
       };
       if (this.sample) {
         params.query = {
