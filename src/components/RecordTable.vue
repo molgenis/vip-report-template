@@ -316,6 +316,10 @@ export default Vue.extend({
                   }
             };
             break;
+          case 'p':
+            // workaround for https://github.com/molgenis/vip-report-template/issues/73
+            sort = undefined;
+            break;
           default:
             sort = { property: ctx.sortBy, compare: ctx.sortDesc ? 'desc' : 'asc' };
             break;
