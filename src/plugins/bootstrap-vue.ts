@@ -1,6 +1,12 @@
 import Vue from 'vue';
 import {
   AlertPlugin,
+  BIcon,
+  BIconBoxArrowInUpRight,
+  BIconChevronDown,
+  BIconChevronUp,
+  BIconQuestionCircle,
+  BIconSearch,
   ButtonPlugin,
   CollapsePlugin,
   FormGroupPlugin,
@@ -11,13 +17,7 @@ import {
   NavPlugin,
   PaginationPlugin,
   TablePlugin,
-  VBTooltipPlugin,
-  BIcon,
-  BIconBoxArrowInUpRight,
-  BIconChevronDown,
-  BIconChevronUp,
-  BIconQuestionCircle,
-  BIconSearch
+  VBTooltipPlugin
 } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
