@@ -15,6 +15,7 @@
   "format": "Format",
   "type": "Type",
   "capice": "CAPICE",
+  "mvl": "MVL",
   "vkgl": "VKGL",
   "gnomad": "gnomAD",
   "clinvar": "ClinVar",

@@ -118,6 +118,14 @@
           :values="data.item.expand ? data.item.gnomAD.items : data.item.gnomAD.items.slice(0, 1)"
         />
       </template>
+      <template v-slot:cell(mvl)="data">
+        <span v-if="data.item.n !== undefined && data.item.n['MVL'] !== undefined">
+          <span v-for="(mvl, index) in data.item.n['MVL']" :key="index">
+            <span>{{ mvl }}</span>
+            <span v-if="index < data.item.n['MVL'].length - 1">, </span>
+          </span>
+        </span>
+      </template>
       <template v-slot:cell(vkgl)="data">
         <span v-if="data.item.n !== undefined && data.item.n['VKGL'] !== undefined">
           <span v-for="(vkgl, index) in data.item.n['VKGL']" :key="index">
@@ -237,7 +245,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasVkgl', 'hasCapice']),
+    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasMvl', 'hasVkgl', 'hasCapice']),
     ...mapState(['metadata', 'records']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
@@ -274,6 +282,9 @@ export default Vue.extend({
         fields.push({ key: 'hgvsC', label: 'hgvsc' });
         fields.push({ key: 'hgvsP', label: 'hgvsp' });
         fields.push({ key: 'gnomAD', label: 'gnomad' });
+      }
+      if (this.hasMvl) {
+        fields.push({ key: 'mvl', label: 'mvl' });
       }
       if (this.hasVkgl) {
         fields.push({ key: 'vkgl', label: 'vkgl' });

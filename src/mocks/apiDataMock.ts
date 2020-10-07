@@ -380,8 +380,7 @@ export const apiData: ApiData = {
         {
           id: 'MVL',
           number: {
-            type: 'NUMBER',
-            count: 1
+            type: 'PER_ALT'
           },
           type: 'STRING',
           description:
@@ -1980,7 +1979,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
-            MVL: 'P',
+            MVL: ['P'],
             CAP: [0.9808],
             VKGL: ['LP'],
             VKGL_NR: 2,
@@ -3612,7 +3611,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000131238|PPT1|53026|-1.719'],
-            MVL: 'P',
+            MVL: ['P'],
             CAP: [0.9416],
             VKGL: ['LP'],
             VKGL_NR: 3,
@@ -6125,7 +6124,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000186603|HPDL|15035|0.586', 'ENSG00000132781|MUTYH|13946|0.648'],
-            MVL: 'P',
+            MVL: ['P'],
             CAP: [0.9719],
             VKGL: ['LP'],
             VKGL_NR: 4,
@@ -11359,7 +11358,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000160789|LMNA|1298|3.0'],
-            MVL: 'VUS',
+            MVL: ['VUS'],
             CAP: [0.9735],
             VKGL: ['VUS'],
             VKGL_NR: 4,
@@ -13112,7 +13111,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000095002|MSH2|1979|2.539'],
-            MVL: 'VUS',
+            MVL: ['VUS'],
             CAP: [0.3964],
             VKGL: ['VUS'],
             VKGL_NR: 2,
