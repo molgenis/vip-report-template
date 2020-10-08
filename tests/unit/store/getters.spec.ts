@@ -162,6 +162,34 @@ test('metadata has no consequences', () => {
   expect(getters.hasConsequences(testState)).toBe(false);
 });
 
+test('metadata has mvl', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'MVL';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasMvl(testState)).toBe(true);
+});
+
+test('metadata has no mvl', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'NO_MVL';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = { ...initialState, metadata: metadata };
+  expect(getters.hasMvl(testState)).toBe(false);
+});
+
 test('metadata has vkgl', () => {
   const infoMetadata = mock<InfoMetadata>();
   infoMetadata.id = 'VKGL';
