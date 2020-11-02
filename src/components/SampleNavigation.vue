@@ -1,7 +1,7 @@
 <template>
   <b-nav pills vertical class="nav-vertical">
     <b-nav-item
-      v-for="sample in samples"
+      v-for="sample in probandSamples"
       :key="getId(sample)"
       :active="isActive(sample)"
       :disabled="isDisabled(sample)"
@@ -13,16 +13,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapState } from 'vuex';
 import { Sample } from '@molgenis/vip-report-api';
 
 export default Vue.extend({
   computed: {
-    ...mapState(['selectedSample'])
+    ...mapState(['selectedSample']),
+    probandSamples(): Sample[] {
+      return this.samples.filter(sample => sample.proband === true);
+    }
   },
   props: {
-    samples: Array
+    samples: Array as PropType<Sample[]>
   },
   methods: {
     getId(sample: Sample) {
