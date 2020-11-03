@@ -59,7 +59,8 @@ test('select sample and load sample phenotypes', async done => {
       sex: 'MALE',
       affectedStatus: 'AFFECTED'
     },
-    index: -1
+    index: -1,
+    proband: true
   };
   const params: Params = {
     query: {
