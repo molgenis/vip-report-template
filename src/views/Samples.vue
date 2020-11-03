@@ -35,7 +35,7 @@ export default Vue.extend({
       const sample = this.getSampleById(this.$route.params.id);
       this.selectSample(sample);
     } else {
-      const sample = this.samples.find((sample: Sample) => sample.index !== -1);
+      const sample = this.samples.find((sample: Sample) => sample.index !== -1 && sample.proband === true);
       if (sample !== null) {
         await this.$router.push({ params: { id: this.getId(sample) } });
       }

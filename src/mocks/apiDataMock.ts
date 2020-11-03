@@ -479,7 +479,8 @@ export const apiData: ApiData = {
             sex: 'UNKNOWN_SEX',
             affectedStatus: 'AFFECTED'
           },
-          index: 0
+          index: 0,
+          proband: true
         },
         {
           person: {
@@ -490,7 +491,8 @@ export const apiData: ApiData = {
             sex: 'FEMALE',
             affectedStatus: 'UNAFFECTED'
           },
-          index: 1
+          index: 1,
+          proband: false
         },
         {
           person: {
@@ -501,7 +503,8 @@ export const apiData: ApiData = {
             sex: 'FEMALE',
             affectedStatus: 'MISSING'
           },
-          index: 2
+          index: 2,
+          proband: false
         }
       ],
       total: 3
