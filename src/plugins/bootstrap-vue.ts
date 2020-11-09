@@ -11,6 +11,8 @@ import {
   CollapsePlugin,
   FormGroupPlugin,
   FormInputPlugin,
+  FormSelectPlugin,
+  InputGroupPlugin,
   LayoutPlugin,
   ModalPlugin,
   NavbarPlugin,
@@ -27,6 +29,8 @@ Vue.use(ButtonPlugin);
 Vue.use(CollapsePlugin);
 Vue.use(FormGroupPlugin);
 Vue.use(FormInputPlugin);
+Vue.use(FormSelectPlugin);
+Vue.use(InputGroupPlugin);
 Vue.use(LayoutPlugin);
 Vue.use(ModalPlugin);
 Vue.use(NavbarPlugin);

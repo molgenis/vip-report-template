@@ -1,6 +1,7 @@
 import { State } from '@/types/State';
 import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
-import { Sample } from '@molgenis/vip-report-api';
+import { Record, Sample } from '@molgenis/vip-report-api';
+import { Annotation } from '@/types/Annotations';
 
 export default {
   samples: (state: State): Array<Sample> => {
@@ -69,5 +70,33 @@ export default {
       state.metadata !== null &&
       state.metadata.records.info.find(item => item.id === 'CSQ' || item.id === 'ANN') !== undefined
     );
+  },
+  isAnnotationEnabled: (state: State): boolean => {
+    return state.annotations !== null;
+  },
+  getAnnotation: (state: State) => (record: Record): Annotation => {
+    if (state.annotations === null) {
+      throw 'Annotations disabled';
+    }
+    if (state.selectedSample == null) {
+      throw 'No sample selected';
+    }
+
+    const sampleId = state.selectedSample.person.individualId;
+    const key = sampleId + '_' + record.c + '_' + record.p + '_' + record.r + '_' + record.a;
+    let annotation = state.annotations[key];
+    if (annotation === undefined) {
+      annotation = {
+        sampleId: sampleId,
+        chr: record.c,
+        pos: record.p,
+        ref: record.r,
+        alt: record.a,
+        geneMatch: null,
+        class: null,
+        txt: null
+      };
+    }
+    return annotation;
   }
 };

@@ -154,6 +154,15 @@
           </span>
         </span>
       </template>
+      <template v-slot:cell(geneMatch)="data">
+        <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="geneMatch" />
+      </template>
+      <template v-slot:cell(class)="data">
+        <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="class" />
+      </template>
+      <template v-slot:cell(txt)="data">
+        <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="notes" />
+      </template>
     </b-table>
     <b-pagination
       v-if="page.totalPages > 1"
@@ -163,7 +172,6 @@
       align="center"
       aria-controls="classifier-table"
     ></b-pagination>
-
     <b-modal :id="infoModal.id" size="xl" :title="$t('recordDetails')" no-fade ok-only @hide="resetInfoModal">
       <template v-slot:modal-ok>
         {{ $t('ok') }}
@@ -189,6 +197,8 @@ import Genotype from '@/components/Genotype.vue';
 import { getConsequences } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
+import { Annotation } from '@/types/Annotations';
+import AnnotationControl from '@/components/annotation/AnnotationControl.vue';
 
 interface Page {
   currentPage: number;
@@ -220,10 +230,19 @@ interface Row {
   clinVar?: unknown;
   gnomAD?: unknown;
   expand?: boolean;
+  annotation?: Annotation;
 }
 
 export default Vue.extend({
-  components: { Allele, Anchor, Genotype, Identifiers, RecordDetails, RecordInfoDetailsItemMultiline },
+  components: {
+    Allele,
+    Anchor,
+    AnnotationControl,
+    Genotype,
+    Identifiers,
+    RecordDetails,
+    RecordInfoDetailsItemMultiline
+  },
   props: {
     sample: Object as PropType<Sample>
   },
@@ -245,8 +264,17 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasMvl', 'hasVkgl', 'hasCapice']),
-    ...mapState(['metadata', 'records']),
+    ...mapGetters([
+      'getSampleById',
+      'genomeBrowserDb',
+      'hasConsequences',
+      'hasMvl',
+      'hasVkgl',
+      'hasCapice',
+      'getAnnotation',
+      'isAnnotationEnabled'
+    ]),
+    ...mapState(['metadata', 'records', 'annotations']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -277,8 +305,8 @@ export default Vue.extend({
       }
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
-        fields.push({ key: 'effect' });
-        fields.push({ key: 'symbol' });
+        fields.push({ key: 'effect', label: 'effect' });
+        fields.push({ key: 'symbol', label: 'symbol' });
         fields.push({ key: 'hgvsC', label: 'hgvsc' });
         fields.push({ key: 'hgvsP', label: 'hgvsp' });
         fields.push({ key: 'gnomAD', label: 'gnomad' });
@@ -292,6 +320,11 @@ export default Vue.extend({
       if (this.hasConsequences) {
         fields.push({ key: 'clinVar', label: 'clinvar' });
         fields.push({ key: 'pubMed', label: 'pubmed' });
+      }
+      if (this.isAnnotationEnabled) {
+        fields.push({ key: 'geneMatch', label: 'geneMatch', class: 'input' });
+        fields.push({ key: 'class', label: 'class', class: 'input' });
+        fields.push({ key: 'txt', label: 'txt', class: 'input' });
       }
       return fields;
     }
@@ -390,6 +423,9 @@ export default Vue.extend({
             };
             row.expand = false;
           }
+          if (this.isAnnotationEnabled) {
+            row.annotation = this.getAnnotation(record);
+          }
           return row;
         });
       });
@@ -412,6 +448,9 @@ export default Vue.extend({
   filters: { append, formatNumber },
   watch: {
     sample() {
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.annotations': function() {
       (this.$refs.table as BTable).refresh();
     }
   }

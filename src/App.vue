@@ -34,7 +34,7 @@ export default Vue.extend({
 <!--suppress CssUnusedSymbol -->
 <style>
 html {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .btn-xs {
@@ -49,6 +49,11 @@ td {
 td.compact {
   padding: 0.25rem;
   width: 0;
+}
+
+td.input {
+  padding-top: 0rem;
+  padding-bottom: 0rem;
 }
 
 .nuc {
