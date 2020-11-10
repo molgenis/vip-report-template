@@ -3,6 +3,7 @@ import { mock, when } from 'ts-mockito';
 import Api, { Metadata, PagedItems, Params, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
 import { ActionContext, Commit } from 'vuex';
 import { State } from '@/types/State';
+import initialState from '@/store/state';
 
 const api: Api = mock(Api);
 setTestApi(mock(Api));
@@ -75,5 +76,56 @@ test('select sample and load sample phenotypes', async done => {
   await actions.selectSample({ commit } as ActionContext<State, State>, sample);
   expect(commit).toHaveBeenCalledWith('setSelectedSample', sample);
   expect(commit).toHaveBeenCalledWith('setSelectedSamplePhenotypes', phenotypes);
+  done();
+});
+
+test('enable annotations', async done => {
+  const commit = jest.fn() as Commit;
+  actions.enableAnnotations({ commit } as ActionContext<State, State>);
+  expect(commit).toHaveBeenCalledWith('setAnnotations', {});
+  done();
+});
+
+test('disable annotations', async done => {
+  const commit = jest.fn() as Commit;
+  actions.disableAnnotations({ commit } as ActionContext<State, State>);
+  expect(commit).toHaveBeenCalledWith('setAnnotations', null);
+  done();
+});
+
+test('import annotations', async done => {
+  const annotations = {
+    'sample0_1_2_A_C,CT': {
+      sampleId: 'sample0',
+      chr: '1',
+      pos: 2,
+      ref: 'A',
+      alt: ['C', 'CT'],
+      geneMatch: 'yes',
+      class: 'LP',
+      txt: 'my notes'
+    }
+  };
+  const commit = jest.fn() as Commit;
+  actions.importAnnotations({ commit } as ActionContext<State, State>, annotations);
+  expect(commit).toHaveBeenCalledWith('setAnnotations', annotations);
+  done();
+});
+
+test('upsert annotations', async done => {
+  const annotation = {
+    sampleId: 'sample0',
+    chr: '1',
+    pos: 2,
+    ref: 'A',
+    alt: ['C', 'CT'],
+    geneMatch: 'yes',
+    class: 'LP',
+    txt: 'my notes'
+  };
+  const commit = jest.fn() as Commit;
+  const testState: State = { ...initialState, annotations: {} };
+  actions.upsertAnnotation({ state: testState, commit } as ActionContext<State, State>, annotation);
+  expect(commit).toHaveBeenCalledWith('setAnnotations', { 'sample0_1_2_A_C,CT': annotation });
   done();
 });

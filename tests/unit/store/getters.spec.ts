@@ -9,6 +9,7 @@ import {
   Metadata,
   PagedItems,
   Person,
+  Record,
   RecordsMetadata,
   Sample
 } from '@molgenis/vip-report-api';
@@ -244,4 +245,74 @@ test('metadata has no CAPICE', () => {
 
   const testState: State = { ...initialState, metadata: metadata };
   expect(getters.hasCapice(testState)).toBe(false);
+});
+
+test('annotations are enabled', () => {
+  const testState: State = { ...initialState, annotations: {} };
+  expect(getters.isAnnotationEnabled(testState)).toBe(true);
+});
+
+test('annotations are disabled', () => {
+  const testState: State = { ...initialState, annotations: null };
+  expect(getters.isAnnotationEnabled(testState)).toBe(false);
+});
+
+test('get existing annotation', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample0';
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const record = mock<Record>();
+  record.c = '1';
+  record.p = 2;
+  record.r = 'A';
+  record.a = ['C', 'CT'];
+
+  const annotation = {
+    sampleId: 'sample0',
+    chr: '1',
+    pos: 2,
+    ref: 'A',
+    alt: ['C', 'CT'],
+    geneMatch: 'true',
+    class: 'LP',
+    txt: null
+  };
+  const testState: State = {
+    ...initialState,
+    selectedSample: sample,
+    annotations: { 'sample0_1_2_A_C,CT': annotation }
+  };
+  expect(getters.getAnnotation(testState)(record)).toEqual(annotation);
+});
+
+test('get non-existing annotation', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample1';
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const record = mock<Record>();
+  record.c = '1';
+  record.p = 2;
+  record.r = 'A';
+  record.a = ['C'];
+
+  const annotation = {
+    sampleId: 'sample1',
+    chr: '1',
+    pos: 2,
+    ref: 'A',
+    alt: ['C'],
+    geneMatch: null,
+    class: null,
+    txt: null
+  };
+  const testState: State = {
+    ...initialState,
+    selectedSample: sample,
+    annotations: {}
+  };
+  expect(getters.getAnnotation(testState)(record)).toEqual(annotation);
 });

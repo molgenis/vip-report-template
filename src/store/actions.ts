@@ -75,8 +75,9 @@ export default {
   },
   upsertAnnotation({ commit, state }: ActionContext<State, State>, annotation: Annotation) {
     const annotations = Object.assign({}, state.annotations);
-    const key =
-      annotation.sampleId + '_' + annotation.chr + '_' + annotation.pos + '_' + annotation.ref + '_' + annotation.alt;
+    const key = `${annotation.sampleId}_${annotation.chr}_${annotation.pos}_${annotation.ref}_${annotation.alt.join(
+      ','
+    )}`;
     annotations[key] = annotation;
     commit('setAnnotations', annotations);
   }

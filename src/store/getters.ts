@@ -83,7 +83,7 @@ export default {
     }
 
     const sampleId = state.selectedSample.person.individualId;
-    const key = sampleId + '_' + record.c + '_' + record.p + '_' + record.r + '_' + record.a;
+    const key = `${sampleId}_${record.c}_${record.p}_${record.r}_${record.a.join(',')}`;
     let annotation = state.annotations[key];
     if (annotation === undefined) {
       annotation = {
