@@ -317,7 +317,7 @@ export default Vue.extend({
       if (this.isAnnotationEnabled) {
         fields.push({ key: 'geneMatch', label: 'geneMatch', class: 'input' });
         fields.push({ key: 'class', label: 'class', class: 'input' });
-        fields.push({ key: 'txt', label: 'txt', class: 'input' });
+        fields.push({ key: 'txt', label: 'txt', class: 'input', thStyle: { minWidth: '20rem' } });
       }
       return fields;
     }
