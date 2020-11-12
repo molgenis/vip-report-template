@@ -56,9 +56,6 @@
         />
         <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
       </template>
-      <template v-slot:cell(i)="data">
-        <Identifiers :identifiers="data.item.i" />
-      </template>
       <template v-slot:cell(r)="data">
         <Allele :allele="data.item.r" />
       </template>
@@ -190,7 +187,6 @@ import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from
 import { PagedItems, Params, Record, RecordSample, Sample, SortOrder } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
-import Identifiers from '@/components/Identifiers.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
@@ -216,7 +212,6 @@ interface InfoModal {
 interface Row {
   c: string;
   p: number;
-  i?: string[];
   r: string;
   a: string[];
   q?: number;
@@ -239,7 +234,6 @@ export default Vue.extend({
     Anchor,
     AnnotationControl,
     Genotype,
-    Identifiers,
     RecordDetails,
     RecordInfoDetailsItemMultiline
   },
@@ -291,7 +285,6 @@ export default Vue.extend({
       const fields = [];
       fields.push({ key: 'actions', label: '', class: ['compact', 'align-top'] });
       fields.push({ key: 'p', label: 'pos', sortable: true });
-      fields.push({ key: 'i', label: 'id' });
       fields.push({ key: 'r', label: 'ref' });
       fields.push(this.sample ? { key: 's', label: 'sample' } : { key: 'a', label: 'alt' });
       if (this.sample && this.samplePaternal) {
