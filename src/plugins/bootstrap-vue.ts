@@ -2,7 +2,6 @@ import Vue from 'vue';
 import {
   AlertPlugin,
   BIcon,
-  BIconBoxArrowInUpRight,
   BIconChevronDown,
   BIconChevronUp,
   BIconQuestionCircle,
@@ -41,7 +40,6 @@ Vue.use(PaginationPlugin);
 Vue.use(TablePlugin);
 Vue.use(VBTooltipPlugin);
 Vue.component('BIcon', BIcon);
-Vue.component('BIconBoxArrowInUpRight', BIconBoxArrowInUpRight);
 Vue.component('BIconChevronDown', BIconChevronDown);
 Vue.component('BIconChevronUp', BIconChevronUp);
 Vue.component('BIconQuestionCircle', BIconQuestionCircle);

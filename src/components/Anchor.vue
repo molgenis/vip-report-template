@@ -1,6 +1,5 @@
 <template>
   <a :href="href" target="_blank" rel="noopener noreferrer nofollow">
-    <b-icon-box-arrow-in-up-right class="mr-1" />
     {{ text }}
   </a>
 </template>
