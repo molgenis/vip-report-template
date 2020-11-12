@@ -9,7 +9,7 @@
     @blur="focus = false"
     @update="onChange"
   />
-  <b-form-input v-else size="sm" v-model="text" type="text" debounce="500" @focus="focus = true" @update="onChange" />
+  <b-form-input v-else size="sm" :value="text" type="text" debounce="500" @focus="focus = true" @update="onChange" />
 </template>
 
 <script lang="ts">
