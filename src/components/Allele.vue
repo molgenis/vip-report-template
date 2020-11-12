@@ -25,9 +25,9 @@ export default Vue.extend({
   computed: {
     nucs() {
       let nucleotides = this.allele.split('');
-      if (this.abbreviate && nucleotides.length > 5) {
+      if (this.abbreviate && nucleotides.length > 4) {
         const lastNuc = nucleotides[nucleotides.length - 1];
-        nucleotides = nucleotides.slice(0, 3);
+        nucleotides = nucleotides.slice(0, 2);
         nucleotides.push('\u2026'); // ellipsis
         nucleotides.push(lastNuc);
       }
