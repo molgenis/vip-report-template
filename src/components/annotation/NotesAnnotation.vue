@@ -1,5 +1,15 @@
 <template>
-  <b-form-input size="sm" v-model="text" type="text" debounce="500" @update="onChange" />
+  <b-form-textarea
+    v-if="focus"
+    v-focus
+    size="sm"
+    v-model="text"
+    type="text"
+    debounce="500"
+    @blur="focus = false"
+    @update="onChange"
+  />
+  <b-form-input v-else size="sm" v-model="text" type="text" debounce="500" @focus="focus = true" @update="onChange" />
 </template>
 
 <script lang="ts">
@@ -11,7 +21,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      text: this.value !== null ? this.value : ''
+      text: this.value !== null ? this.value : '',
+      focus: false
     };
   },
   methods: {
@@ -22,6 +33,13 @@ export default Vue.extend({
   watch: {
     value(value) {
       this.text = value;
+    }
+  },
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+      }
     }
   }
 });

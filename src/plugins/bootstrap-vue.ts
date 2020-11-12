@@ -12,6 +12,7 @@ import {
   FormGroupPlugin,
   FormInputPlugin,
   FormSelectPlugin,
+  FormTextareaPlugin,
   InputGroupPlugin,
   LayoutPlugin,
   ModalPlugin,
@@ -30,6 +31,7 @@ Vue.use(CollapsePlugin);
 Vue.use(FormGroupPlugin);
 Vue.use(FormInputPlugin);
 Vue.use(FormSelectPlugin);
+Vue.use(FormTextareaPlugin);
 Vue.use(InputGroupPlugin);
 Vue.use(LayoutPlugin);
 Vue.use(ModalPlugin);
