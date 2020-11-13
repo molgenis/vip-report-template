@@ -316,3 +316,37 @@ test('get non-existing annotation', () => {
   };
   expect(getters.getAnnotation(testState)(record)).toEqual(annotation);
 });
+
+test('get annotation in case of no annotations', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample0';
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const record = mock<Record>();
+  record.c = '1';
+  record.p = 2;
+  record.r = 'A';
+  record.a = ['C', 'CT'];
+
+  const testState: State = {
+    ...initialState,
+    selectedSample: sample
+  };
+  expect(() => getters.getAnnotation(testState)(record)).toThrow();
+});
+
+test('get annotation in case of no selected sample', () => {
+  const testState: State = {
+    ...initialState,
+    annotations: {}
+  };
+
+  const record = mock<Record>();
+  record.c = '1';
+  record.p = 2;
+  record.r = 'A';
+  record.a = ['C', 'CT'];
+
+  expect(() => getters.getAnnotation(testState)(record)).toThrow();
+});
