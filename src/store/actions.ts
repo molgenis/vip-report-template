@@ -3,6 +3,7 @@ import { Alert } from '@/types/Alert';
 import { ActionContext } from 'vuex';
 import { State } from '@/types/State';
 import { apiData } from '@/mocks/apiDataMock';
+import { Annotation, Annotations } from '@/types/Annotations';
 
 declare global {
   interface Window {
@@ -62,6 +63,23 @@ export default {
   },
   removeAlert({ commit }: ActionContext<State, State>, alert: Alert) {
     commit('removeAlert', alert);
+  },
+  enableAnnotations({ commit }: ActionContext<State, State>) {
+    commit('setAnnotations', {});
+  },
+  disableAnnotations({ commit }: ActionContext<State, State>) {
+    commit('setAnnotations', null);
+  },
+  importAnnotations({ commit }: ActionContext<State, State>, annotations: Annotations) {
+    commit('setAnnotations', annotations);
+  },
+  upsertAnnotation({ commit, state }: ActionContext<State, State>, annotation: Annotation) {
+    const annotations = Object.assign({}, state.annotations);
+    const key = `${annotation.sampleId}_${annotation.chr}_${annotation.pos}_${annotation.ref}_${annotation.alt.join(
+      ','
+    )}`;
+    annotations[key] = annotation;
+    commit('setAnnotations', annotations);
   }
 };
 

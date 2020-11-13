@@ -2,7 +2,6 @@ import Vue from 'vue';
 import {
   AlertPlugin,
   BIcon,
-  BIconBoxArrowInUpRight,
   BIconChevronDown,
   BIconChevronUp,
   BIconQuestionCircle,
@@ -11,6 +10,9 @@ import {
   CollapsePlugin,
   FormGroupPlugin,
   FormInputPlugin,
+  FormSelectPlugin,
+  FormTextareaPlugin,
+  InputGroupPlugin,
   LayoutPlugin,
   ModalPlugin,
   NavbarPlugin,
@@ -27,6 +29,9 @@ Vue.use(ButtonPlugin);
 Vue.use(CollapsePlugin);
 Vue.use(FormGroupPlugin);
 Vue.use(FormInputPlugin);
+Vue.use(FormSelectPlugin);
+Vue.use(FormTextareaPlugin);
+Vue.use(InputGroupPlugin);
 Vue.use(LayoutPlugin);
 Vue.use(ModalPlugin);
 Vue.use(NavbarPlugin);
@@ -35,7 +40,6 @@ Vue.use(PaginationPlugin);
 Vue.use(TablePlugin);
 Vue.use(VBTooltipPlugin);
 Vue.component('BIcon', BIcon);
-Vue.component('BIconBoxArrowInUpRight', BIconBoxArrowInUpRight);
 Vue.component('BIconChevronDown', BIconChevronDown);
 Vue.component('BIconChevronUp', BIconChevronUp);
 Vue.component('BIconQuestionCircle', BIconQuestionCircle);

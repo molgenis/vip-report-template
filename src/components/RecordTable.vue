@@ -56,9 +56,6 @@
         />
         <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
       </template>
-      <template v-slot:cell(i)="data">
-        <Identifiers :identifiers="data.item.i" />
-      </template>
       <template v-slot:cell(r)="data">
         <Allele :allele="data.item.r" />
       </template>
@@ -154,6 +151,15 @@
           </span>
         </span>
       </template>
+      <template v-slot:cell(geneMatch)="data">
+        <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="geneMatch" />
+      </template>
+      <template v-slot:cell(class)="data">
+        <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="class" />
+      </template>
+      <template v-slot:cell(txt)="data">
+        <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="notes" />
+      </template>
     </b-table>
     <b-pagination
       v-if="page.totalPages > 1"
@@ -163,7 +169,6 @@
       align="center"
       aria-controls="classifier-table"
     ></b-pagination>
-
     <b-modal :id="infoModal.id" size="xl" :title="$t('recordDetails')" no-fade ok-only @hide="resetInfoModal">
       <template v-slot:modal-ok>
         {{ $t('ok') }}
@@ -182,13 +187,14 @@ import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from
 import { PagedItems, Params, Record, RecordSample, Sample, SortOrder } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
-import Identifiers from '@/components/Identifiers.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
 import { getConsequences } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
+import { Annotation } from '@/types/Annotations';
+import AnnotationControl from '@/components/annotation/AnnotationControl.vue';
 
 interface Page {
   currentPage: number;
@@ -206,7 +212,6 @@ interface InfoModal {
 interface Row {
   c: string;
   p: number;
-  i?: string[];
   r: string;
   a: string[];
   q?: number;
@@ -220,10 +225,18 @@ interface Row {
   clinVar?: unknown;
   gnomAD?: unknown;
   expand?: boolean;
+  annotation?: Annotation;
 }
 
 export default Vue.extend({
-  components: { Allele, Anchor, Genotype, Identifiers, RecordDetails, RecordInfoDetailsItemMultiline },
+  components: {
+    Allele,
+    Anchor,
+    AnnotationControl,
+    Genotype,
+    RecordDetails,
+    RecordInfoDetailsItemMultiline
+  },
   props: {
     sample: Object as PropType<Sample>
   },
@@ -245,8 +258,17 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters(['getSampleById', 'genomeBrowserDb', 'hasConsequences', 'hasMvl', 'hasVkgl', 'hasCapice']),
-    ...mapState(['metadata', 'records']),
+    ...mapGetters([
+      'getSampleById',
+      'genomeBrowserDb',
+      'hasConsequences',
+      'hasMvl',
+      'hasVkgl',
+      'hasCapice',
+      'getAnnotation',
+      'isAnnotationEnabled'
+    ]),
+    ...mapState(['metadata', 'records', 'annotations']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -263,7 +285,6 @@ export default Vue.extend({
       const fields = [];
       fields.push({ key: 'actions', label: '', class: ['compact', 'align-top'] });
       fields.push({ key: 'p', label: 'pos', sortable: true });
-      fields.push({ key: 'i', label: 'id' });
       fields.push({ key: 'r', label: 'ref' });
       fields.push(this.sample ? { key: 's', label: 'sample' } : { key: 'a', label: 'alt' });
       if (this.sample && this.samplePaternal) {
@@ -277,8 +298,8 @@ export default Vue.extend({
       }
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
-        fields.push({ key: 'effect' });
-        fields.push({ key: 'symbol' });
+        fields.push({ key: 'effect', label: 'effect' });
+        fields.push({ key: 'symbol', label: 'symbol' });
         fields.push({ key: 'hgvsC', label: 'hgvsc' });
         fields.push({ key: 'hgvsP', label: 'hgvsp' });
         fields.push({ key: 'gnomAD', label: 'gnomad' });
@@ -292,6 +313,11 @@ export default Vue.extend({
       if (this.hasConsequences) {
         fields.push({ key: 'clinVar', label: 'clinvar' });
         fields.push({ key: 'pubMed', label: 'pubmed' });
+      }
+      if (this.isAnnotationEnabled) {
+        fields.push({ key: 'geneMatch', label: 'geneMatch', class: 'input' });
+        fields.push({ key: 'class', label: 'class', class: 'input' });
+        fields.push({ key: 'txt', label: 'txt', class: 'input', thStyle: { minWidth: '20rem' } });
       }
       return fields;
     }
@@ -390,6 +416,9 @@ export default Vue.extend({
             };
             row.expand = false;
           }
+          if (this.isAnnotationEnabled) {
+            row.annotation = this.getAnnotation(record);
+          }
           return row;
         });
       });
@@ -412,6 +441,9 @@ export default Vue.extend({
   filters: { append, formatNumber },
   watch: {
     sample() {
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.annotations': function() {
       (this.$refs.table as BTable).refresh();
     }
   }

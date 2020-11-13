@@ -6,7 +6,8 @@ const state: State = {
   samples: null,
   selectedSample: null,
   selectedSamplePhenotypes: null,
-  records: null
+  records: null,
+  annotations: null
 };
 
 export default state;

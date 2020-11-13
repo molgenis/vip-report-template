@@ -3,6 +3,7 @@ import mutations from '@/store/mutations';
 import { State } from '@/types/State';
 import { mock } from 'ts-mockito';
 import { Metadata, PagedItems, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
+import { Annotations } from '@/types/Annotations';
 
 test('set metadata', () => {
   const testState: State = { ...initialState };
@@ -37,4 +38,11 @@ test('set records', () => {
   const records: PagedItems<Record> = mock<PagedItems<Record>>();
   mutations.setRecords(testState, records);
   expect(testState.records).toBe(records);
+});
+
+test('set annotations', () => {
+  const testState: State = { ...initialState };
+  const annotations: Annotations = mock<Annotations>();
+  mutations.setAnnotations(testState, annotations);
+  expect(testState.annotations).toBe(annotations);
 });

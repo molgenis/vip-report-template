@@ -1,6 +1,7 @@
 import { State } from '@/types/State';
 import { Metadata, PagedItems, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
 import { Alert } from '@/types/Alert';
+import { Annotations } from '@/types/Annotations';
 
 export default {
   setMetadata(state: State, metadata: Metadata) {
@@ -25,5 +26,8 @@ export default {
   },
   removeAlert(state: State, alert: Alert) {
     state.alerts = state.alerts.filter(anAlert => anAlert !== alert);
+  },
+  setAnnotations(state: State, annotations: Annotations) {
+    state.annotations = annotations;
   }
 };
