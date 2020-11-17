@@ -18,7 +18,8 @@ export default Vue.extend({
         { value: 'LP', text: 'LP' },
         { value: 'VUS', text: 'VUS' },
         { value: 'LB', text: 'LB' },
-        { value: 'B', text: 'B' }
+        { value: 'B', text: 'B' },
+        { value: 'ART', text: 'ART' }
       ]
     };
   },
