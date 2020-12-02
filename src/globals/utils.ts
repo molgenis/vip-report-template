@@ -1,4 +1,4 @@
-import { InfoMetadata, InfoValue, Record, RecordsMetadata } from '@molgenis/vip-report-api';
+import { InfoMetadata, InfoValue, Record, RecordsMetadata, Selector } from '@molgenis/vip-report-api';
 import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
 
 const consequenceMetadata: ConsequenceMetadata = {
@@ -277,4 +277,28 @@ export function getConsequences(record: Record, recordMetadata: RecordsMetadata)
   }
   consequences.sort(sortConsequences);
   return { metadata: consequenceMetadata, items: consequences };
+}
+
+function getVepPhenotypesIndex(metadata: RecordsMetadata): number | null {
+  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
+  if (infoMetadata === undefined || infoMetadata.nested === undefined) {
+    return null;
+  }
+
+  let index = 0;
+  for (const nestedInfoMetadata of infoMetadata.nested) {
+    if (nestedInfoMetadata.id === 'HPO') {
+      return index;
+    }
+    ++index;
+  }
+  return null;
+}
+
+export function getPhenotypesSelector(recordMetadata: RecordsMetadata): Selector {
+  const index = getVepPhenotypesIndex(recordMetadata);
+  if (index === null) {
+    throw new Error('phenotypes unavailable');
+  }
+  return ['n', 'CSQ', '*', index];
 }

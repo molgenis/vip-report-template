@@ -80,6 +80,9 @@ export default {
     )}`;
     annotations[key] = annotation;
     commit('setAnnotations', annotations);
+  },
+  setFilterRecordsByPhenotype({ commit }: ActionContext<State, State>, value: boolean) {
+    commit('setFilterRecordsByPhenotype', value);
   }
 };
 

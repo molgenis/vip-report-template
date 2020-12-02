@@ -9,8 +9,7 @@ import {
   BIconSearch,
   ButtonPlugin,
   CollapsePlugin,
-  FormGroupPlugin,
-  FormInputPlugin,
+  FormCheckboxPlugin,
   FormSelectPlugin,
   FormTextareaPlugin,
   InputGroupPlugin,
@@ -28,8 +27,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 Vue.use(AlertPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(CollapsePlugin);
-Vue.use(FormGroupPlugin);
-Vue.use(FormInputPlugin);
+Vue.use(FormCheckboxPlugin);
 Vue.use(FormSelectPlugin);
 Vue.use(FormTextareaPlugin);
 Vue.use(InputGroupPlugin);

@@ -29,5 +29,8 @@ export default {
   },
   setAnnotations(state: State, annotations: Annotations) {
     state.annotations = annotations;
+  },
+  setFilterRecordsByPhenotype(state: State, value: boolean) {
+    state.filterRecordsByPhenotype = value;
   }
 };

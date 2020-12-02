@@ -98,5 +98,26 @@ export default {
       };
     }
     return annotation;
+  },
+  /**
+   * Returns whether records contain phenotype associations.
+   */
+  isRecordsContainPhenotypes: (state: State): boolean => {
+    let hasPhenotypeAssociations;
+    if (state.metadata === null) {
+      hasPhenotypeAssociations = false;
+    } else {
+      const csqInfo = state.metadata.records.info.find(item => item.id === 'CSQ');
+      if (csqInfo === undefined) {
+        hasPhenotypeAssociations = false;
+      } else {
+        if (csqInfo.nested === undefined) {
+          hasPhenotypeAssociations = false;
+        } else {
+          hasPhenotypeAssociations = csqInfo.nested.some(item => item.id === 'HPO');
+        }
+      }
+    }
+    return hasPhenotypeAssociations;
   }
 };
