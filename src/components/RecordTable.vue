@@ -1,19 +1,8 @@
 <template>
   <div>
-    <!-- hidden, see note in methods.provider -->
-    <b-row style="display: none; visibility: hidden">
-      <b-col md="4">
-        <b-form-group>
-          <b-input-group class="mt-3">
-            <template v-slot:append>
-              <b-button variant="outline-secondary">
-                <span v-if="filter" @click="clearSearch">{{ $t('clear') }}</span>
-                <span v-else>{{ $t('search') }}</span>
-              </b-button>
-            </template>
-            <b-form-input ref="search" id="searchInput" v-model="filter" type="text" debounce="100"></b-form-input>
-          </b-input-group>
-        </b-form-group>
+    <b-row>
+      <b-col>
+        <RecordTableControls />
       </b-col>
     </b-row>
     <b-table
@@ -25,7 +14,6 @@
       small
       :items="provider"
       :fields="fields"
-      :filter="filter"
       :show-empty="true"
       :busy.sync="isTableBusy"
       :sort-by.sync="sortBy"
@@ -183,18 +171,29 @@
 <script lang="ts">
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Vue, { PropType } from 'vue';
-import { BButton, BFormInput, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
-import { PagedItems, Params, Record, RecordSample, Sample, SortOrder } from '@molgenis/vip-report-api';
+import { BButton, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
+import {
+  ComposedQuery,
+  PagedItems,
+  Params,
+  Phenotype,
+  Query,
+  Record,
+  RecordSample,
+  Sample,
+  SortOrder
+} from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
-import { getConsequences } from '@/globals/utils';
+import { getConsequences, getPhenotypesSelector } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
 import { Annotation } from '@/types/Annotations';
 import AnnotationControl from '@/components/annotation/AnnotationControl.vue';
+import RecordTableControls from '@/components/RecordTableControls.vue';
 
 interface Page {
   currentPage: number;
@@ -235,14 +234,14 @@ export default Vue.extend({
     AnnotationControl,
     Genotype,
     RecordDetails,
-    RecordInfoDetailsItemMultiline
+    RecordInfoDetailsItemMultiline,
+    RecordTableControls
   },
   props: {
     sample: Object as PropType<Sample>
   },
   data: function() {
     return {
-      filter: '' as string,
       isTableBusy: false as boolean,
       sortBy: null as string | null,
       sortDesc: false as boolean,
@@ -266,9 +265,10 @@ export default Vue.extend({
       'hasVkgl',
       'hasCapice',
       'getAnnotation',
-      'isAnnotationEnabled'
+      'isAnnotationEnabled',
+      'isRecordsContainPhenotypes'
     ]),
-    ...mapState(['metadata', 'records', 'annotations']),
+    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -325,7 +325,73 @@ export default Vue.extend({
   methods: {
     ...mapActions(['loadRecords']),
     provider(ctx: BvTableCtxObject): Promise<Row[]> {
-      // todo: translate filter param to query
+      const params: Params = {
+        page: ctx.currentPage - 1,
+        size: ctx.perPage,
+        query: this.createQuery(),
+        sort: this.createSort(ctx)
+      };
+
+      return this.loadRecords(params).then(() => {
+        const records = this.records as PagedItems<Record>;
+        this.page.totalRows = records.page.totalElements;
+        this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage);
+        return records.items.map(this.mapRecordToRow);
+      });
+    },
+    info(record: Record, index: number, button: BButton): void {
+      this.infoModal.title = `Row index: ${index}`;
+      this.infoModal.record = record;
+      this.$root.$emit('bv::show::modal', this.infoModal.id, button);
+    },
+    resetInfoModal(): void {
+      this.infoModal.title = '';
+      this.infoModal.record = null;
+    },
+    createQuery(): Query | ComposedQuery | undefined {
+      const queries: Query[] = [];
+      if (this.sample) {
+        queries.push(this.createSampleQuery());
+      }
+      if (this.isRecordsContainPhenotypes && this.hasSamplePhenotypes() && this.filterRecordsByPhenotype) {
+        queries.push(this.createSamplePhenotypesQuery());
+      }
+      // todo: translate ctx filter param to query
+
+      let query: Query | ComposedQuery | undefined;
+      if (queries.length === 0) {
+        query = undefined;
+      } else if (queries.length === 1) {
+        query = queries[0];
+      } else {
+        query = {
+          operator: 'and',
+          args: queries
+        };
+      }
+      return query;
+    },
+    createSampleQuery(): Query {
+      return {
+        selector: ['s', this.sample.index, 'gt', 't'],
+        operator: 'in',
+        args: ['het', 'hom_a', 'part']
+      };
+    },
+    hasSamplePhenotypes(): boolean {
+      return this.selectedSamplePhenotypes !== null && this.selectedSamplePhenotypes.page.totalElements > 0;
+    },
+    createSamplePhenotypesQuery(): Query {
+      const phenotypeIds = (this.selectedSamplePhenotypes.items as Phenotype[])
+        .flatMap(phenotype => phenotype.phenotypicFeaturesList)
+        .map(phenotypicFeature => phenotypicFeature.type.id);
+      return {
+        selector: getPhenotypesSelector(this.metadata.records),
+        operator: 'any_has_any',
+        args: [...new Set(phenotypeIds)]
+      };
+    },
+    createSort(ctx: BvTableCtxObject): SortOrder | undefined {
       let sort: SortOrder | undefined;
       if (ctx.sortBy) {
         switch (ctx.sortBy) {
@@ -364,86 +430,59 @@ export default Vue.extend({
       } else {
         sort = undefined;
       }
-
-      const params: Params = {
-        page: ctx.currentPage - 1,
-        size: ctx.perPage,
-        sort: sort
-      };
-      if (this.sample) {
-        params.query = {
-          // todo: remove as unknown as string after Query type fix in vip-report-api
-          selector: ['s', (this.sample.index as unknown) as string, 'gt', 't'],
-          operator: 'in',
-          args: ['het', 'hom_a', 'part']
+      return sort;
+    },
+    mapRecordToRow(record: Record) {
+      const row: Row = { ...record };
+      if (this.hasConsequences) {
+        const consequences: Consequences = getConsequences(record, this.metadata.records);
+        row.effect = {
+          metadata: consequences.metadata.effect,
+          items: consequences.items.map(consequence => consequence.effect)
         };
+        row.symbol = {
+          metadata: consequences.metadata.symbol,
+          items: consequences.items.map(consequence => consequence.symbol)
+        };
+        row.hgvsC = {
+          metadata: consequences.metadata.hgvsC,
+          items: consequences.items.map(consequence => consequence.hgvsC)
+        };
+        row.hgvsP = {
+          metadata: consequences.metadata.hgvsP,
+          items: consequences.items.map(consequence => consequence.hgvsP)
+        };
+        row.gnomAD = {
+          metadata: consequences.metadata.gnomAD,
+          items: consequences.items.map(consequence => consequence.gnomAD)
+        };
+        row.clinVar = {
+          metadata: consequences.metadata.clinVar,
+          items: consequences.items.map(consequence => consequence.clinVar)
+        };
+        row.pubMed = {
+          metadata: consequences.metadata.pubMed,
+          items: consequences.items.map(consequence => consequence.pubMed)
+        };
+        row.expand = false;
       }
-      return this.loadRecords(params).then(() => {
-        const records = this.records as PagedItems<Record>;
-        this.page.totalRows = records.page.totalElements;
-        this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage);
-        return records.items.map(record => {
-          const row: Row = { ...record };
-          if (this.hasConsequences) {
-            const consequences: Consequences = getConsequences(record, this.metadata.records);
-            row.effect = {
-              metadata: consequences.metadata.effect,
-              items: consequences.items.map(consequence => consequence.effect)
-            };
-            row.symbol = {
-              metadata: consequences.metadata.symbol,
-              items: consequences.items.map(consequence => consequence.symbol)
-            };
-            row.hgvsC = {
-              metadata: consequences.metadata.hgvsC,
-              items: consequences.items.map(consequence => consequence.hgvsC)
-            };
-            row.hgvsP = {
-              metadata: consequences.metadata.hgvsP,
-              items: consequences.items.map(consequence => consequence.hgvsP)
-            };
-            row.gnomAD = {
-              metadata: consequences.metadata.gnomAD,
-              items: consequences.items.map(consequence => consequence.gnomAD)
-            };
-            row.clinVar = {
-              metadata: consequences.metadata.clinVar,
-              items: consequences.items.map(consequence => consequence.clinVar)
-            };
-            row.pubMed = {
-              metadata: consequences.metadata.pubMed,
-              items: consequences.items.map(consequence => consequence.pubMed)
-            };
-            row.expand = false;
-          }
-          if (this.isAnnotationEnabled) {
-            row.annotation = this.getAnnotation(record);
-          }
-          return row;
-        });
-      });
-    },
-    clearSearch(): void {
-      this.filter = '';
-      const searchElement = this.$refs.search as BFormInput;
-      searchElement.focus();
-    },
-    info(record: Record, index: number, button: BButton): void {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.record = record;
-      this.$root.$emit('bv::show::modal', this.infoModal.id, button);
-    },
-    resetInfoModal(): void {
-      this.infoModal.title = '';
-      this.infoModal.record = null;
+      if (this.isAnnotationEnabled) {
+        row.annotation = this.getAnnotation(record);
+      }
+      return row;
     }
   },
   filters: { append, formatNumber },
   watch: {
     sample() {
+      this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.annotations': function() {
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.filterRecordsByPhenotype'() {
+      this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     }
   }

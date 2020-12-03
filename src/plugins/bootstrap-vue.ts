@@ -2,14 +2,14 @@ import Vue from 'vue';
 import {
   AlertPlugin,
   BIcon,
+  BIconBoxArrowInUpRight,
   BIconChevronDown,
   BIconChevronUp,
   BIconQuestionCircle,
   BIconSearch,
   ButtonPlugin,
   CollapsePlugin,
-  FormGroupPlugin,
-  FormInputPlugin,
+  FormCheckboxPlugin,
   FormSelectPlugin,
   FormTextareaPlugin,
   InputGroupPlugin,
@@ -27,8 +27,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 Vue.use(AlertPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(CollapsePlugin);
-Vue.use(FormGroupPlugin);
-Vue.use(FormInputPlugin);
+Vue.use(FormCheckboxPlugin);
 Vue.use(FormSelectPlugin);
 Vue.use(FormTextareaPlugin);
 Vue.use(InputGroupPlugin);
@@ -40,6 +39,7 @@ Vue.use(PaginationPlugin);
 Vue.use(TablePlugin);
 Vue.use(VBTooltipPlugin);
 Vue.component('BIcon', BIcon);
+Vue.component('BIconBoxArrowInUpRight', BIconBoxArrowInUpRight);
 Vue.component('BIconChevronDown', BIconChevronDown);
 Vue.component('BIconChevronUp', BIconChevronUp);
 Vue.component('BIconQuestionCircle', BIconQuestionCircle);

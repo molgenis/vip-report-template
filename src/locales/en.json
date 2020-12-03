@@ -27,7 +27,6 @@
   "noSearchResults": "No Search Results",
   "emptyTableMessage": "There are no records to show",
   "clear": "Clear",
-  "search": "Search",
   "sample": "Sample",
   "samples": "Samples",
   "father": "Father",
@@ -53,5 +52,6 @@
   "new": "New",
   "open": "Open...",
   "save": "Save...",
-  "exit": "Exit"
+  "exit": "Exit",
+  "matchPhenotype": "Only display records that match sample phenotype(s)"
 }

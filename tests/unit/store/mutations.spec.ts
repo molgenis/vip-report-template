@@ -46,3 +46,9 @@ test('set annotations', () => {
   mutations.setAnnotations(testState, annotations);
   expect(testState.annotations).toBe(annotations);
 });
+
+test('set filter records by phenotype', () => {
+  const testState: State = { ...initialState };
+  mutations.setFilterRecordsByPhenotype(testState, false);
+  expect(testState.filterRecordsByPhenotype).toBe(false);
+});

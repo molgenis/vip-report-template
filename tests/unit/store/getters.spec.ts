@@ -350,3 +350,56 @@ test('get annotation in case of no selected sample', () => {
 
   expect(() => getters.getAnnotation(testState)(record)).toThrow();
 });
+
+test('whether records contain phenotype associations', () => {
+  const hpoMetadata = mock<InfoMetadata>();
+  hpoMetadata.id = 'HPO';
+
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'CSQ';
+  infoMetadata.nested = [hpoMetadata];
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainPhenotypes(testState)).toEqual(true);
+});
+
+test('whether records contain phenotype associations with VEP without HPO', () => {
+  const infoMetadata = mock<InfoMetadata>();
+  infoMetadata.id = 'CSQ';
+  infoMetadata.nested = [];
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [infoMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainPhenotypes(testState)).toEqual(false);
+});
+
+test('whether records contain phenotype associations without VEP', () => {
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.info = [];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainPhenotypes(testState)).toEqual(false);
+});
