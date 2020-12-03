@@ -1,4 +1,4 @@
-import { getConsequences } from '@/globals/utils';
+import { getConsequences, getPhenotypesSelector } from '@/globals/utils';
 import { InfoMetadata, Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { mock } from 'ts-mockito';
 
@@ -51,12 +51,15 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
   clinSigMetadata.id = 'CLIN_SIG';
   const gnomADMetadata = mock<InfoMetadata>();
   gnomADMetadata.id = 'gnomAD_AF';
+  const hpoMetadata = mock<InfoMetadata>();
+  hpoMetadata.id = 'HPO';
 
   const csqInfoMetadata = createCsqInfoMetadata();
   if (csqInfoMetadata.nested !== undefined) {
     csqInfoMetadata.nested.push(pubMedMetadata);
     csqInfoMetadata.nested.push(clinSigMetadata);
     csqInfoMetadata.nested.push(gnomADMetadata);
+    csqInfoMetadata.nested.push(hpoMetadata);
   }
   return csqInfoMetadata;
 }
@@ -263,4 +266,25 @@ test('get consequences in case of CSQ and ANN info', () => {
       }
     ]
   });
+});
+
+test('get phenotypes selector in case of VEP annotations with HPO', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadataExtended()];
+
+  expect(getPhenotypesSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 7]);
+});
+
+test('get phenotypes selector in case of VEP annotations without HPO', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadata()];
+
+  expect(() => getPhenotypesSelector(recordMetadata)).toThrow();
+});
+
+test('get phenotypes selector in case of SnpEff annotations', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createAnnInfoMetadata()];
+
+  expect(() => getPhenotypesSelector(recordMetadata)).toThrow();
 });

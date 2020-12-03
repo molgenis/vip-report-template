@@ -129,3 +129,10 @@ test('upsert annotations', async done => {
   expect(commit).toHaveBeenCalledWith('setAnnotations', { 'sample0_1_2_A_C,CT': annotation });
   done();
 });
+
+test('set filter records by phenotype', async done => {
+  const commit = jest.fn() as Commit;
+  actions.setFilterRecordsByPhenotype({ commit } as ActionContext<State, State>, true);
+  expect(commit).toHaveBeenCalledWith('setFilterRecordsByPhenotype', true);
+  done();
+});
