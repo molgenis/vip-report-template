@@ -119,5 +119,18 @@ export default {
       }
     }
     return hasPhenotypeAssociations;
+  },
+  /**
+   * Returns whether records contain inheritance matching information.
+   */
+  isSamplesContainInheritance: (state: State): boolean => {
+    let hasSampleInheritance;
+    if (state.metadata === null) {
+      hasSampleInheritance = false;
+    } else {
+      const vimFormat = state.metadata.records.format.find(item => item.id === 'VIM');
+      hasSampleInheritance = vimFormat !== undefined
+    }
+    return hasSampleInheritance;
   }
 };

@@ -136,3 +136,10 @@ test('set filter records by phenotype', async done => {
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByPhenotype', true);
   done();
 });
+
+test('set filter records by inheritance', async done => {
+  const commit = jest.fn() as Commit;
+  actions.setFilterRecordsByInheritance({ commit } as ActionContext<State, State>, true);
+  expect(commit).toHaveBeenCalledWith('setFilterRecordsByInheritance', true);
+  done();
+});

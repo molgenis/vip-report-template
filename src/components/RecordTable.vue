@@ -266,9 +266,10 @@ export default Vue.extend({
       'hasCapice',
       'getAnnotation',
       'isAnnotationEnabled',
-      'isRecordsContainPhenotypes'
+      'isRecordsContainPhenotypes',
+      'isSamplesContainInheritance'
     ]),
-    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype']),
+    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype', 'filterRecordsByInheritance']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -349,12 +350,15 @@ export default Vue.extend({
       this.infoModal.record = null;
     },
     createQuery(): Query | ComposedQuery | undefined {
-      const queries: Query[] = [];
+      const queries: (Query|ComposedQuery)[] = [];
       if (this.sample) {
         queries.push(this.createSampleQuery());
       }
       if (this.isRecordsContainPhenotypes && this.hasSamplePhenotypes() && this.filterRecordsByPhenotype) {
         queries.push(this.createSamplePhenotypesQuery());
+      }
+      if (this.isSamplesContainInheritance && this.filterRecordsByInheritance) {
+        queries.push(this.createSampleInheritanceQuery());
       }
       // todo: translate ctx filter param to query
 
@@ -377,6 +381,23 @@ export default Vue.extend({
         operator: 'in',
         args: ['het', 'hom_a', 'part']
       };
+    },
+    createSampleInheritanceQuery(): ComposedQuery {
+      return {
+          operator: 'or',
+          args: [
+            {
+              selector: ['s', this.sample.index, 'f', 'VIM'],
+              operator: '==',
+              args: "1"
+            },
+            {
+              selector: ['s', this.sample.index, 'f', 'VID'],
+              operator: '==',
+              args: 1
+            }
+          ],
+        };
     },
     hasSamplePhenotypes(): boolean {
       return this.selectedSamplePhenotypes !== null && this.selectedSamplePhenotypes.page.totalElements > 0;
@@ -482,6 +503,10 @@ export default Vue.extend({
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.filterRecordsByPhenotype'() {
+      this.page.currentPage = 1;
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.filterRecordsByInheritance'() {
       this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     }

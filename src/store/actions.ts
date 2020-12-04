@@ -83,6 +83,9 @@ export default {
   },
   setFilterRecordsByPhenotype({ commit }: ActionContext<State, State>, value: boolean) {
     commit('setFilterRecordsByPhenotype', value);
+  },
+  setFilterRecordsByInheritance({ commit }: ActionContext<State, State>, value: boolean) {
+    commit('setFilterRecordsByInheritance', value);
   }
 };
 

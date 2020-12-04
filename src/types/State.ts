@@ -10,5 +10,6 @@ export type State = {
   selectedSamplePhenotypes: PagedItems<Phenotype> | null;
   records: PagedItems<Record> | null;
   filterRecordsByPhenotype: boolean;
+  filterRecordsByInheritance: boolean;
   annotations: Annotations | null;
 };
