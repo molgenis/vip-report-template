@@ -390,7 +390,7 @@ export default Vue.extend({
       return {
         selector: ['s', this.sample.index, 'f', 'VIM'],
         operator: '==',
-        args: "1"
+        args:1
       };
     },
     createSampleDenovoQuery(): Query {
