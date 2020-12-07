@@ -12,6 +12,12 @@
         @change="this.setFilterRecordsByInheritance"
     >{{ $t('matchInheritance') }}
     </b-form-checkbox>
+    <b-form-checkbox
+        v-if="isSamplesContainDenovo"
+        :checked="filterRecordsByDenovo"
+        @change="this.setFilterRecordsByDenovo"
+    >{{ $t('matchDenovo') }}
+    </b-form-checkbox>
   </div>
 </template>
 
@@ -21,11 +27,11 @@ import {mapActions, mapGetters, mapState} from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapGetters(['isRecordsContainPhenotypes', 'isSamplesContainInheritance']),
-    ...mapState(['filterRecordsByPhenotype', 'filterRecordsByInheritance'])
+    ...mapGetters(['isRecordsContainPhenotypes', 'isSamplesContainInheritance', 'isSamplesContainDenovo']),
+    ...mapState(['filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo'])
   },
   methods: {
-    ...mapActions(['setFilterRecordsByPhenotype', 'setFilterRecordsByInheritance'])
+    ...mapActions(['setFilterRecordsByPhenotype', 'setFilterRecordsByInheritance', 'setFilterRecordsByDenovo'])
   }
 });
 </script>

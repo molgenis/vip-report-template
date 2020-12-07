@@ -35,5 +35,8 @@ export default {
   },
   setFilterRecordsByInheritance(state: State, value: boolean) {
     state.filterRecordsByInheritance = value;
+  },
+  setFilterRecordsByDenovo(state: State, value: boolean) {
+    state.filterRecordsByDenovo = value;
   }
 };

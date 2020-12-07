@@ -54,5 +54,6 @@
   "save": "Save...",
   "exit": "Exit",
   "matchPhenotype": "Only display records that match sample phenotype(s)",
-  "matchInheritance": "Only display records that match inheritance or are denovo"
+  "matchInheritance": "Only display records that match inheritance",
+  "matchDenovo": "Only display records that are denovo"
 }

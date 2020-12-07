@@ -448,3 +448,47 @@ test('whether records contain inheritance matching information. null.', () => {
   };
   expect(getters.isSamplesContainInheritance(testState)).toEqual(false);
 });
+
+test('whether records contain denovo information. true.', () => {
+  const formatMetadata = mock<FormatMetadata>();
+  formatMetadata.id = 'VID';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.format = [formatMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDenovo(testState)).toEqual(true);
+});
+
+test('whether records contain denovo information. false.', () => {
+  const formatMetadata = mock<FormatMetadata>();
+  formatMetadata.id = 'OTHER';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.format = [formatMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDenovo(testState)).toEqual(false);
+});
+
+test('whether records contain denovo information. null.', () => {
+  const metadata =null;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDenovo(testState)).toEqual(false);
+});

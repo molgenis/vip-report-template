@@ -86,6 +86,9 @@ export default {
   },
   setFilterRecordsByInheritance({ commit }: ActionContext<State, State>, value: boolean) {
     commit('setFilterRecordsByInheritance', value);
+  },
+  setFilterRecordsByDenovo({ commit }: ActionContext<State, State>, value: boolean) {
+    commit('setFilterRecordsByDenovo', value);
   }
 };
 

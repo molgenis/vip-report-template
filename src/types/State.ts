@@ -11,5 +11,6 @@ export type State = {
   records: PagedItems<Record> | null;
   filterRecordsByPhenotype: boolean;
   filterRecordsByInheritance: boolean;
+  filterRecordsByDenovo: boolean;
   annotations: Annotations | null;
 };

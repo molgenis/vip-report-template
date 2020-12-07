@@ -20,7 +20,7 @@ export default Vue.extend({
   components: { SampleNavigation, SampleReport },
   computed: {
     ...mapGetters(['samples', 'getSampleById']),
-    ...mapState(['selectedSample', 'selectedSamplePhenotypes', 'selectedSampleInheritance'])
+    ...mapState(['selectedSample', 'selectedSamplePhenotypes', 'selectedSampleInheritance', 'selectedSampleDenovo'])
   },
   methods: {
     ...mapActions(['loadMetadata', 'loadSamples', 'selectSample']),

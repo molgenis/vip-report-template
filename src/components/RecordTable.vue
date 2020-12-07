@@ -267,9 +267,10 @@ export default Vue.extend({
       'getAnnotation',
       'isAnnotationEnabled',
       'isRecordsContainPhenotypes',
-      'isSamplesContainInheritance'
+      'isSamplesContainInheritance',
+      'isSamplesContainDenovo'
     ]),
-    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype', 'filterRecordsByInheritance']),
+    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -350,7 +351,7 @@ export default Vue.extend({
       this.infoModal.record = null;
     },
     createQuery(): Query | ComposedQuery | undefined {
-      const queries: (Query|ComposedQuery)[] = [];
+      const queries: Query[] = [];
       if (this.sample) {
         queries.push(this.createSampleQuery());
       }
@@ -359,6 +360,9 @@ export default Vue.extend({
       }
       if (this.isSamplesContainInheritance && this.filterRecordsByInheritance) {
         queries.push(this.createSampleInheritanceQuery());
+      }
+      if (this.isSamplesContainDenovo && this.filterRecordsByDenovo) {
+        queries.push(this.createSampleDenovoQuery());
       }
       // todo: translate ctx filter param to query
 
@@ -382,22 +386,19 @@ export default Vue.extend({
         args: ['het', 'hom_a', 'part']
       };
     },
-    createSampleInheritanceQuery(): ComposedQuery {
+    createSampleInheritanceQuery(): Query {
       return {
-          operator: 'or',
-          args: [
-            {
-              selector: ['s', this.sample.index, 'f', 'VIM'],
-              operator: '==',
-              args: "1"
-            },
-            {
-              selector: ['s', this.sample.index, 'f', 'VID'],
-              operator: '==',
-              args: 1
-            }
-          ],
-        };
+        selector: ['s', this.sample.index, 'f', 'VIM'],
+        operator: '==',
+        args: "1"
+      };
+    },
+    createSampleDenovoQuery(): Query {
+      return {
+        selector: ['s', this.sample.index, 'f', 'VID'],
+        operator:'==',
+        args:1
+      };
     },
     hasSamplePhenotypes(): boolean {
       return this.selectedSamplePhenotypes !== null && this.selectedSamplePhenotypes.page.totalElements > 0;
@@ -507,6 +508,10 @@ export default Vue.extend({
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.filterRecordsByInheritance'() {
+      this.page.currentPage = 1;
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.filterRecordsByDenovo'() {
       this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     }
