@@ -4,6 +4,7 @@ import { State } from '@/types/State';
 import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
 import { mock } from 'ts-mockito';
 import {
+  FormatMetadata,
   HtsFileMetadata,
   InfoMetadata,
   Metadata,
@@ -402,4 +403,92 @@ test('whether records contain phenotype associations without VEP', () => {
     metadata: metadata
   };
   expect(getters.isRecordsContainPhenotypes(testState)).toEqual(false);
+});
+
+test('whether records contain inheritance matching information. true.', () => {
+  const formatMetadata = mock<FormatMetadata>();
+  formatMetadata.id = 'VIM';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.format = [formatMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainInheritance(testState)).toEqual(true);
+});
+
+test('whether records contain inheritance matching information. false.', () => {
+  const formatMetadata = mock<FormatMetadata>();
+  formatMetadata.id = 'OTHER';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.format = [formatMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainInheritance(testState)).toEqual(false);
+});
+
+test('whether records contain inheritance matching information. null.', () => {
+  const metadata =null;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainInheritance(testState)).toEqual(false);
+});
+
+test('whether records contain denovo information. true.', () => {
+  const formatMetadata = mock<FormatMetadata>();
+  formatMetadata.id = 'VID';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.format = [formatMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDenovo(testState)).toEqual(true);
+});
+
+test('whether records contain denovo information. false.', () => {
+  const formatMetadata = mock<FormatMetadata>();
+  formatMetadata.id = 'OTHER';
+
+  const recordsMetadata = mock<RecordsMetadata>();
+  recordsMetadata.format = [formatMetadata];
+
+  const metadata = mock<Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDenovo(testState)).toEqual(false);
+});
+
+test('whether records contain denovo information. null.', () => {
+  const metadata =null;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDenovo(testState)).toEqual(false);
 });

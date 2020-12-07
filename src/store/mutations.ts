@@ -32,5 +32,11 @@ export default {
   },
   setFilterRecordsByPhenotype(state: State, value: boolean) {
     state.filterRecordsByPhenotype = value;
+  },
+  setFilterRecordsByInheritance(state: State, value: boolean) {
+    state.filterRecordsByInheritance = value;
+  },
+  setFilterRecordsByDenovo(state: State, value: boolean) {
+    state.filterRecordsByDenovo = value;
   }
 };

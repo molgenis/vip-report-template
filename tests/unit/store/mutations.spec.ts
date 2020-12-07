@@ -52,3 +52,15 @@ test('set filter records by phenotype', () => {
   mutations.setFilterRecordsByPhenotype(testState, false);
   expect(testState.filterRecordsByPhenotype).toBe(false);
 });
+
+test('set filter records by inheritance', () => {
+  const testState: State = { ...initialState };
+  mutations.setFilterRecordsByInheritance(testState, false);
+  expect(testState.filterRecordsByInheritance).toBe(false);
+});
+
+test('set filter records by denovo', () => {
+  const testState: State = { ...initialState };
+  mutations.setFilterRecordsByDenovo(testState, false);
+  expect(testState.filterRecordsByDenovo).toBe(false);
+});

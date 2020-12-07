@@ -266,9 +266,11 @@ export default Vue.extend({
       'hasCapice',
       'getAnnotation',
       'isAnnotationEnabled',
-      'isRecordsContainPhenotypes'
+      'isRecordsContainPhenotypes',
+      'isSamplesContainInheritance',
+      'isSamplesContainDenovo'
     ]),
-    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype']),
+    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo']),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -356,6 +358,12 @@ export default Vue.extend({
       if (this.isRecordsContainPhenotypes && this.hasSamplePhenotypes() && this.filterRecordsByPhenotype) {
         queries.push(this.createSamplePhenotypesQuery());
       }
+      if (this.isSamplesContainInheritance && this.filterRecordsByInheritance) {
+        queries.push(this.createSampleInheritanceQuery());
+      }
+      if (this.isSamplesContainDenovo && this.filterRecordsByDenovo) {
+        queries.push(this.createSampleDenovoQuery());
+      }
       // todo: translate ctx filter param to query
 
       let query: Query | ComposedQuery | undefined;
@@ -376,6 +384,20 @@ export default Vue.extend({
         selector: ['s', this.sample.index, 'gt', 't'],
         operator: 'in',
         args: ['het', 'hom_a', 'part']
+      };
+    },
+    createSampleInheritanceQuery(): Query {
+      return {
+        selector: ['s', this.sample.index, 'f', 'VIM'],
+        operator: '==',
+        args:1
+      };
+    },
+    createSampleDenovoQuery(): Query {
+      return {
+        selector: ['s', this.sample.index, 'f', 'VID'],
+        operator:'==',
+        args:1
       };
     },
     hasSamplePhenotypes(): boolean {
@@ -482,6 +504,14 @@ export default Vue.extend({
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.filterRecordsByPhenotype'() {
+      this.page.currentPage = 1;
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.filterRecordsByInheritance'() {
+      this.page.currentPage = 1;
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.filterRecordsByDenovo'() {
       this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     }
