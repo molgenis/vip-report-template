@@ -10,6 +10,7 @@ import {
   ButtonPlugin,
   CollapsePlugin,
   FormCheckboxPlugin,
+  FormInputPlugin,
   FormSelectPlugin,
   FormTextareaPlugin,
   InputGroupPlugin,
@@ -28,6 +29,7 @@ Vue.use(AlertPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(CollapsePlugin);
 Vue.use(FormCheckboxPlugin);
+Vue.use(FormInputPlugin);
 Vue.use(FormSelectPlugin);
 Vue.use(FormTextareaPlugin);
 Vue.use(InputGroupPlugin);
