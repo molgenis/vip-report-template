@@ -4,6 +4,12 @@ import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Conseque
 const consequenceMetadata: ConsequenceMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
+  inheritance: {
+    id: 'InheritanceModesGene',
+    type: 'STRING',
+    number: { type: 'OTHER' },
+    description: 'InheritanceModesGene'
+  },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
   hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
   pubMed: {
@@ -30,6 +36,7 @@ function createConsequence(
   info: InfoValue[],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
+  inheritanceIndex: number | undefined,
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
   pubMedIndex: number | undefined,
@@ -39,6 +46,7 @@ function createConsequence(
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
     symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
+    inheritance: inheritanceIndex !== undefined ? (info[inheritanceIndex] as string | null) : null,
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
     pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],
@@ -51,6 +59,7 @@ function createConsequences(
   info: InfoValue[][],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
+  inheritanceIndex: number | undefined,
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
   pubMedIndex: number | undefined,
@@ -63,6 +72,7 @@ function createConsequences(
       item,
       effectIndex,
       symbolIndex,
+      inheritanceIndex,
       hgvsCIndex,
       hgvsPIndex,
       pubMedIndex,
@@ -80,6 +90,7 @@ function getInfoConsequences(
   info: InfoValue[][],
   effectId: string,
   symbolId: string,
+  inheritanceId: string | null,
   hgvsCId: string,
   hgvsPId: string,
   pubMedId: string | null,
@@ -90,7 +101,7 @@ function getInfoConsequences(
     return [];
   }
 
-  let effectIndex, symbolIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex, gnomADIndex;
+  let effectIndex, symbolIndex, inheritanceIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex, gnomADIndex;
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
@@ -99,6 +110,9 @@ function getInfoConsequences(
         break;
       case symbolId:
         symbolIndex = index;
+        break;
+      case inheritanceId:
+        inheritanceIndex = index;
         break;
       case hgvsCId:
         hgvsCIndex = index;
@@ -125,6 +139,7 @@ function getInfoConsequences(
     info,
     effectIndex,
     symbolIndex,
+    inheritanceIndex,
     hgvsCIndex,
     hgvsPIndex,
     pubMedIndex,
@@ -153,6 +168,7 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     csqInfo,
     'Consequence',
     'SYMBOL',
+    'InheritanceModesGene',
     'HGVSc',
     'HGVSp',
     'PUBMED',
@@ -176,7 +192,18 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
     return [];
   }
   const annInfo = info.ANN as InfoValue[][];
-  return getInfoConsequences(infoMetadata, annInfo, 'Annotation', 'Gene_Name', 'HGVS.c', 'HGVS.p', null, null, null);
+  return getInfoConsequences(
+    infoMetadata,
+    annInfo,
+    'Annotation',
+    'Gene_Name',
+    null,
+    'HGVS.c',
+    'HGVS.p',
+    null,
+    null,
+    null
+  );
 }
 
 /**
@@ -299,6 +326,30 @@ export function getPhenotypesSelector(recordMetadata: RecordsMetadata): Selector
   const index = getVepPhenotypesIndex(recordMetadata);
   if (index === null) {
     throw new Error('phenotypes unavailable');
+  }
+  return ['n', 'CSQ', '*', index];
+}
+
+function getVepInheritanceModesGeneIndex(metadata: RecordsMetadata): number | null {
+  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
+  if (infoMetadata === undefined || infoMetadata.nested === undefined) {
+    return null;
+  }
+
+  let index = 0;
+  for (const nestedInfoMetadata of infoMetadata.nested) {
+    if (nestedInfoMetadata.id === 'InheritanceModesGene') {
+      return index;
+    }
+    ++index;
+  }
+  return null;
+}
+
+export function getInheritanceModesGeneSelector(recordMetadata: RecordsMetadata): Selector {
+  const index = getVepInheritanceModesGeneIndex(recordMetadata);
+  if (index === null) {
+    throw new Error('inheritance modes gene unavailable');
   }
   return ['n', 'CSQ', '*', index];
 }

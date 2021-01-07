@@ -1,10 +1,16 @@
-import { getConsequences, getPhenotypesSelector } from '@/globals/utils';
+import { getConsequences, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
 import { InfoMetadata, Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { mock } from 'ts-mockito';
 
 const expectedMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
+  inheritance: {
+    id: 'InheritanceModesGene',
+    type: 'STRING',
+    number: { type: 'OTHER' },
+    description: 'InheritanceModesGene'
+  },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
   hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
   pubMed: {
@@ -53,6 +59,8 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
   gnomADMetadata.id = 'gnomAD_AF';
   const hpoMetadata = mock<InfoMetadata>();
   hpoMetadata.id = 'HPO';
+  const inheritanceModesGeneMetadata = mock<InfoMetadata>();
+  inheritanceModesGeneMetadata.id = 'InheritanceModesGene';
 
   const csqInfoMetadata = createCsqInfoMetadata();
   if (csqInfoMetadata.nested !== undefined) {
@@ -60,6 +68,7 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
     csqInfoMetadata.nested.push(clinSigMetadata);
     csqInfoMetadata.nested.push(gnomADMetadata);
     csqInfoMetadata.nested.push(hpoMetadata);
+    csqInfoMetadata.nested.push(inheritanceModesGeneMetadata);
   }
   return csqInfoMetadata;
 }
@@ -287,4 +296,25 @@ test('get phenotypes selector in case of SnpEff annotations', () => {
   recordMetadata.info = [createAnnInfoMetadata()];
 
   expect(() => getPhenotypesSelector(recordMetadata)).toThrow();
+});
+
+test('get inheritance modes gene selector in case of VEP annotations with HPO', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadataExtended()];
+
+  expect(getInheritanceModesGeneSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 8]);
+});
+
+test('get inheritance modes gene selector in case of VEP annotations without HPO', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadata()];
+
+  expect(() => getInheritanceModesGeneSelector(recordMetadata)).toThrow();
+});
+
+test('get inheritance modes gene selector in case of SnpEff annotations', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createAnnInfoMetadata()];
+
+  expect(() => getInheritanceModesGeneSelector(recordMetadata)).toThrow();
 });
