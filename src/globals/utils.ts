@@ -46,7 +46,7 @@ function createConsequence(
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
     symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
-    inheritance: inheritanceIndex !== undefined ? (info[inheritanceIndex] as string | null) : null,
+    inheritance: inheritanceIndex !== undefined ? (info[inheritanceIndex] as string[]) : [],
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
     pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],

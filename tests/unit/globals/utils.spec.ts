@@ -132,6 +132,7 @@ test('get consequences in case of CSQ info', () => {
       {
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -141,6 +142,7 @@ test('get consequences in case of CSQ info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -158,7 +160,7 @@ test('get consequences in case of CSQ info with extended info', () => {
   const record = mock<Record>();
   record.n = {
     CSQ: [
-      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345],
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345, 'HP:123', []],
       [
         ['frameshift_variant'],
         'hgvsC1',
@@ -166,7 +168,9 @@ test('get consequences in case of CSQ info with extended info', () => {
         'symbol1',
         ['12345678', '23456789'],
         ['likely_pathogenic', 'pathogenic'],
-        0.1234
+        0.1234,
+        'HP:123',
+        []
       ]
     ]
   };
@@ -176,6 +180,7 @@ test('get consequences in case of CSQ info with extended info', () => {
       {
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: 0.1234,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -185,6 +190,7 @@ test('get consequences in case of CSQ info with extended info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: 0.2345,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -212,6 +218,7 @@ test('get consequences in case of ANN info', () => {
       {
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -221,6 +228,7 @@ test('get consequences in case of ANN info', () => {
       {
         effect: ['start_lost'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -249,6 +257,7 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -258,6 +267,7 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['start_lost'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -267,6 +277,7 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol2',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC2',
         hgvsP: 'hgvsP2',

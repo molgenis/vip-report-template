@@ -14,7 +14,7 @@ export interface ConsequenceMetadata {
 export interface Consequence {
   effect: string[];
   symbol: string | null;
-  inheritance: string | null;
+  inheritance: string[];
   hgvsC: string | null;
   hgvsP: string | null;
   pubMed: number[];
