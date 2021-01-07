@@ -85,6 +85,12 @@
           :values="data.item.expand ? data.item.symbol.items : data.item.symbol.items.slice(0, 1)"
         />
       </template>
+      <template v-slot:cell(inheritance)="data">
+        <RecordInfoDetailsItemMultiline
+          :metadata="data.item.inheritance.metadata"
+          :values="data.item.expand ? data.item.inheritance.items : data.item.inheritance.items.slice(0, 1)"
+        />
+      </template>
       <template v-slot:cell(hgvsC)="data">
         <RecordInfoDetailsItemMultiline
           :metadata="data.item.hgvsC.metadata"
@@ -188,7 +194,7 @@ import RecordDetails from '@/components/RecordDetails.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
-import { getConsequences, getPhenotypesSelector } from '@/globals/utils';
+import { getConsequences, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
 import { Annotation } from '@/types/Annotations';
@@ -218,6 +224,7 @@ interface Row {
   s?: RecordSample[];
   effect?: unknown;
   symbol?: unknown;
+  inheritance?: unknown;
   hgvsC?: unknown;
   hgvsP?: unknown;
   pubMed?: unknown;
@@ -270,7 +277,15 @@ export default Vue.extend({
       'isSamplesContainInheritance',
       'isSamplesContainDenovo'
     ]),
-    ...mapState(['metadata', 'records', 'annotations', 'selectedSamplePhenotypes', 'filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo']),
+    ...mapState([
+      'metadata',
+      'records',
+      'annotations',
+      'selectedSamplePhenotypes',
+      'filterRecordsByPhenotype',
+      'filterRecordsByInheritance',
+      'filterRecordsByDenovo'
+    ]),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
@@ -302,6 +317,9 @@ export default Vue.extend({
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
         fields.push({ key: 'effect', label: 'effect' });
         fields.push({ key: 'symbol', label: 'symbol' });
+        if (this.isSamplesContainInheritance) {
+          fields.push({ key: 'inheritance', label: 'inheritance' });
+        }
         fields.push({ key: 'hgvsC', label: 'hgvsc' });
         fields.push({ key: 'hgvsP', label: 'hgvsp' });
         fields.push({ key: 'gnomAD', label: 'gnomad' });
@@ -351,7 +369,7 @@ export default Vue.extend({
       this.infoModal.record = null;
     },
     createQuery(): Query | ComposedQuery | undefined {
-      const queries: Query[] = [];
+      const queries: (Query | ComposedQuery)[] = [];
       if (this.sample) {
         queries.push(this.createSampleQuery());
       }
@@ -386,18 +404,38 @@ export default Vue.extend({
         args: ['het', 'hom_a', 'part']
       };
     },
-    createSampleInheritanceQuery(): Query {
+    createSampleInheritanceQuery(): ComposedQuery {
       return {
-        selector: ['s', this.sample.index, 'f', 'VIM'],
-        operator: '==',
-        args:1
+        operator: 'or',
+        args: [
+          {
+            selector: ['s', this.sample.index, 'f', 'VIM'],
+            operator: '==',
+            args: 1
+          },
+          {
+            operator: 'and',
+            args: [
+              {
+                selector: getInheritanceModesGeneSelector(this.metadata.records),
+                operator: '!any_has_any',
+                args: ['AD', 'AR', 'XR', 'XD', 'XL']
+              },
+              {
+                selector: ['s', this.sample.index, 'f', 'VI'],
+                operator: 'has_any',
+                args: ['AD', 'AR', 'XR', 'XD', 'XL']
+              }
+            ]
+          }
+        ]
       };
     },
     createSampleDenovoQuery(): Query {
       return {
         selector: ['s', this.sample.index, 'f', 'VID'],
-        operator:'==',
-        args:1
+        operator: '==',
+        args: 1
       };
     },
     hasSamplePhenotypes(): boolean {
@@ -466,6 +504,12 @@ export default Vue.extend({
           metadata: consequences.metadata.symbol,
           items: consequences.items.map(consequence => consequence.symbol)
         };
+        if (this.isSamplesContainInheritance) {
+          row.inheritance = {
+            metadata: consequences.metadata.inheritance,
+            items: consequences.items.map(consequence => consequence.inheritance)
+          };
+        }
         row.hgvsC = {
           metadata: consequences.metadata.hgvsC,
           items: consequences.items.map(consequence => consequence.hgvsC)

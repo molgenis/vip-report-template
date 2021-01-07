@@ -1,10 +1,16 @@
-import { getConsequences, getPhenotypesSelector } from '@/globals/utils';
+import { getConsequences, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
 import { InfoMetadata, Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { mock } from 'ts-mockito';
 
 const expectedMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
+  inheritance: {
+    id: 'InheritanceModesGene',
+    type: 'STRING',
+    number: { type: 'OTHER' },
+    description: 'InheritanceModesGene'
+  },
   hgvsC: { id: 'hgvsC', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsC' },
   hgvsP: { id: 'hgvsP', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'hgvsP' },
   pubMed: {
@@ -53,6 +59,8 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
   gnomADMetadata.id = 'gnomAD_AF';
   const hpoMetadata = mock<InfoMetadata>();
   hpoMetadata.id = 'HPO';
+  const inheritanceModesGeneMetadata = mock<InfoMetadata>();
+  inheritanceModesGeneMetadata.id = 'InheritanceModesGene';
 
   const csqInfoMetadata = createCsqInfoMetadata();
   if (csqInfoMetadata.nested !== undefined) {
@@ -60,6 +68,7 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
     csqInfoMetadata.nested.push(clinSigMetadata);
     csqInfoMetadata.nested.push(gnomADMetadata);
     csqInfoMetadata.nested.push(hpoMetadata);
+    csqInfoMetadata.nested.push(inheritanceModesGeneMetadata);
   }
   return csqInfoMetadata;
 }
@@ -123,6 +132,7 @@ test('get consequences in case of CSQ info', () => {
       {
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -132,6 +142,7 @@ test('get consequences in case of CSQ info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -149,7 +160,7 @@ test('get consequences in case of CSQ info with extended info', () => {
   const record = mock<Record>();
   record.n = {
     CSQ: [
-      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345],
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345, 'HP:123', []],
       [
         ['frameshift_variant'],
         'hgvsC1',
@@ -157,7 +168,9 @@ test('get consequences in case of CSQ info with extended info', () => {
         'symbol1',
         ['12345678', '23456789'],
         ['likely_pathogenic', 'pathogenic'],
-        0.1234
+        0.1234,
+        'HP:123',
+        []
       ]
     ]
   };
@@ -167,6 +180,7 @@ test('get consequences in case of CSQ info with extended info', () => {
       {
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: 0.1234,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -176,6 +190,7 @@ test('get consequences in case of CSQ info with extended info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: 0.2345,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -203,6 +218,7 @@ test('get consequences in case of ANN info', () => {
       {
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -212,6 +228,7 @@ test('get consequences in case of ANN info', () => {
       {
         effect: ['start_lost'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -240,6 +257,7 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
@@ -249,6 +267,7 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['start_lost'],
         symbol: 'symbol0',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
@@ -258,6 +277,7 @@ test('get consequences in case of CSQ and ANN info', () => {
       {
         effect: ['intergenic_variant'],
         symbol: 'symbol2',
+        inheritance: [],
         gnomAD: null,
         hgvsC: 'hgvsC2',
         hgvsP: 'hgvsP2',
@@ -287,4 +307,25 @@ test('get phenotypes selector in case of SnpEff annotations', () => {
   recordMetadata.info = [createAnnInfoMetadata()];
 
   expect(() => getPhenotypesSelector(recordMetadata)).toThrow();
+});
+
+test('get inheritance modes gene selector in case of VEP annotations with HPO', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadataExtended()];
+
+  expect(getInheritanceModesGeneSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 8]);
+});
+
+test('get inheritance modes gene selector in case of VEP annotations without HPO', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createCsqInfoMetadata()];
+
+  expect(() => getInheritanceModesGeneSelector(recordMetadata)).toThrow();
+});
+
+test('get inheritance modes gene selector in case of SnpEff annotations', () => {
+  const recordMetadata = mock<RecordsMetadata>();
+  recordMetadata.info = [createAnnInfoMetadata()];
+
+  expect(() => getInheritanceModesGeneSelector(recordMetadata)).toThrow();
 });
