@@ -194,7 +194,7 @@ import RecordDetails from '@/components/RecordDetails.vue';
 import Allele from '@/components/Allele.vue';
 import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
-import { getConsequences, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
+import { getConsequences, getVariant, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
 import { Annotation } from '@/types/Annotations';
@@ -520,7 +520,14 @@ export default Vue.extend({
         };
         row.gnomAD = {
           metadata: consequences.metadata.gnomAD,
-          items: consequences.items.map(consequence => consequence.gnomAD)
+          items: consequences.items.map(consequence =>
+            consequence.gnomAD !== null
+              ? {
+                  variant: getVariant(record, consequence),
+                  gnomAD: consequence.gnomAD
+                }
+              : null
+          )
         };
         row.clinVar = {
           metadata: consequences.metadata.clinVar,
