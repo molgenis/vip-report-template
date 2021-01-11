@@ -1,5 +1,6 @@
 import { InfoMetadata, InfoValue, Record, RecordsMetadata, Selector } from '@molgenis/vip-report-api';
 import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
+import { Variant } from '@/types/Variant';
 
 const consequenceMetadata: ConsequenceMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
@@ -42,7 +43,8 @@ function createConsequence(
   pubMedIndex: number | undefined,
   clinVarIndex: number | undefined,
   gnomADIndex: number | undefined,
-  primaryIndex: number | undefined
+  primaryIndex: number | undefined,
+  alleleIndexIndex: number | undefined
 ): Consequence {
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
@@ -53,7 +55,8 @@ function createConsequence(
     pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],
     clinVar: clinVarIndex !== undefined ? (info[clinVarIndex] as string[]) : [],
     gnomAD: gnomADIndex !== undefined ? (info[gnomADIndex] as number) : null,
-    primary: primaryIndex !== undefined ? (info[primaryIndex] as string) : null
+    primary: primaryIndex !== undefined ? (info[primaryIndex] as string) : null,
+    alleleIndex: alleleIndexIndex != undefined ? (info[alleleIndexIndex] as number) : null
   };
 }
 
@@ -67,7 +70,8 @@ function createConsequences(
   pubMedIndex: number | undefined,
   clinVarIndex: number | undefined,
   gnomADIndex: number | undefined,
-  primaryIndex: number | undefined
+  primaryIndex: number | undefined,
+  alleleIndexIndex: number | undefined
 ): Consequence[] {
   const items = [];
   for (const item of info) {
@@ -81,7 +85,8 @@ function createConsequences(
       pubMedIndex,
       clinVarIndex,
       gnomADIndex,
-      primaryIndex
+      primaryIndex,
+      alleleIndexIndex
     );
     items.push(consequence);
   }
@@ -100,7 +105,8 @@ function getInfoConsequences(
   pubMedId: string | null,
   clinVarId: string | null,
   gnomADId: string | null,
-  primaryId: string | null
+  primaryId: string | null,
+  alleleIndexId: string | null
 ): Consequence[] {
   if (infoMetadata.nested === undefined) {
     return [];
@@ -114,7 +120,8 @@ function getInfoConsequences(
     pubMedIndex,
     clinVarIndex,
     gnomADIndex,
-    primaryIndex;
+    primaryIndex,
+    alleleIndexIndex;
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
@@ -145,6 +152,9 @@ function getInfoConsequences(
       case primaryId:
         primaryIndex = index;
         break;
+      case alleleIndexId:
+        alleleIndexIndex = index;
+        break;
       default:
         break;
     }
@@ -161,7 +171,8 @@ function getInfoConsequences(
     pubMedIndex,
     clinVarIndex,
     gnomADIndex,
-    primaryIndex
+    primaryIndex,
+    alleleIndexIndex
   );
 }
 
@@ -191,7 +202,8 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     'PUBMED',
     'CLIN_SIG',
     'gnomAD_AF',
-    'PICK'
+    'PICK',
+    'ALLELE_NUM'
   );
 }
 
@@ -218,6 +230,7 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
     null,
     'HGVS.c',
     'HGVS.p',
+    null,
     null,
     null,
     null,
@@ -377,4 +390,19 @@ export function getInheritanceModesGeneSelector(recordMetadata: RecordsMetadata)
     throw new Error('inheritance modes gene unavailable');
   }
   return ['n', 'CSQ', '*', index];
+}
+
+export function getVariant(record: Record, consequence: Consequence): Variant | null {
+  let variant;
+  if (consequence.alleleIndex !== null) {
+    variant = {
+      chr: record.c,
+      pos: record.p,
+      ref: record.r,
+      alt: record.a[consequence.alleleIndex - 1]
+    };
+  } else {
+    variant = null;
+  }
+  return variant;
 }

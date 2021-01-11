@@ -59,8 +59,16 @@
     <span v-else>{{ value.indexOf(':') !== -1 ? value.substring(value.indexOf(':') + 1) : value }}</span>
   </span>
   <span v-else-if="metadataId === 'gnomAD_AF'">
-    <span v-if="details">{{ value }}</span>
-    <span v-else>{{ value.toFixed(5) }}</span>
+    <Anchor
+      v-if="typeof value === 'object' && value.variant !== null"
+      :href="
+        'https://gnomad.broadinstitute.org/variant/' +
+          encodeURIComponent([value.variant.chr, value.variant.pos, value.variant.ref, value.variant.alt].join('-')) +
+          '?dataset=gnomad_r2_1'
+      "
+      :text="details ? value.gnomAD : value.gnomAD.toFixed(5)"
+    />
+    <span v-else>{{ details ? value.gnomAD : value.gnomAD.toFixed(5) }}</span>
   </span>
   <span v-else-if="metadataId === 'CLIN_SIG'">{{ getClass(value) }}</span>
   <span v-else>{{ value }}</span>
@@ -75,7 +83,7 @@ export default Vue.extend({
   components: { Anchor },
   props: {
     metadataId: String as PropType<string>,
-    value: [String, Number, Boolean] as PropType<string | number | boolean>,
+    value: [String, Number, Boolean, Object] as PropType<string | number | boolean | object>,
     details: {
       type: Boolean as PropType<boolean>,
       default: false

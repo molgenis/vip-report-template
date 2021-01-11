@@ -12,6 +12,7 @@ export interface ConsequenceMetadata {
 }
 
 export interface Consequence {
+  alleleIndex: number | null;
   effect: string[];
   symbol: string | null;
   inheritance: string[];

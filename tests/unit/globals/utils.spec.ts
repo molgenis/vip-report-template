@@ -1,6 +1,7 @@
-import { getConsequences, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
+import { getConsequences, getInheritanceModesGeneSelector, getPhenotypesSelector, getVariant } from '@/globals/utils';
 import { InfoMetadata, Record, RecordsMetadata } from '@molgenis/vip-report-api';
 import { mock } from 'ts-mockito';
+import { Consequence } from '@/types/Consequence';
 
 const expectedMetadata = {
   effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
@@ -63,6 +64,8 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
   inheritanceModesGeneMetadata.id = 'InheritanceModesGene';
   const pickMetadata = mock<InfoMetadata>();
   pickMetadata.id = 'PICK';
+  const alleleNumMetadata = mock<InfoMetadata>();
+  alleleNumMetadata.id = 'ALLELE_NUM';
 
   const csqInfoMetadata = createCsqInfoMetadata();
   if (csqInfoMetadata.nested !== undefined) {
@@ -72,6 +75,7 @@ function createCsqInfoMetadataExtended(): InfoMetadata {
     csqInfoMetadata.nested.push(hpoMetadata);
     csqInfoMetadata.nested.push(inheritanceModesGeneMetadata);
     csqInfoMetadata.nested.push(pickMetadata);
+    csqInfoMetadata.nested.push(alleleNumMetadata);
   }
   return csqInfoMetadata;
 }
@@ -133,6 +137,7 @@ test('get consequences in case of CSQ info', () => {
     metadata: expectedMetadata,
     items: [
       {
+        alleleIndex: null,
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
         inheritance: [],
@@ -144,6 +149,7 @@ test('get consequences in case of CSQ info', () => {
         clinVar: []
       },
       {
+        alleleIndex: null,
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
         inheritance: [],
@@ -165,7 +171,7 @@ test('get consequences in case of CSQ info with extended info', () => {
   const record = mock<Record>();
   record.n = {
     CSQ: [
-      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345, 'HP:123', [], null],
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345, 'HP:123', [], null, 1],
       [
         ['frameshift_variant'],
         'hgvsC1',
@@ -176,7 +182,8 @@ test('get consequences in case of CSQ info with extended info', () => {
         0.1234,
         'HP:123',
         [],
-        '1'
+        '1',
+        2
       ]
     ]
   };
@@ -184,6 +191,7 @@ test('get consequences in case of CSQ info with extended info', () => {
     metadata: expectedMetadata,
     items: [
       {
+        alleleIndex: 2,
         effect: ['frameshift_variant'],
         symbol: 'symbol1',
         inheritance: [],
@@ -195,6 +203,7 @@ test('get consequences in case of CSQ info with extended info', () => {
         clinVar: ['likely_pathogenic', 'pathogenic']
       },
       {
+        alleleIndex: 1,
         effect: ['intergenic_variant'],
         symbol: 'symbol0',
         inheritance: [],
@@ -224,6 +233,7 @@ test('get consequences in case of ANN info', () => {
     metadata: expectedMetadata,
     items: [
       {
+        alleleIndex: null,
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
         inheritance: [],
@@ -235,6 +245,7 @@ test('get consequences in case of ANN info', () => {
         clinVar: []
       },
       {
+        alleleIndex: null,
         effect: ['start_lost'],
         symbol: 'symbol0',
         inheritance: [],
@@ -265,6 +276,7 @@ test('get consequences in case of CSQ and ANN info', () => {
     metadata: expectedMetadata,
     items: [
       {
+        alleleIndex: null,
         effect: ['missense_variant', 'frameshift_variant'],
         symbol: 'symbol1',
         inheritance: [],
@@ -276,6 +288,7 @@ test('get consequences in case of CSQ and ANN info', () => {
         clinVar: []
       },
       {
+        alleleIndex: null,
         effect: ['start_lost'],
         symbol: 'symbol0',
         inheritance: [],
@@ -287,6 +300,7 @@ test('get consequences in case of CSQ and ANN info', () => {
         clinVar: []
       },
       {
+        alleleIndex: null,
         effect: ['intergenic_variant'],
         symbol: 'symbol2',
         inheritance: [],
@@ -341,4 +355,26 @@ test('get inheritance modes gene selector in case of SnpEff annotations', () => 
   recordMetadata.info = [createAnnInfoMetadata()];
 
   expect(() => getInheritanceModesGeneSelector(recordMetadata)).toThrow();
+});
+
+test('get variant for consequence with allele index', () => {
+  const record = mock<Record>();
+  record.c = '1';
+  record.p = 123;
+  record.r = 'A';
+  record.a = ['T', 'TA'];
+  const consequence = mock<Consequence>();
+  consequence.alleleIndex = 2;
+  expect(getVariant(record, consequence)).toEqual({ chr: '1', pos: 123, ref: 'A', alt: 'TA' });
+});
+
+test('get variant for consequence without allele index', () => {
+  const record = mock<Record>();
+  record.c = '1';
+  record.p = 123;
+  record.r = 'A';
+  record.a = ['T', 'TA'];
+  const consequence = mock<Consequence>();
+  consequence.alleleIndex = null;
+  expect(getVariant(record, consequence)).toBeNull();
 });
