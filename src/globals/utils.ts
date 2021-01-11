@@ -41,7 +41,8 @@ function createConsequence(
   hgvsPIndex: number | undefined,
   pubMedIndex: number | undefined,
   clinVarIndex: number | undefined,
-  gnomADIndex: number | undefined
+  gnomADIndex: number | undefined,
+  primaryIndex: number | undefined
 ): Consequence {
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
@@ -51,7 +52,8 @@ function createConsequence(
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
     pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],
     clinVar: clinVarIndex !== undefined ? (info[clinVarIndex] as string[]) : [],
-    gnomAD: gnomADIndex !== undefined ? (info[gnomADIndex] as number) : null
+    gnomAD: gnomADIndex !== undefined ? (info[gnomADIndex] as number) : null,
+    primary: primaryIndex !== undefined ? (info[primaryIndex] as string) : null
   };
 }
 
@@ -64,7 +66,8 @@ function createConsequences(
   hgvsPIndex: number | undefined,
   pubMedIndex: number | undefined,
   clinVarIndex: number | undefined,
-  gnomADIndex: number | undefined
+  gnomADIndex: number | undefined,
+  primaryIndex: number | undefined
 ): Consequence[] {
   const items = [];
   for (const item of info) {
@@ -77,7 +80,8 @@ function createConsequences(
       hgvsPIndex,
       pubMedIndex,
       clinVarIndex,
-      gnomADIndex
+      gnomADIndex,
+      primaryIndex
     );
     items.push(consequence);
   }
@@ -95,13 +99,22 @@ function getInfoConsequences(
   hgvsPId: string,
   pubMedId: string | null,
   clinVarId: string | null,
-  gnomADId: string | null
+  gnomADId: string | null,
+  primaryId: string | null
 ): Consequence[] {
   if (infoMetadata.nested === undefined) {
     return [];
   }
 
-  let effectIndex, symbolIndex, inheritanceIndex, hgvsCIndex, hgvsPIndex, pubMedIndex, clinVarIndex, gnomADIndex;
+  let effectIndex,
+    symbolIndex,
+    inheritanceIndex,
+    hgvsCIndex,
+    hgvsPIndex,
+    pubMedIndex,
+    clinVarIndex,
+    gnomADIndex,
+    primaryIndex;
   let index = 0;
   for (const nestedInfoMetadata of infoMetadata.nested) {
     switch (nestedInfoMetadata.id) {
@@ -129,6 +142,9 @@ function getInfoConsequences(
       case gnomADId:
         gnomADIndex = index;
         break;
+      case primaryId:
+        primaryIndex = index;
+        break;
       default:
         break;
     }
@@ -144,7 +160,8 @@ function getInfoConsequences(
     hgvsPIndex,
     pubMedIndex,
     clinVarIndex,
-    gnomADIndex
+    gnomADIndex,
+    primaryIndex
   );
 }
 
@@ -173,7 +190,8 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
     'HGVSp',
     'PUBMED',
     'CLIN_SIG',
-    'gnomAD_AF'
+    'gnomAD_AF',
+    'PICK'
   );
 }
 
@@ -200,6 +218,7 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
     null,
     'HGVS.c',
     'HGVS.p',
+    null,
     null,
     null,
     null
@@ -271,24 +290,30 @@ const soTermRank: { [index: string]: number } = {
 };
 
 function sortConsequences(thisConsequence: Consequence, thatConsequence: Consequence): number {
-  let thisRank = Number.MAX_VALUE;
+  if (thisConsequence.primary === '1' && thatConsequence.primary !== '1') {
+    return -1;
+  } else if (thatConsequence.primary === '1') {
+    return 1;
+  } else {
+    let thisRank = Number.MAX_VALUE;
 
-  for (const soTerm of thisConsequence.effect) {
-    const rank = soTermRank[soTerm];
-    if (rank < thisRank) {
-      thisRank = rank;
+    for (const soTerm of thisConsequence.effect) {
+      const rank = soTermRank[soTerm];
+      if (rank < thisRank) {
+        thisRank = rank;
+      }
     }
-  }
 
-  let thatRank = Number.MAX_VALUE;
-  for (const soTerm of thatConsequence.effect) {
-    const rank = soTermRank[soTerm];
-    if (rank < thatRank) {
-      thatRank = rank;
+    let thatRank = Number.MAX_VALUE;
+    for (const soTerm of thatConsequence.effect) {
+      const rank = soTermRank[soTerm];
+      if (rank < thatRank) {
+        thatRank = rank;
+      }
     }
-  }
 
-  return thisRank - thatRank;
+    return thisRank - thatRank;
+  }
 }
 
 /**

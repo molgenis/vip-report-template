@@ -20,6 +20,7 @@ export interface Consequence {
   pubMed: number[];
   clinVar: string[];
   gnomAD: number | null;
+  primary: string | null;
 }
 
 export interface Consequences {
