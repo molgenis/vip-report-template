@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, {PropType} from 'vue';
 import {Sample} from "@molgenis/vip-report-api";
 import SampleDetails from "@/components/SampleDetails.vue";
 import {mapGetters} from "vuex";
@@ -29,7 +29,7 @@ import {mapGetters} from "vuex";
 export default Vue.extend({
   components: {SampleDetails},
   props: {
-    sample: Object
+    sample: Object as PropType<Sample>
   },
   computed: {
     ...mapGetters([
