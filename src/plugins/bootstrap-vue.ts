@@ -5,8 +5,13 @@ import {
   BIconBoxArrowInUpRight,
   BIconChevronDown,
   BIconChevronUp,
+  BIconCircle,
+  BIconCircleFill,
   BIconQuestionCircle,
+  BIconQuestionSquare,
   BIconSearch,
+  BIconSquare,
+  BIconSquareFill,
   ButtonPlugin,
   CollapsePlugin,
   FormCheckboxPlugin,
@@ -44,5 +49,10 @@ Vue.component('BIcon', BIcon);
 Vue.component('BIconBoxArrowInUpRight', BIconBoxArrowInUpRight);
 Vue.component('BIconChevronDown', BIconChevronDown);
 Vue.component('BIconChevronUp', BIconChevronUp);
+Vue.component('BIconCircle', BIconCircle);
+Vue.component('BIconCircleFill', BIconCircleFill);
 Vue.component('BIconQuestionCircle', BIconQuestionCircle);
 Vue.component('BIconSearch', BIconSearch);
+Vue.component('BIconSquare', BIconSquare);
+Vue.component('BIconSquareFill', BIconSquareFill);
+Vue.component('BIconQuestionSquare', BIconQuestionSquare);

@@ -32,6 +32,7 @@
   "samples": "Samples",
   "father": "Father",
   "mother": "Mother",
+  "pedigree": "Pedigree",
   "phenotype": "Phenotype",
   "phenotypes": "Phenotypes",
   "phenotypesUnavailable": "no phenotype information available",
@@ -56,5 +57,11 @@
   "exit": "Exit",
   "matchPhenotype": "Only display records that match sample phenotype(s)",
   "matchInheritance": "Only display records that match inheritance",
-  "matchDenovo": "Only display records that are denovo"
+  "matchDenovo": "Only display records that are denovo",
+  "maleAffected": "Male, Affected.",
+  "maleUnaffected": "Male, Unaffected.",
+  "maleUnknown": "Male, Unknown affected status.",
+  "femaleAffected": "Female, Affected.",
+  "femaleUnaffected": "Female, Unaffected.",
+  "femaleUnknown": "Female, Unknown affected status."
 }
