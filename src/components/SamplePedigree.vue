@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {Sample} from "@molgenis/vip-report-api";
 import SampleDetails from "@/components/SampleDetails.vue";
 import {mapGetters} from "vuex";
 
