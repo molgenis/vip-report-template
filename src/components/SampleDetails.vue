@@ -5,8 +5,8 @@
       <b-icon-square v-else-if="sample.person.affectedStatus === 'UNAFFECTED' && sample.person.sex == 'MALE'" v-b-tooltip.hover :title="$t('maleUnaffected')"/>
       <b-icon-circle-fill v-else-if="sample.person.affectedStatus === 'AFFECTED' && sample.person.sex == 'FEMALE'" v-b-tooltip.hover :title="$t('femaleAffected')"/>
       <b-icon-circle v-else-if="sample.person.affectedStatus === 'UNAFFECTED' && sample.person.sex == 'FEMALE'" v-b-tooltip.hover :title="$t('femaleUnaffected')"/>
-      <b-icon-question-circle v-else-if="sample.person.sex == 'FEMALE'" v-b-tooltip.hover :title="$t('maleUnknown')"/>
-      <b-icon-question-square v-else-if="sample.person.sex == 'MALE'" v-b-tooltip.hover :title="$t('femaleUnknown')"/>
+      <b-icon-question-circle v-else-if="sample.person.sex == 'FEMALE'" v-b-tooltip.hover :title="$t('femaleUnknown')"/>
+      <b-icon-question-square v-else-if="sample.person.sex == 'MALE'" v-b-tooltip.hover :title="$t('maleUnknown')"/>
     </span>
 </template>
 
