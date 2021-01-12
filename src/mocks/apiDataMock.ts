@@ -1029,7 +1029,8 @@ export const apiData: ApiData = {
                 t: 'het'
               },
               f: {
-                DP: 50
+                DP: 50,
+                AD: [1, 49]
               }
             },
             {

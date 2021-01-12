@@ -63,5 +63,6 @@
   "maleUnknown": "Male, Unknown affected status.",
   "femaleAffected": "Female, Affected.",
   "femaleUnaffected": "Female, Unaffected.",
-  "femaleUnknown": "Female, Unknown affected status."
+  "femaleUnknown": "Female, Unknown affected status.",
+  "allelicImbalance": "Allelic imbalance"
 }
