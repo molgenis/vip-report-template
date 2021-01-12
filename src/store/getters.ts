@@ -26,6 +26,32 @@ export default {
     }
     return state.samples.items.find(sample => sample.person.individualId === id) || null;
   },
+  sampleMaternal: (state: State): Sample | null => {
+    if (state.selectedSample === null) {
+      return null;
+    }
+    const maternalId = state.selectedSample.person.maternalId;
+    if (maternalId === '0') {
+      return null;
+    }
+    if (state.samples === null) {
+      return null;
+    }
+    return state.samples.items.find(sample => sample.person.individualId === maternalId) || null;
+  },
+  samplePaternal: (state: State): Sample | null => {
+    if (state.selectedSample === null) {
+      return null;
+    }
+    const paternalId = state.selectedSample.person.paternalId;
+    if (paternalId === '0') {
+      return null;
+    }
+    if (state.samples === null) {
+      return null;
+    }
+    return state.samples.items.find(sample => sample.person.individualId === paternalId) || null;
+  },
   genomeBrowserDb: (state: State): GenomeBrowserDb | null => {
     if (state.metadata === null) {
       return null;
@@ -129,7 +155,7 @@ export default {
       hasSampleInheritance = false;
     } else {
       const vimFormat = state.metadata.records.format.find(item => item.id === 'VIM');
-      hasSampleInheritance = vimFormat !== undefined
+      hasSampleInheritance = vimFormat !== undefined;
     }
     return hasSampleInheritance;
   },
@@ -142,7 +168,7 @@ export default {
       hasSampleInheritance = false;
     } else {
       const vimFormat = state.metadata.records.format.find(item => item.id === 'VID');
-      hasSampleInheritance = vimFormat !== undefined
+      hasSampleInheritance = vimFormat !== undefined;
     }
     return hasSampleInheritance;
   }

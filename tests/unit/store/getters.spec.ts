@@ -77,6 +77,46 @@ test('get sample by id returns sample in case of known sample', () => {
   expect(getters.getSampleById(testState)('MySampleId')).toBe(sample0);
 });
 
+test('get maternal sample for selected sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.maternalId = 'sampleMother';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const personMother: Person = mock<Person>();
+  personMother.individualId = 'sampleMother';
+  const sampleMother: Sample = mock<Sample>();
+  sampleMother.person = personMother;
+
+  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  samples.items = [sample, sampleMother];
+
+  const testState: State = { ...initialState, samples, selectedSample: sample };
+  expect(getters.sampleMaternal(testState)).toBe(sampleMother);
+});
+
+test('get paternal sample for selected sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.paternalId = 'sampleFather';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const personFather: Person = mock<Person>();
+  personFather.individualId = 'sampleFather';
+  const sampleFather: Sample = mock<Sample>();
+  sampleFather.person = personFather;
+
+  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  samples.items = [sample, sampleFather];
+
+  const testState: State = { ...initialState, samples, selectedSample: sample };
+  expect(getters.samplePaternal(testState)).toBe(sampleFather);
+});
+
 test('get genomeBrowserDb for NCBI34 assembly', () => {
   const metadata = mock<Metadata>();
   metadata.htsFile = mock<HtsFileMetadata>();
@@ -440,7 +480,7 @@ test('whether records contain inheritance matching information. false.', () => {
 });
 
 test('whether records contain inheritance matching information. null.', () => {
-  const metadata =null;
+  const metadata = null;
 
   const testState: State = {
     ...initialState,
@@ -484,7 +524,7 @@ test('whether records contain denovo information. false.', () => {
 });
 
 test('whether records contain denovo information. null.', () => {
-  const metadata =null;
+  const metadata = null;
 
   const testState: State = {
     ...initialState,
