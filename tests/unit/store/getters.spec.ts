@@ -97,6 +97,46 @@ test('get maternal sample for selected sample', () => {
   expect(getters.sampleMaternal(testState)).toBe(sampleMother);
 });
 
+test('get maternal sample in case of no selected sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.maternalId = 'sampleMother';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const personMother: Person = mock<Person>();
+  personMother.individualId = 'sampleMother';
+  const sampleMother: Sample = mock<Sample>();
+  sampleMother.person = personMother;
+
+  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  samples.items = [sample, sampleMother];
+
+  const testState: State = { ...initialState, samples };
+  expect(getters.sampleMaternal(testState)).toBe(null);
+});
+
+test('get maternal sample in case of no samples', () => {
+  const testState: State = { ...initialState };
+  expect(getters.sampleMaternal(testState)).toBeNull();
+});
+
+test('get maternal sample for selected sample without maternal sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.maternalId = '0';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  samples.items = [sample];
+
+  const testState: State = { ...initialState, samples, selectedSample: sample };
+  expect(getters.sampleMaternal(testState)).toBeNull();
+});
+
 test('get paternal sample for selected sample', () => {
   const person: Person = mock<Person>();
   person.individualId = 'sample';
@@ -115,6 +155,46 @@ test('get paternal sample for selected sample', () => {
 
   const testState: State = { ...initialState, samples, selectedSample: sample };
   expect(getters.samplePaternal(testState)).toBe(sampleFather);
+});
+
+test('get paternal sample in case of no selected sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.paternalId = 'sampleFather';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const personFather: Person = mock<Person>();
+  personFather.individualId = 'sampleFather';
+  const sampleFather: Sample = mock<Sample>();
+  sampleFather.person = personFather;
+
+  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  samples.items = [sample, sampleFather];
+
+  const testState: State = { ...initialState, samples };
+  expect(getters.samplePaternal(testState)).toBeNull();
+});
+
+test('get paternal sample for selected sample without paternal sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.paternalId = '0';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const personFather: Person = mock<Person>();
+  personFather.individualId = 'sampleFather';
+  const sampleFather: Sample = mock<Sample>();
+  sampleFather.person = personFather;
+
+  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  samples.items = [sample, sampleFather];
+
+  const testState: State = { ...initialState, samples, selectedSample: sample };
+  expect(getters.samplePaternal(testState)).toBeNull();
 });
 
 test('get genomeBrowserDb for NCBI34 assembly', () => {
