@@ -265,7 +265,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters([
-      'getSampleById',
       'genomeBrowserDb',
       'hasConsequences',
       'hasMvl',
@@ -275,7 +274,9 @@ export default Vue.extend({
       'isAnnotationEnabled',
       'isRecordsContainPhenotypes',
       'isSamplesContainInheritance',
-      'isSamplesContainDenovo'
+      'isSamplesContainDenovo',
+      'sampleMaternal',
+      'samplePaternal'
     ]),
     ...mapState([
       'metadata',
@@ -289,14 +290,6 @@ export default Vue.extend({
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
     },
-    samplePaternal(): Sample | null {
-      const paternalId = this.sample.person.paternalId;
-      return paternalId !== '0' ? this.getSampleById(paternalId) : null;
-    },
-    sampleMaternal(): Sample | null {
-      const maternalId = this.sample.person.maternalId;
-      return maternalId !== '0' ? this.getSampleById(maternalId) : null;
-    },
     fields(): BvTableFieldArray {
       // field keys must much report api field ids
       const fields = [];
@@ -304,10 +297,10 @@ export default Vue.extend({
       fields.push({ key: 'p', label: 'pos', sortable: true });
       fields.push({ key: 'r', label: 'ref' });
       fields.push(this.sample ? { key: 's', label: 'sample' } : { key: 'a', label: 'alt' });
-      if (this.sample && this.samplePaternal) {
+      if (this.sample && this.samplePaternal !== null) {
         fields.push({ key: 'father', label: 'father' });
       }
-      if (this.sample && this.sampleMaternal) {
+      if (this.sample && this.sampleMaternal !== null) {
         fields.push({ key: 'mother', label: 'mother' });
       }
       if (this.hasCapice) {
