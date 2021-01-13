@@ -54,13 +54,22 @@
         </span>
       </template>
       <template v-slot:cell(s)="data">
-        <Genotype :genotype="data.item.s[sample.index].gt" />
+        <Genotype
+          :genotype="data.item.s[sample.index].gt"
+          :allelicDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.AD : undefined"
+        />
       </template>
       <template v-slot:cell(father)="data">
-        <Genotype :genotype="data.item.s[samplePaternal.index].gt" />
+        <Genotype
+          :genotype="data.item.s[samplePaternal.index].gt"
+          :allelicDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.AD : undefined"
+        />
       </template>
       <template v-slot:cell(mother)="data">
-        <Genotype :genotype="data.item.s[sampleMaternal.index].gt" />
+        <Genotype
+          :genotype="data.item.s[sampleMaternal.index].gt"
+          :allelicDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.AD : undefined"
+        />
       </template>
       <template v-slot:cell(expand)="data">
         <b-button
