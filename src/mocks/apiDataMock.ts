@@ -508,7 +508,7 @@ export const apiData: ApiData = {
             individualId: 'Father',
             paternalId: '0',
             maternalId: '0',
-            sex: 'FEMALE',
+            sex: 'MALE',
             affectedStatus: 'MISSING'
           },
           index: 2,

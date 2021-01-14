@@ -1,28 +1,60 @@
 <template>
   <span>
     {{ sample.person.individualId }}
-    <b-icon-square-fill
+    <b-button
+      size="sm"
+      variant="link"
       v-if="sample.person.affectedStatus === 'AFFECTED' && sample.person.sex === 'MALE'"
-      v-b-tooltip.hover
+      v-b-tooltip.click
       :title="$t('maleAffected')"
-    />
-    <b-icon-square
+    >
+      <b-icon-square-fill />
+    </b-button>
+    <b-button
+      size="sm"
+      variant="link"
       v-else-if="sample.person.affectedStatus === 'UNAFFECTED' && sample.person.sex === 'MALE'"
-      v-b-tooltip.hover
+      v-b-tooltip.click
       :title="$t('maleUnaffected')"
-    />
-    <b-icon-circle-fill
+    >
+      <b-icon-square />
+    </b-button>
+    <b-button
+      size="sm"
+      variant="link"
       v-else-if="sample.person.affectedStatus === 'AFFECTED' && sample.person.sex === 'FEMALE'"
-      v-b-tooltip.hover
+      v-b-tooltip.click
       :title="$t('femaleAffected')"
-    />
-    <b-icon-circle
+    >
+      <b-icon-circle-fill />
+    </b-button>
+    <b-button
+      size="sm"
+      variant="link"
       v-else-if="sample.person.affectedStatus === 'UNAFFECTED' && sample.person.sex === 'FEMALE'"
-      v-b-tooltip.hover
+      v-b-tooltip.click
       :title="$t('femaleUnaffected')"
-    />
-    <b-icon-question-circle v-else-if="sample.person.sex === 'FEMALE'" v-b-tooltip.hover :title="$t('femaleUnknown')" />
-    <b-icon-question-square v-else-if="sample.person.sex === 'MALE'" v-b-tooltip.hover :title="$t('maleUnknown')" />
+    >
+      <b-icon-circle />
+    </b-button>
+    <b-button
+      size="sm"
+      variant="link"
+      v-else-if="sample.person.sex === 'FEMALE'"
+      v-b-tooltip.click
+      :title="$t('femaleUnknown')"
+    >
+      <b-icon-question-circle />
+    </b-button>
+    <b-button
+      size="sm"
+      variant="link"
+      v-else-if="sample.person.sex === 'MALE'"
+      v-b-tooltip.click
+      :title="$t('maleUnknown')"
+    >
+      <b-icon-question-square />
+    </b-button>
   </span>
 </template>
 
