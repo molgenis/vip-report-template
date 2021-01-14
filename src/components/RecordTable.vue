@@ -177,7 +177,12 @@
         {{ $t('ok') }}
       </template>
       <div class="modal-container">
-        <RecordDetails :metadata="metadata.records" :record="infoModal.record" :sample="sample" />
+        <RecordDetails
+          v-if="infoModal.record"
+          :metadata="metadata.records"
+          :record="infoModal.record"
+          :sample="sample"
+        />
       </div>
     </b-modal>
   </div>
