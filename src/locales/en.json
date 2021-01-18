@@ -64,5 +64,6 @@
   "femaleAffected": "Female, Affected.",
   "femaleUnaffected": "Female, Unaffected.",
   "femaleUnknown": "Female, Unknown affected status.",
-  "allelicImbalance": "Allelic imbalance"
+  "allelicImbalance": "Allelic imbalance",
+  "lowReadDepth": "Read depth < 20"
 }

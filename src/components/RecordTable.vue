@@ -56,18 +56,21 @@
       <template v-slot:cell(s)="data">
         <Genotype
           :genotype="data.item.s[sample.index].gt"
+          :readDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.DP : undefined"
           :allelicDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.AD : undefined"
         />
       </template>
       <template v-slot:cell(father)="data">
         <Genotype
           :genotype="data.item.s[samplePaternal.index].gt"
+          :readDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.DP : undefined"
           :allelicDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.AD : undefined"
         />
       </template>
       <template v-slot:cell(mother)="data">
         <Genotype
           :genotype="data.item.s[sampleMaternal.index].gt"
+          :readDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.DP : undefined"
           :allelicDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.AD : undefined"
         />
       </template>
