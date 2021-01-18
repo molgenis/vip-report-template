@@ -38,5 +38,8 @@ export default {
   },
   setFilterRecordsByDenovo(state: State, value: boolean) {
     state.filterRecordsByDenovo = value;
+  },
+  setAllowLowPenetrance(state: State, value: boolean) {
+    state.isAllowLowPenetrance = value;
   }
 };

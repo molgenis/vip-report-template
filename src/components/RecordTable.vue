@@ -290,7 +290,8 @@ export default Vue.extend({
       'isSamplesContainInheritance',
       'isSamplesContainDenovo',
       'sampleMaternal',
-      'samplePaternal'
+      'samplePaternal',
+      'isAllowLowPenetrance'
     ]),
     ...mapState([
       'metadata',
@@ -384,7 +385,7 @@ export default Vue.extend({
         queries.push(this.createSamplePhenotypesQuery());
       }
       if (this.isSamplesContainInheritance && this.filterRecordsByInheritance) {
-        queries.push(this.createSampleInheritanceQuery());
+        queries.push(this.createSampleInheritanceQuery(this.isAllowLowPenetrance));
       }
       if (this.isSamplesContainDenovo && this.filterRecordsByDenovo) {
         queries.push(this.createSampleDenovoQuery());
@@ -411,32 +412,71 @@ export default Vue.extend({
         args: ['het', 'hom_a', 'part']
       };
     },
-    createSampleInheritanceQuery(): ComposedQuery {
-      return {
-        operator: 'or',
-        args: [
-          {
-            selector: ['s', this.sample.index, 'f', 'VIM'],
-            operator: '==',
-            args: 1
-          },
-          {
-            operator: 'and',
-            args: [
-              {
-                selector: getInheritanceModesGeneSelector(this.metadata.records),
-                operator: '!any_has_any',
-                args: ['AD', 'AR', 'XR', 'XD', 'XL']
-              },
-              {
-                selector: ['s', this.sample.index, 'f', 'VI'],
-                operator: 'has_any',
-                args: ['AD', 'AR', 'XR', 'XD', 'XL']
-              }
-            ]
-          }
-        ]
-      };
+    createSampleInheritanceQuery(allowLowPenetrance :boolean): ComposedQuery {
+      if(!allowLowPenetrance){
+        return {
+          operator: 'or',
+          args: [
+            {
+              selector: ['s', this.sample.index, 'f', 'VIM'],
+              operator: '==',
+              args: 1
+            },
+            {
+              operator: 'and',
+              args: [
+                {
+                  selector: getInheritanceModesGeneSelector(this.metadata.records),
+                  operator: '!any_has_any',
+                  args: ['AD', 'AR', 'XR', 'XD', 'XL']
+                },
+                {
+                  selector: ['s', this.sample.index, 'f', 'VI'],
+                  operator: 'has_any',
+                  args: ['AD', 'AR', 'XR', 'XD', 'XL']
+                }
+              ]
+            }
+          ]
+        };
+      }else
+      {
+        return {
+          operator: 'or',
+          args: [
+            {
+              selector: ['s', this.sample.index, 'f', 'VIM'],
+              operator: '==',
+              args: 1
+            },
+            {
+              operator: 'and',
+              args: [
+                {
+                  selector: getInheritanceModesGeneSelector(this.metadata.records),
+                  operator: '!any_has_any',
+                  args: ['AD', 'AR', 'XR', 'XD', 'XL']
+                },
+                {
+                  selector: ['s', this.sample.index, 'f', 'VI'],
+                  operator: 'has_any',
+                  args: ['AD', 'AR', 'XR', 'XD', 'XL']
+                }
+              ]
+            },
+            {
+              operator: 'or',
+              args: [
+                {
+                  selector: getInheritanceModesGeneSelector(this.metadata.records),
+                  operator: 'any_has_any',
+                  args: ['AD', 'XD', 'XL']
+                }
+              ]
+            }
+          ]
+        };
+      }
     },
     createSampleDenovoQuery(): Query {
       return {
@@ -570,6 +610,10 @@ export default Vue.extend({
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.filterRecordsByDenovo'() {
+      this.page.currentPage = 1;
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.isAllowLowPenetrance'() {
       this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     }

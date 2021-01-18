@@ -171,5 +171,8 @@ export default {
       hasSampleInheritance = vimFormat !== undefined;
     }
     return hasSampleInheritance;
+  },
+  isAllowLowPenetrance: (state: State): boolean => {
+    return state.isAllowLowPenetrance;
   }
 };

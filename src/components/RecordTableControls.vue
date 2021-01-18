@@ -13,6 +13,14 @@
       >{{ $t('matchInheritance') }}
     </b-form-checkbox>
     <b-form-checkbox
+        v-if="isSamplesContainInheritance"
+        :disabled="!filterRecordsByInheritance"
+        :checked="filterRecordsByInheritance && isAllowLowPenetrance"
+        @change="this.setAllowLowPenetrance"
+        style="padding-left: 2.5rem;"
+    >{{ $t('allowNonPenetrance') }}
+    </b-form-checkbox>
+    <b-form-checkbox
       v-if="isSamplesContainDenovo"
       :checked="filterRecordsByDenovo"
       @change="this.setFilterRecordsByDenovo"
@@ -27,11 +35,11 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapGetters(['isRecordsContainPhenotypes', 'isSamplesContainInheritance', 'isSamplesContainDenovo']),
-    ...mapState(['filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo'])
+    ...mapGetters(['isRecordsContainPhenotypes', 'isSamplesContainInheritance', 'isSamplesContainDenovo', 'isAllowLowPenetrance']),
+    ...mapState(['filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo', 'allowNonPenetrance'])
   },
   methods: {
-    ...mapActions(['setFilterRecordsByPhenotype', 'setFilterRecordsByInheritance', 'setFilterRecordsByDenovo'])
+    ...mapActions(['setFilterRecordsByPhenotype', 'setFilterRecordsByInheritance', 'setFilterRecordsByDenovo', 'setAllowLowPenetrance'])
   }
 });
 </script>

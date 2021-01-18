@@ -89,6 +89,9 @@ export default {
   },
   setFilterRecordsByDenovo({ commit }: ActionContext<State, State>, value: boolean) {
     commit('setFilterRecordsByDenovo', value);
+  },
+  setAllowLowPenetrance({ commit }: ActionContext<State, State>, value: boolean) {
+    commit('setAllowLowPenetrance', value);
   }
 };
 
