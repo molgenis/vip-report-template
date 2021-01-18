@@ -24,7 +24,7 @@
     <Anchor
       v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
       :href="
-        'http://' +
+        'https://' +
           (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
           '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
           encodeURIComponent(value)
@@ -42,7 +42,7 @@
     <Anchor
       v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
       :href="
-        'http://' +
+        'https://' +
           (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
           '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
           encodeURIComponent(value.substring(0, value.indexOf(':')))
