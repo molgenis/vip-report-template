@@ -7,12 +7,15 @@
       </span>
     </span>
     <b-button
-      v-if="allelicImbalance"
+      v-if="allelicImbalance || lowReadDepth"
       size="sm"
       variant="link"
       class="ml-2 p-0"
       v-b-tooltip.click
-      :title="$t('allelicImbalance')"
+      :title="
+        (lowReadDepth ? $t('lowReadDepth') : '') +
+          (allelicImbalance ? (lowReadDepth ? ' & ' : '') + $t('allelicImbalance') : '')
+      "
     >
       <b-icon-exclamation-circle variant="danger" />
     </b-button>
@@ -28,9 +31,17 @@ export default Vue.extend({
   components: { Allele },
   props: {
     genotype: Object as PropType<Genotype>,
+    readDepth: { type: Number as PropType<number>, required: false },
     allelicDepth: { type: Array as PropType<number[]>, required: false }
   },
   computed: {
+    lowReadDepth(): boolean {
+      let lowReadDepth = false;
+      if (this.readDepth && this.readDepth < 20) {
+        lowReadDepth = true;
+      }
+      return lowReadDepth;
+    },
     allelicImbalance(): boolean {
       let allelicImbalance = false;
       if (this.allelicDepth && this.genotype.t === 'het') {
