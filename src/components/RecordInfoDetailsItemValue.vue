@@ -146,6 +146,7 @@ export default Vue.extend({
     },
     getHgvsText(value: string): string {
       let textValue;
+      value = decodeURIComponent(value);
       if (this.details) {
         textValue = value;
       } else {
