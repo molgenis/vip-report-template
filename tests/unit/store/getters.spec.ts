@@ -286,7 +286,7 @@ test('metadata has no consequences', () => {
 
 test('metadata has mvl', () => {
   const infoMetadata = mock<InfoMetadata>();
-  infoMetadata.id = 'MVL';
+  infoMetadata.id = 'VKGL_UMCG';
 
   const recordsMetadata = mock<RecordsMetadata>();
   recordsMetadata.info = [infoMetadata];
