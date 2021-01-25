@@ -386,13 +386,76 @@ export const apiData: ApiData = {
           ]
         },
         {
-          id: 'MVL',
+          id: 'VKGL_AMC',
           number: {
             type: 'PER_ALT'
           },
           type: 'STRING',
           description:
-            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/vkgl_2020-02-28_11_28_42.vcf.gz)'
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_EMC',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_LUMC',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_NKI',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_RMMC',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_UMCG',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_UMCU',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
+        },
+        {
+          id: 'VKGL_VUMC',
+          number: {
+            type: 'PER_ALT'
+          },
+          type: 'STRING',
+          description:
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
         },
         {
           id: 'VKGL',
@@ -401,7 +464,7 @@ export const apiData: ApiData = {
           },
           type: 'STRING',
           description:
-            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_dec2019.vcf.gz)'
+            'Clinical significance: LB (likely benign), VUS (unknown significance), LP (likely pathogenic) (from input/vcfanno/VKGL_public_consensus_jun2020.vcf.gz)'
         },
         {
           id: 'VKGL_NR',
@@ -1007,6 +1070,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000173614|NMNAT1|48383|-1.111'],
+            VKGL_VUMC: ['LP'],
+            VKGL_EMC: ['LP'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['AR', 'PLP', 'Classification:P'],
@@ -1337,6 +1402,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000184908|CLCNKB|38299|-0.467'],
+            VKGL_RMMC: ['LP'],
+            VKGL_NKI: ['LP'],
             VKGL_NR: 2,
             FILTER_LABELS: ['PLP', 'Classification:P', 'plusMin2'],
             INHERITANCE_ROUTE: [
@@ -1704,6 +1771,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
+            VKGL_RMMC: ['LP'],
+            VKGL_EMC: ['P'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Likely_pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -2061,7 +2130,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
-            MVL: ['P'],
+            VKGL_UMCG: ['P'],
+            VKGL_UMCU: ['LP'],
             CAP: [0.9808],
             VKGL: ['LP'],
             VKGL_NR: 2,
@@ -2432,6 +2502,9 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
+            VKGL_UMCU: ['P'],
+            VKGL_AMC: ['LP'],
+            VKGL_VUMC: ['P'],
             VKGL_NR: 3,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -2799,6 +2872,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
+            VKGL_UMCU: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -3164,6 +3238,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000117118|SDHB|1024|3.0'],
+            VKGL_AMC: ['LP'],
+            VKGL_UMCU: ['P'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -3726,7 +3802,9 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000131238|PPT1|53026|-1.719'],
-            MVL: ['P'],
+            VKGL_UMCG: ['P'],
+            VKGL_RMMC: ['LP'],
+            VKGL_AMC: ['P'],
             CAP: [0.9416],
             VKGL: ['LP'],
             VKGL_NR: 3,
@@ -6300,7 +6378,10 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000186603|HPDL|15035|0.586', 'ENSG00000132781|MUTYH|13946|0.648'],
-            MVL: ['P'],
+            VKGL_UMCG: ['P'],
+            VKGL_UMCU: ['P'],
+            VKGL_VUMC: ['LP'],
+            VKGL_LUMC: ['P'],
             CAP: [0.9719],
             VKGL: ['LP'],
             VKGL_NR: 4,
@@ -8885,6 +8966,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000186603|HPDL|15035|0.586', 'ENSG00000132781|MUTYH|13946|0.648'],
+            VKGL_AMC: ['LP'],
+            VKGL_VUMC: ['LP'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Pathogenic/Likely_pathogenic'],
             FILTER_LABELS: ['AR', 'PLP', 'Classification:P'],
@@ -10281,6 +10364,9 @@ export const apiData: ApiData = {
             ],
             GADO: ['ENSG00000160789|LMNA|1298|3.0'],
             VKGL_NR: 3,
+            VKGL_UMCU: ['LB'],
+            VKGL_EMC: ['B'],
+            VKGL_LUMC: ['LB'],
             CLINVAR_SIGNIFICANCE: ['Conflicting_interpretations_of_pathogenicity'],
             FILTER_LABELS: ['AR', 'AD'],
             INHERITANCE_ROUTE: [
@@ -11659,7 +11745,10 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000160789|LMNA|1298|3.0'],
-            MVL: ['VUS'],
+            VKGL_UMCG: ['VUS'],
+            VKGL_EMC: ['VUS'],
+            VKGL_AMC: ['VUS'],
+            VKGL_UMCU: ['VUS'],
             CAP: [0.9735],
             VKGL: ['VUS'],
             VKGL_NR: 4,
@@ -13057,6 +13146,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000160789|LMNA|1298|3.0'],
+            VKGL_AMC: ['LB'],
+            VKGL_LUMC: ['B'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Benign/Likely_benign'],
             FILTER_LABELS: ['AR', 'AD'],
@@ -13452,7 +13543,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000095002|MSH2|1979|2.539'],
-            MVL: ['VUS'],
+            VKGL_UMCG: ['VUS'],
+            VKGL_AMC: ['VUS'],
             CAP: [0.3964],
             VKGL: ['VUS'],
             VKGL_NR: 2,
@@ -13864,6 +13956,8 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000095002|MSH2|1979|2.539'],
+            VKGL_EMC: ['LP'],
+            VKGL_RMMC: ['LP'],
             VKGL_NR: 2,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -14806,6 +14900,9 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000138777|PPA2|51947|-1.527'],
+            VKGL_EMC: ['LP'],
+            VKGL_LUMC: ['LP'],
+            VKGL_RMMC: ['P'],
             VKGL_NR: 3,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['AR', 'PLP', 'Classification:P'],
@@ -15256,6 +15353,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000106571|GLI3|939|3.0'],
+            VKGL_RMMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['AD', 'PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -15664,6 +15762,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000106571|GLI3|939|3.0'],
+            VKGL_EMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['AD', 'PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -16113,6 +16212,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000171316|CHD7|1408|3.0'],
+            VKGL_AMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -17095,6 +17195,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000178896|EXOSC4|24733|0.124', 'ENSG00000197858|GPAA1|6058|1.305'],
+            VKGL_AMC: ['LP'],
             VKGL_NR: 1,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -17545,6 +17646,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000165029|ABCA1|13120|0.697'],
+            VKGL_LUMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -18363,6 +18465,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000065154|OAT|34598|-0.291'],
+            VKGL_VUMC: ['LP'],
             VKGL_NR: 1,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['AR', 'PLP', 'Classification:P'],
@@ -18895,6 +18998,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000166086|JAM3|4094|1.655'],
+            VKGL_NKI: ['LP'],
             VKGL_NR: 1,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['AR', 'PLP', 'Classification:P'],
@@ -19181,6 +19285,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000005812|FBXL3|33371|-0.237', 'ENSG00000102805|CLN5|7021|1.181'],
+            VKGL_UMCU: ['LP'],
             VKGL_NR: 1,
             CLINVAR_SIGNIFICANCE: ['Pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -20246,6 +20351,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000165533|TTC8|1341|3.0'],
+            VKGL_EMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -20777,6 +20883,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000203485|INF2|14312|0.627'],
+            VKGL_RMMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -21431,6 +21538,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000196712|NF1|1535|3.0'],
+            VKGL_AMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -22290,6 +22398,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000196712|NF1|1535|3.0'],
+            VKGL_UMCU: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -23108,6 +23217,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000130164|LDLR|12771|0.718'],
+            VKGL_EMC: ['LP'],
             VKGL_NR: 1,
             CLINVAR_SIGNIFICANCE: ['Pathogenic/Likely_pathogenic'],
             FILTER_LABELS: ['PLP', 'Classification:P'],
@@ -24624,6 +24734,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000130299|GTPBP3|44409|-0.807'],
+            VKGL_VUMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -27087,6 +27198,7 @@ export const apiData: ApiData = {
               'ENSG00000258366|RTEL1|1600|3.0',
               'ENSG00000243509|TNFRSF6B|23022|0.198'
             ],
+            VKGL_LUMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -28725,6 +28837,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000243279|PRAF2|1849|2.667', 'ENSG00000196998|WDR45|18637|0.399'],
+            VKGL_AMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [
@@ -29051,6 +29164,7 @@ export const apiData: ApiData = {
               'KEEP'
             ],
             GADO: ['ENSG00000102076|OPN1LW|55965|-3.011'],
+            VKGL_VUMC: ['LP'],
             VKGL_NR: 1,
             FILTER_LABELS: ['PLP', 'Classification:P'],
             INHERITANCE_ROUTE: [

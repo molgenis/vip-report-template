@@ -86,7 +86,7 @@ export default {
     return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'CAP') !== undefined;
   },
   hasMvl: (state: State): boolean => {
-    return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'MVL') !== undefined;
+    return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'VKGL_UMCG') !== undefined;
   },
   hasVkgl: (state: State): boolean => {
     return state.metadata !== null && state.metadata.records.info.find(item => item.id === 'VKGL') !== undefined;

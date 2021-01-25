@@ -122,10 +122,10 @@
         />
       </template>
       <template v-slot:cell(mvl)="data">
-        <span v-if="data.item.n !== undefined && data.item.n['MVL'] !== undefined">
-          <span v-for="(mvl, index) in data.item.n['MVL']" :key="index">
+        <span v-if="data.item.n !== undefined && data.item.n['VKGL_UMCG'] !== undefined">
+          <span v-for="(mvl, index) in data.item.n['VKGL_UMCG']" :key="index">
             <span>{{ mvl }}</span>
-            <span v-if="index < data.item.n['MVL'].length - 1">, </span>
+            <span v-if="index < data.item.n['VKGL_UMCG'].length - 1">, </span>
           </span>
         </span>
       </template>
