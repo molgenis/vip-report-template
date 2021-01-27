@@ -429,12 +429,12 @@ export default Vue.extend({
               {
                 selector: getInheritanceModesGeneSelector(this.metadata.records),
                 operator: '!any_has_any',
-                args: ['AD', 'AR', 'XR', 'XD', 'XL']
+                args: ['AD', 'AR', 'XLR', 'XLD', 'XL']
               },
               {
                 selector: ['s', this.sample.index, 'f', 'VI'],
                 operator: 'has_any',
-                args: ['AD', 'AR', 'XR', 'XD', 'XL']
+                args: ['AD', 'AR', 'XLR', 'XLD', 'XL']
               }
             ]
           }
