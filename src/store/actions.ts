@@ -89,6 +89,9 @@ export default {
   },
   setFilterRecordsByDenovo({ commit }: ActionContext<State, State>, value: boolean) {
     commit('setFilterRecordsByDenovo', value);
+  },
+  setFilterRecordsByDepth({ commit }: ActionContext<State, State>, value: boolean) {
+    commit('setFilterRecordsByDepth', value);
   }
 };
 

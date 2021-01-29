@@ -58,6 +58,7 @@
   "matchPhenotype": "Only display records that match sample phenotype(s)",
   "matchInheritance": "Only display records that match inheritance",
   "matchDenovo": "Only display records that are denovo",
+  "matchDepth": "Only display records that have a read depth of 20 or higher",
   "maleAffected": "Male, Affected.",
   "maleUnaffected": "Male, Unaffected.",
   "maleUnknown": "Male, Unknown affected status.",

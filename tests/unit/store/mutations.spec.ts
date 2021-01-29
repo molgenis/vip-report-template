@@ -64,3 +64,9 @@ test('set filter records by denovo', () => {
   mutations.setFilterRecordsByDenovo(testState, false);
   expect(testState.filterRecordsByDenovo).toBe(false);
 });
+
+test('set filter records by read depth', () => {
+  const testState: State = { ...initialState };
+  mutations.setFilterRecordsByDepth(testState, false);
+  expect(testState.filterRecordsByDepth).toBe(false);
+});
