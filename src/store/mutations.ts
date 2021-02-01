@@ -38,5 +38,8 @@ export default {
   },
   setFilterRecordsByDenovo(state: State, value: boolean) {
     state.filterRecordsByDenovo = value;
+  },
+  setFilterRecordsByDepth(state: State, value: boolean) {
+    state.filterRecordsByDepth = value;
   }
 };

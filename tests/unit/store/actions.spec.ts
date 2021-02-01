@@ -150,3 +150,11 @@ test('set filter records by denovo status', async done => {
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByDenovo', true);
   done();
 });
+
+
+test('set filter records by read depth', async done => {
+  const commit = jest.fn() as Commit;
+  actions.setFilterRecordsByDepth({ commit } as ActionContext<State, State>, true);
+  expect(commit).toHaveBeenCalledWith('setFilterRecordsByDepth', true);
+  done();
+});

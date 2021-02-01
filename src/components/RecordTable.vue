@@ -292,6 +292,7 @@ export default Vue.extend({
       'isRecordsContainPhenotypes',
       'isSamplesContainInheritance',
       'isSamplesContainDenovo',
+      'isSamplesContainDepth',
       'sampleMaternal',
       'samplePaternal'
     ]),
@@ -302,7 +303,8 @@ export default Vue.extend({
       'selectedSamplePhenotypes',
       'filterRecordsByPhenotype',
       'filterRecordsByInheritance',
-      'filterRecordsByDenovo'
+      'filterRecordsByDenovo',
+      'filterRecordsByDepth'
     ]),
     genomeAssembly(): string {
       return this.metadata.htsFile.genomeAssembly;
@@ -392,6 +394,11 @@ export default Vue.extend({
       if (this.isSamplesContainDenovo && this.filterRecordsByDenovo) {
         queries.push(this.createSampleDenovoQuery());
       }
+      if (this.isSamplesContainDepth && this.filterRecordsByDepth) {
+        queries.push(this.createSampleReadDepthQuery());
+      }
+
+
       // todo: translate ctx filter param to query
 
       let query: Query | ComposedQuery | undefined;
@@ -446,6 +453,13 @@ export default Vue.extend({
         selector: ['s', this.sample.index, 'f', 'VID'],
         operator: '==',
         args: 1
+      };
+    },
+    createSampleReadDepthQuery(): Query {
+      return {
+        selector: ['s', this.sample.index, 'f', 'DP'],
+        operator: '>=',
+        args: 20
       };
     },
     hasSamplePhenotypes(): boolean {
@@ -573,6 +587,10 @@ export default Vue.extend({
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.filterRecordsByDenovo'() {
+      this.page.currentPage = 1;
+      (this.$refs.table as BTable).refresh();
+    },
+    '$store.state.filterRecordsByDepth'() {
       this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     }

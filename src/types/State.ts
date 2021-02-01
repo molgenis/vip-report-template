@@ -12,5 +12,6 @@ export type State = {
   filterRecordsByPhenotype: boolean;
   filterRecordsByInheritance: boolean;
   filterRecordsByDenovo: boolean;
+  filterRecordsByDepth: boolean;
   annotations: Annotations | null;
 };

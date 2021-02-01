@@ -10,6 +10,7 @@ const state: State = {
   filterRecordsByPhenotype: true,
   filterRecordsByInheritance: true,
   filterRecordsByDenovo: false,
+  filterRecordsByDepth: false,
   annotations: null
 };
 

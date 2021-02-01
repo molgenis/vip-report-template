@@ -612,3 +612,13 @@ test('whether records contain denovo information. null.', () => {
   };
   expect(getters.isSamplesContainDenovo(testState)).toEqual(false);
 });
+
+test('whether records contain read depth information. null.', () => {
+  const metadata = null;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isSamplesContainDepth(testState)).toEqual(false);
+});

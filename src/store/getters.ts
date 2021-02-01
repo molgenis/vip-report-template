@@ -171,5 +171,18 @@ export default {
       hasSampleInheritance = vimFormat !== undefined;
     }
     return hasSampleInheritance;
+  },
+  /**
+   * Returns whether records contain read depth information.
+   */
+  isSamplesContainDepth: (state: State): boolean => {
+    let hasReadDepth;
+    if (state.metadata === null) {
+      hasReadDepth = false;
+    } else {
+      const dpFormat = state.metadata.records.format.find(item => item.id === 'DP');
+      hasReadDepth = dpFormat !== undefined;
+    }
+    return hasReadDepth;
   }
 };
