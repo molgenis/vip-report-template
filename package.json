@@ -10,7 +10,7 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
-    "@molgenis/vip-report-api": "0.7.0",
+    "@molgenis/vip-report-api": "0.8.1",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
     "file-saver": "^2.0.2",
