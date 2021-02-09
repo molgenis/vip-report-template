@@ -167,14 +167,23 @@
         <AnnotationControl v-if="data.item.annotation" :annotation="data.item.annotation" type="notes" />
       </template>
     </b-table>
-    <b-pagination
-      v-if="page.totalPages > 1"
-      v-model="page.currentPage"
-      :total-rows="page.totalRows"
-      :per-page="page.perPage"
-      align="center"
-      aria-controls="classifier-table"
-    ></b-pagination>
+    <b-row>
+      <b-col offset="3" cols="6">
+        <b-pagination
+          v-if="page.totalPages > 1"
+          v-model="page.currentPage"
+          :total-rows="page.totalRows"
+          :per-page="page.perPage"
+          align="center"
+          aria-controls="classifier-table"
+        ></b-pagination>
+      </b-col>
+      <b-col cols="3" class="text-right">
+        <span v-if="page.totalRows > 0"
+          ><em>{{ page.totalRows }} {{ $t(page.totalRows === 1 ? 'record' : 'records') }}</em></span
+        >
+      </b-col>
+    </b-row>
     <b-modal :id="infoModal.id" size="xl" :title="$t('recordDetails')" no-fade ok-only @hide="resetInfoModal">
       <template v-slot:modal-ok>
         {{ $t('ok') }}
@@ -397,7 +406,6 @@ export default Vue.extend({
       if (this.isSamplesContainDepth && this.filterRecordsByDepth) {
         queries.push(this.createSampleReadDepthQuery());
       }
-
 
       // todo: translate ctx filter param to query
 

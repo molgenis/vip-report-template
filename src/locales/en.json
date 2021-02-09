@@ -26,6 +26,8 @@
   "hgvsc": "HGVS C",
   "hgvsp": "HGVS P",
   "noSearchResults": "No Search Results",
+  "record": "record",
+  "records": "records",
   "emptyTableMessage": "There are no records to show",
   "clear": "Clear",
   "sample": "Sample",
