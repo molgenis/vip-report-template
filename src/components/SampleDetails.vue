@@ -55,6 +55,27 @@
     >
       <b-icon-question-square />
     </b-button>
+    <b-button
+      size="sm"
+      variant="link"
+      v-else-if="sample.person.affectedStatus === 'AFFECTED'"
+      v-b-tooltip.click
+      :title="$t('sexUnknownAffected')"
+    >
+      <b-icon-diamond-fill />
+    </b-button>
+    <b-button
+      size="sm"
+      variant="link"
+      v-else-if="sample.person.affectedStatus === 'UNAFFECTED'"
+      v-b-tooltip.click
+      :title="$t('sexUnknownUnaffected')"
+    >
+      <b-icon-diamond />
+    </b-button>
+    <b-button size="sm" variant="link" v-else v-b-tooltip.click :title="$t('sexUnknownAffectedUnknown')">
+      <b-icon-question-diamond />
+    </b-button>
   </span>
 </template>
 
