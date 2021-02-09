@@ -7,11 +7,12 @@
     <title>VCF Report</title>
     <!-- blank embedded favicon -->
     <link rel="icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" type="image/x-icon">
+    <script type="text/javascript">
+        window.onerror = msg => { alert(msg); };
+        window.onunhandledrejection = event => { alert('Uncaught (in promise) ' + event.reason); };
+    </script>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

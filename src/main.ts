@@ -6,7 +6,14 @@ import router from '@/router';
 import store from '@/store/store';
 
 Vue.config.productionTip = false;
-
+Vue.config.errorHandler = err => {
+  console.error(err);
+  alert(err);
+};
+Vue.config.warnHandler = msg => {
+  console.warn(msg);
+  alert(msg);
+};
 new Vue({
   i18n,
   router,
