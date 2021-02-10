@@ -122,6 +122,18 @@ test('get maternal sample in case of no samples', () => {
   expect(getters.sampleMaternal(testState)).toBeNull();
 });
 
+test('get maternal sample in case of no samples with a selected sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.maternalId = '0';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const testState: State = { ...initialState, selectedSample: sample };
+  expect(getters.sampleMaternal(testState)).toBeNull();
+});
+
 test('get maternal sample for selected sample without maternal sample', () => {
   const person: Person = mock<Person>();
   person.individualId = 'sample';
@@ -194,6 +206,18 @@ test('get paternal sample for selected sample without paternal sample', () => {
   samples.items = [sample, sampleFather];
 
   const testState: State = { ...initialState, samples, selectedSample: sample };
+  expect(getters.samplePaternal(testState)).toBeNull();
+});
+
+test('get paternal sample in case of no samples with a selected sample', () => {
+  const person: Person = mock<Person>();
+  person.individualId = 'sample';
+  person.maternalId = '0';
+
+  const sample: Sample = mock<Sample>();
+  sample.person = person;
+
+  const testState: State = { ...initialState, selectedSample: sample };
   expect(getters.samplePaternal(testState)).toBeNull();
 });
 
