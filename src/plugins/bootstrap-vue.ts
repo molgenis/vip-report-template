@@ -7,8 +7,11 @@ import {
   BIconChevronUp,
   BIconCircle,
   BIconCircleFill,
+  BIconDiamond,
+  BIconDiamondFill,
   BIconExclamationCircle,
   BIconQuestionCircle,
+  BIconQuestionDiamond,
   BIconQuestionSquare,
   BIconSearch,
   BIconSquare,
@@ -52,9 +55,12 @@ Vue.component('BIconChevronDown', BIconChevronDown);
 Vue.component('BIconChevronUp', BIconChevronUp);
 Vue.component('BIconCircle', BIconCircle);
 Vue.component('BIconCircleFill', BIconCircleFill);
+Vue.component('BIconDiamond', BIconDiamond);
+Vue.component('BIconDiamondFill', BIconDiamondFill);
 Vue.component('BIconExclamationCircle', BIconExclamationCircle);
-Vue.component('BIconQuestionCircle', BIconQuestionCircle);
 Vue.component('BIconSearch', BIconSearch);
 Vue.component('BIconSquare', BIconSquare);
 Vue.component('BIconSquareFill', BIconSquareFill);
+Vue.component('BIconQuestionCircle', BIconQuestionCircle);
+Vue.component('BIconQuestionDiamond', BIconQuestionDiamond);
 Vue.component('BIconQuestionSquare', BIconQuestionSquare);
