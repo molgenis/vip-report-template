@@ -24,6 +24,7 @@ test('set selected sample', () => {
   const sample: Sample = mock<Sample>();
   mutations.setSelectedSample(testState, sample);
   expect(testState.selectedSample).toBe(sample);
+  expect(testState.selectedRecord).toBe(null);
 });
 
 test('set selected sample phenotypes', () => {

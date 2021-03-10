@@ -9,6 +9,7 @@ export type State = {
   selectedSample: Sample | null;
   selectedSamplePhenotypes: PagedItems<Phenotype> | null;
   records: PagedItems<Record> | null;
+  selectedRecord: Record | null;
   filterRecordsByPhenotype: boolean;
   filterRecordsByInheritance: boolean;
   filterRecordsByDenovo: boolean;
