@@ -8,7 +8,7 @@ import initialState from '@/store/state';
 const api: Api = mock(Api);
 setTestApi(mock(Api));
 
-test('load metadata', async done => {
+test('load metadata', async (done) => {
   const metadata = mock<Metadata>();
   when(api.getMeta()).thenReturn(new Promise(() => metadata));
 
@@ -18,7 +18,7 @@ test('load metadata', async done => {
   done();
 });
 
-test('load samples', async done => {
+test('load samples', async (done) => {
   const samples = mock<PagedItems<Sample>>();
   when(api.get('samples')).thenReturn(new Promise(() => samples));
 
@@ -28,7 +28,7 @@ test('load samples', async done => {
   done();
 });
 
-test('load records without params', async done => {
+test('load records without params', async (done) => {
   const records = mock<PagedItems<Record>>();
   when(api.get('records')).thenReturn(new Promise(() => records));
 
@@ -38,7 +38,7 @@ test('load records without params', async done => {
   done();
 });
 
-test('load records with params', async done => {
+test('load records with params', async (done) => {
   const records = mock<PagedItems<Record>>();
   const params = {};
   when(api.get('records', params)).thenReturn(new Promise(() => records));
@@ -49,7 +49,7 @@ test('load records with params', async done => {
   done();
 });
 
-test('select sample and load sample phenotypes', async done => {
+test('select sample and load sample phenotypes', async (done) => {
   const phenotypes = mock<PagedItems<Phenotype>>();
   const sample: Sample = {
     person: {
@@ -79,21 +79,21 @@ test('select sample and load sample phenotypes', async done => {
   done();
 });
 
-test('enable annotations', async done => {
+test('enable annotations', async (done) => {
   const commit = jest.fn() as Commit;
   actions.enableAnnotations({ commit } as ActionContext<State, State>);
   expect(commit).toHaveBeenCalledWith('setAnnotations', {});
   done();
 });
 
-test('disable annotations', async done => {
+test('disable annotations', async (done) => {
   const commit = jest.fn() as Commit;
   actions.disableAnnotations({ commit } as ActionContext<State, State>);
   expect(commit).toHaveBeenCalledWith('setAnnotations', null);
   done();
 });
 
-test('import annotations', async done => {
+test('import annotations', async (done) => {
   const annotations = {
     'sample0_1_2_A_C,CT': {
       sampleId: 'sample0',
@@ -112,7 +112,7 @@ test('import annotations', async done => {
   done();
 });
 
-test('upsert annotations', async done => {
+test('upsert annotations', async (done) => {
   const annotation = {
     sampleId: 'sample0',
     chr: '1',
@@ -130,29 +130,28 @@ test('upsert annotations', async done => {
   done();
 });
 
-test('set filter records by phenotype', async done => {
+test('set filter records by phenotype', async (done) => {
   const commit = jest.fn() as Commit;
   actions.setFilterRecordsByPhenotype({ commit } as ActionContext<State, State>, true);
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByPhenotype', true);
   done();
 });
 
-test('set filter records by inheritance', async done => {
+test('set filter records by inheritance', async (done) => {
   const commit = jest.fn() as Commit;
   actions.setFilterRecordsByInheritance({ commit } as ActionContext<State, State>, true);
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByInheritance', true);
   done();
 });
 
-test('set filter records by denovo status', async done => {
+test('set filter records by denovo status', async (done) => {
   const commit = jest.fn() as Commit;
   actions.setFilterRecordsByDenovo({ commit } as ActionContext<State, State>, true);
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByDenovo', true);
   done();
 });
 
-
-test('set filter records by read depth', async done => {
+test('set filter records by read depth', async (done) => {
   const commit = jest.fn() as Commit;
   actions.setFilterRecordsByDepth({ commit } as ActionContext<State, State>, true);
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByDepth', true);

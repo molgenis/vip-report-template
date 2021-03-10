@@ -41,7 +41,7 @@ export default Vue.extend({
     phenotypes: Object
   },
   computed: {
-    hpoTerms: function() {
+    hpoTerms: function () {
       const hpoTerms = [];
       for (const phenotypicFeature of this.phenotypes.items[0].phenotypicFeaturesList) {
         if (phenotypicFeature.type.id.startsWith('HP:')) {

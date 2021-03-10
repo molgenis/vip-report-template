@@ -38,7 +38,7 @@ test('samples returns array sorted by sample id', () => {
   samples.items = [sample2, sample0, sample1, sample2];
 
   const testState: State = { ...initialState, samples };
-  expect(getters.samples(testState).map(sample => sample.person.individualId)).toEqual([
+  expect(getters.samples(testState).map((sample) => sample.person.individualId)).toEqual([
     'personA',
     'personB',
     'personB',

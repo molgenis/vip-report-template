@@ -21,7 +21,7 @@ export default Vue.extend({
   computed: {
     ...mapState(['selectedSample']),
     probandSamples(): Sample[] {
-      return this.samples.filter(sample => sample.proband === true);
+      return this.samples.filter((sample) => sample.proband === true);
     }
   },
   props: {

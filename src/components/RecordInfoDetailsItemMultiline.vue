@@ -16,7 +16,7 @@ export default Vue.extend({
   components: { RecordInfoDetailsItem },
   props: {
     metadata: Object as PropType<InfoMetadata>,
-    values: Array as PropType<(string | number | boolean | object | string[] | number[] | boolean[] | object[])[]>,
+    values: Array as PropType<(string | number | boolean | unknown | string[] | number[] | boolean[] | unknown[])[]>,
     details: {
       type: Boolean as PropType<boolean>,
       default: false

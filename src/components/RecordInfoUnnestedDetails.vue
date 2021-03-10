@@ -55,7 +55,7 @@ export default Vue.extend({
           items.push(item);
         }
       }
-      items.sort(function(thisItem, thatItem) {
+      items.sort(function (thisItem, thatItem) {
         return thisItem.key.localeCompare(thatItem.key);
       });
       return items;

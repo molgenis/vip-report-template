@@ -10,14 +10,14 @@ module.exports = {
     plugins: [new HtmlWebpackInlineSourcePlugin()]
   },
 
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       config.plugins.delete('preload');
       config.plugins.delete('prefetch');
 
       config.optimization.splitChunks({ chunks: 'all' });
 
-      config.plugin('html').tap(args => {
+      config.plugin('html').tap((args) => {
         args[0].filename = './vip-report-template.html';
         args[0].inlineSource = '.(js|css)$';
         return args;

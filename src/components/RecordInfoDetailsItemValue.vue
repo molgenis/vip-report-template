@@ -3,8 +3,8 @@
     <Anchor
       :href="
         'http://www.sequenceontology.org/browser/obob.cgi?rm=term_list&obo_query=' +
-          encodeURIComponent(value) +
-          '&release=current_release'
+        encodeURIComponent(value) +
+        '&release=current_release'
       "
       :text="details ? value : value.replace(/_variant$/, '')"
     />
@@ -25,9 +25,9 @@
       v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
       :href="
         'https://' +
-          (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
-          '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
-          encodeURIComponent(value)
+        (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
+        '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+        encodeURIComponent(value)
       "
       :text="value"
     />
@@ -43,9 +43,9 @@
       v-else-if="isEnsemblFeatureId() && (genomeAssembly === 'GRCh37' || genomeAssembly === 'GRCh38')"
       :href="
         'https://' +
-          (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
-          '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
-          encodeURIComponent(value.substring(0, value.indexOf(':')))
+        (genomeAssembly === 'GRCh37' ? 'grch37' : 'www') +
+        '.ensembl.org/Homo_sapiens/Transcript/Summary?db=core;t=' +
+        encodeURIComponent(value.substring(0, value.indexOf(':')))
       "
       :text="getHgvsText(value)"
     />
@@ -59,8 +59,8 @@
       v-if="typeof value === 'object' && value.variant !== null"
       :href="
         'https://gnomad.broadinstitute.org/variant/' +
-          encodeURIComponent([value.variant.chr, value.variant.pos, value.variant.ref, value.variant.alt].join('-')) +
-          '?dataset=gnomad_r2_1'
+        encodeURIComponent([value.variant.chr, value.variant.pos, value.variant.ref, value.variant.alt].join('-')) +
+        '?dataset=gnomad_r2_1'
       "
       :text="details ? value.gnomAD : value.gnomAD.toFixed(5)"
     />
@@ -79,7 +79,7 @@ export default Vue.extend({
   components: { Anchor },
   props: {
     metadataId: String as PropType<string>,
-    value: [String, Number, Boolean, Object] as PropType<string | number | boolean | object>,
+    value: [String, Number, Boolean, Object] as PropType<string | number | boolean | unknown>,
     details: {
       type: Boolean as PropType<boolean>,
       default: false

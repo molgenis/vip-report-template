@@ -25,7 +25,7 @@ export default {
     state.alerts = alerts;
   },
   removeAlert(state: State, alert: Alert) {
-    state.alerts = state.alerts.filter(anAlert => anAlert !== alert);
+    state.alerts = state.alerts.filter((anAlert) => anAlert !== alert);
   },
   setAnnotations(state: State, annotations: Annotations) {
     state.annotations = annotations;

@@ -177,12 +177,12 @@ function getInfoConsequences(
 }
 
 function hasVepConsequences(metadata: RecordsMetadata): boolean {
-  const csqInfo = metadata.info.find(item => item.id === 'CSQ');
+  const csqInfo = metadata.info.find((item) => item.id === 'CSQ');
   return csqInfo !== undefined;
 }
 
 function getVepConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
-  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
+  const infoMetadata = metadata.info.find((item) => item.id === 'CSQ');
   if (infoMetadata === undefined || record.n === undefined) {
     return [];
   }
@@ -208,12 +208,12 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
 }
 
 function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
-  const csqInfo = metadata.info.find(item => item.id === 'ANN');
+  const csqInfo = metadata.info.find((item) => item.id === 'ANN');
   return csqInfo !== undefined;
 }
 
 function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
-  const infoMetadata = metadata.info.find(item => item.id === 'ANN');
+  const infoMetadata = metadata.info.find((item) => item.id === 'ANN');
   if (infoMetadata === undefined || record.n === undefined) {
     return [];
   }
@@ -243,7 +243,6 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
  * - http://grch37.ensembl.org/info/genome/variation/prediction/predicted_data.html#consequences
  * - http://snpeff.sourceforge.net/VCFannotationformat_v1.0.pdf
  */
-/* eslint-disable @typescript-eslint/camelcase */
 const soTermRank: { [index: string]: number } = {
   transcript_ablation: 0,
   chromosome_number_variation: 1,
@@ -345,7 +344,7 @@ export function getConsequences(record: Record, recordMetadata: RecordsMetadata)
 }
 
 function getVepPhenotypesIndex(metadata: RecordsMetadata): number | null {
-  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
+  const infoMetadata = metadata.info.find((item) => item.id === 'CSQ');
   if (infoMetadata === undefined || infoMetadata.nested === undefined) {
     return null;
   }
@@ -369,7 +368,7 @@ export function getPhenotypesSelector(recordMetadata: RecordsMetadata): Selector
 }
 
 function getVepInheritanceModesGeneIndex(metadata: RecordsMetadata): number | null {
-  const infoMetadata = metadata.info.find(item => item.id === 'CSQ');
+  const infoMetadata = metadata.info.find((item) => item.id === 'CSQ');
   if (infoMetadata === undefined || infoMetadata.nested === undefined) {
     return null;
   }
