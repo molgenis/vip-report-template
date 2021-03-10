@@ -29,6 +29,7 @@ import {
   NavPlugin,
   PaginationPlugin,
   TablePlugin,
+  TabsPlugin,
   VBTooltipPlugin
 } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -48,6 +49,7 @@ Vue.use(NavbarPlugin);
 Vue.use(NavPlugin);
 Vue.use(PaginationPlugin);
 Vue.use(TablePlugin);
+Vue.use(TabsPlugin);
 Vue.use(VBTooltipPlugin);
 Vue.component('BIcon', BIcon);
 Vue.component('BIconBoxArrowInUpRight', BIconBoxArrowInUpRight);

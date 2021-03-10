@@ -96,4 +96,8 @@ td.input {
   overflow-y: auto;
   flex-wrap: nowrap;
 }
+
+.capitalize {
+  text-transform: capitalize;
+}
 </style>
