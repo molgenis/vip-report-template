@@ -15,11 +15,11 @@ const inputData = process.env.NODE_ENV === 'development' ? apiData : window.api;
 let api = new Api(inputData);
 
 export default {
-  async loadMetadata({ commit }: ActionContext<State, State>) {
+  async loadMetadata({ commit }: ActionContext<State, State>): Promise<void> {
     const response = await api.getMeta();
     commit('setMetadata', response);
   },
-  async validateSamples({ commit }: ActionContext<State, State>) {
+  async validateSamples({ commit }: ActionContext<State, State>): Promise<void> {
     const params: Params = { size: 0 };
     const response = await api.get('samples', params);
     if (response.total > response.page.totalElements) {
@@ -30,12 +30,12 @@ export default {
       });
     }
   },
-  async loadSamples({ commit }: ActionContext<State, State>) {
+  async loadSamples({ commit }: ActionContext<State, State>): Promise<void> {
     const params: Params = { size: Number.MAX_VALUE };
     const response = await api.get('samples', params);
     commit('setSamples', response);
   },
-  async selectSample({ commit }: ActionContext<State, State>, sample: Sample) {
+  async selectSample({ commit }: ActionContext<State, State>, sample: Sample): Promise<void> {
     const response = await api.get('phenotypes', {
       query: {
         selector: ['subject', 'id'],
@@ -47,7 +47,7 @@ export default {
     commit('setSelectedSample', sample);
     commit('setSelectedSamplePhenotypes', response);
   },
-  async validateRecords({ commit }: ActionContext<State, State>) {
+  async validateRecords({ commit }: ActionContext<State, State>): Promise<void> {
     const response = await api.get('records', { size: 0 });
     if (response.total > response.page.totalElements) {
       commit('addAlert', {
@@ -57,23 +57,23 @@ export default {
       });
     }
   },
-  async loadRecords({ commit }: ActionContext<State, State>, params?: Params) {
+  async loadRecords({ commit }: ActionContext<State, State>, params?: Params): Promise<void> {
     const response = await api.get('records', params);
     commit('setRecords', response);
   },
-  removeAlert({ commit }: ActionContext<State, State>, alert: Alert) {
+  removeAlert({ commit }: ActionContext<State, State>, alert: Alert): void {
     commit('removeAlert', alert);
   },
-  enableAnnotations({ commit }: ActionContext<State, State>) {
+  enableAnnotations({ commit }: ActionContext<State, State>): void {
     commit('setAnnotations', {});
   },
-  disableAnnotations({ commit }: ActionContext<State, State>) {
+  disableAnnotations({ commit }: ActionContext<State, State>): void {
     commit('setAnnotations', null);
   },
-  importAnnotations({ commit }: ActionContext<State, State>, annotations: Annotations) {
+  importAnnotations({ commit }: ActionContext<State, State>, annotations: Annotations): void {
     commit('setAnnotations', annotations);
   },
-  upsertAnnotation({ commit, state }: ActionContext<State, State>, annotation: Annotation) {
+  upsertAnnotation({ commit, state }: ActionContext<State, State>, annotation: Annotation): void {
     const annotations = Object.assign({}, state.annotations);
     const key = `${annotation.sampleId}_${annotation.chr}_${annotation.pos}_${annotation.ref}_${annotation.alt.join(
       ','
@@ -81,21 +81,21 @@ export default {
     annotations[key] = annotation;
     commit('setAnnotations', annotations);
   },
-  setFilterRecordsByPhenotype({ commit }: ActionContext<State, State>, value: boolean) {
+  setFilterRecordsByPhenotype({ commit }: ActionContext<State, State>, value: boolean): void {
     commit('setFilterRecordsByPhenotype', value);
   },
-  setFilterRecordsByInheritance({ commit }: ActionContext<State, State>, value: boolean) {
+  setFilterRecordsByInheritance({ commit }: ActionContext<State, State>, value: boolean): void {
     commit('setFilterRecordsByInheritance', value);
   },
-  setFilterRecordsByDenovo({ commit }: ActionContext<State, State>, value: boolean) {
+  setFilterRecordsByDenovo({ commit }: ActionContext<State, State>, value: boolean): void {
     commit('setFilterRecordsByDenovo', value);
   },
-  setFilterRecordsByDepth({ commit }: ActionContext<State, State>, value: boolean) {
+  setFilterRecordsByDepth({ commit }: ActionContext<State, State>, value: boolean): void {
     commit('setFilterRecordsByDepth', value);
   }
 };
 
 // testability
-export function setTestApi(testApi: Api) {
+export function setTestApi(testApi: Api): void {
   api = testApi;
 }

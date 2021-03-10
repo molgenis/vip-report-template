@@ -4,42 +4,42 @@ import { Alert } from '@/types/Alert';
 import { Annotations } from '@/types/Annotations';
 
 export default {
-  setMetadata(state: State, metadata: Metadata) {
+  setMetadata(state: State, metadata: Metadata): void {
     state.metadata = metadata;
   },
-  setSamples(state: State, samples: PagedItems<Sample>) {
+  setSamples(state: State, samples: PagedItems<Sample>): void {
     state.samples = samples;
   },
-  setSelectedSample(state: State, sample: Sample) {
+  setSelectedSample(state: State, sample: Sample): void {
     state.selectedSample = sample;
   },
-  setSelectedSamplePhenotypes(state: State, phenotypes: PagedItems<Phenotype>) {
+  setSelectedSamplePhenotypes(state: State, phenotypes: PagedItems<Phenotype>): void {
     state.selectedSamplePhenotypes = phenotypes;
   },
-  setRecords(state: State, records: PagedItems<Record>) {
+  setRecords(state: State, records: PagedItems<Record>): void {
     state.records = records;
   },
-  addAlert(state: State, alert: Alert) {
+  addAlert(state: State, alert: Alert): void {
     const alerts = state.alerts.slice();
     alerts.push(alert);
     state.alerts = alerts;
   },
-  removeAlert(state: State, alert: Alert) {
+  removeAlert(state: State, alert: Alert): void {
     state.alerts = state.alerts.filter((anAlert) => anAlert !== alert);
   },
-  setAnnotations(state: State, annotations: Annotations) {
+  setAnnotations(state: State, annotations: Annotations): void {
     state.annotations = annotations;
   },
-  setFilterRecordsByPhenotype(state: State, value: boolean) {
+  setFilterRecordsByPhenotype(state: State, value: boolean): void {
     state.filterRecordsByPhenotype = value;
   },
-  setFilterRecordsByInheritance(state: State, value: boolean) {
+  setFilterRecordsByInheritance(state: State, value: boolean): void {
     state.filterRecordsByInheritance = value;
   },
-  setFilterRecordsByDenovo(state: State, value: boolean) {
+  setFilterRecordsByDenovo(state: State, value: boolean): void {
     state.filterRecordsByDenovo = value;
   },
-  setFilterRecordsByDepth(state: State, value: boolean) {
+  setFilterRecordsByDepth(state: State, value: boolean): void {
     state.filterRecordsByDepth = value;
   }
 };
