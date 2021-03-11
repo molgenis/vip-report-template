@@ -7,14 +7,14 @@
         </b-col>
       </b-row>
       <b-tabs>
-        <b-tab :title="$t('records')" title-link-class="capitalize" active>
+        <b-tab :title="$t('records')" title-link-class="capitalize" active @click="hideGenomeBrowser">
           <b-row>
             <b-col>
               <RecordTable :sample="sample" />
             </b-col>
           </b-row>
         </b-tab>
-        <b-tab :title="$t('genomeBrowser')" title-link-class="capitalize">
+        <b-tab :title="$t('genomeBrowser')" title-link-class="capitalize" @click="showGenomeBrowser">
           <b-row>
             <b-col>
               <GenomeBrowser />
@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import eventHub from '@/eventHub';
 import RecordTable from '@/components/RecordTable.vue';
 import SampleInfo from '@/components/SampleInfo.vue';
 import Vue from 'vue';
@@ -37,6 +38,14 @@ export default Vue.extend({
   props: {
     sample: Object,
     phenotypes: Object
+  },
+  methods: {
+    showGenomeBrowser() {
+      eventHub.$emit('show-genome-browser', true);
+    },
+    hideGenomeBrowser() {
+      eventHub.$emit('show-genome-browser', false);
+    }
   }
 });
 </script>
