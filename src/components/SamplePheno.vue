@@ -18,7 +18,7 @@
       type="button"
       size="sm"
       variant="info"
-      :href="'https://molgenis102.gcc.rug.nl?phenotypes=' + hpoTerms.join(',')"
+      :href="'https://vibe.molgeniscloud.org?phenotypes=' + hpoTerms.join(',')"
       target="_blank"
       rel="noopener noreferrer nofollow"
     >
