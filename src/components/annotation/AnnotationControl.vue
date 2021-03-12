@@ -17,7 +17,7 @@ export default Vue.extend({
   props: {
     annotation: { type: Object as PropType<Annotation> },
     type: {
-      validator: function(value: string) {
+      validator: function (value: string) {
         return ['geneMatch', 'class', 'notes'].indexOf(value) !== -1;
       }
     }

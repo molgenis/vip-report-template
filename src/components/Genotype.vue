@@ -14,7 +14,7 @@
       v-b-tooltip.click
       :title="
         (lowReadDepth ? $t('lowReadDepth') : '') +
-          (allelicImbalance ? (lowReadDepth ? ' & ' : '') + $t('allelicImbalance') : '')
+        (allelicImbalance ? (lowReadDepth ? ' & ' : '') + $t('allelicImbalance') : '')
       "
     >
       <b-icon-exclamation-circle variant="danger" />

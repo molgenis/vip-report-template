@@ -2,11 +2,11 @@
   <Anchor
     :href="
       'https://pubmed.ncbi.nlm.nih.gov/?term=' +
-        pubMedIds
-          .filter(pubMedId => pubMedId !== 25741868)
-          .map(pubMedId => encodeURIComponent(pubMedId) + '[UID]')
-          .join('+OR+') +
-        '&sort=pubdate'
+      pubMedIds
+        .filter((pubMedId) => pubMedId !== 25741868)
+        .map((pubMedId) => encodeURIComponent(pubMedId) + '[UID]')
+        .join('+OR+') +
+      '&sort=pubdate'
     "
     text="PubMed"
   />

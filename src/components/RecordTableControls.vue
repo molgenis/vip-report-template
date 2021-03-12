@@ -18,11 +18,8 @@
       @change="this.setFilterRecordsByDenovo"
       >{{ $t('matchDenovo') }}
     </b-form-checkbox>
-    <b-form-checkbox
-        v-if="isSamplesContainDepth"
-        :checked="filterRecordsByDepth"
-        @change="this.setFilterRecordsByDepth"
-    >{{ $t('matchDepth') }}
+    <b-form-checkbox v-if="isSamplesContainDepth" :checked="filterRecordsByDepth" @change="this.setFilterRecordsByDepth"
+      >{{ $t('matchDepth') }}
     </b-form-checkbox>
   </div>
 </template>
@@ -33,11 +30,26 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapGetters(['isRecordsContainPhenotypes', 'isSamplesContainInheritance', 'isSamplesContainDenovo', 'isSamplesContainDepth']),
-    ...mapState(['filterRecordsByPhenotype', 'filterRecordsByInheritance', 'filterRecordsByDenovo', 'filterRecordsByDepth'])
+    ...mapGetters([
+      'isRecordsContainPhenotypes',
+      'isSamplesContainInheritance',
+      'isSamplesContainDenovo',
+      'isSamplesContainDepth'
+    ]),
+    ...mapState([
+      'filterRecordsByPhenotype',
+      'filterRecordsByInheritance',
+      'filterRecordsByDenovo',
+      'filterRecordsByDepth'
+    ])
   },
   methods: {
-    ...mapActions(['setFilterRecordsByPhenotype', 'setFilterRecordsByInheritance', 'setFilterRecordsByDenovo', 'setFilterRecordsByDepth'])
+    ...mapActions([
+      'setFilterRecordsByPhenotype',
+      'setFilterRecordsByInheritance',
+      'setFilterRecordsByDenovo',
+      'setFilterRecordsByDepth'
+    ])
   }
 });
 </script>

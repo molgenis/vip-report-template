@@ -36,9 +36,9 @@
           v-if="genomeBrowserDb"
           :href="
             'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' +
-              encodeURIComponent(genomeBrowserDb) +
-              '&position=' +
-              encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, data.item.p - 500) + '-' + (data.item.p + 500))
+            encodeURIComponent(genomeBrowserDb) +
+            '&position=' +
+            encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, data.item.p - 500) + '-' + (data.item.p + 500))
           "
           :text="data.item.p | formatNumber(true) | append(data.item.c + ':')"
         />
@@ -273,7 +273,7 @@ export default Vue.extend({
   props: {
     sample: Object as PropType<Sample>
   },
-  data: function() {
+  data: function () {
     return {
       isTableBusy: false as boolean,
       sortBy: null as string | null,
@@ -475,8 +475,8 @@ export default Vue.extend({
     },
     createSamplePhenotypesQuery(): Query {
       const phenotypeIds = (this.selectedSamplePhenotypes.items as Phenotype[])
-        .flatMap(phenotype => phenotype.phenotypicFeaturesList)
-        .map(phenotypicFeature => phenotypicFeature.type.id);
+        .flatMap((phenotype) => phenotype.phenotypicFeaturesList)
+        .map((phenotypicFeature) => phenotypicFeature.type.id);
       return {
         selector: getPhenotypesSelector(this.metadata.records),
         operator: 'any_has_any',
@@ -530,29 +530,29 @@ export default Vue.extend({
         const consequences: Consequences = getConsequences(record, this.metadata.records);
         row.effect = {
           metadata: consequences.metadata.effect,
-          items: consequences.items.map(consequence => consequence.effect)
+          items: consequences.items.map((consequence) => consequence.effect)
         };
         row.symbol = {
           metadata: consequences.metadata.symbol,
-          items: consequences.items.map(consequence => consequence.symbol)
+          items: consequences.items.map((consequence) => consequence.symbol)
         };
         if (this.isSamplesContainInheritance) {
           row.inheritance = {
             metadata: consequences.metadata.inheritance,
-            items: consequences.items.map(consequence => consequence.inheritance)
+            items: consequences.items.map((consequence) => consequence.inheritance)
           };
         }
         row.hgvsC = {
           metadata: consequences.metadata.hgvsC,
-          items: consequences.items.map(consequence => consequence.hgvsC)
+          items: consequences.items.map((consequence) => consequence.hgvsC)
         };
         row.hgvsP = {
           metadata: consequences.metadata.hgvsP,
-          items: consequences.items.map(consequence => consequence.hgvsP)
+          items: consequences.items.map((consequence) => consequence.hgvsP)
         };
         row.gnomAD = {
           metadata: consequences.metadata.gnomAD,
-          items: consequences.items.map(consequence =>
+          items: consequences.items.map((consequence) =>
             consequence.gnomAD !== null
               ? {
                   variant: getVariant(record, consequence),
@@ -563,11 +563,11 @@ export default Vue.extend({
         };
         row.clinVar = {
           metadata: consequences.metadata.clinVar,
-          items: consequences.items.map(consequence => consequence.clinVar)
+          items: consequences.items.map((consequence) => consequence.clinVar)
         };
         row.pubMed = {
           metadata: consequences.metadata.pubMed,
-          items: consequences.items.map(consequence => consequence.pubMed)
+          items: consequences.items.map((consequence) => consequence.pubMed)
         };
         row.expand = false;
       }
@@ -583,7 +583,7 @@ export default Vue.extend({
       this.page.currentPage = 1;
       (this.$refs.table as BTable).refresh();
     },
-    '$store.state.annotations': function() {
+    '$store.state.annotations': function () {
       (this.$refs.table as BTable).refresh();
     },
     '$store.state.filterRecordsByPhenotype'() {

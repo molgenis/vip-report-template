@@ -29,7 +29,7 @@ export default Vue.extend({
   props: {
     metadata: Object as PropType<InfoMetadata>,
     value: [String, Number, Boolean, Array, Object] as PropType<
-      string | number | boolean | object | string[] | number[] | boolean[] | object[]
+      string | number | boolean | unknown | string[] | number[] | boolean[] | unknown[]
     >,
     details: {
       type: Boolean as PropType<boolean>,

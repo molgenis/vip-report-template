@@ -22,7 +22,7 @@ export default Vue.extend({
   components: { Allele, RecordInfoDetails },
   props: {
     metadata: Array as PropType<FormatMetadata[]>,
-    data: Object as PropType<object>
+    data: Object as PropType<unknown>
   }
 });
 </script>

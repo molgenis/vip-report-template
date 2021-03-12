@@ -31,13 +31,13 @@ export default Vue.extend({
     info: Object as PropType<Info>
   },
   computed: {
-    unnestedMetadata: function() {
-      const unnestedMetadata = this.metadata.filter(infoMetadata => infoMetadata.type !== 'NESTED');
+    unnestedMetadata: function () {
+      const unnestedMetadata = this.metadata.filter((infoMetadata) => infoMetadata.type !== 'NESTED');
       unnestedMetadata.sort(this.sortMetadata);
       return unnestedMetadata;
     },
-    nestedMetadata: function() {
-      const nestedMetadata = this.metadata.filter(infoMetadata => infoMetadata.type === 'NESTED');
+    nestedMetadata: function () {
+      const nestedMetadata = this.metadata.filter((infoMetadata) => infoMetadata.type === 'NESTED');
       nestedMetadata.sort(this.sortMetadata);
       return nestedMetadata;
     }

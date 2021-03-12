@@ -9,11 +9,11 @@ const numberFormatWithoutGrouping = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 1
 });
 
-export const formatNumber = function(x: number, grouping = false): string {
+export const formatNumber = function (x: number, grouping = false): string {
   const numberFormat = grouping ? numberFormatWithGrouping : numberFormatWithoutGrouping;
   return numberFormat.format(x);
 };
 
-export const append = function(thisString: string, thatString: string): string {
+export const append = function (thisString: string, thatString: string): string {
   return `${thatString}${thisString}`;
 };
