@@ -7,6 +7,7 @@ import Vue from 'vue';
 import igv from 'igv';
 import { mapGetters, mapState } from 'vuex';
 import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
+import { Record } from '@molgenis/vip-report-api';
 
 export default Vue.extend({
   computed: {
@@ -47,7 +48,7 @@ export default Vue.extend({
     selectRecord(record?: Record) {
       if (this.supportedGenomeBrowserDb) {
         let locus;
-        if (record !== null) {
+        if (record) {
           let chr = record.c;
           if (!chr.startsWith('chr')) {
             chr = 'chr' + chr;
