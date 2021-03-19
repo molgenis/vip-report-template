@@ -71,6 +71,5 @@
   "sexUnknownUnaffected": "Unknown sex, Unaffected.",
   "sexUnknownAffectedUnknown": "Unknown sex, Unknown affected status.",
   "allelicImbalance": "Allelic imbalance",
-  "lowReadDepth": "Read depth < 20",
-  "genomeBrowser": "Genome Browser"
+  "lowReadDepth": "Read depth < 20"
 }
