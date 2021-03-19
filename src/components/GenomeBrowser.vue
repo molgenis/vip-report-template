@@ -37,7 +37,7 @@ export default Vue.extend({
       const options = {
         genome: this.genomeBrowserDb
       };
-      igv.createBrowser(igvDiv, options).then(function (browser: any) {
+      igv.createBrowser(igvDiv, options).then(function (browser: never) {
         // storing in data instead of prototype results in very slow report
         Vue.prototype.$browser = browser;
       });
