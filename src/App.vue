@@ -97,7 +97,12 @@ td.input {
   flex-wrap: nowrap;
 }
 
-.capitalize {
-  text-transform: capitalize;
+.igv-root {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn-link {
+  padding: 0;
 }
 </style>

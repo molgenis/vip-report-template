@@ -32,16 +32,9 @@
         </b-button>
       </template>
       <template v-slot:cell(p)="data">
-        <Anchor
-          v-if="genomeBrowserDb"
-          :href="
-            'https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=' +
-            encodeURIComponent(genomeBrowserDb) +
-            '&position=' +
-            encodeURIComponent('chr' + data.item.c + ':' + Math.max(0, data.item.p - 500) + '-' + (data.item.p + 500))
-          "
-          :text="data.item.p | formatNumber(true) | append(data.item.c + ':')"
-        />
+        <b-button v-if="genomeBrowserDb" class="btn-link" variant="link" @click="selectRecord(data.item)">{{
+          data.item.p | formatNumber(true) | append(data.item.c + ':')
+        }}</b-button>
         <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
       </template>
       <template v-slot:cell(r)="data">
@@ -218,7 +211,6 @@ import {
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
 import Allele from '@/components/Allele.vue';
-import Anchor from '@/components/Anchor.vue';
 import Genotype from '@/components/Genotype.vue';
 import { getConsequences, getVariant, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
@@ -263,7 +255,6 @@ interface Row {
 export default Vue.extend({
   components: {
     Allele,
-    Anchor,
     AnnotationControl,
     Genotype,
     RecordDetails,
@@ -364,7 +355,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions(['loadRecords']),
+    ...mapActions(['loadRecords', 'selectRecord']),
     provider(ctx: BvTableCtxObject): Promise<Row[]> {
       const params: Params = {
         page: ctx.currentPage - 1,

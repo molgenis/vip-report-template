@@ -1,4 +1,4 @@
-import Api, { ApiData, Params, Sample } from '@molgenis/vip-report-api';
+import Api, { ApiData, Params, Record, Sample } from '@molgenis/vip-report-api';
 import { Alert } from '@/types/Alert';
 import { ActionContext } from 'vuex';
 import { State } from '@/types/State';
@@ -60,6 +60,9 @@ export default {
   async loadRecords({ commit }: ActionContext<State, State>, params?: Params): Promise<void> {
     const response = await api.get('records', params);
     commit('setRecords', response);
+  },
+  selectRecord({ commit }: ActionContext<State, State>, record: Record): void {
+    commit('setSelectedRecord', record);
   },
   removeAlert({ commit }: ActionContext<State, State>, alert: Alert): void {
     commit('removeAlert', alert);

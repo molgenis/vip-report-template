@@ -1,29 +1,68 @@
 <template>
-  <div ref="igv"></div>
+  <div v-if="supportedGenomeBrowserDb" ref="igv"></div>
 </template>
 
 <script lang="ts">
-import eventHub from '@/eventHub';
 import Vue from 'vue';
 import igv from 'igv';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
+import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
 
 export default Vue.extend({
   computed: {
-    ...mapGetters(['genomeBrowserDb'])
+    ...mapGetters(['genomeBrowserDb']),
+    ...mapState(['selectedRecord']),
+    supportedGenomeBrowserDb() {
+      let supported;
+      switch (this.genomeBrowserDb) {
+        case GenomeBrowserDb.hg16:
+        case GenomeBrowserDb.hg17:
+        case GenomeBrowserDb.hg18:
+          supported = false;
+          break;
+        case GenomeBrowserDb.hg19:
+        case GenomeBrowserDb.hg38:
+          supported = true;
+          break;
+        default:
+          supported = false;
+          break;
+      }
+      return supported;
+    }
   },
-
   mounted() {
-    if (this.genomeBrowserDb) {
-      // eslint-disable-next-line @typescript-eslint/no-this-alias
-      const that = this;
+    if (this.supportedGenomeBrowserDb) {
       const igvDiv = this.$refs.igv;
-      const options = { genome: this.genomeBrowserDb };
+      const options = {
+        genome: this.genomeBrowserDb
+      };
       igv.createBrowser(igvDiv, options).then(function (browser: any) {
-        eventHub.$on('show-genome-browser', function () {
-          that.$nextTick(() => browser.visibilityChange());
-        });
+        // storing in data instead of prototype results in very slow report
+        Vue.prototype.$browser = browser;
       });
+    }
+  },
+  methods: {
+    selectRecord(record?: Record) {
+      if (this.supportedGenomeBrowserDb) {
+        let locus;
+        if (record !== null) {
+          let chr = record.c;
+          if (!chr.startsWith('chr')) {
+            chr = 'chr' + chr;
+          }
+          locus = chr + ':' + record.p;
+        } else {
+          locus = 'all';
+        }
+        Vue.prototype.$browser.search(locus);
+      }
+    }
+  },
+  watch: {
+    selectedRecord(newRecord?: Record) {
+      this.selectRecord(newRecord);
     }
   }
 });
