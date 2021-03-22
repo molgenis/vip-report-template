@@ -49,6 +49,14 @@ test('load records with params', async (done) => {
   done();
 });
 
+test('select record', async (done) => {
+  const record = mock<Record>();
+  const commit = jest.fn() as Commit;
+  actions.selectRecord({ commit } as ActionContext<State, State>, record);
+  expect(commit).toHaveBeenCalledWith('setSelectedRecord', {});
+  done();
+});
+
 test('select sample and load sample phenotypes', async (done) => {
   const phenotypes = mock<PagedItems<Phenotype>>();
   const sample: Sample = {

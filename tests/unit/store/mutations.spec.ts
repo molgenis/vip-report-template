@@ -24,6 +24,7 @@ test('set selected sample', () => {
   const sample: Sample = mock<Sample>();
   mutations.setSelectedSample(testState, sample);
   expect(testState.selectedSample).toBe(sample);
+  expect(testState.selectedRecord).toBe(null);
 });
 
 test('set selected sample phenotypes', () => {
@@ -38,6 +39,13 @@ test('set records', () => {
   const records: PagedItems<Record> = mock<PagedItems<Record>>();
   mutations.setRecords(testState, records);
   expect(testState.records).toBe(records);
+});
+
+test('set selected record', () => {
+  const testState: State = { ...initialState };
+  const record: Record = mock<Record>();
+  mutations.setSelectedRecord(testState, record);
+  expect(testState.selectedRecord).toBe(record);
 });
 
 test('set annotations', () => {
