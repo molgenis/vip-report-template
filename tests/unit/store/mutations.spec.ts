@@ -41,6 +41,13 @@ test('set records', () => {
   expect(testState.records).toBe(records);
 });
 
+test('set selected record', () => {
+  const testState: State = { ...initialState };
+  const record: Record = mock<Record>();
+  mutations.setSelectedRecord(testState, record);
+  expect(testState.selectedRecord).toBe(record);
+});
+
 test('set annotations', () => {
   const testState: State = { ...initialState };
   const annotations: Annotations = mock<Annotations>();
