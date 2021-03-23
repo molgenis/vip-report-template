@@ -1,5 +1,5 @@
 <template>
-  <div v-if="supportedGenomeBrowserDb" ref="igv"></div>
+  <div ref="igv"></div>
 </template>
 
 <script lang="ts">
@@ -12,58 +12,31 @@ import { Record } from '@molgenis/vip-report-api';
 export default Vue.extend({
   computed: {
     ...mapGetters(['genomeBrowserDb']),
-    ...mapState(['selectedRecord']),
-    supportedGenomeBrowserDb() {
-      let supported;
-      switch (this.genomeBrowserDb) {
-        case GenomeBrowserDb.hg16:
-        case GenomeBrowserDb.hg17:
-        case GenomeBrowserDb.hg18:
-          supported = false;
-          break;
-        case GenomeBrowserDb.hg19:
-        case GenomeBrowserDb.hg38:
-          supported = true;
-          break;
-        default:
-          supported = false;
-          break;
-      }
-      return supported;
-    }
+    ...mapState(['selectedRecord'])
   },
   mounted() {
-    if (this.supportedGenomeBrowserDb) {
-      const igvDiv = this.$refs.igv;
-      const options = {
-        genome: this.genomeBrowserDb
-      };
-      igv.createBrowser(igvDiv, options).then(function (browser: never) {
-        // storing in data instead of prototype results in very slow report
-        Vue.prototype.$browser = browser;
-      });
+    if (this.genomeBrowserDb !== GenomeBrowserDb.hg19 && this.genomeBrowserDb !== GenomeBrowserDb.hg38) {
+      return;
     }
+
+    const options = {
+      genome: this.genomeBrowserDb
+    };
+
+    // store browser in prototype instead of data to prevent very slow report
+    igv.createBrowser(this.$refs.igv, options).then((browser: never) => (Vue.prototype.$browser = browser));
   },
   methods: {
     selectRecord(record?: Record) {
-      if (this.supportedGenomeBrowserDb) {
-        let locus;
-        if (record) {
-          let chr = record.c;
-          if (!chr.startsWith('chr')) {
-            chr = 'chr' + chr;
-          }
-          locus = chr + ':' + record.p;
-        } else {
-          locus = 'all';
-        }
-        Vue.prototype.$browser.search(locus);
-      }
+      const locus = record ? `chr${record.c}:${record.p}` : 'all';
+      Vue.prototype.$browser.search(locus);
     }
   },
   watch: {
     selectedRecord(newRecord?: Record) {
-      this.selectRecord(newRecord);
+      if (Vue.prototype.$browser !== undefined) {
+        this.selectRecord(newRecord);
+      }
     }
   }
 });
