@@ -7,6 +7,7 @@ const state: State = {
   selectedSample: null,
   selectedSamplePhenotypes: null,
   records: null,
+  selectedRecord: null,
   filterRecordsByPhenotype: true,
   filterRecordsByInheritance: true,
   filterRecordsByDenovo: false,

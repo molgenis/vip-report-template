@@ -12,12 +12,17 @@ export default {
   },
   setSelectedSample(state: State, sample: Sample): void {
     state.selectedSample = sample;
+    state.selectedRecord = null;
   },
   setSelectedSamplePhenotypes(state: State, phenotypes: PagedItems<Phenotype>): void {
     state.selectedSamplePhenotypes = phenotypes;
   },
   setRecords(state: State, records: PagedItems<Record>): void {
     state.records = records;
+    state.selectedRecord = null;
+  },
+  setSelectedRecord(state: State, record: Record): void {
+    state.selectedRecord = record;
   },
   addAlert(state: State, alert: Alert): void {
     const alerts = state.alerts.slice();

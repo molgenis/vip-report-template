@@ -96,4 +96,13 @@ td.input {
   overflow-y: auto;
   flex-wrap: nowrap;
 }
+
+.igv-root {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn-link {
+  padding: 0;
+}
 </style>
