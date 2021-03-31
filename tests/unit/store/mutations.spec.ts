@@ -2,26 +2,26 @@ import initialState from '@/store/state';
 import mutations from '@/store/mutations';
 import { State } from '@/types/State';
 import { mock } from 'ts-mockito';
-import { Metadata, PagedItems, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
+import { Api, Vcf } from '@molgenis/vip-report-api';
 import { Annotations } from '@/types/Annotations';
 
 test('set metadata', () => {
   const testState: State = { ...initialState };
-  const metadata: Metadata = mock<Metadata>();
+  const metadata: Api.Metadata = mock<Api.Metadata>();
   mutations.setMetadata(testState, metadata);
   expect(testState.metadata).toBe(metadata);
 });
 
 test('set samples', () => {
   const testState: State = { ...initialState };
-  const samples: PagedItems<Sample> = mock<PagedItems<Sample>>();
+  const samples: Api.PagedItems<Api.Sample> = mock<Api.PagedItems<Api.Sample>>();
   mutations.setSamples(testState, samples);
   expect(testState.samples).toBe(samples);
 });
 
 test('set selected sample', () => {
   const testState: State = { ...initialState };
-  const sample: Sample = mock<Sample>();
+  const sample: Api.Sample = mock<Api.Sample>();
   mutations.setSelectedSample(testState, sample);
   expect(testState.selectedSample).toBe(sample);
   expect(testState.selectedRecord).toBe(null);
@@ -29,21 +29,21 @@ test('set selected sample', () => {
 
 test('set selected sample phenotypes', () => {
   const testState: State = { ...initialState };
-  const phenotypes: PagedItems<Phenotype> = mock<PagedItems<Phenotype>>();
+  const phenotypes: Api.PagedItems<Api.Phenotype> = mock<Api.PagedItems<Api.Phenotype>>();
   mutations.setSelectedSamplePhenotypes(testState, phenotypes);
   expect(testState.selectedSamplePhenotypes).toBe(phenotypes);
 });
 
 test('set records', () => {
   const testState: State = { ...initialState };
-  const records: PagedItems<Record> = mock<PagedItems<Record>>();
+  const records: Api.PagedItems<Vcf.Record> = mock<Api.PagedItems<Vcf.Record>>();
   mutations.setRecords(testState, records);
   expect(testState.records).toBe(records);
 });
 
 test('set selected record', () => {
   const testState: State = { ...initialState };
-  const record: Record = mock<Record>();
+  const record: Vcf.Record = mock<Vcf.Record>();
   mutations.setSelectedRecord(testState, record);
   expect(testState.selectedRecord).toBe(record);
 });

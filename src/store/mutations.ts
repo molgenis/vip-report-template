@@ -1,27 +1,27 @@
 import { State } from '@/types/State';
-import { Metadata, PagedItems, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
+import { Api, Vcf } from '@molgenis/vip-report-api';
 import { Alert } from '@/types/Alert';
 import { Annotations } from '@/types/Annotations';
 
 export default {
-  setMetadata(state: State, metadata: Metadata): void {
+  setMetadata(state: State, metadata: Api.Metadata): void {
     state.metadata = metadata;
   },
-  setSamples(state: State, samples: PagedItems<Sample>): void {
+  setSamples(state: State, samples: Api.PagedItems<Api.Sample>): void {
     state.samples = samples;
   },
-  setSelectedSample(state: State, sample: Sample): void {
+  setSelectedSample(state: State, sample: Api.Sample): void {
     state.selectedSample = sample;
     state.selectedRecord = null;
   },
-  setSelectedSamplePhenotypes(state: State, phenotypes: PagedItems<Phenotype>): void {
+  setSelectedSamplePhenotypes(state: State, phenotypes: Api.PagedItems<Api.Phenotype>): void {
     state.selectedSamplePhenotypes = phenotypes;
   },
-  setRecords(state: State, records: PagedItems<Record>): void {
+  setRecords(state: State, records: Api.PagedItems<Vcf.Record>): void {
     state.records = records;
     state.selectedRecord = null;
   },
-  setSelectedRecord(state: State, record: Record): void {
+  setSelectedRecord(state: State, record: Vcf.Record): void {
     state.selectedRecord = record;
   },
   addAlert(state: State, alert: Alert): void {

@@ -1,18 +1,18 @@
-import Api, { ApiData, Params, Record, Sample } from '@molgenis/vip-report-api';
 import { Alert } from '@/types/Alert';
 import { ActionContext } from 'vuex';
 import { State } from '@/types/State';
 import { apiData } from '@/mocks/apiDataMock';
 import { Annotation, Annotations } from '@/types/Annotations';
+import { Api, ApiClient, ApiData, Vcf } from '@molgenis/vip-report-api';
 
 declare global {
   interface Window {
-    api: ApiData;
+    api: ApiData.Container;
   }
 }
 
-const inputData = process.env.NODE_ENV === 'development' ? apiData : window.api;
-let api = new Api(inputData);
+const inputData = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ? apiData : window.api;
+let api = new ApiClient(inputData);
 
 export default {
   async loadMetadata({ commit }: ActionContext<State, State>): Promise<void> {
@@ -20,8 +20,8 @@ export default {
     commit('setMetadata', response);
   },
   async validateSamples({ commit }: ActionContext<State, State>): Promise<void> {
-    const params: Params = { size: 0 };
-    const response = await api.get('samples', params);
+    const params: Api.Params = { size: 0 };
+    const response = await api.getSamples(params);
     if (response.total > response.page.totalElements) {
       commit('addAlert', {
         type: 'warning',
@@ -31,12 +31,12 @@ export default {
     }
   },
   async loadSamples({ commit }: ActionContext<State, State>): Promise<void> {
-    const params: Params = { size: Number.MAX_VALUE };
-    const response = await api.get('samples', params);
+    const params: Api.Params = { size: Number.MAX_VALUE };
+    const response = await api.getSamples(params);
     commit('setSamples', response);
   },
-  async selectSample({ commit }: ActionContext<State, State>, sample: Sample): Promise<void> {
-    const response = await api.get('phenotypes', {
+  async selectSample({ commit }: ActionContext<State, State>, sample: Api.Sample): Promise<void> {
+    const response = await api.getPhenotypes({
       query: {
         selector: ['subject', 'id'],
         operator: '==',
@@ -48,7 +48,7 @@ export default {
     commit('setSelectedSamplePhenotypes', response);
   },
   async validateRecords({ commit }: ActionContext<State, State>): Promise<void> {
-    const response = await api.get('records', { size: 0 });
+    const response = await api.getRecords({ size: 0 });
     if (response.total > response.page.totalElements) {
       commit('addAlert', {
         type: 'warning',
@@ -57,11 +57,11 @@ export default {
       });
     }
   },
-  async loadRecords({ commit }: ActionContext<State, State>, params?: Params): Promise<void> {
-    const response = await api.get('records', params);
+  async loadRecords({ commit }: ActionContext<State, State>, params?: Api.Params): Promise<void> {
+    const response = await api.getRecords(params);
     commit('setRecords', response);
   },
-  selectRecord({ commit }: ActionContext<State, State>, record: Record): void {
+  selectRecord({ commit }: ActionContext<State, State>, record: Vcf.Record): void {
     commit('setSelectedRecord', record);
   },
   removeAlert({ commit }: ActionContext<State, State>, alert: Alert): void {
@@ -95,10 +95,13 @@ export default {
   },
   setFilterRecordsByDepth({ commit }: ActionContext<State, State>, value: boolean): void {
     commit('setFilterRecordsByDepth', value);
+  },
+  async getVcfGz(): Promise<Buffer> {
+    return api.getVcfGz();
   }
 };
 
 // testability
-export function setTestApi(testApi: Api): void {
+export function setTestApi(testApi: ApiClient): void {
   api = testApi;
 }

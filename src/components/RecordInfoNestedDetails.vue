@@ -11,15 +11,17 @@
   </div>
 </template>
 
+// FIXME broken due to API changes
+
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { Info, InfoMetadata, InfoValue } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 import { BvTableField } from 'bootstrap-vue/src/components/table';
 
 interface RecordInfoBvTableField extends BvTableField {
   index: number;
-  metadata: InfoMetadata;
+  metadata: Vcf.InfoMetadata;
 }
 
 type RecordInfoBvTableFieldArray = Array<string | ({ key: string } & RecordInfoBvTableField)>;
@@ -27,14 +29,14 @@ type RecordInfoBvTableFieldArray = Array<string | ({ key: string } & RecordInfoB
 export default Vue.extend({
   components: { RecordInfoDetailsItem },
   props: {
-    metadata: Array as PropType<InfoMetadata[]>,
-    info: Array as PropType<InfoValue[][]>
+    metadata: Object as PropType<Vcf.NestedInfoMetadata>,
+    info: Array as PropType<Vcf.Value[][]>
   },
   computed: {
     fields(): RecordInfoBvTableFieldArray {
       const fields = [];
       let index = 0;
-      for (const info of this.metadata) {
+      for (const info of this.metadata.items) {
         if (this.hasData(index)) {
           fields.push({
             key: info.id,
@@ -47,7 +49,7 @@ export default Vue.extend({
       }
       return fields;
     },
-    items(): InfoValue[] {
+    items(): Vcf.Value[] {
       return this.info;
     }
   },
@@ -57,7 +59,7 @@ export default Vue.extend({
         if (
           !(
             item[index] === null ||
-            (Array.isArray(item[index]) && (item[index] as string[] | number[] | Info[]).length === 0)
+            (Array.isArray(item[index]) && (item[index] as string[] | number[] | Vcf.Value[]).length === 0)
           )
         ) {
           return true;

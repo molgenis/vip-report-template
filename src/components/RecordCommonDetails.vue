@@ -61,20 +61,20 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { Record } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import Allele from '@/components/Allele.vue';
 import Identifiers from '@/components/Identifiers.vue';
 import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
 
 interface Item {
   key: string;
-  val?: string | string[] | number | number[] | boolean;
+  val: string | (string | null)[] | number | number[] | boolean | null;
 }
 
 export default Vue.extend({
   components: { Allele, Identifiers },
   props: {
-    record: Object as PropType<Record>
+    record: Object as PropType<Vcf.Record>
   },
   computed: {
     fields(): BvTableFieldArray {

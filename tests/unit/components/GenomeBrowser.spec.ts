@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex, { GetterTree, Store } from 'vuex';
 import GenomeBrowser from '@/components/GenomeBrowser.vue';
 import { mock } from 'ts-mockito';
-import { Record } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 
 import igv from 'igv';
 jest.mock('igv');
@@ -30,7 +30,7 @@ describe('GenomeBrowser', () => {
     const wrapper = shallowMount(GenomeBrowser, { store, localVue });
     await wrapper.vm.$nextTick();
 
-    const record = mock<Record>();
+    const record = mock<Vcf.Record>();
     record.c = '1';
     record.p = 123456;
 
@@ -58,7 +58,7 @@ describe('GenomeBrowser', () => {
     const wrapper = shallowMount(GenomeBrowser, { store, localVue });
     await wrapper.vm.$nextTick();
 
-    const record = mock<Record>();
+    const record = mock<Vcf.Record>();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     wrapper.vm.$options.watch.selectedRecord.call(wrapper.vm, record);

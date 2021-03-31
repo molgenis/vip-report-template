@@ -1,8 +1,5 @@
 <template>
-  <span v-if="metadata.number === undefined">
-    <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" :details="details" />
-  </span>
-  <span v-else-if="metadata.number && metadata.number.type === 'NUMBER' && metadata.number.count === 1">
+  <span v-if="metadata.number.type === 'NUMBER' && metadata.number.count === 1">
     <RecordInfoDetailsItemValue v-if="value !== null" :metadataId="metadata.id" :value="value" :details="details" />
   </span>
   <span v-else>
@@ -20,14 +17,14 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { InfoMetadata } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItemValue from '@/components/RecordInfoDetailsItemValue.vue';
 import PubMedAnchor from '@/components/PubMedAnchor.vue';
 
 export default Vue.extend({
   components: { PubMedAnchor, RecordInfoDetailsItemValue },
   props: {
-    metadata: Object as PropType<InfoMetadata>,
+    metadata: Object as PropType<Vcf.InfoMetadata>,
     value: [String, Number, Boolean, Array, Object] as PropType<
       string | number | boolean | unknown | string[] | number[] | boolean[] | unknown[]
     >,

@@ -9,13 +9,13 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { InfoMetadata } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 
 export default Vue.extend({
   components: { RecordInfoDetailsItem },
   props: {
-    metadata: Object as PropType<InfoMetadata>,
+    metadata: Object as PropType<Vcf.InfoMetadata>,
     values: Array as PropType<(string | number | boolean | unknown | string[] | number[] | boolean[] | unknown[])[]>,
     details: {
       type: Boolean as PropType<boolean>,
