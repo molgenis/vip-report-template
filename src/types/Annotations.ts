@@ -7,7 +7,7 @@ export interface Annotation {
   chr: string;
   pos: number;
   ref: string;
-  alt: string[];
+  alt: (string | null)[];
   geneMatch: string | null;
   class: string | null;
   txt: string | null;

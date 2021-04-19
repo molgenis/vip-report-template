@@ -1,15 +1,15 @@
 import actions, { setTestApi } from '@/store/actions';
 import { mock, when } from 'ts-mockito';
-import Api, { Metadata, PagedItems, Params, Phenotype, Record, Sample } from '@molgenis/vip-report-api';
+import { Api, ApiClient, Vcf } from '@molgenis/vip-report-api';
 import { ActionContext, Commit } from 'vuex';
 import { State } from '@/types/State';
 import initialState from '@/store/state';
 
-const api: Api = mock(Api);
-setTestApi(mock(Api));
+const api: ApiClient = mock(ApiClient);
+setTestApi(api);
 
 test('load metadata', async (done) => {
-  const metadata = mock<Metadata>();
+  const metadata = mock<Api.Metadata>();
   when(api.getMeta()).thenReturn(new Promise(() => metadata));
 
   const commit = jest.fn() as Commit;
@@ -19,8 +19,8 @@ test('load metadata', async (done) => {
 });
 
 test('load samples', async (done) => {
-  const samples = mock<PagedItems<Sample>>();
-  when(api.get('samples')).thenReturn(new Promise(() => samples));
+  const samples = mock<Api.PagedItems<Api.Sample>>();
+  when(api.getSamples()).thenReturn(new Promise(() => samples));
 
   const commit = jest.fn() as Commit;
   await actions.loadSamples({ commit } as ActionContext<State, State>);
@@ -29,8 +29,8 @@ test('load samples', async (done) => {
 });
 
 test('load records without params', async (done) => {
-  const records = mock<PagedItems<Record>>();
-  when(api.get('records')).thenReturn(new Promise(() => records));
+  const records = mock<Api.PagedItems<Vcf.Record>>();
+  when(api.getRecords()).thenReturn(new Promise(() => records));
 
   const commit = jest.fn() as Commit;
   await actions.loadRecords({ commit } as ActionContext<State, State>);
@@ -39,9 +39,9 @@ test('load records without params', async (done) => {
 });
 
 test('load records with params', async (done) => {
-  const records = mock<PagedItems<Record>>();
+  const records = mock<Api.PagedItems<Vcf.Record>>();
   const params = {};
-  when(api.get('records', params)).thenReturn(new Promise(() => records));
+  when(api.getRecords(params)).thenReturn(new Promise(() => records));
 
   const commit = jest.fn() as Commit;
   await actions.loadRecords({ commit } as ActionContext<State, State>, params);
@@ -50,7 +50,7 @@ test('load records with params', async (done) => {
 });
 
 test('select record', async (done) => {
-  const record = mock<Record>();
+  const record = mock<Vcf.Record>();
   const commit = jest.fn() as Commit;
   actions.selectRecord({ commit } as ActionContext<State, State>, record);
   expect(commit).toHaveBeenCalledWith('setSelectedRecord', {});
@@ -58,8 +58,8 @@ test('select record', async (done) => {
 });
 
 test('select sample and load sample phenotypes', async (done) => {
-  const phenotypes = mock<PagedItems<Phenotype>>();
-  const sample: Sample = {
+  const phenotypes = mock<Api.PagedItems<Api.Phenotype>>();
+  const sample: Api.Sample = {
     person: {
       familyId: 'MyFamilyId',
       individualId: 'personC',
@@ -71,14 +71,14 @@ test('select sample and load sample phenotypes', async (done) => {
     index: -1,
     proband: true
   };
-  const params: Params = {
+  const params: Api.Params = {
     query: {
       selector: ['subject', 'id'],
       operator: '==',
       args: 'personC'
     }
   };
-  when(api.get('phenotypes', params)).thenReturn(new Promise(() => phenotypes));
+  when(api.getPhenotypes(params)).thenReturn(new Promise(() => phenotypes));
 
   const commit = jest.fn() as Commit;
   await actions.selectSample({ commit } as ActionContext<State, State>, sample);
@@ -163,5 +163,10 @@ test('set filter records by read depth', async (done) => {
   const commit = jest.fn() as Commit;
   actions.setFilterRecordsByDepth({ commit } as ActionContext<State, State>, true);
   expect(commit).toHaveBeenCalledWith('setFilterRecordsByDepth', true);
+  done();
+});
+
+test('set filter records by read depth', async (done) => {
+  expect(await actions.getVcfGz()).not.toBe(null);
   done();
 });

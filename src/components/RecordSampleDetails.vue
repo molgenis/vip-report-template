@@ -1,28 +1,32 @@
 <template>
   <div>
     <div>
-      <span v-for="(alt, index) in data.gt.a" :key="index">
-        <Allele :allele="alt" :abbreviate="false" />
-        <span v-if="index < data.gt.a.length - 1">
-          {{ data.gt.p ? '|' : '/' }}
+      <span v-for="(alleleIndex, index) in data.GT.a" :key="index">
+        <Allele :allele="alleles[alleleIndex]" :abbreviate="false" />
+        <span v-if="index < data.GT.a.length - 1">
+          {{ data.GT.p ? '|' : '/' }}
         </span>
       </span>
     </div>
-    <RecordInfoDetails :metadata="metadata" :info="data.f" />
+    <RecordInfoDetails
+      :metadata="metadata"
+      :info="Object.fromEntries(Object.entries(data).filter(([key]) => key !== 'GT'))"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { FormatMetadata } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import RecordInfoDetails from '@/components/RecordInfoDetails.vue';
 import Allele from '@/components/Allele.vue';
 
 export default Vue.extend({
   components: { Allele, RecordInfoDetails },
   props: {
-    metadata: Array as PropType<FormatMetadata[]>,
-    data: Object as PropType<unknown>
+    metadata: Object as PropType<Vcf.FormatMetadataContainer>,
+    data: Object as PropType<unknown>,
+    alleles: Array as PropType<(string | null)[]>
   }
 });
 </script>

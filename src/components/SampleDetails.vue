@@ -81,11 +81,11 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { Sample } from '@molgenis/vip-report-api';
+import { Api } from '@molgenis/vip-report-api';
 
 export default Vue.extend({
   props: {
-    sample: Object as PropType<Sample>
+    sample: Object as PropType<Api.Sample>
   }
 });
 </script>

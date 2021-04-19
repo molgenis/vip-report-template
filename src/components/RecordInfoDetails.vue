@@ -12,10 +12,8 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import Vue, { PropType } from 'vue';
-// eslint-disable-next-line no-unused-vars
-import { Info, InfoMetadata, InfoValue } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import RecordInfoNestedDetails from '@/components/RecordInfoNestedDetails.vue';
 import RecordInfoUnnestedDetails from '@/components/RecordInfoUnnestedDetails.vue';
 import InfoButton from '@/components/InfoButton.vue';
@@ -27,31 +25,31 @@ export default Vue.extend({
     RecordInfoUnnestedDetails
   },
   props: {
-    metadata: Array as PropType<InfoMetadata[]>,
-    info: Object as PropType<Info>
+    metadata: Object as PropType<Vcf.InfoMetadataContainer>,
+    info: Object as PropType<Vcf.InfoContainer>
   },
   computed: {
     unnestedMetadata: function () {
-      const unnestedMetadata = this.metadata.filter((infoMetadata) => infoMetadata.type !== 'NESTED');
+      const unnestedMetadata = Object.values(this.metadata).filter((infoMetadata) => infoMetadata.nested === undefined);
       unnestedMetadata.sort(this.sortMetadata);
       return unnestedMetadata;
     },
     nestedMetadata: function () {
-      const nestedMetadata = this.metadata.filter((infoMetadata) => infoMetadata.type === 'NESTED');
+      const nestedMetadata = Object.values(this.metadata).filter((infoMetadata) => infoMetadata.nested !== undefined);
       nestedMetadata.sort(this.sortMetadata);
       return nestedMetadata;
     }
   },
   methods: {
-    sortMetadata(thisItem: InfoMetadata, thatItem: InfoMetadata): number {
+    sortMetadata(thisItem: Vcf.InfoMetadata, thatItem: Vcf.InfoMetadata): number {
       return thisItem.id.localeCompare(thatItem.id);
     },
-    getNestedInfo(metadata: InfoMetadata): InfoValue[] {
-      let nestedInfo: InfoValue[][];
+    getNestedInfo(metadata: Vcf.InfoMetadata): Vcf.Value[] {
+      let nestedInfo: Vcf.Value[][];
       if (metadata.number && metadata.number.count === 1) {
-        nestedInfo = [this.info[metadata.id] as InfoValue[]];
+        nestedInfo = [this.info[metadata.id] as Vcf.Value[]];
       } else {
-        nestedInfo = this.info[metadata.id] as InfoValue[][];
+        nestedInfo = this.info[metadata.id] as Vcf.Value[][];
       }
       return nestedInfo;
     }

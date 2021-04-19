@@ -1,10 +1,10 @@
 import { State } from '@/types/State';
 import { GenomeBrowserDb } from '@/types/GenomeBrowserDb';
-import { Record, Sample } from '@molgenis/vip-report-api';
 import { Annotation } from '@/types/Annotations';
+import { Api, Vcf } from '@molgenis/vip-report-api';
 
 export default {
-  samples: (state: State): Array<Sample> => {
+  samples: (state: State): Array<Api.Sample> => {
     if (state.samples === null) {
       return [];
     }
@@ -20,13 +20,13 @@ export default {
       return 0;
     });
   },
-  getSampleById: (state: State) => (id: string): Sample | null => {
+  getSampleById: (state: State) => (id: string): Api.Sample | null => {
     if (state.samples === null) {
       return null;
     }
     return state.samples.items.find((sample) => sample.person.individualId === id) || null;
   },
-  sampleMaternal: (state: State): Sample | null => {
+  sampleMaternal: (state: State): Api.Sample | null => {
     if (state.selectedSample === null) {
       return null;
     }
@@ -39,7 +39,7 @@ export default {
     }
     return state.samples.items.find((sample) => sample.person.individualId === maternalId) || null;
   },
-  samplePaternal: (state: State): Sample | null => {
+  samplePaternal: (state: State): Api.Sample | null => {
     if (state.selectedSample === null) {
       return null;
     }
@@ -83,24 +83,24 @@ export default {
     return genomeBrowserDb;
   },
   hasCapice: (state: State): boolean => {
-    return state.metadata !== null && state.metadata.records.info.find((item) => item.id === 'CAP') !== undefined;
+    return state.metadata !== null && state.metadata.records.info['CAP'] !== undefined;
   },
   hasMvl: (state: State): boolean => {
-    return state.metadata !== null && state.metadata.records.info.find((item) => item.id === 'VKGL_UMCG') !== undefined;
+    return state.metadata !== null && state.metadata.records.info['VKGL_UMCG'] !== undefined;
   },
   hasVkgl: (state: State): boolean => {
-    return state.metadata !== null && state.metadata.records.info.find((item) => item.id === 'VKGL') !== undefined;
+    return state.metadata !== null && state.metadata.records.info['VKGL'] !== undefined;
   },
   hasConsequences: (state: State): boolean => {
     return (
       state.metadata !== null &&
-      state.metadata.records.info.find((item) => item.id === 'CSQ' || item.id === 'ANN') !== undefined
+      (state.metadata.records.info['CSQ'] !== undefined || state.metadata.records.info['ANN']) !== undefined
     );
   },
   isAnnotationEnabled: (state: State): boolean => {
     return state.annotations !== null;
   },
-  getAnnotation: (state: State) => (record: Record): Annotation => {
+  getAnnotation: (state: State) => (record: Vcf.Record): Annotation => {
     if (state.annotations === null) {
       throw 'Annotations disabled';
     }
@@ -133,14 +133,14 @@ export default {
     if (state.metadata === null) {
       hasPhenotypeAssociations = false;
     } else {
-      const csqInfo = state.metadata.records.info.find((item) => item.id === 'CSQ');
+      const csqInfo = state.metadata.records.info['CSQ'];
       if (csqInfo === undefined) {
         hasPhenotypeAssociations = false;
       } else {
         if (csqInfo.nested === undefined) {
           hasPhenotypeAssociations = false;
         } else {
-          hasPhenotypeAssociations = csqInfo.nested.some((item) => item.id === 'HPO');
+          hasPhenotypeAssociations = csqInfo.nested.items.some((item) => item.id === 'HPO');
         }
       }
     }
@@ -154,7 +154,7 @@ export default {
     if (state.metadata === null) {
       hasSampleInheritance = false;
     } else {
-      const vimFormat = state.metadata.records.format.find((item) => item.id === 'VIM');
+      const vimFormat = state.metadata.records.format['VIM'];
       hasSampleInheritance = vimFormat !== undefined;
     }
     return hasSampleInheritance;
@@ -167,7 +167,7 @@ export default {
     if (state.metadata === null) {
       hasSampleInheritance = false;
     } else {
-      const vimFormat = state.metadata.records.format.find((item) => item.id === 'VID');
+      const vimFormat = state.metadata.records.format['VID'];
       hasSampleInheritance = vimFormat !== undefined;
     }
     return hasSampleInheritance;
@@ -180,7 +180,7 @@ export default {
     if (state.metadata === null) {
       hasReadDepth = false;
     } else {
-      const dpFormat = state.metadata.records.format.find((item) => item.id === 'DP');
+      const dpFormat = state.metadata.records.format['DP'];
       hasReadDepth = dpFormat !== undefined;
     }
     return hasReadDepth;

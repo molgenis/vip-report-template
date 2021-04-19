@@ -48,21 +48,24 @@
       </template>
       <template v-slot:cell(s)="data">
         <Genotype
-          :genotype="data.item.s[sample.index].gt"
+          :genotype="data.item.s[sample.index].GT"
+          :alleles="[data.item.r].concat(data.item.a)"
           :readDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.DP : undefined"
           :allelicDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.AD : undefined"
         />
       </template>
       <template v-slot:cell(father)="data">
         <Genotype
-          :genotype="data.item.s[samplePaternal.index].gt"
+          :genotype="data.item.s[samplePaternal.index].GT"
+          :alleles="[data.item.r].concat(data.item.a)"
           :readDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.DP : undefined"
           :allelicDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.AD : undefined"
         />
       </template>
       <template v-slot:cell(mother)="data">
         <Genotype
-          :genotype="data.item.s[sampleMaternal.index].gt"
+          :genotype="data.item.s[sampleMaternal.index].GT"
+          :alleles="[data.item.r].concat(data.item.a)"
           :readDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.DP : undefined"
           :allelicDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.AD : undefined"
         />
@@ -197,17 +200,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Vue, { PropType } from 'vue';
 import { BButton, BTable, BvTableCtxObject, BvTableFieldArray } from 'bootstrap-vue';
-import {
-  ComposedQuery,
-  PagedItems,
-  Params,
-  Phenotype,
-  Query,
-  Record,
-  RecordSample,
-  Sample,
-  SortOrder
-} from '@molgenis/vip-report-api';
+import { Api, Vcf } from '@molgenis/vip-report-api';
 import { append, formatNumber } from '@/globals/filters';
 import RecordDetails from '@/components/RecordDetails.vue';
 import Allele from '@/components/Allele.vue';
@@ -229,17 +222,17 @@ interface Page {
 interface InfoModal {
   id: string;
   title: string;
-  record: Record | null;
+  record: Vcf.Record | null;
 }
 
 interface Row {
   c: string;
   p: number;
   r: string;
-  a: string[];
-  q?: number;
-  f?: string[];
-  s?: RecordSample[];
+  a: (string | null)[];
+  q: number | null;
+  f: string[];
+  s: Vcf.RecordSample[];
   effect?: unknown;
   symbol?: unknown;
   inheritance?: unknown;
@@ -262,7 +255,7 @@ export default Vue.extend({
     RecordTableControls
   },
   props: {
-    sample: Object as PropType<Sample>
+    sample: Object as PropType<Api.Sample>
   },
   data: function () {
     return {
@@ -357,7 +350,7 @@ export default Vue.extend({
   methods: {
     ...mapActions(['loadRecords', 'selectRecord']),
     provider(ctx: BvTableCtxObject): Promise<Row[]> {
-      const params: Params = {
+      const params: Api.Params = {
         page: ctx.currentPage - 1,
         size: ctx.perPage,
         query: this.createQuery(),
@@ -365,13 +358,13 @@ export default Vue.extend({
       };
 
       return this.loadRecords(params).then(() => {
-        const records = this.records as PagedItems<Record>;
+        const records = this.records as Api.PagedItems<Vcf.Record>;
         this.page.totalRows = records.page.totalElements;
         this.page.totalPages = Math.ceil(records.page.totalElements / ctx.perPage);
         return records.items.map(this.mapRecordToRow);
       });
     },
-    info(record: Record, index: number, button: BButton): void {
+    info(record: Vcf.Record, index: number, button: BButton): void {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.record = record;
       this.$root.$emit('bv::show::modal', this.infoModal.id, button);
@@ -380,8 +373,8 @@ export default Vue.extend({
       this.infoModal.title = '';
       this.infoModal.record = null;
     },
-    createQuery(): Query | ComposedQuery | undefined {
-      const queries: (Query | ComposedQuery)[] = [];
+    createQuery(): Api.Query | Api.ComposedQuery | undefined {
+      const queries: (Api.Query | Api.ComposedQuery)[] = [];
       if (this.sample) {
         queries.push(this.createSampleQuery());
       }
@@ -400,7 +393,7 @@ export default Vue.extend({
 
       // todo: translate ctx filter param to query
 
-      let query: Query | ComposedQuery | undefined;
+      let query: Api.Query | Api.ComposedQuery | undefined;
       if (queries.length === 0) {
         query = undefined;
       } else if (queries.length === 1) {
@@ -413,19 +406,19 @@ export default Vue.extend({
       }
       return query;
     },
-    createSampleQuery(): Query {
+    createSampleQuery(): Api.Query {
       return {
-        selector: ['s', this.sample.index, 'gt', 't'],
+        selector: ['s', this.sample.index, 'GT', 't'],
         operator: 'in',
         args: ['het', 'hom_a', 'part']
       };
     },
-    createSampleInheritanceQuery(): ComposedQuery {
+    createSampleInheritanceQuery(): Api.ComposedQuery {
       return {
         operator: 'or',
         args: [
           {
-            selector: ['s', this.sample.index, 'f', 'VIM'],
+            selector: ['s', this.sample.index, 'VIM'],
             operator: '==',
             args: 1
           },
@@ -438,7 +431,7 @@ export default Vue.extend({
                 args: ['AD', 'AR', 'XLR', 'XLD', 'XL']
               },
               {
-                selector: ['s', this.sample.index, 'f', 'VI'],
+                selector: ['s', this.sample.index, 'VI'],
                 operator: 'has_any',
                 args: ['AD', 'AR', 'XLR', 'XLD', 'XL']
               }
@@ -447,16 +440,16 @@ export default Vue.extend({
         ]
       };
     },
-    createSampleDenovoQuery(): Query {
+    createSampleDenovoQuery(): Api.Query {
       return {
-        selector: ['s', this.sample.index, 'f', 'VID'],
+        selector: ['s', this.sample.index, 'VID'],
         operator: '==',
         args: 1
       };
     },
-    createSampleReadDepthQuery(): Query {
+    createSampleReadDepthQuery(): Api.Query {
       return {
-        selector: ['s', this.sample.index, 'f', 'DP'],
+        selector: ['s', this.sample.index, 'DP'],
         operator: '>=',
         args: 20
       };
@@ -464,8 +457,8 @@ export default Vue.extend({
     hasSamplePhenotypes(): boolean {
       return this.selectedSamplePhenotypes !== null && this.selectedSamplePhenotypes.page.totalElements > 0;
     },
-    createSamplePhenotypesQuery(): Query {
-      const phenotypeIds = (this.selectedSamplePhenotypes.items as Phenotype[])
+    createSamplePhenotypesQuery(): Api.Query {
+      const phenotypeIds = (this.selectedSamplePhenotypes.items as Api.Phenotype[])
         .flatMap((phenotype) => phenotype.phenotypicFeaturesList)
         .map((phenotypicFeature) => phenotypicFeature.type.id);
       return {
@@ -474,8 +467,8 @@ export default Vue.extend({
         args: [...new Set(phenotypeIds)]
       };
     },
-    createSort(ctx: BvTableCtxObject): SortOrder | undefined {
-      let sort: SortOrder | undefined;
+    createSort(ctx: BvTableCtxObject): Api.SortOrder | undefined {
+      let sort: Api.SortOrder | undefined;
       if (ctx.sortBy) {
         switch (ctx.sortBy) {
           case 'capice':
@@ -515,7 +508,7 @@ export default Vue.extend({
       }
       return sort;
     },
-    mapRecordToRow(record: Record) {
+    mapRecordToRow(record: Vcf.Record) {
       const row: Row = { ...record };
       if (this.hasConsequences) {
         const consequences: Consequences = getConsequences(record, this.metadata.records);

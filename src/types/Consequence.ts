@@ -1,14 +1,14 @@
-import { InfoMetadata } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 
 export interface ConsequenceMetadata {
-  effect: InfoMetadata;
-  symbol: InfoMetadata;
-  inheritance: InfoMetadata;
-  hgvsC: InfoMetadata;
-  hgvsP: InfoMetadata;
-  pubMed: InfoMetadata;
-  clinVar: InfoMetadata;
-  gnomAD: InfoMetadata;
+  effect: Vcf.InfoMetadata;
+  symbol: Vcf.InfoMetadata;
+  inheritance: Vcf.InfoMetadata;
+  hgvsC: Vcf.InfoMetadata;
+  hgvsP: Vcf.InfoMetadata;
+  pubMed: Vcf.InfoMetadata;
+  clinVar: Vcf.InfoMetadata;
+  gnomAD: Vcf.InfoMetadata;
 }
 
 export interface Consequence {

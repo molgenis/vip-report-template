@@ -15,29 +15,29 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { mapState } from 'vuex';
-import { Sample } from '@molgenis/vip-report-api';
+import { Api } from '@molgenis/vip-report-api';
 
 export default Vue.extend({
   computed: {
     ...mapState(['selectedSample']),
-    probandSamples(): Sample[] {
+    probandSamples(): Api.Sample[] {
       return this.samples.filter((sample) => sample.proband === true);
     }
   },
   props: {
-    samples: Array as PropType<Sample[]>
+    samples: Array as PropType<Api.Sample[]>
   },
   methods: {
-    getId(sample: Sample) {
+    getId(sample: Api.Sample) {
       return sample.person.individualId;
     },
-    getLabel(sample: Sample) {
+    getLabel(sample: Api.Sample) {
       return sample.person.individualId;
     },
-    isActive(sample: Sample) {
+    isActive(sample: Api.Sample) {
       return this.selectedSample !== null && this.getId(sample) === this.getId(this.selectedSample);
     },
-    isDisabled(sample: Sample) {
+    isDisabled(sample: Api.Sample) {
       return sample.index === -1;
     }
   }

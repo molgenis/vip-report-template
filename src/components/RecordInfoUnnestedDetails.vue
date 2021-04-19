@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { Info, InfoMetadata } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import RecordInfoDetailsItem from '@/components/RecordInfoDetailsItem.vue';
 import InfoButton from '@/components/InfoButton.vue';
 import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
@@ -27,13 +27,13 @@ import { BvTableFieldArray } from 'bootstrap-vue/src/components/table';
 interface Item {
   key: string;
   val: string | string[] | number | number[] | boolean;
-  metadata: InfoMetadata;
+  metadata: Vcf.InfoMetadata;
 }
 export default Vue.extend({
   components: { InfoButton, RecordInfoDetailsItem },
   props: {
-    metadata: Array as PropType<InfoMetadata[]>,
-    info: Object as PropType<Info>
+    metadata: Array as PropType<Vcf.InfoMetadata[]>,
+    info: Object as PropType<Vcf.InfoContainer>
   },
   computed: {
     fields(): BvTableFieldArray {
@@ -46,10 +46,11 @@ export default Vue.extend({
     items(): Item[] {
       const items: Item[] = [];
       for (const metadata of this.metadata) {
-        if (this.info[metadata.id] !== undefined) {
+        const info = this.info[metadata.id];
+        if (info !== undefined && info !== null) {
           const item = {
             key: metadata.id,
-            val: this.info[metadata.id] as string | string[] | number | number[] | boolean,
+            val: info as string | string[] | number | number[] | boolean,
             metadata: metadata
           };
           items.push(item);

@@ -1,7 +1,7 @@
 <template>
   <span>
-    <span v-for="(alt, index) in genotype.a" :key="index">
-      <Allele :allele="alt" />
+    <span v-for="(alleleIndex, index) in genotype.a" :key="index">
+      <Allele :allele="alleles[alleleIndex]" />
       <span v-if="index < genotype.a.length - 1">
         {{ genotype.p ? '|' : '/' }}
       </span>
@@ -24,13 +24,14 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { Genotype } from '@molgenis/vip-report-api';
+import { Vcf } from '@molgenis/vip-report-api';
 import Allele from '@/components/Allele.vue';
 
 export default Vue.extend({
   components: { Allele },
   props: {
-    genotype: Object as PropType<Genotype>,
+    genotype: Object as PropType<Vcf.Genotype>,
+    alleles: Array as PropType<(string | null)[]>,
     readDepth: { type: Number as PropType<number>, required: false },
     allelicDepth: { type: Array as PropType<number[]>, required: false }
   },

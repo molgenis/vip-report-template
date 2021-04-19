@@ -1,9 +1,14 @@
-import { InfoMetadata, InfoValue, Record, RecordsMetadata, Selector } from '@molgenis/vip-report-api';
+import { Vcf, Api } from '@molgenis/vip-report-api';
 import { Consequence, ConsequenceMetadata, Consequences } from '@/types/Consequence';
 import { Variant } from '@/types/Variant';
 
 const consequenceMetadata: ConsequenceMetadata = {
-  effect: { id: 'Consequence', type: 'STRING', number: { type: 'OTHER' }, description: 'Consequence' },
+  effect: {
+    id: 'Consequence',
+    type: 'STRING',
+    number: { type: 'OTHER' },
+    description: 'Consequence'
+  },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
   inheritance: {
     id: 'InheritanceModesGene',
@@ -34,7 +39,7 @@ const consequenceMetadata: ConsequenceMetadata = {
 };
 
 function createConsequence(
-  info: InfoValue[],
+  info: Vcf.Value[],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
   inheritanceIndex: number | undefined,
@@ -61,7 +66,7 @@ function createConsequence(
 }
 
 function createConsequences(
-  info: InfoValue[][],
+  info: Vcf.Value[][],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
   inheritanceIndex: number | undefined,
@@ -95,8 +100,8 @@ function createConsequences(
 }
 
 function getInfoConsequences(
-  infoMetadata: InfoMetadata,
-  info: InfoValue[][],
+  infoMetadata: Vcf.InfoMetadata,
+  info: Vcf.Value[][],
   effectId: string,
   symbolId: string,
   inheritanceId: string | null,
@@ -123,7 +128,7 @@ function getInfoConsequences(
     primaryIndex,
     alleleIndexIndex;
   let index = 0;
-  for (const nestedInfoMetadata of infoMetadata.nested) {
+  for (const nestedInfoMetadata of Object.values(infoMetadata.nested.items)) {
     switch (nestedInfoMetadata.id) {
       case effectId:
         effectIndex = index;
@@ -176,13 +181,13 @@ function getInfoConsequences(
   );
 }
 
-function hasVepConsequences(metadata: RecordsMetadata): boolean {
-  const csqInfo = metadata.info.find((item) => item.id === 'CSQ');
+function hasVepConsequences(metadata: Vcf.Metadata): boolean {
+  const csqInfo = metadata.info['CSQ'];
   return csqInfo !== undefined;
 }
 
-function getVepConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
-  const infoMetadata = metadata.info.find((item) => item.id === 'CSQ');
+function getVepConsequences(record: Vcf.Record, metadata: Vcf.Metadata): Consequence[] {
+  const infoMetadata = metadata.info['CSQ'];
   if (infoMetadata === undefined || record.n === undefined) {
     return [];
   }
@@ -190,7 +195,7 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
   if (!Object.prototype.hasOwnProperty.call(info, 'CSQ') && info.CSQ !== null) {
     return [];
   }
-  const csqInfo = info.CSQ as InfoValue[][];
+  const csqInfo = info.CSQ as Vcf.Value[][];
   return getInfoConsequences(
     infoMetadata,
     csqInfo,
@@ -207,13 +212,13 @@ function getVepConsequences(record: Record, metadata: RecordsMetadata): Conseque
   );
 }
 
-function hasSnpEffConsequences(metadata: RecordsMetadata): boolean {
-  const csqInfo = metadata.info.find((item) => item.id === 'ANN');
+function hasSnpEffConsequences(metadata: Vcf.Metadata): boolean {
+  const csqInfo = metadata.info['ANN'];
   return csqInfo !== undefined;
 }
 
-function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Consequence[] {
-  const infoMetadata = metadata.info.find((item) => item.id === 'ANN');
+function getSnpEffConsequences(record: Vcf.Record, metadata: Vcf.Metadata): Consequence[] {
+  const infoMetadata = metadata.info['ANN'];
   if (infoMetadata === undefined || record.n === undefined) {
     return [];
   }
@@ -221,7 +226,7 @@ function getSnpEffConsequences(record: Record, metadata: RecordsMetadata): Conse
   if (!Object.prototype.hasOwnProperty.call(info, 'ANN') && info.ANN !== null) {
     return [];
   }
-  const annInfo = info.ANN as InfoValue[][];
+  const annInfo = info.ANN as Vcf.Value[][];
   return getInfoConsequences(
     infoMetadata,
     annInfo,
@@ -331,7 +336,7 @@ function sortConsequences(thisConsequence: Consequence, thatConsequence: Consequ
 /**
  * Returns consequences extracted from various info fields
  */
-export function getConsequences(record: Record, recordMetadata: RecordsMetadata): Consequences {
+export function getConsequences(record: Vcf.Record, recordMetadata: Vcf.Metadata): Consequences {
   const consequences: Consequence[] = [];
   if (hasVepConsequences(recordMetadata)) {
     consequences.push(...getVepConsequences(record, recordMetadata));
@@ -343,14 +348,14 @@ export function getConsequences(record: Record, recordMetadata: RecordsMetadata)
   return { metadata: consequenceMetadata, items: consequences };
 }
 
-function getVepPhenotypesIndex(metadata: RecordsMetadata): number | null {
-  const infoMetadata = metadata.info.find((item) => item.id === 'CSQ');
+function getVepPhenotypesIndex(metadata: Vcf.Metadata): number | null {
+  const infoMetadata = metadata.info['CSQ'];
   if (infoMetadata === undefined || infoMetadata.nested === undefined) {
     return null;
   }
 
   let index = 0;
-  for (const nestedInfoMetadata of infoMetadata.nested) {
+  for (const nestedInfoMetadata of Object.values(infoMetadata.nested.items)) {
     if (nestedInfoMetadata.id === 'HPO') {
       return index;
     }
@@ -359,7 +364,7 @@ function getVepPhenotypesIndex(metadata: RecordsMetadata): number | null {
   return null;
 }
 
-export function getPhenotypesSelector(recordMetadata: RecordsMetadata): Selector {
+export function getPhenotypesSelector(recordMetadata: Vcf.Metadata): Api.Selector {
   const index = getVepPhenotypesIndex(recordMetadata);
   if (index === null) {
     throw new Error('phenotypes unavailable');
@@ -367,14 +372,14 @@ export function getPhenotypesSelector(recordMetadata: RecordsMetadata): Selector
   return ['n', 'CSQ', '*', index];
 }
 
-function getVepInheritanceModesGeneIndex(metadata: RecordsMetadata): number | null {
-  const infoMetadata = metadata.info.find((item) => item.id === 'CSQ');
+function getVepInheritanceModesGeneIndex(metadata: Vcf.Metadata): number | null {
+  const infoMetadata = metadata.info['CSQ'];
   if (infoMetadata === undefined || infoMetadata.nested === undefined) {
     return null;
   }
 
   let index = 0;
-  for (const nestedInfoMetadata of infoMetadata.nested) {
+  for (const nestedInfoMetadata of Object.values(infoMetadata.nested.items)) {
     if (nestedInfoMetadata.id === 'InheritanceModesGene') {
       return index;
     }
@@ -383,7 +388,7 @@ function getVepInheritanceModesGeneIndex(metadata: RecordsMetadata): number | nu
   return null;
 }
 
-export function getInheritanceModesGeneSelector(recordMetadata: RecordsMetadata): Selector {
+export function getInheritanceModesGeneSelector(recordMetadata: Vcf.Metadata): Api.Selector {
   const index = getVepInheritanceModesGeneIndex(recordMetadata);
   if (index === null) {
     throw new Error('inheritance modes gene unavailable');
@@ -391,7 +396,7 @@ export function getInheritanceModesGeneSelector(recordMetadata: RecordsMetadata)
   return ['n', 'CSQ', '*', index];
 }
 
-export function getVariant(record: Record, consequence: Consequence): Variant | null {
+export function getVariant(record: Vcf.Record, consequence: Consequence): Variant | null {
   let variant;
   if (consequence.alleleIndex !== null) {
     variant = {
