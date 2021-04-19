@@ -418,7 +418,7 @@ export default Vue.extend({
         operator: 'or',
         args: [
           {
-            selector: ['s', this.sample.index, 'f', 'VIM'],
+            selector: ['s', this.sample.index, 'VIM'],
             operator: '==',
             args: 1
           },
@@ -431,7 +431,7 @@ export default Vue.extend({
                 args: ['AD', 'AR', 'XLR', 'XLD', 'XL']
               },
               {
-                selector: ['s', this.sample.index, 'f', 'VI'],
+                selector: ['s', this.sample.index, 'VI'],
                 operator: 'has_any',
                 args: ['AD', 'AR', 'XLR', 'XLD', 'XL']
               }
@@ -442,14 +442,14 @@ export default Vue.extend({
     },
     createSampleDenovoQuery(): Api.Query {
       return {
-        selector: ['s', this.sample.index, 'f', 'VID'],
+        selector: ['s', this.sample.index, 'VID'],
         operator: '==',
         args: 1
       };
     },
     createSampleReadDepthQuery(): Api.Query {
       return {
-        selector: ['s', this.sample.index, 'f', 'DP'],
+        selector: ['s', this.sample.index, 'DP'],
         operator: '>=',
         args: 20
       };
