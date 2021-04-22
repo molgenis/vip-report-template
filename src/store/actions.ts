@@ -12,7 +12,12 @@ declare global {
 }
 
 const inputData = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ? apiData : window.api;
-let api = new ApiClient(inputData);
+let api: ApiClient = new ApiClient(inputData);
+
+export type Locus = {
+  contig: string;
+  pos: number;
+};
 
 export default {
   async loadMetadata({ commit }: ActionContext<State, State>): Promise<void> {
@@ -96,8 +101,12 @@ export default {
   setFilterRecordsByDepth({ commit }: ActionContext<State, State>, value: boolean): void {
     commit('setFilterRecordsByDepth', value);
   },
-  async getVcfGz(): Promise<Buffer> {
+  getVcfGz(): Promise<Buffer> {
     return api.getVcfGz();
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getFastaGz({ commit }: ActionContext<State, State>, locus: Locus): Promise<Buffer | null> {
+    return api.getFastaGz(locus.contig, locus.pos);
   }
 };
 

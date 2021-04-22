@@ -166,7 +166,15 @@ test('set filter records by read depth', async (done) => {
   done();
 });
 
-test('set filter records by read depth', async (done) => {
+test('get vcf gz', async (done) => {
   expect(await actions.getVcfGz()).not.toBe(null);
+  done();
+});
+
+test('get fasta gz', async (done) => {
+  const commit = jest.fn() as Commit;
+  expect(await actions.getFastaGz({ commit } as ActionContext<State, State>, { contig: '1', pos: 17350500 })).not.toBe(
+    null
+  );
   done();
 });
