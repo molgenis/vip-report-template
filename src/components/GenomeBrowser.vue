@@ -23,7 +23,7 @@ export default Vue.extend({
     },
     async updateGenomeBrowser(record: Vcf.Record | null) {
       const config = record !== null ? await this.createBrowserConfig(record) : null;
-      if (config == null) {
+      if (config === null) {
         if (this.hasGenomeBrowser()) {
           await this.deleteGenomeBrowser();
         }
