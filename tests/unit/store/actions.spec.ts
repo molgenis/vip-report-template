@@ -178,3 +178,8 @@ test('get fasta gz', async (done) => {
   );
   done();
 });
+
+test('get genes gz', async (done) => {
+  expect(await actions.getGenesGz()).not.toBe(null);
+  done();
+});

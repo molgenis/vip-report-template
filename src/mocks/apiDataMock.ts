@@ -158,6 +158,8 @@ export const apiData: ApiData.Container = {
         'ABzY800000001qKyA1;|3`6_dB}G2KB`E?3DzpHL>_18Ps2p%MEy)xqf4=X>^L4+S=k)?Gx*k>CRpYNUQv1~E1U1z)<){HUgK@3OpdD*YMpQZCLsRPOg#3HeB<!Mu6#fY<&}2S#+I5MNNT62$jdHiC3+sf!Trh{$idc}G0=~*#Pz=1IM3d8cG&kf}h{*uR(jJYLg*SL(#=@LJYVR!8d|)=anrO?Qgd*$YkXimmqs$9?-j(HVVrGZG+0IzE>%g=*rDgim-XO`4SI<tFD38|rZh|4*s*WEo_#mVU0ssI',
       'X:153421665-153422165':
         'ABzY800000001?SF_OYi3`2YFvIXoW1qCx27ruasz5hw@lM^tBlP}AX`24@0$M4_kd7j5lx@nI`%iU#)drjp+RjH(O9#{qAd0BZVXRLx99G?a*;Jj|{ur+f-FKI3moj9J3X?9K9IZHFYIjo*967Lc<jI+0`%I%iliqZ%Kv!e^Xq(&x0h8j$E1G$4(cio}NEV@xsmow|K3yqUaB%w_i#c#Yu%wX2E6RE>zknUZ$mU&QLN&-bH0qq9Tf)?f?nTFQuea#aiBS=9>g64l!@3tiU_ySz#ZKDkW000'
-    }
+    },
+    genesGz:
+      'ABzY8o^FC*00ZroO>g2b5Qfk6S9pc?v`w&`Pe9R%f|hb<RMGCaGRZ)#5}Vqllz+cAR8;9kWe=^i5>1q7JodaEKd~lmw-@ud_XJ9FDNu0M{^r_x1;xQhd`hf;rDOqGONH{`#RM@Sq}eELK)E0gvI1|m=F1X|r^EXo@mC~x)8nziNjOobaW~K!s@Zbe8xMcoVRw-bM?Q^g+)kevJJu_i0Yq?z(hkKG*E_Xbs{-~pUCK%#%~l+QM!#1su0(^wSTuztFzvMLBvy%FO3&JD4UcOO1$YV;y9L{uhFu!r*sZ+nXmHTz-k6o{bvm2P#uvqm`(j!7g5UcK`P8{(&(f}R+qqD3qd~b*hCTbmg8$@Y){Sv|Mp_r3%@pQ0@Yt%R`JhGYnrSyB&IqF@id%l`hkYiaObO=YR~8GQ-6Tm;pY*Sp0%0<X6l_;MxF!A3>{-D)8(Y_8)QiIu({tOHG4ar=N1tDg^I>oIB1xJg=U0=fUX0TO<9^O6$lgr0m_5KYb6NJ?gxSl4b{mxI!eoLM(s02lUIG&9VhOfsO;&=~F1Jggn9y@jJKo>v5bYd=;wyumnBq(rMEkGKI}53vK^+%Zyfs`nz-jP`%k{tE<sFDMu>2Ts|0$$^;w0W1G>qSeL{An{6i0Y(q`{G$6r3ugkl?htHz-ZthZLSHBpO8Bh7#TcDLOSs!_m#Y5|Mz`OA>aBic)*|^)5UO6P)<}P_&0uv*%uRb6OV7ylR@qe}458a%mvrTF#}a>}h~&WDf|kw8x3rwi(Ety3Oe*^v+9z7l;+SM3p@^9QzLFkc*Qvz{L)GE$L?Le-}CWh5gg9H<V5Ch5hrf9||!|tnszmKOXxZWJlFGF%AF#'
   }
 };

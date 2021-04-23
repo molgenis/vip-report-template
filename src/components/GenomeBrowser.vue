@@ -14,7 +14,7 @@ export default Vue.extend({
     ...mapState(['selectedRecord'])
   },
   methods: {
-    ...mapActions(['getFastaGz', 'getVcfGz']),
+    ...mapActions(['getFastaGz', 'getGenesGz', 'getVcfGz']),
     hasGenomeBrowser() {
       return Vue.prototype.$browser !== undefined;
     },
@@ -40,9 +40,14 @@ export default Vue.extend({
       Vue.prototype.$browser = undefined;
     },
     async createBrowserConfig(record: Vcf.Record): Promise<unknown | null> {
-      const data = await Promise.all([this.getFastaGz({ contig: record.c, pos: record.p }), this.getVcfGz()]);
+      const data = await Promise.all([
+        this.getFastaGz({ contig: record.c, pos: record.p }),
+        this.getVcfGz(),
+        this.getGenesGz()
+      ]);
       const fastaGz = data[0];
       const vcfGz = data[1];
+      const genesGz = data[2];
       if (fastaGz === null) {
         return null;
       }
@@ -54,7 +59,14 @@ export default Vue.extend({
         name: 'Variants',
         url: 'data:application/gzip;base64,' + vcfGz.toString('base64')
       });
-
+      if (genesGz !== null) {
+        tracks.push({
+          type: 'annotation',
+          format: 'gff',
+          name: 'Genes',
+          url: 'data:application/gzip;base64,' + genesGz.toString('base64')
+        });
+      }
       return {
         reference: {
           id: this.genomeBrowserDb !== null ? this.genomeBrowserDb : 'reference_unknown',
