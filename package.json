@@ -1,6 +1,6 @@
 {
   "name": "@molgenis/vip-report-template",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Report Template for Variant Call Format (VCF) Report Generator",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,7 +10,7 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
-    "@molgenis/vip-report-api": "^2.1.0",
+    "@molgenis/vip-report-api": "^2.2.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.9.1",
     "file-saver": "^2.0.5",

@@ -107,6 +107,9 @@ export default {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getFastaGz({ commit }: ActionContext<State, State>, locus: Locus): Promise<Buffer | null> {
     return api.getFastaGz(locus.contig, locus.pos);
+  },
+  getGenesGz(): Promise<Buffer | null> {
+    return api.getGenesGz();
   }
 };
 
