@@ -62,7 +62,7 @@ export default Vue.extend({
       if (genesGz !== null) {
         tracks.push({
           type: 'annotation',
-          format: 'gff',
+          format: 'refGene',
           name: 'Genes',
           url: 'data:application/gzip;base64,' + genesGz.toString('base64')
         });
