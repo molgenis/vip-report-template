@@ -11,10 +11,10 @@ import { Vcf } from '@molgenis/vip-report-api';
 export default Vue.extend({
   computed: {
     ...mapGetters(['genomeBrowserDb']),
-    ...mapState(['selectedRecord'])
+    ...mapState(['selectedRecord', 'selectedSample'])
   },
   methods: {
-    ...mapActions(['getFastaGz', 'getGenesGz', 'getVcfGz']),
+    ...mapActions(['getBam', 'getFastaGz', 'getGenesGz', 'getVcfGz']),
     hasGenomeBrowser() {
       return Vue.prototype.$browser !== undefined;
     },
@@ -40,33 +40,69 @@ export default Vue.extend({
       Vue.prototype.$browser = undefined;
     },
     async createBrowserConfig(record: Vcf.Record): Promise<unknown | null> {
+      const sampleIds = [];
+      if (this.selectedSample) {
+        const sampleId = this.selectedSample.person.individualId;
+        sampleIds.push(sampleId);
+
+        const paternalId = this.selectedSample.person.paternalId;
+        if (paternalId !== '0') {
+          sampleIds.push(paternalId);
+        }
+
+        const maternalId = this.selectedSample.person.maternalId;
+        if (maternalId !== '0') {
+          sampleIds.push(maternalId);
+        }
+      }
+
       const data = await Promise.all([
         this.getFastaGz({ contig: record.c, pos: record.p }),
         this.getVcfGz(),
-        this.getGenesGz()
+        this.getGenesGz(),
+        ...sampleIds.map((sampleId) => this.getBam(sampleId))
       ]);
       const fastaGz = data[0];
       const vcfGz = data[1];
       const genesGz = data[2];
+      const bams = data.slice(3);
       if (fastaGz === null) {
         return null;
       }
 
+      let order = 1;
       let tracks = [];
-      tracks.push({
-        type: 'variant',
-        format: 'vcf',
-        name: 'Variants',
-        url: 'data:application/gzip;base64,' + vcfGz.toString('base64')
-      });
-      if (genesGz !== undefined) {
+      if (genesGz) {
         tracks.push({
+          order: order++,
           type: 'annotation',
           format: 'refGene',
           name: 'Genes',
           url: 'data:application/gzip;base64,' + genesGz.toString('base64')
         });
       }
+      tracks.push({
+        order: order++,
+        type: 'variant',
+        format: 'vcf',
+        name: 'Variants',
+        url: 'data:application/gzip;base64,' + vcfGz.toString('base64')
+      });
+
+      for (let i = 0; i < sampleIds.length; ++i) {
+        const bam = bams[i];
+        if (bam !== null) {
+          const sampleId = sampleIds[i];
+          tracks.push({
+            order: order++,
+            type: 'alignment',
+            format: 'bam',
+            name: `Alignment (${sampleId})`,
+            url: 'data:application/gzip;base64,' + bam.toString('base64')
+          });
+        }
+      }
+
       return {
         reference: {
           id: this.genomeBrowserDb !== null ? this.genomeBrowserDb : 'reference_unknown',
