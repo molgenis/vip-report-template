@@ -183,3 +183,9 @@ test('get genes gz', async (done) => {
   expect(await actions.getGenesGz()).not.toBe(null);
   done();
 });
+
+test('get bam', async (done) => {
+  const commit = jest.fn() as Commit;
+  expect(await actions.getBam({ commit } as ActionContext<State, State>, 'Patient')).not.toBe(null);
+  done();
+});

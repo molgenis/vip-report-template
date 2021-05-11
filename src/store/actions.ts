@@ -110,6 +110,10 @@ export default {
   },
   getGenesGz(): Promise<Buffer | null> {
     return api.getGenesGz();
+  },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getBam({ commit }: ActionContext<State, State>, sampleId: string): Promise<Buffer | null> {
+    return api.getBam(sampleId);
   }
 };
 
