@@ -9,6 +9,8 @@ export interface ConsequenceMetadata {
   pubMed: Vcf.InfoMetadata;
   clinVar: Vcf.InfoMetadata;
   gnomAD: Vcf.InfoMetadata;
+  mvl: Vcf.InfoMetadata;
+  vkgl: Vcf.InfoMetadata;
 }
 
 export interface Consequence {
@@ -21,6 +23,8 @@ export interface Consequence {
   pubMed: number[];
   clinVar: string[];
   gnomAD: number | null;
+  mvl: string | null;
+  vkgl: string | null;
   primary: string | null;
 }
 

@@ -31,6 +31,18 @@ const expectedMetadata = {
     type: 'FLOAT',
     number: { type: 'NUMBER', count: 1 },
     description: 'Frequency of existing variant in gnomAD exomes combined population'
+  },
+  mvl: {
+    id: 'VKGL_UMCG',
+    type: 'STRING',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'UMCG Managed variant list Classification'
+  },
+  vkgl: {
+    id: 'VKGL_CL',
+    type: 'STRING',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'VKGL public consensus'
   }
 };
 
@@ -59,6 +71,10 @@ function createCsqInfoMetadataExtended(): Vcf.InfoMetadata {
   pubMedMetadata.id = 'PUBMED';
   const clinSigMetadata = mock<Vcf.InfoMetadata>();
   clinSigMetadata.id = 'CLIN_SIG';
+  const vkglMetadata = mock<Vcf.InfoMetadata>();
+  vkglMetadata.id = 'VKGL_CL';
+  const mvlMetadata = mock<Vcf.InfoMetadata>();
+  mvlMetadata.id = 'VKGL_UMCG';
   const gnomADMetadata = mock<Vcf.InfoMetadata>();
   gnomADMetadata.id = 'gnomAD_AF';
   const hpoMetadata = mock<Vcf.InfoMetadata>();
@@ -74,6 +90,8 @@ function createCsqInfoMetadataExtended(): Vcf.InfoMetadata {
   if (csqInfoMetadata.nested !== undefined) {
     csqInfoMetadata.nested.items.push(pubMedMetadata);
     csqInfoMetadata.nested.items.push(clinSigMetadata);
+    csqInfoMetadata.nested.items.push(mvlMetadata);
+    csqInfoMetadata.nested.items.push(vkglMetadata);
     csqInfoMetadata.nested.items.push(gnomADMetadata);
     csqInfoMetadata.nested.items.push(hpoMetadata);
     csqInfoMetadata.nested.items.push(inheritanceModesGeneMetadata);
@@ -152,7 +170,9 @@ test('get consequences in case of CSQ info', () => {
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       },
       {
         alleleIndex: null,
@@ -164,7 +184,9 @@ test('get consequences in case of CSQ info', () => {
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       }
     ]
   });
@@ -177,7 +199,7 @@ test('get consequences in case of CSQ info with extended info', () => {
   const record = mock<Vcf.Record>();
   record.n = {
     CSQ: [
-      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'], 0.2345, 'HP:123', [], null, 1],
+      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'],'LP', 'VUS', 0.2345, 'HP:123',  [], null, 1],
       [
         ['frameshift_variant'],
         'hgvsC1',
@@ -185,6 +207,8 @@ test('get consequences in case of CSQ info with extended info', () => {
         'symbol1',
         ['12345678', '23456789'],
         ['likely_pathogenic', 'pathogenic'],
+        'LB',
+        'B',
         0.1234,
         'HP:123',
         [],
@@ -206,7 +230,9 @@ test('get consequences in case of CSQ info with extended info', () => {
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: ['12345678', '23456789'],
-        clinVar: ['likely_pathogenic', 'pathogenic']
+        clinVar: ['likely_pathogenic', 'pathogenic'],
+        vkgl: 'B',
+        mvl: 'LB'
       },
       {
         alleleIndex: 1,
@@ -218,7 +244,9 @@ test('get consequences in case of CSQ info with extended info', () => {
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
         pubMed: ['12345678'],
-        clinVar: ['benign']
+        clinVar: ['benign'],
+        vkgl: 'VUS',
+        mvl: 'LP'
       }
     ]
   });
@@ -248,7 +276,9 @@ test('get consequences in case of ANN info', () => {
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       },
       {
         alleleIndex: null,
@@ -260,7 +290,9 @@ test('get consequences in case of ANN info', () => {
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       }
     ]
   });
@@ -291,7 +323,9 @@ test('get consequences in case of CSQ and ANN info', () => {
         hgvsC: 'hgvsC1',
         hgvsP: 'hgvsP1',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       },
       {
         alleleIndex: null,
@@ -303,7 +337,9 @@ test('get consequences in case of CSQ and ANN info', () => {
         hgvsC: 'hgvsC0',
         hgvsP: 'hgvsP0',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       },
       {
         alleleIndex: null,
@@ -315,7 +351,9 @@ test('get consequences in case of CSQ and ANN info', () => {
         hgvsC: 'hgvsC2',
         hgvsP: 'hgvsP2',
         pubMed: [],
-        clinVar: []
+        clinVar: [],
+        mvl: null,
+        vkgl: null
       }
     ]
   });
@@ -325,7 +363,7 @@ test('get phenotypes selector in case of VEP annotations with HPO', () => {
   const recordMetadata = mock<Vcf.Metadata>();
   recordMetadata.info = { CSQ: createCsqInfoMetadataExtended() };
 
-  expect(getPhenotypesSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 7]);
+  expect(getPhenotypesSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 9]);
 });
 
 test('get phenotypes selector in case of VEP annotations without HPO', () => {
@@ -346,7 +384,7 @@ test('get inheritance modes gene selector in case of VEP annotations with HPO', 
   const recordMetadata = mock<Vcf.Metadata>();
   recordMetadata.info = { CSQ: createCsqInfoMetadataExtended() };
 
-  expect(getInheritanceModesGeneSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 8]);
+  expect(getInheritanceModesGeneSelector(recordMetadata)).toEqual(['n', 'CSQ', '*', 10]);
 });
 
 test('get inheritance modes gene selector in case of VEP annotations without HPO', () => {

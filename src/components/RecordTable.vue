@@ -118,25 +118,21 @@
         />
       </template>
       <template v-slot:cell(mvl)="data">
-        <span v-if="data.item.n !== undefined && data.item.n['VKGL_UMCG'] !== undefined">
-          <span v-for="(mvl, index) in data.item.n['VKGL_UMCG']" :key="index">
-            <span>{{ mvl }}</span>
-            <span v-if="index < data.item.n['VKGL_UMCG'].length - 1">, </span>
-          </span>
-        </span>
+        <RecordInfoDetailsItemMultiline
+            :metadata="data.item.mvl.metadata"
+            :values="data.item.expand ? data.item.mvl.items : data.item.mvl.items.slice(0, 1)"
+        />
       </template>
       <template v-slot:cell(vkgl)="data">
-        <span v-if="data.item.n !== undefined && data.item.n['VKGL'] !== undefined">
-          <span v-for="(vkgl, index) in data.item.n['VKGL']" :key="index">
-            <span>{{ vkgl }}</span>
-            <span v-if="index < data.item.n['VKGL'].length - 1">, </span>
-          </span>
-        </span>
+        <RecordInfoDetailsItemMultiline
+            :metadata="data.item.vkgl.metadata"
+            :values="data.item.expand ? data.item.vkgl.items : data.item.vkgl.items.slice(0, 1)"
+        />
       </template>
       <template v-slot:cell(clinVar)="data">
         <RecordInfoDetailsItemMultiline
-          :metadata="data.item.clinVar.metadata"
-          :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
+            :metadata="data.item.clinVar.metadata"
+            :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(pubMed)="data">
@@ -241,6 +237,8 @@ interface Row {
   pubMed?: unknown;
   clinVar?: unknown;
   gnomAD?: unknown;
+  mvl?: unknown;
+  vkgl?: unknown;
   expand?: boolean;
   annotation?: Annotation;
 }
@@ -277,12 +275,11 @@ export default Vue.extend({
     ...mapGetters([
       'genomeBrowserDb',
       'hasConsequences',
-      'hasMvl',
-      'hasVkgl',
       'hasCapice',
       'getAnnotation',
       'isAnnotationEnabled',
       'isRecordsContainPhenotypes',
+      'isRecordsContainMvl',
       'isSamplesContainInheritance',
       'isSamplesContainDenovo',
       'isSamplesContainDepth',
@@ -329,13 +326,11 @@ export default Vue.extend({
         fields.push({ key: 'hgvsP', label: 'hgvsp' });
         fields.push({ key: 'gnomAD', label: 'gnomad' });
       }
-      if (this.hasMvl) {
+      if (this.isRecordsContainMvl) {
         fields.push({ key: 'mvl', label: 'mvl' });
       }
-      if (this.hasVkgl) {
-        fields.push({ key: 'vkgl', label: 'vkgl' });
-      }
       if (this.hasConsequences) {
+        fields.push({ key: 'vkgl', label: 'vkgl' });
         fields.push({ key: 'clinVar', label: 'clinvar' });
         fields.push({ key: 'pubMed', label: 'pubmed' });
       }
@@ -544,6 +539,14 @@ export default Vue.extend({
                 }
               : null
           )
+        };
+        row.mvl = {
+          metadata: consequences.metadata.mvl,
+          items: consequences.items.map((consequence) => consequence.mvl)
+        };
+        row.vkgl = {
+          metadata: consequences.metadata.vkgl,
+          items: consequences.items.map((consequence) => consequence.vkgl)
         };
         row.clinVar = {
           metadata: consequences.metadata.clinVar,

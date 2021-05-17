@@ -85,12 +85,6 @@ export default {
   hasCapice: (state: State): boolean => {
     return state.metadata !== null && state.metadata.records.info['CAP'] !== undefined;
   },
-  hasMvl: (state: State): boolean => {
-    return state.metadata !== null && state.metadata.records.info['VKGL_UMCG'] !== undefined;
-  },
-  hasVkgl: (state: State): boolean => {
-    return state.metadata !== null && state.metadata.records.info['VKGL'] !== undefined;
-  },
   hasConsequences: (state: State): boolean => {
     return (
       state.metadata !== null &&
@@ -124,6 +118,27 @@ export default {
       };
     }
     return annotation;
+  },
+  /**
+   * Returns whether records contain mvl annotations.
+   */
+  isRecordsContainMvl: (state: State): boolean => {
+    let hasMvl;
+    if (state.metadata === null) {
+      hasMvl = false;
+    } else {
+      const csqInfo = state.metadata.records.info['CSQ'];
+      if (csqInfo === undefined) {
+        hasMvl = false;
+      } else {
+        if (csqInfo.nested === undefined) {
+          hasMvl = false;
+        } else {
+          hasMvl = csqInfo.nested.items.some((item) => item.id === 'VKGL_UMCG');
+        }
+      }
+    }
+    return hasMvl;
   },
   /**
    * Returns whether records contain phenotype associations.
