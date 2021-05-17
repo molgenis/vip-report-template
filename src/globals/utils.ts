@@ -35,6 +35,18 @@ const consequenceMetadata: ConsequenceMetadata = {
     type: 'FLOAT',
     number: { type: 'NUMBER', count: 1 },
     description: 'Frequency of existing variant in gnomAD exomes combined population'
+  },
+  mvl: {
+    id: 'VKGL_UMCG',
+    type: 'STRING',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'UMCG Managed variant list Classification'
+  },
+  vkgl: {
+    id: 'VKGL_CL',
+    type: 'STRING',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'VKGL public consensus'
   }
 };
 
@@ -48,6 +60,8 @@ function createConsequence(
   pubMedIndex: number | undefined,
   clinVarIndex: number | undefined,
   gnomADIndex: number | undefined,
+  mvlIndex: number | undefined,
+  vkglIndex: number | undefined,
   primaryIndex: number | undefined,
   alleleIndexIndex: number | undefined
 ): Consequence {
@@ -60,6 +74,8 @@ function createConsequence(
     pubMed: pubMedIndex !== undefined ? (info[pubMedIndex] as number[]) : [],
     clinVar: clinVarIndex !== undefined ? (info[clinVarIndex] as string[]) : [],
     gnomAD: gnomADIndex !== undefined ? (info[gnomADIndex] as number) : null,
+    mvl: mvlIndex !== undefined ? (info[mvlIndex] as string | null) : null,
+    vkgl: vkglIndex !== undefined ? (info[vkglIndex] as string | null) : null,
     primary: primaryIndex !== undefined ? (info[primaryIndex] as string) : null,
     alleleIndex: alleleIndexIndex != undefined ? (info[alleleIndexIndex] as number) : null
   };
@@ -75,6 +91,8 @@ function createConsequences(
   pubMedIndex: number | undefined,
   clinVarIndex: number | undefined,
   gnomADIndex: number | undefined,
+  mvlIndex: number | undefined,
+  vkglIndex: number | undefined,
   primaryIndex: number | undefined,
   alleleIndexIndex: number | undefined
 ): Consequence[] {
@@ -90,6 +108,8 @@ function createConsequences(
       pubMedIndex,
       clinVarIndex,
       gnomADIndex,
+      mvlIndex,
+      vkglIndex,
       primaryIndex,
       alleleIndexIndex
     );
@@ -110,6 +130,8 @@ function getInfoConsequences(
   pubMedId: string | null,
   clinVarId: string | null,
   gnomADId: string | null,
+  mvlId: string | null,
+  vkglId: string | null,
   primaryId: string | null,
   alleleIndexId: string | null
 ): Consequence[] {
@@ -125,6 +147,8 @@ function getInfoConsequences(
     pubMedIndex,
     clinVarIndex,
     gnomADIndex,
+    mvlIndex,
+    vkglIndex,
     primaryIndex,
     alleleIndexIndex;
   let index = 0;
@@ -154,6 +178,12 @@ function getInfoConsequences(
       case gnomADId:
         gnomADIndex = index;
         break;
+      case mvlId:
+        mvlIndex = index;
+        break;
+      case vkglId:
+        vkglIndex = index;
+        break;
       case primaryId:
         primaryIndex = index;
         break;
@@ -176,6 +206,8 @@ function getInfoConsequences(
     pubMedIndex,
     clinVarIndex,
     gnomADIndex,
+    mvlIndex,
+    vkglIndex,
     primaryIndex,
     alleleIndexIndex
   );
@@ -207,6 +239,8 @@ function getVepConsequences(record: Vcf.Record, metadata: Vcf.Metadata): Consequ
     'PUBMED',
     'CLIN_SIG',
     'gnomAD_AF',
+    'VKGL_UMCG',
+    'VKGL_CL',
     'PICK',
     'ALLELE_NUM'
   );
@@ -235,6 +269,8 @@ function getSnpEffConsequences(record: Vcf.Record, metadata: Vcf.Metadata): Cons
     null,
     'HGVS.c',
     'HGVS.p',
+    null,
+    null,
     null,
     null,
     null,

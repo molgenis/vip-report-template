@@ -298,62 +298,6 @@ test('metadata has no consequences', () => {
   expect(getters.hasConsequences(testState)).toBe(false);
 });
 
-test('metadata has mvl', () => {
-  const infoMetadata = mock<Vcf.InfoMetadata>();
-  infoMetadata.id = 'VKGL_UMCG';
-
-  const recordsMetadata = mock<Vcf.Metadata>();
-  recordsMetadata.info = { VKGL_UMCG: infoMetadata };
-
-  const metadata = mock<Api.Metadata>();
-  metadata.records = recordsMetadata;
-
-  const testState: State = { ...initialState, metadata: metadata };
-  expect(getters.hasMvl(testState)).toBe(true);
-});
-
-test('metadata has no mvl', () => {
-  const infoMetadata = mock<Vcf.InfoMetadata>();
-  infoMetadata.id = 'NO_MVL';
-
-  const recordsMetadata = mock<Vcf.Metadata>();
-  recordsMetadata.info = { NO_MVL: infoMetadata };
-
-  const metadata = mock<Api.Metadata>();
-  metadata.records = recordsMetadata;
-
-  const testState: State = { ...initialState, metadata: metadata };
-  expect(getters.hasMvl(testState)).toBe(false);
-});
-
-test('metadata has vkgl', () => {
-  const infoMetadata = mock<Vcf.InfoMetadata>();
-  infoMetadata.id = 'VKGL';
-
-  const recordsMetadata = mock<Vcf.Metadata>();
-  recordsMetadata.info = { VKGL: infoMetadata };
-
-  const metadata = mock<Api.Metadata>();
-  metadata.records = recordsMetadata;
-
-  const testState: State = { ...initialState, metadata: metadata };
-  expect(getters.hasVkgl(testState)).toBe(true);
-});
-
-test('metadata has no vkgl', () => {
-  const infoMetadata = mock<Vcf.InfoMetadata>();
-  infoMetadata.id = 'NO_VKGL';
-
-  const recordsMetadata = mock<Vcf.Metadata>();
-  recordsMetadata.info = { NO_VKGL: infoMetadata };
-
-  const metadata = mock<Api.Metadata>();
-  metadata.records = recordsMetadata;
-
-  const testState: State = { ...initialState, metadata: metadata };
-  expect(getters.hasVkgl(testState)).toBe(false);
-});
-
 test('metadata has CAPICE', () => {
   const infoMetadata = mock<Vcf.InfoMetadata>();
   infoMetadata.id = 'CAP';
@@ -523,6 +467,84 @@ test('whether records contain phenotype associations with VEP without HPO', () =
     metadata: metadata
   };
   expect(getters.isRecordsContainPhenotypes(testState)).toEqual(false);
+});
+
+test('whether records contain MVL annotations', () => {
+  const mvlMetadata = mock<Vcf.InfoMetadata>();
+  mvlMetadata.id = 'VKGL_UMCG';
+
+  const infoMetadata = mock<Vcf.InfoMetadata>();
+  infoMetadata.id = 'CSQ';
+  infoMetadata.nested = { separator: '|', items: [mvlMetadata] };
+
+  const recordsMetadata = mock<Vcf.Metadata>();
+  recordsMetadata.info = { CSQ: infoMetadata };
+
+  const metadata = mock<Api.Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainMvl(testState)).toEqual(true);
+});
+
+test('whether records contain MVL annotations - false', () => {
+  const infoMetadata = mock<Vcf.InfoMetadata>();
+  infoMetadata.id = 'CSQ';
+  infoMetadata.nested = { separator: '|', items: [] };
+
+  const recordsMetadata = mock<Vcf.Metadata>();
+  recordsMetadata.info = { CSQ: infoMetadata };
+
+  const metadata = mock<Api.Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainMvl(testState)).toEqual(false);
+});
+
+test('whether records contain MVL annotations - no meta', () => {
+  const testState: State = {
+    ...initialState
+  };
+  expect(getters.isRecordsContainMvl(testState)).toEqual(false);
+});
+
+test('whether records contain MVL annotations - no info meta', () => {
+  const recordsMetadata = mock<Vcf.Metadata>();
+  recordsMetadata.info = { };
+
+  const metadata = mock<Api.Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainMvl(testState)).toEqual(false);
+});
+
+test('whether records contain MVL annotations - no nested meta', () => {
+  const infoMetadata = mock<Vcf.InfoMetadata>();
+  infoMetadata.id = 'CSQ';
+  infoMetadata.nested = undefined;
+
+  const recordsMetadata = mock<Vcf.Metadata>();
+  recordsMetadata.info = { CSQ: infoMetadata };
+
+  const metadata = mock<Api.Metadata>();
+  metadata.records = recordsMetadata;
+
+  const testState: State = {
+    ...initialState,
+    metadata: metadata
+  };
+  expect(getters.isRecordsContainMvl(testState)).toEqual(false);
 });
 
 test('whether records contain phenotype associations without VEP', () => {
