@@ -105,4 +105,8 @@ td.input {
 .btn-link {
   padding: 0;
 }
+
+textarea {
+  font-family: monospace;
+}
 </style>

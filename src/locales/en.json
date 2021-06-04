@@ -71,5 +71,7 @@
   "sexUnknownUnaffected": "Unknown sex, Unaffected.",
   "sexUnknownAffectedUnknown": "Unknown sex, Unknown affected status.",
   "allelicImbalance": "Allelic imbalance",
-  "lowReadDepth": "Read depth < 20"
+  "lowReadDepth": "Read depth < 20",
+  "data": "Data",
+  "vcf": "VCF"
 }
