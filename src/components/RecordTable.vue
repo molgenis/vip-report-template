@@ -21,7 +21,7 @@
       :current-page="page.currentPage"
       :per-page="page.perPage"
       :empty-text="$t('emptyTableMessage')"
-      :key="sample.index"
+      :key="sample ? sample.index : 'no-sample'"
     >
       <template v-slot:head()="data">
         {{ data.label ? $t(data.label) : '' }}
@@ -119,20 +119,20 @@
       </template>
       <template v-slot:cell(mvl)="data">
         <RecordInfoDetailsItemMultiline
-            :metadata="data.item.mvl.metadata"
-            :values="data.item.expand ? data.item.mvl.items : data.item.mvl.items.slice(0, 1)"
+          :metadata="data.item.mvl.metadata"
+          :values="data.item.expand ? data.item.mvl.items : data.item.mvl.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(vkgl)="data">
         <RecordInfoDetailsItemMultiline
-            :metadata="data.item.vkgl.metadata"
-            :values="data.item.expand ? data.item.vkgl.items : data.item.vkgl.items.slice(0, 1)"
+          :metadata="data.item.vkgl.metadata"
+          :values="data.item.expand ? data.item.vkgl.items : data.item.vkgl.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(clinVar)="data">
         <RecordInfoDetailsItemMultiline
-            :metadata="data.item.clinVar.metadata"
-            :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
+          :metadata="data.item.clinVar.metadata"
+          :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(pubMed)="data">
@@ -253,7 +253,7 @@ export default Vue.extend({
     RecordTableControls
   },
   props: {
-    sample: Object as PropType<Api.Sample>
+    sample: { type: Object as PropType<Api.Sample>, required: false }
   },
   data: function () {
     return {

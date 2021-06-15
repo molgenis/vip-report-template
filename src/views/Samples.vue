@@ -1,12 +1,13 @@
 <template>
-  <b-row>
+  <b-row v-if="selectedSample">
     <b-col cols="1">
       <SampleNavigation v-if="samples" :samples="samples" />
     </b-col>
     <b-col>
-      <SampleReport v-if="selectedSample" :sample="selectedSample" :phenotypes="selectedSamplePhenotypes" />
+      <SampleReport :sample="selectedSample" :phenotypes="selectedSamplePhenotypes" />
     </b-col>
   </b-row>
+  <RecordTable v-else />
 </template>
 
 <script lang="ts">
@@ -15,9 +16,10 @@ import SampleNavigation from '@/components/SampleNavigation.vue';
 import SampleReport from '@/components/SampleReport.vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { Api } from '@molgenis/vip-report-api';
+import RecordTable from '@/components/RecordTable.vue';
 
 export default Vue.extend({
-  components: { SampleNavigation, SampleReport },
+  components: { SampleNavigation, RecordTable, SampleReport },
   computed: {
     ...mapGetters(['samples', 'getSampleById']),
     ...mapState(['selectedSample', 'selectedSamplePhenotypes'])
@@ -36,7 +38,7 @@ export default Vue.extend({
       this.selectSample(sample);
     } else {
       const sample = this.samples.find((sample: Api.Sample) => sample.index !== -1 && sample.proband === true);
-      if (sample !== null) {
+      if (sample !== undefined) {
         await this.$router.push({ params: { id: this.getId(sample) } });
       }
     }
