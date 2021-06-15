@@ -32,10 +32,9 @@
         </b-button>
       </template>
       <template v-slot:cell(p)="data">
-        <b-button v-if="genomeBrowserDb" class="btn-link" variant="link" @click="selectRecord(data.item)">{{
+        <b-button class="btn-link" variant="link" @click="selectRecord(data.item)">{{
           data.item.p | formatNumber(true) | append(data.item.c + ':')
         }}</b-button>
-        <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
       </template>
       <template v-slot:cell(r)="data">
         <Allele :allele="data.item.r" />
@@ -119,20 +118,20 @@
       </template>
       <template v-slot:cell(mvl)="data">
         <RecordInfoDetailsItemMultiline
-            :metadata="data.item.mvl.metadata"
-            :values="data.item.expand ? data.item.mvl.items : data.item.mvl.items.slice(0, 1)"
+          :metadata="data.item.mvl.metadata"
+          :values="data.item.expand ? data.item.mvl.items : data.item.mvl.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(vkgl)="data">
         <RecordInfoDetailsItemMultiline
-            :metadata="data.item.vkgl.metadata"
-            :values="data.item.expand ? data.item.vkgl.items : data.item.vkgl.items.slice(0, 1)"
+          :metadata="data.item.vkgl.metadata"
+          :values="data.item.expand ? data.item.vkgl.items : data.item.vkgl.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(clinVar)="data">
         <RecordInfoDetailsItemMultiline
-            :metadata="data.item.clinVar.metadata"
-            :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
+          :metadata="data.item.clinVar.metadata"
+          :values="data.item.expand ? data.item.clinVar.items : data.item.clinVar.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(pubMed)="data">
@@ -273,7 +272,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters([
-      'genomeBrowserDb',
       'hasConsequences',
       'hasCapice',
       'getAnnotation',

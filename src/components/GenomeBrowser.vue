@@ -1,5 +1,8 @@
 <template>
-  <div ref="igv"></div>
+  <div>
+    <span v-if="genomeBrowserUnavailable">{{ $t('genomeBrowserUnavailable') }}</span>
+    <div ref="igv"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -12,6 +15,11 @@ export default Vue.extend({
   computed: {
     ...mapGetters(['genomeBrowserDb']),
     ...mapState(['selectedRecord', 'selectedSample'])
+  },
+  data() {
+    return {
+      genomeBrowserUnavailable: false
+    };
   },
   methods: {
     ...mapActions(['getBam', 'getFastaGz', 'getGenesGz', 'getVcfGz']),
@@ -34,10 +42,12 @@ export default Vue.extend({
           await this.createGenomeBrowser(config);
         }
       }
+      this.genomeBrowserUnavailable = config === null;
     },
     async deleteGenomeBrowser() {
       igv.removeBrowser(Vue.prototype.$browser);
       Vue.prototype.$browser = undefined;
+      this.genomeBrowserUnavailable = this.hasGenomeBrowser();
     },
     async createBrowserConfig(record: Vcf.Record): Promise<unknown | null> {
       const sampleIds = [];
