@@ -109,4 +109,9 @@ td.input {
 textarea {
   font-family: monospace;
 }
+
+/* below bootstrap zindex-dropdown:1000 */
+.igv-ui-popover {
+  z-index: 999;
+}
 </style>
