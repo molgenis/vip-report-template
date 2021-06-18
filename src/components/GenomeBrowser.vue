@@ -119,9 +119,8 @@ export default Vue.extend({
           T: 'rgb(238, 162, 173)',
           G: 'rgb(255, 236, 139)',
           N: 'rgb(80,80,80)'
-        }
-        // bug in igv?
-        // showCenterGuide: true
+        },
+        showCenterGuide: true
       };
     }
   },
