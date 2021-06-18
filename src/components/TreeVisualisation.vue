@@ -67,10 +67,6 @@ export default Vue.extend({
         g.setEdge(edge.from, edge.to, { label: edge.label });
       });
     },
-    addToolTips(inner: D3GSelection): void {
-      const self = this;
-      inner.selectAll('g.node').attr('title', () => 'tree');
-    },
     addZoom(g: TreeGraph): void {
       const inner = this.svg.append('g');
       const d3zoom = zoom().on('zoom', () => {
@@ -79,7 +75,6 @@ export default Vue.extend({
       this.svg.call(d3zoom);
       const renderTree = new render();
       renderTree(inner, g);
-      this.addToolTips(inner);
       const width = parseInt(this.svg.attr('width'));
       const graphWidth = g.graph().width;
       if (graphWidth) {
