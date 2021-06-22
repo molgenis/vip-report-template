@@ -3,7 +3,7 @@
     <RecordCommonDetails :record="record" />
     <h4>Info</h4>
     <RecordInfoDetails :metadata="metadata.info" :info="record.n" />
-    <b-row>
+    <b-row v-if="sample">
       <b-col>
         <h4>{{ $t('sample') }}</h4>
         <RecordSampleDetails
@@ -47,7 +47,7 @@ export default Vue.extend({
   props: {
     metadata: Object as PropType<Vcf.Metadata>,
     record: Object as PropType<Vcf.Record>,
-    sample: Object as PropType<Api.Sample>
+    sample: { type: Object as PropType<Api.Sample>, required: false }
   },
   computed: {
     ...mapGetters(['sampleMaternal', 'samplePaternal'])
