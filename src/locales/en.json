@@ -73,5 +73,6 @@
   "allelicImbalance": "Allelic imbalance",
   "lowReadDepth": "Read depth < 20",
   "data": "Data",
-  "vcf": "VCF"
+  "vcf": "VCF",
+  "genomeBrowserUnavailable": "Genome browser unavailable for selected record."
 }

@@ -32,10 +32,9 @@
         </b-button>
       </template>
       <template v-slot:cell(p)="data">
-        <b-button v-if="genomeBrowserDb" class="btn-link" variant="link" @click="selectRecord(data.item)">{{
+        <b-button class="btn-link" variant="link" @click="selectRecord(data.item)">{{
           data.item.p | formatNumber(true) | append(data.item.c + ':')
         }}</b-button>
-        <span v-else>{{ data.item.p | formatNumber(true) | append(data.item.c + ':') }}</span>
       </template>
       <template v-slot:cell(r)="data">
         <Allele :allele="data.item.r" />
@@ -273,7 +272,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters([
-      'genomeBrowserDb',
       'hasConsequences',
       'hasCapice',
       'getAnnotation',
