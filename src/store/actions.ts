@@ -114,6 +114,9 @@ export default {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getBam({ commit }: ActionContext<State, State>, sampleId: string): Promise<Buffer | null> {
     return api.getBam(sampleId);
+  },
+  getDecisionTree(): Promise<Buffer | null> {
+    return api.getDecisionTreeGz();
   }
 };
 

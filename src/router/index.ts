@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import About from '@/views/About.vue';
 import Samples from '@/views/Samples.vue';
 import VcfViewer from '@/views/VcfViewer.vue';
+import DecisionTreeViewer from '@/views/DecisionTreeViewer.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes: Array<RouteConfig> = [
     path: '/about',
     name: 'about',
     component: About
+  },
+  {
+    path: '/decision-tree',
+    name: 'decision-tree',
+    component: DecisionTreeViewer
   },
   {
     path: '/data/vcf',

@@ -13,6 +13,8 @@
     "@molgenis/vip-report-api": "^2.4.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.9.1",
+    "d3": "^7.0.0",
+    "dagre": "^0.8.5",
     "fflate": "^0.6.10",
     "file-saver": "^2.0.5",
     "igv": "^2.8.6",
@@ -24,6 +26,10 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@types/d3": "^7.0.0",
+    "@types/d3-shape": "^3.0.0",
+    "@types/d3-zoom": "^3.0.1",
+    "@types/dagre": "^0.7.44",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
