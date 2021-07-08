@@ -115,7 +115,7 @@ export default {
   getBam({ commit }: ActionContext<State, State>, sampleId: string): Promise<Buffer | null> {
     return api.getBam(sampleId);
   },
-  getDecisionTree(): Promise<Buffer | null> {
+  getDecisionTreeGz(): Promise<Buffer | null> {
     return api.getDecisionTreeGz();
   }
 };

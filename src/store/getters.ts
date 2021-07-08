@@ -20,14 +20,12 @@ export default {
       return 0;
     });
   },
-  getSampleById:
-    (state: State) =>
-    (id: string): Api.Sample | null => {
-      if (state.samples === null) {
-        return null;
-      }
-      return state.samples.items.find((sample) => sample.person.individualId === id) || null;
-    },
+  getSampleById: (state: State) => (id: string): Api.Sample | null => {
+    if (state.samples === null) {
+      return null;
+    }
+    return state.samples.items.find((sample) => sample.person.individualId === id) || null;
+  },
   sampleMaternal: (state: State): Api.Sample | null => {
     if (state.selectedSample === null) {
       return null;
@@ -96,33 +94,31 @@ export default {
   isAnnotationEnabled: (state: State): boolean => {
     return state.annotations !== null;
   },
-  getAnnotation:
-    (state: State) =>
-    (record: Vcf.Record): Annotation => {
-      if (state.annotations === null) {
-        throw 'Annotations disabled';
-      }
-      if (state.selectedSample == null) {
-        throw 'No sample selected';
-      }
+  getAnnotation: (state: State) => (record: Vcf.Record): Annotation => {
+    if (state.annotations === null) {
+      throw 'Annotations disabled';
+    }
+    if (state.selectedSample == null) {
+      throw 'No sample selected';
+    }
 
-      const sampleId = state.selectedSample.person.individualId;
-      const key = `${sampleId}_${record.c}_${record.p}_${record.r}_${record.a.join(',')}`;
-      let annotation = state.annotations[key];
-      if (annotation === undefined) {
-        annotation = {
-          sampleId: sampleId,
-          chr: record.c,
-          pos: record.p,
-          ref: record.r,
-          alt: record.a,
-          geneMatch: null,
-          class: null,
-          txt: null
-        };
-      }
-      return annotation;
-    },
+    const sampleId = state.selectedSample.person.individualId;
+    const key = `${sampleId}_${record.c}_${record.p}_${record.r}_${record.a.join(',')}`;
+    let annotation = state.annotations[key];
+    if (annotation === undefined) {
+      annotation = {
+        sampleId: sampleId,
+        chr: record.c,
+        pos: record.p,
+        ref: record.r,
+        alt: record.a,
+        geneMatch: null,
+        class: null,
+        txt: null
+      };
+    }
+    return annotation;
+  },
   /**
    * Returns whether records contain mvl annotations.
    */

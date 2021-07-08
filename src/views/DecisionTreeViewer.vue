@@ -18,13 +18,13 @@ export default Vue.extend({
     TreeVisualisation
   },
   methods: {
-    ...mapActions(['getDecisionTree'])
+    ...mapActions(['getDecisionTreeGz'])
   },
   data: () => ({
     decisionTree: null as string | null
   }),
   async created() {
-    const decisionTree = await this.getDecisionTree();
+    const decisionTree = await this.getDecisionTreeGz();
     if (decisionTree) {
       this.decisionTree = Buffer.from(gunzipSync(decisionTree).buffer).toString();
     }

@@ -189,3 +189,8 @@ test('get bam', async (done) => {
   expect(await actions.getBam({ commit } as ActionContext<State, State>, 'Patient')).not.toBe(null);
   done();
 });
+
+test('get decision tree gz', async (done) => {
+  expect(await actions.getDecisionTreeGz()).not.toBe(null);
+  done();
+});

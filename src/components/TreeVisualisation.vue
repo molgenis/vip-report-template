@@ -25,7 +25,7 @@ export default Vue.extend({
       default: '#fff'
     },
     canvasWidth: {
-      default: window.screen.width - 350
+      default: window.screen.width - 200
     },
     canvasHeight: {
       default: window.screen.height - 200
@@ -119,7 +119,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style>
 .d3-tree-visualisation {
   font-size: 10px;
 }
