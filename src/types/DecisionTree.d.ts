@@ -7,13 +7,15 @@ type BoolOutcome = {
   outcomeFalse: Outcome;
 };
 
+type Query = {
+  field: string;
+  operator: string;
+  value: string;
+};
+
 type BoolNode = {
   type: 'BOOL';
-  query: {
-    field: string;
-    operator: string;
-    value: string;
-  };
+  query: Query;
   outcomeMissing?: Outcome;
 } & BoolOutcome;
 

@@ -40,9 +40,10 @@ export default Vue.extend({
   mounted(): void {
     this.render(this.nodes, this.edges);
   },
-  data(): { svg: D3SVGSelection } {
+  data(): { svg: D3SVGSelection; graphWidth: number } {
     return {
-      svg: {}
+      svg: {},
+      graphWidth: 0
     };
   },
   computed: {
@@ -104,6 +105,7 @@ export default Vue.extend({
       this.defineNodes(nodes, g);
       this.defineEdges(edges, g);
       layout(g);
+      this.graphWidth = g.graph().width;
       return g;
     },
     drawGraph(g: TreeGraph) {
@@ -115,9 +117,10 @@ export default Vue.extend({
         this.nodeColour,
         this.nodeTextColour,
         this.exitNodeColour,
-        this.exitNodeTextColour
+        this.exitNodeTextColour,
+        this.graphWidth
       );
-      drawEdges(this.svg, g, this.barHeight, this.font);
+      drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
       const graphZoom = defineZoom(this.svg, 0.2, 8);
       this.svg.call(graphZoom);
     },

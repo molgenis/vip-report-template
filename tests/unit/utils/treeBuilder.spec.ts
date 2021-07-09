@@ -79,12 +79,12 @@ describe('retrieveTreeFromFile', () => {
     const expected: TreeNodes = [
       {
         id: 'boolNode',
-        label: 'boolNode',
+        label: 'boolNode\n(== val)',
         type: 'BOOL'
       },
       {
         id: 'existsNode',
-        label: 'existsNode',
+        label: 'existsNode\n(exists)',
         type: 'EXISTS'
       },
       {

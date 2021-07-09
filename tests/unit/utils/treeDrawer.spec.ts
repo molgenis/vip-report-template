@@ -19,7 +19,7 @@ describe('retrieveTreeFromFile', () => {
     const expected = {
       label: 'node',
       type: 'BOOL',
-      width: 70,
+      width: 52,
       height: 30
     };
     expect(actual).toEqual(expected);
@@ -54,11 +54,15 @@ describe('retrieveTreeFromFile', () => {
     expect(actual).toEqual(63);
   });
   it('getNodeLabelYPos', () => {
-    const actual = treeDrawer.getNodeLabelYPos(42, 10);
-    expect(actual).toEqual(62);
+    const actual = treeDrawer.getNodeLabelYPos(42, 1, 10, 2);
+    expect(actual).toEqual(67);
   });
   it('getXPos', () => {
     const actual = treeDrawer.getXPos(42, 42);
     expect(actual).toEqual(84);
+  });
+  it('getLongestLabelPart', () => {
+    const actual = treeDrawer.getLongestLabelPart('this is a long label\nhello!');
+    expect(actual).toEqual('this is a long label');
   });
 });

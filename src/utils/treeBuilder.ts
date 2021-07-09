@@ -4,6 +4,7 @@ import {
   NodeWithOutcome,
   OutcomeEnum,
   OutcomeTypeEnum,
+  Query,
   TreeEdgesArray,
   TreeEdgesObj,
   TreeNodes
@@ -11,12 +12,23 @@ import {
 
 export const retrieveNodes = (inputTree: DecisionTree): TreeNodes => {
   return Object.keys(inputTree.nodes).map((key) => {
+    const node = inputTree.nodes[key];
     return {
       id: key,
-      label: key,
-      type: inputTree.nodes[key].type
+      label: getNodeLabel(key, node.type, 'query' in node ? node.query : undefined),
+      type: node.type
     };
   });
+};
+
+export const getNodeLabel = (label: string, type: string, query: Query | undefined): string => {
+  if (query) {
+    return `${label}\n(${query.operator} ${query.value})`;
+  } else if (type === 'EXISTS') {
+    return `${label}\n(exists)`;
+  } else {
+    return label;
+  }
 };
 
 const createSimpleEdge = (
