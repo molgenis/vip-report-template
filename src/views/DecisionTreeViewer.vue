@@ -7,8 +7,6 @@
 
 <script lang="ts">
 import { mapActions } from 'vuex';
-import { gunzipSync } from 'fflate';
-import { Buffer } from 'buffer';
 import Vue from 'vue';
 import TreeVisualisation from '@/components/TreeVisualisation.vue';
 
@@ -18,15 +16,15 @@ export default Vue.extend({
     TreeVisualisation
   },
   methods: {
-    ...mapActions(['getDecisionTreeGz'])
+    ...mapActions(['getDecisionTree'])
   },
   data: () => ({
     decisionTree: null as string | null
   }),
   async created() {
-    const decisionTree = await this.getDecisionTreeGz();
+    const decisionTree = await this.getDecisionTree();
     if (decisionTree) {
-      this.decisionTree = Buffer.from(gunzipSync(decisionTree).buffer).toString();
+      this.decisionTree = decisionTree;
     }
   }
 });
