@@ -34,7 +34,7 @@ type CategoricalNode = {
 
 type ExitNode = {
   type: 'LEAF';
-  class: 'T' | 'F';
+  class: string;
 };
 
 type NodeDescription = { description: string };
@@ -61,7 +61,7 @@ export type TreeEdgesObj = {
 
 export type TreeEdgesArray = Edge[];
 
-export type TreeNodes = Array<{ id: string; label: string }>;
+export type TreeNodes = Array<{ id: string; label: string; type: string }>;
 
 export type OutcomeTypeEnum = 'True' | 'False' | 'Missing' | 'Default';
 

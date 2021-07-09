@@ -24,6 +24,12 @@ export default Vue.extend({
     nodeTextColour: {
       default: '#fff'
     },
+    exitNodeColour: {
+      default: '#007bff'
+    },
+    exitNodeTextColour: {
+      default: '#fff'
+    },
     canvasWidth: {
       default: window.screen.width - 200
     },
@@ -78,7 +84,7 @@ export default Vue.extend({
     },
     defineNodes(nodes: TreeNodes, g: TreeGraph): void {
       nodes.forEach((node) => {
-        g.setNode(node.id, getNode(node.label, this.fontSize, this.font));
+        g.setNode(node.id, getNode(node.label, this.fontSize, node.type, this.font));
       });
     },
     defineEdges(edges: TreeEdgesArray, g: TreeGraph): void {
@@ -102,7 +108,15 @@ export default Vue.extend({
     },
     drawGraph(g: TreeGraph) {
       this.setSvg();
-      drawNodes(this.svg, g, this.fontSize, this.nodeColour, this.nodeTextColour);
+      drawNodes(
+        this.svg,
+        g,
+        this.fontSize,
+        this.nodeColour,
+        this.nodeTextColour,
+        this.exitNodeColour,
+        this.exitNodeTextColour
+      );
       drawEdges(this.svg, g, this.barHeight, this.font);
       const graphZoom = defineZoom(this.svg, 0.2, 8);
       this.svg.call(graphZoom);
@@ -123,6 +137,7 @@ export default Vue.extend({
 .d3-tree-visualisation {
   font-size: 10px;
 }
+
 .d3-tree-visualisation svg {
   display: block;
   margin: auto;

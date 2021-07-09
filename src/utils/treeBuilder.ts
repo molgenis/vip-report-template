@@ -13,7 +13,8 @@ export const retrieveNodes = (inputTree: DecisionTree): TreeNodes => {
   return Object.keys(inputTree.nodes).map((key) => {
     return {
       id: key,
-      label: key
+      label: key,
+      type: inputTree.nodes[key].type
     };
   });
 };

@@ -15,9 +15,10 @@ describe('retrieveTreeFromFile', () => {
   });
   it('getNode', () => {
     treeDrawer.getTextWidth = jest.fn().mockReturnValue(42);
-    const actual = treeDrawer.getNode('node', 10, 'Arial');
+    const actual = treeDrawer.getNode('node', 10, 'BOOL', 'Arial');
     const expected = {
       label: 'node',
+      type: 'BOOL',
       width: 70,
       height: 30
     };

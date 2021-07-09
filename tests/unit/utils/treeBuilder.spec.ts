@@ -79,23 +79,28 @@ describe('retrieveTreeFromFile', () => {
     const expected: TreeNodes = [
       {
         id: 'boolNode',
-        label: 'boolNode'
+        label: 'boolNode',
+        type: 'BOOL'
       },
       {
         id: 'existsNode',
-        label: 'existsNode'
+        label: 'existsNode',
+        type: 'EXISTS'
       },
       {
         id: 'categoricalField',
-        label: 'categoricalField'
+        label: 'categoricalField',
+        type: 'CATEGORICAL'
       },
       {
         id: 'exit_t',
-        label: 'exit_t'
+        label: 'exit_t',
+        type: 'LEAF'
       },
       {
         id: 'exit_f',
-        label: 'exit_f'
+        label: 'exit_f',
+        type: 'LEAF'
       }
     ];
     expect(nodes).toStrictEqual(expected);

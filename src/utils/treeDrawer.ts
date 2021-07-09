@@ -79,13 +79,15 @@ const getTextWidth = (innerText: string, fontSize: number, font: string): number
 export const getNode = (
   label: string,
   fontSize: number,
+  type: string,
   font: string
-): { label: string; width: number; height: number } => {
+): { width: number; label: string; type: string; height: number } => {
   const textWidth = exportFunctions.getTextWidth(label, fontSize, font);
   const barHeight = getBarHeightFromFontSize(fontSize);
   return {
     label: label,
     width: textWidth + (textWidth / fontSizeToBarHeightRatio) * 2,
+    type: type,
     height: barHeight
   };
 };
@@ -189,15 +191,19 @@ export const drawNodes = (
   g: TreeGraph,
   fontSize: number,
   backgroundColour: string,
-  textColour: string
+  textColour: string,
+  exitBackgroundColour: string,
+  exitTextColour: string
 ): void => {
   const xOffset = getXOffset(svg);
   g.nodes().forEach((v: string) => {
     const node = g.node(v);
     const gElement = svg.append('g');
     const xPos = getXPos(node.x, xOffset);
-    drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, backgroundColour);
-    addLabel(gElement, xPos, getNodeLabelYPos(node.y, fontSize), node.label, fontSize, textColour);
+    const nodeBackgroundColour = node.type === 'LEAF' ? exitBackgroundColour : backgroundColour;
+    const nodeTextColour = node.type === 'LEAF' ? exitTextColour : textColour;
+    drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, nodeBackgroundColour);
+    addLabel(gElement, xPos, getNodeLabelYPos(node.y, fontSize), node.label, fontSize, nodeTextColour);
   });
 };
 
