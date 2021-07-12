@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/d3": "^7.0.0",
     "@types/d3-selection": "^3.0.0",
-    "@types/d3-shape": "^3.0.0",
+    "@types/d3-shape": "^3.0.1",
     "@types/d3-zoom": "^3.0.1",
     "@types/dagre": "^0.7.45",
     "@types/file-saver": "^2.0.1",
