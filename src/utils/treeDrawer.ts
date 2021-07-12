@@ -229,10 +229,12 @@ export const drawNodes = (
   svg: Selection<SVGSVGElement, never, null, undefined>,
   g: Graph,
   fontSize: number,
-  backgroundColour: string,
-  textColour: string,
-  exitBackgroundColour: string,
-  exitTextColour: string,
+  colours: {
+    backgroundColour: string;
+    textColour: string;
+    exitBackgroundColour: string;
+    exitTextColour: string;
+  },
   graphWidth: number
 ): void => {
   const xOffset = getXOffset(svg, graphWidth);
@@ -240,8 +242,8 @@ export const drawNodes = (
     const node = g.node(v);
     const gElement = svg.append('g');
     const xPos = getXPos(node.x, xOffset);
-    const nodeBackgroundColour = node.type === 'LEAF' ? exitBackgroundColour : backgroundColour;
-    const nodeTextColour = node.type === 'LEAF' ? exitTextColour : textColour;
+    const nodeBackgroundColour = node.type === 'LEAF' ? colours.exitBackgroundColour : colours.backgroundColour;
+    const nodeTextColour = node.type === 'LEAF' ? colours.exitTextColour : colours.textColour;
     drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, nodeBackgroundColour);
     const labels = node.label.split('\n');
     for (const [labelIndex, label] of labels.entries()) {

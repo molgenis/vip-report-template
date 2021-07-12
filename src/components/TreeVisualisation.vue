@@ -111,10 +111,12 @@ export default Vue.extend({
         this.svg,
         g,
         this.fontSize,
-        this.nodeColour,
-        this.nodeTextColour,
-        this.exitNodeColour,
-        this.exitNodeTextColour,
+        {
+          backgroundColour: this.nodeColour,
+          textColour: this.nodeTextColour,
+          exitBackgroundColour: this.exitNodeColour,
+          exitTextColour: this.exitNodeTextColour
+        },
         this.graphWidth
       );
       drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
