@@ -1,7 +1,6 @@
-import { D3SVGSelection } from '@/types/d3';
-import { TreeGraph } from '@/types/dagre';
-import { line } from 'd3-shape';
-import { zoom, ZoomBehavior, ZoomedElementBaseType } from 'd3-zoom';
+import { zoom, ZoomBehavior } from 'd3-zoom';
+import { Edge, Graph } from '@dagrejs/graphlib';
+import { Selection } from 'd3-selection';
 
 /**
  * Functions that calculate reference sizes
@@ -56,7 +55,7 @@ const getNodeXPos = (xPos: number, width: number): number => {
 /**
  * Functions retrieve the sizes of elements on the screen
  */
-const getXOffset = (svg: D3SVGSelection, graphWidth: number) => {
+const getXOffset = (svg: Selection<SVGSVGElement, never, null, undefined>, graphWidth: number) => {
   // Center the graph in the canvas
   const svgWidth = Number(svg.style('width').replace('px', ''));
   return svgWidth > graphWidth ? (svgWidth - graphWidth) / 2 : 0;
@@ -109,7 +108,14 @@ export const getNode = (
 /**
  * Functions that define elements (that help) to draw on the screen
  */
-const drawLine = (svg: D3SVGSelection, x1: number, y1: number, x2: number, y2: number, strokeWidth: number) => {
+const drawLine = (
+  svg: Selection<SVGSVGElement, never, null, undefined>,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  strokeWidth: number
+) => {
   return svg
     .append('line')
     .style('stroke', 'black')
@@ -121,7 +127,7 @@ const drawLine = (svg: D3SVGSelection, x1: number, y1: number, x2: number, y2: n
 };
 
 const drawNode = (
-  gElement: D3SVGSelection,
+  gElement: Selection<SVGGElement, never, null, undefined>,
   x: number,
   y: number,
   width: number,
@@ -141,7 +147,7 @@ const drawNode = (
 };
 
 const addLabel = (
-  gElement: D3SVGSelection,
+  gElement: Selection<SVGGElement, never, null, undefined> | Selection<SVGSVGElement, never, null, undefined>,
   x: number,
   y: number,
   label: string,
@@ -158,37 +164,36 @@ const addLabel = (
     .text(label);
 };
 
-const defineArrowHead = (svg: D3SVGSelection) => {
-  const arrowPoints: Iterable<[number, number]> = [
-    [0, 0],
-    [0, 10],
-    [10, 5]
-  ];
+const defineArrowHead = (svg: Selection<SVGSVGElement, never, null, undefined>) => {
   svg
     .append('defs')
     .append('marker')
     .attr('id', 'arrow')
-    .attr('viewBox', [0, 0, 10, 10])
+    .attr('viewBox', '0, 0, 10, 10')
     .attr('refX', 9)
     .attr('refY', 5)
     .attr('markerWidth', 8)
     .attr('markerHeight', 6)
     .attr('orient', 'auto')
     .append('path')
-    .attr('d', line()(arrowPoints))
+    .attr('d', 'M 0 0 L 0 10 L 10 5')
     .attr('stroke', 'black');
 };
 
-export const defineCanvas = (element: D3SVGSelection, canvasWidth: number, canvasHeight: number): D3SVGSelection => {
+export const defineCanvas = (
+  element: Selection<Element, never, null, undefined>,
+  canvasWidth: number,
+  canvasHeight: number
+): Selection<SVGSVGElement, never, null, undefined> => {
   return element.append('svg').attr('width', canvasWidth).attr('height', canvasHeight);
 };
 
 export const defineZoom = (
-  svg: D3SVGSelection,
+  svg: Selection<SVGSVGElement, never, null, undefined>,
   min: number,
   max: number
-): ZoomBehavior<ZoomedElementBaseType, unknown> => {
-  return zoom()
+): ZoomBehavior<SVGSVGElement, never> => {
+  return zoom<SVGSVGElement, never>()
     .scaleExtent([min, max])
     .on('zoom', (event) => {
       svg.selectAll('line').attr('transform', event.transform);
@@ -199,12 +204,12 @@ export const defineZoom = (
 
 const addEdgeLabels = (
   barHeight: number,
-  g: D3SVGSelection,
-  e: string,
+  g: Graph,
+  e: Edge,
   font: string,
   value: { x: number; y: number },
   xOffset: number,
-  svg: D3SVGSelection
+  svg: Selection<SVGSVGElement, never, null, undefined>
 ) => {
   const fontSize = getFontSizeFromBarHeight(barHeight);
   const labels = g.edge(e).label.split('\n');
@@ -221,8 +226,8 @@ const addEdgeLabels = (
  * Functions that go through the nodes and edges to draw them on the screen
  */
 export const drawNodes = (
-  svg: D3SVGSelection,
-  g: TreeGraph,
+  svg: Selection<SVGSVGElement, never, null, undefined>,
+  g: Graph,
   fontSize: number,
   backgroundColour: string,
   textColour: string,
@@ -247,14 +252,14 @@ export const drawNodes = (
 };
 
 export const drawEdges = (
-  svg: D3SVGSelection,
-  g: TreeGraph,
+  svg: Selection<SVGSVGElement, never, null, undefined>,
+  g: Graph,
   barHeight: number,
   font: string,
   graphWidth: number
 ): void => {
   const xOffset = getXOffset(svg, graphWidth);
-  g.edges().forEach((e: string) => {
+  g.edges().forEach((e: Edge) => {
     const points = g.edge(e).points;
     for (const [nodeIndex, value] of points.entries()) {
       const nextNodeIndex = nodeIndex + 1;
