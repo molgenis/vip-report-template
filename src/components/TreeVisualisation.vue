@@ -17,18 +17,6 @@ export default Vue.extend({
   name: 'TreeVisualisation',
   props: {
     tree: String,
-    nodeColour: {
-      default: '#6c757d'
-    },
-    nodeTextColour: {
-      default: '#fff'
-    },
-    exitNodeColour: {
-      default: '#007bff'
-    },
-    exitNodeTextColour: {
-      default: '#fff'
-    },
     canvasWidth: {
       default: window.screen.width - 200
     },
@@ -131,14 +119,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style>
-.d3-tree-visualisation {
-  font-size: 10px;
-}
-
-.d3-tree-visualisation svg {
-  display: block;
-  margin: auto;
-}
-</style>

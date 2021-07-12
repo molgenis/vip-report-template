@@ -132,8 +132,9 @@ const drawNode = (
   y: number,
   width: number,
   height: number,
-  backgroundColour: string
+  isExitNode: boolean
 ) => {
+  const nodeClass = isExitNode ? 'tree-exit-node' : 'tree-node';
   gElement
     .append('rect')
     .attr('x', x)
@@ -143,7 +144,7 @@ const drawNode = (
     .attr('stroke', 'black')
     .attr('rx', 3)
     .attr('ry', 3)
-    .attr('fill', backgroundColour);
+    .attr('class', nodeClass);
 };
 
 const addLabel = (
@@ -152,13 +153,13 @@ const addLabel = (
   y: number,
   label: string,
   fontSize: number,
-  textColour: string
+  nodeLabelClass: string
 ) => {
   gElement
     .append('text')
     .attr('x', x)
     .attr('y', y)
-    .attr('fill', textColour)
+    .attr('class', nodeLabelClass)
     .style('font-size', `${fontSize}px`)
     .style('text-anchor', 'middle')
     .text(label);
@@ -218,7 +219,7 @@ const addEdgeLabels = (
   for (const [labelIndex, label] of labels.entries()) {
     const xPos = getEdgeLabelXPos(getXPos(value.x, xOffset), textWidth);
     const yPos = getEdgeLabelYPos(value.y, labelIndex, fontSize);
-    addLabel(svg, xPos, yPos, label, fontSize, '#000');
+    addLabel(svg, xPos, yPos, label, fontSize, 'tree-edge-label');
   }
 };
 
@@ -243,13 +244,13 @@ export const drawNodes = (
     if (node.x && node.y) {
       const gElement = svg.append('g');
       const xPos = getXPos(node.x, xOffset);
-      const nodeBackgroundColour = node.type === 'LEAF' ? colours.exitBackgroundColour : colours.backgroundColour;
-      const nodeTextColour = node.type === 'LEAF' ? colours.exitTextColour : colours.textColour;
-      drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, nodeBackgroundColour);
+      const isExitNode = node.type === 'LEAF';
+      drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, isExitNode);
       const labels = node.label.split('\n');
       for (const [labelIndex, label] of labels.entries()) {
         const yPos = getNodeLabelYPos(node.y, labelIndex, fontSize, labels.length);
-        addLabel(gElement, xPos, yPos, label, fontSize, nodeTextColour);
+        const nodeLabelClass = isExitNode ? 'tree-exit-node-label' : 'tree-node-label';
+        addLabel(gElement, xPos, yPos, label, fontSize, nodeLabelClass);
       }
     }
   });
