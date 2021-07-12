@@ -240,15 +240,17 @@ export const drawNodes = (
   const xOffset = getXOffset(svg, graphWidth);
   g.nodes().forEach((v: string) => {
     const node = g.node(v);
-    const gElement = svg.append('g');
-    const xPos = getXPos(node.x, xOffset);
-    const nodeBackgroundColour = node.type === 'LEAF' ? colours.exitBackgroundColour : colours.backgroundColour;
-    const nodeTextColour = node.type === 'LEAF' ? colours.exitTextColour : colours.textColour;
-    drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, nodeBackgroundColour);
-    const labels = node.label.split('\n');
-    for (const [labelIndex, label] of labels.entries()) {
-      const yPos = getNodeLabelYPos(node.y, labelIndex, fontSize, labels.length);
-      addLabel(gElement, xPos, yPos, label, fontSize, nodeTextColour);
+    if (node.x && node.y) {
+      const gElement = svg.append('g');
+      const xPos = getXPos(node.x, xOffset);
+      const nodeBackgroundColour = node.type === 'LEAF' ? colours.exitBackgroundColour : colours.backgroundColour;
+      const nodeTextColour = node.type === 'LEAF' ? colours.exitTextColour : colours.textColour;
+      drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, nodeBackgroundColour);
+      const labels = node.label.split('\n');
+      for (const [labelIndex, label] of labels.entries()) {
+        const yPos = getNodeLabelYPos(node.y, labelIndex, fontSize, labels.length);
+        addLabel(gElement, xPos, yPos, label, fontSize, nodeTextColour);
+      }
     }
   });
 };
@@ -263,22 +265,24 @@ export const drawEdges = (
   const xOffset = getXOffset(svg, graphWidth);
   g.edges().forEach((e: Edge) => {
     const points = g.edge(e).points;
-    for (const [nodeIndex, value] of points.entries()) {
-      const nextNodeIndex = nodeIndex + 1;
-      if (nextNodeIndex !== points.length) {
-        const x1 = getXPos(value.x, xOffset);
-        const y1 = value.y + barHeight / 2;
-        const x2 = getXPos(points[nextNodeIndex].x, xOffset);
-        const y2 = points[nextNodeIndex].y + barHeight / 2;
-        const lineThickness = getLineThickness(getFontSizeFromBarHeight(barHeight));
-        const drawnLine = drawLine(svg, x1, y1, x2, y2, lineThickness);
-        // if line == last line (node is 0  based, length is 1 based), add arrowhead
-        if (nextNodeIndex === points.length - 1) {
-          defineArrowHead(svg);
-          drawnLine.attr('marker-end', 'url(#arrow)').attr('fill', 'none');
-        }
-        if (nodeIndex === getMiddleEdgeIndex(points)) {
-          addEdgeLabels(barHeight, g, e, font, value, xOffset, svg);
+    if (points) {
+      for (const [nodeIndex, value] of points.entries()) {
+        const nextNodeIndex = nodeIndex + 1;
+        if (nextNodeIndex !== points.length) {
+          const x1 = getXPos(value.x, xOffset);
+          const y1 = value.y + barHeight / 2;
+          const x2 = getXPos(points[nextNodeIndex].x, xOffset);
+          const y2 = points[nextNodeIndex].y + barHeight / 2;
+          const lineThickness = getLineThickness(getFontSizeFromBarHeight(barHeight));
+          const drawnLine = drawLine(svg, x1, y1, x2, y2, lineThickness);
+          // if line == last line (node is 0  based, length is 1 based), add arrowhead
+          if (nextNodeIndex === points.length - 1) {
+            defineArrowHead(svg);
+            drawnLine.attr('marker-end', 'url(#arrow)').attr('fill', 'none');
+          }
+          if (nodeIndex === getMiddleEdgeIndex(points)) {
+            addEdgeLabels(barHeight, g, e, font, value, xOffset, svg);
+          }
         }
       }
     }

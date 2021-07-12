@@ -10,8 +10,8 @@ import graphlib from 'dagre/lib/graphlib';
 import * as layout from 'dagre/lib/layout';
 import { retrieveNodes, retrieveEdges } from '@/utils/treeBuilder';
 import { DecisionTree, TreeEdgesArray, TreeNodes } from '@/types/DecisionTree';
+import { Graph } from '@dagrejs/graphlib';
 import { getNode, drawNodes, drawEdges, getBarHeightFromFontSize, defineCanvas, defineZoom } from '@/utils/treeDrawer';
-import { DagreGraph } from '@/types/Graph';
 
 export default Vue.extend({
   name: 'TreeVisualisation',
@@ -84,29 +84,26 @@ export default Vue.extend({
         return window.getComputedStyle(element).getPropertyValue(property);
       }
     },
-    defineNodes(nodes: TreeNodes, g: DagreGraph): void {
+    defineNodes(nodes: TreeNodes, g: Graph): void {
       nodes.forEach((node) => {
         g.setNode(node.id, getNode(node.label, this.fontSize, node.type, this.font));
       });
     },
-    defineEdges(edges: TreeEdgesArray, g: DagreGraph): void {
+    defineEdges(edges: TreeEdgesArray, g: Graph): void {
       edges.forEach((edge) => {
         g.setEdge(edge.from, edge.to, { label: edge.label });
       });
     },
     generateGraph(nodes: TreeNodes, edges: TreeEdgesArray) {
-      const g: DagreGraph = new graphlib.Graph();
+      const g: Graph = new graphlib.Graph();
       g.setGraph({});
-      g.setDefaultEdgeLabel(() => {
-        return {};
-      });
       this.defineNodes(nodes, g);
       this.defineEdges(edges, g);
       layout(g);
       this.graphWidth = g.graph().width;
       return g;
     },
-    drawGraph(g: DagreGraph) {
+    drawGraph(g: Graph) {
       drawNodes(
         this.svg,
         g,
@@ -124,7 +121,7 @@ export default Vue.extend({
       this.svg.call(graphZoom);
     },
     render(nodes: TreeNodes, edges: TreeEdgesArray): void {
-      const g: DagreGraph = this.generateGraph(nodes, edges);
+      const g: Graph = this.generateGraph(nodes, edges);
       this.drawGraph(g);
     },
     refresh(): void {
