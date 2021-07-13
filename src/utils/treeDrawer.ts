@@ -230,12 +230,6 @@ export const drawNodes = (
   svg: Selection<SVGSVGElement, never, null, undefined>,
   g: Graph,
   fontSize: number,
-  colours: {
-    backgroundColour: string;
-    textColour: string;
-    exitBackgroundColour: string;
-    exitTextColour: string;
-  },
   graphWidth: number
 ): void => {
   const xOffset = getXOffset(svg, graphWidth);

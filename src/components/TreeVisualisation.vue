@@ -92,18 +92,7 @@ export default Vue.extend({
       return g;
     },
     drawGraph(g: Graph) {
-      drawNodes(
-        this.svg,
-        g,
-        this.fontSize,
-        {
-          backgroundColour: this.nodeColour,
-          textColour: this.nodeTextColour,
-          exitBackgroundColour: this.exitNodeColour,
-          exitTextColour: this.exitNodeTextColour
-        },
-        this.graphWidth
-      );
+      drawNodes(this.svg, g, this.fontSize, this.graphWidth);
       drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
       const graphZoom = defineZoom(this.svg, 0.2, 8);
       this.svg.call(graphZoom);
