@@ -137,7 +137,7 @@ textarea {
 }
 
 .d3-tree-visualisation {
-  font-size: 10px;
+  font-size: 0.8rem;
 }
 
 .d3-tree-visualisation svg {
