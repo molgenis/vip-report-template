@@ -2,6 +2,8 @@ type Outcome = {
   nextNode: string;
 };
 
+export type Exists = 'EXISTS';
+
 type BoolOutcome = {
   outcomeTrue: Outcome;
   outcomeFalse: Outcome;
@@ -20,7 +22,7 @@ type BoolNode = {
 } & BoolOutcome;
 
 type ExistsNode = {
-  type: 'EXISTS';
+  type: Exists;
   field: string;
 } & BoolOutcome;
 

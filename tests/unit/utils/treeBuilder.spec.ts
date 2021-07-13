@@ -1,7 +1,7 @@
-import { createEdge, retrieveEdges, retrieveNodes } from '@/utils/treeBuilder';
-import { DecisionTree, TreeEdgesObj, TreeNodes } from '@/types/DecisionTree';
+import { createEdge, createSimpleEdge, getNodeLabel, retrieveEdges, retrieveNodes } from '@/utils/treeBuilder';
+import { DecisionTree, Exists, TreeEdgesObj, TreeNodes } from '@/types/DecisionTree';
 
-describe('retrieveTreeFromFile', () => {
+describe('treeBuilder', () => {
   const decisionTree: DecisionTree = {
     files: {
       panel: {
@@ -104,6 +104,54 @@ describe('retrieveTreeFromFile', () => {
       }
     ];
     expect(nodes).toStrictEqual(expected);
+  });
+  it('should return the node label for a query type', () => {
+    const query = {
+      field: 'field',
+      operator: '==',
+      value: 'value1'
+    };
+    const actual = getNodeLabel('label', 'BOOL', query);
+    const expected = 'label\n(== value1)';
+    expect(actual).toEqual(expected);
+  });
+  it('should return the node label for a exists type', () => {
+    const actual = getNodeLabel('label', 'EXISTS', undefined);
+    const expected = 'label\n(exists)';
+    expect(actual).toEqual(expected);
+  });
+  it('should return the node label for a leaf type', () => {
+    const actual = getNodeLabel('label', 'LEAF', undefined);
+    const expected = 'label';
+    expect(actual).toEqual(expected);
+  });
+  it('should create a simple edge', () => {
+    const type: Exists = 'EXISTS';
+    const node = {
+      description: 'description',
+      type: type,
+      field: 'field',
+      outcomeTrue: { nextNode: 'trueNode' },
+      outcomeFalse: { nextNode: 'falseNode' }
+    };
+    const edges = {};
+    const actual = createSimpleEdge('True', node, 'key1', edges);
+    const expected = { key1_trueNode: { from: 'key1', to: 'trueNode', label: 'True' } };
+    expect(actual).toStrictEqual(expected);
+  });
+  it('should add to a simple edge', () => {
+    const type: Exists = 'EXISTS';
+    const node = {
+      description: 'description',
+      type: type,
+      field: 'field',
+      outcomeTrue: { nextNode: 'trueNode' },
+      outcomeFalse: { nextNode: 'trueNode' }
+    };
+    const edges = { key1_trueNode: { from: 'key1', to: 'trueNode', label: 'True' } };
+    const actual = createSimpleEdge('False', node, 'key1', edges);
+    const expected = { key1_trueNode: { from: 'key1', to: 'trueNode', label: 'True\nFalse' } };
+    expect(actual).toStrictEqual(expected);
   });
   it('should generate edge', () => {
     const nextNode = 'exit';

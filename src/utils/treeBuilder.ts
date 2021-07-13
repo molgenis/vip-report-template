@@ -31,7 +31,7 @@ export const getNodeLabel = (label: string, type: string, query: Query | undefin
   }
 };
 
-const createSimpleEdge = (
+export const createSimpleEdge = (
   outcomeType: OutcomeTypeEnum,
   node: NodeWithOutcome,
   key: string,
