@@ -139,9 +139,17 @@ textarea {
 .d3-tree-visualisation {
   font-size: 0.8rem;
 }
+.d3-tree-visualisation > svg {
+  border-color: #000;
+  border-style: solid;
+  border-width: thin;
+}
 
-.d3-tree-visualisation svg {
+.d3-tree-visualisation > svg {
   display: block;
   margin: auto;
+}
+
+.tree-info {
 }
 </style>

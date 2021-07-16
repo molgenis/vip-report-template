@@ -1,10 +1,15 @@
 <template>
-  <div class="d3-tree-visualisation"></div>
+  <div class="d3-tree-visualisation">
+    <b-button class="btn-xs float-right" v-b-tooltip.click :title="$t('treeInfo')">
+      <b-icon-info-circle />
+    </b-button>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
+import { BIconInfoCircle } from 'bootstrap-vue';
 import { select, Selection } from 'd3-selection';
 import graphlib from 'dagre/lib/graphlib';
 import * as layout from 'dagre/lib/layout';
@@ -13,12 +18,14 @@ import { DecisionTree, TreeEdgesArray, TreeNodes } from '@/types/DecisionTree';
 import { Graph } from '@dagrejs/graphlib';
 import { getNode, drawNodes, drawEdges, getBarHeightFromFontSize, defineCanvas, defineZoom } from '@/utils/treeDrawer';
 
+Vue.component('BIconInfoCircle', BIconInfoCircle);
+
 export default Vue.extend({
   name: 'TreeVisualisation',
   props: {
     tree: String,
     canvasWidth: {
-      default: window.screen.width - 200
+      default: window.screen.width - 100
     },
     canvasHeight: {
       default: window.screen.height - 200
