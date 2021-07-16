@@ -7,6 +7,7 @@
       <b-navbar-nav>
         <b-nav-item-dropdown :text="$t('data')">
           <b-dropdown-item :to="{ name: 'vcf' }">{{ $t('vcf') }}</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'decision-tree' }">{{ $t('treeViewer') }}</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
