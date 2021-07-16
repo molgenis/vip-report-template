@@ -1,27 +1,52 @@
 <template>
   <div class="d3-tree-visualisation">
-    <b-button class="btn-xs float-right" v-b-tooltip.click :title="$t('treeInfo')">
-      <b-icon-info-circle />
-    </b-button>
+    <b-button-group vertical class="float-right">
+      <b-button class="btn-xs" v-b-tooltip.click :title="$t('treeInfo')">
+        <b-icon-info-circle />
+      </b-button>
+      <b-button class="btn-xs">
+        <b-icon-arrow-repeat />
+      </b-button>
+      <b-button class="btn-xs" @click="fitOnScreen ? resetZoom() : zoomToFit()">
+        <b-icon-box-arrow-up-right v-if="fitOnScreen" />
+        <b-icon-box-arrow-in-down-left v-else />
+      </b-button>
+    </b-button-group>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
-import { BIconInfoCircle } from 'bootstrap-vue';
-import { select, Selection } from 'd3-selection';
+import {
+  BIconInfoCircle,
+  BIconArrowRepeat,
+  BIconBoxArrowInDownLeft,
+  BIconBoxArrowUpRight,
+  BButtonGroup
+} from 'bootstrap-vue';
+import { select as d3Select, Selection } from 'd3-selection';
+import { transition as d3Transition } from 'd3-transition';
 import graphlib from 'dagre/lib/graphlib';
 import * as layout from 'dagre/lib/layout';
 import { retrieveNodes, retrieveEdges } from '@/utils/treeBuilder';
 import { DecisionTree, TreeEdgesArray, TreeNodes } from '@/types/DecisionTree';
 import { Graph } from '@dagrejs/graphlib';
 import { getNode, drawNodes, drawEdges, getBarHeightFromFontSize, defineCanvas, defineZoom } from '@/utils/treeDrawer';
+import { ZoomBehavior, zoomIdentity } from 'd3-zoom';
+
+d3Select.prototype.transition = d3Transition;
 
 Vue.component('BIconInfoCircle', BIconInfoCircle);
+Vue.component('BIconArrowRepeat', BIconArrowRepeat);
+Vue.component('BIconBoxArrowInDownLeft', BIconBoxArrowInDownLeft);
+Vue.component('BIconBoxArrowUpRight', BIconBoxArrowUpRight);
 
 export default Vue.extend({
   name: 'TreeVisualisation',
+  components: {
+    BButtonGroup
+  },
   props: {
     tree: String,
     canvasWidth: {
@@ -34,14 +59,22 @@ export default Vue.extend({
   mounted(): void {
     this.render(this.nodes, this.edges);
   },
-  data(): { graphWidth: number } {
+  data(): {
+    graphWidth: number;
+    graphHeight: number;
+    graphZoom: ZoomBehavior<SVGSVGElement, never> | undefined;
+    fitOnScreen: boolean;
+  } {
     return {
-      graphWidth: 0
+      graphWidth: 0,
+      graphHeight: 0,
+      graphZoom: undefined,
+      fitOnScreen: false
     };
   },
   computed: {
     svg(): Selection<SVGSVGElement, never, null, undefined> {
-      return defineCanvas(select(this.$el), this.canvasWidth, this.canvasHeight);
+      return defineCanvas(d3Select(this.$el), this.canvasWidth, this.canvasHeight);
     },
     fontSize(): number {
       const fontSize = this.getCss('font-size');
@@ -73,8 +106,23 @@ export default Vue.extend({
     }
   },
   methods: {
+    zoomToFit() {
+      const height = this.canvasHeight / (this.graphHeight + 50);
+      const width = this.canvasWidth / (this.graphWidth + 50);
+      const scale = Math.min(height, width);
+      if (this.graphZoom) {
+        this.graphZoom.scaleBy(this.svg.transition().duration(750), scale, [width / 2, 0]);
+        this.fitOnScreen = true;
+      }
+    },
+    resetZoom() {
+      if (this.graphZoom) {
+        this.svg.transition().duration(750).call(this.graphZoom.transform, zoomIdentity);
+        this.fitOnScreen = false;
+      }
+    },
     getCss(property: string) {
-      const element = select(this.$el).node();
+      const element = d3Select(this.$el).node();
       if (element) {
         return window.getComputedStyle(element).getPropertyValue(property);
       }
@@ -96,13 +144,14 @@ export default Vue.extend({
       this.defineEdges(edges, g);
       layout(g);
       this.graphWidth = g.graph().width;
+      this.graphHeight = g.graph().height;
       return g;
     },
     drawGraph(g: Graph) {
       drawNodes(this.svg, g, this.fontSize, this.graphWidth);
       drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
-      const graphZoom = defineZoom(this.svg, 0.2, 8);
-      this.svg.call(graphZoom);
+      this.graphZoom = defineZoom(this.svg, 0.2, 8);
+      this.svg.call(this.graphZoom);
     },
     render(nodes: TreeNodes, edges: TreeEdgesArray): void {
       const g: Graph = this.generateGraph(nodes, edges);

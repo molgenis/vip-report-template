@@ -58,7 +58,7 @@ const getNodeXPos = (xPos: number, width: number): number => {
 const getXOffset = (svg: Selection<SVGSVGElement, never, null, undefined>, graphWidth: number) => {
   // Center the graph in the canvas
   const svgWidth = Number(svg.style('width').replace('px', ''));
-  return svgWidth > graphWidth ? (svgWidth - graphWidth) / 2 : 0;
+  return svgWidth > graphWidth ? (svgWidth - graphWidth) / 2 : 100;
 };
 
 const getTextWidth = (innerText: string, fontSize: number, font: string): number => {
