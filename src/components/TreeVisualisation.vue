@@ -5,7 +5,7 @@
         <b-icon-info-circle />
       </b-button>
       <b-button class="btn-xs">
-        <b-icon-arrow-repeat />
+        <b-icon-arrow-repeat @click="horizontal = !horizontal" />
       </b-button>
       <b-button class="btn-xs" @click="fitOnScreen ? resetZoom() : zoomToFit()">
         <b-icon-box-arrow-up-right v-if="fitOnScreen" />
@@ -64,16 +64,20 @@ export default Vue.extend({
     graphHeight: number;
     graphZoom: ZoomBehavior<SVGSVGElement, never> | undefined;
     fitOnScreen: boolean;
+    horizontal: boolean;
   } {
     return {
       graphWidth: 0,
       graphHeight: 0,
       graphZoom: undefined,
-      fitOnScreen: false
+      fitOnScreen: false,
+      horizontal: false
     };
   },
   computed: {
     svg(): Selection<SVGSVGElement, never, null, undefined> {
+      const el = d3Select(this.$el);
+      console.log(el); // fix this please!
       return defineCanvas(d3Select(this.$el), this.canvasWidth, this.canvasHeight);
     },
     fontSize(): number {
@@ -102,6 +106,9 @@ export default Vue.extend({
       this.refresh();
     },
     edges(): void {
+      this.refresh();
+    },
+    horizontal(): void {
       this.refresh();
     }
   },
@@ -142,6 +149,9 @@ export default Vue.extend({
       g.setGraph({});
       this.defineNodes(nodes, g);
       this.defineEdges(edges, g);
+      if (this.horizontal) {
+        g.graph().rankdir = 'LR';
+      }
       layout(g);
       this.graphWidth = g.graph().width;
       this.graphHeight = g.graph().height;
@@ -155,6 +165,7 @@ export default Vue.extend({
     },
     render(nodes: TreeNodes, edges: TreeEdgesArray): void {
       const g: Graph = this.generateGraph(nodes, edges);
+      console.log(g, this.nodes, this.edges);
       this.drawGraph(g);
     },
     refresh(): void {
