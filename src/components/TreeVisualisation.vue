@@ -24,24 +24,53 @@ export default Vue.extend({
   name: 'TreeVisualisation',
   props: {
     tree: String,
-    canvasWidth: {
-      default: window.screen.width - 100
+    width: {
+      type: Number,
+      required: false
     },
-    canvasHeight: {
-      default: window.screen.height - 200
+    height: {
+      type: Number,
+      required: false
     }
   },
   mounted(): void {
     this.render(this.nodes, this.edges);
   },
-  data(): { graphWidth: number } {
+  created(): void {
+    window.addEventListener('resize', this.refresh);
+  },
+  destroyed(): void {
+    window.removeEventListener('resize', this.refresh);
+  },
+  data(): {
+    graphWidth: number;
+    svg: Selection<SVGSVGElement, never, null, undefined> | undefined;
+    clientWidth: number;
+    clientHeight: number;
+  } {
     return {
-      graphWidth: 0
+      graphWidth: 0,
+      svg: undefined,
+      clientWidth: 0,
+      clientHeight: 0
     };
   },
   computed: {
-    svg(): Selection<SVGSVGElement, never, null, undefined> {
-      return defineCanvas(select(this.$el), this.canvasWidth, this.canvasHeight);
+    svgWidth: {
+      set(clientWidth: number): void {
+        this.clientWidth = clientWidth;
+      },
+      get(): number {
+        return this.width ? this.width : this.clientWidth;
+      }
+    },
+    svgHeight: {
+      set(clientHeight: number): void {
+        this.clientHeight = clientHeight;
+      },
+      get(): number {
+        return this.height ? this.height : this.clientHeight;
+      }
     },
     fontSize(): number {
       const fontSize = this.getCss('font-size');
@@ -73,6 +102,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    setSvg() {
+      this.svg = defineCanvas(select(this.$el), this.svgWidth, this.svgHeight);
+    },
     getCss(property: string) {
       const element = select(this.$el).node();
       if (element) {
@@ -99,17 +131,26 @@ export default Vue.extend({
       return g;
     },
     drawGraph(g: Graph) {
-      drawNodes(this.svg, g, this.fontSize, this.graphWidth);
-      drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
-      const graphZoom = defineZoom(this.svg, 0.2, 8);
-      this.svg.call(graphZoom);
+      if (this.svg) {
+        drawNodes(this.svg, g, this.fontSize, this.graphWidth);
+        drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
+        const graphZoom = defineZoom(this.svg, 0.2, 8);
+        this.svg.call(graphZoom);
+      } else {
+        this.refresh();
+      }
     },
     render(nodes: TreeNodes, edges: TreeEdgesArray): void {
+      this.svgWidth = (document.documentElement.clientWidth || document.body.clientWidth) - 100;
+      this.svgHeight = (document.documentElement.clientHeight || document.body.clientHeight) - 100;
+      this.setSvg();
       const g: Graph = this.generateGraph(nodes, edges);
       this.drawGraph(g);
     },
     refresh(): void {
-      this.svg.remove();
+      if (this.svg) {
+        this.svg.remove();
+      }
       this.render(this.nodes, this.edges);
     }
   }
