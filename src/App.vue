@@ -143,13 +143,7 @@ textarea {
   border-color: #000;
   border-style: solid;
   border-width: thin;
-}
-
-.d3-tree-visualisation > svg {
   display: block;
   margin: auto;
-}
-
-.tree-info {
 }
 </style>
