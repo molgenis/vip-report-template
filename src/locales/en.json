@@ -74,5 +74,8 @@
   "lowReadDepth": "Read depth < 20",
   "data": "Data",
   "vcf": "VCF",
-  "genomeBrowserUnavailable": "Genome browser unavailable for selected record."
+  "genomeBrowserUnavailable": "Genome browser unavailable for selected record.",
+  "treeViewer": "Decision tree",
+  "missingDecisionTree": "Decision tree unavailable",
+  "treeInfo": "Click and drag in the tree to navigate, scroll to zoom."
 }

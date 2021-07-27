@@ -199,7 +199,21 @@ test('get consequences in case of CSQ info with extended info', () => {
   const record = mock<Vcf.Record>();
   record.n = {
     CSQ: [
-      [['intergenic_variant'], 'hgvsC0', 'hgvsP0', 'symbol0', ['12345678'], ['benign'],'LP', 'VUS', 0.2345, 'HP:123',  [], null, 1],
+      [
+        ['intergenic_variant'],
+        'hgvsC0',
+        'hgvsP0',
+        'symbol0',
+        ['12345678'],
+        ['benign'],
+        'LP',
+        'VUS',
+        0.2345,
+        'HP:123',
+        [],
+        null,
+        1
+      ],
       [
         ['frameshift_variant'],
         'hgvsC1',

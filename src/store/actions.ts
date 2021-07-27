@@ -4,6 +4,8 @@ import { State } from '@/types/State';
 import { apiData } from '@/mocks/apiDataMock';
 import { Annotation, Annotations } from '@/types/Annotations';
 import { Api, ApiClient, ApiData, Vcf } from '@molgenis/vip-report-api';
+import { Buffer } from 'buffer';
+import { gunzipSync } from 'fflate';
 
 declare global {
   interface Window {
@@ -114,6 +116,12 @@ export default {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getBam({ commit }: ActionContext<State, State>, sampleId: string): Promise<Buffer | null> {
     return api.getBam(sampleId);
+  },
+  async getDecisionTree(): Promise<string | undefined> {
+    const zippedDecisionTree = await api.getDecisionTreeGz();
+    if (zippedDecisionTree) {
+      return Buffer.from(gunzipSync(zippedDecisionTree).buffer).toString();
+    }
   }
 };
 

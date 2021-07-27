@@ -114,4 +114,36 @@ textarea {
 .igv-ui-popover {
   z-index: 999;
 }
+
+/* Decision tree styling */
+.tree-node {
+  fill: #6c757d;
+}
+
+.tree-exit-node {
+  fill: #007bff;
+}
+
+.tree-exit-node-label {
+  fill: #fff;
+}
+
+.tree-node-label {
+  fill: #fff;
+}
+
+.tree-edge-label {
+  fill: #000;
+}
+
+.d3-tree-visualisation {
+  font-size: 0.8rem;
+}
+.d3-tree-visualisation > svg {
+  border-color: #000;
+  border-style: solid;
+  border-width: thin;
+  display: block;
+  margin: auto;
+}
 </style>
