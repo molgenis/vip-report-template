@@ -73,4 +73,28 @@ describe('retrieveTreeFromFile', () => {
     const actual = treeDrawer.getCoordinates(42, 42, 42, 42, 42, 42, 20);
     expect(actual).toEqual({ x1: 84, x2: 84, y1: 94, y2: 94 });
   });
+  it('getXOffset when vertical svg > graph', () => {
+    const actual = treeDrawer.getXOffset(20, 10, false);
+    expect(actual).toEqual(5);
+  });
+  it('getXOffset when vertical svg < graph', () => {
+    const actual = treeDrawer.getXOffset(20, 30, false);
+    expect(actual).toEqual(100);
+  });
+  it('getXOffset when horizontal', () => {
+    const actual = treeDrawer.getXOffset(20, 10, true);
+    expect(actual).toEqual(25);
+  });
+  it('getYOffset when horizontal', () => {
+    const actual = treeDrawer.getYOffset(20, 10, true);
+    expect(actual).toEqual(5);
+  });
+  it('getYOffset when vertical when svg > graph', () => {
+    const actual = treeDrawer.getYOffset(20, 10, false);
+    expect(actual).toEqual(5);
+  });
+  it('getYOffset when vertical when svg < graph', () => {
+    const actual = treeDrawer.getYOffset(10, 20, false);
+    expect(actual).toEqual(0);
+  });
 });

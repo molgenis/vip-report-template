@@ -60,9 +60,9 @@ const getNodeXPos = (xPos: number, width: number): number => {
 /**
  * Functions retrieve the sizes of elements on the screen
  */
-const getXOffset = (svg: Selection<SVGSVGElement, never, null, undefined>, graphWidth: number, horizontal: boolean) => {
+
+const getXOffset = (svgWidth: number, graphWidth: number, horizontal: boolean): number => {
   // Center the graph in the canvas
-  const svgWidth = Number(svg.style('width').replace('px', ''));
   if (horizontal) {
     return 25;
   } else {
@@ -70,13 +70,8 @@ const getXOffset = (svg: Selection<SVGSVGElement, never, null, undefined>, graph
   }
 };
 
-const getYOffset = (
-  svg: Selection<SVGSVGElement, never, null, undefined>,
-  graphHeight: number,
-  horizontal: boolean
-) => {
+const getYOffset = (svgHeight: number, graphHeight: number, horizontal: boolean): number => {
   // Center the graph in the canvas when the layout is horizontal
-  const svgHeight = Number(svg.style('height').replace('px', ''));
   return horizontal || svgHeight > graphHeight ? (svgHeight - graphHeight) / 2 : 0;
 };
 
@@ -102,6 +97,10 @@ const getLongestLabelPart = (label: string): string => {
   return label.split('\n').reduce((a, b) => {
     return a.length > b.length ? a : b;
   });
+};
+
+const getSizePropertyFromSvg = (svg: Selection<SVGSVGElement, never, null, undefined>, property: string): number => {
+  return Number(svg.style(property).replace('px', ''));
 };
 
 const getCoordinates = (
@@ -286,13 +285,13 @@ export const drawNodes = (
   graphHeight: number,
   horizontal: boolean
 ): void => {
-  const xOffset = getXOffset(svg, graphWidth, horizontal);
+  const xOffset = getXOffset(getSizePropertyFromSvg(svg, 'width'), graphWidth, horizontal);
   g.nodes().forEach((v: string) => {
     const node = g.node(v);
     if (node.x && node.y) {
       const gElement = svg.append('g');
       const xPos = getXPos(node.x, xOffset);
-      const yOffset = getYOffset(svg, graphHeight, horizontal);
+      const yOffset = getYOffset(getSizePropertyFromSvg(svg, 'height'), graphHeight, horizontal);
       const yPos = node.y + yOffset;
       const isExitNode = node.type === 'LEAF';
       drawNode(gElement, getNodeXPos(xPos, node.width), yPos, node.width, node.height, isExitNode);
@@ -315,8 +314,8 @@ export const drawEdges = (
   graphHeight: number,
   horizontal: boolean
 ): void => {
-  const xOffset = getXOffset(svg, graphWidth, horizontal);
-  const yOffset = getYOffset(svg, graphHeight, horizontal);
+  const xOffset = getXOffset(getSizePropertyFromSvg(svg, 'width'), graphWidth, horizontal);
+  const yOffset = getYOffset(getSizePropertyFromSvg(svg, 'height'), graphHeight, horizontal);
   g.edges().forEach((e: Edge) => {
     const points = g.edge(e).points;
     if (points) {
@@ -356,6 +355,8 @@ const exportFunctions = {
   getNodeLabelYPos,
   getXPos,
   getYPos,
+  getXOffset,
+  getYOffset,
   getLongestLabelPart,
   getCoordinates
 };
