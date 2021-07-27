@@ -46,8 +46,8 @@ describe('retrieveTreeFromFile', () => {
     expect(actual).toEqual(107);
   });
   it('getEdgeLabelYPos', () => {
-    const actual = treeDrawer.getEdgeLabelYPos(42, 1, 10);
-    expect(actual).toEqual(62);
+    const actual = treeDrawer.getEdgeLabelYPos(42, 1, 10, 10);
+    expect(actual).toEqual(72);
   });
   it('getNodeXPos', () => {
     const actual = treeDrawer.getNodeXPos(84, 42);
