@@ -1,6 +1,7 @@
 import { zoom, ZoomBehavior } from 'd3-zoom';
 import { Edge, Graph } from '@dagrejs/graphlib';
 import { Selection } from 'd3-selection';
+import { Coordinates } from '@/types/DecisionTree';
 
 /**
  * Functions that calculate reference sizes
@@ -35,6 +36,10 @@ const getEdgeLabelYPos = (y: number, index: number, fontSize: number): number =>
 const getNodeLabelYPos = (y: number, index: number, fontSize: number, labelLength: number): number => {
   const margin = (getBarHeightFromFontSize(fontSize) - labelLength * fontSize) / 2;
   return y + index * fontSize + fontSize + margin;
+};
+
+const getYPos = (y: number, barHeight: number, offset: number): number => {
+  return y + barHeight / 2 + offset;
 };
 
 /**
@@ -89,6 +94,23 @@ const getLongestLabelPart = (label: string): string => {
   return label.split('\n').reduce((a, b) => {
     return a.length > b.length ? a : b;
   });
+};
+
+const getCoordinates = (
+  thisX: number,
+  nextX: number,
+  thisY: number,
+  nextY: number,
+  xOffset: number,
+  yOffset: number,
+  barHeight: number
+): Coordinates => {
+  return {
+    x1: getXPos(thisX, xOffset),
+    x2: getXPos(nextX, xOffset),
+    y1: getYPos(thisY, barHeight, yOffset),
+    y2: getYPos(nextY, barHeight, yOffset)
+  };
 };
 
 /**
@@ -230,6 +252,22 @@ const addEdgeLabels = (
   }
 };
 
+const drawEdge = (
+  coordinates: Coordinates,
+  barHeight: number,
+  svg: Selection<SVGSVGElement, never, null, undefined>,
+  nextNodeIndex: number,
+  indexOfLastPoint: number
+) => {
+  const lineThickness = getLineThickness(getFontSizeFromBarHeight(barHeight));
+  const drawnLine = drawLine(svg, coordinates.x1, coordinates.y1, coordinates.x2, coordinates.y2, lineThickness);
+  // if line == last line (node is 0  based, length is 1 based), add arrowhead
+  if (nextNodeIndex === indexOfLastPoint) {
+    defineArrowHead(svg);
+    drawnLine.attr('marker-end', 'url(#arrow)').attr('fill', 'none');
+  }
+};
+
 /**
  * Functions that go through the nodes and edges to draw them on the screen
  */
@@ -278,17 +316,16 @@ export const drawEdges = (
       for (const [nodeIndex, value] of points.entries()) {
         const nextNodeIndex = nodeIndex + 1;
         if (nextNodeIndex !== points.length) {
-          const x1 = getXPos(value.x, xOffset);
-          const y1 = value.y + barHeight / 2 + yOffset;
-          const x2 = getXPos(points[nextNodeIndex].x, xOffset);
-          const y2 = points[nextNodeIndex].y + barHeight / 2 + yOffset;
-          const lineThickness = getLineThickness(getFontSizeFromBarHeight(barHeight));
-          const drawnLine = drawLine(svg, x1, y1, x2, y2, lineThickness);
-          // if line == last line (node is 0  based, length is 1 based), add arrowhead
-          if (nextNodeIndex === points.length - 1) {
-            defineArrowHead(svg);
-            drawnLine.attr('marker-end', 'url(#arrow)').attr('fill', 'none');
-          }
+          const coordinates = getCoordinates(
+            value.x,
+            points[nextNodeIndex].x,
+            value.y,
+            points[nextNodeIndex].y,
+            xOffset,
+            yOffset,
+            barHeight
+          );
+          drawEdge(coordinates, barHeight, svg, nextNodeIndex, points.length - 1);
           if (nodeIndex === getMiddleEdgeIndex(points)) {
             addEdgeLabels(barHeight, g, e, font, value, xOffset, yOffset, svg);
           }
@@ -310,7 +347,9 @@ const exportFunctions = {
   getNodeXPos,
   getNodeLabelYPos,
   getXPos,
-  getLongestLabelPart
+  getYPos,
+  getLongestLabelPart,
+  getCoordinates
 };
 
 export default exportFunctions;

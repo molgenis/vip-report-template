@@ -61,8 +61,16 @@ describe('retrieveTreeFromFile', () => {
     const actual = treeDrawer.getXPos(42, 42);
     expect(actual).toEqual(84);
   });
+  it('getYPos', () => {
+    const actual = treeDrawer.getYPos(42, 20, 42);
+    expect(actual).toEqual(94);
+  });
   it('getLongestLabelPart', () => {
     const actual = treeDrawer.getLongestLabelPart('this is a long label\nhello!');
     expect(actual).toEqual('this is a long label');
+  });
+  it('getCoordinates', () => {
+    const actual = treeDrawer.getCoordinates(42, 42, 42, 42, 42, 42, 20);
+    expect(actual).toEqual({ x1: 84, x2: 84, y1: 94, y2: 94 });
   });
 });
