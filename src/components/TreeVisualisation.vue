@@ -5,7 +5,7 @@
         <b-icon-info-circle />
       </b-button>
       <b-button class="btn-xs">
-        <b-icon-arrow-repeat @click="horizontal = !horizontal" />
+        <b-icon-arrow-repeat @click="flipGraph" />
       </b-button>
       <b-button class="btn-xs" @click="fitOnScreen ? resetZoom() : zoomToFit()">
         <b-icon-box-arrow-up-right v-if="fitOnScreen" />
@@ -49,11 +49,13 @@ export default Vue.extend({
   },
   props: {
     tree: String,
-    canvasWidth: {
-      default: window.screen.width - 100
+    width: {
+      type: Number,
+      required: false
     },
-    canvasHeight: {
-      default: window.screen.height - 200
+    height: {
+      type: Number,
+      required: false
     }
   },
   mounted(): void {
@@ -65,20 +67,43 @@ export default Vue.extend({
     graphZoom: ZoomBehavior<SVGSVGElement, never> | undefined;
     fitOnScreen: boolean;
     horizontal: boolean;
+    svg: Selection<SVGSVGElement, never, null, undefined> | undefined;
+    clientWidth: number;
+    clientHeight: number;
   } {
     return {
       graphWidth: 0,
       graphHeight: 0,
       graphZoom: undefined,
       fitOnScreen: false,
-      horizontal: false
+      horizontal: false,
+      svg: undefined,
+      clientWidth: 0,
+      clientHeight: 0
     };
   },
+  created(): void {
+    window.addEventListener('resize', this.refresh);
+  },
+  destroyed(): void {
+    window.removeEventListener('resize', this.refresh);
+  },
   computed: {
-    svg(): Selection<SVGSVGElement, never, null, undefined> {
-      const el = d3Select(this.$el);
-      console.log(el); // fix this please!
-      return defineCanvas(d3Select(this.$el), this.canvasWidth, this.canvasHeight);
+    svgWidth: {
+      set(clientWidth: number): void {
+        this.clientWidth = clientWidth;
+      },
+      get(): number {
+        return this.width ? this.width : this.clientWidth;
+      }
+    },
+    svgHeight: {
+      set(clientHeight: number): void {
+        this.clientHeight = clientHeight;
+      },
+      get(): number {
+        return this.height ? this.height : this.clientHeight;
+      }
     },
     fontSize(): number {
       const fontSize = this.getCss('font-size');
@@ -113,20 +138,27 @@ export default Vue.extend({
     }
   },
   methods: {
+    flipGraph() {
+      this.horizontal = !this.horizontal;
+      this.refresh();
+    },
     zoomToFit() {
-      const height = this.canvasHeight / (this.graphHeight + 50);
-      const width = this.canvasWidth / (this.graphWidth + 50);
+      const height = this.svgHeight / (this.graphHeight + 50);
+      const width = this.svgWidth / (this.graphWidth + 150);
       const scale = Math.min(height, width);
-      if (this.graphZoom) {
+      if (this.graphZoom && this.svg) {
         this.graphZoom.scaleBy(this.svg.transition().duration(750), scale, [width / 2, 0]);
         this.fitOnScreen = true;
       }
     },
     resetZoom() {
-      if (this.graphZoom) {
+      if (this.graphZoom && this.svg) {
         this.svg.transition().duration(750).call(this.graphZoom.transform, zoomIdentity);
         this.fitOnScreen = false;
       }
+    },
+    setSvg() {
+      this.svg = defineCanvas(d3Select(this.$el), this.svgWidth, this.svgHeight);
     },
     getCss(property: string) {
       const element = d3Select(this.$el).node();
@@ -158,18 +190,26 @@ export default Vue.extend({
       return g;
     },
     drawGraph(g: Graph) {
-      drawNodes(this.svg, g, this.fontSize, this.graphWidth);
-      drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth);
-      this.graphZoom = defineZoom(this.svg, 0.2, 8);
-      this.svg.call(this.graphZoom);
+      if (this.svg) {
+        drawNodes(this.svg, g, this.fontSize, this.graphWidth, this.graphHeight, this.horizontal);
+        drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth, this.graphHeight, this.horizontal);
+        this.graphZoom = defineZoom(this.svg, 0.2, 8);
+        this.svg.call(this.graphZoom);
+      } else {
+        this.refresh();
+      }
     },
     render(nodes: TreeNodes, edges: TreeEdgesArray): void {
+      this.svgWidth = (document.documentElement.clientWidth || document.body.clientWidth) - 100;
+      this.svgHeight = (document.documentElement.clientHeight || document.body.clientHeight) - 100;
+      this.setSvg();
       const g: Graph = this.generateGraph(nodes, edges);
-      console.log(g, this.nodes, this.edges);
       this.drawGraph(g);
     },
     refresh(): void {
-      this.svg.remove();
+      if (this.svg) {
+        this.svg.remove();
+      }
       this.render(this.nodes, this.edges);
     }
   }

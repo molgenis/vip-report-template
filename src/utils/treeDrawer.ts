@@ -61,6 +61,12 @@ const getXOffset = (svg: Selection<SVGSVGElement, never, null, undefined>, graph
   return svgWidth > graphWidth ? (svgWidth - graphWidth) / 2 : 100;
 };
 
+const getYOffset = (svg: Selection<SVGSVGElement, never, null, undefined>, graphHeight: number) => {
+  // Center the graph in the canvas when the layout is horizontal
+  const svgHeight = Number(svg.style('height').replace('px', ''));
+  return svgHeight > graphHeight ? (svgHeight - graphHeight) / 2 : 0;
+};
+
 const getTextWidth = (innerText: string, fontSize: number, font: string): number => {
   const text = document.createElement('span');
   document.body.appendChild(text);
@@ -210,6 +216,7 @@ const addEdgeLabels = (
   font: string,
   value: { x: number; y: number },
   xOffset: number,
+  yOffset: number,
   svg: Selection<SVGSVGElement, never, null, undefined>
 ) => {
   const fontSize = getFontSizeFromBarHeight(barHeight);
@@ -218,7 +225,7 @@ const addEdgeLabels = (
   const textWidth = exportFunctions.getTextWidth(longestLabel, fontSize, font);
   for (const [labelIndex, label] of labels.entries()) {
     const xPos = getEdgeLabelXPos(getXPos(value.x, xOffset), textWidth);
-    const yPos = getEdgeLabelYPos(value.y, labelIndex, fontSize);
+    const yPos = getEdgeLabelYPos(value.y, labelIndex, fontSize) + yOffset;
     addLabel(svg, xPos, yPos, label, fontSize, 'tree-edge-label');
   }
 };
@@ -230,7 +237,9 @@ export const drawNodes = (
   svg: Selection<SVGSVGElement, never, null, undefined>,
   g: Graph,
   fontSize: number,
-  graphWidth: number
+  graphWidth: number,
+  graphHeight: number,
+  horizontal: boolean
 ): void => {
   const xOffset = getXOffset(svg, graphWidth);
   g.nodes().forEach((v: string) => {
@@ -238,13 +247,15 @@ export const drawNodes = (
     if (node.x && node.y) {
       const gElement = svg.append('g');
       const xPos = getXPos(node.x, xOffset);
+      const yOffset = horizontal ? getYOffset(svg, graphHeight) : 0;
+      const yPos = node.y + yOffset;
       const isExitNode = node.type === 'LEAF';
-      drawNode(gElement, getNodeXPos(xPos, node.width), node.y, node.width, node.height, isExitNode);
+      drawNode(gElement, getNodeXPos(xPos, node.width), yPos, node.width, node.height, isExitNode);
       const labels = node.label.split('\n');
       for (const [labelIndex, label] of labels.entries()) {
-        const yPos = getNodeLabelYPos(node.y, labelIndex, fontSize, labels.length);
+        const labelYPos = getNodeLabelYPos(yPos, labelIndex, fontSize, labels.length);
         const nodeLabelClass = isExitNode ? 'tree-exit-node-label' : 'tree-node-label';
-        addLabel(gElement, xPos, yPos, label, fontSize, nodeLabelClass);
+        addLabel(gElement, xPos, labelYPos, label, fontSize, nodeLabelClass);
       }
     }
   });
@@ -255,9 +266,12 @@ export const drawEdges = (
   g: Graph,
   barHeight: number,
   font: string,
-  graphWidth: number
+  graphWidth: number,
+  graphHeight: number,
+  horizontal: boolean
 ): void => {
   const xOffset = getXOffset(svg, graphWidth);
+  const yOffset = horizontal ? getYOffset(svg, graphHeight) : 0;
   g.edges().forEach((e: Edge) => {
     const points = g.edge(e).points;
     if (points) {
@@ -265,9 +279,9 @@ export const drawEdges = (
         const nextNodeIndex = nodeIndex + 1;
         if (nextNodeIndex !== points.length) {
           const x1 = getXPos(value.x, xOffset);
-          const y1 = value.y + barHeight / 2;
+          const y1 = value.y + barHeight / 2 + yOffset;
           const x2 = getXPos(points[nextNodeIndex].x, xOffset);
-          const y2 = points[nextNodeIndex].y + barHeight / 2;
+          const y2 = points[nextNodeIndex].y + barHeight / 2 + yOffset;
           const lineThickness = getLineThickness(getFontSizeFromBarHeight(barHeight));
           const drawnLine = drawLine(svg, x1, y1, x2, y2, lineThickness);
           // if line == last line (node is 0  based, length is 1 based), add arrowhead
@@ -276,7 +290,7 @@ export const drawEdges = (
             drawnLine.attr('marker-end', 'url(#arrow)').attr('fill', 'none');
           }
           if (nodeIndex === getMiddleEdgeIndex(points)) {
-            addEdgeLabels(barHeight, g, e, font, value, xOffset, svg);
+            addEdgeLabels(barHeight, g, e, font, value, xOffset, yOffset, svg);
           }
         }
       }
