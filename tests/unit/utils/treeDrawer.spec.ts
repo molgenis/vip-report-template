@@ -1,4 +1,4 @@
-import treeDrawer from '@/utils/treeDrawer';
+import treeDrawer, { calculateScaleToFit, getGraphScale } from '@/utils/treeDrawer';
 
 describe('retrieveTreeFromFile', () => {
   it('getLineThickness', () => {
@@ -96,5 +96,13 @@ describe('retrieveTreeFromFile', () => {
   it('getYOffset when vertical when svg < graph', () => {
     const actual = treeDrawer.getYOffset(10, 20, false);
     expect(actual).toEqual(0);
+  });
+  it('getGraphScale', () => {
+    const actual = treeDrawer.getGraphScale(100, 50);
+    expect(actual).toEqual(1);
+  });
+  it('calculateScaleToFit', () => {
+    const actual = treeDrawer.calculateScaleToFit(0.6, 0.4);
+    expect(actual).toEqual(0.4);
   });
 });

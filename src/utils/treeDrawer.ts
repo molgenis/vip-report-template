@@ -26,6 +26,14 @@ const getMiddleEdgeIndex = (edges: { x: number; y: number }[]): number => {
   return Math.floor(edges.length / 2);
 };
 
+export const getGraphScale = (svgSize: number, graphSize: number): number => {
+  return svgSize / (graphSize + 50);
+};
+
+export const calculateScaleToFit = (widthScale: number, heightScale: number): number => {
+  return Math.min(heightScale, widthScale);
+};
+
 /**
  * Functions that calculate y positions
  */
@@ -358,7 +366,9 @@ const exportFunctions = {
   getXOffset,
   getYOffset,
   getLongestLabelPart,
-  getCoordinates
+  getCoordinates,
+  getGraphScale,
+  calculateScaleToFit
 };
 
 export default exportFunctions;

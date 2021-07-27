@@ -32,7 +32,16 @@ import * as layout from 'dagre/lib/layout';
 import { retrieveNodes, retrieveEdges } from '@/utils/treeBuilder';
 import { DecisionTree, TreeEdgesArray, TreeNodes } from '@/types/DecisionTree';
 import { Graph } from '@dagrejs/graphlib';
-import { getNode, drawNodes, drawEdges, getBarHeightFromFontSize, defineCanvas, defineZoom } from '@/utils/treeDrawer';
+import {
+  getNode,
+  drawNodes,
+  drawEdges,
+  getBarHeightFromFontSize,
+  defineCanvas,
+  defineZoom,
+  getGraphScale,
+  calculateScaleToFit
+} from '@/utils/treeDrawer';
 import { ZoomBehavior, zoomIdentity } from 'd3-zoom';
 
 d3Select.prototype.transition = d3Transition;
@@ -143,11 +152,11 @@ export default Vue.extend({
       this.refresh();
     },
     zoomToFit() {
-      const height = this.svgHeight / (this.graphHeight + 50);
-      const width = this.svgWidth / (this.graphWidth + 50);
-      const scale = Math.min(height, width);
+      const heightRatio = getGraphScale(this.svgHeight, this.graphHeight);
+      const widthRatio = getGraphScale(this.svgWidth, this.graphWidth);
+      const scale = calculateScaleToFit(heightRatio, widthRatio);
       if (this.graphZoom && this.svg) {
-        this.graphZoom.scaleBy(this.svg.transition().duration(750), scale, [width / 2, 0]);
+        this.graphZoom.scaleBy(this.svg.transition().duration(750), scale, [widthRatio / 2, 0]);
         this.fitOnScreen = true;
       }
     },
