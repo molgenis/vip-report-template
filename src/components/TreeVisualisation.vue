@@ -61,6 +61,12 @@ export default Vue.extend({
   mounted(): void {
     this.render(this.nodes, this.edges);
   },
+  created(): void {
+    window.addEventListener('resize', this.refresh);
+  },
+  destroyed(): void {
+    window.removeEventListener('resize', this.refresh);
+  },
   data(): {
     graphWidth: number;
     graphHeight: number;
@@ -81,12 +87,6 @@ export default Vue.extend({
       clientWidth: 0,
       clientHeight: 0
     };
-  },
-  created(): void {
-    window.addEventListener('resize', this.refresh);
-  },
-  destroyed(): void {
-    window.removeEventListener('resize', this.refresh);
   },
   computed: {
     svgWidth: {
