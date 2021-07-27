@@ -144,7 +144,7 @@ export default Vue.extend({
     },
     zoomToFit() {
       const height = this.svgHeight / (this.graphHeight + 50);
-      const width = this.svgWidth / (this.graphWidth + 150);
+      const width = this.svgWidth / (this.graphWidth + 50);
       const scale = Math.min(height, width);
       if (this.graphZoom && this.svg) {
         this.graphZoom.scaleBy(this.svg.transition().duration(750), scale, [width / 2, 0]);

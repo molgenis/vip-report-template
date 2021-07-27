@@ -279,7 +279,7 @@ export const drawNodes = (
   graphHeight: number,
   horizontal: boolean
 ): void => {
-  const xOffset = getXOffset(svg, graphWidth);
+  const xOffset = horizontal ? 25 : getXOffset(svg, graphWidth);
   g.nodes().forEach((v: string) => {
     const node = g.node(v);
     if (node.x && node.y) {
@@ -308,7 +308,7 @@ export const drawEdges = (
   graphHeight: number,
   horizontal: boolean
 ): void => {
-  const xOffset = getXOffset(svg, graphWidth);
+  const xOffset = horizontal ? 25 : getXOffset(svg, graphWidth);
   const yOffset = horizontal ? getYOffset(svg, graphHeight) : 0;
   g.edges().forEach((e: Edge) => {
     const points = g.edge(e).points;
@@ -327,7 +327,8 @@ export const drawEdges = (
           );
           drawEdge(coordinates, barHeight, svg, nextNodeIndex, points.length - 1);
           if (nodeIndex === getMiddleEdgeIndex(points)) {
-            addEdgeLabels(barHeight, g, e, font, value, xOffset, yOffset, svg);
+            const labelXOffset = horizontal ? xOffset - 15 : xOffset;
+            addEdgeLabels(barHeight, g, e, font, value, labelXOffset, yOffset, svg);
           }
         }
       }
