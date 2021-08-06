@@ -85,17 +85,13 @@ describe('retrieveTreeFromFile', () => {
     const actual = treeDrawer.getXOffset(20, 10, true);
     expect(actual).toEqual(25);
   });
-  it('getYOffset when horizontal', () => {
-    const actual = treeDrawer.getYOffset(20, 10, true);
+  it('getYOffset when svg > graph', () => {
+    const actual = treeDrawer.getYOffset(20, 10);
     expect(actual).toEqual(5);
   });
-  it('getYOffset when vertical when svg > graph', () => {
-    const actual = treeDrawer.getYOffset(20, 10, false);
-    expect(actual).toEqual(5);
-  });
-  it('getYOffset when vertical when svg < graph', () => {
-    const actual = treeDrawer.getYOffset(10, 20, false);
-    expect(actual).toEqual(0);
+  it('getYOffset when svg < graph', () => {
+    const actual = treeDrawer.getYOffset(10, 20);
+    expect(actual).toEqual(100);
   });
   it('getGraphScale', () => {
     const actual = treeDrawer.getGraphScale(100, 50);

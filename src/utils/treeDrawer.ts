@@ -1,4 +1,3 @@
-import { zoom, ZoomBehavior } from 'd3-zoom';
 import { Edge, Graph } from '@dagrejs/graphlib';
 import { Selection } from 'd3-selection';
 import { Coordinates } from '@/types/DecisionTree';
@@ -78,9 +77,9 @@ const getXOffset = (svgWidth: number, graphWidth: number, horizontal: boolean): 
   }
 };
 
-const getYOffset = (svgHeight: number, graphHeight: number, horizontal: boolean): number => {
+const getYOffset = (svgHeight: number, graphHeight: number): number => {
   // Center the graph in the canvas when the layout is horizontal
-  return horizontal || svgHeight > graphHeight ? (svgHeight - graphHeight) / 2 : 0;
+  return svgHeight > graphHeight ? (svgHeight - graphHeight) / 2 : 100;
 };
 
 const getTextWidth = (innerText: string, fontSize: number, font: string): number => {
@@ -285,7 +284,7 @@ export const drawNodes = (
     if (node.x && node.y) {
       const gElement = svg.append('g');
       const xPos = getXPos(node.x, xOffset);
-      const yOffset = getYOffset(getSizePropertyFromSvg(svg, 'height'), graphHeight, horizontal);
+      const yOffset = getYOffset(getSizePropertyFromSvg(svg, 'height'), graphHeight);
       const yPos = node.y + yOffset;
       const isExitNode = node.type === 'LEAF';
       drawNode(gElement, getNodeXPos(xPos, node.width), yPos, node.width, node.height, isExitNode);
@@ -309,7 +308,7 @@ export const drawEdges = (
   horizontal: boolean
 ): void => {
   const xOffset = getXOffset(getSizePropertyFromSvg(svg, 'width'), graphWidth, horizontal);
-  const yOffset = getYOffset(getSizePropertyFromSvg(svg, 'height'), graphHeight, horizontal);
+  const yOffset = getYOffset(getSizePropertyFromSvg(svg, 'height'), graphHeight);
   g.edges().forEach((e: Edge) => {
     const points = g.edge(e).points;
     if (points) {
