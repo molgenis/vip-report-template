@@ -70,3 +70,10 @@ export type TreeNodes = Array<{ id: string; label: string; type: string }>;
 export type OutcomeTypeEnum = 'True' | 'False' | 'Missing' | 'Default';
 
 export type OutcomeEnum = 'outcomeTrue' | 'outcomeFalse' | 'outcomeMissing' | 'outcomeDefault';
+
+export type Coordinates = {
+  x1: number;
+  x2: number;
+  y1: number;
+  y2: number;
+};

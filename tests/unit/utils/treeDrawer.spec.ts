@@ -1,4 +1,4 @@
-import treeDrawer from '@/utils/treeDrawer';
+import treeDrawer, { calculateScaleToFit, getGraphScale } from '@/utils/treeDrawer';
 
 describe('retrieveTreeFromFile', () => {
   it('getLineThickness', () => {
@@ -46,8 +46,8 @@ describe('retrieveTreeFromFile', () => {
     expect(actual).toEqual(107);
   });
   it('getEdgeLabelYPos', () => {
-    const actual = treeDrawer.getEdgeLabelYPos(42, 1, 10);
-    expect(actual).toEqual(62);
+    const actual = treeDrawer.getEdgeLabelYPos(42, 1, 10, 10);
+    expect(actual).toEqual(72);
   });
   it('getNodeXPos', () => {
     const actual = treeDrawer.getNodeXPos(84, 42);
@@ -61,8 +61,44 @@ describe('retrieveTreeFromFile', () => {
     const actual = treeDrawer.getXPos(42, 42);
     expect(actual).toEqual(84);
   });
+  it('getYPos', () => {
+    const actual = treeDrawer.getYPos(42, 20, 42);
+    expect(actual).toEqual(94);
+  });
   it('getLongestLabelPart', () => {
     const actual = treeDrawer.getLongestLabelPart('this is a long label\nhello!');
     expect(actual).toEqual('this is a long label');
+  });
+  it('getCoordinates', () => {
+    const actual = treeDrawer.getCoordinates(42, 42, 42, 42, 42, 42, 20);
+    expect(actual).toEqual({ x1: 84, x2: 84, y1: 94, y2: 94 });
+  });
+  it('getXOffset when vertical svg > graph', () => {
+    const actual = treeDrawer.getXOffset(20, 10, false);
+    expect(actual).toEqual(5);
+  });
+  it('getXOffset when vertical svg < graph', () => {
+    const actual = treeDrawer.getXOffset(20, 30, false);
+    expect(actual).toEqual(100);
+  });
+  it('getXOffset when horizontal', () => {
+    const actual = treeDrawer.getXOffset(20, 10, true);
+    expect(actual).toEqual(25);
+  });
+  it('getYOffset when svg > graph', () => {
+    const actual = treeDrawer.getYOffset(20, 10);
+    expect(actual).toEqual(5);
+  });
+  it('getYOffset when svg < graph', () => {
+    const actual = treeDrawer.getYOffset(10, 20);
+    expect(actual).toEqual(100);
+  });
+  it('getGraphScale', () => {
+    const actual = treeDrawer.getGraphScale(100, 50);
+    expect(actual).toEqual(1);
+  });
+  it('calculateScaleToFit', () => {
+    const actual = treeDrawer.calculateScaleToFit(0.6, 0.4);
+    expect(actual).toEqual(0.4);
   });
 });
