@@ -232,20 +232,6 @@ export const defineCanvas = (
   return element.append('svg').attr('width', canvasWidth).attr('height', canvasHeight);
 };
 
-export const defineZoom = (
-  svg: Selection<SVGSVGElement, never, null, undefined>,
-  min: number,
-  max: number
-): ZoomBehavior<SVGSVGElement, never> => {
-  return zoom<SVGSVGElement, never>()
-    .scaleExtent([min, max])
-    .on('zoom', (event) => {
-      svg.selectAll('line').attr('transform', event.transform);
-      svg.selectAll('rect').attr('transform', event.transform);
-      svg.selectAll('text').attr('transform', event.transform);
-    });
-};
-
 const addEdgeLabels = (
   barHeight: number,
   g: Graph,

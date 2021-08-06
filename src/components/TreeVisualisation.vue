@@ -38,11 +38,10 @@ import {
   drawEdges,
   getBarHeightFromFontSize,
   defineCanvas,
-  defineZoom,
   getGraphScale,
   calculateScaleToFit
 } from '@/utils/treeDrawer';
-import { ZoomBehavior, zoomIdentity } from 'd3-zoom';
+import { zoom, ZoomBehavior, zoomIdentity } from 'd3-zoom';
 
 d3Select.prototype.transition = d3Transition;
 
@@ -156,14 +155,13 @@ export default Vue.extend({
       const widthRatio = getGraphScale(this.svgWidth, this.graphWidth);
       const scale = calculateScaleToFit(heightRatio, widthRatio);
       if (this.graphZoom && this.svg) {
+        this.refresh();
         this.graphZoom.scaleBy(this.svg.transition().duration(750), scale, [widthRatio / 2, 0]);
-        this.fitOnScreen = true;
       }
     },
     resetZoom() {
       if (this.graphZoom && this.svg) {
         this.svg.transition().duration(750).call(this.graphZoom.transform, zoomIdentity);
-        this.fitOnScreen = false;
       }
     },
     setSvg() {
@@ -202,11 +200,27 @@ export default Vue.extend({
       if (this.svg) {
         drawNodes(this.svg, g, this.fontSize, this.graphWidth, this.graphHeight, this.horizontal);
         drawEdges(this.svg, g, this.barHeight, this.font, this.graphWidth, this.graphHeight, this.horizontal);
-        this.graphZoom = defineZoom(this.svg, 0.2, 8);
+        this.graphZoom = this.defineZoom(this.svg, 0.2, 8);
         this.svg.call(this.graphZoom);
       } else {
         this.refresh();
       }
+    },
+    defineZoom(
+      svg: Selection<SVGSVGElement, never, null, undefined>,
+      min: number,
+      max: number
+    ): ZoomBehavior<SVGSVGElement, never> {
+      return zoom<SVGSVGElement, never>()
+        .scaleExtent([min, max])
+        .on('zoom', (event) => {
+          const widthFitsScreen = this.svgWidth > this.graphWidth * event.transform.k + event.transform.x;
+          const heightFitsScreen = this.svgHeight > this.graphHeight * event.transform.k + event.transform.y;
+          this.fitOnScreen = widthFitsScreen && heightFitsScreen;
+          svg.selectAll('line').attr('transform', event.transform);
+          svg.selectAll('rect').attr('transform', event.transform);
+          svg.selectAll('text').attr('transform', event.transform);
+        });
     },
     render(nodes: TreeNodes, edges: TreeEdgesArray): void {
       this.svgWidth = (document.documentElement.clientWidth || document.body.clientWidth) - 100;
