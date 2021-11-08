@@ -10,7 +10,7 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
   },
   "dependencies": {
-    "@molgenis/vip-report-api": "^2.4.1",
+    "@molgenis/vip-report-api": "^2.4.2",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.9.1",
     "d3": "^7.0.0",
@@ -51,7 +51,7 @@
     "eslint-plugin-vue": "^7.7.0",
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^5.3.1",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "prettier": "^2.2.1",
     "sass-loader": "^11.0.1",
     "ts-mockito": "^2.6.1",
