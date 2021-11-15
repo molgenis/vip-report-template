@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/molgenis/vip-report-template.svg?branch=master)](https://travis-ci.com/molgenis/vip-report-template)
+[![Build Status](https://app.travis-ci.com/molgenis/vip-report-template.svg?branch=master)](https://app.travis-ci.com/molgenis/vip-report-template)
 [![Quality Status](https://sonarcloud.io/api/project_badges/measure?project=molgenis_vip-report-template&metric=alert_status)](https://sonarcloud.io/dashboard?id=molgenis_vip-report-template)
 # Variant Interpretation Pipeline - VCF Report Generator
 See https://github.com/molgenis/vip-report#readme
