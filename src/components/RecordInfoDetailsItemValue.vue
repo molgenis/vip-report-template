@@ -9,7 +9,10 @@
       :text="details ? value : value.replace(/_variant$/, '')"
     />
   </span>
-  <span v-else-if="metadataId === 'SYMBOL' || metadataId === 'Gene_Name'">
+  <span v-else-if="metadataId === 'GeneObject'">
+    <Gene :value="value" />
+  </span>
+  <span v-else-if="metadataId === 'Gene_Name'">
     <Anchor
       :href="'https://www.omim.org/search?search=' + encodeURIComponent(value) + '&field=approved_gene_symbol'"
       :text="value"
@@ -73,10 +76,11 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import Anchor from '@/components/Anchor.vue';
+import Gene from '@/components/Gene.vue';
 import { mapState } from 'vuex';
 
 export default Vue.extend({
-  components: { Anchor },
+  components: { Anchor, Gene },
   props: {
     metadataId: String as PropType<string>,
     value: [String, Number, Boolean, Object] as PropType<string | number | boolean | unknown>,

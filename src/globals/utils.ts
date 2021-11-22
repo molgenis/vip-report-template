@@ -10,6 +10,12 @@ const consequenceMetadata: ConsequenceMetadata = {
     description: 'Consequence'
   },
   symbol: { id: 'SYMBOL', type: 'STRING', number: { type: 'NUMBER', count: 1 }, description: 'SYMBOL' },
+  incompletePenetrance: {
+    id: 'IncompletePenetrance',
+    type: 'FLAG',
+    number: { type: 'NUMBER', count: 1 },
+    description: 'IncompletePenetrance'
+  },
   inheritance: {
     id: 'InheritanceModesGene',
     type: 'STRING',
@@ -54,6 +60,7 @@ function createConsequence(
   info: Vcf.Value[],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
+  incompletePenetranceIndex: number | undefined,
   inheritanceIndex: number | undefined,
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
@@ -68,6 +75,7 @@ function createConsequence(
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
     symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
+    incompletePenetrance: incompletePenetranceIndex !== undefined ? (info[incompletePenetranceIndex] as boolean) : false,
     inheritance: inheritanceIndex !== undefined ? (info[inheritanceIndex] as string[]) : [],
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,
@@ -85,6 +93,7 @@ function createConsequences(
   info: Vcf.Value[][],
   effectIndex: number | undefined,
   symbolIndex: number | undefined,
+  incompletePenetranceIndex: number | undefined,
   inheritanceIndex: number | undefined,
   hgvsCIndex: number | undefined,
   hgvsPIndex: number | undefined,
@@ -102,6 +111,7 @@ function createConsequences(
       item,
       effectIndex,
       symbolIndex,
+      incompletePenetranceIndex,
       inheritanceIndex,
       hgvsCIndex,
       hgvsPIndex,
@@ -124,6 +134,7 @@ function getInfoConsequences(
   info: Vcf.Value[][],
   effectId: string,
   symbolId: string,
+  incompletePenetranceId: string | null,
   inheritanceId: string | null,
   hgvsCId: string,
   hgvsPId: string,
@@ -141,6 +152,7 @@ function getInfoConsequences(
 
   let effectIndex,
     symbolIndex,
+    incompletePenetranceIndex,
     inheritanceIndex,
     hgvsCIndex,
     hgvsPIndex,
@@ -159,6 +171,9 @@ function getInfoConsequences(
         break;
       case symbolId:
         symbolIndex = index;
+        break;
+      case incompletePenetranceId:
+        incompletePenetranceIndex = index;
         break;
       case inheritanceId:
         inheritanceIndex = index;
@@ -200,6 +215,7 @@ function getInfoConsequences(
     info,
     effectIndex,
     symbolIndex,
+    incompletePenetranceIndex,
     inheritanceIndex,
     hgvsCIndex,
     hgvsPIndex,
@@ -233,6 +249,7 @@ function getVepConsequences(record: Vcf.Record, metadata: Vcf.Metadata): Consequ
     csqInfo,
     'Consequence',
     'SYMBOL',
+    'IncompletePenetrance',
     'InheritanceModesGene',
     'HGVSc',
     'HGVSp',
@@ -266,6 +283,7 @@ function getSnpEffConsequences(record: Vcf.Record, metadata: Vcf.Metadata): Cons
     annInfo,
     'Annotation',
     'Gene_Name',
+    null,
     null,
     'HGVS.c',
     'HGVS.p',

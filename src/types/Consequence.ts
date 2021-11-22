@@ -3,6 +3,7 @@ import { Vcf } from '@molgenis/vip-report-api';
 export interface ConsequenceMetadata {
   effect: Vcf.InfoMetadata;
   symbol: Vcf.InfoMetadata;
+  incompletePenetrance: Vcf.InfoMetadata;
   inheritance: Vcf.InfoMetadata;
   hgvsC: Vcf.InfoMetadata;
   hgvsP: Vcf.InfoMetadata;
@@ -17,6 +18,7 @@ export interface Consequence {
   alleleIndex: number | null;
   effect: string[];
   symbol: string | null;
+  incompletePenetrance: boolean | false;
   inheritance: string[];
   hgvsC: string | null;
   hgvsP: string | null;
