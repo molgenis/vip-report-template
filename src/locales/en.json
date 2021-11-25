@@ -17,7 +17,6 @@
   "capice": "CAPICE",
   "effect": "Effect",
   "symbol": "Gene",
-  "gene": "Gene",
   "inheritance": "Gene Inh Modes",
   "mvl": "MVL",
   "vkgl": "VKGL",
@@ -79,5 +78,5 @@
   "treeViewer": "Decision tree",
   "missingDecisionTree": "Decision tree unavailable",
   "treeInfo": "Click and drag in the tree to navigate, scroll to zoom.",
-  "incompletePenetrance": "Gene known to show incomplete penetrance."
+  "incompletePenetrance": "Gene associated with incomplete penetrance."
 }

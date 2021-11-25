@@ -203,7 +203,6 @@ import Genotype from '@/components/Genotype.vue';
 import { getConsequences, getVariant, getInheritanceModesGeneSelector, getPhenotypesSelector } from '@/globals/utils';
 import { Consequences } from '@/types/Consequence';
 import RecordInfoDetailsItemMultiline from '@/components/RecordInfoDetailsItemMultiline.vue';
-import Gene from '@/components/Gene.vue';
 import { Annotation } from '@/types/Annotations';
 import AnnotationControl from '@/components/annotation/AnnotationControl.vue';
 import RecordTableControls from '@/components/RecordTableControls.vue';
@@ -318,7 +317,7 @@ export default Vue.extend({
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
         fields.push({ key: 'effect', label: 'effect' });
-        fields.push({ key: 'gene', label: 'gene' });
+        fields.push({ key: 'gene', label: 'symbol' });
         if (this.isSamplesContainInheritance) {
           fields.push({ key: 'inheritance', label: 'inheritance' });
         }

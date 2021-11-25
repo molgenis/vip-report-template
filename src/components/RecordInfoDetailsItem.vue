@@ -9,8 +9,8 @@
     <span v-if="metadata.id === 'PUBMED'">
       <PubMedAnchor v-if="value.length > 0" :pubMedIds="value" />
     </span>
-    <span v-if="metadata.id === 'GeneObject'">
-      test2<Gene v-if="value.length > 0" :value="value" />
+    <span v-else-if="metadata.id === 'GeneObject'">
+      <Gene v-if="value.length > 0" :value="value" />
     </span>
     <span v-else>
       <span v-for="(item, index) in value" :key="index">
