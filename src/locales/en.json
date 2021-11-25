@@ -77,5 +77,6 @@
   "genomeBrowserUnavailable": "Genome browser unavailable for selected record.",
   "treeViewer": "Decision tree",
   "missingDecisionTree": "Decision tree unavailable",
-  "treeInfo": "Click and drag in the tree to navigate, scroll to zoom."
+  "treeInfo": "Click and drag in the tree to navigate, scroll to zoom.",
+  "incompletePenetrance": "Gene associated with incomplete penetrance."
 }

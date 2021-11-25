@@ -86,10 +86,10 @@
           :values="data.item.expand ? data.item.effect.items : data.item.effect.items.slice(0, 1)"
         />
       </template>
-      <template v-slot:cell(symbol)="data">
+      <template v-slot:cell(gene)="data">
         <RecordInfoDetailsItemMultiline
-          :metadata="data.item.symbol.metadata"
-          :values="data.item.expand ? data.item.symbol.items : data.item.symbol.items.slice(0, 1)"
+          :metadata="data.item.gene.metadata"
+          :values="data.item.expand ? data.item.gene.items : data.item.gene.items.slice(0, 1)"
         />
       </template>
       <template v-slot:cell(inheritance)="data">
@@ -229,7 +229,7 @@ interface Row {
   f: string[];
   s: Vcf.RecordSample[];
   effect?: unknown;
-  symbol?: unknown;
+  gene?: unknown;
   inheritance?: unknown;
   hgvsC?: unknown;
   hgvsP?: unknown;
@@ -281,6 +281,7 @@ export default Vue.extend({
       'isSamplesContainInheritance',
       'isSamplesContainDenovo',
       'isSamplesContainDepth',
+      'isRecordsContainIncompletePenetrance',
       'sampleMaternal',
       'samplePaternal'
     ]),
@@ -316,7 +317,7 @@ export default Vue.extend({
       if (this.hasConsequences) {
         fields.push({ key: 'expand', label: '', class: ['compact', 'align-top'] });
         fields.push({ key: 'effect', label: 'effect' });
-        fields.push({ key: 'symbol', label: 'symbol' });
+        fields.push({ key: 'gene', label: 'symbol' });
         if (this.isSamplesContainInheritance) {
           fields.push({ key: 'inheritance', label: 'inheritance' });
         }
@@ -509,9 +510,16 @@ export default Vue.extend({
           metadata: consequences.metadata.effect,
           items: consequences.items.map((consequence) => consequence.effect)
         };
-        row.symbol = {
-          metadata: consequences.metadata.symbol,
-          items: consequences.items.map((consequence) => consequence.symbol)
+        row.gene = {
+          metadata: { id: 'GeneObject', type: 'Other', number: { type: 'NUMBER', count: 1 }, description: 'GeneObject' },
+          items: consequences.items.map((consequence) =>
+            consequence.symbol !== null
+              ? {
+                  symbol: consequence.symbol,
+                  incompletePenetrance: consequence.incompletePenetrance
+                }
+              : null
+          )
         };
         if (this.isSamplesContainInheritance) {
           row.inheritance = {
