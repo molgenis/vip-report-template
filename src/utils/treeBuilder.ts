@@ -63,19 +63,34 @@ export const retrieveEdges = (inputTree: DecisionTree): TreeEdgesArray => {
   let edges: TreeEdgesObj = {};
   Object.keys(inputTree.nodes).forEach((key) => {
     const node: Node = inputTree.nodes[key];
-    if ('outcomeTrue' in node) {
-      edges = createSimpleEdge('True', node, key, edges);
-      edges = createSimpleEdge('False', node, key, edges);
-      if ('outcomeMissing' in node) {
-        edges = createSimpleEdge('Missing', node, key, edges);
-      }
-    } else if ('outcomeMap' in node) {
-      Object.keys(node.outcomeMap).forEach((category) => {
-        const nextNode = node.outcomeMap[category].nextNode;
-        edges = createEdge(nextNode, category, key, edges);
-      });
-      edges = createSimpleEdge('Missing', node, key, edges);
-      edges = createSimpleEdge('Default', node, key, edges);
+    switch (node.type) {
+      case 'BOOL':
+        edges = createSimpleEdge('True', node, key, edges);
+        edges = createSimpleEdge('False', node, key, edges);
+        if ('outcomeMissing' in node) {
+          edges = createSimpleEdge('Missing', node, key, edges);
+        }
+        break;
+      case 'CATEGORICAL':
+        Object.keys(node.outcomeMap).forEach((category) => {
+          const nextNode = node.outcomeMap[category].nextNode;
+          edges = createEdge(nextNode, category, key, edges);
+        });
+        if ('outcomeMissing' in node) {
+          edges = createSimpleEdge('Missing', node, key, edges);
+        }
+        if ('outcomeDefault' in node) {
+          edges = createSimpleEdge('Default', node, key, edges);
+        }
+        break;
+      case 'EXISTS':
+        edges = createSimpleEdge('True', node, key, edges);
+        edges = createSimpleEdge('False', node, key, edges);
+        break;
+      case 'LEAF':
+        break;
+      default:
+        throw new Error('unknown node type');
     }
   });
   return Object.keys(edges).map((k) => edges[k]);

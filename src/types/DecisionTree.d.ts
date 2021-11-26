@@ -32,8 +32,8 @@ type CategoricalNode = {
   outcomeMap: {
     [key: string]: Outcome;
   };
-  outcomeMissing: Outcome;
-  outcomeDefault: Outcome;
+  outcomeMissing?: Outcome;
+  outcomeDefault?: Outcome;
 };
 
 type ExitNode = {
