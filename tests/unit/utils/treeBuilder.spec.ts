@@ -199,4 +199,58 @@ describe('treeBuilder', () => {
     ];
     expect(outcome).toStrictEqual(expected);
   });
+  it('should generate edges for CATEGORICAL node without default/missing', () => {
+    const decisionTree: DecisionTree = {
+      files: {
+        panel: {
+          path: 'path/to/tsv'
+        }
+      },
+      rootNode: 'ROOT',
+      nodes: {
+        categoricalField: {
+          type: 'CATEGORICAL',
+          description: 'check categorical field',
+          field: 'FIELD_TO_CHECK',
+          outcomeMap: {
+            P: {
+              nextNode: 'exit_t'
+            },
+            LP: {
+              nextNode: 'exit_t'
+            },
+            LB: {
+              nextNode: 'exit_f'
+            },
+            B: {
+              nextNode: 'exit_f'
+            }
+          }
+        },
+        exit_t: {
+          type: 'LEAF',
+          class: 'T'
+        },
+        exit_f: {
+          type: 'LEAF',
+          class: 'F'
+        }
+      }
+    };
+
+    const outcome = retrieveEdges(decisionTree);
+    const expected = [
+      {
+        from: 'categoricalField',
+        to: 'exit_t',
+        label: 'P\nLP'
+      },
+      {
+        from: 'categoricalField',
+        to: 'exit_f',
+        label: 'LB\nB'
+      }
+    ];
+    expect(outcome).toStrictEqual(expected);
+  });
 });
