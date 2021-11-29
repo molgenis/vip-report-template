@@ -4,14 +4,16 @@
       :href="'https://www.omim.org/search?search=' + encodeURIComponent(value.symbol) + '&field=approved_gene_symbol'"
       :text="value.symbol"
     />
-    <b-button pill
+    <b-button
+      pill
       v-if="value.incompletePenetrance"
       size="sm"
       variant="info"
-              class="ml-2 p-0"
+      class="ml-2 p-0"
       v-b-tooltip.click
       :title="$t('incompletePenetrance')"
-    >     <sup>IP</sup>
+    >
+      <sup>IP</sup>
     </b-button>
   </span>
 </template>

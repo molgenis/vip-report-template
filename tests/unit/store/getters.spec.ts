@@ -517,7 +517,7 @@ test('whether records contain MVL annotations - no meta', () => {
 
 test('whether records contain MVL annotations - no info meta', () => {
   const recordsMetadata = mock<Vcf.Metadata>();
-  recordsMetadata.info = { };
+  recordsMetadata.info = {};
 
   const metadata = mock<Api.Metadata>();
   metadata.records = recordsMetadata;
