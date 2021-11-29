@@ -511,7 +511,12 @@ export default Vue.extend({
           items: consequences.items.map((consequence) => consequence.effect)
         };
         row.gene = {
-          metadata: { id: 'GeneObject', type: 'Other', number: { type: 'NUMBER', count: 1 }, description: 'GeneObject' },
+          metadata: {
+            id: 'GeneObject',
+            type: 'Other',
+            number: { type: 'NUMBER', count: 1 },
+            description: 'GeneObject'
+          },
           items: consequences.items.map((consequence) =>
             consequence.symbol !== null
               ? {

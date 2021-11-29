@@ -75,7 +75,8 @@ function createConsequence(
   return {
     effect: effectIndex !== undefined ? (info[effectIndex] as string[]) : [],
     symbol: symbolIndex !== undefined ? (info[symbolIndex] as string | null) : null,
-    incompletePenetrance: incompletePenetranceIndex !== undefined ? (info[incompletePenetranceIndex] as boolean) : false,
+    incompletePenetrance:
+      incompletePenetranceIndex !== undefined ? (info[incompletePenetranceIndex] as boolean) : false,
     inheritance: inheritanceIndex !== undefined ? (info[inheritanceIndex] as string[]) : [],
     hgvsC: hgvsCIndex !== undefined ? (info[hgvsCIndex] as string | null) : null,
     hgvsP: hgvsPIndex !== undefined ? (info[hgvsPIndex] as string | null) : null,

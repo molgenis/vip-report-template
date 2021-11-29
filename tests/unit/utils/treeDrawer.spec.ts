@@ -1,4 +1,4 @@
-import treeDrawer, { calculateScaleToFit, getGraphScale } from '@/utils/treeDrawer';
+import treeDrawer from '@/utils/treeDrawer';
 
 describe('retrieveTreeFromFile', () => {
   it('getLineThickness', () => {
