@@ -49,24 +49,24 @@
         <Genotype
           :genotype="data.item.s[sample.index].GT"
           :alleles="[data.item.r].concat(data.item.a)"
-          :readDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.DP : undefined"
-          :allelicDepth="data.item.s[sample.index].f ? data.item.s[sample.index].f.AD : undefined"
+          :readDepth="data.item.s[sample.index].DP"
+          :allelicDepth="data.item.s[sample.index].AD"
         />
       </template>
       <template v-slot:cell(father)="data">
         <Genotype
           :genotype="data.item.s[samplePaternal.index].GT"
           :alleles="[data.item.r].concat(data.item.a)"
-          :readDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.DP : undefined"
-          :allelicDepth="data.item.s[samplePaternal.index].f ? data.item.s[samplePaternal.index].f.AD : undefined"
+          :readDepth="data.item.s[samplePaternal.index].DP"
+          :allelicDepth="data.item.s[samplePaternal.index].AD"
         />
       </template>
       <template v-slot:cell(mother)="data">
         <Genotype
           :genotype="data.item.s[sampleMaternal.index].GT"
           :alleles="[data.item.r].concat(data.item.a)"
-          :readDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.DP : undefined"
-          :allelicDepth="data.item.s[sampleMaternal.index].f ? data.item.s[sampleMaternal.index].f.AD : undefined"
+          :readDepth="data.item.s[sampleMaternal.index].DP"
+          :allelicDepth="data.item.s[sampleMaternal.index].AD"
         />
       </template>
       <template v-slot:cell(expand)="data">
