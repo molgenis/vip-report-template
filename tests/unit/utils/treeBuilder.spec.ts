@@ -28,6 +28,55 @@ describe('treeBuilder', () => {
           nextNode: 'existsNode'
         }
       },
+      boolMultiNode: {
+        type: 'BOOL_MULTI',
+        description: 'Bool multi type node',
+        fields: ['my_multi_1', 'my_multi_2'],
+        outcomeDefault: {
+          nextNode: 'exit_t'
+        },
+        outcomeMissing: {
+          nextNode: 'exit_f'
+        },
+        outcomes: [
+          {
+            operator: 'AND',
+            queries: [
+              {
+                field: 'my_multi_1',
+                operator: '>',
+                value: 0.1
+              },
+              {
+                field: 'my_multi_1',
+                operator: '<=',
+                value: 0.2
+              }
+            ],
+            outcomeTrue: {
+              nextNode: 'exit_f'
+            }
+          },
+          {
+            operator: 'OR',
+            queries: [
+              {
+                field: 'my_multi_2',
+                operator: '<',
+                value: 0.1
+              },
+              {
+                field: 'my_multi_2',
+                operator: '>',
+                value: 0.2
+              }
+            ],
+            outcomeTrue: {
+              nextNode: 'exit_t'
+            }
+          }
+        ]
+      },
       existsNode: {
         type: 'EXISTS',
         description: 'check some field exists',
@@ -81,6 +130,11 @@ describe('treeBuilder', () => {
         id: 'boolNode',
         label: 'boolNode\n(== val)',
         type: 'BOOL'
+      },
+      {
+        id: 'boolMultiNode',
+        label: 'boolMultiNode',
+        type: 'BOOL_MULTI'
       },
       {
         id: 'existsNode',
@@ -180,6 +234,16 @@ describe('treeBuilder', () => {
         from: 'boolNode',
         to: 'existsNode',
         label: 'False\nMissing'
+      },
+      {
+        from: 'boolMultiNode',
+        to: 'exit_f',
+        label: 'my_multi_1 > 0.1 AND my_multi_1 <= 0.2\nMissing'
+      },
+      {
+        from: 'boolMultiNode',
+        to: 'exit_t',
+        label: 'my_multi_2 < 0.1 OR my_multi_2 > 0.2\nDefault'
       },
       {
         from: 'existsNode',
