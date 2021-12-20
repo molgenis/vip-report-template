@@ -21,10 +21,10 @@ type BoolNode = {
   outcomeMissing?: Outcome;
 } & BoolOutcome;
 
-type Operator = 'AND' | 'OR';
+type MultiOperator = 'AND' | 'OR';
 
 type BoolMultiQuery = {
-  operator: Operator;
+  operator?: MultiOperator;
   queries: Query[];
   outcomeTrue: Outcome;
 };
