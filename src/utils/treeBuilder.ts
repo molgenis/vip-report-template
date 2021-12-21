@@ -71,6 +71,21 @@ export const retrieveEdges = (inputTree: DecisionTree): TreeEdgesArray => {
           edges = createSimpleEdge('Missing', node, key, edges);
         }
         break;
+      case 'BOOL_MULTI':
+        node.outcomes.forEach((outcome) => {
+          const nextNode = outcome.outcomeTrue.nextNode;
+          const label = outcome.queries
+            .map((query) => `${query.field} ${query.operator} ${query.value}`)
+            .join(` ${outcome.operator} `);
+          edges = createEdge(nextNode, label, key, edges);
+        });
+        if ('outcomeMissing' in node) {
+          edges = createSimpleEdge('Missing', node, key, edges);
+        }
+        if ('outcomeDefault' in node) {
+          edges = createSimpleEdge('Default', node, key, edges);
+        }
+        break;
       case 'CATEGORICAL':
         Object.keys(node.outcomeMap).forEach((category) => {
           const nextNode = node.outcomeMap[category].nextNode;
