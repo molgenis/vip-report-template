@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/node': ^17.0.12
   '@typescript-eslint/eslint-plugin': ^5.10.1
   '@typescript-eslint/parser': ^5.10.1
   '@vitejs/plugin-vue': ^2.1.0
@@ -9,7 +10,9 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-vue: ^8.3.0
+  fflate: ^0.7.3
   prettier: 2.5.1
+  rollup: ^2.66.1
   sass: ^1.49.0
   typescript: ^4.5.5
   vite: ^2.7.13
@@ -18,10 +21,12 @@ specifiers:
   vue-tsc: ^0.29.8
 
 dependencies:
+  fflate: 0.7.3
   vue: 3.2.29
   vue-router: 4.0.12_vue@3.2.29
 
 devDependencies:
+  '@types/node': 17.0.12
   '@typescript-eslint/eslint-plugin': 5.10.1_0f442f6b60390429061d5d9b6bcaaba6
   '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
   '@vitejs/plugin-vue': 2.1.0_vite@2.7.13+vue@3.2.29
@@ -31,6 +36,7 @@ devDependencies:
   eslint-plugin-prettier: 4.0.0_4660519532e4c3b0a9e5bb6623cfedf6
   eslint-plugin-vue: 8.3.0_eslint@8.7.0
   prettier: 2.5.1
+  rollup: 2.66.1
   sass: 1.49.0
   typescript: 4.5.5
   vite: 2.7.13_sass@1.49.0
@@ -127,6 +133,10 @@ packages:
 
   /@types/json-schema/7.0.9:
     resolution: {integrity: sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==}
+    dev: true
+
+  /@types/node/17.0.12:
+    resolution: {integrity: sha512-4YpbAsnJXWYK/fpTVFlMIcUIho2AYCi4wg5aNPrG1ng7fn/1/RZfCIpRCiBX+12RVa34RluilnvCqD+g3KiSiA==}
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.10.1_0f442f6b60390429061d5d9b6bcaaba6:
@@ -1021,6 +1031,10 @@ packages:
     dependencies:
       reusify: 1.0.4
     dev: true
+
+  /fflate/0.7.3:
+    resolution: {integrity: sha512-0Zz1jOzJWERhyhsimS54VTqOteCNwRtIlh8isdL0AXLo0g7xNTfTL7oWrkmCnPhZGocKIkWHBistBrrpoNH3aw==}
+    dev: false
 
   /file-entry-cache/6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
