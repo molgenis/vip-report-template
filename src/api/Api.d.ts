@@ -1,5 +1,6 @@
 export interface Api {
   getMeta(): Promise<Metadata>;
+  getVcf(): Promise<string>;
 }
 
 export interface Metadata {

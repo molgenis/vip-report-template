@@ -1,5 +1,8 @@
+const encodeMap: string[] =
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~".split("");
+
 function toAscii(val: number): string {
-  return String.fromCharCode((val % 85) + 33);
+  return encodeMap[val % 85];
 }
 
 function getUint32BigEndianPadding(byteArray: Uint8Array, offset: number): number {
@@ -11,7 +14,7 @@ function getUint32BigEndianPadding(byteArray: Uint8Array, offset: number): numbe
 }
 
 /**
- * Ascii85 encode
+ * Base85 encode (RFC 1924)
  */
 export function enc(bytes: Uint8Array): string {
   let s = "";
@@ -39,8 +42,15 @@ export function enc(bytes: Uint8Array): string {
   return s;
 }
 
+const decodeMap: Uint8Array = new Uint8Array([
+  62, -1, 63, 64, 65, 66, -1, 67, 68, 69, 70, -1, 71, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, 72, 73, 74, 75, 76, 77,
+  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1,
+  78, 79, 80, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+  81, 82, 83, 84,
+]);
+
 function fromAscii(str: string, offset: number, exponent: number): number {
-  return (offset < str.length ? str.charCodeAt(offset) - 33 : 84) * Math.pow(85, exponent);
+  return (offset < str.length ? decodeMap[str.charCodeAt(offset) - 33] : 84) * Math.pow(85, exponent);
 }
 
 function toUint32(str: string, offset: number): number {
@@ -54,7 +64,7 @@ function toUint32(str: string, offset: number): number {
 }
 
 /**
- * Ascii85 decode
+ * Base85 decode (RFC 1924)
  */
 export function dec(str: string): Uint8Array {
   const length = str.length;

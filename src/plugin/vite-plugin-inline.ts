@@ -1,6 +1,6 @@
 import { HtmlTagDescriptor, IndexHtmlTransformContext, IndexHtmlTransformResult, Plugin } from "vite";
 import { gzipSync } from "fflate";
-import { enc } from "./Ascii85";
+import { enc } from "./Base85";
 import { OutputAsset, OutputChunk } from "rollup";
 
 function compress(str: string): string {
