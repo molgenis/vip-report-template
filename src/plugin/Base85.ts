@@ -37,7 +37,7 @@ export function enc(bytes: Uint8Array): string {
     s += c0 + c1 + c2 + c3 + c4;
   }
   if (remainder > 0) {
-    s = s.substring(0, s.length - remainder);
+    s = s.substring(0, s.length - (4 - remainder));
   }
   return s;
 }
@@ -68,7 +68,7 @@ function toUint32(str: string, offset: number): number {
  */
 export function dec(str: string): Uint8Array {
   const length = str.length;
-  const nrBytes = length % 5 === 0 ? (length / 5) * 4 : Math.floor(length / 5) * 4 + (5 - (length % 5));
+  const nrBytes = length % 5 === 0 ? (length / 5) * 4 : Math.floor(length / 5) * 4 + ((length % 5) - 1);
   const byteArray = new Uint8Array(nrBytes);
   let val: number,
     offset = 0;
