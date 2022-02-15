@@ -11,12 +11,11 @@ export default defineComponent({
 
     let metadata: Ref<Metadata | undefined> = ref();
     let vcf: Ref<string | undefined> = ref();
-    const fetchRecords = async () => {
-      metadata.value = await api.getMeta();
+    const fetchVcf = async () => {
       vcf.value = await api.getVcf();
     };
 
-    onMounted(fetchRecords);
+    onMounted(fetchVcf);
 
     return { metadata, vcf };
   },
@@ -24,7 +23,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <span v-if="metadata">{{ metadata }}</span>
-  <hr />
-  <span v-if="vcf">{{ vcf }}</span>
+  <textarea v-if="vcf" v-model="vcf" rows="50" cols="200" wrap="off"></textarea>
 </template>

@@ -1,8 +1,13 @@
-import { Api, Metadata } from "./Api";
+import { Api, Items, Metadata, Resource } from "./Api";
 
 export interface ReportData {
   metadata: Metadata;
+  data: Data;
   binary: BinaryReportData;
+}
+
+export interface Data {
+  [key: string]: Items<Resource>;
 }
 
 export interface BinaryReportData {

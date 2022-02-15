@@ -19,3 +19,12 @@ export interface HtsFileMetadata {
   uri: string;
   genomeAssembly: string;
 }
+
+export interface Resource {
+  [key: string]: any;
+}
+
+export interface Items<T extends Resource> {
+  items: T[];
+  total: number;
+}

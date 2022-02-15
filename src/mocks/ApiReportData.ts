@@ -1,4 +1,8 @@
-const apiReportData = {
+import { ReportData } from "../api/ApiClient";
+import vcf from "./vcf";
+import decisionTree from "./decisionTree";
+
+const apiReportData: ReportData = {
   metadata: {
     app: {
       name: "vcf-report",
@@ -59,44 +63,48 @@ const apiReportData = {
           phenotypicFeaturesList: [
             {
               type: {
-                getId: "HP:0000518",
+                id: "HP:0000518",
                 label: "HP:0000518",
               },
             },
           ],
           subject: {
-            getId: "Patient",
+            id: "Patient",
           },
         },
         {
           phenotypicFeaturesList: [
             {
               type: {
-                getId: "HP:0000518",
+                id: "HP:0000518",
                 label: "HP:0000518",
               },
             },
           ],
           subject: {
-            getId: "Mother",
+            id: "Mother",
           },
         },
         {
           phenotypicFeaturesList: [
             {
               type: {
-                getId: "HP:0000518",
+                id: "HP:0000518",
                 label: "HP:0000518",
               },
             },
           ],
           subject: {
-            getId: "Father",
+            id: "Father",
           },
         },
       ],
       total: 3,
     },
+  },
+  binary: {
+    vcf: new TextEncoder().encode(vcf),
+    decisionTree: new TextEncoder().encode(decisionTree),
   },
 };
 
