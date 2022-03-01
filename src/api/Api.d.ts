@@ -21,7 +21,7 @@ export interface HtsFileMetadata {
 }
 
 export interface Resource {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface Items<T extends Resource> {

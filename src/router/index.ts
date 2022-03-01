@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Variants from "../components/Variants.vue";
+import Vcf from "../views/Vcf.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/variants",
     name: "variants",
     component: Variants,
+  },
+  {
+    path: "/vcf",
+    name: "vcf",
+    component: Vcf,
   },
 ];
 
