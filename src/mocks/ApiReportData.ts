@@ -1,6 +1,7 @@
 import { ReportData } from "../api/ApiClient";
 import vcf from "./vcf";
 import decisionTree from "./decisionTree";
+import { Metadata } from "../api/Api";
 
 const apiReportData: ReportData = {
   metadata: {
@@ -14,7 +15,7 @@ const apiReportData: ReportData = {
       htsFormat: "VCF",
       genomeAssembly: "GRCh37",
     },
-  },
+  } as Metadata,
   data: {
     samples: {
       items: [

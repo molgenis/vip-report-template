@@ -25,9 +25,10 @@ export default defineComponent({
       <div class="navbar-start">
         <router-link class="navbar-item" :to="{ name: 'variants' }">{{ t("variants") }}</router-link>
         <!-- dropdown doesn't close on click, use :key as a workaround to force rerender -->
-        <div :key="route.name" class="navbar-item has-dropdown is-hoverable">
+        <div :key="route.name ? route.name : undefined" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">{{ t("data") }}</a>
           <div class="navbar-dropdown">
+            <router-link class="navbar-item" :to="{ name: 'tree' }">{{ t("decisionTree") }}</router-link>
             <router-link class="navbar-item" :to="{ name: 'vcf' }">{{ t("vcf") }}</router-link>
           </div>
         </div>

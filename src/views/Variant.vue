@@ -2,13 +2,10 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "VipVariants",
-  setup() {
-    return {};
-  },
+  name: "VipVariant",
 });
 </script>
 
 <template>
-  <p>Variants component placeholder (todo: implement)</p>
+  <p>Variant component placeholder (todo: implement)</p>
 </template>

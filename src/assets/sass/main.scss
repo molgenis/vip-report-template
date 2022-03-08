@@ -40,3 +40,33 @@ html {
 textarea {
   font-family: monospace;
 }
+
+.base {
+  width: 0.9rem;
+  display: inline-block;
+  text-align: center;
+}
+
+.base-a {
+  background-color: #90ee90;
+}
+
+.base-c {
+  background-color: #b0c4de;
+}
+
+.base-g {
+  background-color: #ffec8b;
+}
+
+.base-t {
+  background-color: #eea2ad;
+}
+
+.base-n {
+  background-color: #e3e3e3;
+}
+
+td {
+  white-space: nowrap;
+}

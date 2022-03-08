@@ -1,5 +1,16 @@
 {
+  "alt": "Alternate non-reference alleles",
+  "altAbbr": "Alt",
   "data": "Data",
+  "decisionTree": "Decision Tree",
+  "flagFalse": "False",
+  "flagTrue": "True",
+  "flagUnknown": "",
+  "noVariants": "No Variants",
+  "pos": "Position",
+  "posAbbr": "Pos",
+  "ref": "Reference allele",
+  "refAbbr": "Ref",
   "variants": "Variants",
   "vcf": "VCF",
   "vcfReport": "VCF Report"
