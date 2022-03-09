@@ -29,5 +29,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <span v-if="valCharacter">{{ valCharacter }}</span>
+  <span v-if="valCharacter !== null">{{ valCharacter }}</span>
 </template>

@@ -29,5 +29,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <abbr v-if="valFloat" :title="valFloat.toString()">{{ valFloat.toFixed(4) }}</abbr>
+  <abbr v-if="valFloat !== null" :title="valFloat.toString()">{{ valFloat.toFixed(4) }}</abbr>
 </template>

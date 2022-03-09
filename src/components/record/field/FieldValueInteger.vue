@@ -29,5 +29,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <span v-if="valInteger">{{ valInteger }}</span>
+  <span v-if="valInteger != null">{{ valInteger }}</span>
 </template>
