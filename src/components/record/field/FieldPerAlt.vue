@@ -1,15 +1,23 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRef } from "vue";
+import { defineComponent } from "vue";
+import FieldValue from "./FieldValue.vue";
+import { asValuePrimitiveArray } from "../../../utils/value";
+import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
-import Value from "../value/Value.vue";
 
 export default defineComponent({
   name: "VipRecordFieldPerAlt",
-  components: { Value },
+  components: { FieldValue },
   props: {
     field: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     fieldMetadata: {
       type: Object as () => FieldMetadata,
@@ -24,20 +32,18 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const field = toRef(props, "field");
-    const fieldTyped = computed(() => field.value as unknown[] | null | undefined);
-    return { fieldTyped };
+  setup() {
+    return {
+      asValuePrimitiveArray,
+    };
   },
 });
 </script>
 
 <template>
-  <template v-if="fieldTyped">
-    <template v-for="(item, index) in fieldTyped" :key="index">
-      <span v-if="index !== 0">, </span>
-      <span v-if="record.a.length > 1">{{ record.a[index] }}=</span>
-      <Value :value="item" :value-type="fieldMetadata.type" />
-    </template>
+  <template v-for="(item, index) in asValuePrimitiveArray(field)" :key="index">
+    <span v-if="index !== 0">, </span>
+    <span v-if="record.a.length > 1">{{ record.a[index] }}=</span>
+    <FieldValue :value="item" :value-type="fieldMetadata.type" />
   </template>
 </template>

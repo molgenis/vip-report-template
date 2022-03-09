@@ -1,15 +1,30 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRef } from "vue";
+import { computed, defineComponent, toRef } from "vue";
 import { FieldMetadata } from "../../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../../api/vcf/Vcf";
-import ValueString from "../../value/ValueString.vue";
+import {
+  Value,
+  ValueCharacter,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueString,
+} from "../../../../api/vcf/ValueParser";
+import { asValueString } from "../../../../utils/value";
+import FieldValueString from "../../field/FieldValueString.vue";
 
 export default defineComponent({
   name: "VipRecordInfoCsqGeneUnknown",
-  components: { ValueString },
+  components: { FieldValueString },
   props: {
     field: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     fieldMetadata: {
       type: Object as () => FieldMetadata,
@@ -26,12 +41,12 @@ export default defineComponent({
   },
   setup(props) {
     const field = toRef(props, "field");
-    const fieldTyped = computed(() => field.value as string | null);
-    return { fieldTyped };
+    const fieldString = computed(() => asValueString(field.value));
+    return { fieldString };
   },
 });
 </script>
 
 <template>
-  <ValueString :value="fieldTyped" :value-type="fieldMetadata.type" />
+  <FieldValueString :value="fieldString" :value-type="fieldMetadata.type" />
 </template>

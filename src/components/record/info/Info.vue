@@ -1,18 +1,25 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
+import { computed, defineComponent, toRefs } from "vue";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
 import { InfoMetadata } from "../../../api/vcf/MetadataParser";
 import Field from "../field/Field.vue";
 import Gene from "./csq/Gene.vue";
 import Consequence from "./csq/Consequence.vue";
 import PubMed from "./csq/PubMed.vue";
+import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordInfo",
   components: { Consequence, Field, Gene, PubMed },
   props: {
     info: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     infoMetadata: {
       type: Object as () => InfoMetadata,
@@ -32,12 +39,12 @@ export default defineComponent({
     return {
       component: computed(() => {
         switch (infoMetadata.value.id) {
-          case "Consequence":
-            return Consequence;
-          case "Gene":
-            return Gene;
-          case "PUBMED":
-            return PubMed;
+          // case "Consequence":
+          //   return Consequence;
+          // case "Gene":
+          //   return Gene;
+          // case "PUBMED":
+          //   return PubMed;
           default:
             return Field;
         }

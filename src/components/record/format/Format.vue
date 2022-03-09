@@ -1,16 +1,23 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
+import { computed, defineComponent, toRefs } from "vue";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
 import { FormatMetadata } from "../../../api/vcf/MetadataParser";
 import FormatGenotype from "./FormatGenotype.vue";
 import Field from "../field/Field.vue";
+import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordFormat",
   components: { Field, FormatGenotype },
   props: {
     format: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     formatMetadata: {
       type: Object as () => FormatMetadata,

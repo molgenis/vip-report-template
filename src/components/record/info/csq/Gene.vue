@@ -1,19 +1,33 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
-import { InfoMetadata } from "../../../../api/vcf/MetadataParser";
+import { computed, defineComponent, toRefs } from "vue";
+import { FieldMetadata } from "../../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../../api/vcf/Vcf";
 import GeneEntrezGene from "./GeneEntrezGene.vue";
 import GeneUnknown from "./GeneUnknown.vue";
+import {
+  Value,
+  ValueCharacter,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueString,
+} from "../../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordInfoCsqGene",
   components: { GeneEntrezGene, GeneUnknown },
   props: {
     field: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     fieldMetadata: {
-      type: Object as () => InfoMetadata,
+      type: Object as () => FieldMetadata,
       required: true,
     },
     record: {

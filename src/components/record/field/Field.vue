@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRef } from "vue";
+import { computed, defineComponent, toRefs } from "vue";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
 import FieldPerAlt from "./FieldPerAlt.vue";
@@ -7,13 +7,20 @@ import FieldPerAltAndRef from "./FieldPerAltAndRef.vue";
 import FieldOther from "./FieldOther.vue";
 import FieldNumberMultiple from "./FieldNumberMultiple.vue";
 import FieldNumberSingle from "./FieldNumberSingle.vue";
+import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordField",
   components: { FieldNumberMultiple, FieldOther, FieldPerAlt, FieldPerAltAndRef, FieldNumberSingle },
   props: {
     field: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     fieldMetadata: {
       type: Object as () => FieldMetadata,
@@ -29,7 +36,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const fieldMetadata = toRef(props, "fieldMetadata");
+    const { fieldMetadata } = toRefs(props);
     return {
       component: computed(() => {
         const type = fieldMetadata.value.number.type;

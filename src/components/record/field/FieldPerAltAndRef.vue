@@ -1,5 +1,7 @@
 <script lang="ts">
-import { computed, defineComponent, PropType, toRef } from "vue";
+import { defineComponent } from "vue";
+import { asValuePrimitiveArray } from "../../../utils/value";
+import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
 
@@ -7,7 +9,13 @@ export default defineComponent({
   name: "VipRecordFieldPerAltAndRef",
   props: {
     field: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     fieldMetadata: {
       type: Object as () => FieldMetadata,
@@ -22,16 +30,16 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const field = toRef(props, "field");
-    const fieldTyped = computed(() => field.value as unknown[] | null | undefined);
-    return { fieldTyped };
+  setup() {
+    return {
+      asValuePrimitiveArray,
+    };
   },
 });
 </script>
 
 <template>
-  <template v-for="(item, index) in fieldTyped" :key="index">
+  <template v-for="(item, index) in asValuePrimitiveArray(field)" :key="index">
     <span v-if="index !== 0">, </span>
     <!-- FIXME use Value -->
     <span>{{ index === 0 ? record.r + "=" + item : record.a[index] + "=" + item }}</span>

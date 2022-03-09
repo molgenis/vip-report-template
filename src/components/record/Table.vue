@@ -5,8 +5,9 @@ import Pos from "./Pos.vue";
 import Ref from "./Ref.vue";
 import Alt from "./Alt.vue";
 import Info from "./info/Info.vue";
-import Format from "./format/Format.vue";
 import { Metadata, Record } from "../../api/vcf/Vcf";
+import Format from "./format/Format.vue";
+import { Value } from "../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordTable",
@@ -33,7 +34,7 @@ export default defineComponent({
     const nrFormatFields: ComputedRef<number> = computed((): number => Object.keys(recordMetadata.value.format).length);
     const nrSamples: ComputedRef<number> = computed((): number => recordMetadata.value.header.samples.length);
 
-    const asArray = (val: unknown): unknown[][] => val as unknown[][];
+    const asArray = (val: unknown) => val as Value[][];
 
     return { t, hasNestedMetadata, nrFormatFields, nrSamples, asArray };
   },
@@ -107,6 +108,7 @@ export default defineComponent({
             <template v-if="info.nested">
               <td v-for="(nestedInfo, nestedInfoIndex) in info.nested.items" :key="nestedInfoIndex">
                 <template v-for="(item, itemIndex) in asArray(record.n[info.id])" :key="itemIndex">
+                  <!-- FIXME get rid of asArray cast -->
                   <Info
                     :info="item[nestedInfoIndex]"
                     :info-metadata="nestedInfo"
@@ -127,8 +129,9 @@ export default defineComponent({
           </template>
           <template v-for="(sample, sampleIndex) in recordMetadata.header.samples" :key="sampleIndex">
             <td v-for="(format, formatIndex) in recordMetadata.format" :key="formatIndex">
+              <!-- FIXME get rid of asArray cast -->
               <Format
-                :format="record.s[sampleIndex][format.id]"
+                :format="asArray(record.s[sampleIndex][format.id])"
                 :format-metadata="format"
                 :record="record"
                 :record-metadata="recordMetadata"

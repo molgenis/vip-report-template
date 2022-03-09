@@ -1,15 +1,23 @@
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
+import FieldValue from "./FieldValue.vue";
+import { asValuePrimitive } from "../../../utils/value";
+import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
-import Value from "../value/Value.vue";
 
 export default defineComponent({
   name: "VipRecordFieldNumberSingle",
-  components: { Value },
+  components: { FieldValue },
   props: {
     field: {
-      type: [Array, Boolean, Number, String] as PropType<unknown>,
+      type: [
+        Array as () => Value[],
+        Boolean as () => ValueFlag,
+        Number as () => ValueInteger | ValueFloat,
+        String as () => ValueCharacter | ValueString,
+      ],
+      default: null,
     },
     fieldMetadata: {
       type: Object as () => FieldMetadata,
@@ -24,9 +32,14 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    return {
+      asValuePrimitive,
+    };
+  },
 });
 </script>
 
 <template>
-  <Value :value="field" :value-type="fieldMetadata.type" />
+  <FieldValue :value="asValuePrimitive(field)" :value-type="fieldMetadata.type" />
 </template>
