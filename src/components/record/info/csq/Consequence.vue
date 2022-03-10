@@ -9,6 +9,7 @@ import {
   ValueFlag,
   ValueFloat,
   ValueInteger,
+  ValueObject,
   ValueString,
 } from "../../../../api/vcf/ValueParser";
 import { asValueStringArray } from "../../../../utils/value";
@@ -22,6 +23,7 @@ export default defineComponent({
         Array as () => Value[],
         Boolean as () => ValueFlag,
         Number as () => ValueInteger | ValueFloat,
+        Object as () => ValueObject,
         String as () => ValueCharacter | ValueString,
       ],
       default: null,

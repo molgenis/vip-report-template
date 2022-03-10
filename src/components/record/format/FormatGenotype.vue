@@ -3,7 +3,15 @@ import { computed, defineComponent, toRef } from "vue";
 import { Genotype, Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
 import { FormatMetadata } from "../../../api/vcf/MetadataParser";
 import Bases from "../Bases.vue";
-import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
+import {
+  Value,
+  ValueCharacter,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueObject,
+  ValueString,
+} from "../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordFormatGenotype",
@@ -14,6 +22,7 @@ export default defineComponent({
         Array as () => Value[],
         Boolean as () => ValueFlag,
         Number as () => ValueInteger | ValueFloat,
+        Object as () => ValueObject,
         String as () => ValueCharacter | ValueString,
       ],
       default: null,

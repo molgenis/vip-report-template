@@ -2,7 +2,15 @@
 import { defineComponent } from "vue";
 import FieldValue from "./FieldValue.vue";
 import { asValuePrimitiveArray } from "../../../utils/value";
-import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
+import {
+  Value,
+  ValueCharacter,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueObject,
+  ValueString,
+} from "../../../api/vcf/ValueParser";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
 import { Metadata as RecordMetadata, Record } from "../../../api/vcf/Vcf";
 
@@ -15,6 +23,7 @@ export default defineComponent({
         Array as () => Value[],
         Boolean as () => ValueFlag,
         Number as () => ValueInteger | ValueFloat,
+        Object as () => ValueObject,
         String as () => ValueCharacter | ValueString,
       ],
       default: null,

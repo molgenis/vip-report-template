@@ -1,11 +1,12 @@
 import { MISSING } from "./Constants";
 import { ValueType } from "./MetadataParser";
 
-export type Value = ValueCharacter | ValueFlag | ValueFloat | ValueInteger | ValueString | Value[];
+export type Value = ValueCharacter | ValueFlag | ValueFloat | ValueInteger | ValueObject | ValueString | Value[];
 export type ValueCharacter = string | null;
 export type ValueFlag = boolean | null;
 export type ValueFloat = number | null;
 export type ValueInteger = number | null;
+export type ValueObject = { [key: string]: Value } | null;
 export type ValueString = string | null;
 
 export function parseTypedValue(token: string, type: ValueType): Value {

@@ -7,7 +7,15 @@ import FieldPerAltAndRef from "./FieldPerAltAndRef.vue";
 import FieldOther from "./FieldOther.vue";
 import FieldNumberMultiple from "./FieldNumberMultiple.vue";
 import FieldNumberSingle from "./FieldNumberSingle.vue";
-import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
+import {
+  Value,
+  ValueCharacter,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueObject,
+  ValueString,
+} from "../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordField",
@@ -18,6 +26,7 @@ export default defineComponent({
         Array as () => Value[],
         Boolean as () => ValueFlag,
         Number as () => ValueInteger | ValueFloat,
+        Object as () => ValueObject,
         String as () => ValueCharacter | ValueString,
       ],
       default: null,

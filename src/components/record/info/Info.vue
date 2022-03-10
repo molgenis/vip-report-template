@@ -6,7 +6,15 @@ import Field from "../field/Field.vue";
 import Gene from "./csq/Gene.vue";
 import Consequence from "./csq/Consequence.vue";
 import PubMed from "./csq/PubMed.vue";
-import { Value, ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
+import {
+  Value,
+  ValueCharacter,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueObject,
+  ValueString,
+} from "../../../api/vcf/ValueParser";
 
 export default defineComponent({
   name: "VipRecordInfo",
@@ -17,6 +25,7 @@ export default defineComponent({
         Array as () => Value[],
         Boolean as () => ValueFlag,
         Number as () => ValueInteger | ValueFloat,
+        Object as () => ValueObject,
         String as () => ValueCharacter | ValueString,
       ],
       default: null,
