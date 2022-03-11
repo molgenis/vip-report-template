@@ -7,6 +7,11 @@ import { ApiKey } from "./utils/symbols";
 import mockApiReportData from "./mocks/ApiReportData";
 import { createI18n } from "vue-i18n";
 import en from "./locales/en.json";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faCircleXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(faCircleXmark, faSearch);
 
 declare global {
   interface Window {
@@ -14,7 +19,7 @@ declare global {
   }
 }
 
-const reportData = process.env.NODE_ENV === "production" ? window.api : mockApiReportData;
+const reportData = import.meta.env.PROD ? window.api : mockApiReportData;
 const apiClient = new ApiClient(reportData);
 
 const i18n = createI18n({
@@ -25,7 +30,7 @@ const i18n = createI18n({
   },
 });
 
-const app = createApp(App);
+const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);
 app.provide(ApiKey, apiClient);
 app.use(router);
 app.use(i18n);

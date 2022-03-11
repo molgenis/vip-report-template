@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref, Ref } from "vue";
+import { defineComponent, onMounted, ref, Ref, watch } from "vue";
 import RecordTable from "../components/record/Table.vue";
 import { useI18n } from "vue-i18n";
 import { injectStrict } from "../utils/inject";
@@ -7,10 +7,12 @@ import { ApiKey } from "../utils/symbols";
 import { PagedItems, Params } from "../api/Api";
 import { Metadata, Record } from "../api/vcf/Vcf";
 import Pagination from "../components/Pagination.vue";
+import SearchBox from "../components/SearchBox.vue";
+import { createSearchQuery } from "../utils/query";
 
 export default defineComponent({
   name: "VipVariants",
-  components: { Pagination, RecordTable },
+  components: { Pagination, RecordTable, SearchBox },
   setup() {
     // workaround for https://github.com/intlify/vue-i18n-next/issues/324
     const { t } = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method
@@ -27,29 +29,55 @@ export default defineComponent({
     const fetchRecords = async (params: Params) => {
       records.value = await api.getRecords(params);
     };
-    onMounted(() => fetchRecords({ page: 0 }));
 
-    const onPageChange = (page: number) => fetchRecords({ page: page });
-    return { t, metadata, records, onPageChange };
+    const params: Ref<Params> = ref({});
+    const onPageChange = (page: number) => (params.value = { ...params.value, ...{ page } });
+
+    const onSearchChange = (search: string) => {
+      const metadataValue = metadata.value;
+      if (metadataValue) {
+        const newParams = {
+          ...params.value,
+          page: 0,
+        };
+
+        const query = createSearchQuery(search, metadataValue);
+        newParams.query = search !== "" && query !== null ? query : undefined;
+        params.value = newParams;
+      }
+    };
+
+    watch(
+      params,
+      async (currentValue) => {
+        await fetchRecords(currentValue);
+      },
+      { immediate: true }
+    );
+
+    return { t, metadata, records, onPageChange, onSearchChange };
   },
 });
 </script>
 
 <template>
   <template v-if="metadata && records">
-    <template v-if="records.items.length > 0">
-      <div class="columns">
-        <div class="column is-half is-offset-one-quarter">
-          <Pagination :page="records.page" @change="onPageChange" />
+    <div class="columns">
+      <div class="column is-two-fifths">
+        <SearchBox @search-change="onSearchChange" />
+      </div>
+      <template v-if="records.items.length > 0">
+        <div class="column is-two-fifths">
+          <Pagination class="is-pulled-right" :page="records.page" @page-change="onPageChange" />
         </div>
-        <div class="column is-one-quarter">
+        <div class="column is-one-fifth">
           <span class="is-pulled-right"
             >{{ records.page.totalElements }} {{ t(records.page.totalElements === 1 ? "record" : "records") }}</span
           >
         </div>
-      </div>
-      <RecordTable :records="records.items" :record-metadata="metadata" />
-    </template>
-    <p v-else>{{ t("noVariants") }}</p>
+      </template>
+      <p v-else>{{ t("noVariants") }}</p>
+    </div>
+    <RecordTable :records="records.items" :record-metadata="metadata" />
   </template>
 </template>

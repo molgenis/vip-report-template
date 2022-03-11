@@ -11,14 +11,15 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["page-change"],
   setup(props, context) {
     const { page } = toRefs(props);
 
     const pages = computed(() => Math.ceil(page.value.totalElements / page.value.size));
 
-    const onPreviousPage = () => context.emit("change", page.value.number - 1);
-    const onNextPage = () => context.emit("change", page.value.number + 1);
-    const onPage = (number: number) => context.emit("change", number);
+    const onPreviousPage = () => context.emit("page-change", page.value.number - 1);
+    const onNextPage = () => context.emit("page-change", page.value.number + 1);
+    const onPage = (number: number) => context.emit("page-change", number);
 
     // workaround for https://github.com/intlify/vue-i18n-next/issues/324
     const { t } = useI18n(); // eslint-disable-line @typescript-eslint/unbound-method

@@ -78,20 +78,22 @@ export interface ComposedQuery {
   args: (Query | ComposedQuery)[];
 }
 
+export type QueryOperator =
+  | "=="
+  | "!="
+  | "in"
+  | "!in"
+  | "has_any"
+  | "!has_any"
+  | "any_has_any"
+  | "!any_has_any"
+  | ">"
+  | ">="
+  | "<"
+  | "<=";
+
 export interface Query {
-  operator:
-    | "=="
-    | "!="
-    | "in"
-    | "!in"
-    | "has_any"
-    | "!has_any"
-    | "any_has_any"
-    | "!any_has_any"
-    | ">"
-    | ">="
-    | "<"
-    | "<=";
+  operator: QueryOperator;
   selector: Selector;
   args: string | number | boolean | string[] | number[];
 }

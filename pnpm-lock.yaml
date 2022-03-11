@@ -1,6 +1,9 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@fortawesome/fontawesome-svg-core': ^1.3.0
+  '@fortawesome/free-solid-svg-icons': ^6.0.0
+  '@fortawesome/vue-fontawesome': 3.0.0-5
   '@intlify/vite-plugin-vue-i18n': ^3.3.1
   '@types/jest': ^27.4.0
   '@types/node': ^17.0.12
@@ -28,6 +31,9 @@ specifiers:
   vue-tsc: ^0.29.8
 
 dependencies:
+  '@fortawesome/fontawesome-svg-core': 1.3.0
+  '@fortawesome/free-solid-svg-icons': 6.0.0
+  '@fortawesome/vue-fontawesome': 3.0.0-5_57300062c04de25e6ec7d83402663243
   fflate: 0.7.3
   vue: 3.2.31
   vue-i18n: 9.1.9_vue@3.2.31
@@ -419,6 +425,38 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@fortawesome/fontawesome-common-types/0.3.0:
+    resolution: {integrity: sha512-CA3MAZBTxVsF6SkfkHXDerkhcQs0QPofy43eFdbWJJkZiq3SfiaH1msOkac59rQaqto5EqWnASboY1dBuKen5w==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dev: false
+
+  /@fortawesome/fontawesome-svg-core/1.3.0:
+    resolution: {integrity: sha512-UIL6crBWhjTNQcONt96ExjUnKt1D68foe3xjEensLDclqQ6YagwCRYVQdrp/hW0ALRp/5Fv/VKw+MqTUWYYvPg==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 0.3.0
+    dev: false
+
+  /@fortawesome/free-solid-svg-icons/6.0.0:
+    resolution: {integrity: sha512-o4FZ1XbndcgeWNb8Wh0y+Hgf73CjmyOQowUSaqQCtgIIdS+XliSBSOwCl330wER+I6CGYE96hT27bHBPmzX2Gg==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 0.3.0
+    dev: false
+
+  /@fortawesome/vue-fontawesome/3.0.0-5_57300062c04de25e6ec7d83402663243:
+    resolution: {integrity: sha512-aNmBT4bOecrFsZTog1l6AJDQHPP3ocXV+WQ3Ogy8WZCqstB/ahfhH4CPu5i4N9Hw0MBKXqE+LX+NbUxcj8cVTw==}
+    peerDependencies:
+      '@fortawesome/fontawesome-svg-core': ~1 || >=1.3.0-beta1
+      vue: '>= 3.0.0 < 4'
+    dependencies:
+      '@fortawesome/fontawesome-svg-core': 1.3.0
+      vue: 3.2.31
+    dev: false
 
   /@humanwhocodes/config-array/0.9.5:
     resolution: {integrity: sha512-ObyMyWxZiCu/yTisA7uzx81s40xR2fD5Cg/2Kq7G02ajkNubJf6BopgDTmDyc3U7sXpNKM8cYOw7s7Tyr+DnCw==}
