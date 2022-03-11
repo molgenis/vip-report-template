@@ -21,7 +21,7 @@ export default defineComponent({
 <template>
   <div class="field has-addons">
     <p class="control has-icons-right">
-      <input v-model="inputValue" class="input" type="search" @keyup.enter="onInput" @keyup.esc="onInputClear" />
+      <input v-model="inputValue" class="input" type="input" @keyup.enter="onInput" @keyup.esc="onInputClear" />
       <span v-if="inputValue.length > 0" class="icon-link is-small is-right" @click="onInputClear">
         <font-awesome-icon icon="circle-xmark" />
       </span>
