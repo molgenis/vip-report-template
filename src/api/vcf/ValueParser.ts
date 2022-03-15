@@ -16,6 +16,7 @@ export function parseTypedValue(token: string, type: ValueType): Value {
     case "CHARACTER":
       value = parseCharacterValue(token);
       break;
+    case "CATEGORICAL":
     case "STRING":
       value = parseStringValue(token);
       break;

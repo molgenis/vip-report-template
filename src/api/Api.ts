@@ -20,7 +20,7 @@ export interface Resource {
 }
 
 export interface Params {
-  query?: Query | ComposedQuery;
+  query?: Query;
   sort?: SortOrder | SortOrder[];
   page?: number;
   size?: number;
@@ -75,7 +75,7 @@ export type Selector = SelectorPart | SelectorPart[];
 
 export interface ComposedQuery {
   operator: "and" | "or";
-  args: (Query | ComposedQuery)[];
+  args: (QueryClause | ComposedQuery)[];
 }
 
 export type QueryOperator =
@@ -92,11 +92,13 @@ export type QueryOperator =
   | "<"
   | "<=";
 
-export interface Query {
+export interface QueryClause {
   operator: QueryOperator;
   selector: Selector;
   args: string | number | boolean | string[] | number[];
 }
+
+export type Query = QueryClause | ComposedQuery;
 
 export interface Person {
   familyId: string;

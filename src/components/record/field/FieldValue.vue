@@ -31,6 +31,8 @@ export default defineComponent({
       component: computed(() => {
         const type = valueType.value;
         switch (type) {
+          case "CATEGORICAL":
+            return FieldValueString;
           case "CHARACTER":
             return FieldValueCharacter;
           case "INTEGER":

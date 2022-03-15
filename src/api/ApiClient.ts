@@ -8,6 +8,7 @@ import {
   Params,
   Phenotype,
   Query,
+  QueryClause,
   Resource,
   Sample,
   Selector,
@@ -228,7 +229,7 @@ function sort<T extends Resource>(resources: T[], sortOrders: SortOrder[]) {
   });
 }
 
-function matchesAnd(args: (Query | ComposedQuery)[], resource: Resource): boolean {
+function matchesAnd(args: Query[], resource: Resource): boolean {
   for (const query of args) {
     if (!matches(query, resource)) {
       return false;
@@ -237,7 +238,7 @@ function matchesAnd(args: (Query | ComposedQuery)[], resource: Resource): boolea
   return true;
 }
 
-function matchesOr(args: (Query | ComposedQuery)[], resource: Resource): boolean {
+function matchesOr(args: Query[], resource: Resource): boolean {
   for (const query of args) {
     if (matches(query, resource)) {
       return true;
@@ -261,7 +262,7 @@ function matchesComposed(composedQuery: ComposedQuery, resource: Resource): bool
   return match;
 }
 
-function matches(query: Query | ComposedQuery, resource: Resource): boolean {
+function matches(query: Query, resource: Resource): boolean {
   if (query.operator === "and" || query.operator === "or") {
     return matchesComposed(query, resource);
   } else {
@@ -310,12 +311,12 @@ function matches(query: Query | ComposedQuery, resource: Resource): boolean {
   }
 }
 
-function matchesEquals(query: Query, resource: Resource): boolean {
+function matchesEquals(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
   return value === query.args;
 }
 
-function matchesIn(query: Query, resource: Resource): boolean {
+function matchesIn(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   let match = false;
@@ -330,7 +331,7 @@ function matchesIn(query: Query, resource: Resource): boolean {
   return match;
 }
 
-function matchesAnyHasAny(query: Query, resource: Resource): boolean {
+function matchesAnyHasAny(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined) {
@@ -353,7 +354,7 @@ function matchesAnyHasAny(query: Query, resource: Resource): boolean {
   return match;
 }
 
-function matchesHasAny(query: Query, resource: Resource): boolean {
+function matchesHasAny(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined) {
@@ -374,7 +375,7 @@ function matchesHasAny(query: Query, resource: Resource): boolean {
   return match;
 }
 
-function matchesGreaterThan(query: Query, resource: Resource): boolean {
+function matchesGreaterThan(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -388,7 +389,7 @@ function matchesGreaterThan(query: Query, resource: Resource): boolean {
   return value > query.args;
 }
 
-function matchesGreaterThanOrEqual(query: Query, resource: Resource): boolean {
+function matchesGreaterThanOrEqual(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -402,7 +403,7 @@ function matchesGreaterThanOrEqual(query: Query, resource: Resource): boolean {
   return value >= query.args;
 }
 
-function matchesLesserThan(query: Query, resource: Resource): boolean {
+function matchesLesserThan(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -416,7 +417,7 @@ function matchesLesserThan(query: Query, resource: Resource): boolean {
   return value < query.args;
 }
 
-function matchesLesserThanOrEqual(query: Query, resource: Resource): boolean {
+function matchesLesserThanOrEqual(query: QueryClause, resource: Resource): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {

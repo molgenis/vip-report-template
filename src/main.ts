@@ -8,10 +8,10 @@ import mockApiReportData from "./mocks/ApiReportData";
 import { createI18n } from "vue-i18n";
 import en from "./locales/en.json";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCircleXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faCircleXmark, faSearch);
+library.add(faCircleXmark, faFilter, faSearch);
 
 declare global {
   interface Window {

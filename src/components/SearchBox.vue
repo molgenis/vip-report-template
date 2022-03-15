@@ -9,7 +9,6 @@ export default defineComponent({
     const onInput = () => context.emit("search-change", inputValue.value);
 
     const onInputClear = () => {
-      console.log("onInputClear");
       inputValue.value = "";
       context.emit("search-change", inputValue.value);
     };
@@ -20,9 +19,9 @@ export default defineComponent({
 
 <template>
   <div class="field has-addons">
-    <p class="control has-icons-right">
-      <input v-model="inputValue" class="input" type="input" @keyup.enter="onInput" @keyup.esc="onInputClear" />
-      <span v-if="inputValue.length > 0" class="icon-link is-small is-right" @click="onInputClear">
+    <p class="control has-icons-right is-expanded">
+      <input v-model="inputValue" class="input" type="text" @keyup.enter="onInput" @keyup.esc="onInputClear" />
+      <span v-if="inputValue.length > 0" class="icon is-clickable is-small is-right" @click="onInputClear">
         <font-awesome-icon icon="circle-xmark" />
       </span>
     </p>

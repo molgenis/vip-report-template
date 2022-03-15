@@ -1,5 +1,5 @@
 import { ReportData } from "../api/ApiClient";
-import vcf from "./vcf";
+import vcf from "./vcf_lp_100";
 import decisionTree from "./decisionTree";
 import { Metadata } from "../api/Api";
 

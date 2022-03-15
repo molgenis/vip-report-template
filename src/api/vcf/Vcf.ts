@@ -1,12 +1,12 @@
 // this is .ts instead of .d.ts file to work around https://github.com/TypeStrong/ts-loader/issues/1036
 import { FormatMetadataContainer, Genotype, RecordSample } from "./SampleDataParser";
-import { InfoContainer, InfoMetadataContainer } from "./VcfParser";
+import { FieldMetadataContainer, InfoContainer } from "./VcfParser";
 
 export { FormatMetadataContainer, Genotype, RecordSample };
 
 export interface Metadata {
   header: Header;
-  info: InfoMetadataContainer;
+  info: FieldMetadataContainer;
   format: FormatMetadataContainer;
 }
 

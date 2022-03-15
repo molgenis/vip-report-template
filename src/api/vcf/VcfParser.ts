@@ -7,7 +7,7 @@ import {
   Value,
 } from "./ValueParser";
 import { MISSING } from "./Constants";
-import { InfoMetadata, parseFormatMetadata, parseInfoMetadata } from "./MetadataParser";
+import { FieldMetadata, parseFormatMetadata, parseInfoMetadata } from "./MetadataParser";
 import { parseValue } from "./DataParser";
 import { FormatMetadataContainer, parseRecordSample, RecordSample } from "./SampleDataParser";
 import { Metadata, Record } from "./Vcf";
@@ -21,8 +21,8 @@ export interface Header {
   samples: string[];
 }
 
-export interface InfoMetadataContainer {
-  [key: string]: InfoMetadata;
+export interface FieldMetadataContainer {
+  [key: string]: FieldMetadata;
 }
 
 export interface InfoContainer {
@@ -96,7 +96,7 @@ function parseDataLine(line: string, metadata: Metadata): Record {
   };
 }
 
-function parseInfoContainer(token: string, infoMetadataContainer: InfoMetadataContainer): InfoContainer {
+function parseInfoContainer(token: string, infoMetadataContainer: FieldMetadataContainer): InfoContainer {
   if (token === MISSING) {
     return {};
   }

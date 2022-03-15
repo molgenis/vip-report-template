@@ -6,6 +6,7 @@
   "flagFalse": "False",
   "flagTrue": "True",
   "flagUnknown": "",
+  "from": "From",
   "noVariants": "No Variants",
   "pageNext": "Next",
   "pagePrevious": "Previous",
@@ -15,6 +16,7 @@
   "records": "records",
   "ref": "Reference allele",
   "refAbbr": "Ref",
+  "to": "To",
   "variants": "Variants",
   "vcf": "VCF",
   "vcfReport": "VCF Report"

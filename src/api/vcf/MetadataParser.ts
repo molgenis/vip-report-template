@@ -50,7 +50,7 @@ export function parseNumberMetadata(token: string): NumberMetadata {
   return numberMetaData;
 }
 
-export type ValueType = "CHARACTER" | "INTEGER" | "FLAG" | "FLOAT" | "STRING" | "NESTED";
+export type ValueType = "CATEGORICAL" | "CHARACTER" | "INTEGER" | "FLAG" | "FLOAT" | "STRING" | "NESTED";
 
 export function parseValueType(token: string): ValueType {
   let type: ValueType;
@@ -83,10 +83,21 @@ export interface FieldMetadata {
   number: NumberMetadata;
   type: ValueType;
   description: string;
+  categories?: string[];
+  nested?: NestedFieldMetadata;
+  parent?: FieldMetadata;
+}
+
+export interface NestedFieldMetadata {
+  separator: string;
+  items: FieldMetadata[];
 }
 
 export interface FormatMetadata extends FieldMetadata {}
-
+export interface InfoMetadata extends FieldMetadata {
+  source?: string;
+  version?: string;
+}
 const REG_EXP_FORMAT = /##FORMAT=<ID=(.+?),Number=(.+?),Type=(.+?),Description="(.+?)">/;
 
 export function parseFormatMetadata(token: string): FormatMetadata {
@@ -101,17 +112,6 @@ export function parseFormatMetadata(token: string): FormatMetadata {
     type: parseValueType(result[3]),
     description: parseStringValueNonNull(result[4]),
   };
-}
-
-export interface InfoMetadata extends FormatMetadata {
-  source?: string;
-  version?: string;
-  nested?: NestedInfoMetadata;
-}
-
-export interface NestedInfoMetadata {
-  separator: string;
-  items: InfoMetadata[];
 }
 
 const REG_EXP_INFO =
@@ -145,8 +145,8 @@ export function parseInfoMetadata(token: string): InfoMetadata {
   return infoMetadata;
 }
 
-function createNestedInfoMetadata(infoMetadata: InfoMetadata): NestedInfoMetadata | null {
-  let nestedInfoMetadata: NestedInfoMetadata | null;
+function createNestedInfoMetadata(infoMetadata: InfoMetadata): NestedFieldMetadata | null {
+  let nestedInfoMetadata: NestedFieldMetadata | null;
   if (isVepInfoMetadata(infoMetadata)) {
     nestedInfoMetadata = createVepInfoMetadata(infoMetadata);
   } else {

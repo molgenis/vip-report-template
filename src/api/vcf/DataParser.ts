@@ -1,4 +1,4 @@
-import { InfoMetadata, NestedInfoMetadata } from "./MetadataParser";
+import { InfoMetadata, NestedFieldMetadata } from "./MetadataParser";
 import { parseTypedValue, Value } from "./ValueParser";
 
 export function parseValue(token: string, infoMetadata: InfoMetadata): Value {
@@ -45,7 +45,7 @@ export function parseMultiValue(token: string, infoMetadata: InfoMetadata): Valu
   return values;
 }
 
-export function parseNestedValue(token: string, nestedInfoMetadata: NestedInfoMetadata): Value[] {
+export function parseNestedValue(token: string, nestedInfoMetadata: NestedFieldMetadata): Value[] {
   const infoValues: Value[] = [];
   const parts = token.split(nestedInfoMetadata.separator);
   for (let i = 0; i < parts.length; ++i) {
