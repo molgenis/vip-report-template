@@ -3,10 +3,11 @@ import { defineComponent, Ref, ref, toRef } from "vue";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
 import FilterHeader from "./FilterHeader.vue";
 import { FilterValueCategorical } from "../../../utils/filter";
+import VCheckbox from "../../form/Checkbox.vue";
 
 export default defineComponent({
   name: "VipRecordFilterCategorical",
-  components: { FilterHeader },
+  components: { VCheckbox, FilterHeader },
   props: {
     fieldMetadata: {
       type: Object as () => FieldMetadata,
@@ -35,10 +36,7 @@ export default defineComponent({
   <FilterHeader :field-metadata="fieldMetadata" />
   <div class="field">
     <div v-for="category in fieldMetadata.categories" :key="category" class="control">
-      <label class="checkbox">
-        <input v-model="checkedCategories" type="checkbox" :value="category" @change="onCategoryChange" />
-        {{ category }}</label
-      >
+      <v-checkbox v-model="checkedCategories" :value="category" @change="onCategoryChange">{{ category }}</v-checkbox>
     </div>
   </div>
 </template>
