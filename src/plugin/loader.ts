@@ -19,7 +19,7 @@ function decodeScript(script: HTMLScriptElement): void {
     } else if (className === "ldr-css") {
       element = doc.createElement("style");
     } else {
-      throw `unknown class '${className}'`;
+      throw new Error(`unknown class '${className}'`);
     }
     element.textContent = textDecoded;
 

@@ -16,5 +16,6 @@ export function getId(fieldMetadata: FieldMetadata): string {
     tokens.push(currentFieldMetadata.id);
     currentFieldMetadata = currentFieldMetadata.parent;
   }
-  return tokens.reverse().join("/");
+  tokens.reverse();
+  return tokens.join("/");
 }

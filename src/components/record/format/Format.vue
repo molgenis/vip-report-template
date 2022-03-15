@@ -45,11 +45,10 @@ export default defineComponent({
     const { formatMetadata } = toRefs(props);
     return {
       component: computed(() => {
-        switch (formatMetadata.value.id) {
-          case "GT":
-            return FormatGenotype;
-          default:
-            return Field;
+        if (formatMetadata.value.id == "GT") {
+          return FormatGenotype;
+        } else {
+          return Field;
         }
       }),
     };

@@ -18,17 +18,14 @@ export default defineComponent({
     const fieldMetadata = toRef(props, "fieldMetadata");
 
     const component = computed(() => {
-      switch (fieldMetadata.value.id) {
-        // add your own custom filters here
-        default:
-          if (fieldMetadata.value.type === "CHARACTER" || fieldMetadata.value.type === "STRING") {
-            return null;
-          }
-          if (fieldMetadata.value.number.count !== 1) {
-            return null;
-          }
-          return FilterDefault;
+      // add your own custom filters here
+      if (fieldMetadata.value.type === "CHARACTER" || fieldMetadata.value.type === "STRING") {
+        return null;
       }
+      if (fieldMetadata.value.number.count !== 1) {
+        return null;
+      }
+      return FilterDefault;
     });
 
     return {

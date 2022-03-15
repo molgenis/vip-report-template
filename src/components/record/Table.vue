@@ -46,7 +46,7 @@ export default defineComponent({
   <!-- workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 -->
   <div style="display: grid">
     <div class="table-container">
-      <table class="table is-narrow">
+      <table class="table is-narrow" :aria-label="t('variants')">
         <thead>
           <tr>
             <th :rowspan="hasNestedMetadata ? 2 : undefined">

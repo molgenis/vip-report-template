@@ -46,18 +46,15 @@ export default defineComponent({
         const query = createSearchQuery(search, metadataValue);
         newParams.query = search !== "" && query !== null ? query : undefined;
         params.value = newParams;
-        console.log(newParams);
       }
     };
 
     const onFiltersChange = (event: FiltersChangeEvent) => {
-      console.log("Variants:onFiltersChange");
       const newParams = {
         ...params.value,
         page: 0,
       };
       newParams.query = event.filters.length > 0 ? createFilterQuery(event.filters) : undefined;
-      console.log(newParams.query);
       params.value = newParams;
     };
 
