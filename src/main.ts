@@ -20,6 +20,7 @@ declare global {
 }
 
 const reportData = import.meta.env.PROD ? window.api : mockApiReportData;
+
 const apiClient = new ApiClient(reportData);
 
 const i18n = createI18n({
@@ -34,4 +35,7 @@ const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);
 app.provide(ApiKey, apiClient);
 app.use(router);
 app.use(i18n);
+if (import.meta.env.DEV) {
+  app.config.performance = true;
+}
 app.mount("#app");

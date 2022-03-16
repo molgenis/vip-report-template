@@ -5,7 +5,7 @@ export default defineComponent({
   name: "VCheckbox",
   props: {
     modelValue: {
-      type: [String, Array as () => string[]],
+      type: [Boolean, Array as () => string[]],
       required: true,
     },
     value: {

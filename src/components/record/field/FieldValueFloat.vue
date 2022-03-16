@@ -1,6 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, toRef } from "vue";
-import { asValueFloat } from "../../../utils/value";
+import { defineComponent } from "vue";
 import { ValueCharacter, ValueFlag, ValueFloat, ValueInteger, ValueString } from "../../../api/vcf/ValueParser";
 import { ValueType } from "../../../api/vcf/MetadataParser";
 
@@ -20,14 +19,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
-    const val = toRef(props, "value");
-    const valFloat = computed(() => asValueFloat(val.value));
-    return { valFloat };
-  },
 });
 </script>
 
 <template>
-  <abbr v-if="valFloat !== null" :title="valFloat.toString()">{{ valFloat.toFixed(4) }}</abbr>
+  <abbr v-if="value !== null && typeof value === 'number'" :title="value.toString()">{{ value.toFixed(4) }}</abbr>
 </template>
