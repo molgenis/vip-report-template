@@ -1,7 +1,14 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
+import "./assets/sass/main.scss";
 
-import "./index.css";
 import App from "./App";
 
-render(() => <App />, document.getElementById("root") as HTMLElement);
+import { dom } from "@fortawesome/fontawesome-svg-core";
+
+window.addEventListener("DOMContentLoaded", () => {
+  void dom.i2svg();
+  dom.watch();
+});
+
+render(() => <App />, document.getElementById("app") as HTMLElement);
