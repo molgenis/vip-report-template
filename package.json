@@ -7,10 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "format": "prettier --write src/**/*.{tsx,ts,d.ts}"
+    "format": "prettier --write src/**/*.{tsx,ts,d.ts}",
+    "lint": "eslint src/**/*.{tsx,ts,d.ts}"
   },
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.6.0",
     "typescript": "^4.6.2",
     "vite": "^2.8.6",
