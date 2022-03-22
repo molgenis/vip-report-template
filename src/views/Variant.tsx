@@ -1,6 +1,7 @@
 import { Component, For, Resource } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Record } from "../api/vcf/Vcf";
+import { GenomeBrowser } from "../components/GenomeBrowser";
 
 export const Variant: Component = () => {
   const variant: Resource<Record> = useRouteData();
@@ -15,6 +16,7 @@ export const Variant: Component = () => {
               </p>
             )}
           </For>
+          <GenomeBrowser variant={variant()} />
         </>
       )}
     </>

@@ -12,6 +12,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   fflate: ^0.7.3
   husky: ^7.0.4
+  igv: ^2.11.2
   prettier: ^2.6.0
   rollup: ^2.70.1
   sass: ^1.49.9
@@ -27,6 +28,7 @@ dependencies:
   '@fortawesome/free-solid-svg-icons': 6.1.0
   bulma: 0.9.3
   fflate: 0.7.3
+  igv: 2.11.2
   sass: 1.49.9
   solid-app-router: 0.3.2_solid-js@1.3.13
   solid-js: 1.3.13
@@ -1457,6 +1459,10 @@ packages:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
     dev: true
+
+  /igv/2.11.2:
+    resolution: {integrity: sha512-4TdUGrVmsSMB/s+9uBQv2JNh/s/itMxSz/0rktIKWZ2nvzzSSbcjj6rKK6sgeN7T/bbKxaSYgDFCeyWwpgb5cw==}
+    dev: false
 
   /immutable/4.0.0:
     resolution: {integrity: sha512-zIE9hX70qew5qTUjSS7wi1iwj/l7+m54KWU247nhM3v806UdGj1yDndXj+IOYxxtW9zyLI+xqFNZjTuDaLUqFw==}

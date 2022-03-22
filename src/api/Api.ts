@@ -9,6 +9,7 @@ export interface Api {
   getSampleById(id: number): Promise<Sample>;
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>>;
   getVcf(): Promise<string>;
+  getFastaGz(contig: string, pos: number): Promise<Uint8Array | null>;
 }
 
 export interface Metadata {
