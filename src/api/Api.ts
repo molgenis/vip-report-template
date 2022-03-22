@@ -4,7 +4,9 @@ import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
 export interface Api {
   getRecordsMeta(): Promise<RecordMetadata>;
   getRecords(params: Params): Promise<PagedItems<Record>>;
+  getRecordById(id: number): Promise<Record>;
   getSamples(params: Params): Promise<PagedItems<Sample>>;
+  getSampleById(id: number): Promise<Sample>;
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>>;
   getVcf(): Promise<string>;
 }
@@ -42,8 +44,13 @@ export interface Sample extends Resource {
   proband: boolean;
 }
 
+export interface Item<T extends Resource> {
+  id: number;
+  data: T;
+}
+
 export interface Items<T extends Resource> {
-  items: T[];
+  items: Item<T>[];
   total: number;
 }
 

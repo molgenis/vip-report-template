@@ -17,91 +17,85 @@ const reportData: ReportData = {
     },
   } as Metadata,
   data: {
-    samples: {
-      items: [
-        {
-          person: {
-            familyId: "FAM001",
-            individualId: "Patient",
-            paternalId: "Father",
-            maternalId: "Mother",
-            sex: "MALE",
-            affectedStatus: "AFFECTED",
-          },
-          index: 0,
-          proband: true,
+    samples: [
+      {
+        person: {
+          familyId: "FAM001",
+          individualId: "Patient",
+          paternalId: "Father",
+          maternalId: "Mother",
+          sex: "MALE",
+          affectedStatus: "AFFECTED",
         },
-        {
-          person: {
-            familyId: "FAM001",
-            individualId: "Mother",
-            paternalId: "0",
-            maternalId: "0",
-            sex: "FEMALE",
-            affectedStatus: "UNAFFECTED",
-          },
-          index: 1,
-          proband: true,
+        index: 0,
+        proband: true,
+      },
+      {
+        person: {
+          familyId: "FAM001",
+          individualId: "Mother",
+          paternalId: "0",
+          maternalId: "0",
+          sex: "FEMALE",
+          affectedStatus: "UNAFFECTED",
         },
-        {
-          person: {
-            familyId: "FAM001",
-            individualId: "Father",
-            paternalId: "0",
-            maternalId: "0",
-            sex: "MALE",
-            affectedStatus: "AFFECTED",
-          },
-          index: 2,
-          proband: true,
+        index: 1,
+        proband: false,
+      },
+      {
+        person: {
+          familyId: "FAM001",
+          individualId: "Father",
+          paternalId: "0",
+          maternalId: "0",
+          sex: "MALE",
+          affectedStatus: "AFFECTED",
         },
-      ],
-      total: 3,
-    },
-    phenotypes: {
-      items: [
-        {
-          phenotypicFeaturesList: [
-            {
-              type: {
-                id: "HP:0000518",
-                label: "HP:0000518",
-              },
+        index: 2,
+        proband: false,
+      },
+    ],
+    phenotypes: [
+      {
+        phenotypicFeaturesList: [
+          {
+            type: {
+              id: "HP:0000518",
+              label: "HP:0000518",
             },
-          ],
-          subject: {
-            id: "Patient",
           },
+        ],
+        subject: {
+          id: "Patient",
         },
-        {
-          phenotypicFeaturesList: [
-            {
-              type: {
-                id: "HP:0000518",
-                label: "HP:0000518",
-              },
+      },
+      {
+        phenotypicFeaturesList: [
+          {
+            type: {
+              id: "HP:0000518",
+              label: "HP:0000518",
             },
-          ],
-          subject: {
-            id: "Mother",
           },
+        ],
+        subject: {
+          id: "Mother",
         },
-        {
-          phenotypicFeaturesList: [
-            {
-              type: {
-                id: "HP:0000518",
-                label: "HP:0000518",
-              },
+      },
+      {
+        phenotypicFeaturesList: [
+          {
+            type: {
+              id: "HP:0000518",
+              label: "HP:0000518",
             },
-          ],
-          subject: {
-            id: "Father",
           },
+        ],
+        subject: {
+          id: "Father",
         },
-      ],
-      total: 3,
-    },
+      },
+    ],
   },
   binary: {
     vcf: new TextEncoder().encode(vcf),

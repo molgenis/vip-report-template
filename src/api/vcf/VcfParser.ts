@@ -57,7 +57,7 @@ function parseLine(line: string, vcf: Container) {
       vcf.metadata.header = parseHeaderLine(line);
     }
   } else {
-    const record = parseDataLine(vcf.data.length, line, vcf.metadata);
+    const record = parseDataLine(line, vcf.metadata);
     vcf.data.push(record);
   }
 }
@@ -77,11 +77,10 @@ function parseHeaderLine(line: string): Header {
   return { samples: tokens.length > 9 ? tokens.slice(9) : [] };
 }
 
-function parseDataLine(id: number, line: string, metadata: Metadata): Record {
+function parseDataLine(line: string, metadata: Metadata): Record {
   const tokens = line.split("\t");
 
   return {
-    id,
     c: parseStringValueNonNull(tokens[0]),
     p: parseIntegerValueNonNull(tokens[1]),
     i: parseStringArrayNonNullValues(tokens[2], ";"),

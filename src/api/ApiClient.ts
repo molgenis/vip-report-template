@@ -2,7 +2,7 @@ import {
   Api,
   CompareFn,
   ComposedQuery,
-  Items,
+  Item,
   Metadata,
   PagedItems,
   Params,
@@ -25,7 +25,7 @@ export interface ReportData {
 }
 
 interface Data {
-  [key: string]: Items<Resource>;
+  [key: string]: Resource[];
 }
 
 export interface BinaryReportData {
@@ -45,10 +45,7 @@ export class ApiClient implements Api {
     const vcf = parseVcf(new TextDecoder().decode(this.reportData.binary.vcf));
 
     reportData.metadata.records = vcf.metadata;
-    reportData.data.records = {
-      items: vcf.data,
-      total: vcf.data.length,
-    };
+    reportData.data.records = vcf.data;
   }
 
   getRecordsMeta(): Promise<RecordMetadata> {
@@ -65,6 +62,10 @@ export class ApiClient implements Api {
 
   getSamples(params = {}): Promise<PagedItems<Sample>> {
     return this.get("samples", params);
+  }
+
+  getSampleById(id: number): Promise<Sample> {
+    return this.getById("samples", id);
   }
 
   getPhenotypes(params = {}): Promise<PagedItems<Phenotype>> {
@@ -114,7 +115,7 @@ export class ApiClient implements Api {
         reject(`unknown resource '${resource}'`);
       }
 
-      let resources: T[] = this.reportData.data[resource].items.slice() as T[];
+      let resources = this.reportData.data[resource].map((resource, i) => ({ id: i, data: resource })) as Item<T>[];
       const query = params.query;
       if (query) {
         resources = resources.filter((aResource) => matches(query, aResource));
@@ -134,7 +135,7 @@ export class ApiClient implements Api {
           size,
           totalElements,
         },
-        total: this.reportData.data[resource].total,
+        total: this.reportData.data[resource].length,
       };
       resolve(response);
     });
@@ -144,7 +145,7 @@ export class ApiClient implements Api {
     if (!this.reportData.data[resource]) {
       throw new Error(`unknown resource '${resource}'`);
     }
-    return Promise.resolve(this.reportData.data[resource].items[id] as T);
+    return Promise.resolve(this.reportData.data[resource][id] as T);
   }
 }
 
@@ -219,7 +220,7 @@ function getCompareFn(sortOrder: SortOrder): CompareFn {
   return compareFn;
 }
 
-function sort<T extends Resource>(resources: T[], sortOrders: SortOrder[]) {
+function sort<T extends Resource>(resources: Item<T>[], sortOrders: SortOrder[]) {
   resources.sort((a, b) => {
     let val = 0;
     for (const sortOrder of sortOrders) {
@@ -236,7 +237,7 @@ function sort<T extends Resource>(resources: T[], sortOrders: SortOrder[]) {
   });
 }
 
-function matchesAnd(args: Query[], resource: Resource): boolean {
+function matchesAnd(args: Query[], resource: Item<Resource>): boolean {
   for (const query of args) {
     if (!matches(query, resource)) {
       return false;
@@ -245,7 +246,7 @@ function matchesAnd(args: Query[], resource: Resource): boolean {
   return true;
 }
 
-function matchesOr(args: Query[], resource: Resource): boolean {
+function matchesOr(args: Query[], resource: Item<Resource>): boolean {
   for (const query of args) {
     if (matches(query, resource)) {
       return true;
@@ -254,7 +255,7 @@ function matchesOr(args: Query[], resource: Resource): boolean {
   return false;
 }
 
-function matchesComposed(composedQuery: ComposedQuery, resource: Resource): boolean {
+function matchesComposed(composedQuery: ComposedQuery, resource: Item<Resource>): boolean {
   let match;
   switch (composedQuery.operator) {
     case "and":
@@ -269,7 +270,7 @@ function matchesComposed(composedQuery: ComposedQuery, resource: Resource): bool
   return match;
 }
 
-function matches(query: Query, resource: Resource): boolean {
+function matches(query: Query, resource: Item<Resource>): boolean {
   if (query.operator === "and" || query.operator === "or") {
     return matchesComposed(query, resource);
   } else {
@@ -318,12 +319,12 @@ function matches(query: Query, resource: Resource): boolean {
   }
 }
 
-function matchesEquals(query: QueryClause, resource: Resource): boolean {
+function matchesEquals(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
   return value === query.args;
 }
 
-function matchesIn(query: QueryClause, resource: Resource): boolean {
+function matchesIn(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
 
   let match = false;
@@ -338,7 +339,7 @@ function matchesIn(query: QueryClause, resource: Resource): boolean {
   return match;
 }
 
-function matchesAnyHasAny(query: QueryClause, resource: Resource): boolean {
+function matchesAnyHasAny(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined) {
@@ -361,7 +362,7 @@ function matchesAnyHasAny(query: QueryClause, resource: Resource): boolean {
   return match;
 }
 
-function matchesHasAny(query: QueryClause, resource: Resource): boolean {
+function matchesHasAny(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined) {
@@ -382,7 +383,7 @@ function matchesHasAny(query: QueryClause, resource: Resource): boolean {
   return match;
 }
 
-function matchesGreaterThan(query: QueryClause, resource: Resource): boolean {
+function matchesGreaterThan(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -396,7 +397,7 @@ function matchesGreaterThan(query: QueryClause, resource: Resource): boolean {
   return value > query.args;
 }
 
-function matchesGreaterThanOrEqual(query: QueryClause, resource: Resource): boolean {
+function matchesGreaterThanOrEqual(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -410,7 +411,7 @@ function matchesGreaterThanOrEqual(query: QueryClause, resource: Resource): bool
   return value >= query.args;
 }
 
-function matchesLesserThan(query: QueryClause, resource: Resource): boolean {
+function matchesLesserThan(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -424,7 +425,7 @@ function matchesLesserThan(query: QueryClause, resource: Resource): boolean {
   return value < query.args;
 }
 
-function matchesLesserThanOrEqual(query: QueryClause, resource: Resource): boolean {
+function matchesLesserThanOrEqual(query: QueryClause, resource: Item<Resource>): boolean {
   const value: unknown = select(query.selector, resource);
 
   if (value === undefined || value === null) {
@@ -438,14 +439,14 @@ function matchesLesserThanOrEqual(query: QueryClause, resource: Resource): boole
   return value <= query.args;
 }
 
-function select(selector: Selector, resource: Resource) {
+function select(selector: Selector, resource: Item<Resource>) {
   let parts: SelectorPart[];
   if (Array.isArray(selector)) {
     parts = (selector as SelectorPart[]).slice();
   } else {
     parts = [selector];
   }
-  return selectRecursive(parts, resource);
+  return selectRecursive(parts, resource.data);
 }
 
 function selectRecursive(parts: SelectorPart[], value: unknown): unknown {
