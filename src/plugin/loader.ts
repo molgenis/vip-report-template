@@ -59,7 +59,7 @@ function decodeReportData(encodedData: EncodedReportData): BinaryReportData {
 
   const encodedBam = encodedData.bam;
   if (encodedBam) {
-    reportData.bam = reportData.fastaGz = decodeReportDataObject(encodedBam);
+    reportData.bam = decodeReportDataObject(encodedBam);
   }
 
   const encodedDecisionTreeGz = encodedData.decisionTreeGz;
