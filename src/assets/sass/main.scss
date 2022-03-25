@@ -89,3 +89,11 @@ td {
 .container {
   margin-top: 8px;
 }
+
+.breadcrumb .icon:first-child {
+  margin-right: 0rem;
+}
+
+.columns.is-gapless:not(:last-child) {
+  margin-bottom: 0.6rem;
+}

@@ -6,6 +6,7 @@ import { Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Checkbox, CheckboxEvent } from "../components/Checkbox";
 import { Loader } from "../components/Loader";
+import { Link } from "solid-app-router";
 
 const fetchSamples = async (params: Params) => await api.getSamples(params);
 
@@ -28,6 +29,24 @@ export const Samples: Component = () => {
 
   return (
     <Show when={!samples.loading} fallback={<Loader />}>
+      <div class="columns is-gapless">
+        <div class="column">
+          <nav class="breadcrumb">
+            <ul>
+              <li>
+                <Link href="/">
+                  <span class="icon">
+                    <i class="fa-solid fa-home" />
+                  </span>
+                </Link>
+              </li>
+              <li class="is-active">
+                <a href="#">Samples</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
       <div class="columns">
         <div class="column is-4 is-offset-3">
           <Pager page={samples().page} onPageChange={onPageChange} />

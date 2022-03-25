@@ -7,6 +7,27 @@ export const Sample: Component = () => {
   const sample: Resource<ApiSample> = useRouteData();
   return (
     <Show when={!sample.loading} fallback={<Loader />}>
+      <div class="columns is-gapless">
+        <div class="column">
+          <nav class="breadcrumb">
+            <ul>
+              <li>
+                <Link href="/">
+                  <span class="icon">
+                    <i class="fa-solid fa-home" />
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/samples">Samples</Link>
+              </li>
+              <li class="is-active">
+                <a href="#">{sample().person.individualId}</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
       <p class="has-text-weight-semibold">Sample</p>
       <div class="columns">
         <div class="column is-1">

@@ -5,6 +5,6 @@ import { RouteDataFuncArgs } from "solid-app-router/dist/types";
 const fetchVariant = async (id: string) => await api.getRecordById(Number(id));
 
 export default function VariantData({ params }: RouteDataFuncArgs) {
-  const [variant] = createResource(() => params.id, fetchVariant);
+  const [variant] = createResource(() => params.variantId, fetchVariant);
   return variant;
 }

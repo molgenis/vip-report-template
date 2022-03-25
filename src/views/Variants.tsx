@@ -9,6 +9,7 @@ import { Sort, SortEvent } from "../components/Sort";
 import api from "../Api";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
+import { Link } from "solid-app-router";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();
@@ -46,6 +47,24 @@ export const Variants: Component = () => {
 
   return (
     <Show when={!recordsMetadata.loading} fallback={<Loader />}>
+      <div class="columns is-gapless">
+        <div class="column">
+          <nav class="breadcrumb">
+            <ul>
+              <li>
+                <Link href="/">
+                  <span class="icon">
+                    <i class="fa-solid fa-home" />
+                  </span>
+                </Link>
+              </li>
+              <li class="is-active">
+                <a href="#">Variants</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
       <div class="columns">
         <div class="column is-2">
           <SearchBox onInput={onSearchChange} />

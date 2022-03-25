@@ -2,8 +2,8 @@ import { ReportData } from "../api/ApiClient";
 import vcf from "./vcf";
 import decisionTree from "./decisionTree";
 import { Metadata } from "../api/Api";
-import { decodeReportDataObject } from "../plugin/loader";
 import { dec } from "../plugin/Base85";
+import { decodeReportDataObject } from "../plugin/loader";
 
 const mockReportData: ReportData = {
   metadata: {
