@@ -5,6 +5,7 @@ specifiers:
   '@fortawesome/free-solid-svg-icons': ^6.1.0
   '@typescript-eslint/eslint-plugin': ^5.16.0
   '@typescript-eslint/parser': ^5.16.0
+  base64-js: ^1.5.1
   bulma: ^0.9.3
   c8: ^7.11.0
   eslint: ^8.11.0
@@ -26,6 +27,7 @@ specifiers:
 dependencies:
   '@fortawesome/fontawesome-svg-core': 6.1.0
   '@fortawesome/free-solid-svg-icons': 6.1.0
+  base64-js: 1.5.1
   bulma: 0.9.3
   fflate: 0.7.3
   igv: 2.11.2
@@ -693,6 +695,10 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
+
+  /base64-js/1.5.1:
+    resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+    dev: false
 
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}

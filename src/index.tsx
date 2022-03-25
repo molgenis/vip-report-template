@@ -5,10 +5,10 @@ import "./assets/sass/main.scss";
 import App from "./App";
 
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
-import { faCircleXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faDownload, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { hashIntegration, Router } from "solid-app-router";
 
-library.add(faCircleXmark, faSearch);
+library.add(faCircleXmark, faDownload, faSearch);
 
 window.addEventListener("DOMContentLoaded", () => {
   void dom.i2svg();

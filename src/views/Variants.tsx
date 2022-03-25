@@ -1,5 +1,4 @@
-import type { Component } from "solid-js";
-import { createResource, createSignal } from "solid-js";
+import { Component, createResource, createSignal, Show } from "solid-js";
 import { RecordTable } from "../components/RecordTable";
 import { Pager } from "../components/record/Pager";
 import { Params } from "../api/Api";
@@ -8,12 +7,14 @@ import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { Filters, FiltersChangeEvent } from "../components/Filters";
 import { Sort, SortEvent } from "../components/Sort";
 import api from "../Api";
+import { Loader } from "../components/Loader";
+import { RecordDownload } from "../components/record/RecordDownload";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();
 
 export const Variants: Component = () => {
-  const [params, setParams] = createSignal({});
+  const [params, setParams] = createSignal({} as Params);
 
   const [records, recordsActions] = createResource(params, fetchRecords);
   const [recordsMetadata, recordsMetadataActions] = createResource(fetchRecordsMeta);
@@ -44,31 +45,44 @@ export const Variants: Component = () => {
   recordsMetadataActions.mutate();
 
   return (
-    <>
-      <div class="columns">
-        <div class="column is-2 is-offset-2">
-          {!recordsMetadata.loading && <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />}
-        </div>
-        <div class="column is-4 is-offset-1">
-          {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
-        </div>
-        <div class="column is-2 is-offset-1">
-          {!records.loading && <span class="is-pulled-right">{records().page.totalElements} records</span>}
-        </div>
-      </div>
+    <Show when={!recordsMetadata.loading} fallback={<Loader />}>
       <div class="columns">
         <div class="column is-2">
           <SearchBox onInput={onSearchChange} />
-          {!recordsMetadata.loading && (
-            <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} />
-          )}
+          <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} />
         </div>
         <div class="column is-10">
-          {!records.loading && !recordsMetadata.loading && (
-            <RecordTable records={records().items} recordsMetadata={recordsMetadata()} />
-          )}
+          <div class="columns">
+            <div class="column is-4">
+              <div class="is-pulled-left">
+                <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
+              </div>
+            </div>
+            <div class="column is-4">
+              {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
+            </div>
+            {!records.loading && (
+              <div class="column">
+                <div class="columns">
+                  <div class="column is-10">
+                    <span class="is-pulled-right" style={{ margin: "auto" }}>
+                      {records().page.totalElements} records
+                    </span>
+                  </div>
+                  <div class="column">
+                    <div class="is-pulled-right">
+                      <RecordDownload recordsMetadata={recordsMetadata()} query={params().query} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div class="columns">
+            {!records.loading && <RecordTable records={records().items} recordsMetadata={recordsMetadata()} />}
+          </div>
         </div>
       </div>
-    </>
+    </Show>
   );
 };

@@ -29,19 +29,27 @@ export const Sort: Component<{
   };
 
   return (
-    <div class="select">
-      <select onChange={onChange}>
-        <option selected>Sort by ...</option>
-        <option value="-2">POS (ascending)</option>
-        <option value="-1">POS (descending)</option>
-        <For each={fieldOptions}>
-          {(fieldOption, i) => (
-            <option value={i()}>
-              {getFullId(fieldOption.fieldMetadata)} {fieldOption.ascending ? "(ascending)" : "(descending)"}
-            </option>
-          )}
-        </For>
-      </select>
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Sort by:</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="select">
+            <select onChange={onChange}>
+              <option value="-2">POS (ascending)</option>
+              <option value="-1">POS (descending)</option>
+              <For each={fieldOptions}>
+                {(fieldOption, i) => (
+                  <option value={i()}>
+                    {getFullId(fieldOption.fieldMetadata)} {fieldOption.ascending ? "(ascending)" : "(descending)"}
+                  </option>
+                )}
+              </For>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

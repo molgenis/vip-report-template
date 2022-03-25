@@ -23,12 +23,11 @@ function decodeScript(script: HTMLScriptElement): void {
       throw new Error(`unknown class '${className}'`);
     }
     element.textContent = textDecoded;
-
     script.replaceWith(element);
   }
 }
 
-function decodeReportDataObject(encodedObj: { [key: string]: string }): {
+export function decodeReportDataObject(encodedObj: { [key: string]: string }): {
   [key: string]: Uint8Array;
 } {
   const decodedObj: { [key: string]: Uint8Array } = {};

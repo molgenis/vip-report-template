@@ -1,10 +1,11 @@
-import { Component, createResource, createSignal } from "solid-js";
+import { Component, createResource, createSignal, Show } from "solid-js";
 import { Params } from "../api/Api";
 import api from "../Api";
 import { SampleTable } from "../components/SampleTable";
 import { Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Checkbox, CheckboxEvent } from "../components/Checkbox";
+import { Loader } from "../components/Loader";
 
 const fetchSamples = async (params: Params) => await api.getSamples(params);
 
@@ -26,13 +27,13 @@ export const Samples: Component = () => {
   };
 
   return (
-    <>
+    <Show when={!samples.loading} fallback={<Loader />}>
       <div class="columns">
         <div class="column is-4 is-offset-3">
-          {!samples.loading && <Pager page={samples().page} onPageChange={onPageChange} />}
+          <Pager page={samples().page} onPageChange={onPageChange} />
         </div>
         <div class="column is-2 is-offset-1">
-          {!samples.loading && <span class="is-pulled-right">{samples().page.totalElements} records</span>}
+          <span class="is-pulled-right">{samples().page.totalElements} records</span>
         </div>
       </div>
 
@@ -46,8 +47,10 @@ export const Samples: Component = () => {
             </div>
           </div>
         </div>
-        <div class="column">{!samples.loading && <SampleTable samples={samples().items} />}</div>
+        <div class="column">
+          <SampleTable samples={samples().items} />
+        </div>
       </div>
-    </>
+    </Show>
   );
 };

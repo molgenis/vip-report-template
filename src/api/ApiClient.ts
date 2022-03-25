@@ -16,7 +16,6 @@ import {
   SortOrder,
 } from "./Api";
 import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
-import { parseVcf } from "./vcf/VcfParser";
 
 export interface ReportData {
   metadata: Metadata;
@@ -29,7 +28,7 @@ interface Data {
 }
 
 export interface BinaryReportData {
-  vcf: Uint8Array;
+  vcf?: Uint8Array;
   fastaGz?: { [key: string]: Uint8Array };
   genesGz?: Uint8Array;
   bam?: { [key: string]: Uint8Array };
@@ -41,11 +40,6 @@ export class ApiClient implements Api {
 
   constructor(reportData: ReportData) {
     this.reportData = reportData;
-
-    const vcf = parseVcf(new TextDecoder().decode(this.reportData.binary.vcf));
-
-    reportData.metadata.records = vcf.metadata;
-    reportData.data.records = vcf.data;
   }
 
   getRecordsMeta(): Promise<RecordMetadata> {
@@ -70,10 +64,6 @@ export class ApiClient implements Api {
 
   getPhenotypes(params = {}): Promise<PagedItems<Phenotype>> {
     return this.get("phenotypes", params);
-  }
-
-  async getVcf(): Promise<string> {
-    return Promise.resolve(new TextDecoder().decode(this.reportData.binary.vcf));
   }
 
   getFastaGz(contig: string, pos: number): Promise<Uint8Array | null> {

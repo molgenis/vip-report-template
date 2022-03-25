@@ -1,5 +1,9 @@
 @charset "utf-8";
-$gap: 16px;
+$gap: 8px;
+
+$notification-padding: 0.75rem 0.75rem 0.75rem 0.75rem;
+$notification-padding-ltr: 0.75rem 0.75rem 0.75rem 0.75rem;
+$notification-padding-rtl: 0.75rem 0.75rem 0.75rem 0.75rem;
 
 @import "bulma/sass/utilities/initial-variables";
 @import "bulma/sass/utilities/functions";
@@ -15,6 +19,7 @@ $gap: 16px;
 @import "bulma/sass/elements/button";
 @import "bulma/sass/elements/container";
 @import "bulma/sass/elements/icon";
+@import "bulma/sass/elements/notification";
 @import "bulma/sass/elements/table";
 
 @import "bulma/sass/form/shared";
@@ -79,4 +84,8 @@ td {
 
 .pagination-ellipsis {
   min-width: $pagination-min-width;
+}
+
+.container {
+  margin-top: 8px;
 }

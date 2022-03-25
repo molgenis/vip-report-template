@@ -1,4 +1,4 @@
-import type { Component } from "solid-js";
+import { Component, ErrorBoundary } from "solid-js";
 import { Link, Route, Routes } from "solid-app-router";
 import { Variants } from "./views/Variants";
 import { Variant } from "./views/Variant";
@@ -8,6 +8,7 @@ import SampleData from "./views/SampleData";
 import { Sample } from "./views/Sample";
 import { DecisionTree } from "./views/DecisionTree";
 import { SampleVariants } from "./views/SampleVariants";
+import { Error } from "./components/Error";
 
 const App: Component = () => {
   return (
@@ -33,15 +34,17 @@ const App: Component = () => {
         </div>
       </nav>
       <div class="container is-fluid">
-        <Routes>
-          <Route path="/" element={<Variants />} />
-          <Route path="/samples" element={<Samples />} />
-          <Route path="/samples/:id" element={<Sample />} data={SampleData} />
-          <Route path="/samples/:id/variants" element={<SampleVariants />} data={SampleData} />
-          <Route path="/variants" element={<Variants />} />
-          <Route path="/variants/:id" element={<Variant />} data={VariantData} />
-          <Route path="/decision-tree" element={<DecisionTree />} />
-        </Routes>
+        <ErrorBoundary fallback={(err) => <Error error={err as unknown} />}>
+          <Routes>
+            <Route path="/" element={<Variants />} />
+            <Route path="/samples" element={<Samples />} />
+            <Route path="/samples/:id" element={<Sample />} data={SampleData} />
+            <Route path="/samples/:id/variants" element={<SampleVariants />} data={SampleData} />
+            <Route path="/variants" element={<Variants />} />
+            <Route path="/variants/:id" element={<Variant />} data={VariantData} />
+            <Route path="/decision-tree" element={<DecisionTree />} />
+          </Routes>
+        </ErrorBoundary>
       </div>
     </>
   );
