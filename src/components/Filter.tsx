@@ -12,11 +12,15 @@ export const Filter: Component<{
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
   const group: CheckboxGroup = {};
+  const nullValue = "__null";
 
   const onChange = (event: CheckboxEvent) => {
-    group[event.value] = event.checked;
-    const values = Object.keys(group).filter((key) => group[key]);
+    group[event.value !== undefined ? event.value : nullValue] = event.checked;
+    const values = Object.keys(group)
+      .filter((key) => group[key])
+      .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
+      console.log(values);
       props.onChange({ fieldMetadata: props.fieldMetadata, value: values });
     } else {
       props.onClear({ fieldMetadata: props.fieldMetadata });
@@ -30,10 +34,11 @@ export const Filter: Component<{
         <For each={props.fieldMetadata.categories}>
           {(category) => (
             <div class="control">
-              <Checkbox value={category} onChange={onChange} />
+              <Checkbox value={category} label={category} onChange={onChange} />
             </div>
           )}
         </For>
+        {!props.fieldMetadata.required && <Checkbox value={nullValue} label="No value" onChange={onChange} />}
       </div>
     </>
   );

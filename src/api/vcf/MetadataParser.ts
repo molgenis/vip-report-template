@@ -84,6 +84,7 @@ export interface FieldMetadata {
   type: ValueType;
   description: string;
   categories?: string[];
+  required: boolean;
   nested?: NestedFieldMetadata;
   parent?: FieldMetadata;
 }
@@ -111,6 +112,7 @@ export function parseFormatMetadata(token: string): FormatMetadata {
     number: parseNumberMetadata(result[2]),
     type: parseValueType(result[3]),
     description: parseStringValueNonNull(result[4]),
+    required: false,
   };
 }
 
@@ -128,6 +130,7 @@ export function parseInfoMetadata(token: string): InfoMetadata {
     number: parseNumberMetadata(result[2]),
     type: parseValueType(result[3]),
     description: result[4],
+    required: false,
   };
 
   const source = result[5];

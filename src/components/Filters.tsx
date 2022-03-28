@@ -6,7 +6,7 @@ import { flattenFieldMetadata } from "../utils/field";
 
 export type FilterChangeEvent = {
   fieldMetadata: FieldMetadata;
-  value: string[];
+  value: (string | null)[];
 };
 
 export type FilterClearEvent = {

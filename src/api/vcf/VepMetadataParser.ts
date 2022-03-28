@@ -30,6 +30,7 @@ function parseVepInfoMetadata(infoMetadata: InfoMetadata, token: string): InfoMe
   let separator;
   let type: ValueType;
   let categories: string[] | undefined;
+  let required = false;
 
   switch (token) {
     case "Consequence":
@@ -54,12 +55,14 @@ function parseVepInfoMetadata(infoMetadata: InfoMetadata, token: string): InfoMe
       numberCount = 1;
       type = "CATEGORICAL";
       categories = ["Transcript", "RegulatoryFeature", "MotifFeature"];
+      required = true;
       break;
     case "IMPACT":
       numberType = "NUMBER";
       numberCount = 1;
       type = "CATEGORICAL";
       categories = ["LOW", "MODERATE", "HIGH", "MODIFIER"];
+      required = true;
       break;
     case "PHENO":
     case "PUBMED":
@@ -111,5 +114,6 @@ function parseVepInfoMetadata(infoMetadata: InfoMetadata, token: string): InfoMe
     description: token,
     categories: categories,
     parent: infoMetadata,
+    required,
   };
 }

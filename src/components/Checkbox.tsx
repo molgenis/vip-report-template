@@ -6,7 +6,8 @@ export type CheckboxEvent = {
 };
 
 export const Checkbox: Component<{
-  value: string;
+  value: string | undefined;
+  label: string;
   onChange: (event: CheckboxEvent) => void;
 }> = (props) => {
   const [checked, setChecked] = createSignal(false);
@@ -23,7 +24,7 @@ export const Checkbox: Component<{
   return (
     <label class="checkbox">
       <input class="mr-1" type="checkbox" value={props.value} checked={checked()} onChange={onChange} />
-      {props.value}
+      {props.label}
     </label>
   );
 };
