@@ -1,7 +1,7 @@
 import { Query, QueryClause, QueryOperator, Selector } from "../api/Api";
 import { Metadata } from "../api/vcf/Vcf";
 import { FieldMetadata, InfoMetadata } from "../api/vcf/MetadataParser";
-import { FilterChangeEvent } from "../components/Filters";
+import { FilterChangeEvent } from "../components/filter/Filters";
 
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {
   const parts: Query[] = [];
@@ -49,10 +49,10 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
   const selector: Selector = [];
   let currentFieldMetadata: FieldMetadata | undefined = fieldMetadata;
   do {
-    if (currentFieldMetadata.number.count !== 1) {
-      selector.push("*");
-    }
     if (currentFieldMetadata.parent && currentFieldMetadata.parent.nested) {
+      if (currentFieldMetadata.number.count !== 1) {
+        selector.push("*");
+      }
       const items = currentFieldMetadata.parent.nested.items;
       let i;
       for (i = 0; i < items.length; ++i) {
@@ -95,5 +95,5 @@ export function createFilterQuery(filters: FilterChangeEvent[]): Query {
         throw new Error("unknown field type");
     }
   }
-  return clauses.length === 1 ? clauses[0] : { operator: "or", args: clauses };
+  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
 }

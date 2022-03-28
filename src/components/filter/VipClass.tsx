@@ -1,12 +1,12 @@
 import { Component, For } from "solid-js";
-import { FieldMetadata } from "../api/vcf/MetadataParser";
-import { Checkbox, CheckboxEvent } from "./Checkbox";
+import { FieldMetadata } from "../../api/vcf/MetadataParser";
+import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export type CheckboxGroup = {
   [key: string]: boolean;
 };
-export const Filter: Component<{
+export const VipClass: Component<{
   fieldMetadata: FieldMetadata;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
@@ -27,18 +27,18 @@ export const Filter: Component<{
     }
   };
 
+  const categories = ["P", "LP", "VUS"];
   return (
     <>
-      <p class="has-text-weight-semibold">{props.fieldMetadata.id}</p>
+      <p class="has-text-weight-semibold">VIP classification</p>
       <div class="field">
-        <For each={props.fieldMetadata.categories}>
+        <For each={categories}>
           {(category) => (
             <div class="control">
               <Checkbox value={category} label={category} onChange={onChange} />
             </div>
           )}
         </For>
-        {!props.fieldMetadata.required && <Checkbox value={nullValue} label="No value" onChange={onChange} />}
       </div>
     </>
   );

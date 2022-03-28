@@ -4,7 +4,7 @@ import { Pager } from "../components/record/Pager";
 import { Params } from "../api/Api";
 import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
-import { Filters, FiltersChangeEvent } from "../components/Filters";
+import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 import { Sort, SortEvent } from "../components/Sort";
 import api from "../Api";
 import { Loader } from "../components/Loader";
@@ -32,6 +32,7 @@ export const Variants: Component = () => {
       page: 0,
     };
     newParams.query = event.filters.length > 0 ? createFilterQuery(event.filters) : undefined;
+    console.log(newParams.query);
     setParams(newParams);
   };
   const onSortChange = (event: SortEvent) => {
