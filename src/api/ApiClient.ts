@@ -269,6 +269,15 @@ function matches(query: Query, resource: Item<Resource>): boolean {
       case "==":
         match = matchesEquals(query, resource);
         break;
+      case "~=":
+        match = matchesSearch(query, resource);
+        break;
+      case "~=_any":
+        match = matchesSearchAny(query, resource);
+        break;
+      case "any_~=_any":
+        match = matchesAnySearchAny(query, resource);
+        break;
       case "in":
         match = matchesIn(query, resource);
         break;
@@ -312,6 +321,67 @@ function matches(query: Query, resource: Item<Resource>): boolean {
 function matchesEquals(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
   return value === query.args;
+}
+
+function searchEquals(token: unknown, search: unknown): boolean {
+  if (typeof token === "string" && typeof search === "string") {
+    return token.toLowerCase().startsWith(search.toLowerCase());
+  } else {
+    return token === search;
+  }
+}
+
+function matchesSearch(query: QueryClause, resource: Item<Resource>): boolean {
+  const value: any = select(query.selector, resource);
+  if (typeof value === "string" && typeof query.args === "string") {
+    return searchEquals(value as string, query.args as string);
+  } else {
+    return value === query.args;
+  }
+}
+
+function matchesSearchAny(query: QueryClause, resource: Item<Resource>): boolean {
+  const value: any = select(query.selector, resource);
+
+  if (value === undefined) {
+    return false;
+  }
+
+  if (!Array.isArray(value)) {
+    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'array'`);
+  }
+
+  for (const arg of query.args as unknown[]) {
+    for (const subValue of value as unknown[]) {
+      if (searchEquals(subValue, arg)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function matchesAnySearchAny(query: QueryClause, resource: Item<Resource>): boolean {
+  const value: any = select(query.selector, resource);
+
+  if (value === undefined) {
+    return false;
+  }
+
+  if (!Array.isArray(value)) {
+    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'array'`);
+  }
+
+  for (const item of value as unknown[]) {
+    for (const arg of query.args as unknown[]) {
+      for (const subItem of item as unknown[]) {
+        if (searchEquals(subItem, arg)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 function matchesIn(query: QueryClause, resource: Item<Resource>): boolean {

@@ -28,10 +28,10 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
         const nested = selector.find((item) => item === "*") !== undefined;
         let operator: QueryOperator, args;
         if (infoMetadata.number.count && infoMetadata.number.count === 1) {
-          operator = nested ? "has_any" : "==";
+          operator = nested ? "~=_any" : "~=";
           args = nested ? [search] : search;
         } else {
-          operator = nested ? "any_has_any" : "has_any";
+          operator = nested ? "any_~=_any" : "~=_any";
           args = [search];
         }
         clauses.push({ selector, operator, args });

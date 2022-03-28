@@ -88,6 +88,9 @@ export interface ComposedQuery {
 
 export type QueryOperator =
   | "=="
+  | "~="
+  | "~=_any"
+  | "any_~=_any"
   | "!="
   | "in"
   | "!in"
