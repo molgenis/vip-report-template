@@ -20,7 +20,6 @@ export const Filter: Component<{
       .filter((key) => group[key])
       .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
-      console.log(values);
       props.onChange({ fieldMetadata: props.fieldMetadata, value: values });
     } else {
       props.onClear({ fieldMetadata: props.fieldMetadata });

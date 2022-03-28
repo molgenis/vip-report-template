@@ -32,7 +32,6 @@ export const Variants: Component = () => {
       page: 0,
     };
     newParams.query = event.filters.length > 0 ? createFilterQuery(event.filters) : undefined;
-    console.log(newParams.query);
     setParams(newParams);
   };
   const onSortChange = (event: SortEvent) => {
