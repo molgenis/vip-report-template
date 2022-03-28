@@ -73,7 +73,7 @@ export const GenomeBrowser: Component<{ contig: string; position: number }> = (p
     (async () => {
       const config = await createBrowserConfig(props.contig, props.position);
       browser = await igv.createBrowser(div, config);
-    })().catch((err) => console.log(err));
+    })().catch((err) => console.error(err));
   });
   onCleanup(() => {
     igv.removeBrowser(browser);

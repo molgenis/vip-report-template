@@ -1,5 +1,5 @@
-import { Component, ErrorBoundary } from "solid-js";
-import { Link, Route, Routes } from "solid-app-router";
+import { Component, ErrorBoundary, onMount } from "solid-js";
+import { Link, Route, Routes, useNavigate } from "solid-app-router";
 import { Variants } from "./views/Variants";
 import { Variant } from "./views/Variant";
 import VariantData from "./views/VariantData";
@@ -11,8 +11,22 @@ import { Error } from "./components/Error";
 import SampleVariantData from "./views/SampleVariantData";
 import { SampleVariant } from "./views/SampleVariant";
 import { Home } from "./views/Home";
+import api from "./Api";
 
 const App: Component = () => {
+  const navigate = useNavigate();
+
+  onMount(() => {
+    (async () => {
+      const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
+      if (samples.page.totalElements === 1) {
+        navigate(`/samples/${samples.items[0].id}/variants`);
+      } else if (samples.total === 0) {
+        navigate(`/variants`);
+      }
+    })().catch((err) => console.error(err));
+  });
+
   return (
     <>
       <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
