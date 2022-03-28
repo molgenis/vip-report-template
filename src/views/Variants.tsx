@@ -66,13 +66,13 @@ export const Variants: Component = () => {
         </div>
       </div>
       <div class="columns">
-        <div class="column is-2">
+        <div class="column is-1">
           <SearchBox onInput={onSearchChange} />
           <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} />
         </div>
-        <div class="column is-10">
+        <div class="column">
           <div class="columns">
-            <div class="column is-4">
+            <div class="column is-offset-1 is-3">
               <div class="is-pulled-left">
                 <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
               </div>

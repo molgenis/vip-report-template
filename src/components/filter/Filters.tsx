@@ -23,7 +23,6 @@ type Filters = {
 };
 
 export const Filters: Component<{
-  fieldMetadata: FieldMetadata;
   fieldMetadataContainer: FieldMetadataContainer;
   onChange: (event: FiltersChangeEvent) => void;
 }> = (props) => {
