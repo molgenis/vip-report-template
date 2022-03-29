@@ -27,7 +27,7 @@ export const RecordTable: Component<{
   const infoFields = Object.values(props.recordsMetadata.info);
   const formatFields = Object.values(props.recordsMetadata.format);
   const infoFieldsNested = infoFields.filter((infoField) => infoField.nested);
-  const samples = props.recordsMetadata.header.samples;
+  const samples = props.recordsMetadata.samples;
 
   const rowspan = computeRowspan(props.recordsMetadata);
 

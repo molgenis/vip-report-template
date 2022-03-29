@@ -2,13 +2,13 @@ import { Component } from "solid-js";
 import { Query } from "../../api/Api";
 import { Metadata } from "../../api/vcf/Vcf";
 import api from "../../Api";
-import { write } from "../../api/vcf/VcfWriter";
+import { writeVcf } from "../../api/vcf/VcfWriter";
 
 export const RecordDownload: Component<{ recordsMetadata: Metadata; query: Query }> = (props) => {
   function onClick() {
     const handler = async () => {
       const records = await api.getRecords({ query: props.query, size: Number.MAX_SAFE_INTEGER });
-      const vcf = write({ metadata: props.recordsMetadata, data: records.items.map((item) => item.data) });
+      const vcf = writeVcf({ metadata: props.recordsMetadata, data: records.items.map((item) => item.data) });
 
       const url = window.URL.createObjectURL(new Blob([vcf]));
       const link = document.createElement("a");

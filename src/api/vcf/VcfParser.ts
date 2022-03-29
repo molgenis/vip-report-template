@@ -17,10 +17,6 @@ export interface Container {
   data: Record[];
 }
 
-export interface Header {
-  samples: string[];
-}
-
 export interface FieldMetadataContainer {
   [key: string]: FieldMetadata;
 }
@@ -32,11 +28,10 @@ export interface InfoContainer {
 export function parseVcf(vcf: string): Container {
   const container = {
     metadata: {
-      header: {
-        samples: [],
-      },
+      lines: [],
       info: {},
       format: {},
+      samples: [],
     },
     data: [],
   };
@@ -51,10 +46,12 @@ export function parseVcf(vcf: string): Container {
 
 function parseLine(line: string, vcf: Container) {
   if (line.charAt(0) === "#") {
+    vcf.metadata.lines.push(line);
+
     if (line.charAt(1) === "#") {
       parseMetadataLine(line, vcf.metadata);
     } else {
-      vcf.metadata.header = parseHeaderLine(line);
+      parseHeaderLine(line, vcf.metadata);
     }
   } else {
     const record = parseDataLine(line, vcf.metadata);
@@ -72,9 +69,9 @@ function parseMetadataLine(line: string, metadata: Metadata) {
   }
 }
 
-function parseHeaderLine(line: string): Header {
+function parseHeaderLine(line: string, metadata: Metadata): void {
   const tokens = line.split("\t");
-  return { samples: tokens.length > 9 ? tokens.slice(9) : [] };
+  metadata.samples = tokens.length > 9 ? tokens.slice(9) : [];
 }
 
 function parseDataLine(line: string, metadata: Metadata): Record {

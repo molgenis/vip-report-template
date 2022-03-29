@@ -2,7 +2,7 @@ import { Component, onCleanup, onMount } from "solid-js";
 import igv from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
-import { write } from "../api/vcf/VcfWriter";
+import { writeVcf } from "../api/vcf/VcfWriter";
 import { ComposedQuery } from "../api/Api";
 
 async function createVcf(contig: string, position: number): Promise<Uint8Array> {
@@ -20,7 +20,7 @@ async function createVcf(contig: string, position: number): Promise<Uint8Array> 
     ],
   };
   const data = await Promise.all([api.getRecordsMeta(), api.getRecords({ query, size: Number.MAX_SAFE_INTEGER })]);
-  const vcf = write({ metadata: data[0], data: data[1].items.map((item) => item.data) });
+  const vcf = writeVcf({ metadata: data[0], data: data[1].items.map((item) => item.data) });
   return toBytes(vcf);
 }
 

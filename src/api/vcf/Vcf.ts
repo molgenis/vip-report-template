@@ -5,18 +5,15 @@ import { FieldMetadataContainer, InfoContainer } from "./VcfParser";
 export type { FormatMetadataContainer, Genotype, RecordSample };
 
 export interface Metadata {
-  header: Header;
+  lines: string[];
   info: FieldMetadataContainer;
   format: FormatMetadataContainer;
+  samples: string[];
 }
 
 export interface Container {
   metadata: Metadata;
   data: Record[];
-}
-
-export interface Header {
-  samples: string[];
 }
 
 export type Record = {
