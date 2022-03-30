@@ -74,7 +74,7 @@ export const SampleVariants: Component = () => {
         </div>
       </div>
       <div class="columns">
-        <div class="column is-1">
+        <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
           <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} />
         </div>
