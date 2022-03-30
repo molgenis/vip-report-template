@@ -132,7 +132,12 @@ export function parseFloatValue(token: string): number | null {
     value = null;
   } else {
     const upperCaseToken = token.toUpperCase();
-    if (upperCaseToken === "INF" || upperCaseToken === "INFINITY") {
+    if (
+      upperCaseToken === "INF" ||
+      upperCaseToken === "INFINITY" ||
+      upperCaseToken === "+INF" ||
+      upperCaseToken === "+INFINITY"
+    ) {
       value = Number.POSITIVE_INFINITY;
     } else if (upperCaseToken === "-INF" || upperCaseToken === "-INFINITY") {
       value = Number.NEGATIVE_INFINITY;

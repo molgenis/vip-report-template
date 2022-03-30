@@ -14,31 +14,63 @@ export function writeVcf(container: Container): string {
     const line = writeRecord(container.metadata, record);
     lines.push(line);
   }
-  return lines.join("\n");
+  return lines.join("\n") + "\n";
 }
 
 function writeRecord(metadata: Metadata, record: Record): string {
   let vcf = [];
-  vcf.push(record.c);
-  vcf.push(record.p);
-  vcf.push(record.i.length > 0 ? record.i.join(",") : MISSING);
-  vcf.push(record.r);
-  vcf.push(record.a.map((alt) => (alt !== null ? alt : MISSING)));
-  vcf.push(record.q !== null ? record.q : MISSING);
-  vcf.push(record.f.length > 0 ? record.f.join(",") : MISSING);
+  vcf.push(writeChr(record.c));
+  vcf.push(writePos(record.p));
+  vcf.push(writeIds(record.i));
+  vcf.push(writeRef(record.r));
+  vcf.push(writeAlts(record.a));
+  vcf.push(writeQual(record.q));
+  vcf.push(writeFilters(record.f));
   vcf.push(writeInfo(metadata.info, record.n));
 
-  for (const [index, sample] of record.s.entries()) {
-    if (index === 0) {
-      vcf.push(writeFormat(Object.keys(sample)));
+  if (record.s.length > 0) {
+    vcf.push(writeFormat(record.s));
+    for (const sample of record.s) {
+      vcf.push(writeSample(metadata.format, sample));
     }
-    vcf.push(writeSample(metadata.format, sample));
   }
 
   return vcf.join("\t");
 }
 
+function writeChr(chr: string): string {
+  return writeString(chr);
+}
+
+function writePos(pos: number): string {
+  return pos.toString();
+}
+
+function writeIds(ids: string[]): string {
+  return ids.length > 0 ? ids.map(writeString).join(";") : MISSING;
+}
+
+function writeRef(ref: string): string {
+  return writeString(ref);
+}
+
+function writeAlts(alts: (string | null)[]): string {
+  return alts.length > 0 ? alts.map((alt) => (alt !== null ? writeString(alt) : MISSING)).join(",") : MISSING;
+}
+
+function writeQual(quality: number | null): string {
+  return quality !== null ? quality.toString() : MISSING;
+}
+
+function writeFilters(filters: string[]): string {
+  return filters.length > 0 ? filters.map(writeString).join(";") : MISSING;
+}
+
 function writeInfo(infoFields: FieldMetadataContainer, infoValues: InfoContainer): string {
+  if (Object.keys(infoFields).length === 0) {
+    return MISSING;
+  }
+
   let vcf = [];
   for (const infoField of Object.values(infoFields)) {
     if (infoField.id in infoValues) {
@@ -50,56 +82,59 @@ function writeInfo(infoFields: FieldMetadataContainer, infoValues: InfoContainer
 
 function writeInfoField(infoField: FieldMetadata, infoValue: Value | Value[]): string {
   let vcf;
-  if (infoField.number.count === 1) {
-    vcf = writeInfoFieldSingle(infoField, infoValue as Value);
-  } else {
-    vcf = writeInfoFieldMultiple(infoField, infoValue as Value[]);
-  }
-  return vcf;
-}
-
-function writeInfoFieldSingle(infoField: FieldMetadata, infoValue: Value): string {
-  let vcf;
-  if (infoField.nested) {
-    vcf = infoField.id + "=" + writeFieldValueNested(infoField.nested, infoValue as unknown as Value[]);
-  } else if (infoField.type === "FLAG") {
+  if (infoField.number.count === 0) {
     vcf = infoField.id;
+  } else if (infoField.number.count === 1) {
+    vcf = infoField.id + "=" + writeFieldValueSingle(infoField, infoValue as Value);
   } else {
-    vcf = infoField.id + "=" + writeFieldValue(infoField, infoValue, MISSING);
+    vcf = infoField.id + "=" + writeFieldValueMultiple(infoField, infoValue as Value[], ",");
   }
   return vcf;
 }
 
-function writeInfoFieldMultiple(infoField: FieldMetadata, infoValues: Value[]): string {
+function writeFieldValueSingle(field: FieldMetadata, value: Value, missingValue = MISSING): string {
+  let vcf;
+  if (field.nested) {
+    vcf = writeFieldValueNested(field.nested, value as unknown as Value[]);
+  } else {
+    vcf = writeFieldValue(field, value, missingValue);
+  }
+  return vcf;
+}
+
+function writeFieldValueMultiple(field: FieldMetadata, values: Value[], separator: string): string {
   const vcf = [];
 
-  for (const infoValue of infoValues) {
-    if (infoField.nested) {
-      vcf.push(writeFieldValueNested(infoField.nested, infoValue as unknown as Value[]));
+  for (const infoValue of values) {
+    if (field.nested) {
+      vcf.push(writeFieldValueNested(field.nested, infoValue as unknown as Value[]));
     } else {
-      vcf.push(writeFieldValue(infoField, infoValue, ""));
+      vcf.push(writeFieldValue(field, infoValue, ""));
     }
   }
 
-  return infoField.id + "=" + vcf.join(",");
+  return vcf.join(separator);
 }
 
 function writeFieldValueNested(nestedField: NestedFieldMetadata, nestedValues: Value[]): string {
   const vcf = [];
   for (const [index, infoField] of nestedField.items.entries()) {
-    vcf.push(writeFieldValue(infoField, nestedValues[index], ""));
+    if (infoField.number.count === 1) {
+      vcf.push(writeFieldValueSingle(infoField, nestedValues[index], ""));
+    } else {
+      vcf.push(writeFieldValueMultiple(infoField, nestedValues[index] as unknown as Value[], "&"));
+    }
   }
   return vcf.join(nestedField.separator);
 }
 
-function writeFieldValue(field: FieldMetadata, value: Value, missingValue: string): string {
+function writeFieldValue(field: FieldMetadata, value: Value, missingValue: string = MISSING): string {
   let vcf;
   switch (field.type) {
     case "CATEGORICAL":
     case "CHARACTER":
     case "STRING":
-      // TODO escaping
-      vcf = value !== null ? (value as string) : missingValue;
+      vcf = value !== null ? writeString(value as string) : missingValue;
       break;
     case "FLOAT":
     case "INTEGER":
@@ -114,11 +149,24 @@ function writeFieldValue(field: FieldMetadata, value: Value, missingValue: strin
   return vcf;
 }
 
-function writeFormat(keys: string[]) {
-  return keys.join(":");
+function writeString(value: string) {
+  return value
+    .replace("%", "%25")
+    .replace(":", "%3A")
+    .replace(";", "%3B")
+    .replace("=", "%3D")
+    .replace(",", "%2C")
+    .replace("\r", "%0D")
+    .replace("\n", "%0A")
+    .replace("\t", "%09");
 }
 
-function writeSample(formatFields: FormatMetadataContainer, sample: RecordSample) {
+function writeFormat(samples: RecordSample[]): string {
+  const keys = Object.keys(samples[0]);
+  return keys.length > 0 ? keys.map(writeString).join(":") : MISSING;
+}
+
+function writeSample(formatFields: FormatMetadataContainer, sample: RecordSample): string {
   const vcf = [];
   for (const [key, value] of Object.entries(sample)) {
     vcf.push(writeSampleValue(formatFields[key], value));
@@ -126,15 +174,17 @@ function writeSample(formatFields: FormatMetadataContainer, sample: RecordSample
   return vcf.join(":");
 }
 
-function writeSampleValue(formatField: FormatMetadata, value: RecordSampleType) {
+function writeSampleValue(formatField: FormatMetadata, value: RecordSampleType): string {
   let vcf;
   if (formatField.id === "GT") {
     vcf = writeSampleValueGt(formatField, value as Genotype);
   } else {
-    if (formatField.number.count === 1) {
-      vcf = writeSampleValueSingle(formatField, value as Value);
+    if (formatField.number.count === 0) {
+      vcf = formatField.id;
+    } else if (formatField.number.count === 1) {
+      vcf = writeFieldValueSingle(formatField, value as Value);
     } else {
-      vcf = writeSampleValueMultiple(formatField, value as Value[]);
+      vcf = writeFieldValueMultiple(formatField, value as Value[], ",");
     }
   }
   return vcf;
@@ -142,22 +192,4 @@ function writeSampleValue(formatField: FormatMetadata, value: RecordSampleType) 
 
 function writeSampleValueGt(formatField: FormatMetadata, value: Genotype) {
   return value.a.join(value.p ? "|" : "/");
-}
-
-function writeSampleValueSingle(formatField: FormatMetadata, value: Value) {
-  let vcf;
-  if (formatField.type === "FLAG") {
-    vcf = formatField.id;
-  } else {
-    vcf = writeFieldValue(formatField, value, MISSING);
-  }
-  return vcf;
-}
-
-function writeSampleValueMultiple(formatField: FormatMetadata, values: Value[]) {
-  const vcf = [];
-  for (const value of values) {
-    vcf.push(writeFieldValue(formatField, value, ""));
-  }
-  return vcf.join(",");
 }

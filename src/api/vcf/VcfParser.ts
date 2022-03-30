@@ -82,7 +82,7 @@ function parseDataLine(line: string, metadata: Metadata): Record {
     p: parseIntegerValueNonNull(tokens[1]),
     i: parseStringArrayNonNullValues(tokens[2], ";"),
     r: parseStringValueNonNull(tokens[3]),
-    a: parseStringArray(tokens[4], ";"),
+    a: parseStringArray(tokens[4], ","),
     q: parseFloatValue(tokens[5]),
     f: parseStringArrayNonNullValues(tokens[6], ";"),
     n: parseInfoContainer(tokens[7], metadata.info),
