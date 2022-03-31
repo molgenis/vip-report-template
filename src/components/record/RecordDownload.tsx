@@ -5,8 +5,6 @@ import api from "../../Api";
 import { Filter, writeVcf } from "../../api/vcf/VcfWriter";
 
 export const RecordDownload: Component<{ recordsMetadata: Metadata; query: Query; samples?: Sample[] }> = (props) => {
-  console.log(props.samples);
-
   const filter: Filter | undefined = props.samples
     ? { samples: props.samples.map((sample) => sample.person.individualId) }
     : undefined;

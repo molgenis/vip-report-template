@@ -68,7 +68,6 @@ function filterSamples(sampleIds: string[], samples: RecordSample[], filterSampl
       filterSamples.push(samples[index]);
     }
   }
-  console.log(filterSamples);
   return filterSamples;
 }
 
