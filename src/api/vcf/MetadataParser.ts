@@ -157,6 +157,7 @@ function createNestedInfoMetadata(infoMetadata: InfoMetadata): NestedFieldMetada
   let nestedInfoMetadata: NestedFieldMetadata | null;
   if (isVepInfoMetadata(infoMetadata)) {
     nestedInfoMetadata = createVepInfoMetadata(infoMetadata);
+    infoMetadata.description = "Consequence annotations from Ensembl VEP";
   } else {
     nestedInfoMetadata = null;
   }

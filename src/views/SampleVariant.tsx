@@ -31,7 +31,13 @@ export const SampleVariant: Component = () => {
               </li>
               <li class="is-active">
                 <a href="#">
-                  {variant().c + ":" + variant().p.toString() + " " + variant().r + ">" + variant().a.join(",")}
+                  {variant().c +
+                    ":" +
+                    variant().p.toString() +
+                    " " +
+                    variant()
+                      .a.map((a) => variant().r + ">" + (a !== null ? a : "."))
+                      .join(" / ")}
                 </a>
               </li>
             </ul>

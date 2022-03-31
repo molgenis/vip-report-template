@@ -3,9 +3,9 @@ import igv from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "../api/vcf/VcfWriter";
-import { ComposedQuery } from "../api/Api";
+import { ComposedQuery, Sample } from "../api/Api";
 
-async function createVcf(contig: string, position: number): Promise<Uint8Array> {
+async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
     operator: "and",
     args: [
@@ -20,14 +20,21 @@ async function createVcf(contig: string, position: number): Promise<Uint8Array> 
     ],
   };
   const data = await Promise.all([api.getRecordsMeta(), api.getRecords({ query, size: Number.MAX_SAFE_INTEGER })]);
-  const vcf = writeVcf({ metadata: data[0], data: data[1].items.map((item) => item.data) });
+  const vcf = writeVcf(
+    { metadata: data[0], data: data[1].items.map((item) => item.data) },
+    { samples: samples.map((sample) => sample.person.individualId) }
+  );
   return toBytes(vcf);
 }
 
 const toBytes = (str: string): Uint8Array => Uint8Array.from(str.split("").map((letter) => letter.charCodeAt(0)));
 
-const createBrowserConfig = async (contig: string, position: number): Promise<unknown | null> => {
-  const data = await Promise.all([api.getFastaGz(contig, position), createVcf(contig, position), api.getGenesGz()]);
+const createBrowserConfig = async (contig: string, position: number, samples: Sample[]): Promise<unknown | null> => {
+  const data = await Promise.all([
+    api.getFastaGz(contig, position),
+    createVcf(contig, position, samples),
+    api.getGenesGz(),
+  ]);
   const fastaGz = data[0];
   const vcf = data[1];
   const genesGz = data[2];
@@ -66,17 +73,19 @@ const createBrowserConfig = async (contig: string, position: number): Promise<un
   };
 };
 
-export const GenomeBrowser: Component<{ contig: string; position: number }> = (props) => {
+export const GenomeBrowser: Component<{ contig: string; position: number; samples: Sample[] }> = (props) => {
   let div: HTMLDivElement;
   let browser: unknown;
   onMount(() => {
     (async () => {
-      const config = await createBrowserConfig(props.contig, props.position);
+      const config = await createBrowserConfig(props.contig, props.position, props.samples);
       browser = await igv.createBrowser(div, config);
     })().catch((err) => console.error(err));
   });
   onCleanup(() => {
-    igv.removeBrowser(browser);
+    if (browser) {
+      igv.removeBrowser(browser);
+    }
   });
   return <div ref={div} />;
 };
