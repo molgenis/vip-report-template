@@ -5,19 +5,41 @@ import { FieldMetadata, FormatMetadata, NestedFieldMetadata } from "./MetadataPa
 import { Value } from "./ValueParser";
 import { RecordSampleType } from "./SampleDataParser";
 
-export function writeVcf(container: Container): string {
-  let lines = [];
-  for (const line of container.metadata.lines) {
-    lines.push(line);
-  }
+export type Filter = {
+  samples?: string[];
+};
+
+export function writeVcf(container: Container, filter: Filter = {}): string {
+  let vcf = [];
+  vcf.push(writeHeader(container.metadata, filter));
+
   for (const record of container.data) {
-    const line = writeRecord(container.metadata, record);
-    lines.push(line);
+    const line = writeRecord(container.metadata, record, filter);
+    vcf.push(line);
   }
-  return lines.join("\n") + "\n";
+  return vcf.join("\n") + "\n";
 }
 
-function writeRecord(metadata: Metadata, record: Record): string {
+function writeHeader(metadata: Metadata, filter: Filter): string {
+  let vcf = [];
+  for (const [index, line] of metadata.lines.entries()) {
+    if (index !== metadata.lines.length - 1) {
+      vcf.push(line);
+    } else if (filter.samples !== undefined) {
+      vcf.push(
+        line
+          .split("\t")
+          .filter((token, index) => index <= 8 || filter.samples?.indexOf(token) !== -1)
+          .join("\t")
+      );
+    } else {
+      vcf.push(line);
+    }
+  }
+  return vcf.join("\n");
+}
+
+function writeRecord(metadata: Metadata, record: Record, filter: Filter): string {
   let vcf = [];
   vcf.push(writeChr(record.c));
   vcf.push(writePos(record.p));
@@ -28,14 +50,26 @@ function writeRecord(metadata: Metadata, record: Record): string {
   vcf.push(writeFilters(record.f));
   vcf.push(writeInfo(metadata.info, record.n));
 
-  if (record.s.length > 0) {
-    vcf.push(writeFormat(record.s));
-    for (const sample of record.s) {
+  const samples = filter.samples ? filterSamples(metadata.samples, record.s, filter.samples) : record.s;
+  if (samples.length > 0) {
+    vcf.push(writeFormat(samples));
+    for (const sample of samples) {
       vcf.push(writeSample(metadata.format, sample));
     }
   }
 
   return vcf.join("\t");
+}
+
+function filterSamples(sampleIds: string[], samples: RecordSample[], filterSampleIds: string[]): RecordSample[] {
+  const filterSamples = [];
+  for (const [index, sample] of sampleIds.entries()) {
+    if (filterSampleIds.indexOf(sample) !== -1) {
+      filterSamples.push(samples[index]);
+    }
+  }
+  console.log(filterSamples);
+  return filterSamples;
 }
 
 function writeChr(chr: string): string {

@@ -1,6 +1,6 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
-import { Params, Sample as ApiSample } from "../api/Api";
+import { Params, Sample, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -13,6 +13,19 @@ import { SampleRecordTable } from "../components/SampleRecordTable";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();
+const fetchPedigreeSamples = async (sample: Sample) =>
+  (
+    await api.getSamples({
+      query: {
+        operator: "and",
+        args: [
+          { selector: ["person", "individualId"], operator: "!=", args: sample.person.individualId },
+          { selector: ["person", "familyId"], operator: "==", args: sample.person.familyId },
+        ],
+      },
+      size: Number.MAX_SAFE_INTEGER,
+    })
+  ).items.map((item) => item.data);
 
 export const SampleVariants: Component = () => {
   const sample: Resource<ApiSample> = useRouteData();
@@ -21,6 +34,7 @@ export const SampleVariants: Component = () => {
 
   const [records, recordsActions] = createResource(params, fetchRecords);
   const [recordsMetadata, recordsMetadataActions] = createResource(fetchRecordsMeta);
+  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
 
   const onPageChange = (page: number) => setParams({ page });
   const onSearchChange = (search: string) =>
@@ -48,7 +62,7 @@ export const SampleVariants: Component = () => {
   recordsMetadataActions.mutate();
 
   return (
-    <Show when={!sample.loading && !recordsMetadata.loading} fallback={<Loader />}>
+    <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
       <div class="columns is-gapless">
         <div class="column">
           <nav class="breadcrumb">
@@ -98,8 +112,11 @@ export const SampleVariants: Component = () => {
                   </div>
                   <div class="column">
                     <div class="is-pulled-right">
-                      {/* TODO only download current sample + pedigree members */}
-                      <RecordDownload recordsMetadata={recordsMetadata()} query={params().query} />
+                      <RecordDownload
+                        recordsMetadata={recordsMetadata()}
+                        query={params().query}
+                        samples={[sample(), ...pedigreeSamples()]}
+                      />
                     </div>
                   </div>
                 </div>
@@ -110,7 +127,7 @@ export const SampleVariants: Component = () => {
             {!records.loading && (
               <SampleRecordTable
                 sample={sample()}
-                pedigreeSamples={[]}
+                pedigreeSamples={pedigreeSamples()}
                 records={records().items}
                 recordsMetadata={recordsMetadata()}
               />

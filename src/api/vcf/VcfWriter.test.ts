@@ -30,6 +30,18 @@ test("parse and write vcf: Samples", () => {
   expect(writeVcf(parseVcf(vcfSamples))).toBe(vcfSamples);
 });
 
+test("parse and write vcf: Samples filtered", () => {
+  const expectedVcfSamples = `##fileformat=VCFv4.2
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=HQ,Number=2,Type=Integer,Description="Haplotype Quality">
+##contig=<ID=1,length=249250621,assembly=b37>
+#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSAMPLE1\tSAMPLE2
+1\t1\t.\tA\tG\t.\t.\t.\tGT:GQ:HQ\t0/1:.:4,5\t1/1
+`;
+  expect(writeVcf(parseVcf(vcfSamples), { samples: ["SAMPLE1", "SAMPLE2"] })).toBe(expectedVcfSamples);
+});
+
 const vcfIdRefAltQualFilter = `##fileformat=VCFv4.2
 ##FILTER=<ID=q10,Description="Quality below 10">
 ##FILTER=<ID=q20,Description="Quality below 20">
