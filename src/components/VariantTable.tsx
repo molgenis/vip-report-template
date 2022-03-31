@@ -14,20 +14,15 @@ import { Link } from "solid-app-router";
 import { Item } from "../api/Api";
 
 const computeRowspan = (recordsMetadata: Metadata) =>
-  Object.keys(recordsMetadata.format).length > 0 ||
-  Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined
-    ? 2
-    : undefined;
+  Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : undefined;
 const computeColspan = (field: FieldMetadata) => (field.nested ? field.nested.items.length : undefined);
 
-export const RecordTable: Component<{
+export const VariantTable: Component<{
   records: Item<Record>[];
   recordsMetadata: Metadata;
 }> = (props) => {
   const infoFields = Object.values(props.recordsMetadata.info);
-  const formatFields = Object.values(props.recordsMetadata.format);
   const infoFieldsNested = infoFields.filter((infoField) => infoField.nested);
-  const samples = props.recordsMetadata.samples;
 
   const rowspan = computeRowspan(props.recordsMetadata);
 
@@ -52,7 +47,6 @@ export const RecordTable: Component<{
                   </th>
                 )}
               </For>
-              <For each={samples}>{(sample) => <th colspan={formatFields.length}>{sample}</th>}</For>
             </tr>
             {rowspan && rowspan > 1 && (
               <tr>
@@ -60,9 +54,6 @@ export const RecordTable: Component<{
                   {(infoField) => (
                     <For each={infoField.nested?.items}>{(nestedInfoField) => <th>{nestedInfoField.id}</th>}</For>
                   )}
-                </For>
-                <For each={samples}>
-                  {() => <For each={formatFields}>{(formatField) => <th>{formatField.id}</th>}</For>}
                 </For>
               </tr>
             )}
@@ -121,13 +112,6 @@ export const RecordTable: Component<{
                         </td>
                       )
                     }
-                  </For>
-                  <For each={samples}>
-                    {(sample, i) => (
-                      <For each={formatFields}>
-                        {(formatField) => <td>{record.data.s[i()][formatField.id] as string}</td>}
-                      </For>
-                    )}
                   </For>
                 </tr>
               )}

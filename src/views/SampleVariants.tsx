@@ -9,7 +9,7 @@ import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import api from "../Api";
-import { SampleRecordTable } from "../components/SampleRecordTable";
+import { VariantSampleTable } from "../components/VariantSampleTable";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();
@@ -125,7 +125,7 @@ export const SampleVariants: Component = () => {
           </div>
           <div class="columns">
             {!records.loading && (
-              <SampleRecordTable
+              <VariantSampleTable
                 sample={sample()}
                 pedigreeSamples={pedigreeSamples()}
                 records={records().items}

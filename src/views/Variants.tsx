@@ -1,5 +1,5 @@
 import { Component, createResource, createSignal, Show } from "solid-js";
-import { RecordTable } from "../components/RecordTable";
+import { VariantTable } from "../components/VariantTable";
 import { Pager } from "../components/record/Pager";
 import { Params } from "../api/Api";
 import { SearchBox } from "../components/SearchBox";
@@ -98,7 +98,7 @@ export const Variants: Component = () => {
             )}
           </div>
           <div class="columns">
-            {!records.loading && <RecordTable records={records().items} recordsMetadata={recordsMetadata()} />}
+            {!records.loading && <VariantTable records={records().items} recordsMetadata={recordsMetadata()} />}
           </div>
         </div>
       </div>
