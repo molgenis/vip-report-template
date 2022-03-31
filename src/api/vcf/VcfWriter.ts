@@ -26,12 +26,21 @@ function writeHeader(metadata: Metadata, filter: Filter): string {
     if (index !== metadata.lines.length - 1) {
       vcf.push(line);
     } else if (filter.samples !== undefined) {
-      vcf.push(
-        line
-          .split("\t")
-          .filter((token, index) => index <= 8 || filter.samples?.indexOf(token) !== -1)
-          .join("\t")
-      );
+      if (filter.samples.length === 0) {
+        vcf.push(
+          line
+            .split("\t")
+            .filter((token, index) => index <= 7)
+            .join("\t")
+        );
+      } else {
+        vcf.push(
+          line
+            .split("\t")
+            .filter((token, index) => index <= 8 || filter.samples?.indexOf(token) !== -1)
+            .join("\t")
+        );
+      }
     } else {
       vcf.push(line);
     }
