@@ -1,6 +1,6 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
-import { Params, Sample, Sample as ApiSample } from "../api/Api";
+import { Params, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -9,31 +9,16 @@ import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import api from "../Api";
-import { VariantSampleTable } from "../components/VariantSampleTable";
-
-const fetchRecords = async (params: Params) => await api.getRecords(params);
-const fetchRecordsMeta = async () => await api.getRecordsMeta();
-const fetchPedigreeSamples = async (sample: Sample) =>
-  (
-    await api.getSamples({
-      query: {
-        operator: "and",
-        args: [
-          { selector: ["person", "individualId"], operator: "!=", args: sample.person.individualId },
-          { selector: ["person", "familyId"], operator: "==", args: sample.person.familyId },
-        ],
-      },
-      size: Number.MAX_SAFE_INTEGER,
-    })
-  ).items.map((item) => item.data);
+import { VariantsSampleTable } from "../components/VariantsSampleTable";
+import { fetchPedigreeSamples } from "../utils/ApiUtils";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<ApiSample> = useRouteData();
 
   const [params, setParams] = createSignal({} as Params);
 
-  const [records, recordsActions] = createResource(params, fetchRecords);
-  const [recordsMetadata, recordsMetadataActions] = createResource(fetchRecordsMeta);
+  const [records, recordsActions] = createResource(params, (params) => api.getRecords(params));
+  const [recordsMetadata, recordsMetadataActions] = createResource(() => api.getRecordsMeta());
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
 
   const onPageChange = (page: number) => setParams({ page });
@@ -125,7 +110,7 @@ export const SampleVariants: Component = () => {
           </div>
           <div class="columns">
             {!records.loading && (
-              <VariantSampleTable
+              <VariantsSampleTable
                 sample={sample()}
                 pedigreeSamples={pedigreeSamples()}
                 records={records().items}

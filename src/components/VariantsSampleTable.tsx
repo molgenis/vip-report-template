@@ -7,7 +7,7 @@ import { Link } from "solid-app-router";
 import { Item, Sample } from "../api/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 
-export const VariantSampleTable: Component<{
+export const VariantsSampleTable: Component<{
   sample: Sample;
   pedigreeSamples: Sample[];
   records: Item<Record>[];
