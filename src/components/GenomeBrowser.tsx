@@ -34,10 +34,13 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     api.getFastaGz(contig, position),
     createVcf(contig, position, samples),
     api.getGenesGz(),
+    ...samples.map((sample) => api.getBam(sample.person.individualId)),
   ]);
   const fastaGz = data[0];
   const vcf = data[1];
   const genesGz = data[2];
+  const bams = data.slice(3);
+
   if (fastaGz === null) {
     return null;
   }
@@ -59,6 +62,22 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     name: "Variants",
     url: "data:application/octet-stream;base64," + fromByteArray(vcf),
   });
+
+  for (let i = 0; i < samples.length; ++i) {
+    const bam = bams[i];
+
+    if (bam !== null) {
+      const sampleId = samples[i].person.individualId;
+      tracks.push({
+        order: order++,
+        type: "alignment",
+        format: "bam",
+        name: `Alignment (${sampleId})`,
+        url: "data:application/gzip;base64," + fromByteArray(bam),
+      });
+    }
+  }
+
   return {
     reference: {
       id: "reference_unknown",

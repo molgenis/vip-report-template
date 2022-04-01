@@ -90,7 +90,7 @@ export class ApiClient implements Api {
 
   getBam(sampleId: string): Promise<Uint8Array | null> {
     const bam = this.reportData.binary.bam;
-    const sampleBam = bam ? bam[sampleId] : null;
+    const sampleBam = bam ? (bam[sampleId] ? bam[sampleId] : null) : null;
     return Promise.resolve(sampleBam);
   }
 
