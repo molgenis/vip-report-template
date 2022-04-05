@@ -131,7 +131,7 @@ const mockReportDataNoSample: ReportData = {
       genomeAssembly: "GRCh37",
     },
   } as Metadata,
-  data: {},
+  data: { samples: [] },
   binary: {
     vcf: new TextEncoder().encode(vcfNoSample),
     decisionTree: new TextEncoder().encode(decisionTree),
@@ -157,10 +157,10 @@ const mockReportDataFamilyGRCh38: ReportData = {
   binary: {
     vcf: new TextEncoder().encode(vcfFamilyGRCh38),
     decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFasta),
+    fastaGz: decodeReportDataObject(encodedFastaGRCh38),
     genesGz: dec(encodedGenesGRCh38),
     bam: decodeReportDataObject({
-      Patient: encodedBam,
+      Patient: encodedBamGRCh38,
     }),
   },
 };

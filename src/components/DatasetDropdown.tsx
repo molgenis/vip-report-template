@@ -13,12 +13,13 @@ export const DatasetDropdown: Component = () => {
     (async () => {
       navigate(`/`);
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
+      console.log(samples);
       if (samples.page.totalElements === 1) {
-        navigate(`/samples/${samples.items[0].id}/variants`, { replace: true });
+        navigate(`/samples/${samples.items[0].id}/variants`);
       } else if (samples.total === 0) {
-        navigate(`/variants`, { replace: true });
+        navigate(`/variants`);
       } else {
-        navigate(`/samples`, { replace: true });
+        navigate(`/samples`);
       }
     })().catch((err) => console.error(err));
   }
