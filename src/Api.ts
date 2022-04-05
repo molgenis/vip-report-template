@@ -2,7 +2,7 @@ import { ApiClient } from "./api/ApiClient";
 import { parseVcf } from "./api/vcf/VcfParser";
 import mockReportData from "./mocks/ReportData";
 
-const reportData = import.meta.env.PROD ? window.api : mockReportData.get("Default");
+const reportData = import.meta.env.PROD ? window.api : mockReportData.get("Family GRCh37");
 if (reportData === undefined) {
   throw new Error("Report data is undefined.");
 }

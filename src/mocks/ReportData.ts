@@ -1,19 +1,23 @@
 import { ReportData } from "../api/ApiClient";
-import vcf from "./vcf";
-import vcfNoVep from "./vcf_noVep";
+import vcfFamily from "./GRCh37/vcf";
+import vcfFamilyGRCh38 from "./GRCh38/vcf";
+import vcfNoVep from "./GRCh37/vcf_noVep";
 import sampleData from "./sampleDataFamily";
-import vcf1Sample from "./vcf_1Sample";
+import vcf1Sample from "./GRCh37/vcf_1Sample";
 import sampleData1Sample from "./sampleData1Sample";
-import vcf100Samples from "./vcf_100Samples";
+import vcf100Samples from "./GRCh37/vcf_100Samples";
 import sampleData100Samples from "./sampleData100Samples";
-import vcfNoSample from "./vcf_NoSample";
+import vcfNoSample from "./GRCh37/vcf_NoSample";
 import decisionTree from "./decisionTree";
 import { Metadata } from "../api/Api";
 import { dec } from "../plugin/Base85";
 import { decodeReportDataObject } from "../plugin/loader";
-import encodedFasta from "./encodedFasta";
-import encodedGenes from "./genes";
-import encodedBam from "./bam";
+import encodedFasta from "./GRCh37/encodedFasta";
+import encodedGenes from "./GRCh37/encodedGenes";
+import encodedBam from "./GRCh37/encodedBam";
+import encodedFastaGRCh38 from "./GRCh38/encodedFasta";
+import encodedGenesGRCh38 from "./GRCh38/encodedGenes";
+import encodedBamGRCh38 from "./GRCh38/encodedBam";
 
 const dataMap = new Map<string, ReportData>();
 
@@ -32,7 +36,7 @@ const mockReportData: ReportData = {
   } as Metadata,
   data: sampleData,
   binary: {
-    vcf: new TextEncoder().encode(vcf),
+    vcf: new TextEncoder().encode(vcfFamily),
     decisionTree: new TextEncoder().encode(decisionTree),
     fastaGz: decodeReportDataObject(encodedFasta),
     genesGz: dec(encodedGenes),
@@ -136,10 +140,35 @@ const mockReportDataNoSample: ReportData = {
   },
 };
 
-dataMap.set("Default", mockReportData);
-dataMap.set("Trio no VEP", mockReportDataNoVep);
-dataMap.set("No sample", mockReportDataNoSample);
-dataMap.set("Single sample", mockReportData1Sample);
-dataMap.set("Cohort", mockReportData100Samples);
+const mockReportDataFamilyGRCh38: ReportData = {
+  metadata: {
+    app: {
+      name: "vcf-report",
+      version: "0.0.8",
+      args: "-i testdata_b38_vip.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
+    },
+    htsFile: {
+      uri: "testdata_b38_vip.vcf",
+      htsFormat: "VCF",
+      genomeAssembly: "GRCh38",
+    },
+  } as Metadata,
+  data: sampleData,
+  binary: {
+    vcf: new TextEncoder().encode(vcfFamilyGRCh38),
+    decisionTree: new TextEncoder().encode(decisionTree),
+    fastaGz: decodeReportDataObject(encodedFasta),
+    genesGz: dec(encodedGenesGRCh38),
+    bam: decodeReportDataObject({
+      Patient: encodedBam,
+    }),
+  },
+};
 
+dataMap.set("Family GRCh37", mockReportData);
+dataMap.set("Family no VEP GRCh37", mockReportDataNoVep);
+dataMap.set("No sample GRCh37", mockReportDataNoSample);
+dataMap.set("Single sample GRCh37", mockReportData1Sample);
+dataMap.set("Cohort GRCh37", mockReportData100Samples);
+dataMap.set("Family GRCh38", mockReportDataFamilyGRCh38);
 export default dataMap;
