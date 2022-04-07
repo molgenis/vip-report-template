@@ -5,7 +5,7 @@ import mockReportData from "../mocks/ReportData";
 
 export const DatasetDropdown: Component = () => {
   const navigate = useNavigate();
-  const [selectedDataset, setSelectedDataset] = createSignal("Default");
+  const [selectedDataset, setSelectedDataset] = createSignal("Family GRCh37");
 
   function switchIt(datasetName: string) {
     setSelectedDataset(datasetName);
