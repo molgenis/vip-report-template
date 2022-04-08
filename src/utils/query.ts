@@ -50,9 +50,6 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
   let currentFieldMetadata: FieldMetadata | undefined = fieldMetadata;
   do {
     if (currentFieldMetadata.parent && currentFieldMetadata.parent.nested) {
-      if (currentFieldMetadata.number.count !== 1) {
-        selector.push("*");
-      }
       const items = currentFieldMetadata.parent.nested.items;
       let i;
       for (i = 0; i < items.length; ++i) {
@@ -61,12 +58,15 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
         }
       }
       selector.push(i);
+      if (currentFieldMetadata.parent.number.count !== 1) {
+        selector.push("*");
+      }
     } else {
       selector.push(currentFieldMetadata.id);
+      selector.push("n");
     }
     currentFieldMetadata = currentFieldMetadata.parent;
   } while (currentFieldMetadata);
-  selector.push("n");
   selector.reverse();
   return selector;
 }
