@@ -1,29 +1,30 @@
 import { ReportData } from "../api/ApiClient";
-import vcfFamily from "./GRCh37/vcf";
-import vcfNoVep from "./GRCh37/vcf_noVep";
-import sampleData from "./sampleDataFamily";
-import vcf1Sample from "./GRCh37/vcf_1Sample";
-import sampleData1Sample from "./sampleData1Sample";
-import vcf100Samples from "./GRCh37/vcf_100Samples";
-import sampleData100Samples from "./sampleData100Samples";
-import vcfNoSample from "./GRCh38/vcf_NoSample";
-import vcfFamilyGRCh38 from "./GRCh38/vcf";
-import vcfNoVepGRCh38 from "./GRCh38/vcf_noVep";
-import vcf1SampleGRCh38 from "./GRCh38/vcf_1Sample";
-import vcf100SamplesGRCh38 from "./GRCh38/vcf_100Samples";
-import vcfNoSampleGRCh38 from "./GRCh37/vcf_NoSample";
-import decisionTree from "./decisionTree";
 import { Metadata } from "../api/Api";
-import { dec } from "../plugin/Base85";
-import { decodeReportDataObject } from "../plugin/loader";
-import encodedFasta from "./GRCh37/encodedFasta";
-import encodedGenes from "./GRCh37/encodedGenes";
-import encodedBam from "./GRCh37/encodedBam";
-import encodedFastaGRCh38 from "./GRCh38/encodedFasta";
-import encodedGenesGRCh38 from "./GRCh38/encodedGenes";
-import encodedBamGRCh38 from "./GRCh38/encodedBam";
+import {
+  bam as bamGRCh37,
+  decisionTree as decisionTreeGRCh37,
+  fastaGz as fastaGzGRCh37,
+  genesGz as genesGzGRCh37,
+  vcfFamily as vcfFamilyGRCh37,
+  vcfNoVep as vcfNoVepGRCh37,
+  vcfSamples0 as vcfSamples0GRCh37,
+  vcfSamples1 as vcfSamples1GRCh37,
+  vcfSamples100 as vcfSamples100GRCh37,
+} from "./GRCh37/static";
+import {
+  bam as bamGRCh38,
+  decisionTree as decisionTreeGRCh38,
+  fastaGz as fastaGzGRCh38,
+  genesGz as genesGzGRCh38,
+  vcfFamily as vcfFamilyGRCh38,
+  vcfNoVep as vcfNoVepGRCh38,
+  vcfSamples0 as vcfSamples0GRCh38,
+  vcfSamples1 as vcfSamples1GRCh38,
+  vcfSamples100 as vcfSamples100GRCh38,
+} from "./GRCh38/static";
+import { samples1, samples100, samplesFamily } from "./static";
 
-const dataMap = new Map<string, ReportData>();
+const dataMap: { [key: string]: ReportData } = {};
 
 const mockReportData: ReportData = {
   metadata: {
@@ -38,15 +39,15 @@ const mockReportData: ReportData = {
       genomeAssembly: "GRCh37",
     },
   } as Metadata,
-  data: sampleData,
+  data: samplesFamily,
   binary: {
-    vcf: new TextEncoder().encode(vcfFamily),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFasta),
-    genesGz: dec(encodedGenes),
-    bam: decodeReportDataObject({
-      Patient: encodedBam,
-    }),
+    vcf: vcfFamilyGRCh37,
+    decisionTree: decisionTreeGRCh37,
+    fastaGz: fastaGzGRCh37,
+    genesGz: genesGzGRCh37,
+    bam: {
+      Patient: bamGRCh37,
+    },
   },
 };
 
@@ -63,15 +64,15 @@ const mockReportDataNoVep: ReportData = {
       genomeAssembly: "GRCh37",
     },
   } as Metadata,
-  data: sampleData,
+  data: samplesFamily,
   binary: {
-    vcf: new TextEncoder().encode(vcfNoVep),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFasta),
-    genesGz: dec(encodedGenes),
-    bam: decodeReportDataObject({
-      Patient: encodedBam,
-    }),
+    vcf: vcfNoVepGRCh37,
+    decisionTree: decisionTreeGRCh37,
+    fastaGz: fastaGzGRCh37,
+    genesGz: genesGzGRCh37,
+    bam: {
+      Patient: bamGRCh37,
+    },
   },
 };
 
@@ -88,15 +89,15 @@ const mockReportData1Sample: ReportData = {
       genomeAssembly: "GRCh37",
     },
   } as Metadata,
-  data: sampleData1Sample,
+  data: samples1,
   binary: {
-    vcf: new TextEncoder().encode(vcf1Sample),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFasta),
-    genesGz: dec(encodedGenes),
-    bam: decodeReportDataObject({
-      SAMPLE1: encodedBam,
-    }),
+    vcf: vcfSamples1GRCh37,
+    decisionTree: decisionTreeGRCh37,
+    fastaGz: fastaGzGRCh37,
+    genesGz: genesGzGRCh37,
+    bam: {
+      SAMPLE1: bamGRCh37,
+    },
   },
 };
 
@@ -113,12 +114,12 @@ const mockReportData100Samples: ReportData = {
       genomeAssembly: "GRCh37",
     },
   } as Metadata,
-  data: sampleData100Samples,
+  data: samples100,
   binary: {
-    vcf: new TextEncoder().encode(vcf100Samples),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFasta),
-    genesGz: dec(encodedGenes),
+    vcf: vcfSamples100GRCh37,
+    decisionTree: decisionTreeGRCh37,
+    fastaGz: fastaGzGRCh37,
+    genesGz: genesGzGRCh37,
   },
 };
 
@@ -137,10 +138,10 @@ const mockReportDataNoSample: ReportData = {
   } as Metadata,
   data: { samples: [] },
   binary: {
-    vcf: new TextEncoder().encode(vcfNoSample),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFasta),
-    genesGz: dec(encodedGenes),
+    vcf: vcfSamples0GRCh37,
+    decisionTree: decisionTreeGRCh37,
+    fastaGz: fastaGzGRCh37,
+    genesGz: genesGzGRCh37,
   },
 };
 
@@ -157,15 +158,15 @@ const mockReportDataFamilyGRCh38: ReportData = {
       genomeAssembly: "GRCh38",
     },
   } as Metadata,
-  data: sampleData,
+  data: samplesFamily,
   binary: {
-    vcf: new TextEncoder().encode(vcfFamilyGRCh38),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFastaGRCh38),
-    genesGz: dec(encodedGenesGRCh38),
-    bam: decodeReportDataObject({
-      Patient: encodedBamGRCh38,
-    }),
+    vcf: vcfFamilyGRCh38,
+    decisionTree: decisionTreeGRCh38,
+    fastaGz: fastaGzGRCh38,
+    genesGz: genesGzGRCh38,
+    bam: {
+      Patient: bamGRCh38,
+    },
   },
 };
 
@@ -182,15 +183,15 @@ const mockReportDataNoVepGRCh38: ReportData = {
       genomeAssembly: "GRCh38",
     },
   } as Metadata,
-  data: sampleData,
+  data: samplesFamily,
   binary: {
-    vcf: new TextEncoder().encode(vcfNoVepGRCh38),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFastaGRCh38),
-    genesGz: dec(encodedGenesGRCh38),
-    bam: decodeReportDataObject({
-      Patient: encodedBamGRCh38,
-    }),
+    vcf: vcfNoVepGRCh38,
+    decisionTree: decisionTreeGRCh38,
+    fastaGz: fastaGzGRCh38,
+    genesGz: genesGzGRCh38,
+    bam: {
+      Patient: bamGRCh38,
+    },
   },
 };
 
@@ -207,15 +208,15 @@ const mockReportData1SampleGRCh38: ReportData = {
       genomeAssembly: "GRCh38",
     },
   } as Metadata,
-  data: sampleData1Sample,
+  data: samples1,
   binary: {
-    vcf: new TextEncoder().encode(vcf1SampleGRCh38),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFastaGRCh38),
-    genesGz: dec(encodedGenesGRCh38),
-    bam: decodeReportDataObject({
-      SAMPLE1: encodedBamGRCh38,
-    }),
+    vcf: vcfSamples1GRCh38,
+    decisionTree: decisionTreeGRCh38,
+    fastaGz: fastaGzGRCh38,
+    genesGz: genesGzGRCh38,
+    bam: {
+      SAMPLE1: bamGRCh38,
+    },
   },
 };
 
@@ -232,12 +233,12 @@ const mockReportData100SamplesGRCh38: ReportData = {
       genomeAssembly: "GRCh38",
     },
   } as Metadata,
-  data: sampleData100Samples,
+  data: samples100,
   binary: {
-    vcf: new TextEncoder().encode(vcf100SamplesGRCh38),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFastaGRCh38),
-    genesGz: dec(encodedGenesGRCh38),
+    vcf: vcfSamples100GRCh38,
+    decisionTree: decisionTreeGRCh38,
+    fastaGz: fastaGzGRCh38,
+    genesGz: genesGzGRCh38,
   },
 };
 
@@ -256,21 +257,21 @@ const mockReportDataNoSampleGRCh38: ReportData = {
   } as Metadata,
   data: { samples: [] },
   binary: {
-    vcf: new TextEncoder().encode(vcfNoSampleGRCh38),
-    decisionTree: new TextEncoder().encode(decisionTree),
-    fastaGz: decodeReportDataObject(encodedFastaGRCh38),
-    genesGz: dec(encodedGenesGRCh38),
+    vcf: vcfSamples0GRCh38,
+    decisionTree: decisionTreeGRCh38,
+    fastaGz: fastaGzGRCh38,
+    genesGz: genesGzGRCh38,
   },
 };
 
-dataMap.set("Family GRCh37", mockReportData);
-dataMap.set("Family no VEP GRCh37", mockReportDataNoVep);
-dataMap.set("No sample GRCh37", mockReportDataNoSample);
-dataMap.set("Single sample GRCh37", mockReportData1Sample);
-dataMap.set("Cohort GRCh37", mockReportData100Samples);
-dataMap.set("Family GRCh38", mockReportDataFamilyGRCh38);
-dataMap.set("Family no VEP GRCh38", mockReportDataNoVepGRCh38);
-dataMap.set("No sample GRCh38", mockReportDataNoSampleGRCh38);
-dataMap.set("Single sample GRCh38", mockReportData1SampleGRCh38);
-dataMap.set("Cohort GRCh38", mockReportData100SamplesGRCh38);
+dataMap["GRCh37 Family"] = mockReportData;
+dataMap["GRCh37 Family no VEP"] = mockReportDataNoVep;
+dataMap["GRCh37 Samples 0"] = mockReportDataNoSample;
+dataMap["GRCh37 Samples 1"] = mockReportData1Sample;
+dataMap["GRCh37 Samples 100"] = mockReportData100Samples;
+dataMap["GRCh38 Family"] = mockReportDataFamilyGRCh38;
+dataMap["GRCh38 Family no VEP"] = mockReportDataNoVepGRCh38;
+dataMap["GRCh38 Samples 0"] = mockReportDataNoSampleGRCh38;
+dataMap["GRCh38 Samples 1"] = mockReportData1SampleGRCh38;
+dataMap["GRCh38 Samples 100"] = mockReportData100SamplesGRCh38;
 export default dataMap;

@@ -1,11 +1,4 @@
 import { Component, For } from "solid-js";
-import { Chrom } from "./record/Chrom";
-import { Pos } from "./record/Pos";
-import { Id } from "./record/Id";
-import { Ref } from "./record/Ref";
-import { Alt } from "./record/Alt";
-import { Qual } from "./record/Qual";
-import { Filter } from "./record/Filter";
 import { Record, RecordSample } from "../api/vcf/Vcf";
 import { FieldMetadataContainer } from "../api/vcf/VcfParser";
 import { FieldMetadata } from "../api/vcf/MetadataParser";

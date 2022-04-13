@@ -144,13 +144,13 @@ export class ApiClient implements Api {
     if (import.meta.env.PROD) {
       throw new Error("Dataset switch functionality is meant for development mode only!");
     }
-    let reportData = <ReportData>mockReportData.get(datasetName);
-    const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf));
-    reportData.metadata.records = vcf.metadata;
-    reportData.data.records = vcf.data;
+    let reportData = <ReportData>mockReportData[datasetName];
     if (reportData === undefined) {
       throw new Error("Unknown dataset:" + datasetName);
     }
+    const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf));
+    reportData.metadata.records = vcf.metadata;
+    reportData.data.records = vcf.data;
     this.reportData = reportData;
   }
 }

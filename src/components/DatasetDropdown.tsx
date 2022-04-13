@@ -13,7 +13,6 @@ export const DatasetDropdown: Component = () => {
     (async () => {
       navigate(`/`);
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
-      console.log(samples);
       if (samples.page.totalElements === 1) {
         navigate(`/samples/${samples.items[0].id}/variants`);
       } else if (samples.total === 0) {
@@ -21,14 +20,14 @@ export const DatasetDropdown: Component = () => {
       } else {
         navigate(`/samples`);
       }
-    })().catch((err) => console.error(err));
+    })().catch((err: Error) => console.error(err.stack));
   }
 
   return (
     <div class="navbar-item has-dropdown is-hoverable">
       <a class="navbar-link">{selectedDataset()}</a>
       <div class="navbar-dropdown">
-        <For each={Array.from(mockReportData.keys())}>
+        <For each={Object.keys(mockReportData)}>
           {(dataset: string) => (
             <a
               class="navbar-item"

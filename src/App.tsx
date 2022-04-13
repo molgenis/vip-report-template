@@ -20,7 +20,6 @@ const App: Component = () => {
   onMount(() => {
     (async () => {
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
-      console.log(samples);
       if (samples.page.totalElements === 1) {
         navigate(`/samples/${samples.items[0].id}/variants`);
       } else if (samples.total === 0) {
