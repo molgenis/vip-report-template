@@ -27,7 +27,7 @@ function decodeScript(script: HTMLScriptElement): void {
   }
 }
 
-export function decodeReportDataObject(encodedObj: { [key: string]: string }): {
+function decodeReportDataObject(encodedObj: { [key: string]: string }): {
   [key: string]: Uint8Array;
 } {
   const decodedObj: { [key: string]: Uint8Array } = {};

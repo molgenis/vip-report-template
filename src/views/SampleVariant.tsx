@@ -65,11 +65,15 @@ export const SampleVariant: Component = () => {
             </nav>
           </div>
         </div>
-        <GenomeBrowser
-          contig={variant().c}
-          position={variant().p}
-          samples={[sample(), ...(pedigreeSamples() as Sample[])]}
-        />
+        <div class="columns">
+          <div class="column">
+            <GenomeBrowser
+              contig={variant().c}
+              position={variant().p}
+              samples={[sample(), ...(pedigreeSamples() as Sample[])]}
+            />
+          </div>
+        </div>
         <div class="columns">
           <div class="column is-3">
             <h1 class="title is-5">Record</h1>
