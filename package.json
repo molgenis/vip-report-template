@@ -35,6 +35,8 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "base64-js": "^1.5.1",
+    "bulma": "^0.9.3",
+    "@creativebulma/bulma-tooltip": "^1.2.0",
     "fflate": "^0.7.3",
     "igv": "^2.12.1",
     "solid-app-router": "^0.3.2",

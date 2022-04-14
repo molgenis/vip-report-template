@@ -5,6 +5,8 @@ import { Consequence } from "./info/Consequence";
 import { Field } from "./field/Field";
 import { Gene } from "./info/Gene";
 import { PubMed } from "./info/PubMed";
+import { HGVS } from "./info/HGVS";
+import { ClinVar } from "./info/ClinVar";
 
 export const Info: Component<{
   info: Value | Value[];
@@ -20,6 +22,18 @@ export const Info: Component<{
       </Match>
       <Match when={props.infoMetadata.id === "SYMBOL" && props.infoMetadata.parent?.id === "CSQ"}>
         {props.info !== null && <Gene symbol={props.info as string} />}
+      </Match>
+
+      <Match
+        when={
+          (props.infoMetadata.id === "HGVSc" || props.infoMetadata.id === "HGVSp") &&
+          props.infoMetadata.parent?.id === "CSQ"
+        }
+      >
+        {props.info !== null && <HGVS notation={props.info as string} />}
+      </Match>
+      <Match when={props.infoMetadata.id === "CLIN_SIG" && props.infoMetadata.parent?.id === "CSQ"}>
+        {props.info !== null && <ClinVar value={props.info as string} />}
       </Match>
     </Switch>
   );

@@ -45,6 +45,9 @@ $notification-padding-rtl: 0.75rem 0.75rem 0.75rem 0.75rem;
 @import "bulma/sass/helpers/typography";
 @import "bulma/sass/helpers/visibility";
 
+@import "@creativebulma/bulma-tooltip";
+
+
 html {
   font-size: 13px;
 }

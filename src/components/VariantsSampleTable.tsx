@@ -1,11 +1,13 @@
 import { Genotype, Metadata, Record } from "../api/vcf/Vcf";
-import { Component, For } from "solid-js";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
 import { Link } from "solid-app-router";
 import { Item, Sample } from "../api/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
+import { NestedInfoCollapsablePane } from "./NestedInfoCollapsablePane";
+import { NestedInfoHeader } from "./NestedInfoHeader";
+import { Component, For } from "solid-js";
 
 export const VariantsSampleTable: Component<{
   sample: Sample;
@@ -14,6 +16,36 @@ export const VariantsSampleTable: Component<{
   recordsMetadata: Metadata;
 }> = (props) => {
   const samples = [props.sample, ...props.pedigreeSamples];
+
+  const nestedFields: string[] = [
+    "Consequence",
+    "SYMBOL",
+    "InheritanceModesGene",
+    "HGVSc",
+    "HGVSp",
+    "CAPICE_SC",
+    "UMCG_CL",
+    "VKGL_CL",
+    "CLIN_SIG",
+    "gnomAD_AF",
+    "gnomAD_HN",
+    "PUBMED",
+  ];
+
+  const nestedHeaders: string[] = [
+    "Effect",
+    "Gene",
+    "Inheritance Modes",
+    "HGVS C",
+    "HGVS P",
+    "CAPICE",
+    "MVL",
+    "VKGL",
+    "ClinVar",
+    "gnomAD AF",
+    "gnomAD HN",
+    "Pubmed",
+  ];
 
   return (
     <div style="display: grid">
@@ -25,6 +57,8 @@ export const VariantsSampleTable: Component<{
               <th>Position</th>
               <th>Reference</th>
               <For each={samples}>{(sample) => <th>{sample.person.individualId}</th>}</For>
+              <th />
+              <NestedInfoHeader fields={nestedHeaders} />
             </tr>
           </thead>
           <tbody>
@@ -52,6 +86,11 @@ export const VariantsSampleTable: Component<{
                       </td>
                     )}
                   </For>
+                  <NestedInfoCollapsablePane
+                    recordsMetadata={props.recordsMetadata}
+                    fields={nestedFields}
+                    record={record}
+                  />
                 </tr>
               )}
             </For>
