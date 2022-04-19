@@ -85,6 +85,11 @@ export class ApiClient implements Api {
     return Promise.resolve(buffer);
   }
 
+  getGenomeAssembly(): Promise<String> {
+    let assembly = this.reportData.metadata.htsFile.genomeAssembly;
+    return Promise.resolve(assembly);
+  }
+
   getGenesGz(): Promise<Uint8Array | null> {
     const genesGz = this.reportData.binary.genesGz;
     return Promise.resolve(genesGz ? genesGz : null);

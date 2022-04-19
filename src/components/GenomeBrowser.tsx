@@ -78,9 +78,11 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     }
   }
 
+  const assembly = await api.getGenomeAssembly();
+
   return {
     reference: {
-      id: "reference_unknown",
+      id: assembly,
       name: "Reference",
       fastaURL: "data:application/gzip;base64," + fromByteArray(fastaGz),
       tracks: tracks,
