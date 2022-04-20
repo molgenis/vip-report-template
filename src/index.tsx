@@ -17,10 +17,16 @@ import { hashIntegration, Router } from "solid-app-router";
 
 library.add(faCircleXmark, faDownload, faHome, faSearch, faAngleDown, faAngleRight);
 
-window.addEventListener("DOMContentLoaded", () => {
+function processIcons() {
   void dom.i2svg();
   dom.watch();
-});
+}
+
+if (document.readyState === "complete") {
+  processIcons();
+} else {
+  window.addEventListener("DOMContentLoaded", processIcons);
+}
 
 render(
   () => (
