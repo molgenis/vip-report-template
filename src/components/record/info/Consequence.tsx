@@ -11,14 +11,12 @@ export const Consequence: Component<{
 
   return (
     <>
-      <For each={props.terms}>
-        {(value, i) => (
-          <>
-            {i() !== 0 && <span>, </span>}
-            <Anchor href={toHref(value)} value={value} />
-          </>
-        )}
-      </For>
+      <Anchor href={toHref(props.terms[0])} value={props.terms[0]} />
+      {props.terms.length > 1 && (
+        <span>
+          , <abbr title={props.terms.slice(1).join(", ")}>...</abbr>
+        </span>
+      )}
     </>
   );
 };
