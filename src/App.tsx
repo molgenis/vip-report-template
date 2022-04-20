@@ -1,4 +1,4 @@
-import { Component, ErrorBoundary, onMount, Show } from "solid-js";
+import { Component, ErrorBoundary, onMount } from "solid-js";
 import { Link, Route, Routes, useNavigate } from "solid-app-router";
 import { Variants } from "./views/Variants";
 import { Variant } from "./views/Variant";
@@ -44,9 +44,7 @@ const App: Component = () => {
             <Link class="navbar-item" href="/variants">
               Variants
             </Link>
-            <Show when={!import.meta.env.PROD}>
-              <DatasetDropdown />
-            </Show>
+            {api.isDatasetSupport() && <DatasetDropdown />}
           </div>
         </div>
       </nav>

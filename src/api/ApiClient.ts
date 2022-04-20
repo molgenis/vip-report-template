@@ -16,8 +16,6 @@ import {
   SortOrder,
 } from "./Api";
 import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
-import mockReportData from "../mocks/ReportData";
-import { parseVcf } from "./vcf/VcfParser";
 
 export interface ReportData {
   metadata: Metadata;
@@ -106,6 +104,18 @@ export class ApiClient implements Api {
     return Promise.resolve(decisionTree ? decisionTree : null);
   }
 
+  isDatasetSupport(): boolean {
+    return false;
+  }
+
+  getDatasetIds(): string[] {
+    throw new Error("unsupported");
+  }
+
+  selectDataset(id: string): void {
+    throw new Error("unsupported");
+  }
+
   private get<T extends Resource>(resource: string, params: Params = {}): Promise<PagedItems<T>> {
     return new Promise((resolve, reject) => {
       if (!this.reportData.data[resource]) {
@@ -143,20 +153,6 @@ export class ApiClient implements Api {
       throw new Error(`unknown resource '${resource}'`);
     }
     return Promise.resolve(this.reportData.data[resource][id] as T);
-  }
-
-  switchDataset(datasetName: string) {
-    if (import.meta.env.PROD) {
-      throw new Error("Dataset switch functionality is meant for development mode only!");
-    }
-    let reportData = <ReportData>mockReportData[datasetName];
-    if (reportData === undefined) {
-      throw new Error("Unknown dataset:" + datasetName);
-    }
-    const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf));
-    reportData.metadata.records = vcf.metadata;
-    reportData.data.records = vcf.data;
-    this.reportData = reportData;
   }
 }
 

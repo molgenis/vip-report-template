@@ -10,6 +10,11 @@ export interface Api {
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>>;
   getFastaGz(contig: string, pos: number): Promise<Uint8Array | null>;
   getGenesGz(): Promise<Uint8Array | null>;
+
+  // testing purposes only
+  isDatasetSupport(): boolean;
+  getDatasetIds(): string[];
+  selectDataset(id: string): void;
 }
 
 export interface Metadata {
@@ -137,3 +142,8 @@ export interface OntologyClass {
 export interface PhenotypicFeature {
   type: OntologyClass;
 }
+
+export type Dataset = {
+  id: string;
+  label: string;
+};

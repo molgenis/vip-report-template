@@ -1,18 +1,12 @@
-import { ApiClient } from "./api/ApiClient";
-import { parseVcf } from "./api/vcf/VcfParser";
-import mockReportData from "./mocks/ReportData";
+import { WindowApiClient } from "./WindowApiClient";
 
-const reportData = import.meta.env.PROD ? window.api : Object.values(mockReportData)[0];
-if (reportData === undefined) {
-  throw new Error("Report data is undefined.");
-}
-const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf));
-reportData.metadata.records = vcf.metadata;
-reportData.data.records = vcf.data;
-if (import.meta.env.PROD) {
-  //Do not delete in dev mode because of dataset switching.
-  delete reportData.binary.vcf;
-}
-const api = new ApiClient(reportData);
+// lazy import MockApiClient to ensure that it is excluded from the build artifact
+const api = import.meta.env.PROD
+  ? new WindowApiClient()
+  : await (function () {
+      return import("./mocks/MockApiClient").then((module) => {
+        return new module.MockApiClient();
+      });
+    })();
 
 export default api;

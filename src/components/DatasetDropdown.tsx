@@ -1,7 +1,6 @@
 import { Component, createSignal, For } from "solid-js";
 import api from "../Api";
 import { useNavigate } from "solid-app-router";
-import mockReportData from "../mocks/ReportData";
 
 export const DatasetDropdown: Component = () => {
   const navigate = useNavigate();
@@ -9,7 +8,7 @@ export const DatasetDropdown: Component = () => {
 
   function switchIt(datasetName: string) {
     setSelectedDataset(datasetName);
-    api.switchDataset(datasetName);
+    api.selectDataset(datasetName);
     (async () => {
       navigate(`/`);
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
@@ -27,7 +26,7 @@ export const DatasetDropdown: Component = () => {
     <div class="navbar-item has-dropdown is-hoverable">
       <a class="navbar-link">{selectedDataset()}</a>
       <div class="navbar-dropdown">
-        <For each={Object.keys(mockReportData)}>
+        <For each={api.getDatasetIds()}>
           {(dataset: string) => (
             <a
               class="navbar-item"

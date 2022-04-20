@@ -6,12 +6,12 @@ import App from "./App";
 
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import {
+  faAngleDown,
+  faAngleRight,
   faCircleXmark,
   faDownload,
   faHome,
   faSearch,
-  faAngleDown,
-  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { hashIntegration, Router } from "solid-app-router";
 
