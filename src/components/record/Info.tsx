@@ -5,7 +5,7 @@ import { Consequence } from "./info/Consequence";
 import { Field } from "./field/Field";
 import { Gene } from "./info/Gene";
 import { PubMed } from "./info/PubMed";
-import { HGVS } from "./info/HGVS";
+import { Hgvs } from "./info/Hgvs";
 import { ClinVar } from "./info/ClinVar";
 
 export const Info: Component<{
@@ -30,7 +30,7 @@ export const Info: Component<{
           props.infoMetadata.parent?.id === "CSQ"
         }
       >
-        {props.info !== null && <HGVS notation={props.info as string} />}
+        {props.info !== null && <Hgvs notation={props.info as string} />}
       </Match>
       <Match when={props.infoMetadata.id === "CLIN_SIG" && props.infoMetadata.parent?.id === "CSQ"}>
         {props.info !== null && <ClinVar value={props.info as string} />}

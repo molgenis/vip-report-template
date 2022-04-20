@@ -15,29 +15,31 @@ import { fetchPedigreeSamples } from "../utils/ApiUtils";
 export const SampleVariants: Component = () => {
   const sample: Resource<ApiSample> = useRouteData();
 
-  const [params, setParams] = createSignal({} as Params);
+  const [params, setParams] = createSignal({ size: 20 } as Params);
 
   const [records, recordsActions] = createResource(params, (params) => api.getRecords(params));
   const [recordsMetadata, recordsMetadataActions] = createResource(() => api.getRecordsMeta());
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
 
-  const onPageChange = (page: number) => setParams({ page });
-  const onSearchChange = (search: string) =>
+  const onPageChange = (page: number) => setParams({ ...params(), page });
+  const onSearchChange = (search: string) => {
     setParams({
+      ...params(),
       page: 0,
       query: search !== "" ? createSearchQuery(search, recordsMetadata()) : undefined,
     });
+  };
   const onFiltersChange = (event: FiltersChangeEvent) => {
-    const newParams: Params = {
-      ...params,
+    setParams({
+      ...params(),
       page: 0,
-    };
-    newParams.query = event.filters.length > 0 ? createFilterQuery(event.filters) : undefined;
-    setParams(newParams);
+      query: event.filters.length > 0 ? createFilterQuery(event.filters) : undefined,
+    });
   };
   const onSortChange = (event: SortEvent) => {
     // FIXME sort on actual field (probably requires API sort fix?)
     setParams({
+      ...params(),
       page: 0,
       sort: { property: "p", compare: event.ascending ? "asc" : "desc" },
     });

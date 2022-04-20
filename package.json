@@ -15,7 +15,6 @@
   },
   "license": "LGPL-3.0",
   "devDependencies": {
-    "@creativebulma/bulma-tooltip": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "bulma": "^0.9.3",

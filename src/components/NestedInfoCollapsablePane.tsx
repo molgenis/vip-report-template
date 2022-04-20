@@ -45,22 +45,23 @@ export const NestedInfoCollapsablePane: Component<{
     setCollapsed(!collapsed());
   }
 
+  // FIXME remove 'as unknown' after InfoContainer type fix
+  const infoVepValues = props.record.data.n[vepField.id] as unknown as Value[][];
+
   return (
     <>
       <td>
-        <a class="button is-small" onClick={toggle}>
-          <span class="icon is-left">
-            <Show when={collapsed() === false} fallback={<i class="fa-solid fa-angle-down"></i>}>
-              <i class="fa-solid fa-angle-right"></i>
-            </Show>
+        {infoVepValues.length > 1 && (
+          <span class="icon is-left is-clickable" onClick={toggle}>
+            {collapsed() ? <i class="fa-solid fa-angle-up" /> : <i class="fa-solid fa-angle-down" />}
           </span>
-        </a>
+        )}
       </td>
       <For each={indices}>
         {(idx: number) => (
           <td>
             {idx > -1 ? (
-              <For each={props.record.data.n[vepField.id] as unknown as Value[][]}>
+              <For each={infoVepValues}>
                 {(value, j) => (
                   <>
                     {j() != 0 && collapsed() && <br />}
