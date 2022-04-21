@@ -1,4 +1,4 @@
-import { Component, createSignal, For, Show, Signal } from "solid-js";
+import { Component, createSignal, For, Signal } from "solid-js";
 import { Value } from "../api/vcf/ValueParser";
 import { Info } from "./record/Info";
 import { NestedFieldMetadata } from "../api/vcf/MetadataParser";
