@@ -5,7 +5,6 @@ import inlinePlugin from "./src/plugin/vite-plugin-inline";
 export default defineConfig({
   plugins: [solidPlugin(), inlinePlugin()],
   build: {
-    target: "esnext",
     polyfillDynamicImport: false,
     // inline plugin build options
     rollupOptions: {

@@ -13,6 +13,10 @@ module.exports = {
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier",
     "plugin:prettier/recommended",
+    "plugin:solid/typescript",
   ],
+  rules: {
+    "solid/prefer-show": "off",
+  },
   plugins: ["prettier", "@typescript-eslint"],
 };

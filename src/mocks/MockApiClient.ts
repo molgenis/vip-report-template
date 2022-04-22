@@ -46,6 +46,14 @@ export class MockApiClient implements Api {
     return this.apiClient.getGenesGz();
   }
 
+  getBam(sampleId: string): Promise<Uint8Array | null> {
+    return this.apiClient.getBam(sampleId);
+  }
+
+  getGenomeAssembly(): Promise<string> {
+    return this.apiClient.getGenomeAssembly();
+  }
+
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>> {
     return this.apiClient.getPhenotypes(params);
   }

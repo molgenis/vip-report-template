@@ -9,7 +9,6 @@ export const FieldSingleValue: Component<{
   // TODO add match for CATEGORICAL
   // TODO add match for INTEGER
   // TODO add match for FLAG
-  // TODO add match for FLOAT
   // TODO add match for STRING
   // FIXME remove NESTED type from API
   // TODO improve match for FLOAT (show full number on hover)

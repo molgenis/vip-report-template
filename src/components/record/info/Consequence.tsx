@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js";
+import { Component } from "solid-js";
 import { Anchor } from "../../Anchor";
 
 export const Consequence: Component<{
