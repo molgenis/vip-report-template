@@ -65,7 +65,6 @@ export const VariantsSampleTable: Component<{
             <For each={props.records}>
               {(record) => (
                 <tr>
-
                   <td>
                     <Link href={`/samples/${props.sample.index}/variants/${record.id}`}>
                       <Chrom value={record.data.c} />
@@ -78,7 +77,6 @@ export const VariantsSampleTable: Component<{
                   </td>
                   <For each={samples}>
                     {(sample) => (
-
                       <td>
                         <GenotypeField
                           genotype={record.data.s[sample.index]["GT"] as Genotype}

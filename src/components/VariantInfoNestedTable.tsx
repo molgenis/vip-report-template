@@ -1,5 +1,4 @@
 import { Component, For } from "solid-js";
-import { Link } from "solid-app-router";
 import { Value } from "../api/vcf/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "../api/vcf/MetadataParser";
@@ -37,7 +36,6 @@ export const VariantInfoNestedTable: Component<{ infoValue: Value[][]; infoField
       <div class="table-container">
         <table class="table is-narrow">
           <thead>
-            {<th></th>}
             <For each={props.infoField.nested.items}>
               {(infoFieldItem, i) => (
                 <>
@@ -53,22 +51,6 @@ export const VariantInfoNestedTable: Component<{ infoValue: Value[][]; infoField
               {(value, rowIndex) => (
                 <>
                   <tr>
-                    <td>
-                      {/* <Link href={`/samples/${props.infoField.id}/variants/${props.infoField.nested.items[rowIndex]}`}> */}
-                        <a class="button is-info is-small" onClick={
-                          () => {
-                            console.log(props.infoValue);
-                            console.log(value[csqIndex]);
-                            console.log(props.sample)
-                            console.log(props.variant)
-                          }
-                          }>
-                          <span class="icon is-left">
-                            <i class="fa-solid fa-search" />
-                          </span>
-                        </a>
-                      {/* </Link> */}
-                    </td>
                     <For each={props.infoField.nested.items}>
                       {(infoFieldItem, i) => (
                         <>
