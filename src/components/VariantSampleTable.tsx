@@ -14,7 +14,7 @@ export const VariantSampleTable: Component<{
   const sampleFields: FieldMetadata[] = Object.keys(props.sampleValues[0]).map(
     (fieldId) => props.formatFields[fieldId]
   );
-
+  console.log(props.record)
   return (
     <div style="display: grid">
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}

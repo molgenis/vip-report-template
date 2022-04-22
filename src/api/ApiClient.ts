@@ -50,7 +50,7 @@ export class ApiClient implements Api {
     return this.get("records", params);
   }
 
-  getRecordById(id: number): Promise<Record> {
+  getRecordById(id: number): Promise<Item<Record>> {
     return this.getById("records", id);
   }
 
@@ -58,7 +58,7 @@ export class ApiClient implements Api {
     return this.get("samples", params);
   }
 
-  getSampleById(id: number): Promise<Sample> {
+  getSampleById(id: number): Promise<Item<Sample>> {
     return this.getById("samples", id);
   }
 
@@ -148,12 +148,12 @@ export class ApiClient implements Api {
     });
   }
 
-  private getById<T extends Resource>(resource: string, id: number): Promise<T> {
+  private getById<T extends Resource>(resource: string, id: number): Promise<Item<T>> {
     if (!this.reportData.data[resource]) {
       throw new Error(`unknown resource '${resource}'`);
     }
-    return Promise.resolve(this.reportData.data[resource][id] as T);
-  }
+    return Promise.resolve({id: id, data: this.reportData.data[resource][id] as T});
+  } 
 }
 
 function get(

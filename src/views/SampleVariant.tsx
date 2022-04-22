@@ -45,19 +45,19 @@ export const SampleVariant: Component = () => {
                   <Link href="/samples">Samples</Link>
                 </li>
                 <li>
-                  <Link href={"/samples/" + sample().index.toString()}>{sample().person.individualId}</Link>
+                  <Link href={"/samples/" + sample().data.index.toString()}>{sample().data.person.individualId}</Link>
                 </li>
                 <li>
-                  <Link href={"/samples/" + sample().index.toString() + "/variants"}>Variants</Link>
+                  <Link href={"/samples/" + sample().data.index.toString() + "/variants"}>Variants</Link>
                 </li>
                 <li class="is-active">
                   <a href="#">
-                    {variant().c +
+                    {variant().data.c +
                       ":" +
-                      variant().p.toString() +
+                      variant().data.p.toString() +
                       " " +
-                      variant()
-                        .a.map((a) => variant().r + ">" + (a !== null ? a : "."))
+                      variant().data
+                        .a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
                         .join(" / ")}
                   </a>
                 </li>
@@ -68,41 +68,53 @@ export const SampleVariant: Component = () => {
         <div class="columns">
           <div class="column">
             <GenomeBrowser
-              contig={variant().c}
-              position={variant().p}
-              samples={[sample(), ...(pedigreeSamples() as Sample[])]}
+              contig={variant().data.c}
+              position={variant().data.p}
+              samples={[sample().data, ...(pedigreeSamples() as Sample[])]}
             />
           </div>
         </div>
         <div class="columns">
           <div class="column is-3">
             <h1 class="title is-5">Record</h1>
-            <VariantTable variant={variant()} />
+            <VariantTable variant={variant().data} />
           </div>
           <div class="column is-3">
             <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoValues={variant().n} infoFields={recordsMetadata().info} />
+            <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
           </div>
           <div class="column">
             <h1 class="title is-5">Samples</h1>
             <VariantSampleTable
               formatFields={recordsMetadata().format}
-              samples={[sample(), ...pedigreeSamples()]}
-              sampleValues={getRecordSamples(variant(), sample(), pedigreeSamples())}
-              record={variant()}
+              samples={[sample().data, ...pedigreeSamples()]}
+              sampleValues={getRecordSamples(variant().data, sample().data, pedigreeSamples())}
+              record={variant().data}
             />
           </div>
         </div>
         <div class="columns">
           <div class="column">
-            <For each={getNestedInfoFieldsWithValues(recordsMetadata()?.info, variant().n)}>
+            <For each={getNestedInfoFieldsWithValues(recordsMetadata()?.info, variant().data.n)}>
               {(infoField) => (
                 <>
                   <h1 class="title is-5">{infoField.id}</h1>
                   <p class="mb-4">{infoField.description}</p>
                   <VariantInfoNestedTable
-                    infoValue={variant().n[infoField.id] as unknown as Value[][]}
+                    infoValue={variant().data.n[infoField.id] as unknown as Value[][]}
                     infoField={infoField}
+                    sample={{id: sample().data.index, label: sample().data.person.individualId}}
+                    variant={{id: variant().id,
+                      label: variant().data.c +
+                      ":" +
+                      variant().data.p.toString() +
+                      " " +
+                      variant().data
+                        .a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                        .join(" / ")
+                      }
+                    }
+
                   />
                 </>
               )}

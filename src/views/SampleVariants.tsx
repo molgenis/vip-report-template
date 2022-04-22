@@ -1,6 +1,6 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
-import { Params, Sample as ApiSample } from "../api/Api";
+import { Item, Params, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -13,7 +13,7 @@ import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 
 export const SampleVariants: Component = () => {
-  const sample: Resource<ApiSample> = useRouteData();
+  const sample: Resource<Item<ApiSample>> = useRouteData();
 
   const [params, setParams] = createSignal({ size: 20 } as Params);
 
@@ -47,7 +47,6 @@ export const SampleVariants: Component = () => {
 
   recordsActions.mutate();
   recordsMetadataActions.mutate();
-
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
       <div class="columns is-gapless">
@@ -65,7 +64,7 @@ export const SampleVariants: Component = () => {
                 <Link href="/samples">Samples</Link>
               </li>
               <li>
-                <Link href={"/samples/" + sample().index.toString()}>{sample().person.individualId}</Link>
+                <Link href={"/samples/" + sample().data.index.toString()}>{sample().data.person.individualId}</Link>
               </li>
               <li class="is-active">
                 <a href="#">Variants</a>
@@ -102,7 +101,7 @@ export const SampleVariants: Component = () => {
                       <RecordDownload
                         recordsMetadata={recordsMetadata()}
                         query={params().query}
-                        samples={[sample(), ...pedigreeSamples()]}
+                        samples={[sample().data, ...pedigreeSamples()]}
                       />
                     </div>
                   </div>
@@ -113,7 +112,7 @@ export const SampleVariants: Component = () => {
           <div class="columns">
             {!records.loading && (
               <VariantsSampleTable
-                sample={sample()}
+                sample={sample().data}
                 pedigreeSamples={pedigreeSamples()}
                 records={records().items}
                 recordsMetadata={recordsMetadata()}

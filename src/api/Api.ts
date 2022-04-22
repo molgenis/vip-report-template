@@ -4,9 +4,9 @@ import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
 export interface Api {
   getRecordsMeta(): Promise<RecordMetadata>;
   getRecords(params: Params): Promise<PagedItems<Record>>;
-  getRecordById(id: number): Promise<Record>;
+  getRecordById(id: number): Promise<Item<Record>>;
   getSamples(params: Params): Promise<PagedItems<Sample>>;
-  getSampleById(id: number): Promise<Sample>;
+  getSampleById(id: number): Promise<Item<Sample>>;
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>>;
   getFastaGz(contig: string, pos: number): Promise<Uint8Array | null>;
   getGenesGz(): Promise<Uint8Array | null>;

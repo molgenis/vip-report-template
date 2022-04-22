@@ -22,7 +22,7 @@ export const Sample: Component = () => {
                 <Link href="/samples">Samples</Link>
               </li>
               <li class="is-active">
-                <a href="#">{sample().person.individualId}</a>
+                <a href="#">{sample().data.person.individualId}</a>
               </li>
             </ul>
           </nav>
@@ -31,14 +31,14 @@ export const Sample: Component = () => {
       <p class="has-text-weight-semibold">Sample</p>
       <div class="columns">
         <div class="column is-1">
-          <For each={Object.keys(sample().person)}>{(key) => <p>{key}</p>}</For>
+          <For each={Object.keys(sample().data.person)}>{(key) => <p>{key}</p>}</For>
         </div>
         <div class="column is-1">
-          <For each={Object.values(sample().person)}>{(value) => <p>{value}</p>}</For>
+          <For each={Object.values(sample().data.person)}>{(value) => <p>{value}</p>}</For>
         </div>
       </div>
       <br />
-      <Link href={`/samples/${sample().index}/variants`}>Variants</Link>
+      <Link href={`/samples/${sample().data.index}/variants`}>Variants</Link>
     </Show>
   );
 };
