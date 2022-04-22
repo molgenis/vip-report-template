@@ -58,7 +58,7 @@ export class MockApiClient implements Api {
     return this.apiClient.getPhenotypes(params);
   }
 
-  getRecordById(id: number): Promise<Record> {
+  getRecordById(id: number): Promise<Item<Record>> {
     return this.apiClient.getRecordById(id);
   }
 

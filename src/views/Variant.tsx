@@ -9,9 +9,10 @@ import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
+import { Item } from "../api/Api";
 
 export const Variant: Component = () => {
-  const variant: Resource<Record> = useRouteData();
+  const variant: Resource<Item<Record>> = useRouteData();
 
   const [recordsMetadata, recordsMetadataActions] = createResource(async () => await api.getRecordsMeta());
   recordsMetadataActions.mutate();
@@ -39,8 +40,8 @@ export const Variant: Component = () => {
                       ":" +
                       variant().data.p.toString() +
                       " " +
-                      variant().data
-                        .a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                      variant()
+                        .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
                         .join(" / ")}
                   </a>
                 </li>

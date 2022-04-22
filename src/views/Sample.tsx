@@ -1,10 +1,10 @@
 import { Component, For, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
-import { Sample as ApiSample } from "../api/Api";
+import { Item, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
 
 export const Sample: Component = () => {
-  const sample: Resource<ApiSample> = useRouteData();
+  const sample: Resource<Item<ApiSample>> = useRouteData();
   return (
     <Show when={!sample.loading} fallback={<Loader />}>
       <div class="columns is-gapless">

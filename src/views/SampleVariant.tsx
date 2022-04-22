@@ -2,7 +2,7 @@ import { Component, createResource, For, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
 import { Record } from "../api/vcf/Vcf";
 import { Loader } from "../components/Loader";
-import { Sample } from "../api/Api";
+import { Item, Sample } from "../api/Api";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
@@ -18,7 +18,7 @@ function getRecordSamples(record: Record, sample: Sample, pedigreeSamples: Sampl
 }
 
 export const SampleVariant: Component = () => {
-  const { sample, variant }: { sample: Resource<Sample>; variant: Resource<Record> } = useRouteData();
+  const { sample, variant }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>> } = useRouteData();
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
 
   const [recordsMetadata, recordsMetadataActions] = createResource(async () => await api.getRecordsMeta());
@@ -56,8 +56,8 @@ export const SampleVariant: Component = () => {
                       ":" +
                       variant().data.p.toString() +
                       " " +
-                      variant().data
-                        .a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                      variant()
+                        .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
                         .join(" / ")}
                   </a>
                 </li>
@@ -103,18 +103,18 @@ export const SampleVariant: Component = () => {
                   <VariantInfoNestedTable
                     infoValue={variant().data.n[infoField.id] as unknown as Value[][]}
                     infoField={infoField}
-                    sample={{id: sample().data.index, label: sample().data.person.individualId}}
-                    variant={{id: variant().id,
-                      label: variant().data.c +
-                      ":" +
-                      variant().data.p.toString() +
-                      " " +
-                      variant().data
-                        .a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                        .join(" / ")
-                      }
-                    }
-
+                    sample={{ id: sample().data.index, label: sample().data.person.individualId }}
+                    variant={{
+                      id: variant().id,
+                      label:
+                        variant().data.c +
+                        ":" +
+                        variant().data.p.toString() +
+                        " " +
+                        variant()
+                          .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                          .join(" / "),
+                    }}
                   />
                 </>
               )}

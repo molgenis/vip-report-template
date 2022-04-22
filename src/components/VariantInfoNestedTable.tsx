@@ -28,8 +28,12 @@ function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number,
   return !empty;
 }
 
-export const VariantInfoNestedTable: Component<{ infoValue: Value[][]; infoField: InfoMetadata, variant: {id: number, label: string}, sample: {id: number, label: string}|null }> = (props) => {
-  const csqIndex = props.infoField.nested.items.findIndex(p => p.id == "Consequence");
+export const VariantInfoNestedTable: Component<{
+  iinfoValue: Value[][];
+  infoField: InfoMetadata;
+  variant: { id: number; label: string };
+  sample: { id: number; label: string } | null;
+}> = (props) => {
   return (
     <div style="display: grid">
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}

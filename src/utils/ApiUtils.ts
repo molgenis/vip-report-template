@@ -9,7 +9,7 @@ export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<Sample
         args: [
           { selector: ["person", "individualId"], operator: "!=", args: sample.data.person.individualId },
           { selector: ["person", "familyId"], operator: "==", args: sample.data.person.familyId },
-        ]
+        ],
       },
       size: Number.MAX_SAFE_INTEGER,
     })
