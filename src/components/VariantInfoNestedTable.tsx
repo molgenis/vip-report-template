@@ -29,7 +29,7 @@ function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number,
 }
 
 export const VariantInfoNestedTable: Component<{
-  iinfoValue: Value[][];
+  infoValue: Value[][];
   infoField: InfoMetadata;
   variant: { id: number; label: string };
   sample: { id: number; label: string } | null;
