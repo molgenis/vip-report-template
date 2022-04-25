@@ -7,7 +7,7 @@ import { Item } from "../api/Api";
 
 export const NestedInfoCollapsablePane: Component<{
   recordsMetadata: Metadata;
-  fields: string[];
+  indices: number[];
   record: Item<Record>;
 }> = (props) => {
   const infoFields = Object.values(props.recordsMetadata.info);
@@ -19,25 +19,7 @@ export const NestedInfoCollapsablePane: Component<{
   const infoFieldVepIdx = infoPositions.indexOf("CSQ");
 
   const vepField = infoFields[infoFieldVepIdx];
-  if (vepField.nested === undefined) {
-    throw new Error("No nested fields found for VEP annotation");
-  }
-
-  const nestedVepItems: NestedFieldMetadata = vepField.nested;
-  const indices = getIndices(props.fields);
-
-  function getIndices(fields: string[]) {
-    const positions = nestedVepItems
-      ? nestedVepItems.items.map(function (csqField) {
-          return csqField.id;
-        })
-      : [];
-    const indices: number[] = [];
-    fields.forEach((field) => {
-      indices.push(positions.indexOf(field));
-    });
-    return indices;
-  }
+  const nestedVepItems: NestedFieldMetadata | undefined = vepField != undefined ? vepField.nested : undefined;
 
   const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
 
@@ -46,7 +28,7 @@ export const NestedInfoCollapsablePane: Component<{
   }
 
   // FIXME remove 'as unknown' after InfoContainer type fix
-  const infoVepValues = props.record.data.n[vepField.id] as unknown as Value[][];
+  const infoVepValues = vepField !== undefined ? (props.record.data.n[vepField.id] as unknown as Value[][]) : [];
 
   return (
     <>
@@ -57,7 +39,7 @@ export const NestedInfoCollapsablePane: Component<{
           </span>
         )}
       </td>
-      <For each={indices}>
+      <For each={props.indices}>
         {(idx: number) => (
           <td>
             {idx > -1 ? (
@@ -65,7 +47,9 @@ export const NestedInfoCollapsablePane: Component<{
                 {(value, j) => (
                   <>
                     {j() != 0 && collapsed() && <br />}
-                    {(j() == 0 || collapsed()) && <Info info={value[idx]} infoMetadata={nestedVepItems.items[idx]} />}
+                    {(j() == 0 || collapsed()) && nestedVepItems !== undefined && (
+                      <Info info={value[idx]} infoMetadata={nestedVepItems.items[idx]} />
+                    )}
                   </>
                 )}
               </For>
