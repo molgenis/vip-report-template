@@ -16,11 +16,13 @@ import {
   SortOrder,
 } from "./Api";
 import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
+import { DecisionTree } from "./DecisionTree";
 
 export interface ReportData {
   metadata: Metadata;
   data: Data;
   binary: BinaryReportData;
+  decisionTree: DecisionTree;
 }
 
 interface Data {
@@ -32,7 +34,7 @@ export interface BinaryReportData {
   fastaGz?: { [key: string]: Uint8Array };
   genesGz?: Uint8Array;
   bam?: { [key: string]: Uint8Array };
-  decisionTree?: Uint8Array;
+  decisionTree?: DecisionTree;
 }
 
 export class ApiClient implements Api {
@@ -99,8 +101,8 @@ export class ApiClient implements Api {
     return Promise.resolve(sampleBam);
   }
 
-  getDecisionTree(): Promise<Uint8Array | null> {
-    const decisionTree = this.reportData.binary.decisionTree;
+  getDecisionTree(): Promise<DecisionTree | null> {
+    const decisionTree = this.reportData.decisionTree;
     return Promise.resolve(decisionTree ? decisionTree : null);
   }
 
@@ -152,8 +154,8 @@ export class ApiClient implements Api {
     if (!this.reportData.data[resource]) {
       throw new Error(`unknown resource '${resource}'`);
     }
-    return Promise.resolve({id: id, data: this.reportData.data[resource][id] as T});
-  } 
+    return Promise.resolve({ id: id, data: this.reportData.data[resource][id] as T });
+  }
 }
 
 function get(

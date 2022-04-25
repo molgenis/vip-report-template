@@ -1,5 +1,5 @@
 import bamUrl from "./alignment.bam.blob";
-import decisionTreeUrl from "./decisionTree.json";
+import decisionTreeJson from "./decisionTree.json";
 import fastaUrl1_10042288_10042788 from "./fasta/1-10042288-10042788.fasta.gz.blob";
 import fastaUrl1_16376162_16376662 from "./fasta/1-16376162-16376662.fasta.gz.blob";
 import fastaUrl1_17348965_17349469 from "./fasta/1-17348965-17349469.fasta.gz.blob";
@@ -34,10 +34,11 @@ import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
 
 import { fetchAsBytes } from "../utils";
+import { DecisionTree } from "../../api/DecisionTree";
 
 export const bam = await fetchAsBytes(bamUrl as string);
 
-export const decisionTree = await fetchAsBytes(decisionTreeUrl as string);
+export const decisionTree: DecisionTree = decisionTreeJson as DecisionTree;
 
 export const fastaGz = {
   "1:10042288-10042788": await fetchAsBytes(fastaUrl1_10042288_10042788 as string),

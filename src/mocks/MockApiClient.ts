@@ -25,6 +25,7 @@ import {
   vcfSamples100 as vcfSamples100GRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "../api/vcf/Vcf";
+import { DecisionTree } from "../api/DecisionTree";
 
 /**
  * API client that uses mocked data as data source.
@@ -48,6 +49,10 @@ export class MockApiClient implements Api {
 
   getBam(sampleId: string): Promise<Uint8Array | null> {
     return this.apiClient.getBam(sampleId);
+  }
+
+  getDecisionTree(): Promise<DecisionTree | null> {
+    return this.apiClient.getDecisionTree();
   }
 
   getGenomeAssembly(): Promise<string> {
@@ -107,13 +112,13 @@ export class MockApiClient implements Api {
       data: samplesFamily,
       binary: {
         vcf: vcfFamilyGRCh37,
-        decisionTree: decisionTreeGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
         bam: {
           Patient: bamGRCh37,
         },
       },
+      decisionTree: decisionTreeGRCh37,
     };
 
     const mockReportDataNoVep: ReportData = {
@@ -132,13 +137,13 @@ export class MockApiClient implements Api {
       data: samplesFamily,
       binary: {
         vcf: vcfNoVepGRCh37,
-        decisionTree: decisionTreeGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
         bam: {
           Patient: bamGRCh37,
         },
       },
+      decisionTree: decisionTreeGRCh37,
     };
 
     const mockReportData1Sample: ReportData = {
@@ -157,13 +162,13 @@ export class MockApiClient implements Api {
       data: samples1,
       binary: {
         vcf: vcfSamples1GRCh37,
-        decisionTree: decisionTreeGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
         bam: {
           SAMPLE1: bamGRCh37,
         },
       },
+      decisionTree: decisionTreeGRCh37,
     };
 
     const mockReportData100Samples: ReportData = {
@@ -182,10 +187,10 @@ export class MockApiClient implements Api {
       data: samples100,
       binary: {
         vcf: vcfSamples100GRCh37,
-        decisionTree: decisionTreeGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
       },
+      decisionTree: decisionTreeGRCh37,
     };
 
     const mockReportDataNoSample: ReportData = {
@@ -204,10 +209,10 @@ export class MockApiClient implements Api {
       data: { samples: [] },
       binary: {
         vcf: vcfSamples0GRCh37,
-        decisionTree: decisionTreeGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
       },
+      decisionTree: decisionTreeGRCh37,
     };
 
     const mockReportDataFamilyGRCh38: ReportData = {
@@ -226,13 +231,13 @@ export class MockApiClient implements Api {
       data: samplesFamily,
       binary: {
         vcf: vcfFamilyGRCh38,
-        decisionTree: decisionTreeGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
         bam: {
           Patient: bamGRCh38,
         },
       },
+      decisionTree: decisionTreeGRCh38,
     };
 
     const mockReportDataNoVepGRCh38: ReportData = {
@@ -251,13 +256,13 @@ export class MockApiClient implements Api {
       data: samplesFamily,
       binary: {
         vcf: vcfNoVepGRCh38,
-        decisionTree: decisionTreeGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
         bam: {
           Patient: bamGRCh38,
         },
       },
+      decisionTree: decisionTreeGRCh38,
     };
 
     const mockReportData1SampleGRCh38: ReportData = {
@@ -276,13 +281,13 @@ export class MockApiClient implements Api {
       data: samples1,
       binary: {
         vcf: vcfSamples1GRCh38,
-        decisionTree: decisionTreeGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
         bam: {
           SAMPLE1: bamGRCh38,
         },
       },
+      decisionTree: decisionTreeGRCh38,
     };
 
     const mockReportData100SamplesGRCh38: ReportData = {
@@ -301,10 +306,10 @@ export class MockApiClient implements Api {
       data: samples100,
       binary: {
         vcf: vcfSamples100GRCh38,
-        decisionTree: decisionTreeGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
       },
+      decisionTree: decisionTreeGRCh38,
     };
 
     const mockReportDataNoSampleGRCh38: ReportData = {
@@ -323,10 +328,10 @@ export class MockApiClient implements Api {
       data: { samples: [] },
       binary: {
         vcf: vcfSamples0GRCh38,
-        decisionTree: decisionTreeGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
       },
+      decisionTree: decisionTreeGRCh38,
     };
 
     const datasets: { [key: string]: ReportData } = {};

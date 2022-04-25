@@ -1,5 +1,6 @@
 // this is .ts instead of .d.ts file to work around https://github.com/TypeStrong/ts-loader/issues/1036
 import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
+import { DecisionTree } from "./DecisionTree";
 
 export interface Api {
   getRecordsMeta(): Promise<RecordMetadata>;
@@ -12,6 +13,7 @@ export interface Api {
   getGenesGz(): Promise<Uint8Array | null>;
   getBam(sampleId: string): Promise<Uint8Array | null>;
   getGenomeAssembly(): Promise<string>;
+  getDecisionTree(): Promise<DecisionTree | null>;
 
   // testing purposes only
   isDatasetSupport(): boolean;

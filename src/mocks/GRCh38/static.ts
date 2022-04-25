@@ -33,11 +33,12 @@ import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
 
 import { fetchAsBytes } from "../utils";
-import decisionTreeUrl from "./decisionTree.json";
+import decisionTreeJson from "./decisionTree.json";
+import { DecisionTree } from "../../api/DecisionTree";
 
 export const bam = await fetchAsBytes(bamUrl as string);
 
-export const decisionTree = await fetchAsBytes(decisionTreeUrl as string);
+export const decisionTree: DecisionTree = decisionTreeJson as DecisionTree;
 
 export const fastaGz = {
   "chr1:9982230-9982730": await fetchAsBytes(fastaUrl_chr1_9982230_9982730 as string),

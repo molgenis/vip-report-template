@@ -47,6 +47,16 @@ export const SampleVariants: Component = () => {
 
   recordsActions.mutate();
   recordsMetadataActions.mutate();
+
+  Promise.resolve(api.getDecisionTree()).then(
+    function (value) {
+      console.log(value); // "Success"
+    },
+    function (value) {
+      // not called
+    }
+  );
+
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
       <div class="columns is-gapless">
