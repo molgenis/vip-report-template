@@ -88,7 +88,6 @@ export function createFilterQuery(filters: FilterChangeEvent[]): Query {
       case "FLAG":
       case "FLOAT":
       case "INTEGER":
-      case "NESTED":
       case "STRING":
         throw new Error("invalid field type");
       default:

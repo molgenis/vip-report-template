@@ -183,8 +183,6 @@ function writeFieldValue(field: FieldMetadata, value: Value, missingValue: strin
       vcf = value !== null ? `${value as number}` : missingValue;
       break;
     case "FLAG":
-    case "NESTED":
-      throw new Error(`unexpected info value type '${field.type}'`);
     default:
       throw new Error(`invalid info value type '${field.type}'`);
   }

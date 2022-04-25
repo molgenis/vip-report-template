@@ -50,7 +50,7 @@ export function parseNumberMetadata(token: string): NumberMetadata {
   return numberMetaData;
 }
 
-export type ValueType = "CATEGORICAL" | "CHARACTER" | "INTEGER" | "FLAG" | "FLOAT" | "STRING" | "NESTED";
+export type ValueType = "CATEGORICAL" | "CHARACTER" | "INTEGER" | "FLAG" | "FLOAT" | "STRING";
 
 export function parseValueType(token: string): ValueType {
   let type: ValueType;
