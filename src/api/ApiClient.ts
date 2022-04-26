@@ -441,10 +441,12 @@ function matchesAnyHasAny(query: QueryClause, resource: Item<Resource>): boolean
 
   let match = false;
   for (const item of value as unknown[]) {
-    for (const arg of query.args as unknown[]) {
-      if ((item as unknown[]).includes(arg)) {
-        match = true;
-        break;
+    if (item !== null) {
+      for (const arg of query.args as unknown[]) {
+        if ((item as unknown[]).includes(arg)) {
+          match = true;
+          break;
+        }
       }
     }
   }
