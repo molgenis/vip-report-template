@@ -37,6 +37,7 @@ export const VariantSampleTable: Component<{
                           format={sampleValue[formatField.id]}
                           formatMetadata={formatField}
                           record={props.record}
+                          isAbbreviate={false}
                         />
                       </td>
                     )}

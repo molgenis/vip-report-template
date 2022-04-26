@@ -1,6 +1,6 @@
 import { Component, For } from "solid-js";
 
-export const Allele: Component<{ value: string | null }> = (props) => {
+export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> = (props) => {
   const missing = props.value === null;
   const symbolic = props.value?.startsWith("<") && props.value?.endsWith(">");
   const breakend =
@@ -8,7 +8,7 @@ export const Allele: Component<{ value: string | null }> = (props) => {
 
   function nucs(value: string) {
     let nucleotides = value.split("");
-    if (nucleotides.length > 4) {
+    if (nucleotides.length > 4 && props.isAbbreviate) {
       const lastNuc = nucleotides[nucleotides.length - 1];
       nucleotides = nucleotides.slice(0, 2);
       nucleotides.push("\u2026"); // ellipsis
@@ -24,7 +24,8 @@ export const Allele: Component<{ value: string | null }> = (props) => {
       {!missing && !symbolic && !breakend && (
         <For each={nucs(props.value as string)}>
           {(base) => (
-            <span
+            <abbr
+              title={props.value as string}
               classList={{
                 base: true,
                 "base-a": base === "A",
@@ -35,7 +36,7 @@ export const Allele: Component<{ value: string | null }> = (props) => {
               }}
             >
               {base}
-            </span>
+            </abbr>
           )}
         </For>
       )}

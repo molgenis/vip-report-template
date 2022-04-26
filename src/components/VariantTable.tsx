@@ -38,13 +38,13 @@ export const VariantTable: Component<{ variant: Record }> = (props) => {
             <tr>
               <td>Reference allele</td>
               <td>
-                <Ref value={props.variant.r} />
+                <Ref value={props.variant.r} isAbbreviate={false} />
               </td>
             </tr>
             <tr>
               <td>Alternate allele(s)</td>
               <td>
-                <Alt value={props.variant.a} />
+                <Alt value={props.variant.a} isAbbreviate={false} />
               </td>
             </tr>
             {props.variant.q !== null && (

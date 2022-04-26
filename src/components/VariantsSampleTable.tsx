@@ -8,7 +8,6 @@ import { GenotypeField } from "./record/format/GenotypeField";
 import { NestedInfoCollapsablePane } from "./NestedInfoCollapsablePane";
 import { NestedInfoHeader } from "./NestedInfoHeader";
 import { Component, For } from "solid-js";
-import { NestedFieldMetadata } from "../api/vcf/MetadataParser";
 
 export const VariantsSampleTable: Component<{
   sample: Sample;
@@ -86,7 +85,7 @@ export const VariantsSampleTable: Component<{
                     </Link>
                   </td>
                   <td>
-                    <Ref value={record.data.r} />
+                    <Ref value={record.data.r} isAbbreviate={true} />
                   </td>
                   <For each={samples}>
                     {(sample) => (
@@ -95,6 +94,7 @@ export const VariantsSampleTable: Component<{
                           genotype={record.data.s[sample.index]["GT"] as Genotype}
                           refAllele={record.data.r}
                           altAlleles={record.data.a}
+                          isAbbreviate={true}
                         />
                       </td>
                     )}

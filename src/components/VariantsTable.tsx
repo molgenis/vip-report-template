@@ -74,10 +74,10 @@ export const VariantsTable: Component<{
                     <Id value={record.data.i} />
                   </td>
                   <td>
-                    <Ref value={record.data.r} />
+                    <Ref value={record.data.r} isAbbreviate={true} />
                   </td>
                   <td>
-                    <Alt value={record.data.a} />
+                    <Alt value={record.data.a} isAbbreviate={true} />
                   </td>
                   <td>
                     <Qual value={record.data.q} />
