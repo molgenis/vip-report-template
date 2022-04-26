@@ -44,7 +44,6 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
   return clauses;
 }
 
-// FIXME doesn't work for many cases
 export function getSelector(fieldMetadata: FieldMetadata): Selector {
   const selector: Selector = [];
   let currentFieldMetadata: FieldMetadata | undefined = fieldMetadata;
