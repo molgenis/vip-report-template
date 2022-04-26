@@ -1,7 +1,7 @@
 import { Container, FormatMetadataContainer, Genotype, Metadata, Record, RecordSample } from "./Vcf";
 import { MISSING } from "./Constants";
 import { FieldMetadataContainer, InfoContainer } from "./VcfParser";
-import { FieldMetadata, FormatMetadata, NestedFieldMetadata } from "./MetadataParser";
+import { FieldMetadata, NestedFieldMetadata } from "./MetadataParser";
 import { Value } from "./ValueParser";
 import { RecordSampleType } from "./SampleDataParser";
 
@@ -10,7 +10,7 @@ export type Filter = {
 };
 
 export function writeVcf(container: Container, filter: Filter = {}): string {
-  let vcf = [];
+  const vcf = [];
   vcf.push(writeHeader(container.metadata, filter));
 
   for (const record of container.data) {
@@ -21,7 +21,7 @@ export function writeVcf(container: Container, filter: Filter = {}): string {
 }
 
 function writeHeader(metadata: Metadata, filter: Filter): string {
-  let vcf = [];
+  const vcf = [];
   for (const [index, line] of metadata.lines.entries()) {
     if (index !== metadata.lines.length - 1) {
       vcf.push(line);
@@ -49,7 +49,7 @@ function writeHeader(metadata: Metadata, filter: Filter): string {
 }
 
 function writeRecord(metadata: Metadata, record: Record, filter: Filter): string {
-  let vcf = [];
+  const vcf = [];
   vcf.push(writeChr(record.c));
   vcf.push(writePos(record.p));
   vcf.push(writeIds(record.i));
@@ -113,7 +113,7 @@ function writeInfo(infoFields: FieldMetadataContainer, infoValues: InfoContainer
     return MISSING;
   }
 
-  let vcf = [];
+  const vcf = [];
   for (const infoField of Object.values(infoFields)) {
     if (infoField.id in infoValues) {
       vcf.push(writeInfoField(infoField, infoValues[infoField.id]));
@@ -214,7 +214,7 @@ function writeSample(formatFields: FormatMetadataContainer, sample: RecordSample
   return vcf.join(":");
 }
 
-function writeSampleValue(formatField: FormatMetadata, value: RecordSampleType): string {
+function writeSampleValue(formatField: FieldMetadata, value: RecordSampleType): string {
   let vcf;
   if (formatField.id === "GT") {
     vcf = writeSampleValueGt(formatField, value as Genotype);
@@ -230,6 +230,6 @@ function writeSampleValue(formatField: FormatMetadata, value: RecordSampleType):
   return vcf;
 }
 
-function writeSampleValueGt(formatField: FormatMetadata, value: Genotype) {
+function writeSampleValueGt(formatField: FieldMetadata, value: Genotype) {
   return value.a.join(value.p ? "|" : "/");
 }

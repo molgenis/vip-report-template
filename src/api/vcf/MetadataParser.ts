@@ -94,14 +94,13 @@ export interface NestedFieldMetadata {
   items: FieldMetadata[];
 }
 
-export interface FormatMetadata extends FieldMetadata {}
 export interface InfoMetadata extends FieldMetadata {
   source?: string;
   version?: string;
 }
 const REG_EXP_FORMAT = /##FORMAT=<ID=(.+?),Number=(.+?),Type=(.+?),Description="(.+?)">/;
 
-export function parseFormatMetadata(token: string): FormatMetadata {
+export function parseFormatMetadata(token: string): FieldMetadata {
   const result = token.match(REG_EXP_FORMAT);
   if (result === null) {
     throw new Error(`invalid format metadata '${token}'`);

@@ -1,4 +1,4 @@
-import { FormatMetadata } from "./MetadataParser";
+import { FieldMetadata } from "./MetadataParser";
 import { parseValue } from "./DataParser";
 import { parseIntegerValue, Value } from "./ValueParser";
 
@@ -17,7 +17,7 @@ export interface Genotype {
 }
 
 export interface FormatMetadataContainer {
-  [key: string]: FormatMetadata;
+  [key: string]: FieldMetadata;
 }
 
 export function parseRecordSample(
@@ -35,7 +35,7 @@ export function parseRecordSample(
   return recordSample;
 }
 
-export function parseFormatValue(token: string, formatMetadata: FormatMetadata): RecordSampleType {
+export function parseFormatValue(token: string, formatMetadata: FieldMetadata): RecordSampleType {
   let value: Genotype | Value | Value[];
   if (formatMetadata.id === "GT") {
     value = parseGenotype(token);

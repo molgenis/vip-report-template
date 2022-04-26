@@ -30,6 +30,8 @@ export function parseTypedValue(token: string, type: ValueType): Value {
       value = parseFloatValue(token);
       break;
     default:
+      //TODO: discuss: the code is unreachable, keep it for the case types are added?
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       throw new Error(`invalid value type '${type}'`);
   }
 

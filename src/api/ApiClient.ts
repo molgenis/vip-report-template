@@ -86,7 +86,7 @@ export class ApiClient implements Api {
   }
 
   getGenomeAssembly(): Promise<string> {
-    let assembly = this.reportData.metadata.htsFile.genomeAssembly;
+    const assembly = this.reportData.metadata.htsFile.genomeAssembly;
     return Promise.resolve(assembly);
   }
 
@@ -162,18 +162,20 @@ function get(
   value: object | null | undefined,
   path: string[]
 ): boolean | boolean[] | number | number[] | string | string[] | null {
-  let valueAtDepth: any = value;
+  if (value === undefined || value === null) {
+    return null;
+  }
+  let valueAtDepth: boolean | boolean[] | number | number[] | string | string[] | null = null;
   for (const token of path) {
-    if (valueAtDepth === undefined) {
-      valueAtDepth = null;
-    } else if (valueAtDepth !== null) {
-      if (typeof valueAtDepth !== "object" || Array.isArray(valueAtDepth)) {
-        throw new Error(`invalid path ${path.join("/")}`);
-      }
-      valueAtDepth = valueAtDepth[token];
+    if (typeof value === "object") {
+      valueAtDepth = value[token as keyof typeof value];
+    } else if (Array.isArray(value)) {
+      valueAtDepth = value[token];
+    } else {
+      throw new Error(`invalid path ${path.join("/")}`);
     }
   }
-  return valueAtDepth !== undefined ? valueAtDepth : null;
+  return valueAtDepth;
 }
 
 function compareAsc(a: unknown, b: unknown) {
@@ -222,8 +224,12 @@ function getCompareFn(sortOrder: SortOrder): CompareFn {
   } else if (typeof sortOrder.compare === "function") {
     compareFn = sortOrder.compare;
   } else {
+    //TODO: discuss: the code is unreachable, keep it for the case types are added?
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     throw new Error(
-      `illegal sort compare value '${sortOrder.compare}'. valid values are 'asc', 'desc' or a function (a, b) => number`
+      `illegal sort compare value '${
+        sortOrder.compare as string
+      }'. valid values are 'asc', 'desc' or a function (a, b) => number`
     );
   }
   return compareFn;
@@ -274,6 +280,8 @@ function matchesComposed(composedQuery: ComposedQuery, resource: Item<Resource>)
       match = matchesOr(composedQuery.args, resource);
       break;
     default:
+      //TODO: discuss: the code is unreachable, keep it for the case types are added?
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       throw new Error(`invalid operator '${composedQuery.operator}'`);
   }
   return match;
@@ -331,7 +339,9 @@ function matches(query: Query, resource: Item<Resource>): boolean {
         match = matchesLesserThanOrEqual(query, resource);
         break;
       default:
-        throw new Error("unexpected query operator " + query.operator);
+        //TODO: discuss: the code is unreachable, keep it for the case types are added?
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        throw new Error(`unexpected query operator ${query.operator}`);
     }
     return match;
   }
@@ -353,7 +363,7 @@ function searchEquals(token: unknown, search: unknown): boolean {
 function matchesSearch(query: QueryClause, resource: Item<Resource>): boolean {
   const value: any = select(query.selector, resource);
   if (typeof value === "string" && typeof query.args === "string") {
-    return searchEquals(value as string, query.args as string);
+    return searchEquals(value, query.args);
   } else {
     return value === query.args;
   }
@@ -367,7 +377,7 @@ function matchesSearchAny(query: QueryClause, resource: Item<Resource>): boolean
   }
 
   if (!Array.isArray(value)) {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'array'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'array'`);
   }
 
   for (const arg of query.args as unknown[]) {
@@ -388,7 +398,7 @@ function matchesAnySearchAny(query: QueryClause, resource: Item<Resource>): bool
   }
 
   if (!Array.isArray(value)) {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'array'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'array'`);
   }
 
   for (const item of value as unknown[]) {
@@ -426,7 +436,7 @@ function matchesAnyHasAny(query: QueryClause, resource: Item<Resource>): boolean
   }
 
   if (!Array.isArray(value)) {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'array'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'array'`);
   }
 
   let match = false;
@@ -449,7 +459,7 @@ function matchesHasAny(query: QueryClause, resource: Item<Resource>): boolean {
   }
 
   if (!Array.isArray(value)) {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'array'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'array'`);
   }
 
   let match = false;
@@ -470,7 +480,7 @@ function matchesGreaterThan(query: QueryClause, resource: Item<Resource>): boole
   }
 
   if (typeof value !== "number") {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'number'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'number'`);
   }
 
   return value > query.args;
@@ -484,7 +494,7 @@ function matchesGreaterThanOrEqual(query: QueryClause, resource: Item<Resource>)
   }
 
   if (typeof value !== "number") {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'number'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'number'`);
   }
 
   return value >= query.args;
@@ -498,7 +508,7 @@ function matchesLesserThan(query: QueryClause, resource: Item<Resource>): boolea
   }
 
   if (typeof value !== "number") {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'number'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'number'`);
   }
 
   return value < query.args;
@@ -512,7 +522,7 @@ function matchesLesserThanOrEqual(query: QueryClause, resource: Item<Resource>):
   }
 
   if (typeof value !== "number") {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'number'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'number'`);
   }
 
   return value <= query.args;
@@ -562,7 +572,7 @@ function selectRecursive(parts: SelectorPart[], value: unknown): unknown {
 
 function selectFromObject(part: string, value: unknown) {
   if (typeof value !== "object") {
-    throw new Error(`value '${value}' is of type '${typeof value}' instead of 'object'`);
+    throw new Error(`value '${value as string}' is of type '${typeof value}' instead of 'object'`);
   }
   return value !== null ? (value as { [index: string]: unknown })[part] : null;
 }

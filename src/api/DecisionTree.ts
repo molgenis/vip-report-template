@@ -71,7 +71,9 @@ export interface NodeOutcome {
   label: string;
 }
 
-export interface Path {}
+export interface Path {
+  [key: string]: string;
+}
 
 export type ClauseOperator = "AND" | "OR";
 
