@@ -56,7 +56,7 @@ export const Samples: Component = () => {
       </div>
 
       <div class="columns">
-        <div class="column is-2">
+        <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
           <p class="has-text-weight-semibold">Proband</p>
           <div class="field">
