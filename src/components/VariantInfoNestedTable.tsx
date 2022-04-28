@@ -8,7 +8,11 @@ function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number,
 
   let empty;
   if (nestedInfoField.number.count === 0 || nestedInfoField.number.count === 1) {
-    empty = (value as Value[])[index] === null;
+    if (value === null) {
+      empty = true;
+    } else {
+      empty = (value as Value[])[index] === null;
+    }
   } else {
     empty = true;
     for (const subValue of value as Value[][]) {
@@ -29,7 +33,7 @@ function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number,
 }
 
 export const VariantInfoNestedTable: Component<{
-  infoValue: Value[][];
+  infoValue: Value[] | Value[][];
   infoField: InfoMetadata;
   variant: { id: number; label: string };
   sample: { id: number; label: string } | null;
@@ -51,25 +55,39 @@ export const VariantInfoNestedTable: Component<{
             </For>
           </thead>
           <tbody>
-            <For each={props.infoValue}>
-              {(value, rowIndex) => (
-                <>
-                  <tr>
-                    <For each={props.infoField.nested.items}>
-                      {(infoFieldItem, i) => (
-                        <>
-                          {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
-                            <td>
-                              <Info info={value[i()]} infoMetadata={infoFieldItem} />
-                            </td>
-                          )}
-                        </>
-                      )}
-                    </For>
-                  </tr>
-                </>
-              )}
-            </For>
+            {props.infoField.number.count === 1 ? (
+              <tr>
+                <For each={props.infoValue}>
+                  {(value, rowIndex) => (
+                    <>
+                      <td>
+                        <Info info={value} infoMetadata={props.infoField} />
+                      </td>
+                    </>
+                  )}
+                </For>
+              </tr>
+            ) : (
+              <For each={props.infoValue}>
+                {(value, rowIndex) => (
+                  <>
+                    <tr>
+                      <For each={props.infoField.nested.items}>
+                        {(infoFieldItem, i) => (
+                          <>
+                            {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
+                              <td>
+                                <Info info={value[i()] as Value} infoMetadata={infoFieldItem} />
+                              </td>
+                            )}
+                          </>
+                        )}
+                      </For>
+                    </tr>
+                  </>
+                )}
+              </For>
+            )}
           </tbody>
         </table>
       </div>
