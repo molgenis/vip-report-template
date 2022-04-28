@@ -92,7 +92,12 @@ export const VariantsTable: Component<{
                           {(infoFieldNested, i) => (
                             <td>
                               {infoField.number.count === 1 ? (
-                                <span>TODO</span>
+                                <>
+                                  <Info
+                                    info={(record.data.n[infoField.id] as Value[])[i()]}
+                                    infoMetadata={infoFieldNested}
+                                  />
+                                </>
                               ) : (
                                 <For each={record.data.n[infoField.id] as unknown as Value[][]}>
                                   {(value, j) => (
