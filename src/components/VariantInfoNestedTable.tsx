@@ -10,8 +10,6 @@ function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number,
   if (nestedInfoField.number.count === 0 || nestedInfoField.number.count === 1) {
     if (value === null) {
       empty = true;
-    } else {
-      empty = (value as Value[])[index] === null;
     }
   } else {
     empty = true;
@@ -60,9 +58,11 @@ export const VariantInfoNestedTable: Component<{
                 <For each={props.infoValue}>
                   {(value, rowIndex) => (
                     <>
-                      <td>
-                        <Info info={value} infoMetadata={props.infoField} />
-                      </td>
+                      {isNonEmptyNestedInfoItem(props.infoField, -1, props.infoValue) && (
+                        <td>
+                          <Info info={value} infoMetadata={props.infoField} />
+                        </td>
+                      )}
                     </>
                   )}
                 </For>
