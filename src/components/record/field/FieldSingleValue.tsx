@@ -14,7 +14,9 @@ export const FieldSingleValue: Component<{
   return (
     <Switch fallback={<span>{props.info as string}</span>}>
       <Match when={props.infoMetadata.type === "FLOAT"}>
-        {props.info !== null && props.info !== undefined && <span>{(props.info as number).toFixed(4)}</span>}
+        {props.info !== null && props.info !== undefined && (
+          <abbr title={props.info as string}>{(props.info as number).toFixed(4)}</abbr>
+        )}
       </Match>
     </Switch>
   );
