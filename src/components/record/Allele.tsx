@@ -21,7 +21,7 @@ export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> 
     <>
       {missing && <span classList={{ base: true, "base-m": true }}>?</span>}
       {(symbolic || breakend) && <span class="base-n">{props.value}</span>}
-      {!missing && !symbolic && !breakend && (
+      {!missing && !symbolic && !breakend && props.isAbbreviate && (props.value as string).length > 4 && (
         <For each={nucs(props.value as string)}>
           {(base) => (
             <abbr
@@ -37,6 +37,24 @@ export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> 
             >
               {base}
             </abbr>
+          )}
+        </For>
+      )}
+      {!missing && !symbolic && !breakend && (!props.isAbbreviate || (props.value as string).length <= 4) && (
+        <For each={nucs(props.value as string)}>
+          {(base) => (
+            <span
+              classList={{
+                base: true,
+                "base-a": base === "A",
+                "base-c": base === "C",
+                "base-g": base === "G",
+                "base-n": base === "N",
+                "base-t": base === "T",
+              }}
+            >
+              {base}
+            </span>
           )}
         </For>
       )}
