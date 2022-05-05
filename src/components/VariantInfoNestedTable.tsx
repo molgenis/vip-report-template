@@ -1,4 +1,5 @@
-import { Component, For } from "solid-js";
+import { Component, For, Show } from "solid-js";
+import { Link } from "solid-app-router";
 import { Value } from "../api/vcf/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "../api/vcf/MetadataParser";
@@ -42,6 +43,7 @@ export const VariantInfoNestedTable: Component<{
       <div class="table-container">
         <table class="table is-narrow">
           <thead>
+            {<th></th>}
             <For each={props.infoField.nested.items}>
               {(infoFieldItem, i) => (
                 <>
@@ -56,7 +58,7 @@ export const VariantInfoNestedTable: Component<{
             {props.infoField.number.count === 1 ? (
               <tr>
                 <For each={props.infoValue}>
-                  {(value, rowIndex) => (
+                  {(value) => (
                     <>
                       {isNonEmptyNestedInfoItem(props.infoField, -1, props.infoValue) && (
                         <td>
@@ -72,6 +74,32 @@ export const VariantInfoNestedTable: Component<{
                 {(value, rowIndex) => (
                   <>
                     <tr>
+                      <td>
+                        <Show
+                          when={props.sample == null}
+                          fallback={
+                            <Link
+                              href={`/samples/${props.sample.id}/variants/${
+                                props.variant.id
+                              }/consequences/${rowIndex()}`}
+                            >
+                              <a class="button is-info is-small">
+                                <span class="icon is-left">
+                                  <i class="fa-solid fa-search" />
+                                </span>
+                              </a>
+                            </Link>
+                          }
+                        >
+                          <Link href={`/variants/${props.variant.id}/consequences/${rowIndex()}`}>
+                            <a class="button is-info is-small">
+                              <span class="icon is-left">
+                                <i class="fa-solid fa-search" />
+                              </span>
+                            </a>
+                          </Link>
+                        </Show>
+                      </td>
                       <For each={props.infoField.nested.items}>
                         {(infoFieldItem, i) => (
                           <>

@@ -2,17 +2,21 @@ import { Component, ErrorBoundary, onMount } from "solid-js";
 import { Link, Route, Routes, useNavigate } from "solid-app-router";
 import { Variants } from "./views/Variants";
 import { Variant } from "./views/Variant";
-import VariantData from "./views/VariantData";
+import VariantData from "./views/data/VariantData";
 import { Samples } from "./views/Samples";
-import SampleData from "./views/SampleData";
+import SampleData from "./views/data/SampleData";
 import { Sample } from "./views/Sample";
+import { VariantConsequence } from "./views/VariantConsequence";
+import { SampleVariantConsequence } from "./views/SampleVariantConsequence";
 import { SampleVariants } from "./views/SampleVariants";
 import { Error } from "./components/Error";
-import SampleVariantData from "./views/SampleVariantData";
+import SampleVariantData from "./views/data/SampleVariantData";
 import { SampleVariant } from "./views/SampleVariant";
 import { Home } from "./views/Home";
 import api from "./Api";
 import { DatasetDropdown } from "./components/DatasetDropdown";
+import SampleVariantConsequenceData from "./views/data/SampleVariantConsequenceData";
+import VariantConsequenceData from "./views/data/VariantConsequenceData";
 
 const App: Component = () => {
   const navigate = useNavigate();
@@ -56,8 +60,10 @@ const App: Component = () => {
             <Route path="/samples/:sampleId" element={<Sample />} data={SampleData} />
             <Route path="/samples/:sampleId/variants" element={<SampleVariants />} data={SampleData} />
             <Route path="/samples/:sampleId/variants/:variantId" element={<SampleVariant />} data={SampleVariantData} />
+            <Route path="/samples/:sampleId/variants/:variantId/consequences/:consequenceId" element={<SampleVariantConsequence />} data={SampleVariantConsequenceData} />
             <Route path="/variants" element={<Variants />} />
             <Route path="/variants/:variantId" element={<Variant />} data={VariantData} />
+            <Route path="/variants/:variantId/consequences/:consequenceId" element={<VariantConsequence />} data={VariantConsequenceData}/>
           </Routes>
         </ErrorBoundary>
       </div>
