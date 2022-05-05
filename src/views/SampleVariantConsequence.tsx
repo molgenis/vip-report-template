@@ -1,4 +1,4 @@
-import { Component, createResource, For, Resource, Show } from "solid-js";
+import { Component, createResource, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Record } from "../api/vcf/Vcf";
 import { Loader } from "../components/Loader";
@@ -6,20 +6,11 @@ import { Item, Sample } from "../api/Api";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
-import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
-import { Value } from "../api/vcf/ValueParser";
-import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import api from "../Api";
 import { Breadcrumb } from "../components/Breadcrumb";
-
-// function getRecordSamples(record: Record, sample: Sample, pedigreeSamples: Sample[]) {
-//   return [record.s[sample.index], ...pedigreeSamples.map((pedigreeSample) => record.s[pedigreeSample.index])];
-// }
-
-function getConsequenceLabel(CSQ: Value[][][], index: number) {
-  return CSQ.length >= index ? (CSQ[index].length >= 1 ? CSQ[index][1].join("&") : "#") : "#";
-}
+import { ConsequenceTable } from "../components/ConsequenceTable";
+import { getConsequenceLabel, getCsqHeaderIndex, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 
 export const SampleVariantConsequence: Component = () => {
   const {
@@ -55,11 +46,42 @@ export const SampleVariantConsequence: Component = () => {
               },
               {
                 href: "#",
-                label: getConsequenceLabel(variant().data.n.CSQ, consequenceId),
+                label: getConsequenceLabel(
+                  variant().data.n.CSQ,
+                  consequenceId,
+                  getCsqHeaderIndex(recordsMetadata().info.CSQ.nested.items)
+                ),
               },
             ]}
           ></Breadcrumb>
-          <h1>Sample variant consequence Page</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">Consequence</h1>
+              <ConsequenceTable
+                csqHeader={recordsMetadata().info.CSQ.nested.items}
+                csq={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
+              ></ConsequenceTable>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-3">
+              <h1 class="title is-5">Record</h1>
+              <VariantTable variant={variant().data} />
+            </div>
+            <div class="column is-3">
+              <h1 class="title is-5">Info</h1>
+              <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
+            </div>
+            <div class="column">
+              <h1 class="title is-5">Samples</h1>
+              <VariantSampleTable
+                formatFields={recordsMetadata().format}
+                samples={[sample().data, ...pedigreeSamples()]}
+                sampleValues={getRecordSamples(variant().data, sample().data, pedigreeSamples())}
+                record={variant().data}
+              />
+            </div>
+          </div>
         </Show>
       }
     </>

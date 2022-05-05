@@ -13,10 +13,7 @@ import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import api from "../Api";
 import { Breadcrumb } from "../components/Breadcrumb";
-
-function getRecordSamples(record: Record, sample: Sample, pedigreeSamples: Sample[]) {
-  return [record.s[sample.index], ...pedigreeSamples.map((pedigreeSample) => record.s[pedigreeSample.index])];
-}
+import { getRecordSamples } from "../utils/viewUtils";
 
 export const SampleVariant: Component = () => {
   const { sample, variant }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>> } = useRouteData();

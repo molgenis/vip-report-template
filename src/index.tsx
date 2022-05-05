@@ -5,10 +5,18 @@ import "./assets/sass/main.scss";
 import App from "./App";
 
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
-import { faAngleDown, faAngleUp, faCircleXmark, faDownload, faHome, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faAngleUp,
+  faCircleXmark,
+  faDownload,
+  faHome,
+  faSearch,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { hashIntegration, Router } from "solid-app-router";
 
-library.add(faCircleXmark, faDownload, faHome, faSearch, faAngleDown, faAngleUp);
+library.add(faCircleXmark, faDownload, faHome, faSearch, faAngleDown, faAngleUp, faArrowRight);
 
 function processIcons() {
   void dom.i2svg();

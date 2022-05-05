@@ -1,5 +1,5 @@
 import { Component, createResource, For, Resource, Show } from "solid-js";
-import { Link, useRouteData } from "solid-app-router";
+import { useRouteData } from "solid-app-router";
 import { Record } from "../api/vcf/Vcf";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { Loader } from "../components/Loader";

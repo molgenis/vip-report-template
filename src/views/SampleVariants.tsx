@@ -1,5 +1,5 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
-import { Link, useRouteData } from "solid-app-router";
+import { useRouteData } from "solid-app-router";
 import { Item, Params, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";

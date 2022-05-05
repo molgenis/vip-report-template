@@ -1,19 +1,14 @@
-import { Component, createResource, For, Resource, Show } from "solid-js";
+import { Component, createResource, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Record } from "../api/vcf/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "../api/Api";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
-import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
-import { Value } from "../api/vcf/ValueParser";
-import { getNestedInfoFieldsWithValues } from "../utils/field";
 import api from "../Api";
 import { Breadcrumb } from "../components/Breadcrumb";
-
-function getConsequenceLabel(CSQ: Value[][][], index: number) {
-  return CSQ.length >= index ? (CSQ[index].length >= 1 ? CSQ[index][1].join("&") : "#") : "#";
-}
+import { getConsequenceLabel, getCsqHeaderIndex, getSpecificConsequence } from "../utils/viewUtils";
+import { ConsequenceTable } from "../components/ConsequenceTable";
 
 export const VariantConsequence: Component = () => {
   const {
@@ -26,7 +21,7 @@ export const VariantConsequence: Component = () => {
   return (
     <>
       {
-        <Show when={!variant.loading} fallback={<Loader />}>
+        <Show when={!variant.loading && !recordsMetadata.loading} fallback={<Loader />}>
           <Breadcrumb
             links={[
               { href: "/variants", label: "Variants" },
@@ -43,11 +38,33 @@ export const VariantConsequence: Component = () => {
               },
               {
                 href: "#",
-                label: getConsequenceLabel(variant().data.n.CSQ, consequenceId),
+                label: getConsequenceLabel(
+                  variant().data.n.CSQ,
+                  consequenceId,
+                  getCsqHeaderIndex(recordsMetadata().info.CSQ.nested.items)
+                ),
               },
             ]}
           ></Breadcrumb>
-          <h1>Variant consequence Page</h1>
+          <div class="columns">
+            <div class="column">
+              <h1 class="title">Consequence</h1>
+              <ConsequenceTable
+                csqHeader={recordsMetadata().info.CSQ.nested.items}
+                csq={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
+              ></ConsequenceTable>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-6">
+              <h1 class="title is-5">Record</h1>
+              <VariantTable variant={variant().data} />
+            </div>
+            <div class="column">
+              <h1 class="title is-5">Info</h1>
+              <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
+            </div>
+          </div>
         </Show>
       }
     </>
