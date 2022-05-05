@@ -60,10 +60,16 @@ const App: Component = () => {
             <Route path="/samples/:sampleId" element={<Sample />} data={SampleData} />
             <Route path="/samples/:sampleId/variants" element={<SampleVariants />} data={SampleData} />
             <Route path="/samples/:sampleId/variants/:variantId" element={<SampleVariant />} data={SampleVariantData} />
-            <Route path="/samples/:sampleId/variants/:variantId/consequences/:consequenceId" element={<SampleVariantConsequence />} data={SampleVariantConsequenceData} />
+            <Route 
+              path="/samples/:sampleId/variants/:variantId/consequences/:consequenceId"
+              element={<SampleVariantConsequence />} 
+              data={SampleVariantConsequenceData} />
             <Route path="/variants" element={<Variants />} />
             <Route path="/variants/:variantId" element={<Variant />} data={VariantData} />
-            <Route path="/variants/:variantId/consequences/:consequenceId" element={<VariantConsequence />} data={VariantConsequenceData}/>
+            <Route 
+              path="/variants/:variantId/consequences/:consequenceId"
+              element={<VariantConsequence />} 
+              data={VariantConsequenceData}/>
           </Routes>
         </ErrorBoundary>
       </div>
