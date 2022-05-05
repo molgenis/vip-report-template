@@ -2,32 +2,18 @@ import { Component, For, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
 import { Item, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
+import { Breadcrumb } from "../components/Breadcrumb";
 
 export const Sample: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
   return (
     <Show when={!sample.loading} fallback={<Loader />}>
-      <div class="columns is-gapless">
-        <div class="column">
-          <nav class="breadcrumb">
-            <ul>
-              <li>
-                <Link href="/">
-                  <span class="icon">
-                    <i class="fa-solid fa-home" />
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/samples">Samples</Link>
-              </li>
-              <li class="is-active">
-                <a href="#">{sample().data.person.individualId}</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumb
+        links={[
+          { href: "/samples", label: "Samples" },
+          { href: "#", label: sample().data.person.individualId },
+        ]}
+      ></Breadcrumb>
       <p class="has-text-weight-semibold">Sample</p>
       <div class="columns">
         <div class="column is-1">

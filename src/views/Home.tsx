@@ -1,21 +1,10 @@
 import { Component } from "solid-js";
+import { Breadcrumb } from "../components/Breadcrumb";
 
 export const Home: Component = () => {
   return (
     <>
-      <div class="columns is-gapless">
-        <div class="column">
-          <nav class="breadcrumb">
-            <ul>
-              <li class="is-active">
-                <span class="icon">
-                  <i class="fa-solid fa-home" />
-                </span>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumb links={[]}></Breadcrumb>
       <div class="has-background-warning" style={{ height: "300px", width: "500px" }}>
         <p>This screen displays:</p>
         <p>- metadata</p>
