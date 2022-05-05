@@ -1,5 +1,5 @@
 import { Component, createResource, For, Resource, Show } from "solid-js";
-import { Link, useRouteData } from "solid-app-router";
+import { useRouteData } from "solid-app-router";
 import { Record } from "../api/vcf/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "../api/Api";
@@ -12,6 +12,7 @@ import { Value } from "../api/vcf/ValueParser";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import api from "../Api";
+import { Breadcrumb } from "../components/Breadcrumb";
 
 function getRecordSamples(record: Record, sample: Sample, pedigreeSamples: Sample[]) {
   return [record.s[sample.index], ...pedigreeSamples.map((pedigreeSample) => record.s[pedigreeSample.index])];
@@ -30,41 +31,24 @@ export const SampleVariant: Component = () => {
         when={!sample.loading && !variant.loading && !recordsMetadata.loading && !pedigreeSamples.loading}
         fallback={<Loader />}
       >
-        <div class="columns is-gapless">
-          <div class="column">
-            <nav class="breadcrumb">
-              <ul>
-                <li>
-                  <Link href="/">
-                    <span class="icon">
-                      <i class="fa-solid fa-home" />
-                    </span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/samples">Samples</Link>
-                </li>
-                <li>
-                  <Link href={"/samples/" + sample().data.index.toString()}>{sample().data.person.individualId}</Link>
-                </li>
-                <li>
-                  <Link href={"/samples/" + sample().data.index.toString() + "/variants"}>Variants</Link>
-                </li>
-                <li class="is-active">
-                  <a href="#">
-                    {variant().data.c +
-                      ":" +
-                      variant().data.p.toString() +
-                      " " +
-                      variant()
-                        .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                        .join(" / ")}
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+        <Breadcrumb
+          links={[
+            { href: "/samples", label: "Samples" },
+            { href: "/samples/" + sample().data.index.toString(), label: sample().data.person.individualId },
+            { href: "/samples/" + sample().data.index.toString() + "/variants", label: "Variants" },
+            {
+              href: "#",
+              label:
+                variant().data.c +
+                ":" +
+                variant().data.p.toString() +
+                " " +
+                variant()
+                  .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                  .join(" / "),
+            },
+          ]}
+        ></Breadcrumb>
         <div class="columns">
           <div class="column">
             <GenomeBrowser

@@ -10,6 +10,7 @@ import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { Item } from "../api/Api";
+import { Breadcrumb } from "../components/Breadcrumb";
 
 export const Variant: Component = () => {
   const variant: Resource<Item<Record>> = useRouteData();
@@ -20,35 +21,22 @@ export const Variant: Component = () => {
   return (
     <>
       <Show when={!variant.loading} fallback={<Loader />}>
-        <div class="columns is-gapless">
-          <div class="column">
-            <nav class="breadcrumb">
-              <ul>
-                <li>
-                  <Link href="/">
-                    <span class="icon">
-                      <i class="fa-solid fa-home" />
-                    </span>
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/variants"}>Variants</Link>
-                </li>
-                <li class="is-active">
-                  <a href="#">
-                    {variant().data.c +
-                      ":" +
-                      variant().data.p.toString() +
-                      " " +
-                      variant()
-                        .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                        .join(" / ")}
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+        <Breadcrumb
+          links={[
+            { href: "/variants", label: "Variants" },
+            {
+              href: "#",
+              label:
+                variant().data.c +
+                ":" +
+                variant().data.p.toString() +
+                " " +
+                variant()
+                  .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                  .join(" / "),
+            },
+          ]}
+        ></Breadcrumb>
         <GenomeBrowser contig={variant().data.c} position={variant().data.p} samples={[]} />
       </Show>
       <Show when={!variant.loading && !recordsMetadata.loading} fallback={<Loader />}>
@@ -72,6 +60,17 @@ export const Variant: Component = () => {
                   <VariantInfoNestedTable
                     infoValue={variant().data.n[infoField.id] as unknown as Value[][]}
                     infoField={infoField}
+                    variant={{
+                      id: variant().id,
+                      label:
+                        variant().data.c +
+                        ":" +
+                        variant().data.p.toString() +
+                        " " +
+                        variant()
+                          .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
+                          .join(" / "),
+                    }}
                   />
                 </>
               )}

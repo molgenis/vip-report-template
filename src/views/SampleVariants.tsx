@@ -11,6 +11,7 @@ import { createFilterQuery, createSearchQuery } from "../utils/query";
 import api from "../Api";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
+import { Breadcrumb } from "../components/Breadcrumb";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
@@ -50,30 +51,13 @@ export const SampleVariants: Component = () => {
 
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
-      <div class="columns is-gapless">
-        <div class="column">
-          <nav class="breadcrumb">
-            <ul>
-              <li>
-                <Link href="/">
-                  <span class="icon">
-                    <i class="fa-solid fa-home" />
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/samples">Samples</Link>
-              </li>
-              <li>
-                <Link href={"/samples/" + sample().data.index.toString()}>{sample().data.person.individualId}</Link>
-              </li>
-              <li class="is-active">
-                <a href="#">Variants</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumb
+        links={[
+          { href: "/samples", label: "Samples" },
+          { href: "/samples/" + sample().data.index.toString(), label: sample().data.person.individualId },
+          { href: "#", label: "Variants" },
+        ]}
+      ></Breadcrumb>
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
