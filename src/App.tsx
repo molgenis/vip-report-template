@@ -1,5 +1,5 @@
 import { Component, ErrorBoundary, onMount } from "solid-js";
-import { Link, Route, Routes, useNavigate } from "solid-app-router";
+import { Link, Route, Routes, useLocation, useNavigate } from "solid-app-router";
 import { Variants } from "./views/Variants";
 import { Variant } from "./views/Variant";
 import VariantData from "./views/data/VariantData";
@@ -20,18 +20,21 @@ import VariantConsequenceData from "./views/data/VariantConsequenceData";
 
 const App: Component = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   onMount(() => {
     (async () => {
       const htsFile = await api.getHtsFileMetadata();
       document.title = `VCF Report (${htsFile.uri})`;
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
-      if (samples.page.totalElements === 1) {
-        navigate(`/samples/${samples.items[0].id}/variants`);
-      } else if (samples.total === 0) {
-        navigate(`/variants`);
-      } else {
-        navigate(`/samples`);
+      if (location.pathname === "/") {
+        if (samples.page.totalElements === 1) {
+          navigate(`/samples/${samples.items[0].id}/variants`);
+        } else if (samples.total === 0) {
+          navigate(`/variants`);
+        } else {
+          navigate(`/samples`);
+        }
       }
     })().catch((err) => console.error(err));
   });
