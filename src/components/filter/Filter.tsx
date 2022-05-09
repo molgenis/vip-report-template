@@ -7,6 +7,7 @@ export type CheckboxGroup = {
   [key: string]: boolean;
 };
 export const Filter: Component<{
+  label: string | undefined;
   fieldMetadata: FieldMetadata;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
@@ -28,7 +29,7 @@ export const Filter: Component<{
 
   return (
     <>
-      <p class="has-text-weight-semibold">{props.fieldMetadata.id}</p>
+      <p class="has-text-weight-semibold">{props.label === undefined ? props.fieldMetadata.id : props.label}</p>
       <div class="field">
         <For each={props.fieldMetadata.categories}>
           {(category) => (

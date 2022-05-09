@@ -46,6 +46,21 @@ export const SampleVariants: Component = () => {
     });
   };
 
+  const nestedFields: { [key: string]: string } = {
+    Consequence: "Effect",
+    SYMBOL: "Gene",
+    InheritanceModesGene: "Inheritance Modes",
+    HGVSc: "HGVS C",
+    HGVSp: "HGVS P",
+    CAPICE_SC: "CAPICE",
+    UMCG_CL: "MVL",
+    VKGL_CL: "VKGL",
+    CLIN_SIG: "ClinVar",
+    gnomAD_AF: "gnomAD AF",
+    gnomAD_HN: "gnomAD HN",
+    PUBMED: "Pubmed",
+  };
+
   recordsActions.mutate();
   recordsMetadataActions.mutate();
 
@@ -61,7 +76,7 @@ export const SampleVariants: Component = () => {
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
-          <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} />
+          <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} fields={nestedFields} />
         </div>
         <div class="column">
           <div class="columns">
@@ -101,6 +116,7 @@ export const SampleVariants: Component = () => {
                 pedigreeSamples={pedigreeSamples()}
                 records={records().items}
                 recordsMetadata={recordsMetadata()}
+                nestedFields={nestedFields}
               />
             )}
           </div>

@@ -25,10 +25,12 @@ type Filters = {
 export const Filters: Component<{
   fieldMetadataContainer: FieldMetadataContainer;
   onChange: (event: FiltersChangeEvent) => void;
+  fields: { [key: string]: string };
 }> = (props) => {
-  const infoMetadataItems = flattenFieldMetadata(props.fieldMetadataContainer).filter(
-    (fieldMetadata) => fieldMetadata.type === "CATEGORICAL"
-  );
+  const fieldIds = Object.keys(props.fields);
+  const infoMetadataItems = flattenFieldMetadata(props.fieldMetadataContainer)
+    .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL")
+    .filter((fieldMetadata) => fieldIds.length == 0 || fieldIds.includes(fieldMetadata.id));
   const filters: Filters = {};
 
   const onFilterChange = (event: FilterChangeEvent) => {
@@ -44,7 +46,16 @@ export const Filters: Component<{
     <>
       <For each={infoMetadataItems}>
         {(infoMetadata) => (
-          <Switch fallback={<Filter fieldMetadata={infoMetadata} onChange={onFilterChange} onClear={onFilterClear} />}>
+          <Switch
+            fallback={
+              <Filter
+                label={props.fields[infoMetadata.id]}
+                fieldMetadata={infoMetadata}
+                onChange={onFilterChange}
+                onClear={onFilterClear}
+              />
+            }
+          >
             <Match when={infoMetadata.id === "VIPC"}>
               <VipClass fieldMetadata={infoMetadata} onChange={onFilterChange} onClear={onFilterClear} />
             </Match>

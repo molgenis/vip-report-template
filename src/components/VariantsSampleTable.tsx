@@ -14,23 +14,9 @@ export const VariantsSampleTable: Component<{
   pedigreeSamples: Sample[];
   records: Item<Record>[];
   recordsMetadata: Metadata;
+  nestedFields: { [key: string]: string };
 }> = (props) => {
   const samples = [props.sample, ...props.pedigreeSamples];
-
-  const nestedFields: { [key: string]: string } = {
-    Consequence: "Effect",
-    SYMBOL: "Gene",
-    InheritanceModesGene: "Inheritance Modes",
-    HGVSc: "HGVS C",
-    HGVSp: "HGVS P",
-    CAPICE_SC: "CAPICE",
-    UMCG_CL: "MVL",
-    VKGL_CL: "VKGL",
-    CLIN_SIG: "ClinVar",
-    gnomAD_AF: "gnomAD AF",
-    gnomAD_HN: "gnomAD HN",
-    PUBMED: "Pubmed",
-  };
   const headers: string[] = [];
   const indices: number[] = [];
 
@@ -50,11 +36,11 @@ export const VariantsSampleTable: Component<{
           return csqField.id;
         })
       : [];
-    for (const nestedFieldsKey in nestedFields) {
+    for (const nestedFieldsKey in props.nestedFields) {
       const index = positions.indexOf(nestedFieldsKey);
       if (index !== -1) {
         indices.push(index);
-        headers.push(nestedFields[nestedFieldsKey]);
+        headers.push(props.nestedFields[nestedFieldsKey]);
       }
     }
   }
