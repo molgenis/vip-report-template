@@ -12,7 +12,7 @@ export interface Api {
   getFastaGz(contig: string, pos: number): Promise<Uint8Array | null>;
   getGenesGz(): Promise<Uint8Array | null>;
   getBam(sampleId: string): Promise<Uint8Array | null>;
-  getGenomeAssembly(): Promise<string>;
+  getHtsFileMetadata(): Promise<HtsFileMetadata>;
   getDecisionTree(): Promise<DecisionTree | null>;
 
   // testing purposes only

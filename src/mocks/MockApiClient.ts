@@ -1,6 +1,6 @@
 import { ApiClient, ReportData } from "../api/ApiClient";
 import { parseVcf } from "../api/vcf/VcfParser";
-import { Api, Item, Metadata, PagedItems, Params, Phenotype, Sample } from "../api/Api";
+import { Api, HtsFileMetadata, Item, Metadata, PagedItems, Params, Phenotype, Sample } from "../api/Api";
 import { samples1, samples100, samplesFamily } from "./static";
 import {
   bam as bamGRCh37,
@@ -55,8 +55,8 @@ export class MockApiClient implements Api {
     return this.apiClient.getDecisionTree();
   }
 
-  getGenomeAssembly(): Promise<string> {
-    return this.apiClient.getGenomeAssembly();
+  getHtsFileMetadata(): Promise<HtsFileMetadata> {
+    return this.apiClient.getHtsFileMetadata();
   }
 
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>> {

@@ -2,6 +2,7 @@ import {
   Api,
   CompareFn,
   ComposedQuery,
+  HtsFileMetadata,
   Item,
   Metadata,
   PagedItems,
@@ -85,9 +86,9 @@ export class ApiClient implements Api {
     return Promise.resolve(buffer);
   }
 
-  getGenomeAssembly(): Promise<string> {
-    const assembly = this.reportData.metadata.htsFile.genomeAssembly;
-    return Promise.resolve(assembly);
+  getHtsFileMetadata(): Promise<HtsFileMetadata> {
+    const htsFile = this.reportData.metadata.htsFile;
+    return Promise.resolve(htsFile);
   }
 
   getGenesGz(): Promise<Uint8Array | null> {

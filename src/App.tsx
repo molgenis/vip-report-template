@@ -23,6 +23,8 @@ const App: Component = () => {
 
   onMount(() => {
     (async () => {
+      const htsFile = await api.getHtsFileMetadata();
+      document.title = `VCF Report (${htsFile.uri})`;
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
       if (samples.page.totalElements === 1) {
         navigate(`/samples/${samples.items[0].id}/variants`);
