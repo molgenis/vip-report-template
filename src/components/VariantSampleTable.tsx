@@ -22,7 +22,13 @@ export const VariantSampleTable: Component<{
           <thead>
             <tr>
               <th></th>
-              <For each={sampleFields}>{(formatField) => <th>{formatField.id}</th>}</For>
+              <For each={sampleFields}>
+                {(formatField) => (
+                  <th>
+                    <abbr title={formatField.description}>{formatField.id}</abbr>
+                  </th>
+                )}
+              </For>
             </tr>
           </thead>
           <tbody>
