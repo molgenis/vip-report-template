@@ -48,10 +48,6 @@ export interface ExistsNode extends Node {
   outcomeFalse: NodeOutcome;
 }
 
-export interface File {
-  path: Path;
-}
-
 export interface Label {
   id: string;
   description: string;
