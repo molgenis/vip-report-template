@@ -1,4 +1,4 @@
-import { Component, createResource, createSignal, For } from "solid-js";
+import { Component, createResource, createSignal } from "solid-js";
 import { Breadcrumb } from "../components/Breadcrumb";
 import api from "../Api";
 import { Params } from "../api/Api";

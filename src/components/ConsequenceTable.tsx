@@ -1,5 +1,5 @@
 import { Component, For, Show } from "solid-js";
-import { Value, ValueString } from "../api/vcf/ValueParser";
+import { Value } from "../api/vcf/ValueParser";
 import { FieldMetadata } from "../api/vcf/MetadataParser";
 
 export const ConsequenceTable: Component<{ csqHeader: FieldMetadata; csq: Value[] }> = (props) => {

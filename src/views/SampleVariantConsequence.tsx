@@ -1,6 +1,6 @@
 import { Component, createResource, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Metadata, Record } from "../api/vcf/Vcf";
+import { Record } from "../api/vcf/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "../api/Api";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
