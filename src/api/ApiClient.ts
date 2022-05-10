@@ -144,6 +144,7 @@ export class ApiClient implements Api {
     }
     csqItem.type = "CATEGORICAL";
     csqItem.categories = categories;
+    csqItem.required = true;
     return reportData;
   }
 
