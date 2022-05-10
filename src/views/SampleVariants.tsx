@@ -53,6 +53,7 @@ export const SampleVariants: Component = () => {
     HGVSc: "HGVS C",
     HGVSp: "HGVS P",
     CAPICE_SC: "CAPICE",
+    VIPC: "VIP",
     UMCG_CL: "MVL",
     VKGL_CL: "VKGL",
     CLIN_SIG: "ClinVar",

@@ -18,7 +18,7 @@ import {
   SortOrder,
 } from "./Api";
 import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
-import { DecisionTree } from "./DecisionTree";
+import { DecisionTree, LeafNode } from "./DecisionTree";
 
 export interface ReportData {
   metadata: Metadata;
@@ -43,7 +43,7 @@ export class ApiClient implements Api {
   private reportData: ReportData;
 
   constructor(reportData: ReportData) {
-    this.reportData = reportData;
+    this.reportData = this.postProcessReportData(reportData);
   }
 
   getRecordsMeta(): Promise<RecordMetadata> {
@@ -123,6 +123,28 @@ export class ApiClient implements Api {
 
   selectDataset(id: string): void {
     throw new Error("unsupported");
+  }
+
+  private postProcessReportData(reportData: ReportData): ReportData {
+    if (!reportData.decisionTree) {
+      return reportData;
+    }
+    const csqItems = reportData.metadata.records.info.CSQ?.nested?.items;
+    if (!csqItems) {
+      return reportData;
+    }
+
+    // make VIPC categorical with categories based on tree exit nodes
+    const categories = Object.values(reportData.decisionTree.nodes)
+      .filter((node) => node.type === "LEAF")
+      .map((node) => (node as LeafNode).class);
+    const csqItem = csqItems.find((item) => item.id === "VIPC");
+    if (!csqItem) {
+      return reportData;
+    }
+    csqItem.type = "CATEGORICAL";
+    csqItem.categories = categories;
+    return reportData;
   }
 
   private get<T extends Resource>(resource: string, params: Params = {}): Promise<PagedItems<T>> {

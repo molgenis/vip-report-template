@@ -1,9 +1,8 @@
-import { Component, For, Match, Switch } from "solid-js";
+import { Component, For } from "solid-js";
 import { FieldMetadataContainer } from "../../api/vcf/VcfParser";
 import { FieldMetadata } from "../../api/vcf/MetadataParser";
 import { Filter } from "./Filter";
 import { flattenFieldMetadata } from "../../utils/field";
-import { VipClass } from "./VipClass";
 
 export type FilterChangeEvent = {
   fieldMetadata: FieldMetadata;
@@ -30,7 +29,7 @@ export const Filters: Component<{
   const fieldIds = () => Object.keys(props.fields);
   const infoMetadataItems = () =>
     flattenFieldMetadata(props.fieldMetadataContainer)
-      .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL")
+      .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL" || fieldMetadata.id === "VIPC")
       .filter((fieldMetadata) => fieldIds().length == 0 || fieldIds().includes(fieldMetadata.id));
   const filters: Filters = {};
 
@@ -47,20 +46,12 @@ export const Filters: Component<{
     <>
       <For each={infoMetadataItems()}>
         {(infoMetadata) => (
-          <Switch
-            fallback={
-              <Filter
-                label={props.fields[infoMetadata.id]}
-                fieldMetadata={infoMetadata}
-                onChange={onFilterChange}
-                onClear={onFilterClear}
-              />
-            }
-          >
-            <Match when={infoMetadata.id === "VIPC"}>
-              <VipClass fieldMetadata={infoMetadata} onChange={onFilterChange} onClear={onFilterClear} />
-            </Match>
-          </Switch>
+          <Filter
+            label={props.fields[infoMetadata.id]}
+            fieldMetadata={infoMetadata}
+            onChange={onFilterChange}
+            onClear={onFilterClear}
+          />
         )}
       </For>
     </>
