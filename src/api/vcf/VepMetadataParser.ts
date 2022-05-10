@@ -39,6 +39,7 @@ function parseVepInfoMetadata(infoMetadata: InfoMetadata, token: string): InfoMe
     case "FLAGS":
     case "HPO":
     case "InheritanceModesGene":
+    case "VIPP":
       numberType = "OTHER";
       separator = "&";
       type = "STRING";

@@ -1,6 +1,6 @@
 import { Component, createResource, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Record } from "../api/vcf/Vcf";
+import { Metadata, Record } from "../api/vcf/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "../api/Api";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
@@ -11,6 +11,8 @@ import api from "../Api";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { ConsequenceTable } from "../components/ConsequenceTable";
 import { getConsequenceLabel, getCsqHeaderIndex, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
+import { DecisionTreePath } from "../components/tree/DecisionTreePath";
+import { getDecisionTreePath } from "../utils/decisionTreeUtils";
 
 export const SampleVariantConsequence: Component = () => {
   const {
@@ -20,12 +22,21 @@ export const SampleVariantConsequence: Component = () => {
   }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>>; consequenceId: number } = useRouteData();
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMetadata, recordsMetadataActions] = createResource(async () => await api.getRecordsMeta());
+  const [decisionTree, decisionTreeActions] = createResource(async () => await api.getDecisionTree());
+
   recordsMetadataActions.mutate();
+  decisionTreeActions.mutate();
   return (
     <>
       {
         <Show
-          when={!sample.loading && !variant.loading && !recordsMetadata.loading && !pedigreeSamples.loading}
+          when={
+            !sample.loading &&
+            !variant.loading &&
+            !recordsMetadata.loading &&
+            !pedigreeSamples.loading &&
+            !decisionTree.loading
+          }
           fallback={<Loader />}
         >
           <Breadcrumb
@@ -55,13 +66,22 @@ export const SampleVariantConsequence: Component = () => {
             ]}
           ></Breadcrumb>
           <div class="columns">
-            <div class="column">
-              <h1 class="title">Consequence</h1>
+            <div class="column is-6">
+              <h1 class="title is-5">Consequence</h1>
               <ConsequenceTable
                 csqHeader={recordsMetadata().info.CSQ.nested.items}
                 csq={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
               ></ConsequenceTable>
             </div>
+            {decisionTree() !== null && (
+              <div class="column">
+                <h1 class="title is-5">Classification tree path</h1>
+                <DecisionTreePath
+                  decisionTree={decisionTree()}
+                  path={getDecisionTreePath(recordsMetadata(), variant(), consequenceId)}
+                />
+              </div>
+            )}
           </div>
           <div class="columns">
             <div class="column is-3">
