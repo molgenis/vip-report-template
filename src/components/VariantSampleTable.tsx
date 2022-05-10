@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 import { Record, RecordSample } from "../api/vcf/Vcf";
 import { FieldMetadataContainer } from "../api/vcf/VcfParser";
 import { FieldMetadata } from "../api/vcf/MetadataParser";
@@ -11,8 +11,8 @@ export const VariantSampleTable: Component<{
   sampleValues: RecordSample[];
   record: Record;
 }> = (props) => {
-  const sampleFields: FieldMetadata[] = Object.keys(props.sampleValues[0]).map(
-    (fieldId) => props.formatFields[fieldId]
+  const sampleFields = createMemo((): FieldMetadata[] =>
+    Object.keys(props.sampleValues[0]).map((fieldId) => props.formatFields[fieldId])
   );
   return (
     <div style="display: grid">
@@ -22,7 +22,7 @@ export const VariantSampleTable: Component<{
           <thead>
             <tr>
               <th></th>
-              <For each={sampleFields}>
+              <For each={sampleFields()}>
                 {(formatField) => (
                   <th>
                     <abbr title={formatField.description}>{formatField.id}</abbr>
@@ -36,7 +36,7 @@ export const VariantSampleTable: Component<{
               {(sampleValue, i) => (
                 <tr>
                   <th>{props.samples[i()].person.individualId}</th>
-                  <For each={sampleFields}>
+                  <For each={sampleFields()}>
                     {(formatField) => (
                       <td>
                         <Format

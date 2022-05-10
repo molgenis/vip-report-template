@@ -5,14 +5,13 @@ import api from "../../Api";
 import { Filter, writeVcf } from "../../api/vcf/VcfWriter";
 
 export const RecordDownload: Component<{ recordsMetadata: Metadata; query: Query; samples?: Sample[] }> = (props) => {
-  const filter: Filter | undefined = props.samples
-    ? { samples: props.samples.map((sample) => sample.person.individualId) }
-    : undefined;
+  const filter = (): Filter | undefined =>
+    props.samples ? { samples: props.samples.map((sample) => sample.person.individualId) } : undefined;
 
   function onClick() {
     const handler = async () => {
       const records = await api.getRecords({ query: props.query, size: Number.MAX_SAFE_INTEGER });
-      const vcf = writeVcf({ metadata: props.recordsMetadata, data: records.items.map((item) => item.data) }, filter);
+      const vcf = writeVcf({ metadata: props.recordsMetadata, data: records.items.map((item) => item.data) }, filter());
 
       const url = window.URL.createObjectURL(new Blob([vcf]));
       const link = document.createElement("a");

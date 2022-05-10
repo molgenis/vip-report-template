@@ -1,15 +1,17 @@
 import { Component } from "solid-js";
 
-export const Hgvs: Component<{
-  notation: string;
-}> = (props) => {
+function abbreviate(notation: string): string {
   let abbreviated;
-  const splitted = props.notation.split(":");
+  const splitted = notation.split(":");
   if (splitted.length === 2) {
     abbreviated = splitted[1];
   } else {
-    abbreviated = props.notation;
+    abbreviated = notation;
   }
-
-  return <abbr title={props.notation}>{abbreviated}</abbr>;
+  return abbreviated;
+}
+export const Hgvs: Component<{
+  notation: string;
+}> = (props) => {
+  return <abbr title={props.notation}>{abbreviate(props.notation)}</abbr>;
 };

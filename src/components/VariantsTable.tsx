@@ -1,5 +1,5 @@
 import { Metadata, Record } from "../api/vcf/Vcf";
-import { Component, For } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
@@ -21,10 +21,10 @@ export const VariantsTable: Component<{
   records: Item<Record>[];
   recordsMetadata: Metadata;
 }> = (props) => {
-  const infoFields = Object.values(props.recordsMetadata.info);
-  const infoFieldsNested = infoFields.filter((infoField) => infoField.nested);
+  const infoFields = () => Object.values(props.recordsMetadata.info);
+  const infoFieldsNested = () => infoFields().filter((infoField) => infoField.nested);
 
-  const rowspan = computeRowspan(props.recordsMetadata);
+  const rowspan = createMemo(() => computeRowspan(props.recordsMetadata));
 
   return (
     <div style="display: grid">
@@ -33,24 +33,24 @@ export const VariantsTable: Component<{
         <table class="table is-narrow">
           <thead>
             <tr>
-              <th rowspan={rowspan}>CHROM</th>
-              <th rowspan={rowspan}>POS</th>
-              <th rowspan={rowspan}>ID</th>
-              <th rowspan={rowspan}>REF</th>
-              <th rowspan={rowspan}>ALT</th>
-              <th rowspan={rowspan}>QUAL</th>
-              <th rowspan={rowspan}>FILTER</th>
-              <For each={infoFields}>
+              <th rowspan={rowspan()}>CHROM</th>
+              <th rowspan={rowspan()}>POS</th>
+              <th rowspan={rowspan()}>ID</th>
+              <th rowspan={rowspan()}>REF</th>
+              <th rowspan={rowspan()}>ALT</th>
+              <th rowspan={rowspan()}>QUAL</th>
+              <th rowspan={rowspan()}>FILTER</th>
+              <For each={infoFields()}>
                 {(infoField) => (
-                  <th rowspan={infoField.nested ? undefined : rowspan} colspan={computeColspan(infoField)}>
+                  <th rowspan={infoField.nested ? undefined : rowspan()} colspan={computeColspan(infoField)}>
                     {infoField.id}
                   </th>
                 )}
               </For>
             </tr>
-            {rowspan && rowspan > 1 && (
+            {rowspan() && rowspan() > 1 && (
               <tr>
-                <For each={infoFieldsNested}>
+                <For each={infoFieldsNested()}>
                   {(infoField) => (
                     <For each={infoField.nested?.items}>{(nestedInfoField) => <th>{nestedInfoField.id}</th>}</For>
                   )}
@@ -85,7 +85,7 @@ export const VariantsTable: Component<{
                   <td>
                     <Filter value={record.data.f} />
                   </td>
-                  <For each={infoFields}>
+                  <For each={infoFields()}>
                     {(infoField) =>
                       infoField.nested ? (
                         <For each={infoField.nested.items}>

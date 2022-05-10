@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 import { Page } from "../../api/Api";
 
 const createPages = (page: number, pages: number): (number | null)[] => {
@@ -17,46 +17,48 @@ export const Pager: Component<{
   page: Page;
   onPageChange: (page: number) => void;
 }> = (props) => {
-  const currentPage = props.page.number;
-  const nrPages = Math.ceil(props.page.totalElements / props.page.size);
-  const pages = createPages(currentPage, nrPages);
+  const currentPage = () => props.page.number;
+  const nrPages = createMemo(() => Math.ceil(props.page.totalElements / props.page.size));
+  const pages = createMemo(() => createPages(currentPage(), nrPages()));
 
   return (
-    props.page.totalElements > props.page.size && (
-      <nav class="pagination is-centered">
-        <ul class="pagination-list">
-          <li>
-            <a
-              classList={{ "pagination-previous": true, "is-invisible": currentPage === 0 }}
-              onClick={currentPage > 0 ? () => props.onPageChange(currentPage - 1) : undefined}
-            >
-              Previous
-            </a>
-          </li>
-          <For each={pages}>
-            {(page) =>
-              page !== null ? (
-                <a
-                  classList={{ "pagination-link": true, "is-current": page === currentPage }}
-                  onClick={page !== currentPage ? () => props.onPageChange(page) : undefined}
-                >
-                  {page + 1}
-                </a>
-              ) : (
-                <span class="pagination-ellipsis">&hellip;</span>
-              )
-            }
-          </For>
-          <li>
-            <a
-              classList={{ "pagination-next": true, "is-invisible": currentPage === nrPages - 1 }}
-              onClick={currentPage < nrPages - 1 ? () => props.onPageChange(currentPage + 1) : undefined}
-            >
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
-    )
+    <>
+      {props.page.totalElements > props.page.size && (
+        <nav class="pagination is-centered">
+          <ul class="pagination-list">
+            <li>
+              <a
+                classList={{ "pagination-previous": true, "is-invisible": currentPage() === 0 }}
+                onClick={currentPage() > 0 ? () => props.onPageChange(currentPage() - 1) : undefined}
+              >
+                Previous
+              </a>
+            </li>
+            <For each={pages()}>
+              {(page) =>
+                page !== null ? (
+                  <a
+                    classList={{ "pagination-link": true, "is-current": page === currentPage() }}
+                    onClick={page !== currentPage() ? () => props.onPageChange(page) : undefined}
+                  >
+                    {page + 1}
+                  </a>
+                ) : (
+                  <span class="pagination-ellipsis">&hellip;</span>
+                )
+              }
+            </For>
+            <li>
+              <a
+                classList={{ "pagination-next": true, "is-invisible": currentPage() === nrPages() - 1 }}
+                onClick={currentPage() < nrPages() - 1 ? () => props.onPageChange(currentPage() + 1) : undefined}
+              >
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      )}
+    </>
   );
 };

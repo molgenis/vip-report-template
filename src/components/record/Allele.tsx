@@ -1,10 +1,11 @@
-import { Component, For } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 
 export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> = (props) => {
-  const missing = props.value === null;
-  const symbolic = props.value?.startsWith("<") && props.value?.endsWith(">");
-  const breakend =
-    props.value?.indexOf("[") !== -1 || props.value?.indexOf("]") !== -1 || props.value?.indexOf(".") !== -1;
+  const missing = () => props.value === null;
+  const symbolic = createMemo(() => props.value?.startsWith("<") && props.value?.endsWith(">"));
+  const breakend = createMemo(
+    () => props.value?.indexOf("[") !== -1 || props.value?.indexOf("]") !== -1 || props.value?.indexOf(".") !== -1
+  );
 
   function nucs(value: string) {
     let nucleotides = value.split("");
@@ -19,9 +20,9 @@ export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> 
 
   return (
     <>
-      {missing && <span classList={{ base: true, "base-m": true }}>?</span>}
-      {(symbolic || breakend) && <span class="base-n">{props.value}</span>}
-      {!missing && !symbolic && !breakend && props.isAbbreviate && (props.value as string).length > 4 && (
+      {missing() && <span classList={{ base: true, "base-m": true }}>?</span>}
+      {(symbolic() || breakend()) && <span class="base-n">{props.value}</span>}
+      {!missing() && !symbolic() && !breakend() && props.isAbbreviate && (props.value as string).length > 4 && (
         <For each={nucs(props.value as string)}>
           {(base) => (
             <abbr
@@ -40,7 +41,7 @@ export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> 
           )}
         </For>
       )}
-      {!missing && !symbolic && !breakend && (!props.isAbbreviate || (props.value as string).length <= 4) && (
+      {!missing() && !symbolic() && !breakend() && (!props.isAbbreviate || (props.value as string).length <= 4) && (
         <For each={nucs(props.value as string)}>
           {(base) => (
             <span

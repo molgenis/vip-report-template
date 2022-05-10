@@ -7,20 +7,16 @@ import { Item, Sample } from "../api/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { NestedInfoCollapsablePane } from "./NestedInfoCollapsablePane";
 import { NestedInfoHeader } from "./NestedInfoHeader";
-import { Component, For } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 
-export const VariantsSampleTable: Component<{
-  sample: Sample;
-  pedigreeSamples: Sample[];
-  records: Item<Record>[];
-  recordsMetadata: Metadata;
-  nestedFields: { [key: string]: string };
-}> = (props) => {
-  const samples = [props.sample, ...props.pedigreeSamples];
+function createIndex(
+  recordsMetadata: Metadata,
+  nestedFields: { [key: string]: string }
+): { headers: string[]; indices: number[] } {
   const headers: string[] = [];
   const indices: number[] = [];
 
-  const infoFields = Object.values(props.recordsMetadata.info);
+  const infoFields = Object.values(recordsMetadata.info);
 
   const infoPositions = infoFields.map(function (infoField) {
     return infoField.id;
@@ -36,14 +32,26 @@ export const VariantsSampleTable: Component<{
           return csqField.id;
         })
       : [];
-    for (const nestedFieldsKey in props.nestedFields) {
+    for (const nestedFieldsKey in nestedFields) {
       const index = positions.indexOf(nestedFieldsKey);
       if (index !== -1) {
         indices.push(index);
-        headers.push(props.nestedFields[nestedFieldsKey]);
+        headers.push(nestedFields[nestedFieldsKey]);
       }
     }
   }
+  return { headers, indices };
+}
+
+export const VariantsSampleTable: Component<{
+  sample: Sample;
+  pedigreeSamples: Sample[];
+  records: Item<Record>[];
+  recordsMetadata: Metadata;
+  nestedFields: { [key: string]: string };
+}> = (props) => {
+  const samples = createMemo(() => [props.sample, ...props.pedigreeSamples]);
+  const index = createMemo(() => createIndex(props.recordsMetadata, props.nestedFields));
 
   return (
     <div style="display: grid">
@@ -54,9 +62,9 @@ export const VariantsSampleTable: Component<{
             <tr>
               <th>Position</th>
               <th>Reference</th>
-              <For each={samples}>{(sample) => <th>{sample.person.individualId}</th>}</For>
+              <For each={samples()}>{(sample) => <th>{sample.person.individualId}</th>}</For>
               <th />
-              <NestedInfoHeader fields={headers} />
+              <NestedInfoHeader fields={index().headers} />
             </tr>
           </thead>
           <tbody>
@@ -73,7 +81,7 @@ export const VariantsSampleTable: Component<{
                   <td>
                     <Ref value={record.data.r} isAbbreviate={true} />
                   </td>
-                  <For each={samples}>
+                  <For each={samples()}>
                     {(sample) => (
                       <td>
                         <GenotypeField
@@ -87,7 +95,7 @@ export const VariantsSampleTable: Component<{
                   </For>
                   <NestedInfoCollapsablePane
                     recordsMetadata={props.recordsMetadata}
-                    indices={indices}
+                    indices={index().indices}
                     record={record}
                   />
                 </tr>

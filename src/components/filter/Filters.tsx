@@ -27,10 +27,11 @@ export const Filters: Component<{
   onChange: (event: FiltersChangeEvent) => void;
   fields: { [key: string]: string };
 }> = (props) => {
-  const fieldIds = Object.keys(props.fields);
-  const infoMetadataItems = flattenFieldMetadata(props.fieldMetadataContainer)
-    .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL")
-    .filter((fieldMetadata) => fieldIds.length == 0 || fieldIds.includes(fieldMetadata.id));
+  const fieldIds = () => Object.keys(props.fields);
+  const infoMetadataItems = () =>
+    flattenFieldMetadata(props.fieldMetadataContainer)
+      .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL")
+      .filter((fieldMetadata) => fieldIds().length == 0 || fieldIds().includes(fieldMetadata.id));
   const filters: Filters = {};
 
   const onFilterChange = (event: FilterChangeEvent) => {
@@ -44,7 +45,7 @@ export const Filters: Component<{
 
   return (
     <>
-      <For each={infoMetadataItems}>
+      <For each={infoMetadataItems()}>
         {(infoMetadata) => (
           <Switch
             fallback={
