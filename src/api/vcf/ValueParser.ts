@@ -155,14 +155,6 @@ export function parseFloatValue(token: string): number | null {
   return value;
 }
 
-export function parseFloatValueNonNull(token: string): number {
-  const value = parseFloatValue(token);
-  if (value === null) {
-    throw new Error(`invalid float '${token}'`);
-  }
-  return value;
-}
-
 export function parseFlagValue(token: string): boolean {
   let value;
   if (token === true.toString()) {
