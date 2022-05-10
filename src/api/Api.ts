@@ -147,8 +147,3 @@ export interface OntologyClass {
 export interface PhenotypicFeature {
   type: OntologyClass;
 }
-
-export type Dataset = {
-  id: string;
-  label: string;
-};
