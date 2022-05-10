@@ -1,5 +1,6 @@
 import {
   Api,
+  AppMetadata,
   CompareFn,
   ComposedQuery,
   HtsFileMetadata,
@@ -89,6 +90,11 @@ export class ApiClient implements Api {
   getHtsFileMetadata(): Promise<HtsFileMetadata> {
     const htsFile = this.reportData.metadata.htsFile;
     return Promise.resolve(htsFile);
+  }
+
+  getAppMetadata(): Promise<AppMetadata> {
+    const appMeta = this.reportData.metadata.app;
+    return Promise.resolve(appMeta);
   }
 
   getGenesGz(): Promise<Uint8Array | null> {

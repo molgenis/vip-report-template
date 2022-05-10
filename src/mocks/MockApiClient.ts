@@ -1,6 +1,6 @@
 import { ApiClient, ReportData } from "../api/ApiClient";
 import { parseVcf } from "../api/vcf/VcfParser";
-import { Api, HtsFileMetadata, Item, Metadata, PagedItems, Params, Phenotype, Sample } from "../api/Api";
+import { Api, AppMetadata, HtsFileMetadata, Item, Metadata, PagedItems, Params, Phenotype, Sample } from "../api/Api";
 import { samples1, samples100, samplesFamily } from "./static";
 import {
   bam as bamGRCh37,
@@ -57,6 +57,10 @@ export class MockApiClient implements Api {
 
   getHtsFileMetadata(): Promise<HtsFileMetadata> {
     return this.apiClient.getHtsFileMetadata();
+  }
+
+  getAppMetadata(): Promise<AppMetadata> {
+    return this.apiClient.getAppMetadata();
   }
 
   getPhenotypes(params: Params): Promise<PagedItems<Phenotype>> {

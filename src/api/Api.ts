@@ -13,6 +13,7 @@ export interface Api {
   getGenesGz(): Promise<Uint8Array | null>;
   getBam(sampleId: string): Promise<Uint8Array | null>;
   getHtsFileMetadata(): Promise<HtsFileMetadata>;
+  getAppMetadata(): Promise<AppMetadata>;
   getDecisionTree(): Promise<DecisionTree | null>;
 
   // testing purposes only
