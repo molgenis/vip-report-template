@@ -1,22 +1,34 @@
 import { Component, Match, Switch } from "solid-js";
 import { Value } from "../../../api/vcf/ValueParser";
 import { FieldMetadata } from "../../../api/vcf/MetadataParser";
+import { FieldValueFloat } from "./FieldValueFloat";
+import { FieldValueString } from "./FieldValueString";
+import { FieldValueCharacter } from "./FieldValueCharacter";
+import { FieldValueInteger } from "./FieldValueInteger";
+import { FieldValueFlag } from "./FieldValueFlag";
+import { Error } from "../../Error";
 
 export const FieldSingleValue: Component<{
   info: Value;
   infoMetadata: FieldMetadata;
 }> = (props) => {
-  // TODO add match for CATEGORICAL
-  // TODO add match for INTEGER
-  // TODO add match for FLAG
-  // TODO add match for STRING
-  // TODO improve match for FLOAT (show full number on hover)
+  const type = () => props.infoMetadata.type;
   return (
-    <Switch fallback={<span>{props.info as string}</span>}>
-      <Match when={props.infoMetadata.type === "FLOAT"}>
-        {props.info !== null && props.info !== undefined && (
-          <abbr title={props.info as string}>{(props.info as number).toFixed(4)}</abbr>
-        )}
+    <Switch fallback={<Error error={`invalid info type ${type()}`} />}>
+      <Match when={type() === "CATEGORICAL" || type() === "STRING"}>
+        <FieldValueString value={props.info as string} />
+      </Match>
+      <Match when={type() === "CHARACTER"}>
+        <FieldValueCharacter value={props.info as string} />
+      </Match>
+      <Match when={type() === "FLAG"}>
+        <FieldValueFlag value={props.info as boolean} />
+      </Match>
+      <Match when={type() === "FLOAT"}>
+        <FieldValueFloat value={props.info as number} />
+      </Match>
+      <Match when={type() === "INTEGER"}>
+        <FieldValueInteger value={props.info as number} />
       </Match>
     </Switch>
   );
