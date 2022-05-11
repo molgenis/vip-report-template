@@ -1,5 +1,5 @@
 import { ApiClient, ReportData } from "../api/ApiClient";
-import { parseVcf } from "../api/vcf/VcfParser";
+import { parseVcf } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { Api, AppMetadata, HtsFileMetadata, Item, Metadata, PagedItems, Params, Phenotype, Sample } from "../api/Api";
 import { samples1, samples100, samplesFamily } from "./static";
 import {
@@ -24,7 +24,7 @@ import {
   vcfSamples1 as vcfSamples1GRCh38,
   vcfSamples100 as vcfSamples100GRCh38,
 } from "./GRCh38/static";
-import { Metadata as RecordMetadata, Record } from "../api/vcf/Vcf";
+import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { DecisionTree } from "../api/DecisionTree";
 
 /**

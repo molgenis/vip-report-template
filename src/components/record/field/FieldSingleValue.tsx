@@ -1,6 +1,6 @@
 import { Component, Match, Switch } from "solid-js";
-import { Value } from "../../../api/vcf/ValueParser";
-import { FieldMetadata } from "../../../api/vcf/MetadataParser";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldValueFloat } from "./FieldValueFloat";
 import { FieldValueString } from "./FieldValueString";
 import { FieldValueCharacter } from "./FieldValueCharacter";

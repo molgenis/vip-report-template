@@ -1,5 +1,5 @@
-import { Value, ValueObject, ValueString } from "../api/vcf/ValueParser";
-import { Record } from "../api/vcf/Vcf";
+import { Value, ValueObject, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Sample } from "../api/Api";
 
 export function getCsqHeaderIndex(

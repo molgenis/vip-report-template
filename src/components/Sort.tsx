@@ -1,7 +1,7 @@
 import { Component, createMemo, For } from "solid-js";
-import { FieldMetadataContainer } from "../api/vcf/VcfParser";
+import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { flattenFieldMetadata, getFullId, isNumerical } from "../utils/field";
-import { FieldMetadata } from "../api/vcf/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export type SortEvent = {
   fieldMetadata: FieldMetadata | null;

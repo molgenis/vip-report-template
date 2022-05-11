@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { FieldMetadata } from "../../api/vcf/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 

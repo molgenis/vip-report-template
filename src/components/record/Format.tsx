@@ -1,10 +1,10 @@
 import { Component, Match, Switch } from "solid-js";
-import { Genotype, RecordSampleType } from "../../api/vcf/SampleDataParser";
-import { Value } from "../../api/vcf/ValueParser";
-import { FieldMetadata } from "../../api/vcf/MetadataParser";
+import { Genotype, RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Field } from "./field/Field";
 import { GenotypeField } from "./format/GenotypeField";
-import { Record } from "../../api/vcf/Vcf";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
 export const Format: Component<{
   format: RecordSampleType;

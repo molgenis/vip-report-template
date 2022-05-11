@@ -1,10 +1,10 @@
 import { Component, createResource, For, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Record } from "../api/vcf/Vcf";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { Loader } from "../components/Loader";
 import api from "../Api";
-import { Value } from "../api/vcf/ValueParser";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";

@@ -1,5 +1,5 @@
 import { ApiClient } from "./api/ApiClient";
-import { parseVcf } from "./api/vcf/VcfParser";
+import { parseVcf } from "@molgenis/vip-report-vcf/src/VcfParser";
 
 /**
  * API client that uses window.api object as data source.

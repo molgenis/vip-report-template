@@ -1,7 +1,7 @@
 import { Component, createMemo, For } from "solid-js";
-import { Record, RecordSample } from "../api/vcf/Vcf";
-import { FieldMetadataContainer } from "../api/vcf/VcfParser";
-import { FieldMetadata } from "../api/vcf/MetadataParser";
+import { Record, RecordSample } from "@molgenis/vip-report-vcf/src/Vcf";
+import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Format } from "./record/Format";
 import { Sample } from "../api/Api";
 

@@ -2,7 +2,7 @@ import { Component, onCleanup, onMount } from "solid-js";
 import igv from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
-import { writeVcf } from "../api/vcf/VcfWriter";
+import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
 import { ComposedQuery, Sample } from "../api/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {

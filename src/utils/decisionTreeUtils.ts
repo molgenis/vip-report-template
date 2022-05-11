@@ -1,4 +1,4 @@
-import { Metadata, Record } from "../api/vcf/Vcf";
+import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "../api/Api";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getSpecificConsequence } from "./viewUtils";

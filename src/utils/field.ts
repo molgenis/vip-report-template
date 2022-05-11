@@ -1,5 +1,5 @@
-import { FieldMetadata } from "../api/vcf/MetadataParser";
-import { FieldMetadataContainer, InfoContainer } from "../api/vcf/VcfParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 
 const flattenFieldMetadataRec = (fieldMetadata: FieldMetadata): FieldMetadata[] => {
   return fieldMetadata.nested ? fieldMetadata.nested.items.flatMap(flattenFieldMetadataRec) : [fieldMetadata];

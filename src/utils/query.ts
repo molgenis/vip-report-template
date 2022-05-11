@@ -1,6 +1,6 @@
 import { Query, QueryClause, QueryOperator, Selector } from "../api/Api";
-import { Metadata } from "../api/vcf/Vcf";
-import { FieldMetadata, InfoMetadata } from "../api/vcf/MetadataParser";
+import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
+import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent } from "../components/filter/Filters";
 
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {

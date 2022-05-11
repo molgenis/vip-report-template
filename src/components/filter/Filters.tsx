@@ -1,6 +1,6 @@
 import { Component, For } from "solid-js";
-import { FieldMetadataContainer } from "../../api/vcf/VcfParser";
-import { FieldMetadata } from "../../api/vcf/MetadataParser";
+import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filter } from "./Filter";
 import { flattenFieldMetadata } from "../../utils/field";
 

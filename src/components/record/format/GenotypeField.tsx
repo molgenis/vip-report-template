@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { Genotype } from "../../../api/vcf/SampleDataParser";
+import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
 import { Allele } from "../Allele";
 
 export const GenotypeField: Component<{

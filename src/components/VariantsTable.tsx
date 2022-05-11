@@ -1,4 +1,4 @@
-import { Metadata, Record } from "../api/vcf/Vcf";
+import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Component, createMemo, For } from "solid-js";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
@@ -8,8 +8,8 @@ import { Alt } from "./record/Alt";
 import { Qual } from "./record/Qual";
 import { Filter } from "./record/Filter";
 import { Info } from "./record/Info";
-import { Value } from "../api/vcf/ValueParser";
-import { FieldMetadata } from "../api/vcf/MetadataParser";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Link } from "solid-app-router";
 import { Item } from "../api/Api";
 

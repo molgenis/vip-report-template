@@ -1,4 +1,4 @@
-import { Genotype, Metadata, Record } from "../api/vcf/Vcf";
+import { Genotype, Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";

@@ -1,8 +1,8 @@
 import { Component } from "solid-js";
 import { Query, Sample } from "../../api/Api";
-import { Metadata } from "../../api/vcf/Vcf";
+import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../../Api";
-import { Filter, writeVcf } from "../../api/vcf/VcfWriter";
+import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
 
 export const RecordDownload: Component<{ recordsMetadata: Metadata; query: Query; samples?: Sample[] }> = (props) => {
   const filter = (): Filter | undefined =>

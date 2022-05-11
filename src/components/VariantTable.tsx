@@ -6,7 +6,7 @@ import { Ref } from "./record/Ref";
 import { Alt } from "./record/Alt";
 import { Qual } from "./record/Qual";
 import { Filter } from "./record/Filter";
-import { Record } from "../api/vcf/Vcf";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
 export const VariantTable: Component<{ variant: Record }> = (props) => {
   return (

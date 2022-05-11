@@ -17,7 +17,7 @@ import {
   SelectorPart,
   SortOrder,
 } from "./Api";
-import { Metadata as RecordMetadata, Record } from "./vcf/Vcf";
+import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { DecisionTree, LeafNode } from "./DecisionTree";
 
 export interface ReportData {

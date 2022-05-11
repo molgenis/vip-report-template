@@ -1,6 +1,6 @@
 import { Component, createResource, For, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Record } from "../api/vcf/Vcf";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "../api/Api";
 import { GenomeBrowser } from "../components/GenomeBrowser";
@@ -8,7 +8,7 @@ import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
-import { Value } from "../api/vcf/ValueParser";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import api from "../Api";

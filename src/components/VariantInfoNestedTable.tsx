@@ -1,8 +1,8 @@
 import { Component, For, Show } from "solid-js";
 import { Link } from "solid-app-router";
-import { Value } from "../api/vcf/ValueParser";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
-import { FieldMetadata, InfoMetadata } from "../api/vcf/MetadataParser";
+import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];

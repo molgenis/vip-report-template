@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { FieldMetadataContainer, InfoContainer } from "../api/vcf/VcfParser";
+import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 
 export const VariantInfoTable: Component<{ infoValues: InfoContainer; infoFields: FieldMetadataContainer }> = (
   props
