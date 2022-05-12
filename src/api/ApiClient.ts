@@ -19,7 +19,7 @@ import {
 } from "./Api";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { DecisionTree, LeafNode } from "./DecisionTree";
-import { FieldMetadata, NestedFieldMetadata, NumberMetadata } from "./vcf/MetadataParser";
+import { FieldMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export interface ReportData {
   metadata: Metadata;
@@ -304,7 +304,7 @@ function getNestedPath(sortOrder: SortOrder, path: string[]) {
   if (typeof sortOrder.property === "string") {
     throw new Error("Cannot create a nested path for a string value.");
   }
-  const fieldMetadata: FieldMetadata = sortOrder.property;
+  const fieldMetadata: FieldMetadata = sortOrder.property as FieldMetadata;
   path = [];
   path.push("n");
   if (fieldMetadata.parent) {
@@ -326,7 +326,7 @@ function sort<T extends Resource>(resources: Item<T>[], sortOrders: SortOrder[])
     for (const sortOrder of sortOrders) {
       let path: string[] = [];
       if (typeof sortOrder.property === "string") {
-        path = [sortOrder.property];
+        path = [sortOrder.property] as string[];
       } else {
         path = getNestedPath(sortOrder, path);
       }

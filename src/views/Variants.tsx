@@ -1,7 +1,7 @@
 import { Component, createResource, createSignal, Show } from "solid-js";
 import { VariantsTable } from "../components/VariantsTable";
 import { Pager } from "../components/record/Pager";
-import { Params, SortOrder } from "../api/Api";
+import { Params } from "../api/Api";
 import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -10,6 +10,7 @@ import api from "../Api";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();
@@ -37,14 +38,14 @@ export const Variants: Component = () => {
   };
 
   const onSortChange = (event: SortEvent) => {
-    let sortOrder: SortOrder = { property: "p", compare: event.ascending ? "asc" : "desc" };
+    let field: string | FieldMetadata = "p";
     if (event.fieldMetadata !== null) {
-      sortOrder = { property: event.fieldMetadata, compare: event.ascending ? "asc" : "desc" };
+      field = event.fieldMetadata;
     }
     setParams({
       ...params(),
       page: 0,
-      sort: sortOrder,
+      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
     });
   };
 

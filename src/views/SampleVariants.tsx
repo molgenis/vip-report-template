@@ -1,6 +1,6 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, Sample as ApiSample, SortOrder } from "../api/Api";
+import { Item, Params, Sample as ApiSample } from "../api/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -12,6 +12,7 @@ import api from "../Api";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
@@ -38,14 +39,14 @@ export const SampleVariants: Component = () => {
     });
   };
   const onSortChange = (event: SortEvent) => {
-    let sortOrder: SortOrder = { property: "p", compare: event.ascending ? "asc" : "desc" };
+    let field: string | FieldMetadata = "p";
     if (event.fieldMetadata !== null) {
-      sortOrder = { property: event.fieldMetadata, compare: event.ascending ? "asc" : "desc" };
+      field = event.fieldMetadata;
     }
     setParams({
       ...params(),
       page: 0,
-      sort: sortOrder,
+      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
     });
   };
 
