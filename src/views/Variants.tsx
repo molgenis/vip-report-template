@@ -10,7 +10,6 @@ import api from "../Api";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { FieldMetadata } from "../api/vcf/MetadataParser";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();

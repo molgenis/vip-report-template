@@ -12,7 +12,6 @@ import api from "../Api";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { FieldMetadata } from "../api/vcf/MetadataParser";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
