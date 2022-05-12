@@ -1,6 +1,6 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, Sample as ApiSample } from "../api/Api";
+import { Item, Params, Sample as ApiSample, SortOrder } from "../api/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -39,14 +39,14 @@ export const SampleVariants: Component = () => {
     });
   };
   const onSortChange = (event: SortEvent) => {
-    let field: string | FieldMetadata = "p";
-    if (event.fieldMetadata?.fieldType === "INFO" || event.fieldMetadata?.fieldType === "NESTED") {
-      field = event.fieldMetadata;
+    let sortOrder: SortOrder = { property: "p", compare: event.ascending ? "asc" : "desc" };
+    if (event.fieldMetadata !== null) {
+      sortOrder = { property: event.fieldMetadata, compare: event.ascending ? "asc" : "desc" };
     }
     setParams({
       ...params(),
       page: 0,
-      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
+      sort: sortOrder,
     });
   };
 

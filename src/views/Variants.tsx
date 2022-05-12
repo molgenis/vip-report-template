@@ -1,7 +1,7 @@
 import { Component, createResource, createSignal, Show } from "solid-js";
 import { VariantsTable } from "../components/VariantsTable";
 import { Pager } from "../components/record/Pager";
-import { Params } from "../api/Api";
+import { Params, SortOrder } from "../api/Api";
 import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
@@ -38,14 +38,14 @@ export const Variants: Component = () => {
   };
 
   const onSortChange = (event: SortEvent) => {
-    let field: string | FieldMetadata = "p";
-    if (event.fieldMetadata?.fieldType === "INFO" || event.fieldMetadata?.fieldType === "NESTED") {
-      field = event.fieldMetadata;
+    let sortOrder: SortOrder = { property: "p", compare: event.ascending ? "asc" : "desc" };
+    if (event.fieldMetadata !== null) {
+      sortOrder = { property: event.fieldMetadata, compare: event.ascending ? "asc" : "desc" };
     }
     setParams({
       ...params(),
       page: 0,
-      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
+      sort: sortOrder,
     });
   };
 
