@@ -19,6 +19,7 @@ import {
 } from "./Api";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { DecisionTree, LeafNode } from "./DecisionTree";
+import { FieldMetadata, NestedFieldMetadata, NumberMetadata } from "./vcf/MetadataParser";
 
 export interface ReportData {
   metadata: Metadata;
@@ -188,24 +189,58 @@ export class ApiClient implements Api {
   }
 }
 
-function get(
+function getSingleNestedValue(
+  sort: SortOrder | null,
+  valueAtDepth: boolean[] | number[] | string[],
+  path: string[],
+  i: number,
+  value: object | null | undefined
+) {
+  if (sort !== null) {
+    let values: boolean[] | number[] | string[] = [];
+    valueAtDepth.forEach((nestedValues) => {
+      const nestedValue = nestedValues[path[i + 1] as keyof typeof value];
+      if (nestedValue !== undefined && nestedValue != null) {
+        values.push(nestedValue);
+      }
+    });
+    values = values.sort((a, b) => getCompareFn(sort)(a, b));
+    return values.length > 0 ? values[0] : null;
+  } else {
+    throw new Error(`Cannot get a single value for an array without a sort.`);
+  }
+}
+
+function getSingleValue(
   value: object | null | undefined,
-  path: string[]
+  path: string[],
+  sort: SortOrder | null
 ): boolean | boolean[] | number | number[] | string | string[] | null {
-  if (value === undefined || value === null) {
+  let valueAtDepth: boolean | boolean[] | number | number[] | string | string[] | null = value as
+    | boolean
+    | boolean[]
+    | number
+    | number[]
+    | string
+    | string[]
+    | null;
+  if (valueAtDepth === undefined || valueAtDepth === null) {
     return null;
   }
-  let valueAtDepth: boolean | boolean[] | number | number[] | string | string[] | null = null;
-  for (const token of path) {
-    if (typeof value === "object") {
-      valueAtDepth = value[token as keyof typeof value];
-    } else if (Array.isArray(value)) {
-      valueAtDepth = value[token];
-    } else {
+
+  for (let i = 0; i < path.length; i++) {
+    const token = path[i];
+    if (typeof valueAtDepth !== "object") {
       throw new Error(`invalid path ${path.join("/")}`);
+    } else {
+      if (Array.isArray(valueAtDepth) && token === "*") {
+        return getSingleNestedValue(sort, valueAtDepth, path, i, value);
+      } else {
+        valueAtDepth = valueAtDepth[token as keyof typeof value];
+      }
     }
   }
-  return valueAtDepth;
+  return valueAtDepth === undefined ? null : valueAtDepth;
 }
 
 function compareAsc(a: unknown, b: unknown) {
@@ -265,13 +300,38 @@ function getCompareFn(sortOrder: SortOrder): CompareFn {
   return compareFn;
 }
 
+function getNestedPath(sortOrder: SortOrder, path: string[]) {
+  if (typeof sortOrder.property === "string") {
+    throw new Error("Cannot create a nested path for a string value.");
+  }
+  const fieldMetadata: FieldMetadata = sortOrder.property;
+  path = [];
+  path.push("n");
+  if (fieldMetadata.parent) {
+    path.push(fieldMetadata.parent.id);
+    if (fieldMetadata.parent.number.type !== "NUMBER" || fieldMetadata.parent.number.count !== 1) {
+      path.push("*");
+    }
+    const nested: NestedFieldMetadata = fieldMetadata.parent.nested as NestedFieldMetadata;
+    path.push(nested.items.indexOf(fieldMetadata) as unknown as string);
+  } else {
+    path.push(fieldMetadata.id);
+  }
+  return path;
+}
+
 function sort<T extends Resource>(resources: Item<T>[], sortOrders: SortOrder[]) {
   resources.sort((a, b) => {
     let val = 0;
     for (const sortOrder of sortOrders) {
-      const path = Array.isArray(sortOrder.property) ? sortOrder.property : [sortOrder.property];
-      const left = get(a, path);
-      const right = get(b, path);
+      let path: string[] = [];
+      if (typeof sortOrder.property === "string") {
+        path = [sortOrder.property];
+      } else {
+        path = getNestedPath(sortOrder, path);
+      }
+      const left = getSingleValue(a.data, path, sortOrder);
+      const right = getSingleValue(b.data, path, sortOrder);
 
       val = getCompareFn(sortOrder)(left, right);
       if (val !== 0) {

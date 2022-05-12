@@ -1,6 +1,7 @@
 // this is .ts instead of .d.ts file to work around https://github.com/TypeStrong/ts-loader/issues/1036
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { DecisionTree } from "./DecisionTree";
+import { FieldMetadata } from "./vcf/MetadataParser";
 
 export interface Api {
   getRecordsMeta(): Promise<RecordMetadata>;
@@ -40,7 +41,7 @@ export interface Params {
 }
 
 export interface SortOrder {
-  property: string | string[];
+  property: string | FieldMetadata;
   compare?: "asc" | "desc" | CompareFn;
 }
 

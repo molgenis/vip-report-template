@@ -10,6 +10,7 @@ import api from "../Api";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { FieldMetadata } from "../api/vcf/MetadataParser";
 
 const fetchRecords = async (params: Params) => await api.getRecords(params);
 const fetchRecordsMeta = async () => await api.getRecordsMeta();
@@ -23,22 +24,28 @@ export const Variants: Component = () => {
   const onPageChange = (page: number) => setParams({ page });
   const onSearchChange = (search: string) =>
     setParams({
+      ...params(),
       page: 0,
       query: search !== "" ? createSearchQuery(search, recordsMetadata()) : undefined,
     });
   const onFiltersChange = (event: FiltersChangeEvent) => {
     const newParams: Params = {
-      ...params,
+      ...params(),
       page: 0,
     };
     newParams.query = event.filters.length > 0 ? createFilterQuery(event.filters) : undefined;
     setParams(newParams);
   };
+
   const onSortChange = (event: SortEvent) => {
-    // FIXME sort on actual field (probably requires API sort fix?)
+    let field: string | FieldMetadata = "p";
+    if (event.fieldMetadata?.fieldType === "INFO" || event.fieldMetadata?.fieldType === "NESTED") {
+      field = event.fieldMetadata;
+    }
     setParams({
+      ...params(),
       page: 0,
-      sort: { property: "p", compare: event.ascending ? "asc" : "desc" },
+      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
     });
   };
 

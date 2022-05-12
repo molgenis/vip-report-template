@@ -12,6 +12,7 @@ import api from "../Api";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { FieldMetadata } from "../api/vcf/MetadataParser";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
@@ -38,11 +39,14 @@ export const SampleVariants: Component = () => {
     });
   };
   const onSortChange = (event: SortEvent) => {
-    // FIXME sort on actual field (probably requires API sort fix?)
+    let field: string | FieldMetadata = "p";
+    if (event.fieldMetadata?.fieldType === "INFO" || event.fieldMetadata?.fieldType === "NESTED") {
+      field = event.fieldMetadata;
+    }
     setParams({
       ...params(),
       page: 0,
-      sort: { property: "p", compare: event.ascending ? "asc" : "desc" },
+      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
     });
   };
 
