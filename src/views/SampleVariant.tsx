@@ -2,7 +2,7 @@ import { Component, createResource, For, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
-import { Item, Sample } from "../api/Api";
+import { Item, Metadata, Sample } from "../api/Api";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { fetchPedigreeSamples } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
@@ -60,10 +60,13 @@ export const SampleVariant: Component = () => {
             <h1 class="title is-5">Record</h1>
             <VariantTable variant={variant().data} />
           </div>
-          <div class="column is-3">
-            <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
-          </div>
+
+          <Show when={Object.keys(recordsMetadata()?.info).length > 0}>
+            <div class="column is-3">
+              <h1 class="title is-5">Info</h1>
+              <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
+            </div>
+          </Show>
           <div class="column">
             <h1 class="title is-5">Samples</h1>
             <VariantSampleTable
