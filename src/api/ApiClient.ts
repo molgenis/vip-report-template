@@ -304,7 +304,7 @@ function getNestedPath(sortOrder: SortOrder, path: string[]) {
   if (typeof sortOrder.property === "string") {
     throw new Error("Cannot create a nested path for a string value.");
   }
-  const fieldMetadata: FieldMetadata = sortOrder.property as FieldMetadata;
+  const fieldMetadata: FieldMetadata = sortOrder.property;
   path = [];
   path.push("n");
   if (fieldMetadata.parent) {
