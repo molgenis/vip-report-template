@@ -46,6 +46,12 @@ export const samplesFamily = {
             label: "HP:0000951",
           },
         },
+        {
+          type: {
+            id: "HP:0000952",
+            label: "HP:0000952",
+          },
+        },
       ],
       subject: {
         id: "Patient",
