@@ -45,7 +45,13 @@ export const Variant: Component = () => {
             <h1 class="title is-5">Record</h1>
             <VariantTable variant={variant().data} />
           </div>
-          <Show when={Object.keys(recordsMetadata()?.info).length > 0}>
+          <Show
+            when={
+              Object.values(recordsMetadata().info).filter(
+                (info) => !info.nested && variant().data.n[info.id] !== undefined
+              ).length > 0
+            }
+          >
             <div class="column is-3">
               <h1 class="title is-5">Info</h1>
               <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
