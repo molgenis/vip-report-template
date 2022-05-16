@@ -1,5 +1,5 @@
 import { Component, createSignal, For, Signal } from "solid-js";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
@@ -27,9 +27,7 @@ export const NestedInfoCollapsablePane: Component<{
     setCollapsed(!collapsed());
   }
 
-  // FIXME remove 'as unknown' after InfoContainer type fix
-  const infoVepValues = () =>
-    vepField !== undefined ? (props.record.data.n[vepField.id] as unknown as Value[][]) : [];
+  const infoVepValues = () => (vepField !== undefined ? (props.record.data.n[vepField.id] as ValueArray) : []);
 
   return (
     <>
@@ -45,7 +43,7 @@ export const NestedInfoCollapsablePane: Component<{
           <td>
             {idx > -1 ? (
               <For each={infoVepValues()}>
-                {(value, j) => (
+                {(value: ValueArray, j) => (
                   <>
                     {j() != 0 && collapsed() && <br />}
                     {(j() == 0 || collapsed()) && nestedVepItems() !== undefined && (

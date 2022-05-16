@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@fortawesome/fontawesome-svg-core': ^6.1.1
   '@fortawesome/free-solid-svg-icons': ^6.1.1
-  '@molgenis/vip-report-vcf': ^1.0.1
+  '@molgenis/vip-report-vcf': ^1.0.3
   '@typescript-eslint/eslint-plugin': ^5.23.0
   '@typescript-eslint/parser': ^5.23.0
   base64-js: ^1.5.1
@@ -28,7 +28,7 @@ specifiers:
 dependencies:
   '@fortawesome/fontawesome-svg-core': 6.1.1
   '@fortawesome/free-solid-svg-icons': 6.1.1
-  '@molgenis/vip-report-vcf': 1.0.1
+  '@molgenis/vip-report-vcf': 1.0.3
   base64-js: 1.5.1
   fflate: 0.7.3
   igv: 2.12.6
@@ -455,8 +455,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
-  /@molgenis/vip-report-vcf/1.0.1:
-    resolution: {integrity: sha512-SSf+cfynkWUYM/COn7X96Iv+VQkRzMmVnrpcnlLBjScgGnJOxWXgdZmaiO7KZhfW5guRjSrEWldZhJ/em9Ha4g==}
+  /@molgenis/vip-report-vcf/1.0.3:
+    resolution: {integrity: sha512-P17QOsOeza4xuJaQFFGJMN7YZUbmy9W64ZthDiozSal+zqwehUfqQcomtsiHG3hAgHvRWdTMpyOvqY48XBWDGA==}
     dev: false
 
   /@nodelib/fs.scandir/2.1.5:
