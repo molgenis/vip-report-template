@@ -1,27 +1,21 @@
-import { Value, ValueObject, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
-export function getCsqHeaderIndex(
-  csqHeaders: {
-    id: string;
-    type: string;
-    description: string;
-    categories: ValueString[];
-    number: ValueObject;
-    parent: ValueObject;
-    required: boolean;
-  }[]
-) {
-  return csqHeaders.findIndex((csq) => csq.id === "Consequence");
+export function getCsqHeaderIndex(csqMetadataArray: FieldMetadata[]) {
+  return csqMetadataArray.findIndex((csqMetadata) => csqMetadata.id === "Consequence");
 }
 
-export function getSpecificConsequence(csq: Value[][][], rowIndex: number) {
-  return csq.length >= rowIndex ? csq[rowIndex] : [];
+export function getSpecificConsequence(csqs: ValueArray, rowIndex: number) {
+  const csq: Value = csqs.length >= rowIndex ? csqs[rowIndex] : ([] as ValueArray);
+  return csq;
 }
 
-export function getConsequenceLabel(csq: Value[][][], rowIndex: number, csqIndex: number) {
-  return csq.length >= rowIndex ? getSpecificConsequence(csq, rowIndex)[csqIndex].join("&") : "#";
+export function getConsequenceLabel(csq: ValueArray, rowIndex: number, csqIndex: number) {
+  const csqValues: ValueArray = getSpecificConsequence(csq, rowIndex) as ValueArray;
+  const csqValue: Value = csqValues[csqIndex];
+  return csqValue;
 }
 
 export function getRecordSamples(record: Record, sample: Sample, pedigreeSamples: Sample[]) {
