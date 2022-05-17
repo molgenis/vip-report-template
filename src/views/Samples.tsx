@@ -1,5 +1,5 @@
 import { Component, createResource, createSignal } from "solid-js";
-import { Params } from "../api/Api";
+import { Params } from "@molgenis/vip-report-api/src/Api";
 import api from "../Api";
 import { SampleTable } from "../components/SampleTable";
 import { Pager } from "../components/record/Pager";

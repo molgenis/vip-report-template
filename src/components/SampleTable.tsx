@@ -1,6 +1,6 @@
 import { Link } from "solid-app-router";
 import { Component, For } from "solid-js";
-import { Item, Sample } from "../api/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 
 export const SampleTable: Component<{
   samples: Item<Sample>[];

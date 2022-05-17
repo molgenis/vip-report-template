@@ -1,4 +1,4 @@
-import { WindowApiClient } from "./WindowApiClient";
+import { WindowApiClient } from "@molgenis/vip-report-api/src/WindowApiClient";
 
 // lazy import MockApiClient to ensure that it is excluded from the build artifact
 const api = import.meta.env.PROD

@@ -1,5 +1,5 @@
 import { Component, createMemo, For } from "solid-js";
-import { Page } from "../../api/Api";
+import { Page } from "@molgenis/vip-report-api/src/Api";
 
 const createPages = (page: number, pages: number): (number | null)[] => {
   if (pages <= 5) {

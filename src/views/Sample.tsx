@@ -1,6 +1,6 @@
 import { Component, For, Resource, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
-import { Item, Sample as ApiSample } from "../api/Api";
+import { Item, Sample as ApiSample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { Breadcrumb } from "../components/Breadcrumb";
 

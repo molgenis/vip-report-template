@@ -9,7 +9,7 @@ import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
-import { Item } from "../api/Api";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Breadcrumb } from "../components/Breadcrumb";
 
 export const Variant: Component = () => {

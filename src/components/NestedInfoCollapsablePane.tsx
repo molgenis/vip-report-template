@@ -1,9 +1,9 @@
 import { Component, createSignal, For, Signal } from "solid-js";
-import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Item } from "../api/Api";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
 export const NestedInfoCollapsablePane: Component<{
   recordsMetadata: Metadata;

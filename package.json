@@ -15,8 +15,8 @@
   },
   "license": "LGPL-3.0",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.23.0",
-    "@typescript-eslint/parser": "^5.23.0",
+    "@typescript-eslint/eslint-plugin": "^5.24.0",
+    "@typescript-eslint/parser": "^5.24.0",
     "bulma": "^0.9.4",
     "c8": "^7.11.3",
     "eslint": "^8.15.0",
@@ -34,7 +34,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
-    "@molgenis/vip-report-vcf": "^1.0.3",
+    "@molgenis/vip-report-api": "^3.0.1",
+    "@molgenis/vip-report-vcf": "^1.0.4",
     "base64-js": "^1.5.1",
     "fflate": "^0.7.3",
     "igv": "^2.12.6",

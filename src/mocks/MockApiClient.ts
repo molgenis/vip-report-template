@@ -1,6 +1,16 @@
-import { ApiClient, ReportData } from "../api/ApiClient";
+import { ApiClient, ReportData } from "@molgenis/vip-report-api/src/ApiClient";
 import { parseVcf } from "@molgenis/vip-report-vcf/src/VcfParser";
-import { Api, AppMetadata, HtsFileMetadata, Item, Metadata, PagedItems, Params, Phenotype, Sample } from "../api/Api";
+import {
+  Api,
+  AppMetadata,
+  HtsFileMetadata,
+  Item,
+  Metadata,
+  PagedItems,
+  Params,
+  Phenotype,
+  Sample,
+} from "@molgenis/vip-report-api/src/Api";
 import { samples1, samples100, samplesFamily } from "./static";
 import {
   bam as bamGRCh37,
@@ -25,7 +35,7 @@ import {
   vcfSamples100 as vcfSamples100GRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { DecisionTree } from "../api/DecisionTree";
+import { DecisionTree } from "@molgenis/vip-report-api/src/DecisionTree";
 
 /**
  * API client that uses mocked data as data source.

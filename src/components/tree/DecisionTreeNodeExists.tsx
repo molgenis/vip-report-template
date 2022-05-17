@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { ExistsNode } from "../../api/DecisionTree";
+import { ExistsNode } from "@molgenis/vip-report-api/src/DecisionTree";
 import { DecisionTreeOutcomeNode } from "./DecisionTreeOutcomeNode";
 
 export const DecisionTreeNodeExists: Component<{ node: ExistsNode }> = (props) => {

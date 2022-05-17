@@ -1,4 +1,4 @@
-import { ReportData } from "./api/ApiClient";
+import { ReportData } from "@molgenis/vip-report-api/src/ApiClient";
 
 export type EncodedReport = ReportData & {
   base85?: EncodedReportData;

@@ -1,6 +1,6 @@
 import { Component, createResource, createSignal, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, Sample as ApiSample } from "../api/Api";
+import { Item, Params, Sample as ApiSample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";

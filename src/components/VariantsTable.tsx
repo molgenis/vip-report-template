@@ -11,7 +11,7 @@ import { Info } from "./record/Info";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Link } from "solid-app-router";
-import { Item } from "../api/Api";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
 const computeRowspan = (recordsMetadata: Metadata) =>
   Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : undefined;

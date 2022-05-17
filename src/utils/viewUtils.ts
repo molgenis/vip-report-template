@@ -1,6 +1,6 @@
 import { Value, ValueObject, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Sample } from "../api/Api";
+import { Sample } from "@molgenis/vip-report-api/src/Api";
 
 export function getCsqHeaderIndex(
   csqHeaders: {

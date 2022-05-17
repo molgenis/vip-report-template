@@ -3,7 +3,7 @@ import { Record, RecordSample } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Format } from "./record/Format";
-import { Sample } from "../api/Api";
+import { Sample } from "@molgenis/vip-report-api/src/Api";
 
 export const VariantSampleTable: Component<{
   formatFields: FieldMetadataContainer;

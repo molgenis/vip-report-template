@@ -1,4 +1,4 @@
-import { Query, QueryClause, QueryOperator, Selector } from "../api/Api";
+import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent } from "../components/filter/Filters";

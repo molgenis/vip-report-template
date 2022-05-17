@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { Query, Sample } from "../../api/Api";
+import { Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../../Api";
 import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";

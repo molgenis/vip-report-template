@@ -8,11 +8,11 @@ import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleDown,
   faAngleUp,
+  faArrowRight,
   faCircleXmark,
   faDownload,
   faHome,
   faSearch,
-  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { hashIntegration, Router } from "solid-app-router";
 

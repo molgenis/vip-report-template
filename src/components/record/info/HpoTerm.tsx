@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { Anchor } from "../../Anchor";
-import { OntologyClass } from "../../../api/Api";
+import { OntologyClass } from "@molgenis/vip-report-api/src/Api";
 
 export const HpoTerm: Component<{
   ontologyClass: OntologyClass;

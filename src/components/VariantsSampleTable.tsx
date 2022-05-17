@@ -3,7 +3,7 @@ import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
 import { Link } from "solid-app-router";
-import { Item, Sample } from "../api/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { NestedInfoCollapsablePane } from "./NestedInfoCollapsablePane";
 import { NestedInfoHeader } from "./NestedInfoHeader";

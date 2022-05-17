@@ -1,7 +1,7 @@
 import { Component, createResource, createSignal, For } from "solid-js";
 import { Breadcrumb } from "../components/Breadcrumb";
 import api from "../Api";
-import { Item, Params, Phenotype, PhenotypicFeature } from "../api/Api";
+import { Item, Params, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "../components/record/info/HpoTerm";
 
 const fetchSamples = async (params: Params) => await api.getSamples(params);

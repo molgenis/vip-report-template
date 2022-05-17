@@ -1,7 +1,7 @@
 import { Component, createResource, createSignal, Show } from "solid-js";
 import { VariantsTable } from "../components/VariantsTable";
 import { Pager } from "../components/record/Pager";
-import { Params } from "../api/Api";
+import { Params } from "@molgenis/vip-report-api/src/Api";
 import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";

@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { NodeOutcome } from "../../api/DecisionTree";
+import { NodeOutcome } from "@molgenis/vip-report-api/src/DecisionTree";
 
 export const DecisionTreeOutcomeNode: Component<{ node: NodeOutcome }> = (props) => {
   return (

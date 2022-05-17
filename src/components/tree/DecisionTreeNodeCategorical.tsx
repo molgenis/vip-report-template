@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { CategoricalNode } from "../../api/DecisionTree";
+import { CategoricalNode } from "@molgenis/vip-report-api/src/DecisionTree";
 import { DecisionTreeOutcomeNode } from "./DecisionTreeOutcomeNode";
 
 export const DecisionTreeNodeCategorical: Component<{ node: CategoricalNode }> = (props) => {

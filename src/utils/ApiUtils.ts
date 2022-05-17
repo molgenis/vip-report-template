@@ -1,4 +1,4 @@
-import { Item, Sample } from "../api/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import api from "../Api";
 
 export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<Sample[]> {

@@ -3,7 +3,7 @@ import igv from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Sample } from "../api/Api";
+import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
