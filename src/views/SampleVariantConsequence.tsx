@@ -13,6 +13,7 @@ import { ConsequenceTable } from "../components/ConsequenceTable";
 import { getConsequenceLabel, getCsqHeaderIndex, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
+import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export const SampleVariantConsequence: Component = () => {
   const {
@@ -58,7 +59,7 @@ export const SampleVariantConsequence: Component = () => {
               {
                 href: "#",
                 label: getConsequenceLabel(
-                  variant().data.n.CSQ,
+                  variant().data.n.CSQ as ValueArray,
                   consequenceId,
                   getCsqHeaderIndex(recordsMetadata().info.CSQ.nested.items)
                 ),
@@ -69,8 +70,8 @@ export const SampleVariantConsequence: Component = () => {
             <div class="column is-6">
               <h1 class="title is-5">Consequence</h1>
               <ConsequenceTable
-                csqHeader={recordsMetadata().info.CSQ.nested.items}
-                csq={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
+                csqMetadata={recordsMetadata().info.CSQ.nested.items}
+                csqValues={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
               ></ConsequenceTable>
             </div>
             {decisionTree() !== null && (
