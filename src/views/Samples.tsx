@@ -1,14 +1,10 @@
 import { Component, createResource, createSignal } from "solid-js";
-import { Params } from "@molgenis/vip-report-api/src/Api";
-import api from "../Api";
 import { SampleTable } from "../components/SampleTable";
 import { Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Checkbox, CheckboxEvent } from "../components/Checkbox";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { EMPTY_PARAMS, EMPTY_SAMPLES_PAGE } from "../utils/ApiUtils";
-
-const fetchSamples = async (params: Params) => await api.getSamples(params);
+import { EMPTY_PARAMS, EMPTY_SAMPLES_PAGE, fetchSamples } from "../utils/ApiUtils";
 
 export const Samples: Component = () => {
   const [params, setParams] = createSignal(EMPTY_PARAMS);
