@@ -3,13 +3,13 @@ import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
-export function getCsqHeaderIndex(csqHeaders: FieldMetadata[]) {
-  return csqHeaders.findIndex((csq) => csq.id === "Consequence");
+export function getCsqHeaderIndex(csqMetadataArray: FieldMetadata[]) {
+  return csqMetadataArray.findIndex((csqMetadata) => csqMetadata.id === "Consequence");
 }
 
-export function getSpecificConsequence(csq: ValueArray, rowIndex: number) {
-  const value: Value = csq.length >= rowIndex ? csq[rowIndex] : [];
-  return value;
+export function getSpecificConsequence(csqs: ValueArray, rowIndex: number) {
+  const csq: Value = csqs.length >= rowIndex ? csqs[rowIndex] : ([] as ValueArray);
+  return csq;
 }
 
 export function getConsequenceLabel(csq: ValueArray, rowIndex: number, csqIndex: number) {
