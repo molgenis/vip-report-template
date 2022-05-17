@@ -6,6 +6,7 @@ import { Breadcrumb } from "../components/Breadcrumb";
 
 export const Sample: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
+
   return (
     <Show when={!sample.loading} fallback={<Loader />}>
       <Breadcrumb

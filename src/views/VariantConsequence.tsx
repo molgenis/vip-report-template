@@ -5,12 +5,12 @@ import { Loader } from "../components/Loader";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
-import api from "../Api";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getConsequenceLabel, getCsqHeaderIndex, getSpecificConsequence } from "../utils/viewUtils";
 import { ConsequenceTable } from "../components/ConsequenceTable";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
+import { EMPTY_DECISION_TREE, EMPTY_RECORDS_METADATA, fetchDecisionTree, fetchRecordsMeta } from "../utils/ApiUtils";
 
 export const VariantConsequence: Component = () => {
   const {
@@ -18,11 +18,8 @@ export const VariantConsequence: Component = () => {
     consequenceId,
   }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>>; consequenceId: number } = useRouteData();
 
-  const [recordsMetadata, recordsMetadataActions] = createResource(async () => await api.getRecordsMeta());
-  const [decisionTree, decisionTreeActions] = createResource(async () => await api.getDecisionTree());
-
-  recordsMetadataActions.mutate();
-  decisionTreeActions.mutate();
+  const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
+  const [decisionTree] = createResource(fetchDecisionTree, { initialValue: EMPTY_DECISION_TREE });
 
   return (
     <>

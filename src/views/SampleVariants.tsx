@@ -8,9 +8,15 @@ import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
-import api from "../Api";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
-import { fetchPedigreeSamples } from "../utils/ApiUtils";
+import {
+  EMPTY_RECORDS_METADATA,
+  EMPTY_RECORDS_PAGE,
+  EMPTY_SAMPLES,
+  fetchPedigreeSamples,
+  fetchRecords,
+  fetchRecordsMeta,
+} from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
@@ -19,9 +25,9 @@ export const SampleVariants: Component = () => {
 
   const [params, setParams] = createSignal({ size: 20 } as Params);
 
-  const [records, recordsActions] = createResource(params, (params) => api.getRecords(params));
-  const [recordsMetadata, recordsMetadataActions] = createResource(() => api.getRecordsMeta());
-  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
+  const [records] = createResource(params, fetchRecords, { initialValue: EMPTY_RECORDS_PAGE });
+  const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
+  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples, { initialValue: EMPTY_SAMPLES });
 
   const onPageChange = (page: number) => setParams({ ...params(), page });
   const onSearchChange = (search: string) => {
@@ -65,9 +71,6 @@ export const SampleVariants: Component = () => {
     gnomAD_HN: "gnomAD HN",
     PUBMED: "Pubmed",
   };
-
-  recordsActions.mutate();
-  recordsMetadataActions.mutate();
 
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>

@@ -4,23 +4,21 @@ import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenomeBrowser } from "../components/GenomeBrowser";
-import { fetchPedigreeSamples } from "../utils/ApiUtils";
+import { EMPTY_RECORDS_METADATA, EMPTY_SAMPLES, fetchPedigreeSamples, fetchRecordsMeta } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
-import api from "../Api";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getRecordSamples } from "../utils/viewUtils";
 
 export const SampleVariant: Component = () => {
   const { sample, variant }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>> } = useRouteData();
-  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
 
-  const [recordsMetadata, recordsMetadataActions] = createResource(async () => await api.getRecordsMeta());
-  recordsMetadataActions.mutate();
+  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples, { initialValue: EMPTY_SAMPLES });
+  const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
 
   return (
     <>
@@ -51,7 +49,7 @@ export const SampleVariant: Component = () => {
             <GenomeBrowser
               contig={variant().data.c}
               position={variant().data.p}
-              samples={[sample().data, ...(pedigreeSamples() as Sample[])]}
+              samples={[sample().data, ...pedigreeSamples()]}
             />
           </div>
         </div>
@@ -84,7 +82,7 @@ export const SampleVariant: Component = () => {
         </div>
         <div class="columns">
           <div class="column">
-            <For each={getNestedInfoFieldsWithValues(recordsMetadata()?.info, variant().data.n)}>
+            <For each={getNestedInfoFieldsWithValues(recordsMetadata().info, variant().data.n)}>
               {(infoField) => (
                 <>
                   <h1 class="title is-5">{infoField.id}</h1>

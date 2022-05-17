@@ -1,12 +1,9 @@
 import { createResource } from "solid-js";
-import api from "../../Api";
 import { RouteDataFuncArgs } from "solid-app-router/dist/types";
-
-const fetchSample = async (id: string) => await api.getSampleById(Number(id));
-const fetchVariant = async (id: string) => await api.getRecordById(Number(id));
+import { fetchRecordById, fetchSampleById } from "../../utils/ApiUtils";
 
 export default function SampleVariantData({ params }: RouteDataFuncArgs) {
-  const [sample] = createResource(() => params.sampleId, fetchSample);
-  const [variant] = createResource(() => params.variantId, fetchVariant);
+  const [sample] = createResource(() => params.sampleId, fetchSampleById);
+  const [variant] = createResource(() => params.variantId, fetchRecordById);
   return { sample, variant };
 }

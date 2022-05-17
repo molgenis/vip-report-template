@@ -3,7 +3,6 @@ import { useRouteData } from "solid-app-router";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { Loader } from "../components/Loader";
-import api from "../Api";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
@@ -11,12 +10,12 @@ import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { EMPTY_RECORDS_METADATA, fetchRecordsMeta } from "../utils/ApiUtils";
 
 export const Variant: Component = () => {
   const variant: Resource<Item<Record>> = useRouteData();
 
-  const [recordsMetadata, recordsMetadataActions] = createResource(async () => await api.getRecordsMeta());
-  recordsMetadataActions.mutate();
+  const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
 
   return (
     <>
@@ -60,7 +59,7 @@ export const Variant: Component = () => {
         </div>
         <div class="columns">
           <div class="column">
-            <For each={getNestedInfoFieldsWithValues(recordsMetadata()?.info, variant().data.n)}>
+            <For each={getNestedInfoFieldsWithValues(recordsMetadata().info, variant().data.n)}>
               {(infoField) => (
                 <>
                   <h1 class="title is-5">{infoField.id}</h1>

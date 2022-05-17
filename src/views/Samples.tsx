@@ -6,12 +6,13 @@ import { Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Checkbox, CheckboxEvent } from "../components/Checkbox";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { EMPTY_PARAMS, EMPTY_SAMPLES_PAGE } from "../utils/ApiUtils";
 
 const fetchSamples = async (params: Params) => await api.getSamples(params);
 
 export const Samples: Component = () => {
-  const [params, setParams] = createSignal({});
-  const [samples] = createResource(params, fetchSamples);
+  const [params, setParams] = createSignal(EMPTY_PARAMS);
+  const [samples] = createResource(params, fetchSamples, { initialValue: EMPTY_SAMPLES_PAGE });
 
   const onPageChange = (page: number) => setParams({ page });
   const onSearchChange = (search: string) =>

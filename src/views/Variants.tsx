@@ -6,20 +6,22 @@ import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 import { Sort, SortEvent } from "../components/Sort";
-import api from "../Api";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-
-const fetchRecords = async (params: Params) => await api.getRecords(params);
-const fetchRecordsMeta = async () => await api.getRecordsMeta();
+import {
+  EMPTY_PARAMS,
+  EMPTY_RECORDS_METADATA,
+  EMPTY_RECORDS_PAGE,
+  fetchRecords,
+  fetchRecordsMeta,
+} from "../utils/ApiUtils";
 
 export const Variants: Component = () => {
-  const [params, setParams] = createSignal({} as Params);
-
-  const [records, recordsActions] = createResource(params, fetchRecords);
-  const [recordsMetadata, recordsMetadataActions] = createResource(fetchRecordsMeta);
+  const [params, setParams] = createSignal(EMPTY_PARAMS);
+  const [records] = createResource(params, fetchRecords, { initialValue: EMPTY_RECORDS_PAGE });
+  const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
 
   const onPageChange = (page: number) => setParams({ page });
   const onSearchChange = (search: string) =>
@@ -48,9 +50,6 @@ export const Variants: Component = () => {
       sort: { property: field, compare: event.ascending ? "asc" : "desc" },
     });
   };
-
-  recordsActions.mutate();
-  recordsMetadataActions.mutate();
 
   return (
     <Show when={!recordsMetadata.loading} fallback={<Loader />}>

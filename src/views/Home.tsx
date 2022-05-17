@@ -1,26 +1,32 @@
 import { Component, createResource, createSignal, For } from "solid-js";
 import { Breadcrumb } from "../components/Breadcrumb";
-import api from "../Api";
-import { Item, Params, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
+import { Item, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "../components/record/info/HpoTerm";
-
-const fetchSamples = async (params: Params) => await api.getSamples(params);
-const fetchRecords = async (params: Params) => await api.getRecords(params);
-const fetchPhenotypes = async (params: Params) => await api.getPhenotypes(params);
-const fetchHtsFileMetadata = async () => await api.getHtsFileMetadata();
-const fetchAppMetadata = async () => await api.getAppMetadata();
+import {
+  EMPTY_APP_METADATA,
+  EMPTY_HTS_FILE_METADATA,
+  EMPTY_PARAMS,
+  EMPTY_PHENOTYPES,
+  EMPTY_RECORDS_PAGE,
+  EMPTY_SAMPLES_PAGE,
+  fetchAppMetadata,
+  fetchHtsFileMetadata,
+  fetchPhenotypes,
+  fetchRecords,
+  fetchSamples,
+} from "../utils/ApiUtils";
 
 export const Home: Component = () => {
-  const [params, setParams] = createSignal({});
-  const [samples] = createResource(params, fetchSamples);
-  const [records] = createResource(params, fetchRecords);
-  const [phenotypes] = createResource(params, fetchPhenotypes);
-  const [htsFileMetadata] = createResource(params, fetchHtsFileMetadata);
-  const [appMetadata] = createResource(params, fetchAppMetadata);
+  const [params] = createSignal(EMPTY_PARAMS);
+  const [samples] = createResource(params, fetchSamples, { initialValue: EMPTY_SAMPLES_PAGE });
+  const [records] = createResource(params, fetchRecords, { initialValue: EMPTY_RECORDS_PAGE });
+  const [phenotypes] = createResource(params, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
+  const [htsFileMetadata] = createResource(params, fetchHtsFileMetadata, { initialValue: EMPTY_HTS_FILE_METADATA });
+  const [appMetadata] = createResource(params, fetchAppMetadata, { initialValue: EMPTY_APP_METADATA });
+
   return (
     <>
       <Breadcrumb links={[]}></Breadcrumb>
-
       <div class="table-container">
         <table class="table is-narrow">
           <thead>
@@ -31,15 +37,15 @@ export const Home: Component = () => {
           <tbody>
             <tr>
               <th>Name:</th>
-              <td>{appMetadata()?.name}</td>
+              <td>{appMetadata().name}</td>
             </tr>
             <tr>
               <th>Version:</th>
-              <td>{appMetadata()?.version}</td>
+              <td>{appMetadata().version}</td>
             </tr>
             <tr>
               <th>Arguments:</th>
-              <td>{appMetadata()?.args}</td>
+              <td>{appMetadata().args}</td>
             </tr>
           </tbody>
         </table>
@@ -54,24 +60,24 @@ export const Home: Component = () => {
           <tbody>
             <tr>
               <th>Filename:</th>
-              <td>{htsFileMetadata()?.uri}</td>
+              <td>{htsFileMetadata().uri}</td>
             </tr>
             <tr>
               <th>Assembly:</th>
-              <td>{htsFileMetadata()?.genomeAssembly}</td>
+              <td>{htsFileMetadata().genomeAssembly}</td>
             </tr>
             <tr>
               <th>Number of records:</th>
-              <td>{records()?.total}</td>
+              <td>{records().total}</td>
             </tr>
             <tr>
               <th>Number of samples:</th>
-              <td>{samples()?.total}</td>
+              <td>{samples().total}</td>
             </tr>
             <tr>
               <th>Phenotypes:</th>
               <td>
-                <For each={phenotypes()?.items}>
+                <For each={phenotypes().items}>
                   {(item: Item<Phenotype>) => (
                     <>
                       <b>{item.data.subject.id}: </b>
