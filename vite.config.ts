@@ -1,6 +1,6 @@
 import { defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
-import inlinePlugin from "./src/plugin/vite-plugin-inline";
+import inlinePlugin from "@molgenis/vite-plugin-inline/src/vite-plugin-inline.js";
 
 export default defineConfig({
   plugins: [solidPlugin(), inlinePlugin()],
@@ -8,7 +8,7 @@ export default defineConfig({
     polyfillDynamicImport: false,
     // inline plugin build options
     rollupOptions: {
-      input: ["./index.html", "./src/plugin/loader.ts"],
+      input: ["./index.html", "@molgenis/vite-plugin-inline/src/loader.ts"],
       output: {
         manualChunks: undefined,
       },
