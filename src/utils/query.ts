@@ -70,27 +70,35 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
   return selector;
 }
 
+function addCategoricalFilterClause(filter: FilterChangeEvent, clauses: QueryClause[]) {
+  const categories = filter.value;
+  clauses.push({
+    selector: getSelector(filter.fieldMetadata),
+    operator: filter.fieldMetadata.number.count === 1 ? "has_any" : "any_has_any",
+    args: categories,
+  });
+}
+
 export function createFilterQuery(filters: FilterChangeEvent[]): Query {
   const clauses: QueryClause[] = [];
   for (const filter of filters) {
-    switch (filter.fieldMetadata.type) {
-      case "CATEGORICAL": {
-        const categories = filter.value;
-        clauses.push({
-          selector: getSelector(filter.fieldMetadata),
-          operator: categories.length === 1 ? "has_any" : "any_has_any",
-          args: categories,
-        });
-        break;
+    if (filter.fieldMetadata.id !== "HPO") {
+      switch (filter.fieldMetadata.type) {
+        case "CATEGORICAL": {
+          addCategoricalFilterClause(filter, clauses);
+          break;
+        }
+        case "CHARACTER":
+        case "FLAG":
+        case "FLOAT":
+        case "INTEGER":
+        case "STRING":
+          throw new Error("invalid field type");
+        default:
+          throw new Error("unknown field type");
       }
-      case "CHARACTER":
-      case "FLAG":
-      case "FLOAT":
-      case "INTEGER":
-      case "STRING":
-        throw new Error("invalid field type");
-      default:
-        throw new Error("unknown field type");
+    } else {
+      addCategoricalFilterClause(filter, clauses);
     }
   }
   return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };

@@ -3,6 +3,7 @@ import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filter } from "./Filter";
 import { flattenFieldMetadata } from "../../utils/field";
+import { PhenotypeFilter } from "./PhenotypeFilter";
 
 export type FilterChangeEvent = {
   fieldMetadata: FieldMetadata;
@@ -25,12 +26,18 @@ export const Filters: Component<{
   fieldMetadataContainer: FieldMetadataContainer;
   onChange: (event: FiltersChangeEvent) => void;
   fields: { [key: string]: string };
+  sampleId: string | undefined;
 }> = (props) => {
   const fieldIds = () => Object.keys(props.fields);
   const infoMetadataItems = () =>
     flattenFieldMetadata(props.fieldMetadataContainer)
-      .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL" || fieldMetadata.id === "VIPC")
-      .filter((fieldMetadata) => fieldIds().length == 0 || fieldIds().includes(fieldMetadata.id));
+      .filter(
+        (fieldMetadata) =>
+          fieldMetadata.type === "CATEGORICAL" || fieldMetadata.id === "VIPC" || fieldMetadata.id === "HPO"
+      )
+      .filter(
+        (fieldMetadata) => fieldIds().length == 0 || fieldIds().includes(fieldMetadata.id) || fieldMetadata.id === "HPO"
+      );
   const filters: Filters = {};
 
   const onFilterChange = (event: FilterChangeEvent) => {
@@ -46,12 +53,24 @@ export const Filters: Component<{
     <>
       <For each={infoMetadataItems()}>
         {(infoMetadata) => (
-          <Filter
-            label={props.fields[infoMetadata.id]}
-            fieldMetadata={infoMetadata}
-            onChange={onFilterChange}
-            onClear={onFilterClear}
-          />
+          <>
+            {infoMetadata.id !== "HPO" && (
+              <Filter
+                label={props.fields[infoMetadata.id]}
+                fieldMetadata={infoMetadata}
+                onChange={onFilterChange}
+                onClear={onFilterClear}
+              />
+            )}
+            {infoMetadata.id === "HPO" && props.sampleId !== undefined && (
+              <PhenotypeFilter
+                sampleId={props.sampleId}
+                fieldMetadata={infoMetadata}
+                onChange={onFilterChange}
+                onClear={onFilterClear}
+              />
+            )}
+          </>
         )}
       </For>
     </>
