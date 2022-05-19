@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { BoolQuery } from "@molgenis/vip-report-api/src/DecisionTree";
+import { BoolQuery } from "@molgenis/vip-report-api/src/Api";
 
 export const DecisionTreeBoolQuery: Component<{ query: BoolQuery }> = (props) => {
   const value = props.query.field + " " + props.query.operator + " " + String(props.query.value);

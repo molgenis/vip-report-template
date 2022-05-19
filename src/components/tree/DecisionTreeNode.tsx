@@ -1,12 +1,5 @@
 import { Component, createSignal, Match, Signal, Switch } from "solid-js";
-import {
-  BoolMultiNode,
-  BoolNode,
-  CategoricalNode,
-  ExistsNode,
-  LeafNode,
-  Node,
-} from "@molgenis/vip-report-api/src/DecisionTree";
+import { BoolMultiNode, BoolNode, CategoricalNode, ExistsNode, LeafNode, Node } from "@molgenis/vip-report-api/src/Api";
 import { Error } from "../Error";
 import { DecisionTreeNodeBool } from "./DecisionTreeNodeBool";
 import { DecisionTreeNodeBoolMulti } from "./DecisionTreeNodeBoolMulti";

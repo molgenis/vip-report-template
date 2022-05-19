@@ -35,7 +35,7 @@ import {
   vcfSamples100 as vcfSamples100GRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { DecisionTree } from "@molgenis/vip-report-api/src/DecisionTree";
+import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
 
 /**
  * API client that uses mocked data as data source.

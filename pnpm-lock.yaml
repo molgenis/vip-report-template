@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@fortawesome/fontawesome-svg-core': ^6.1.1
   '@fortawesome/free-solid-svg-icons': ^6.1.1
-  '@molgenis/vip-report-api': ^3.0.1
+  '@molgenis/vip-report-api': ^3.0.2
   '@molgenis/vip-report-vcf': ^1.0.4
   '@molgenis/vite-plugin-inline': ^1.0.5
   '@typescript-eslint/eslint-plugin': ^5.24.0
@@ -29,7 +29,7 @@ specifiers:
 dependencies:
   '@fortawesome/fontawesome-svg-core': 6.1.1
   '@fortawesome/free-solid-svg-icons': 6.1.1
-  '@molgenis/vip-report-api': 3.0.1
+  '@molgenis/vip-report-api': 3.0.2
   '@molgenis/vip-report-vcf': 1.0.4
   base64-js: 1.5.1
   igv: 2.12.6
@@ -466,8 +466,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
-  /@molgenis/vip-report-api/3.0.1:
-    resolution: {integrity: sha512-t4J82nXarp4kRSakfsL8qiHCny22ELykr3nMaV7XVUlXJRnidrhzU1FEdD49iL2WCy3ofne+yF9YvHRFHM2Alw==}
+  /@molgenis/vip-report-api/3.0.2:
+    resolution: {integrity: sha512-Ga3kI0TwMG+3ubZvY9T3GvHS8B0lbY7FkWg/xjoiHi8ND2BgOSwqdBXrkfePLCNfIzwIJF+kNUY5SURKF7gKeg==}
     dependencies:
       '@molgenis/vip-report-vcf': 1.0.4
     dev: false

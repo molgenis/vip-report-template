@@ -34,7 +34,7 @@ import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
 
 import { fetchAsBytes } from "../utils";
-import { DecisionTree } from "@molgenis/vip-report-api/src/DecisionTree";
+import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
 
 export const bam = await fetchAsBytes(bamUrl as string);
 
