@@ -3,8 +3,9 @@ lockfileVersion: 5.4
 specifiers:
   '@fortawesome/fontawesome-svg-core': ^6.1.1
   '@fortawesome/free-solid-svg-icons': ^6.1.1
-  '@molgenis/vip-report-api': ^3.0.1
+  '@molgenis/vip-report-api': ^3.0.2
   '@molgenis/vip-report-vcf': ^1.0.4
+  '@molgenis/vite-plugin-inline': ^1.0.6
   '@typescript-eslint/eslint-plugin': ^5.24.0
   '@typescript-eslint/parser': ^5.24.0
   base64-js: ^1.5.1
@@ -14,7 +15,6 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-solid: ^0.4.7
-  fflate: ^0.7.3
   husky: ^8.0.1
   igv: ^2.12.6
   prettier: ^2.6.2
@@ -29,15 +29,15 @@ specifiers:
 dependencies:
   '@fortawesome/fontawesome-svg-core': 6.1.1
   '@fortawesome/free-solid-svg-icons': 6.1.1
-  '@molgenis/vip-report-api': 3.0.1
+  '@molgenis/vip-report-api': 3.0.2
   '@molgenis/vip-report-vcf': 1.0.4
   base64-js: 1.5.1
-  fflate: 0.7.3
   igv: 2.12.6
   solid-app-router: 0.3.2_solid-js@1.4.1
   solid-js: 1.4.1
 
 devDependencies:
+  '@molgenis/vite-plugin-inline': 1.0.6
   '@typescript-eslint/eslint-plugin': 5.24.0_w4ec7awddsetq6k5phhi6huiuu
   '@typescript-eslint/parser': 5.24.0_hcfsmds2fshutdssjqluwm76uu
   bulma: 0.9.4
@@ -466,8 +466,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
-  /@molgenis/vip-report-api/3.0.1:
-    resolution: {integrity: sha512-t4J82nXarp4kRSakfsL8qiHCny22ELykr3nMaV7XVUlXJRnidrhzU1FEdD49iL2WCy3ofne+yF9YvHRFHM2Alw==}
+  /@molgenis/vip-report-api/3.0.2:
+    resolution: {integrity: sha512-Ga3kI0TwMG+3ubZvY9T3GvHS8B0lbY7FkWg/xjoiHi8ND2BgOSwqdBXrkfePLCNfIzwIJF+kNUY5SURKF7gKeg==}
     dependencies:
       '@molgenis/vip-report-vcf': 1.0.4
     dev: false
@@ -475,6 +475,12 @@ packages:
   /@molgenis/vip-report-vcf/1.0.4:
     resolution: {integrity: sha512-95fOIsGN2gNUc4DPaJ8jd01iq6j4We6BZAX1/BE3aQne5wdLipqDpfHJaZS8ksffELAFbMXN3ow4fBUSwYoIaw==}
     dev: false
+
+  /@molgenis/vite-plugin-inline/1.0.6:
+    resolution: {integrity: sha512-aEYCLi2uz74msJjOmpcnXAEN4tVOxezT5ZnAMGt/ChTMTF9qCq9Wqs7Un1pwULWxqxzlye6cHZ9XEzQw4o1vgw==}
+    dependencies:
+      fflate: 0.7.3
+    dev: true
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1420,7 +1426,7 @@ packages:
 
   /fflate/0.7.3:
     resolution: {integrity: sha512-0Zz1jOzJWERhyhsimS54VTqOteCNwRtIlh8isdL0AXLo0g7xNTfTL7oWrkmCnPhZGocKIkWHBistBrrpoNH3aw==}
-    dev: false
+    dev: true
 
   /file-entry-cache/6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}

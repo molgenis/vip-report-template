@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { BoolMultiQuery } from "@molgenis/vip-report-api/src/DecisionTree";
+import { BoolMultiQuery } from "@molgenis/vip-report-api/src/Api";
 import { DecisionTreeBoolQuery } from "./DecisionTreeBoolQuery";
 import { DecisionTreeOutcomeNode } from "./DecisionTreeOutcomeNode";
 
