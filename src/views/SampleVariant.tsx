@@ -81,7 +81,7 @@ export const SampleVariant: Component = () => {
           </div>
         </div>
         <div class="columns">
-          <div class="column">
+          <div class="column" style="max-width: 100%">
             <For each={getNestedInfoFieldsWithValues(recordsMetadata().info, variant().data.n)}>
               {(infoField) => (
                 <>
