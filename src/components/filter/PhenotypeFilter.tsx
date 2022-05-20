@@ -2,18 +2,19 @@ import { Component, createResource, For, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
-import { Item, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
+import { Item, OntologyClass, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
 import { EMPTY_PARAMS, EMPTY_PHENOTYPES, fetchPhenotypes } from "../../utils/ApiUtils";
 import { Loader } from "../Loader";
+import { HpoTerm } from "../record/info/HpoTerm";
 
 const [phenotypes] = createResource(EMPTY_PARAMS, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
 
 function getHpoTermsForSample(sampleId: string) {
-  const hpoTerms: string[] = [];
+  const hpoTerms: OntologyClass[] = [];
   phenotypes().items.forEach((item: Item<Phenotype>) => {
     if (item.data.subject.id === sampleId) {
       item.data.phenotypicFeaturesList.forEach((phenotypicFeature: PhenotypicFeature) => {
-        hpoTerms.push(phenotypicFeature.type.id);
+        hpoTerms.push(phenotypicFeature.type);
       });
     }
   });
@@ -44,7 +45,7 @@ export const PhenotypeFilter: Component<{
     }
   };
 
-  const phenotypesForPatient: string[] = getHpoTermsForSample(props.sampleId);
+  const phenotypesForPatient: OntologyClass[] = getHpoTermsForSample(props.sampleId);
 
   return (
     <Show when={!phenotypes.loading} fallback={<Loader />}>
@@ -55,7 +56,8 @@ export const PhenotypeFilter: Component<{
             <For each={phenotypesForPatient}>
               {(category) => (
                 <div class="control">
-                  <Checkbox value={category} label={category} onChange={onChange} />
+                  <Checkbox value={category.id} label="" onChange={onChange} />
+                  <HpoTerm ontologyClass={category}></HpoTerm>
                 </div>
               )}
             </For>
