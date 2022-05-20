@@ -61,10 +61,8 @@ export const Variants: Component = () => {
         </div>
         <div class="column">
           <div class="columns">
-            <div class="column is-offset-1-full-hd is-3-fullhd is-4">
-              <div class="is-pulled-left">
-                <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
-              </div>
+            <div class="column is-offset-1-fullhd is-3-fullhd is-4">
+              <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
             </div>
             <div class="column is-4">
               {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}

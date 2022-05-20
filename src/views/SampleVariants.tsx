@@ -49,6 +49,7 @@ export const SampleVariants: Component = () => {
     if (event.fieldMetadata !== null) {
       field = event.fieldMetadata;
     }
+    console.log(field);
     setParams({
       ...params(),
       page: 0,
@@ -88,10 +89,8 @@ export const SampleVariants: Component = () => {
         </div>
         <div class="column">
           <div class="columns">
-            <div class="column is-offset-1 is-3">
-              <div class="is-pulled-left">
-                <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
-              </div>
+            <div class="column is-offset-1-fullhd is-3-fullhd is-4">
+              <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
             </div>
             <div class="column is-4">
               {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
