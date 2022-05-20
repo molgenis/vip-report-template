@@ -39,8 +39,7 @@ export const Sort: Component<{
         <div class="field">
           <div class="select">
             <select onChange={onChange}>
-              <option value="-2">POS (ascending)</option>
-              <option value="-1">POS (descending)</option>
+              <option value="-2">Position</option>
               <For each={fieldOptions()}>
                 {(fieldOption, i) => (
                   <option value={i()}>
