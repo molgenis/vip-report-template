@@ -2,6 +2,7 @@ import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-repor
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent } from "../components/filter/Filters";
+import { FormatFilterChangeEvent } from "../components/filter/FormatFilters";
 
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {
   const parts: Query[] = [];
@@ -100,6 +101,18 @@ export function createFilterQuery(filters: FilterChangeEvent[]): Query {
     } else {
       addCategoricalFilterClause(filter, clauses);
     }
+  }
+  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
+}
+
+export function createFormatFilterQuery(filters: FormatFilterChangeEvent[], sampleId: number): Query {
+  const clauses: QueryClause[] = [];
+  for (const filter of filters) {
+    clauses.push({
+      selector: ["s", sampleId, filter.fieldMetadata.id],
+      operator: filter.operator,
+      args: filter.value != null ? filter.value : "",
+    });
   }
   return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
 }

@@ -7,7 +7,7 @@ import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createFilterQuery, createSearchQuery } from "../utils/query";
+import { createFilterQuery, createFormatFilterQuery, createSearchQuery } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import {
   EMPTY_RECORDS_METADATA,
@@ -18,7 +18,7 @@ import {
   fetchRecordsMeta,
 } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FormatFilters, FormatFiltersChangeEvent } from "../components/filter/FormatFilters";
 import { filterFieldMetadata } from "../utils/field";
 
 export const SampleVariants: Component = () => {
@@ -32,10 +32,14 @@ export const SampleVariants: Component = () => {
 
   const onPageChange = (page: number) => setParams({ ...params(), page });
   const onSearchChange = (search: string) => {
+    let query = null;
+    if (search !== "") {
+      query = createSearchQuery(search, recordsMetadata());
+    }
     setParams({
       ...params(),
       page: 0,
-      query: search !== "" ? createSearchQuery(search, recordsMetadata()) : undefined,
+      query: query != null ? query : undefined,
     });
   };
   const onFiltersChange = (event: FiltersChangeEvent) => {
@@ -43,6 +47,13 @@ export const SampleVariants: Component = () => {
       ...params(),
       page: 0,
       query: event.filters.length > 0 ? createFilterQuery(event.filters) : undefined,
+    });
+  };
+  const onFormatFiltersChange = (event: FormatFiltersChangeEvent, sampleId: number) => {
+    setParams({
+      ...params(),
+      page: 0,
+      query: event.filters.length > 0 ? createFormatFilterQuery(event.filters, sampleId) : undefined,
     });
   };
   const onSortChange = (event: SortEvent) => {
@@ -84,6 +95,11 @@ export const SampleVariants: Component = () => {
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
+          <FormatFilters
+            sampleId={sample().id}
+            fieldMetadataContainer={recordsMetadata().format}
+            onChange={onFormatFiltersChange}
+          />
           <Filters
             sampleId={sample().data.person.individualId}
             fieldMetadataContainer={recordsMetadata().info}
