@@ -1,4 +1,4 @@
-import { Component, createSignal } from "solid-js";
+import { Component, createSignal, Show } from "solid-js";
 
 export type CheckboxEvent = {
   value: string;
@@ -8,6 +8,7 @@ export type CheckboxEvent = {
 export const Checkbox: Component<{
   value: string | undefined;
   label: string;
+  desc?: string;
   onChange: (event: CheckboxEvent) => void;
 }> = (props) => {
   const [checked, setChecked] = createSignal(false);
@@ -24,7 +25,9 @@ export const Checkbox: Component<{
   return (
     <label class="checkbox">
       <input class="mr-1" type="checkbox" value={props.value} checked={checked()} onChange={onChange} />
-      {props.label}
+      <Show when={props.desc !== undefined} fallback={<span>{props.label}</span>}>
+        <abbr title={props.desc}>{props.label}</abbr>
+      </Show>
     </label>
   );
 };
