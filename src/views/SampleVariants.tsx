@@ -19,6 +19,7 @@ import {
 } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { filterFieldMetadata } from "../utils/field";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
@@ -49,7 +50,6 @@ export const SampleVariants: Component = () => {
     if (event.fieldMetadata !== null) {
       field = event.fieldMetadata;
     }
-    console.log(field);
     setParams({
       ...params(),
       page: 0,
@@ -95,7 +95,10 @@ export const SampleVariants: Component = () => {
         <div class="column">
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-              <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
+              <Sort
+                fieldMetadataContainer={filterFieldMetadata(recordsMetadata().info, {}, nestedFields)}
+                onChange={onSortChange}
+              />
             </div>
             <div class="column is-4">
               {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
