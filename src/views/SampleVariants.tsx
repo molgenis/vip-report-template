@@ -46,14 +46,13 @@ export const SampleVariants: Component = () => {
     });
   };
   const onSortChange = (event: SortEvent) => {
-    let field: string | FieldMetadata = "p";
-    if (event.fieldMetadata !== null) {
-      field = event.fieldMetadata;
-    }
     setParams({
       ...params(),
       page: 0,
-      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
+      sort:
+        event.fieldMetadata !== null
+          ? { property: event.fieldMetadata, compare: event.ascending ? "asc" : "desc" }
+          : undefined,
     });
   };
 
