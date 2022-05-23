@@ -31,10 +31,7 @@ export const Filters: Component<{
   const fieldIds = () => Object.keys(props.fields);
   const infoMetadataItems = () =>
     flattenFieldMetadata(props.fieldMetadataContainer)
-      .filter(
-        (fieldMetadata) =>
-          fieldMetadata.type === "CATEGORICAL" || fieldMetadata.id === "VIPC" || fieldMetadata.id === "HPO"
-      )
+      .filter((fieldMetadata) => fieldMetadata.type === "CATEGORICAL" || fieldMetadata.id === "HPO")
       .filter(
         (fieldMetadata) => fieldIds().length == 0 || fieldIds().includes(fieldMetadata.id) || fieldMetadata.id === "HPO"
       );
