@@ -1,4 +1,4 @@
-import { Component, For, Show } from "solid-js";
+import { Component, Show } from "solid-js";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FormatBoolFilter } from "./FormatBoolFilter";
