@@ -38,7 +38,7 @@ export const Filters: Component<{
       .filter(
         (fieldMetadata) => fieldIds().length == 0 || fieldIds().includes(fieldMetadata.id) || fieldMetadata.id === "HPO"
       );
-  const filters: Filters = {};
+  const filters: Filters = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const onFilterChange = (event: FilterChangeEvent) => {
     filters[event.fieldMetadata.id] = event;

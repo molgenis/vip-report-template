@@ -9,7 +9,7 @@ import { HpoTerm } from "../record/info/HpoTerm";
 
 const [phenotypes] = createResource(EMPTY_PARAMS, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
 
-function getHpoTermsForSample(sampleId: string) {
+function getHpoTermsForSample(sampleId: string): OntologyClass[] {
   const hpoTerms: OntologyClass[] = [];
   phenotypes().items.forEach((item: Item<Phenotype>) => {
     if (item.data.subject.id === sampleId) {
@@ -45,15 +45,15 @@ export const PhenotypeFilter: Component<{
     }
   };
 
-  const phenotypesForPatient: OntologyClass[] = getHpoTermsForSample(props.sampleId);
+  const phenotypesForPatient = () => getHpoTermsForSample(props.sampleId);
 
   return (
     <Show when={!phenotypes.loading} fallback={<Loader />}>
-      <Show when={phenotypesForPatient.length > 0}>
+      <Show when={phenotypesForPatient().length > 0}>
         <>
           <p class="has-text-weight-semibold">Phenotypes</p>
           <div class="field">
-            <For each={phenotypesForPatient}>
+            <For each={phenotypesForPatient()}>
               {(category) => (
                 <div class="control">
                   <Checkbox value={category.id} label="" onChange={onChange} />

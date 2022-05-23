@@ -1,8 +1,8 @@
-import { Component } from "solid-js";
+import { Component, createMemo } from "solid-js";
 import { BoolQuery } from "@molgenis/vip-report-api/src/Api";
 
 export const DecisionTreeBoolQuery: Component<{ query: BoolQuery }> = (props) => {
-  const value = props.query.field + " " + props.query.operator + " " + String(props.query.value);
+  const value = createMemo(() => props.query.field + " " + props.query.operator + " " + String(props.query.value));
 
   function label(value: string) {
     let label = undefined;
@@ -14,8 +14,8 @@ export const DecisionTreeBoolQuery: Component<{ query: BoolQuery }> = (props) =>
 
   return (
     <>
-      {label(value) !== undefined && <abbr title={value}>{label(value)}</abbr>}
-      {label(value) === undefined && <span>{value}</span>}
+      {label(value()) !== undefined && <abbr title={value()}>{label(value())}</abbr>}
+      {label(value()) === undefined && <span>{value()}</span>}
     </>
   );
 };
