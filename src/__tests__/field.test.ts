@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isNumerical } from "../../src/utils/field";
+import { isNumerical } from "../utils/field";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 describe("field utilities", () => {
