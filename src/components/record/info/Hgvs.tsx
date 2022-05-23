@@ -1,4 +1,5 @@
 import { Component } from "solid-js";
+import { Abbr } from "../../Abbr";
 
 function abbreviate(notation: string): string {
   let abbreviated;
@@ -13,5 +14,5 @@ function abbreviate(notation: string): string {
 export const Hgvs: Component<{
   notation: string;
 }> = (props) => {
-  return <abbr title={props.notation}>{abbreviate(props.notation)}</abbr>;
+  return <Abbr title={props.notation} value={abbreviate(props.notation)}></Abbr>;
 };

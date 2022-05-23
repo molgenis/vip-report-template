@@ -1,4 +1,5 @@
 import { Component, Show } from "solid-js";
+import { Abbr } from "../../Abbr";
 
 export const FieldValueString: Component<{
   value: string | null | undefined;
@@ -6,7 +7,7 @@ export const FieldValueString: Component<{
   return (
     <Show when={props.value !== null && props.value !== undefined}>
       <Show when={(props.value as string).length > 20} fallback={<span>{props.value as string}</span>}>
-        <abbr title={props.value as string}>{(props.value as string).substring(0, 20)}</abbr>
+        <Abbr title={props.value as string} value={(props.value as string).substring(0, 20)}></Abbr>
       </Show>
     </Show>
   );

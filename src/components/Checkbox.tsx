@@ -1,4 +1,5 @@
 import { Component, createSignal, Show } from "solid-js";
+import { Abbr } from "./Abbr";
 
 export type CheckboxEvent = {
   value: string;
@@ -26,7 +27,7 @@ export const Checkbox: Component<{
     <label class="checkbox">
       <input class="mr-1" type="checkbox" value={props.value} checked={checked()} onChange={onChange} />
       <Show when={props.desc !== undefined} fallback={<span>{props.label}</span>}>
-        <abbr title={props.desc}>{props.label}</abbr>
+        <Abbr title={props.desc as string} value={props.label}></Abbr>
       </Show>
     </label>
   );

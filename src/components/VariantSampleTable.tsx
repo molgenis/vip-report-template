@@ -4,6 +4,7 @@ import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Format } from "./record/Format";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { Abbr } from "./Abbr";
 
 export const VariantSampleTable: Component<{
   formatFields: FieldMetadataContainer;
@@ -25,7 +26,7 @@ export const VariantSampleTable: Component<{
               <For each={sampleFields()}>
                 {(formatField) => (
                   <th>
-                    <abbr title={formatField.description}>{formatField.id}</abbr>
+                    <Abbr title={formatField.description.toString()} value={formatField.id}></Abbr>
                   </th>
                 )}
               </For>

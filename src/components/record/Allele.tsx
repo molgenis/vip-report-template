@@ -1,4 +1,5 @@
 import { Component, createMemo, For } from "solid-js";
+import { Abbr } from "../Abbr";
 
 export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> = (props) => {
   const missing = () => props.value === null;
@@ -25,8 +26,9 @@ export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> 
       {!missing() && !symbolic() && !breakend() && props.isAbbreviate && (props.value as string).length > 4 && (
         <For each={nucs(props.value as string)}>
           {(base) => (
-            <abbr
+            <Abbr
               title={props.value as string}
+              value={base}
               classList={{
                 base: true,
                 "base-a": base === "A",
@@ -35,9 +37,7 @@ export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> 
                 "base-n": base === "N",
                 "base-t": base === "T",
               }}
-            >
-              {base}
-            </abbr>
+            ></Abbr>
           )}
         </For>
       )}

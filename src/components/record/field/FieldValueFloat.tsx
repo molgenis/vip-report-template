@@ -1,4 +1,5 @@
 import { Component, Show } from "solid-js";
+import { Abbr } from "../../Abbr";
 
 export const FieldValueFloat: Component<{
   value: number | null | undefined;
@@ -9,7 +10,7 @@ export const FieldValueFloat: Component<{
         when={(props.value as number).toString().length > 6}
         fallback={<span>{(props.value as number).toString()}</span>}
       >
-        <abbr title={(props.value as number).toString()}>{(props.value as number).toFixed(4)}</abbr>
+        <Abbr title={(props.value as number).toString()} value={(props.value as number).toFixed(4)}></Abbr>
       </Show>
     </Show>
   );
