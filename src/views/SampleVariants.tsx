@@ -71,6 +71,7 @@ export const SampleVariants: Component = () => {
     Consequence: "Effect",
     SYMBOL: "Gene",
     InheritanceModesGene: "Inheritance Modes",
+    IncompletePenetrance: "Incomplete Penetrance",
     HGVSc: "HGVS C",
     HGVSp: "HGVS P",
     CAPICE_SC: "CAPICE",
