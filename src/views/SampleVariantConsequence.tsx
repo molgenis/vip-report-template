@@ -15,7 +15,7 @@ import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { ConsequenceTable } from "../components/ConsequenceTable";
-import { getConsequenceLabel, getCsqHeaderIndex, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
+import { getConsequenceLabel, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
@@ -65,7 +65,7 @@ export const SampleVariantConsequence: Component = () => {
                 label: getConsequenceLabel(
                   variant().data.n.CSQ as ValueArray,
                   consequenceId,
-                  getCsqHeaderIndex(recordsMetadata().info.CSQ.nested.items)
+                  recordsMetadata().info.CSQ.nested.items
                 ),
               },
             ]}
