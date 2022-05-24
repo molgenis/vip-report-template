@@ -43,7 +43,9 @@ const App: Component = () => {
     <>
       <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <span class="navbar-item has-text-weight-semibold">VCF Report</span>
+          <Link class="navbar-item has-text-weight-semibold" href="/">
+            VCF Report
+          </Link>
         </div>
         <div class="navbar-menu">
           <div class="navbar-start">
