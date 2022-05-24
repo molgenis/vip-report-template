@@ -56,8 +56,7 @@ export const PhenotypeFilter: Component<{
             <For each={phenotypesForPatient()}>
               {(category) => (
                 <div class="control">
-                  <Checkbox value={category.id} label="" onChange={onChange} />
-                  <HpoTerm ontologyClass={category}></HpoTerm>
+                  <Checkbox value={category.id} label={category.label} onChange={onChange} />
                 </div>
               )}
             </For>
