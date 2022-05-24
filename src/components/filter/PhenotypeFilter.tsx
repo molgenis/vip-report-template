@@ -5,7 +5,6 @@ import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 import { Item, OntologyClass, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
 import { EMPTY_PARAMS, EMPTY_PHENOTYPES, fetchPhenotypes } from "../../utils/ApiUtils";
 import { Loader } from "../Loader";
-import { HpoTerm } from "../record/info/HpoTerm";
 
 const [phenotypes] = createResource(EMPTY_PARAMS, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
 

@@ -3,7 +3,6 @@ import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Info } from "./record/Info";
 import { Abbr } from "./Abbr";
-import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 
 export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValues: ValueArray }> = (props) => {
   console.log(props.csqMetadata);
