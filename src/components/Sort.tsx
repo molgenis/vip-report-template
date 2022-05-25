@@ -1,33 +1,29 @@
 import { Component, createMemo, For } from "solid-js";
-import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
-import { flattenFieldMetadata, getFullId, isNumerical } from "../utils/field";
+import { isNumerical } from "../utils/field";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export type SortEvent = {
-  fieldMetadata: FieldMetadata | null;
+  field: FieldMetadata;
   ascending: boolean;
 };
 
 export const Sort: Component<{
-  fieldMetadataContainer: FieldMetadataContainer;
+  fields: FieldMetadata[];
   onChange: (event: SortEvent) => void;
+  onClear: () => void;
 }> = (props) => {
-  const fieldOptions = createMemo(() =>
-    flattenFieldMetadata(props.fieldMetadataContainer)
-      .filter((fieldMetadata) => isNumerical(fieldMetadata) && fieldMetadata.number.count === 1)
-      .flatMap((fieldMetadata) => [
-        { fieldMetadata: fieldMetadata, ascending: true },
-        {
-          fieldMetadata: fieldMetadata,
-          ascending: false,
-        },
-      ])
+  const sortableFields = () => props.fields.filter((field) => isNumerical(field) && field.number.count === 1);
+
+  const sortOptions = createMemo(() =>
+    sortableFields().flatMap((field) => [
+      { field, ascending: true },
+      { field, ascending: false },
+    ])
   );
 
-  const onChange = (event: Event) => {
+  const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);
-    if (index >= 0) props.onChange(fieldOptions()[index]);
-    else props.onChange({ fieldMetadata: null, ascending: index === -2 });
+    index === -1 ? props.onClear() : props.onChange(sortOptions()[index]);
   };
 
   return (
@@ -38,12 +34,13 @@ export const Sort: Component<{
       <div class="field-body">
         <div class="field">
           <div class="select">
-            <select onChange={onChange}>
-              <option value="-2">Position</option>
-              <For each={fieldOptions()}>
+            <select onChange={onSortChange}>
+              <option value="-1"></option>
+              <For each={sortOptions()}>
                 {(fieldOption, i) => (
                   <option value={i()}>
-                    {getFullId(fieldOption.fieldMetadata)} {fieldOption.ascending ? "(ascending)" : "(descending)"}
+                    {fieldOption.field.label || fieldOption.field.id}{" "}
+                    {fieldOption.ascending ? "(ascending)" : "(descending)"}
                   </option>
                 )}
               </For>

@@ -5,8 +5,6 @@ import { Info } from "./record/Info";
 import { Abbr } from "./Abbr";
 
 export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValues: ValueArray }> = (props) => {
-  console.log(props.csqMetadata);
-
   function getValues(index: number) {
     const value: ValueArray =
       props.csqValues[index] !== null ? (props.csqValues[index] as ValueArray) : ([] as ValueArray);

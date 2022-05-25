@@ -7,38 +7,38 @@ export type CheckboxGroup = {
   [key: string]: boolean;
 };
 export const Filter: Component<{
-  label: string | undefined;
-  fieldMetadata: FieldMetadata;
+  field: FieldMetadata;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
   const group: CheckboxGroup = {};
   const nullValue = "__null";
 
+  const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
   const onChange = (event: CheckboxEvent) => {
     group[event.value !== undefined ? event.value : nullValue] = event.checked;
     const values = Object.keys(group)
       .filter((key) => group[key])
       .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
-      props.onChange({ fieldMetadata: props.fieldMetadata, value: values });
+      props.onChange({ field: props.field, value: values });
     } else {
-      props.onClear({ fieldMetadata: props.fieldMetadata });
+      props.onClear({ field: props.field });
     }
   };
 
   return (
     <>
-      <p class="has-text-weight-semibold">{props.label === undefined ? props.fieldMetadata.id : props.label}</p>
+      <p class="has-text-weight-semibold">{label()}</p>
       <div class="field">
-        <For each={props.fieldMetadata.categories}>
+        <For each={props.field.categories}>
           {(category) => (
             <div class="control">
               <Checkbox value={category} label={category} onChange={onChange} />
             </div>
           )}
         </For>
-        {!props.fieldMetadata.required && <Checkbox value={nullValue} label="No value" onChange={onChange} />}
+        {!props.field.required && <Checkbox value={nullValue} label="No value" onChange={onChange} />}
       </div>
     </>
   );

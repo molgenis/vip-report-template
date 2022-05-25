@@ -1,4 +1,4 @@
-import { Component, createResource, createSignal, Resource, Show } from "solid-js";
+import { Component, createMemo, createResource, createSignal, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Item, Params, Sample as ApiSample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
@@ -19,7 +19,7 @@ import {
 } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FormatFilters, FormatFiltersChangeEvent } from "../components/filter/FormatFilters";
-import { filterFieldMetadata } from "../utils/field";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<ApiSample>> = useRouteData();
@@ -60,29 +60,42 @@ export const SampleVariants: Component = () => {
     setParams({
       ...params(),
       page: 0,
-      sort:
-        event.fieldMetadata !== null
-          ? { property: event.fieldMetadata, compare: event.ascending ? "asc" : "desc" }
-          : undefined,
+      sort: event.field !== null ? { property: event.field, compare: event.ascending ? "asc" : "desc" } : undefined,
+    });
+  };
+  const onSortClear = () => {
+    setParams({
+      ...params(),
+      page: 0,
+      sort: undefined,
     });
   };
 
-  const nestedFields: { [key: string]: string } = {
-    Consequence: "Effect",
-    SYMBOL: "Gene",
-    InheritanceModesGene: "Inheritance Modes",
-    IncompletePenetrance: "Incomplete Penetrance",
-    HGVSc: "HGVS C",
-    HGVSp: "HGVS P",
-    CAPICE_SC: "CAPICE",
-    VIPC: "VIP",
-    UMCG_CL: "MVL",
-    VKGL_CL: "VKGL",
-    CLIN_SIG: "ClinVar",
-    gnomAD_AF: "gnomAD AF",
-    gnomAD_HN: "gnomAD HN",
-    PUBMED: "Pubmed",
-  };
+  const infoFields = createMemo(() => {
+    const csqNestedFields = recordsMetadata().info.CSQ?.nested?.items;
+    const includedFields = [
+      "Consequence",
+      "SYMBOL",
+      "InheritanceModesGene",
+      "IncompletePenetrance",
+      "HPO",
+      "HGVSc",
+      "HGVSp",
+      "CAPICE_SC",
+      "VIPC",
+      "UMCG_CL",
+      "VKGL_CL",
+      "CLIN_SIG",
+      "gnomAD_AF",
+      "gnomAD_HN",
+      "PUBMED",
+    ];
+    return csqNestedFields
+      ? (includedFields
+          .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
+          .filter((field) => field !== undefined) as FieldMetadata[])
+      : [];
+  });
 
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
@@ -101,20 +114,12 @@ export const SampleVariants: Component = () => {
             fieldMetadataContainer={recordsMetadata().format}
             onChange={onFormatFiltersChange}
           />
-          <Filters
-            sampleId={sample().data.person.individualId}
-            fieldMetadataContainer={recordsMetadata().info}
-            onChange={onFiltersChange}
-            fields={nestedFields}
-          />
+          <Filters fields={infoFields()} onChange={onFiltersChange} />
         </div>
         <div class="column">
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-              <Sort
-                fieldMetadataContainer={filterFieldMetadata(recordsMetadata().info, {}, nestedFields)}
-                onChange={onSortChange}
-              />
+              <Sort fields={infoFields()} onChange={onSortChange} onClear={onSortClear} />
             </div>
             <div class="column is-4">
               {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
@@ -147,7 +152,7 @@ export const SampleVariants: Component = () => {
                 pedigreeSamples={pedigreeSamples()}
                 records={records().items}
                 recordsMetadata={recordsMetadata()}
-                nestedFields={nestedFields}
+                nestedFields={infoFields()}
               />
             )}
           </div>

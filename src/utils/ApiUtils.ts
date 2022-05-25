@@ -1,7 +1,9 @@
 import {
   AppMetadata,
+  DecisionTree,
   HtsFileMetadata,
   Item,
+  LeafNode,
   PagedItems,
   Params,
   Phenotype,
@@ -10,7 +12,6 @@ import {
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../Api";
-import { DecisionTree, LeafNode } from "@molgenis/vip-report-api/src/Api";
 
 export const EMPTY_PARAMS: Params = {};
 

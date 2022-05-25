@@ -47,8 +47,8 @@ test("Create search query", () => {
 
 test("Create filter query", () => {
   const filterevent: FilterChangeEvent[] = [
-    { fieldMetadata: fieldMeta1, value: ["1", "2"] },
-    { fieldMetadata: fieldMeta2, value: ["1"] },
+    { field: fieldMeta1, value: ["1", "2"] },
+    { field: fieldMeta2, value: ["1"] },
   ];
   const output = createFilterQuery(filterevent);
   expect(output).toEqual({

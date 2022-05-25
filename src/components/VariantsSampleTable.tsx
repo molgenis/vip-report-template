@@ -5,53 +5,19 @@ import { Pos } from "./record/Pos";
 import { Link } from "solid-app-router";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
-import { NestedInfoCollapsablePane } from "./NestedInfoCollapsablePane";
-import { NestedInfoHeader } from "./NestedInfoHeader";
+import { InfoCollapsablePane } from "./InfoCollapsablePane";
 import { Component, createMemo, For } from "solid-js";
-
-function createIndex(
-  recordsMetadata: Metadata,
-  nestedFields: { [key: string]: string }
-): { headers: string[]; indices: number[] } {
-  const headers: string[] = [];
-  const indices: number[] = [];
-
-  const infoFields = Object.values(recordsMetadata.info);
-
-  const infoPositions = infoFields.map(function (infoField) {
-    return infoField.id;
-  });
-
-  const infoFieldVepIdx = infoPositions.indexOf("CSQ");
-  const vepField = infoFields[infoFieldVepIdx];
-
-  if (vepField !== undefined && vepField.nested !== undefined) {
-    const nestedVepItems = vepField.nested;
-    const positions = nestedVepItems
-      ? nestedVepItems.items.map(function (csqField) {
-          return csqField.id;
-        })
-      : [];
-    for (const nestedFieldsKey in nestedFields) {
-      const index = positions.indexOf(nestedFieldsKey);
-      if (index !== -1) {
-        indices.push(index);
-        headers.push(nestedFields[nestedFieldsKey]);
-      }
-    }
-  }
-  return { headers, indices };
-}
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldHeader } from "./FieldHeader";
 
 export const VariantsSampleTable: Component<{
   sample: Sample;
   pedigreeSamples: Sample[];
   records: Item<Record>[];
   recordsMetadata: Metadata;
-  nestedFields: { [key: string]: string };
+  nestedFields: FieldMetadata[];
 }> = (props) => {
   const samples = createMemo(() => [props.sample, ...props.pedigreeSamples]);
-  const index = createMemo(() => createIndex(props.recordsMetadata, props.nestedFields));
 
   return (
     <div style="display: grid">
@@ -63,8 +29,9 @@ export const VariantsSampleTable: Component<{
               <th>Position</th>
               <th>Reference</th>
               <For each={samples()}>{(sample) => <th>{sample.person.individualId}</th>}</For>
+              {/* column containing collapse/expand icon */}
               <th />
-              <NestedInfoHeader fields={index().headers} />
+              <For each={props.nestedFields}>{(field) => <FieldHeader field={field} />}</For>
             </tr>
           </thead>
           <tbody>
@@ -93,11 +60,7 @@ export const VariantsSampleTable: Component<{
                       </td>
                     )}
                   </For>
-                  <NestedInfoCollapsablePane
-                    recordsMetadata={props.recordsMetadata}
-                    indices={index().indices}
-                    record={record}
-                  />
+                  <InfoCollapsablePane fields={props.nestedFields} record={record} />
                 </tr>
               )}
             </For>

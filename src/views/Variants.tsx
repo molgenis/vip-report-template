@@ -9,7 +9,6 @@ import { Sort, SortEvent } from "../components/Sort";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import {
   EMPTY_PARAMS,
   EMPTY_RECORDS_METADATA,
@@ -17,6 +16,7 @@ import {
   fetchRecords,
   fetchRecordsMeta,
 } from "../utils/ApiUtils";
+import { flattenFieldMetadata } from "../utils/field";
 
 export const Variants: Component = () => {
   const [params, setParams] = createSignal(EMPTY_PARAMS);
@@ -40,14 +40,17 @@ export const Variants: Component = () => {
   };
 
   const onSortChange = (event: SortEvent) => {
-    let field: string | FieldMetadata = "p";
-    if (event.fieldMetadata !== null) {
-      field = event.fieldMetadata;
-    }
     setParams({
       ...params(),
       page: 0,
-      sort: { property: field, compare: event.ascending ? "asc" : "desc" },
+      sort: event.field !== null ? { property: event.field, compare: event.ascending ? "asc" : "desc" } : undefined,
+    });
+  };
+  const onSortClear = () => {
+    setParams({
+      ...params(),
+      page: 0,
+      sort: undefined,
     });
   };
 
@@ -57,12 +60,16 @@ export const Variants: Component = () => {
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
-          <Filters fieldMetadataContainer={recordsMetadata().info} onChange={onFiltersChange} fields={[]} />
+          <Filters fields={flattenFieldMetadata(recordsMetadata().info)} onChange={onFiltersChange} />
         </div>
         <div class="column">
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-              <Sort fieldMetadataContainer={recordsMetadata().info} onChange={onSortChange} />
+              <Sort
+                fields={flattenFieldMetadata(recordsMetadata().info)}
+                onChange={onSortChange}
+                onClear={onSortClear}
+              />
             </div>
             <div class="column is-4">
               {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
