@@ -1,9 +1,7 @@
 import { Component } from "solid-js";
 
 const onClick = (event: Event) => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const text: string = event.target !== null ? (event.target["title"] as string) : "";
+  const text: string = event.target !== null ? (event.target as HTMLElement).title : "";
   void navigator.clipboard.writeText(text);
 };
 
