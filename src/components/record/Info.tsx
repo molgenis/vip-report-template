@@ -11,11 +11,12 @@ import { ClinVar } from "./info/ClinVar";
 export const Info: Component<{
   info: Value | Value[];
   infoMetadata: FieldMetadata;
+  href?: string;
 }> = (props) => {
   return (
     <Switch fallback={<Field info={props.info} infoMetadata={props.infoMetadata} />}>
       <Match when={props.infoMetadata.id === "Consequence" && props.infoMetadata.parent?.id === "CSQ"}>
-        <Consequence terms={props.info as string[]} />
+        <Consequence terms={props.info as string[]} href={props.href} />
       </Match>
       <Match when={props.infoMetadata.id === "PUBMED" && props.infoMetadata.parent?.id === "CSQ"}>
         <PubMed ids={props.info as number[]} />

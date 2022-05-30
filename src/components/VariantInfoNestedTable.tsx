@@ -38,13 +38,21 @@ export const VariantInfoNestedTable: Component<{
   variant: { id: number; label: string };
   sample: { id: number; label: string } | null;
 }> = (props) => {
+  function getHref(field: InfoMetadata, consequenceIndex: number): string | undefined {
+    let href;
+    if (field.id === "Consequence" && field.parent?.id === "CSQ") {
+      href = `/variants/${props.variant.id}/consequences/${consequenceIndex}`;
+      if (props.sample !== null) href = `/samples/${props.sample.id}` + href;
+    }
+    return href;
+  }
+
   return (
     <div style="display: grid">
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
       <div class="table-container">
         <table class="table is-narrow">
           <thead>
-            {<th></th>}
             <For each={props.infoField.nested.items}>
               {(infoFieldItem, i) => (
                 <>
@@ -75,38 +83,16 @@ export const VariantInfoNestedTable: Component<{
                 {(value, rowIndex) => (
                   <>
                     <tr>
-                      <td>
-                        <Show
-                          when={props.sample == null}
-                          fallback={
-                            <Link
-                              href={`/samples/${props.sample.id}/variants/${
-                                props.variant.id
-                              }/consequences/${rowIndex()}`}
-                            >
-                              <a class="button is-info is-small">
-                                <span class="icon is-left">
-                                  <i class="fas fa-search" />
-                                </span>
-                              </a>
-                            </Link>
-                          }
-                        >
-                          <Link href={`/variants/${props.variant.id}/consequences/${rowIndex()}`}>
-                            <a class="button is-info is-small">
-                              <span class="icon is-left">
-                                <i class="fas fa-search" />
-                              </span>
-                            </a>
-                          </Link>
-                        </Show>
-                      </td>
                       <For each={props.infoField.nested.items}>
                         {(infoFieldItem, i) => (
                           <>
                             {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
                               <td>
-                                <Info info={value[i()] as Value} infoMetadata={infoFieldItem} />
+                                <Info
+                                  info={value[i()] as Value}
+                                  infoMetadata={infoFieldItem}
+                                  href={getHref(infoFieldItem, i())}
+                                />
                               </td>
                             )}
                           </>

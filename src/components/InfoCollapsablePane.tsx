@@ -1,15 +1,24 @@
 import { Component, createMemo, createSignal, For, Signal } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
+import { useLocation } from "solid-app-router";
 
 export const InfoCollapsablePane: Component<{
   fields: FieldMetadata[];
   record: Item<Record>;
 }> = (props) => {
   const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
+
+  function getHref(field: InfoMetadata, consequenceIndex: number): string | undefined {
+    let href;
+    if (field.id === "Consequence" && field.parent?.id === "CSQ") {
+      href = `${useLocation().pathname}/${props.record.id}/consequences/${consequenceIndex}`;
+    }
+    return href;
+  }
 
   function toggleCollapse() {
     setCollapsed(!collapsed());
@@ -46,7 +55,7 @@ export const InfoCollapsablePane: Component<{
               {(value, j) => (
                 <>
                   {j() != 0 && collapsed() && <br />}
-                  {(j() == 0 || collapsed()) && <Info info={value} infoMetadata={field} />}
+                  {(j() == 0 || collapsed()) && <Info info={value} infoMetadata={field} href={getHref(field, j())} />}
                 </>
               )}
             </For>
