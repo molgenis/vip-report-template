@@ -26,7 +26,7 @@ export const Home: Component = () => {
 
   return (
     <>
-      <Breadcrumb links={[]}></Breadcrumb>
+      <Breadcrumb items={[]} />
       <div class="table-container">
         <table class="table is-narrow">
           <thead>

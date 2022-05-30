@@ -100,12 +100,12 @@ export const SampleVariants: Component = () => {
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
       <Breadcrumb
-        links={[
-          { href: "/samples", label: "Samples" },
-          { href: "/samples/" + sample().data.index.toString(), label: sample().data.person.individualId },
-          { href: "#", label: "Variants" },
+        items={[
+          { href: "/samples", text: "Samples" },
+          { href: `/samples/${sample().data.index}`, text: sample().data.person.individualId },
+          { text: "Variants" },
         ]}
-      ></Breadcrumb>
+      />
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />

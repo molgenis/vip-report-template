@@ -107,3 +107,8 @@ export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<Sample
     })
   ).items.map((item) => item.data);
 }
+
+export function toString(item: Item<Record>) {
+  const record = item.data;
+  return `${record.c}:${record.p} ${record.a.map((a) => `${record.r}>${a !== null ? a : "."}`).join(" / ")}`;
+}

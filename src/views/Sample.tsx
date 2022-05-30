@@ -9,12 +9,7 @@ export const Sample: Component = () => {
 
   return (
     <Show when={!sample.loading} fallback={<Loader />}>
-      <Breadcrumb
-        links={[
-          { href: "/samples", label: "Samples" },
-          { href: "#", label: sample().data.person.individualId },
-        ]}
-      ></Breadcrumb>
+      <Breadcrumb items={[{ href: "/samples", text: "Samples" }, { text: sample().data.person.individualId }]} />
       <p class="has-text-weight-semibold">Sample</p>
       <div class="columns">
         <div class="column is-1">

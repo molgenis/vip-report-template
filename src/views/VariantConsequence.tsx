@@ -6,11 +6,17 @@ import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { getConsequenceLabel, getSpecificConsequence } from "../utils/viewUtils";
+import { getSpecificConsequence } from "../utils/viewUtils";
 import { ConsequenceTable } from "../components/ConsequenceTable";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
-import { EMPTY_DECISION_TREE, EMPTY_RECORDS_METADATA, fetchDecisionTree, fetchRecordsMeta } from "../utils/ApiUtils";
+import {
+  EMPTY_DECISION_TREE,
+  EMPTY_RECORDS_METADATA,
+  fetchDecisionTree,
+  fetchRecordsMeta,
+  toString,
+} from "../utils/ApiUtils";
 
 export const VariantConsequence: Component = () => {
   const {
@@ -26,25 +32,12 @@ export const VariantConsequence: Component = () => {
       {
         <Show when={!variant.loading && !recordsMetadata.loading && !decisionTree.loading} fallback={<Loader />}>
           <Breadcrumb
-            links={[
-              { href: "/variants", label: "Variants" },
-              {
-                href: "/variants/" + variant().id.toString(),
-                label:
-                  variant().data.c +
-                  ":" +
-                  variant().data.p.toString() +
-                  " " +
-                  variant()
-                    .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                    .join(" / "),
-              },
-              {
-                href: "#",
-                label: `Consequence #${consequenceId}`,
-              },
+            items={[
+              { href: "/variants", text: "Variants" },
+              { href: `/variants/${variant().id}`, text: toString(variant()) },
+              { text: `Consequence #${consequenceId}` },
             ]}
-          ></Breadcrumb>
+          />
           <div class="columns">
             <div class="column is-6">
               <h1 class="title is-5">Consequence</h1>

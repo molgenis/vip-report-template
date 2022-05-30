@@ -10,7 +10,7 @@ import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { EMPTY_RECORDS_METADATA, fetchRecordsMeta } from "../utils/ApiUtils";
+import { EMPTY_RECORDS_METADATA, fetchRecordsMeta, toString } from "../utils/ApiUtils";
 
 export const Variant: Component = () => {
   const variant: Resource<Item<Record>> = useRouteData();
@@ -20,22 +20,7 @@ export const Variant: Component = () => {
   return (
     <>
       <Show when={!variant.loading} fallback={<Loader />}>
-        <Breadcrumb
-          links={[
-            { href: "/variants", label: "Variants" },
-            {
-              href: "#",
-              label:
-                variant().data.c +
-                ":" +
-                variant().data.p.toString() +
-                " " +
-                variant()
-                  .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                  .join(" / "),
-            },
-          ]}
-        ></Breadcrumb>
+        <Breadcrumb items={[{ href: "/variants", text: "Variants" }, { text: toString(variant()) }]} />
         <GenomeBrowser contig={variant().data.c} position={variant().data.p} samples={[]} />
       </Show>
       <Show when={!variant.loading && !recordsMetadata.loading} fallback={<Loader />}>
@@ -67,17 +52,7 @@ export const Variant: Component = () => {
                   <VariantInfoNestedTable
                     infoValue={variant().data.n[infoField.id] as unknown as Value[][]}
                     infoField={infoField}
-                    variant={{
-                      id: variant().id,
-                      label:
-                        variant().data.c +
-                        ":" +
-                        variant().data.p.toString() +
-                        " " +
-                        variant()
-                          .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                          .join(" / "),
-                    }}
+                    variant={{ id: variant().id, label: toString(variant()) }}
                   />
                 </>
               )}

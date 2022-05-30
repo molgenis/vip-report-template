@@ -9,16 +9,16 @@ import {
   fetchDecisionTree,
   fetchPedigreeSamples,
   fetchRecordsMeta,
+  toString,
 } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { ConsequenceTable } from "../components/ConsequenceTable";
-import { getConsequenceLabel, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
+import { getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
-import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export const SampleVariantConsequence: Component = () => {
   const {
@@ -45,27 +45,14 @@ export const SampleVariantConsequence: Component = () => {
           fallback={<Loader />}
         >
           <Breadcrumb
-            links={[
-              { href: "/samples", label: "Samples" },
-              { href: "/samples/" + sample().data.index.toString(), label: sample().data.person.individualId },
-              { href: "/samples/" + sample().data.index.toString() + "/variants", label: "Variants" },
-              {
-                href: "/samples/" + sample().data.index.toString() + "/variants/" + variant().id.toString(),
-                label:
-                  variant().data.c +
-                  ":" +
-                  variant().data.p.toString() +
-                  " " +
-                  variant()
-                    .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                    .join(" / "),
-              },
-              {
-                href: "#",
-                label: `Consequence #${consequenceId}`,
-              },
+            items={[
+              { href: "/samples", text: "Samples" },
+              { href: `/samples/${sample().data.index}`, text: sample().data.person.individualId },
+              { href: `/samples/${sample().data.index}/variants`, text: "Variants" },
+              { href: `/samples/${sample().data.index}/variants/${variant().id}`, text: toString(variant()) },
+              { text: `Consequence #${consequenceId}` },
             ]}
-          ></Breadcrumb>
+          />
           <div class="columns">
             <div class="column is-6">
               <h1 class="title is-5">Consequence</h1>

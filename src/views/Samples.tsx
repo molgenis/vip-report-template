@@ -1,4 +1,4 @@
-import { Component, createResource, createSignal, For } from "solid-js";
+import { Component, createResource, createSignal } from "solid-js";
 import { SampleTable } from "../components/SampleTable";
 import { Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
@@ -26,7 +26,7 @@ export const Samples: Component = () => {
 
   return (
     <>
-      <Breadcrumb links={[{ href: "#", label: "Samples" }]}></Breadcrumb>
+      <Breadcrumb items={[{ text: "Samples" }]} />
       <div class="columns">
         <div class="column is-4 is-offset-3">
           {!samples.loading && <Pager page={samples().page} onPageChange={onPageChange} />}

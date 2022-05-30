@@ -57,7 +57,7 @@ export const Variants: Component = () => {
 
   return (
     <Show when={!recordsMetadata.loading} fallback={<Loader />}>
-      <Breadcrumb links={[{ href: "#", label: "Variants" }]}></Breadcrumb>
+      <Breadcrumb items={[{ text: "Variants" }]} />
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />

@@ -4,7 +4,13 @@ import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenomeBrowser } from "../components/GenomeBrowser";
-import { EMPTY_RECORDS_METADATA, EMPTY_SAMPLES, fetchPedigreeSamples, fetchRecordsMeta } from "../utils/ApiUtils";
+import {
+  EMPTY_RECORDS_METADATA,
+  EMPTY_SAMPLES,
+  fetchPedigreeSamples,
+  fetchRecordsMeta,
+  toString,
+} from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
@@ -27,23 +33,13 @@ export const SampleVariant: Component = () => {
         fallback={<Loader />}
       >
         <Breadcrumb
-          links={[
-            { href: "/samples", label: "Samples" },
-            { href: "/samples/" + sample().data.index.toString(), label: sample().data.person.individualId },
-            { href: "/samples/" + sample().data.index.toString() + "/variants", label: "Variants" },
-            {
-              href: "#",
-              label:
-                variant().data.c +
-                ":" +
-                variant().data.p.toString() +
-                " " +
-                variant()
-                  .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                  .join(" / "),
-            },
+          items={[
+            { href: "/samples", text: "Samples" },
+            { href: `/samples/${sample().data.index}`, text: sample().data.person.individualId },
+            { href: `/samples/${sample().data.index}/variants`, text: "Variants" },
+            { text: toString(variant()) },
           ]}
-        ></Breadcrumb>
+        />
         <div class="columns">
           <div class="column">
             <GenomeBrowser
@@ -91,17 +87,7 @@ export const SampleVariant: Component = () => {
                     infoValue={variant().data.n[infoField.id] as unknown as Value[][]}
                     infoField={infoField}
                     sample={{ id: sample().data.index, label: sample().data.person.individualId }}
-                    variant={{
-                      id: variant().id,
-                      label:
-                        variant().data.c +
-                        ":" +
-                        variant().data.p.toString() +
-                        " " +
-                        variant()
-                          .data.a.map((a) => variant().data.r + ">" + (a !== null ? a : "."))
-                          .join(" / "),
-                    }}
+                    variant={{ id: variant().id, label: toString(variant()) }}
                   />
                 </>
               )}
