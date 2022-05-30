@@ -15,7 +15,7 @@ export const Breadcrumb: Component<{
                 <li>
                   <Link href="/">
                     <span class="icon">
-                      <i class="fa-solid fa-home" />
+                      <i class="fas fa-home" />
                     </span>
                   </Link>
                 </li>
@@ -24,7 +24,7 @@ export const Breadcrumb: Component<{
               <li class="is-active">
                 <Link href="#">
                   <span class="icon">
-                    <i class="fa-solid fa-home" />
+                    <i class="fas fa-home" />
                   </span>
                 </Link>
               </li>

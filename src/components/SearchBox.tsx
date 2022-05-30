@@ -28,14 +28,14 @@ export const SearchBox: Component<{ onInput: (value: string) => void }> = (props
               props.onInput("");
             }}
           >
-            <i class="fa-solid fa-circle-xmark" />
+            <i class="fas fa-circle-xmark" />
           </span>
         )}
       </p>
       <div class="control">
         <a class="button is-info" onClick={() => props.onInput(value())}>
           <span class="icon is-left">
-            <i class="fa-solid fa-search" />
+            <i class="fas fa-search" />
           </span>
         </a>
       </div>

@@ -101,7 +101,7 @@ export const SampleTable: Component<{
                           .map((feature) => feature.type.id)
                           .join(",")}`}
                       >
-                        <i class="fa-solid fa-external-link" />
+                        <i class="fas fa-external-link" />
                       </Link>
                     </Show>
                   </td>

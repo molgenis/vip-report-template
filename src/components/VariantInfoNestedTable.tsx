@@ -86,7 +86,7 @@ export const VariantInfoNestedTable: Component<{
                             >
                               <a class="button is-info is-small">
                                 <span class="icon is-left">
-                                  <i class="fa-solid fa-search" />
+                                  <i class="fas fa-search" />
                                 </span>
                               </a>
                             </Link>
@@ -95,7 +95,7 @@ export const VariantInfoNestedTable: Component<{
                           <Link href={`/variants/${props.variant.id}/consequences/${rowIndex()}`}>
                             <a class="button is-info is-small">
                               <span class="icon is-left">
-                                <i class="fa-solid fa-search" />
+                                <i class="fas fa-search" />
                               </span>
                             </a>
                           </Link>
