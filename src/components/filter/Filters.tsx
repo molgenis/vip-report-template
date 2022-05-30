@@ -1,42 +1,43 @@
-import { Component, For } from "solid-js";
+import { Component } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Filter } from "./Filter";
+import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { InfoFilters, InfoFiltersChangeEvent } from "./InfoFilters";
+import { FilterChangeEvent } from "./Filter";
+import { SamplesFilters, SamplesFiltersChangeEvent } from "./SamplesFilters";
+import { SampleFiltersChangeEvent } from "./SampleFilters";
 
-export type FilterChangeEvent = {
-  field: FieldMetadata;
-  value: (string | null)[];
-};
-
-export type FilterClearEvent = {
-  field: FieldMetadata;
+export type Filters = {
+  fields: FilterChangeEvent[];
+  samplesFields: SampleFiltersChangeEvent[];
 };
 
 export type FiltersChangeEvent = {
-  filters: FilterChangeEvent[];
+  filters: Filters;
 };
 
 export const Filters: Component<{
   fields: FieldMetadata[];
+  samplesFields: { sample: Sample; fields: FieldMetadata[] }[];
   onChange: (event: FiltersChangeEvent) => void;
 }> = (props) => {
-  const filterableFields = () => props.fields.filter((field) => field.type === "CATEGORICAL");
+  const filters: Filters = { fields: [], samplesFields: [] }; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  const filters: { [key: string]: FilterChangeEvent } = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const onFiltersChange = () => props.onChange({ filters });
 
-  const onFilterChange = (event: FilterChangeEvent) => {
-    filters[event.field.id] = event;
-    props.onChange({ filters: Object.values(filters) });
+  const onInfoFiltersChange = (event: InfoFiltersChangeEvent) => {
+    filters.fields = event.filters;
+    onFiltersChange();
   };
-  const onFilterClear = (event: FilterClearEvent) => {
-    delete filters[event.field.id];
-    props.onChange({ filters: Object.values(filters) });
+
+  const onSamplesFiltersChange = (event: SamplesFiltersChangeEvent) => {
+    filters.samplesFields = event.filters;
+    onFiltersChange();
   };
 
   return (
     <>
-      <For each={filterableFields()}>
-        {(field) => <Filter field={field} onChange={onFilterChange} onClear={onFilterClear} />}
-      </For>
+      <InfoFilters fields={props.fields} onChange={onInfoFiltersChange} />
+      <SamplesFilters samplesFields={props.samplesFields} onChange={onSamplesFiltersChange} />
     </>
   );
 };
