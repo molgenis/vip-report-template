@@ -17,9 +17,9 @@
 ##INFO=<ID=SVLEN,Number=.,Type=Integer,Description="Difference in length between REF and ALT alleles">
 ##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
 ##INFO=<ID=SwappedAlleles,Number=0,Type=Flag,Description="The REF and the ALT alleles have been swapped in liftover due to changes in the reference. It is possible that not all INFO annotations reflect this swap, and in the genotypes, only the GT, PL, and AD fields have been modified. You should check the TAGS_TO_REVERSE parameter that was used during the LiftOver to be sure.">
-##INFO=<ID=gnomAD,Number=.,Type=String,Description="/groups/solve-rd/tmp10/bcharbon/vip/resources/GRCh38/gnomad.genomes.v3.1.2.sites.stripped.vcf.gz (exact)">
-##INFO=<ID=gnomAD_AF,Number=.,Type=String,Description="AF field from /groups/solve-rd/tmp10/bcharbon/vip/resources/GRCh38/gnomad.genomes.v3.1.2.sites.stripped.vcf.gz">
-##INFO=<ID=gnomAD_HN,Number=.,Type=String,Description="HN field from /groups/solve-rd/tmp10/bcharbon/vip/resources/GRCh38/gnomad.genomes.v3.1.2.sites.stripped.vcf.gz">
+##INFO=<ID=gnomAD,Number=.,Type=String,Description="/groups/solve-rd/tmp10/vip/resources/GRCh38/gnomad.genomes.v3.1.2.sites.stripped.vcf.gz (exact)">
+##INFO=<ID=gnomAD_AF,Number=.,Type=String,Description="AF field from /groups/solve-rd/tmp10/vip/resources/GRCh38/gnomad.genomes.v3.1.2.sites.stripped.vcf.gz">
+##INFO=<ID=gnomAD_HN,Number=.,Type=String,Description="HN field from /groups/solve-rd/tmp10/vip/resources/GRCh38/gnomad.genomes.v3.1.2.sites.stripped.vcf.gz">
 ##IncompletePenetrance=Boolean indicating if the gene is known for incomplete penetrance.
 ##InheritanceModesGene=List of inheritance modes for the gene
 ##SpliceAI_pred_DP_AG=SpliceAI predicted effect on splicing. Delta position for acceptor gain
@@ -31,13 +31,13 @@
 ##SpliceAI_pred_DS_DG=SpliceAI predicted effect on splicing. Delta score for donor gain
 ##SpliceAI_pred_DS_DL=SpliceAI predicted effect on splicing. Delta score for donor loss
 ##SpliceAI_pred_SYMBOL=SpliceAI gene symbol
-##VEP="v105" time="2022-03-25 12:52:08" cache="/groups/solve-rd/tmp10/bcharbon/vip/resources/vep/cache/homo_sapiens_refseq/105_GRCh38" ensembl-funcgen=105.660df8f ensembl-variation=105.ac8178e ensembl=105.525fbcb ensembl-io=105.2a0a40c 1000genomes="phase3" COSMIC="94" ClinVar="105202106" ESP="V2-SSA137" HGMD-PUBLIC="20204" assembly="GRCh38.p13" dbSNP="154" gencode="GENCODE 39" genebuild="2014-07" gnomAD="r2.1.1" polyphen="2.2.2" refseq="2021-05-28 21:42:08 - GCF_000001405.39_GRCh38.p13_genomic.gff" regbuild="1.0" sift="sift5.2.2"
+##VEP="v105" time="2022-03-25 12:52:08" cache="/groups/solve-rd/tmp10/vip/resources/vep/cache/homo_sapiens_refseq/105_GRCh38" ensembl-funcgen=105.660df8f ensembl-variation=105.ac8178e ensembl=105.525fbcb ensembl-io=105.2a0a40c 1000genomes="phase3" COSMIC="94" ClinVar="105202106" ESP="V2-SSA137" HGMD-PUBLIC="20204" assembly="GRCh38.p13" dbSNP="154" gencode="GENCODE 39" genebuild="2014-07" gnomAD="r2.1.1" polyphen="2.2.2" refseq="2021-05-28 21:42:08 - GCF_000001405.39_GRCh38.p13_genomic.gff" regbuild="1.0" sift="sift5.2.2"
 ##VIPC=VIP decision tree classification
 ##VIPL=VIP decision tree labels (ampersand separated)
 ##VIPP=VIP decision tree path (ampersand separated)
-##VIP_Command=nextflow run ./main.nf --input /groups/solve-rd/tmp10/bcharbon/testdata/testdata_b38_noSample.vcf --output /groups/solve-rd/tmp10/bcharbon/testdata_out/ --keep --phenotypes 'HP:0000951' --assembly GRCh38
+##VIP_Command=nextflow run ./main.nf --input /groups/solve-rd/tmp10/testdata/testdata_b38_noSample.vcf --output /groups/solve-rd/tmp10/testdata_out/ --keep --phenotypes 'HP:0000951' --assembly GRCh38
 ##VIP_Version=4.0.1
-##VIP_treeCommand=--input testdata_b38_noSample_chunk0_annotated.vcf.gz --config /groups/solve-rd/tmp10/bcharbon/vip/resources/decision_tree.json --labels 0 --path 0 --output testdata_b38_noSample_chunk0_classified.vcf.gz
+##VIP_treeCommand=--input testdata_b38_noSample_chunk0_annotated.vcf.gz --config /groups/solve-rd/tmp10/vip/resources/decision_tree.json --labels 0 --path 0 --output testdata_b38_noSample_chunk0_classified.vcf.gz
 ##VIP_treeVersion=2.2.0
 ##VKGL_CL=VKGL consensus variant classification.
 ##contig=<ID=chr1,length=248956422>
@@ -236,7 +236,7 @@
 ##contig=<ID=chrUn_GL000218v1,length=161147>
 ##contig=<ID=chrEBV,length=171823>
 ##fileDate=20200320
-##reference=file:/groups/umcg-gcc/tmp01/umcg-bcharbon/testdata/../vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
+##reference=file:/groups/umcg-gcc/tmp01/umcg-testdata/../vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
 chr1	9982480	.	C	T	.	PASS	CSQ=T|missense_variant|MODERATE|NMNAT1|64802|Transcript|NM_001297778.1|protein_coding|5/5||NM_001297778.1:c.619C>T|NP_001284707.1:p.Arg207Trp|778/3796|619/840|207/279|R/W|Cgg/Tgg|rs142968179&CM127756|1||1|||EntrezGene|||||0.04|0.08||pathogenic||1&1||||||||0|-36|-16|17|0.00|0.00|0.00|0.00|NMNAT1|VUS|0.16328752|||AR|LP||||chr1:9982480-9982480|3.94519e-05|0|P|filter&vkgl&exit_p|,T|downstream_gene_variant|MODIFIER|NMNAT1|64802|Transcript|NM_001297779.2|protein_coding||||||||||rs142968179&CM127756|1|714|1|||EntrezGene||||||||pathogenic||1&1||||||||0|-36|-16|17|0.00|0.00|0.00|0.00|NMNAT1|VUS|0.030009428|||AR|LP||||chr1:9982480-9982480|3.94519e-05|0|P|filter&vkgl&exit_p|,T|missense_variant|MODERATE|NMNAT1|64802|Transcript|NM_022787.4|protein_coding|5/5||NM_022787.4:c.619C>T|NP_073624.2:p.Arg207Trp|716/3734|619/840|207/279|R/W|Cgg/Tgg|rs142968179&CM127756|1||1||1|EntrezGene|||||0.04|0.08||pathogenic||1&1||||||||0|-36|-16|17|0.00|0.00|0.00|0.00|NMNAT1|VUS|0.16328752|||AR|LP||||chr1:9982480-9982480|3.94519e-05|0|P|filter&vkgl&exit_p|
 chr1	16049917	n_alt	G	N	.	PASS	CSQ=N|splice_donor_variant|HIGH|CLCNKB|1188|Transcript|NM_000085.5|protein_coding||10/19||||||||CS1211892&CS971662|1||1||1|EntrezGene||||||||||1&1|||||||||||||||||VUS|0.45317215|HP:0000951||AR||||||||P|filter&vkgl&clinVar&gnomad&effect&spliceAI&annotSV&impact&exit_p|,N|splice_donor_variant|HIGH|CLCNKB|1188|Transcript|NM_001165945.2|protein_coding||3/12||||||||CS1211892&CS971662|1||1|||EntrezGene||||||||||1&1|||||||||||||||||VUS|0.45317215|HP:0000951||AR||||||||P|filter&vkgl&clinVar&gnomad&effect&spliceAI&annotSV&impact&exit_p|

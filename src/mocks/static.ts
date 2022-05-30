@@ -15,7 +15,7 @@ export const samplesFamily = {
     {
       person: {
         familyId: "FAM001",
-        individualId: "Mother",
+        individualId: "MotherHasQuiteALongName",
         paternalId: "0",
         maternalId: "0",
         sex: "FEMALE",
