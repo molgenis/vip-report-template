@@ -30,11 +30,10 @@ export const InfoCollapsablePane: Component<{
           : null
       ) as ValueArray[]
   );
-
   return (
     <>
       <td>
-        {values()[0].length > 1 && (
+        {values.length > 0 && values()[0].length > 1 && (
           <span class="icon is-left is-clickable" onClick={toggleCollapse}>
             {collapsed() ? <i class="fas fa-angle-up" /> : <i class="fas fa-angle-down" />}
           </span>

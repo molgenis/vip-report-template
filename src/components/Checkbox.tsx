@@ -7,7 +7,7 @@ export type CheckboxEvent = {
 };
 
 export const Checkbox: Component<{
-  value: string | undefined;
+  value?: string;
   label: string;
   desc?: string;
   onChange: (event: CheckboxEvent) => void;
