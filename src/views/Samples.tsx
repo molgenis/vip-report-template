@@ -1,14 +1,15 @@
-import { Component, createResource, createSignal } from "solid-js";
+import { Component, createResource, createSignal, For } from "solid-js";
 import { SampleTable } from "../components/SampleTable";
 import { Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Checkbox, CheckboxEvent } from "../components/Checkbox";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { EMPTY_PARAMS, EMPTY_SAMPLES_PAGE, fetchSamples } from "../utils/ApiUtils";
+import { EMPTY_PARAMS, EMPTY_PHENOTYPES, EMPTY_SAMPLES_PAGE, fetchPhenotypes, fetchSamples } from "../utils/ApiUtils";
 
 export const Samples: Component = () => {
   const [params, setParams] = createSignal(EMPTY_PARAMS);
   const [samples] = createResource(params, fetchSamples, { initialValue: EMPTY_SAMPLES_PAGE });
+  const [phenotypes] = createResource(params, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
 
   const onPageChange = (page: number) => setParams({ page });
   const onSearchChange = (search: string) =>
@@ -45,7 +46,11 @@ export const Samples: Component = () => {
             </div>
           </div>
         </div>
-        <div class="column">{!samples.loading && <SampleTable samples={samples().items} />}</div>
+        <div class="column">
+          {!samples.loading && !phenotypes.loading && (
+            <SampleTable samples={samples().items} phenotypes={phenotypes().items} />
+          )}
+        </div>
       </div>
     </>
   );
