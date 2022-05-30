@@ -33,7 +33,7 @@
 ##INFO=<ID=BND_DEPTH,Number=1,Type=Integer,Description="Read depth at local translocation breakend">
 ##INFO=<ID=MATE_BND_DEPTH,Number=1,Type=Integer,Description="Read depth at remote translocation mate breakend">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
-##FORMAT=<ID=DP,Number=1,Type=String,Description="Depth">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth">
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Patient	Father	Mother	Sister	Nephew	Unrelated
 1	10042538	.	C	T	.	PASS	.	GT:DP	1|0:50	0|0:10	0|0:50	0|0:50	0|0:50	0|0:50
 1	152520788	symbolic1	A	<DEL>	.	PASS	SVLEN=-49314;SVTYPE=DEL	GT:DP	1|0:50	0|0:10	0|0:50	0|0:50	0|0:50	0|0:50
