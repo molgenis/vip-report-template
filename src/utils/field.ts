@@ -16,3 +16,7 @@ export const isNumerical = (fieldMetadata: FieldMetadata): boolean => {
 export function getNestedInfoFieldsWithValues(infoFields: FieldMetadataContainer, infoValues: InfoContainer) {
   return Object.values(infoFields).filter((infoField) => infoField.nested && infoValues[infoField.id] !== undefined);
 }
+
+export function abbreviateHeader(header: string) {
+  return header.length > 13 ? header.slice(0, 11) + "\u2026" : header;
+}

@@ -10,13 +10,7 @@ import { Component, createMemo, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
-
-function getSampleName(individualId: string) {
-  if (individualId.length > 10) {
-    return individualId.slice(0, 8) + "...";
-  }
-  return individualId;
-}
+import { abbreviateHeader } from "../utils/field";
 
 export const VariantsSampleTable: Component<{
   sample: Sample;
@@ -43,7 +37,7 @@ export const VariantsSampleTable: Component<{
                       title={`${
                         sample.person.individualId
                       }: ${sample.person.sex.toLowerCase()}, ${sample.person.affectedStatus.toLowerCase()}`}
-                      value={getSampleName(sample.person.individualId)}
+                      value={abbreviateHeader(sample.person.individualId)}
                     ></Abbr>
                   </th>
                 )}
