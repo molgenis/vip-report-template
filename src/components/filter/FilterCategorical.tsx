@@ -15,6 +15,9 @@ export const FilterCategorical: Component<{
   const group: CheckboxGroup = {};
   const nullValue = "__null";
 
+  // enable null category for any_has_any case if someone asks for it (requires query to be composed)
+  const includeNullCategory = () => !props.field.required && props.field.number.count === 1;
+
   const onChange = (event: CheckboxEvent) => {
     group[event.value !== undefined ? event.value : nullValue] = event.checked;
     const values = Object.keys(group)
@@ -40,7 +43,7 @@ export const FilterCategorical: Component<{
           </div>
         )}
       </For>
-      {!props.field.required && <Checkbox value={nullValue} label="No value" onChange={onChange} />}
+      {includeNullCategory() && <Checkbox value={nullValue} label="No value" onChange={onChange} />}
     </>
   );
 };
