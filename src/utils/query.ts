@@ -1,8 +1,7 @@
 import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterChangeEvent } from "../components/filter/Filters";
-import { FormatFilterChangeEvent } from "../components/filter/FormatFilters";
+import { Filters } from "../components/filter/Filters";
 
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {
   const parts: Query[] = [];
@@ -71,44 +70,24 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
   return selector;
 }
 
-function addCategoricalFilterClause(filter: FilterChangeEvent, clauses: QueryClause[]) {
-  const categories = filter.value;
-  clauses.push({
-    selector: getSelector(filter.field),
-    operator: filter.field.number.count === 1 ? "has_any" : "any_has_any",
-    args: categories,
-  });
-}
-
-export function createFilterQuery(filters: FilterChangeEvent[]): Query {
+export function createFilterQuery(filters: Filters): Query {
   const clauses: QueryClause[] = [];
-  for (const filter of filters) {
-    switch (filter.field.type) {
-      case "CATEGORICAL": {
-        addCategoricalFilterClause(filter, clauses);
-        break;
-      }
-      case "CHARACTER":
-      case "FLAG":
-      case "FLOAT":
-      case "INTEGER":
-      case "STRING":
-        throw new Error("invalid field type");
-      default:
-        throw new Error("unknown field type");
-    }
-  }
-  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
-}
-
-export function createFormatFilterQuery(filters: FormatFilterChangeEvent[], sampleId: number): Query {
-  const clauses: QueryClause[] = [];
-  for (const filter of filters) {
+  for (const filter of filters.fields) {
     clauses.push({
-      selector: ["s", sampleId, filter.fieldMetadata.id],
-      operator: filter.operator,
-      args: filter.value != null ? filter.value : "",
+      selector: getSelector(filter.field),
+      operator: filter.field.number.count === 1 ? "has_any" : "any_has_any",
+      args: filter.value as string | number | boolean | string[] | number[],
     });
+  }
+  for (const sampleFilters of filters.samplesFields) {
+    const sample = sampleFilters.sample;
+    for (const sampleFilter of sampleFilters.filters) {
+      clauses.push({
+        selector: ["s", sample.index, sampleFilter.field.id],
+        operator: sampleFilter.operator,
+        args: sampleFilter.value as string | number | boolean | string[] | number[],
+      });
+    }
   }
   return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
 }

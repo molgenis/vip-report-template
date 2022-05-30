@@ -4,7 +4,7 @@ import { Pager } from "../components/record/Pager";
 import { Params } from "@molgenis/vip-report-api/src/Api";
 import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
-import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
+import { InfoFilters, InfoFiltersChangeEvent } from "../components/filter/InfoFilters";
 import { Sort, SortEvent } from "../components/Sort";
 import { Loader } from "../components/Loader";
 import { RecordDownload } from "../components/record/RecordDownload";
@@ -30,7 +30,7 @@ export const Variants: Component = () => {
       page: 0,
       query: search !== "" ? createSearchQuery(search, recordsMetadata()) : undefined,
     });
-  const onFiltersChange = (event: FiltersChangeEvent) => {
+  const onFiltersChange = (event: InfoFiltersChangeEvent) => {
     const newParams: Params = {
       ...params(),
       page: 0,
@@ -60,7 +60,7 @@ export const Variants: Component = () => {
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
-          <Filters fields={flattenFieldMetadata(recordsMetadata().info)} onChange={onFiltersChange} />
+          <InfoFilters fields={flattenFieldMetadata(recordsMetadata().info)} onChange={onFiltersChange} />
         </div>
         <div class="column">
           <div class="columns">

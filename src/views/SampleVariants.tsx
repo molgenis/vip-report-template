@@ -1,13 +1,12 @@
 import { Component, createMemo, createResource, createSignal, Resource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, Sample as ApiSample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Params, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
-import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createFilterQuery, createFormatFilterQuery, createSearchQuery } from "../utils/query";
+import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import {
   EMPTY_RECORDS_METADATA,
@@ -18,11 +17,11 @@ import {
   fetchRecordsMeta,
 } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { FormatFilters, FormatFiltersChangeEvent } from "../components/filter/FormatFilters";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 
 export const SampleVariants: Component = () => {
-  const sample: Resource<Item<ApiSample>> = useRouteData();
+  const sample: Resource<Item<Sample>> = useRouteData();
 
   const [params, setParams] = createSignal({ size: 20 } as Params);
 
@@ -46,14 +45,7 @@ export const SampleVariants: Component = () => {
     setParams({
       ...params(),
       page: 0,
-      query: event.filters.length > 0 ? createFilterQuery(event.filters) : undefined,
-    });
-  };
-  const onFormatFiltersChange = (event: FormatFiltersChangeEvent, sampleId: number) => {
-    setParams({
-      ...params(),
-      page: 0,
-      query: event.filters.length > 0 ? createFormatFilterQuery(event.filters, sampleId) : undefined,
+      query: createFilterQuery(event.filters),
     });
   };
   const onSortChange = (event: SortEvent) => {
@@ -97,6 +89,14 @@ export const SampleVariants: Component = () => {
       : [];
   });
 
+  const formatFields = createMemo(() => {
+    const formatFieldMap = recordsMetadata()?.format;
+    const includedFields = ["VIM", "VID", "DP"];
+    return formatFieldMap
+      ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
+      : [];
+  });
+
   return (
     <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
       <Breadcrumb
@@ -109,12 +109,11 @@ export const SampleVariants: Component = () => {
       <div class="columns">
         <div class="column is-1-fullhd is-2">
           <SearchBox onInput={onSearchChange} />
-          <FormatFilters
-            sampleId={sample().id}
-            fieldMetadataContainer={recordsMetadata().format}
-            onChange={onFormatFiltersChange}
+          <Filters
+            fields={infoFields()}
+            samplesFields={[{ sample: sample().data, fields: formatFields() }]}
+            onChange={onFiltersChange}
           />
-          <Filters fields={infoFields()} onChange={onFiltersChange} />
         </div>
         <div class="column">
           <div class="columns">
