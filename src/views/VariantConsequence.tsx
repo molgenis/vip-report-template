@@ -41,11 +41,7 @@ export const VariantConsequence: Component = () => {
               },
               {
                 href: "#",
-                label: getConsequenceLabel(
-                  variant().data.n.CSQ,
-                  consequenceId,
-                  recordsMetadata().info.CSQ.nested.items
-                ),
+                label: `Consequence #${consequenceId}`,
               },
             ]}
           ></Breadcrumb>
