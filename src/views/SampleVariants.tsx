@@ -118,7 +118,7 @@ export const SampleVariants: Component = () => {
         <div class="column">
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-              <Sort fields={infoFields()} onChange={onSortChange} onClear={onSortClear} />
+              {infoFields().length > 0 && <Sort fields={infoFields()} onChange={onSortChange} onClear={onSortClear} />}
             </div>
             <div class="column is-4">
               {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
