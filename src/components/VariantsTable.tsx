@@ -12,6 +12,7 @@ import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Link } from "solid-app-router";
 import { Item } from "@molgenis/vip-report-api/src/Api";
+import { FieldHeader } from "./FieldHeader";
 
 const computeRowspan = (recordsMetadata: Metadata) =>
   Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : undefined;
@@ -42,9 +43,11 @@ export const VariantsTable: Component<{
               <th rowspan={rowspan()}>FILTER</th>
               <For each={infoFields()}>
                 {(infoField) => (
-                  <th rowspan={infoField.nested ? undefined : rowspan()} colspan={computeColspan(infoField)}>
-                    {infoField.id}
-                  </th>
+                  <FieldHeader
+                    field={infoField}
+                    rowspan={infoField.nested ? undefined : rowspan()}
+                    colspan={computeColspan(infoField)}
+                  />
                 )}
               </For>
             </tr>
@@ -52,7 +55,9 @@ export const VariantsTable: Component<{
               <tr>
                 <For each={infoFieldsNested()}>
                   {(infoField) => (
-                    <For each={infoField.nested?.items}>{(nestedInfoField) => <th>{nestedInfoField.id}</th>}</For>
+                    <For each={infoField.nested?.items}>
+                      {(nestedInfoField) => <FieldHeader field={nestedInfoField} />}
+                    </For>
                   )}
                 </For>
               </tr>

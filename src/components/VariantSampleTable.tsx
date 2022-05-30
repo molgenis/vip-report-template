@@ -1,10 +1,10 @@
-import { Component, createMemo, For, Show } from "solid-js";
+import { Component, createMemo, For } from "solid-js";
 import { Record, RecordSample } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Format } from "./record/Format";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
-import { Abbr } from "./Abbr";
+import { FieldHeader } from "./FieldHeader";
 
 export const VariantSampleTable: Component<{
   formatFields: FieldMetadataContainer;
@@ -23,18 +23,7 @@ export const VariantSampleTable: Component<{
           <thead>
             <tr>
               <th></th>
-              <For each={sampleFields()}>
-                {(formatField) => (
-                  <th>
-                    <Show
-                      when={formatField.description !== undefined && formatField.label !== undefined}
-                      fallback={<span>{formatField.label !== undefined ? formatField.label : formatField.id}</span>}
-                    >
-                      <Abbr title={formatField.description.toString()} value={formatField.label}></Abbr>
-                    </Show>
-                  </th>
-                )}
-              </For>
+              <For each={sampleFields()}>{(formatField) => <FieldHeader field={formatField} />}</For>
             </tr>
           </thead>
           <tbody>

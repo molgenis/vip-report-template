@@ -3,6 +3,7 @@ import { Link } from "solid-app-router";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldHeader } from "./FieldHeader";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
@@ -48,7 +49,7 @@ export const VariantInfoNestedTable: Component<{
               {(infoFieldItem, i) => (
                 <>
                   {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
-                    <th style="writing-mode: vertical-rl">{infoFieldItem.id}</th>
+                    <FieldHeader field={infoFieldItem} vertical={true} />
                   )}
                 </>
               )}

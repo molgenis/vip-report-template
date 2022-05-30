@@ -2,6 +2,7 @@ import { Component, For, Show } from "solid-js";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Info } from "./record/Info";
+import { FieldHeader } from "./FieldHeader";
 
 export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValues: ValueArray }> = (props) => {
   function getValues(index: number): ValueArray {
@@ -18,11 +19,7 @@ export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValu
               {(field: FieldMetadata, index) => (
                 <Show when={!(getValues(index()).length === 0)}>
                   <tr>
-                    <th>
-                      <Show when={field.description} fallback={<span>{field.label || field.id}</span>}>
-                        <abbr title={field.description}>{field.label || field.id}</abbr>
-                      </Show>
-                    </th>
+                    <FieldHeader field={field} />
                     <td>
                       <Info info={props.csqValues[index()]} infoMetadata={field}></Info>
                     </td>
