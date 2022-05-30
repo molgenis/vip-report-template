@@ -2,13 +2,10 @@ import { Component, For, Show } from "solid-js";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Info } from "./record/Info";
-import { Abbr } from "./Abbr";
 
 export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValues: ValueArray }> = (props) => {
-  function getValues(index: number) {
-    const value: ValueArray =
-      props.csqValues[index] !== null ? (props.csqValues[index] as ValueArray) : ([] as ValueArray);
-    return value;
+  function getValues(index: number): ValueArray {
+    return props.csqValues[index] !== null ? (props.csqValues[index] as ValueArray) : [];
   }
 
   return (
@@ -18,17 +15,16 @@ export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValu
         <table class="table is-borderless is-narrow">
           <tbody>
             <For each={props.csqMetadata}>
-              {(metadata: FieldMetadata, index) => (
+              {(field: FieldMetadata, index) => (
                 <Show when={!(getValues(index()).length === 0)}>
                   <tr>
                     <th>
-                      <Abbr
-                        title={metadata.description !== undefined ? metadata.description : ""}
-                        value={metadata.label !== undefined ? metadata.label : metadata.id}
-                      ></Abbr>
+                      <Show when={field.description} fallback={<span>{field.label || field.id}</span>}>
+                        <abbr title={field.description}>{field.label || field.id}</abbr>
+                      </Show>
                     </th>
                     <td>
-                      <Info info={props.csqValues[index()]} infoMetadata={metadata}></Info>
+                      <Info info={props.csqValues[index()]} infoMetadata={field}></Info>
                     </td>
                   </tr>
                 </Show>
