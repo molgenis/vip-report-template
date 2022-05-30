@@ -9,6 +9,14 @@ import { InfoCollapsablePane } from "./InfoCollapsablePane";
 import { Component, createMemo, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
+import { Abbr } from "./Abbr";
+
+function getSampleName(individualId: string) {
+  if (individualId.length > 10) {
+    return individualId.slice(0, 8) + "...";
+  }
+  return individualId;
+}
 
 export const VariantsSampleTable: Component<{
   sample: Sample;
@@ -28,7 +36,18 @@ export const VariantsSampleTable: Component<{
             <tr>
               <th>Position</th>
               <th>Reference</th>
-              <For each={samples()}>{(sample) => <th>{sample.person.individualId}</th>}</For>
+              <For each={samples()}>
+                {(sample) => (
+                  <th>
+                    <Abbr
+                      title={`${
+                        sample.person.individualId
+                      }: ${sample.person.sex.toLowerCase()}, ${sample.person.affectedStatus.toLowerCase()}`}
+                      value={getSampleName(sample.person.individualId)}
+                    ></Abbr>
+                  </th>
+                )}
+              </For>
               {/* column containing collapse/expand icon */}
               <th />
               <For each={props.nestedFields}>{(field) => <FieldHeader field={field} />}</For>
