@@ -35,7 +35,8 @@ export const Variants: Component = () => {
       ...params(),
       page: 0,
     };
-    newParams.query = event.filters.length > 0 ? createFilterQuery(event.filters) : undefined;
+    newParams.query =
+      event.filters.length > 0 ? createFilterQuery({ fields: event.filters, samplesFields: [] }) : undefined;
     setParams(newParams);
   };
 
