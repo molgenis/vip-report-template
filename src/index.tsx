@@ -14,10 +14,21 @@ import {
   faExternalLink,
   faHome,
   faSearch,
+  faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import { hashIntegration, Router } from "solid-app-router";
 
-library.add(faCircleXmark, faDownload, faHome, faSearch, faAngleDown, faAngleUp, faArrowRight, faExternalLink);
+library.add(
+  faCircleXmark,
+  faDownload,
+  faHome,
+  faSearch,
+  faAngleDown,
+  faAngleUp,
+  faArrowRight,
+  faExternalLink,
+  faCircleExclamation
+);
 
 function processIcons() {
   void dom.i2svg();

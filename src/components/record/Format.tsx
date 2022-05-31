@@ -11,6 +11,8 @@ export const Format: Component<{
   formatMetadata: FieldMetadata;
   record: Record;
   isAbbreviate: boolean;
+  allelicDepth: number[] | undefined;
+  readDepth: number | undefined;
 }> = (props) => {
   return (
     <Switch fallback={<Field info={props.format as Value | Value[]} infoMetadata={props.formatMetadata} />}>
@@ -20,6 +22,8 @@ export const Format: Component<{
           refAllele={props.record.r}
           altAlleles={props.record.a}
           isAbbreviate={props.isAbbreviate}
+          allelicDepth={props.allelicDepth}
+          readDepth={props.readDepth}
         />
       </Match>
     </Switch>

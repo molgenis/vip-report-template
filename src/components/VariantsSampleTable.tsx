@@ -69,6 +69,8 @@ export const VariantsSampleTable: Component<{
                           refAllele={record.data.r}
                           altAlleles={record.data.a}
                           isAbbreviate={true}
+                          allelicDepth={record.data.s[sample.index]["AD"] as number[]}
+                          readDepth={record.data.s[sample.index]["DP"] as number}
                         />
                       </td>
                     )}
