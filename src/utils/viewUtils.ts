@@ -21,3 +21,19 @@ export function getConsequenceLabel(csq: ValueArray, rowIndex: number, csqMetada
 export function getRecordSamples(record: Record, sample: Sample, pedigreeSamples: Sample[]) {
   return [record.s[sample.index], ...pedigreeSamples.map((pedigreeSample) => record.s[pedigreeSample.index])];
 }
+
+export function getHeaderValue(key: string, lines: string[]) {
+  let value = null;
+  lines.forEach((line: string) => {
+    if (line.startsWith(`##${key}`)) {
+      const splitted: string[] = line.split("=");
+      if (splitted.length === 2) {
+        value = splitted[1];
+        return;
+      } else {
+        throw new Error("Invalid header format for key");
+      }
+    }
+  });
+  return value;
+}
