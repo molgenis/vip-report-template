@@ -5,7 +5,7 @@ export const samplesFamily = {
         familyId: "FAM001",
         individualId: "Patient",
         paternalId: "Father",
-        maternalId: "Mother",
+        maternalId: "MotherHasQuiteALongName",
         sex: "MALE",
         affectedStatus: "AFFECTED",
       },
@@ -67,7 +67,7 @@ export const samplesFamily = {
         },
       ],
       subject: {
-        id: "Mother",
+        id: "MotherHasQuiteALongName",
       },
     },
     {
