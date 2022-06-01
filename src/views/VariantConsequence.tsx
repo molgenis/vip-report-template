@@ -30,7 +30,7 @@ export const VariantConsequence: Component = () => {
   return (
     <>
       {
-        <Show when={!variant.loading && !recordsMetadata.loading && !decisionTree.loading} fallback={<Loader />}>
+        <Show when={!variant.loading} fallback={<Loader />}>
           <Breadcrumb
             items={[
               { href: "/variants", text: "Variants" },

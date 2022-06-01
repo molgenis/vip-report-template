@@ -22,8 +22,6 @@ export const Variant: Component = () => {
       <Show when={!variant.loading} fallback={<Loader />}>
         <Breadcrumb items={[{ href: "/variants", text: "Variants" }, { text: toString(variant()) }]} />
         <GenomeBrowser contig={variant().data.c} position={variant().data.p} samples={[]} />
-      </Show>
-      <Show when={!variant.loading && !recordsMetadata.loading} fallback={<Loader />}>
         <div class="columns">
           <div class="column is-3">
             <h1 class="title is-5">Record</h1>

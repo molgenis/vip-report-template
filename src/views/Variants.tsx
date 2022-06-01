@@ -56,7 +56,7 @@ export const Variants: Component = () => {
   };
 
   return (
-    <Show when={!recordsMetadata.loading} fallback={<Loader />}>
+    <>
       <Breadcrumb items={[{ text: "Variants" }]} />
       <div class="columns">
         <div class="column is-1-fullhd is-2">
@@ -73,30 +73,28 @@ export const Variants: Component = () => {
               />
             </div>
             <div class="column is-4">
-              {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
+              <Pager page={records().page} onPageChange={onPageChange} />
             </div>
-            {!records.loading && (
-              <div class="column">
-                <div class="columns">
-                  <div class="column is-10">
-                    <span class="is-pulled-right" style={{ margin: "auto" }}>
-                      {records().page.totalElements} records
-                    </span>
-                  </div>
-                  <div class="column">
-                    <div class="is-pulled-right">
-                      <RecordDownload recordsMetadata={recordsMetadata()} query={params().query} />
-                    </div>
+            <div class="column">
+              <div class="columns">
+                <div class="column is-10">
+                  <span class="is-pulled-right" style={{ margin: "auto" }}>
+                    {records().page.totalElements} records
+                  </span>
+                </div>
+                <div class="column">
+                  <div class="is-pulled-right">
+                    <RecordDownload recordsMetadata={recordsMetadata()} query={params().query} />
                   </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
           <div class="columns">
-            {!records.loading && <VariantsTable records={records().items} recordsMetadata={recordsMetadata()} />}
+            <VariantsTable records={records().items} recordsMetadata={recordsMetadata()} />
           </div>
         </div>
       </div>
-    </Show>
+    </>
   );
 };
