@@ -1,64 +1,38 @@
-import { Component, createMemo, For } from "solid-js";
-import { Abbr } from "../Abbr";
+import { Component, createMemo, Match, Switch } from "solid-js";
+import { AlleleBreakend } from "./AlleleBreakend";
+import { AlleleMissing } from "./AlleleMissing";
+import { AlleleSymbolic } from "./AlleleSymbolic";
+import { AlleleNucs } from "./AlleleNucs";
+
+type AlleleType = "breakend" | "missing" | "symbolic" | "nucs";
 
 export const Allele: Component<{ value: string | null; isAbbreviate: boolean }> = (props) => {
-  const missing = () => props.value === null;
-  const symbolic = createMemo(() => props.value?.startsWith("<") && props.value?.endsWith(">"));
-  const breakend = createMemo(
-    () => props.value?.indexOf("[") !== -1 || props.value?.indexOf("]") !== -1 || props.value?.indexOf(".") !== -1
-  );
+  const type = createMemo((): AlleleType => {
+    const value = props.value;
+    let type: AlleleType;
 
-  function nucs(value: string) {
-    let nucleotides = value.split("");
-    if (nucleotides.length > 4 && props.isAbbreviate) {
-      const lastNuc = nucleotides[nucleotides.length - 1];
-      nucleotides = nucleotides.slice(0, 2);
-      nucleotides.push("\u2026"); // ellipsis
-      nucleotides.push(lastNuc);
-    }
-    return nucleotides;
-  }
+    if (value === null) type = "missing";
+    else if (value.startsWith("<") && value.endsWith(">")) type = "symbolic";
+    else if (value.indexOf("[") !== -1 || value.indexOf("]") !== -1 || value.indexOf(".") !== -1) type = "breakend";
+    else type = "nucs";
+
+    return type;
+  });
 
   return (
-    <>
-      {missing() && <span classList={{ base: true, "base-m": true }}>?</span>}
-      {(symbolic() || breakend()) && <span class="base-n">{props.value}</span>}
-      {!missing() && !symbolic() && !breakend() && props.isAbbreviate && (props.value as string).length > 4 && (
-        <For each={nucs(props.value as string)}>
-          {(base) => (
-            <Abbr
-              title={props.value as string}
-              value={base}
-              classList={{
-                base: true,
-                "base-a": base === "A",
-                "base-c": base === "C",
-                "base-g": base === "G",
-                "base-n": base === "N",
-                "base-t": base === "T",
-              }}
-            ></Abbr>
-          )}
-        </For>
-      )}
-      {!missing() && !symbolic() && !breakend() && (!props.isAbbreviate || (props.value as string).length <= 4) && (
-        <For each={nucs(props.value as string)}>
-          {(base) => (
-            <span
-              classList={{
-                base: true,
-                "base-a": base === "A",
-                "base-c": base === "C",
-                "base-g": base === "G",
-                "base-n": base === "N",
-                "base-t": base === "T",
-              }}
-            >
-              {base}
-            </span>
-          )}
-        </For>
-      )}
-    </>
+    <Switch>
+      <Match when={type() === "breakend"}>
+        <AlleleBreakend value={props.value as string} />
+      </Match>
+      <Match when={type() === "missing"}>
+        <AlleleMissing />
+      </Match>
+      <Match when={type() === "symbolic"}>
+        <AlleleSymbolic value={props.value as string} />
+      </Match>
+      <Match when={type() === "nucs"}>
+        <AlleleNucs values={(props.value as string).split("")} isAbbreviate={props.isAbbreviate} />
+      </Match>
+    </Switch>
   );
 };
