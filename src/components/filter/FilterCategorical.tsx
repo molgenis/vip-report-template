@@ -2,16 +2,25 @@ import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export type CheckboxGroup = {
   [key: string]: boolean;
 };
 
+function getDefaultValue(category: string, defaultValues: string[]) {
+  return defaultValues !== undefined ? defaultValues.includes(category) : undefined;
+}
+
 export const FilterCategorical: Component<{
   field: FieldMetadata;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
+  defaultValues: Value | undefined;
 }> = (props) => {
+  if (props.defaultValues !== undefined && props.defaultValues !== null && !Array.isArray(props.defaultValues)) {
+    throw new Error("Default value for a categorical filter should be an array.");
+  }
   const group: CheckboxGroup = {};
   const nullValue = "__null";
 
@@ -39,7 +48,12 @@ export const FilterCategorical: Component<{
       <For each={props.field.categories}>
         {(category) => (
           <div class="control">
-            <Checkbox value={category} label={category} onChange={onChange} />
+            <Checkbox
+              value={category}
+              label={category}
+              onChange={onChange}
+              default={getDefaultValue(category, props.defaultValues as string[])}
+            />
           </div>
         )}
       </For>

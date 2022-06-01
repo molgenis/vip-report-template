@@ -21,20 +21,41 @@ export const Filter: Component<{
   field: FieldMetadata;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
+  defaultValue: Value | undefined;
 }> = (props) => {
   return (
     <Switch>
       <Match when={props.field.id === "DP"}>
-        <FilterIntegerDp field={props.field} onChange={props.onChange} onClear={props.onClear} />
+        <FilterIntegerDp
+          field={props.field}
+          onChange={props.onChange}
+          onClear={props.onClear}
+          defaultValue={props.defaultValue}
+        />
       </Match>
       <Match when={props.field.id === "VID"}>
-        <FilterIntegerVid field={props.field} onChange={props.onChange} onClear={props.onClear} />
+        <FilterIntegerVid
+          field={props.field}
+          onChange={props.onChange}
+          onClear={props.onClear}
+          defaultValue={props.defaultValue}
+        />
       </Match>
       <Match when={props.field.id === "VIM"}>
-        <FilterIntegerVim field={props.field} onChange={props.onChange} onClear={props.onClear} />
+        <FilterIntegerVim
+          field={props.field}
+          onChange={props.onChange}
+          onClear={props.onClear}
+          defaultValue={props.defaultValue}
+        />
       </Match>
       <Match when={props.field.type === "CATEGORICAL"}>
-        <FilterCategorical field={props.field} onChange={props.onChange} onClear={props.onClear} />
+        <FilterCategorical
+          field={props.field}
+          onChange={props.onChange}
+          onClear={props.onClear}
+          defaultValues={props.defaultValue}
+        />
       </Match>
     </Switch>
   );

@@ -113,6 +113,7 @@ export const SampleVariants: Component = () => {
             fields={infoFields()}
             samplesFields={[{ sample: sample().data, fields: formatFields() }]}
             onChange={onFiltersChange}
+            sampleId={sample().data.person.individualId}
           />
         </div>
         <div class="column">
