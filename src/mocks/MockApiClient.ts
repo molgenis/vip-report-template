@@ -220,7 +220,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh37",
         },
       } as Metadata,
-      data: { samples: [] },
+      data: { samples: [], phenotypes: [] },
       binary: {
         vcf: vcfSamples0GRCh37,
         fastaGz: fastaGzGRCh37,
@@ -339,7 +339,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh38",
         },
       } as Metadata,
-      data: { samples: [] },
+      data: { samples: [], phenotypes: [] },
       binary: {
         vcf: vcfSamples0GRCh38,
         fastaGz: fastaGzGRCh38,
