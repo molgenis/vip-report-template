@@ -119,7 +119,18 @@ export const SampleVariants: Component = () => {
         <div class="column">
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-              {infoFields().length > 0 && <Sort fields={infoFields()} onChange={onSortChange} onClear={onSortClear} />}
+              {infoFields().length > 0 && (
+                <Sort
+                  fields={infoFields()}
+                  onChange={onSortChange}
+                  onClear={onSortClear}
+                  defaultSort={{
+                    field: "CAPICE_SC",
+                    parent: "CSQ",
+                    compare: "desc",
+                  }}
+                />
+              )}
             </div>
             <div class="column is-4">{<Pager page={records().page} onPageChange={onPageChange} />}</div>
             {
