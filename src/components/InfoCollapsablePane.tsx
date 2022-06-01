@@ -55,7 +55,9 @@ export const InfoCollapsablePane: Component<{
               {(value, j) => (
                 <>
                   {j() != 0 && collapsed() && <br />}
-                  {(j() == 0 || collapsed()) && <Info info={value} infoMetadata={field} href={getHref(field, j())} />}
+                  {(j() == 0 || collapsed()) && (
+                    <Info info={value} infoMetadata={field} href={getHref(field, j())} variant={props.record.data} />
+                  )}
                 </>
               )}
             </For>

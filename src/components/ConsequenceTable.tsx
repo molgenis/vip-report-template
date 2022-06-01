@@ -3,8 +3,11 @@ import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Info } from "./record/Info";
 import { FieldHeader } from "./FieldHeader";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
-export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValues: ValueArray }> = (props) => {
+export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValues: ValueArray; record: Record }> = (
+  props
+) => {
   function getValues(index: number): ValueArray {
     return props.csqValues[index] !== null ? (props.csqValues[index] as ValueArray) : [];
   }
@@ -21,7 +24,7 @@ export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValu
                   <tr>
                     <FieldHeader field={field} />
                     <td>
-                      <Info info={props.csqValues[index()]} infoMetadata={field}></Info>
+                      <Info info={props.csqValues[index()]} infoMetadata={field} variant={props.record}></Info>
                     </td>
                   </tr>
                 </Show>

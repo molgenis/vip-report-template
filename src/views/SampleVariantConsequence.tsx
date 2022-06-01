@@ -59,6 +59,7 @@ export const SampleVariantConsequence: Component = () => {
               <ConsequenceTable
                 csqMetadata={recordsMetadata().info.CSQ.nested.items}
                 csqValues={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
+                record={variant().data}
               ></ConsequenceTable>
             </div>
             {decisionTree() !== null && (

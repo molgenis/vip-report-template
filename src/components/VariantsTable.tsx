@@ -101,6 +101,7 @@ export const VariantsTable: Component<{
                                   <Info
                                     info={(record.data.n[infoField.id] as Value[])[i()]}
                                     infoMetadata={infoFieldNested}
+                                    variant={record.data}
                                   />
                                 </>
                               ) : (
@@ -108,7 +109,7 @@ export const VariantsTable: Component<{
                                   {(value, j) => (
                                     <>
                                       {j() !== 0 && <br />}
-                                      <Info info={value[i()]} infoMetadata={infoFieldNested} />
+                                      <Info info={value[i()]} infoMetadata={infoFieldNested} variant={record.data} />
                                     </>
                                   )}
                                 </For>
@@ -118,7 +119,7 @@ export const VariantsTable: Component<{
                         </For>
                       ) : (
                         <td>
-                          <Info info={record.data.n[infoField.id]} infoMetadata={infoField} />
+                          <Info info={record.data.n[infoField.id]} infoMetadata={infoField} variant={record.data} />
                         </td>
                       )
                     }

@@ -4,6 +4,8 @@ import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
@@ -35,13 +37,13 @@ function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number,
 export const VariantInfoNestedTable: Component<{
   infoValue: Value[] | Value[][];
   infoField: InfoMetadata;
-  variant: { id: number; label: string };
+  record: Item<Record>;
   sample: { id: number; label: string } | null;
 }> = (props) => {
   function getHref(field: InfoMetadata, consequenceIndex: number): string | undefined {
     let href;
     if (field.id === "Consequence" && field.parent?.id === "CSQ") {
-      href = `/variants/${props.variant.id}/consequences/${consequenceIndex}`;
+      href = `/variants/${props.record.id}/consequences/${consequenceIndex}`;
       if (props.sample !== null) href = `/samples/${props.sample.id}` + href;
     }
     return href;
@@ -71,7 +73,7 @@ export const VariantInfoNestedTable: Component<{
                     <>
                       {isNonEmptyNestedInfoItem(props.infoField, -1, props.infoValue) && (
                         <td>
-                          <Info info={value} infoMetadata={props.infoField} />
+                          <Info info={value} infoMetadata={props.infoField} variant={props.record.data} />
                         </td>
                       )}
                     </>
@@ -92,6 +94,7 @@ export const VariantInfoNestedTable: Component<{
                                   info={value[i()] as Value}
                                   infoMetadata={infoFieldItem}
                                   href={getHref(infoFieldItem, i())}
+                                  variant={props.record.data}
                                 />
                               </td>
                             )}
