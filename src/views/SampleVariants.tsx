@@ -98,7 +98,7 @@ export const SampleVariants: Component = () => {
   });
 
   return (
-    <Show when={!sample.loading && !pedigreeSamples.loading && !recordsMetadata.loading} fallback={<Loader />}>
+    <Show when={!sample.loading} fallback={<Loader />}>
       <Breadcrumb
         items={[
           { href: "/samples", text: "Samples" },
@@ -120,10 +120,8 @@ export const SampleVariants: Component = () => {
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
               {infoFields().length > 0 && <Sort fields={infoFields()} onChange={onSortChange} onClear={onSortClear} />}
             </div>
-            <div class="column is-4">
-              {!records.loading && <Pager page={records().page} onPageChange={onPageChange} />}
-            </div>
-            {!records.loading && (
+            <div class="column is-4">{<Pager page={records().page} onPageChange={onPageChange} />}</div>
+            {
               <div class="column">
                 <div class="columns">
                   <div class="column is-10">
@@ -142,10 +140,10 @@ export const SampleVariants: Component = () => {
                   </div>
                 </div>
               </div>
-            )}
+            }
           </div>
           <div class="columns">
-            {!records.loading && (
+            <Show when={!records.loading} fallback={<Loader />}>
               <VariantsSampleTable
                 sample={sample().data}
                 pedigreeSamples={pedigreeSamples()}
@@ -153,7 +151,7 @@ export const SampleVariants: Component = () => {
                 recordsMetadata={recordsMetadata()}
                 nestedFields={infoFields()}
               />
-            )}
+            </Show>
           </div>
         </div>
       </div>
