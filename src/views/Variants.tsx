@@ -23,12 +23,14 @@ export const Variants: Component = () => {
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
 
   const onPageChange = (page: number) => setParams({ page });
-  const onSearchChange = (search: string) =>
+  const onSearchChange = (search: string) => {
+    const query = search !== "" ? createSearchQuery(search, recordsMetadata()) : null;
     setParams({
       ...params(),
       page: 0,
-      query: search !== "" ? createSearchQuery(search, recordsMetadata()) : undefined,
+      query: query !== null ? query : undefined,
     });
+  };
   const onFiltersChange = (event: InfoFiltersChangeEvent) => {
     const newParams: Params = {
       ...params(),
