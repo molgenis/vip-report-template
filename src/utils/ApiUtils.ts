@@ -92,13 +92,13 @@ function getCsqSortOrders(params: Params): SortOrder[] {
   );
 }
 
-function compareCsqValue(aValue: number | null, bValue: number | null): number {
-  if (aValue === null) return bValue !== null ? -1 : 0;
-  if (bValue === null) return 1;
-  return aValue - bValue;
+function compareCsqValue(aValue: number | null, bValue: number | null, direction: string): number {
+  if (aValue === null) return bValue === null ? 0 : 1;
+  if (bValue === null) return -1;
+  return direction === "desc" ? bValue - aValue : aValue - bValue;
 }
 
-function compareCsq(aValueArray: Value[], bValueArray: Value[], field: FieldMetadata): number {
+function compareCsq(aValueArray: Value[], bValueArray: Value[], field: FieldMetadata, direction: string): number {
   const parentField = field.parent as FieldMetadata;
   const parentItems = (parentField.nested as NestedFieldMetadata).items;
 
@@ -109,7 +109,7 @@ function compareCsq(aValueArray: Value[], bValueArray: Value[], field: FieldMeta
 
   const aValue = aValueArray[index] as number | null;
   const bValue = bValueArray[index] as number | null;
-  return compareCsqValue(aValue, bValue);
+  return compareCsqValue(aValue, bValue, direction);
 }
 
 function compareCsqDefault(aValue: Value[], bValue: Value[], pickIndex: number, consequenceIndex: number): number {
@@ -144,8 +144,13 @@ export async function fetchRecords(params: Params) {
 
     csqArray.sort((aValue, bValue) => {
       for (const sortOrder of sortOrders) {
-        const compareValue = compareCsq(aValue, bValue, sortOrder.property as FieldMetadata);
-        if (compareValue !== 0) return sortOrder.compare !== "desc" ? compareValue : -compareValue;
+        const compareValue = compareCsq(
+          aValue,
+          bValue,
+          sortOrder.property as FieldMetadata,
+          sortOrder.compare as string
+        );
+        if (compareValue !== 0) return compareValue;
       }
       return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
     });
