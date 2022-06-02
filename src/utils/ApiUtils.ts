@@ -15,7 +15,7 @@ import {
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../Api";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { FieldMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata, InfoMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { isNumerical } from "./field";
 
 export const EMPTY_PARAMS: Params = {};
@@ -80,17 +80,24 @@ function getMostSevereConsequenceIndex(value: string[]) {
   return value.map((consequence) => consequenceOrder[consequence]).reduce((max, value) => Math.max(max, value));
 }
 
-function getCsqSortOrders(params: Params): SortOrder[] {
+function getCsqSortOrders(params: Params, csqMetadata: InfoMetadata): SortOrder[] {
   const sortOrders = params.sort ? (Array.isArray(params.sort) ? params.sort : [params.sort]) : [];
-  return sortOrders.filter(
-    (sortOrder) =>
-      (sortOrder.compare === undefined || typeof sortOrder.compare !== "function") &&
-      typeof sortOrder.property !== "string" &&
-      sortOrder.property.parent?.id === "CSQ" &&
-      isNumerical(sortOrder.property) &&
-      sortOrder.property.number.type === "NUMBER" &&
-      sortOrder.property.number.count === 1
-  );
+  if (Array.isArray(params.sort)) {
+    return sortOrders.filter((sortOrder) => {
+      const csqIndex = sortOrder.property.indexOf("CSQ");
+      const childMetadata = csqMetadata.nested?.items[sortOrder.property[csqIndex + 1] as number];
+      if (childMetadata === undefined) {
+        throw new Error(`Unknown field for path: ${sortOrder.property[csqIndex + 1]}`);
+      }
+      return (
+        (sortOrder.compare === undefined || typeof sortOrder.compare !== "function") &&
+        csqIndex !== -1 &&
+        isNumerical(childMetadata) &&
+        childMetadata.number.type === "NUMBER" &&
+        childMetadata.number.count === 1
+      );
+    });
+  }
 }
 
 function compareCsqValue(aValue: number | null, bValue: number | null, direction: string): number {
@@ -134,7 +141,7 @@ export async function fetchRecords(params: Params) {
     return records;
   }
 
-  const sortOrders = getCsqSortOrders(params);
+  const sortOrders = getCsqSortOrders(params, recordsMeta.info.CSQ);
 
   const fieldMetas = (recordsMeta.info.CSQ.nested as NestedFieldMetadata).items;
   const consequenceIndex = fieldMetas.findIndex((item) => item.id === "Consequence");
