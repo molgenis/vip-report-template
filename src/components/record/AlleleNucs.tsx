@@ -1,4 +1,4 @@
-import { Component, For, Show } from "solid-js";
+import { Component, For } from "solid-js";
 
 const Nucs: Component<{ bases: string[] }> = (props) => {
   return (

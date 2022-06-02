@@ -1,5 +1,4 @@
-import { Component, For, Show } from "solid-js";
-import { Link } from "solid-app-router";
+import { Component, For } from "solid-js";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
@@ -82,7 +81,7 @@ export const VariantInfoNestedTable: Component<{
               </tr>
             ) : (
               <For each={props.infoValue}>
-                {(value, rowIndex) => (
+                {(value) => (
                   <>
                     <tr>
                       <For each={props.infoField.nested.items}>
