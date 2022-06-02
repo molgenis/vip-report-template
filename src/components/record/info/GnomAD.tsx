@@ -20,9 +20,8 @@ export const GnomAD: Component<{
   return (
     <Show when={!htsFileMetadata.loading}>
       <a href={getHref(htsFileMetadata().genomeAssembly)} target="_blank" rel="noopener noreferrer nofollow">
-        <Show when={props.id === "GNOMAD_AD"} fallback={<FieldValueInteger value={props.value} />}>
-          {" "}
-          <FieldValueFloat value={props.value} />
+        <Show when={props.id === "GNOMAD_AD"} fallback={<FieldValueFloat value={props.value} />}>
+          <FieldValueInteger value={props.value} />
         </Show>
       </a>
     </Show>
