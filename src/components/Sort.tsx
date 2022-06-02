@@ -23,7 +23,7 @@ export const Sort: Component<{
   fields: FieldMetadata[];
   onChange: (event: SortEvent) => void;
   onClear: () => void;
-  defaultSort: { field: string; parent: string | undefined; compare: "asc" | "desc" };
+  defaultSort?: { field: string; parent: string | undefined; compare: "asc" | "desc" };
 }> = (props) => {
   const sortableFields = () => props.fields.filter((field) => isNumerical(field) && field.number.count === 1);
 
@@ -40,15 +40,21 @@ export const Sort: Component<{
   };
 
   onMount(() => {
-    let defaultSortOption = undefined;
-    sortOptions().forEach((option) => {
-      if ((props.defaultSort.compare === "asc") === option.ascending && isDefault(option.field, props.defaultSort)) {
-        defaultSortOption = option;
-        return;
+    if (props.defaultSort !== undefined) {
+      let defaultSortOption = undefined;
+      sortOptions().forEach((option) => {
+        if (
+          props.defaultSort !== undefined &&
+          (props.defaultSort.compare === "asc") === option.ascending &&
+          isDefault(option.field, props.defaultSort)
+        ) {
+          defaultSortOption = option;
+          return;
+        }
+      });
+      if (defaultSortOption !== undefined) {
+        props.onChange(defaultSortOption);
       }
-    });
-    if (defaultSortOption !== undefined) {
-      props.onChange(defaultSortOption);
     }
   });
 
@@ -67,6 +73,7 @@ export const Sort: Component<{
                   <option
                     value={i()}
                     selected={
+                      props.defaultSort !== undefined &&
                       (props.defaultSort.compare === "asc") === fieldOption.ascending &&
                       isDefault(fieldOption.field, props.defaultSort)
                     }
