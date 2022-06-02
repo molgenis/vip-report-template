@@ -48,8 +48,8 @@ export const samplesFamily = {
         },
         {
           type: {
-            id: "HP:0000952",
-            label: "HP:0000952",
+            id: "HP:0003124",
+            label: "HP:0003124",
           },
         },
       ],
