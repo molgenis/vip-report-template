@@ -10,6 +10,7 @@ import {
   Resource,
   Sample,
   SortOrder,
+  SortPath,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../Api";
@@ -98,7 +99,7 @@ function compareCsqValue(aValue: number | null, bValue: number | null, direction
   return direction === "desc" ? bValue - aValue : aValue - bValue;
 }
 
-function compareCsq(aValueArray: Value[], bValueArray: Value[], field: FieldMetadata, direction: string): number {
+function compareCsq(aValueArray: Value[], bValueArray: Value[], field: SortPath, direction: string): number {
   const parentField = field.parent as FieldMetadata;
   const parentItems = (parentField.nested as NestedFieldMetadata).items;
 
@@ -144,12 +145,7 @@ export async function fetchRecords(params: Params) {
 
     csqArray.sort((aValue, bValue) => {
       for (const sortOrder of sortOrders) {
-        const compareValue = compareCsq(
-          aValue,
-          bValue,
-          sortOrder.property as FieldMetadata,
-          sortOrder.compare as string
-        );
+        const compareValue = compareCsq(aValue, bValue, sortOrder.property, sortOrder.compare as string);
         if (compareValue !== 0) return compareValue;
       }
       return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
@@ -236,4 +232,34 @@ export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<Sample
 export function toString(item: Item<Record>) {
   const record = item.data;
   return `${record.c}:${record.p} ${record.a.map((a) => `${record.r}>${a !== null ? a : "."}`).join(" / ")}`;
+}
+
+export function getPath(field: FieldMetadata): SortPath {
+  const path = [];
+  do {
+    const parent = field.parent;
+    if (parent && parent.number.count !== 1) {
+      const index = (parent.nested as NestedFieldMetadata).items.findIndex((item) => field.id === item.id);
+      if (index === -1) {
+        throw new UnknownFieldError(field.id, path);
+      }
+      path.push(index);
+    } else {
+      path.push(field.id);
+    }
+
+    if (parent) field = parent;
+    else break;
+  } while (true);
+  path.push("n");
+  path.reverse();
+
+  return path;
+}
+
+class UnknownFieldError extends Error {
+  constructor(fieldId: string, path: (string | number)[]) {
+    super(`unknown field '${fieldId}' in path '[${path.join(",")}]'`);
+    this.name = "UnknownFieldError";
+  }
 }

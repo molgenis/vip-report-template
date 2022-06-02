@@ -1,29 +1,19 @@
 import { Component, createMemo, For, onMount } from "solid-js";
 import { isNumerical } from "../utils/field";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { getPath } from "../utils/ApiUtils";
+import { SortPath } from "@molgenis/vip-report-api/src/Api";
 
 export type SortEvent = {
-  field: FieldMetadata;
+  field: (string | number)[];
   ascending: boolean;
 };
-
-function isDefault(
-  fieldMetadata: FieldMetadata,
-  defaultSort: { field: string; parent: string | undefined; compare: "asc" | "desc" }
-) {
-  return (
-    (fieldMetadata.id === defaultSort.field &&
-      fieldMetadata.parent !== undefined &&
-      fieldMetadata.parent.id === defaultSort.parent) ||
-    defaultSort.parent === undefined
-  );
-}
 
 export const Sort: Component<{
   fields: FieldMetadata[];
   onChange: (event: SortEvent) => void;
   onClear: () => void;
-  defaultSort?: { field: string; parent: string | undefined; compare: "asc" | "desc" };
+  defaultSort?: { field: SortPath; compare: "asc" | "desc" };
 }> = (props) => {
   const sortableFields = () => props.fields.filter((field) => isNumerical(field) && field.number.count === 1);
 
@@ -36,7 +26,12 @@ export const Sort: Component<{
 
   const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);
-    index === -1 ? props.onClear() : props.onChange(sortOptions()[index]);
+    index === -1
+      ? props.onClear()
+      : props.onChange({
+          field: getPath(sortOptions()[index].field),
+          ascending: sortOptions()[index].ascending,
+        });
   };
 
   onMount(() => {
@@ -46,7 +41,7 @@ export const Sort: Component<{
         if (
           props.defaultSort !== undefined &&
           (props.defaultSort.compare === "asc") === option.ascending &&
-          isDefault(option.field, props.defaultSort)
+          getPath(option.field) === props.defaultSort.field
         ) {
           defaultSortOption = option;
           return;
@@ -75,7 +70,7 @@ export const Sort: Component<{
                     selected={
                       props.defaultSort !== undefined &&
                       (props.defaultSort.compare === "asc") === fieldOption.ascending &&
-                      isDefault(fieldOption.field, props.defaultSort)
+                      getPath(fieldOption.field) === props.defaultSort.field
                     }
                   >
                     {fieldOption.field.label || fieldOption.field.id}{" "}

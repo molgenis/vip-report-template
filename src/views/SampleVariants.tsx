@@ -125,8 +125,7 @@ export const SampleVariants: Component = () => {
                   onChange={onSortChange}
                   onClear={onSortClear}
                   defaultSort={{
-                    field: "CAPICE_SC",
-                    parent: "CSQ",
+                    field: ["n", "CSQ", "CAPICE_SC"],
                     compare: "desc",
                   }}
                 />
