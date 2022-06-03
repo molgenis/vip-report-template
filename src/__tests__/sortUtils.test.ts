@@ -72,15 +72,6 @@ describe("sort utilities", () => {
     ).toStrictEqual({ orders: [{ field: nString2Meta, direction: DIRECTION_ASCENDING }] });
   });
 
-  test("create record sort order from params sort order with invalid path with missing item", () => {
-    expect(() =>
-      createRecordSort(metadata, {
-        property: ["n", "n_object0"],
-        compare: "asc",
-      })
-    ).toThrowError();
-  });
-
   test("create record sort order from params sort order with invalid path with unknown item", () => {
     expect(() =>
       createRecordSort(metadata, {
