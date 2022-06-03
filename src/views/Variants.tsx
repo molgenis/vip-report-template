@@ -1,61 +1,40 @@
-import { Component, createResource, createSignal } from "solid-js";
+import { Component, createResource } from "solid-js";
 import { VariantsTable } from "../components/VariantsTable";
 import { Pager } from "../components/record/Pager";
-import { Params } from "@molgenis/vip-report-api/src/Api";
 import { SearchBox } from "../components/SearchBox";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
 import { InfoFilters, InfoFiltersChangeEvent } from "../components/filter/InfoFilters";
 import { Sort, SortEvent } from "../components/Sort";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
-import {
-  EMPTY_PARAMS,
-  EMPTY_RECORDS_METADATA,
-  EMPTY_RECORDS_PAGE,
-  fetchRecords,
-  fetchRecordsMeta,
-} from "../utils/ApiUtils";
+import { EMPTY_RECORDS_METADATA, EMPTY_RECORDS_PAGE, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
 import { flattenFieldMetadata } from "../utils/field";
 import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+import { useSearchParams } from "solid-app-router";
+import { parseSearchParams, RecordSearchParams } from "../utils/searchParamsUtils";
 
 export const Variants: Component = () => {
-  const [params, setParams] = createSignal(EMPTY_PARAMS);
+  const [searchParams, setSearchParams] = useSearchParams<RecordSearchParams>();
+  const params = () => parseSearchParams(searchParams);
+
   const [records] = createResource(params, fetchRecords, { initialValue: EMPTY_RECORDS_PAGE });
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
 
-  const onPageChange = (page: number) => setParams({ page });
+  const onPageChange = (page: number) => setSearchParams({ page: page });
   const onSearchChange = (search: string) => {
     const query = search !== "" ? createSearchQuery(search, recordsMetadata()) : null;
-    setParams({
-      ...params(),
-      page: 0,
-      query: query !== null ? query : undefined,
-    });
-  };
-  const onFiltersChange = (event: InfoFiltersChangeEvent) => {
-    const newParams: Params = {
-      ...params(),
-      page: 0,
-    };
-    newParams.query =
-      event.filters.length > 0 ? createFilterQuery({ fields: event.filters, samplesFields: [] }) : undefined;
-    setParams(newParams);
+    setSearchParams({ page: null, query: query ? JSON.stringify(query) : null });
   };
 
+  const onFiltersChange = (event: InfoFiltersChangeEvent) => {
+    const query = event.filters.length > 0 ? createFilterQuery({ fields: event.filters, samplesFields: [] }) : null;
+    setSearchParams({ page: null, query: query ? JSON.stringify(query) : null });
+  };
   const onSortChange = (event: SortEvent) => {
-    setParams({
-      ...params(),
-      page: 0,
-      sort: event.order !== null ? createSortOrder(event.order) : undefined,
-    });
+    const sort = event.order !== null ? createSortOrder(event.order) : undefined;
+    setSearchParams({ page: null, sort: sort ? JSON.stringify(sort) : null });
   };
-  const onSortClear = () => {
-    setParams({
-      ...params(),
-      page: 0,
-      sort: undefined,
-    });
-  };
+  const onSortClear = () => setSearchParams({ page: null, sort: null });
 
   const sortOptions = () => {
     return flattenFieldMetadata(recordsMetadata().info).flatMap((field) => [

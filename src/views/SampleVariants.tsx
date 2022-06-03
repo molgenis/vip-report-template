@@ -1,6 +1,6 @@
-import { Component, createMemo, createResource, createSignal, Resource, Show } from "solid-js";
-import { useRouteData } from "solid-app-router";
-import { Item, Params, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Component, createMemo, createResource, Resource, Show } from "solid-js";
+import { useRouteData, useSearchParams } from "solid-app-router";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
@@ -20,49 +20,33 @@ import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+import { parseSearchParams, RecordSearchParams } from "../utils/searchParamsUtils";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<Sample>> = useRouteData();
 
-  const [params, setParams] = createSignal({ size: 20 } as Params);
+  const [searchParams, setSearchParams] = useSearchParams<RecordSearchParams>();
+  const params = () => ({ size: 20, ...parseSearchParams(searchParams) });
 
   const [records] = createResource(params, fetchRecords, { initialValue: EMPTY_RECORDS_PAGE });
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples, { initialValue: EMPTY_SAMPLES });
 
-  const onPageChange = (page: number) => setParams({ ...params(), page });
+  const onPageChange = (page: number) => setSearchParams({ page: page });
   const onSearchChange = (search: string) => {
-    let query = null;
-    if (search !== "") {
-      query = createSearchQuery(search, recordsMetadata());
-    }
-    setParams({
-      ...params(),
-      page: 0,
-      query: query != null ? query : undefined,
-    });
+    const query = search !== "" ? createSearchQuery(search, recordsMetadata()) : null;
+    setSearchParams({ page: null, query: query ? JSON.stringify(query) : null });
   };
+
   const onFiltersChange = (event: FiltersChangeEvent) => {
-    setParams({
-      ...params(),
-      page: 0,
-      query: createFilterQuery(event.filters),
-    });
+    const query = createFilterQuery(event.filters);
+    setSearchParams({ page: null, query: JSON.stringify(query) });
   };
   const onSortChange = (event: SortEvent) => {
-    setParams({
-      ...params(),
-      page: 0,
-      sort: event.order !== null ? createSortOrder(event.order) : undefined,
-    });
+    const sort = event.order !== null ? createSortOrder(event.order) : undefined;
+    setSearchParams({ page: null, sort: sort ? JSON.stringify(sort) : null });
   };
-  const onSortClear = () => {
-    setParams({
-      ...params(),
-      page: 0,
-      sort: undefined,
-    });
-  };
+  const onSortClear = () => setSearchParams({ page: null, sort: null });
 
   const infoFields = createMemo(() => {
     const csqNestedFields = recordsMetadata().info.CSQ?.nested?.items;
