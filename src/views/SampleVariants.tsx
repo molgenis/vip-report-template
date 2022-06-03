@@ -19,6 +19,7 @@ import {
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
+import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<Sample>> = useRouteData();
@@ -52,7 +53,7 @@ export const SampleVariants: Component = () => {
     setParams({
       ...params(),
       page: 0,
-      sort: event.field !== null ? { property: event.field, compare: event.ascending ? "asc" : "desc" } : undefined,
+      sort: event.order !== null ? createSortOrder(event.order) : undefined,
     });
   };
   const onSortClear = () => {
@@ -97,6 +98,13 @@ export const SampleVariants: Component = () => {
       : [];
   });
 
+  const sortOptions = () => {
+    return infoFields().flatMap((field) => [
+      { order: { field, direction: DIRECTION_ASCENDING } },
+      { order: { field, direction: DIRECTION_DESCENDING }, selected: field.id === "CAPICE_SC" ? true : undefined },
+    ]);
+  };
+
   return (
     <Show when={!sample.loading} fallback={<Loader />}>
       <Breadcrumb
@@ -120,15 +128,7 @@ export const SampleVariants: Component = () => {
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
               {infoFields().length > 0 && (
-                <Sort
-                  fields={infoFields()}
-                  onChange={onSortChange}
-                  onClear={onSortClear}
-                  defaultSort={{
-                    field: ["n", "CSQ", "CAPICE_SC"],
-                    compare: "desc",
-                  }}
-                />
+                <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />
               )}
             </div>
             <div class="column is-4">{<Pager page={records().page} onPageChange={onPageChange} />}</div>

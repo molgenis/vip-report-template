@@ -9,14 +9,13 @@ import {
   Phenotype,
   Resource,
   Sample,
-  SortOrder,
-  SortPath,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../Api";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { FieldMetadata, InfoMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { isNumerical } from "./field";
+import { createRecordSort, Direction } from "./sortUtils";
 
 export const EMPTY_PARAMS: Params = {};
 
@@ -80,33 +79,13 @@ function getMostSevereConsequenceIndex(value: string[]) {
   return value.map((consequence) => consequenceOrder[consequence]).reduce((max, value) => Math.max(max, value));
 }
 
-function getCsqSortOrders(params: Params, csqMetadata: InfoMetadata): SortOrder[] {
-  const sortOrders = params.sort ? (Array.isArray(params.sort) ? params.sort : [params.sort]) : [];
-  if (Array.isArray(params.sort)) {
-    return sortOrders.filter((sortOrder) => {
-      const csqIndex = sortOrder.property.indexOf("CSQ");
-      const childMetadata = csqMetadata.nested?.items[sortOrder.property[csqIndex + 1] as number];
-      if (childMetadata === undefined) {
-        throw new Error(`Unknown field for path: ${sortOrder.property[csqIndex + 1]}`);
-      }
-      return (
-        (sortOrder.compare === undefined || typeof sortOrder.compare !== "function") &&
-        csqIndex !== -1 &&
-        isNumerical(childMetadata) &&
-        childMetadata.number.type === "NUMBER" &&
-        childMetadata.number.count === 1
-      );
-    });
-  }
-}
-
 function compareCsqValue(aValue: number | null, bValue: number | null, direction: string): number {
   if (aValue === null) return bValue === null ? 0 : 1;
   if (bValue === null) return -1;
   return direction === "desc" ? bValue - aValue : aValue - bValue;
 }
 
-function compareCsq(aValueArray: Value[], bValueArray: Value[], field: SortPath, direction: string): number {
+function compareCsq(aValueArray: Value[], bValueArray: Value[], field: FieldMetadata, direction: Direction): number {
   const parentField = field.parent as FieldMetadata;
   const parentItems = (parentField.nested as NestedFieldMetadata).items;
 
@@ -141,7 +120,13 @@ export async function fetchRecords(params: Params) {
     return records;
   }
 
-  const sortOrders = getCsqSortOrders(params, recordsMeta.info.CSQ);
+  const orders = createRecordSort(recordsMeta, params.sort).orders.filter(
+    (order) =>
+      order.field.parent?.id === "CSQ" &&
+      isNumerical(order.field) &&
+      order.field.number.type === "NUMBER" &&
+      order.field.number.count === 1
+  );
 
   const fieldMetas = (recordsMeta.info.CSQ.nested as NestedFieldMetadata).items;
   const consequenceIndex = fieldMetas.findIndex((item) => item.id === "Consequence");
@@ -151,8 +136,8 @@ export async function fetchRecords(params: Params) {
     const csqArray = record.data.n.CSQ as Value[][];
 
     csqArray.sort((aValue, bValue) => {
-      for (const sortOrder of sortOrders) {
-        const compareValue = compareCsq(aValue, bValue, sortOrder.property, sortOrder.compare as string);
+      for (const order of orders) {
+        const compareValue = compareCsq(aValue, bValue, order.field, order.direction);
         if (compareValue !== 0) return compareValue;
       }
       return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
@@ -239,34 +224,4 @@ export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<Sample
 export function toString(item: Item<Record>) {
   const record = item.data;
   return `${record.c}:${record.p} ${record.a.map((a) => `${record.r}>${a !== null ? a : "."}`).join(" / ")}`;
-}
-
-export function getPath(field: FieldMetadata): SortPath {
-  const path = [];
-  do {
-    const parent = field.parent;
-    if (parent && parent.number.count !== 1) {
-      const index = (parent.nested as NestedFieldMetadata).items.findIndex((item) => field.id === item.id);
-      if (index === -1) {
-        throw new UnknownFieldError(field.id, path);
-      }
-      path.push(index);
-    } else {
-      path.push(field.id);
-    }
-
-    if (parent) field = parent;
-    else break;
-  } while (true);
-  path.push("n");
-  path.reverse();
-
-  return path;
-}
-
-class UnknownFieldError extends Error {
-  constructor(fieldId: string, path: (string | number)[]) {
-    super(`unknown field '${fieldId}' in path '[${path.join(",")}]'`);
-    this.name = "UnknownFieldError";
-  }
 }

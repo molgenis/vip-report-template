@@ -16,6 +16,7 @@ import {
   fetchRecordsMeta,
 } from "../utils/ApiUtils";
 import { flattenFieldMetadata } from "../utils/field";
+import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 
 export const Variants: Component = () => {
   const [params, setParams] = createSignal(EMPTY_PARAMS);
@@ -43,7 +44,7 @@ export const Variants: Component = () => {
     setParams({
       ...params(),
       page: 0,
-      sort: event.field !== null ? { property: event.field, compare: event.ascending ? "asc" : "desc" } : undefined,
+      sort: event.order !== null ? createSortOrder(event.order) : undefined,
     });
   };
   const onSortClear = () => {
@@ -52,6 +53,13 @@ export const Variants: Component = () => {
       page: 0,
       sort: undefined,
     });
+  };
+
+  const sortOptions = () => {
+    return flattenFieldMetadata(recordsMetadata().info).flatMap((field) => [
+      { order: { field, direction: DIRECTION_ASCENDING } },
+      { order: { field, direction: DIRECTION_DESCENDING } },
+    ]);
   };
 
   return (
@@ -65,11 +73,7 @@ export const Variants: Component = () => {
         <div class="column">
           <div class="columns">
             <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-              <Sort
-                fields={flattenFieldMetadata(recordsMetadata().info)}
-                onChange={onSortChange}
-                onClear={onSortClear}
-              />
+              <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />
             </div>
             <div class="column is-4">
               <Pager page={records().page} onPageChange={onPageChange} />
