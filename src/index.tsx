@@ -8,27 +8,16 @@ import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleDown,
   faAngleUp,
-  faArrowRight,
+  faCircleExclamation,
   faCircleXmark,
   faDownload,
   faExternalLink,
   faHome,
   faSearch,
-  faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import { hashIntegration, Router } from "solid-app-router";
 
-library.add(
-  faCircleXmark,
-  faDownload,
-  faHome,
-  faSearch,
-  faAngleDown,
-  faAngleUp,
-  faArrowRight,
-  faExternalLink,
-  faCircleExclamation
-);
+library.add(faCircleXmark, faDownload, faHome, faSearch, faAngleDown, faAngleUp, faExternalLink, faCircleExclamation);
 
 function processIcons() {
   void dom.i2svg();
