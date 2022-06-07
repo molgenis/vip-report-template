@@ -1,8 +1,6 @@
-import { Component, createResource, Resource, Show } from "solid-js";
+import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import {
   EMPTY_RECORDS_METADATA,
   EMPTY_SAMPLES,
@@ -19,13 +17,10 @@ import { ConsequenceTable } from "../components/ConsequenceTable";
 import { getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
+import { SampleVariantConsequenceRouteData } from "./data/SampleVariantConsequenceData";
 
 export const SampleVariantConsequence: Component = () => {
-  const {
-    sample,
-    variant,
-    consequenceId,
-  }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>>; consequenceId: number } = useRouteData();
+  const { sample, variant, consequenceId } = useRouteData<SampleVariantConsequenceRouteData>();
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples, { initialValue: EMPTY_SAMPLES });
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });

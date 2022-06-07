@@ -63,22 +63,34 @@ const App: Component = () => {
         <ErrorBoundary fallback={(err) => <Error error={err as unknown} />}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/samples" element={<Samples />} />
-            <Route path="/samples/:sampleId" element={<Sample />} data={SampleData} />
-            <Route path="/samples/:sampleId/variants" element={<SampleVariants />} data={SampleData} />
-            <Route path="/samples/:sampleId/variants/:variantId" element={<SampleVariant />} data={SampleVariantData} />
-            <Route
-              path="/samples/:sampleId/variants/:variantId/consequences/:consequenceId"
-              element={<SampleVariantConsequence />}
-              data={SampleVariantConsequenceData}
-            />
-            <Route path="/variants" element={<Variants />} />
-            <Route path="/variants/:variantId" element={<Variant />} data={VariantData} />
-            <Route
-              path="/variants/:variantId/consequences/:consequenceId"
-              element={<VariantConsequence />}
-              data={VariantConsequenceData}
-            />
+            <Route path="/samples">
+              <Route path="/" element={<Samples />} />
+              <Route path="/:sampleId" data={SampleData}>
+                <Route path="/" element={<Sample />} />
+                <Route path="/variants">
+                  <Route path="/" element={<SampleVariants />} />
+                  <Route path="/:variantId" data={SampleVariantData}>
+                    <Route path="/" element={<SampleVariant />} />
+                    <Route path="/consequences">
+                      <Route
+                        path="/:consequenceId"
+                        element={<SampleVariantConsequence />}
+                        data={SampleVariantConsequenceData}
+                      />
+                    </Route>
+                  </Route>
+                </Route>
+              </Route>
+            </Route>
+            <Route path="/variants">
+              <Route path="/" element={<Variants />} />
+              <Route path="/:variantId" data={VariantData}>
+                <Route path="/" element={<Variant />} />
+                <Route path="/consequences">
+                  <Route path="/:consequenceId" element={<VariantConsequence />} data={VariantConsequenceData} />
+                </Route>
+              </Route>
+            </Route>
           </Routes>
         </ErrorBoundary>
       </div>

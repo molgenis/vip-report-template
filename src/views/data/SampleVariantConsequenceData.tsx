@@ -1,10 +1,12 @@
-import { createResource } from "solid-js";
 import { RouteDataFuncArgs } from "solid-app-router/dist/types";
-import { fetchRecordById, fetchSampleById } from "../../utils/ApiUtils";
+import { SampleVariantRouteData } from "./SampleVariantData";
 
-export default function SampleVariantConsequenceData({ params }: RouteDataFuncArgs) {
-  const [sample] = createResource(() => params.sampleId, fetchSampleById);
-  const [variant] = createResource(() => params.variantId, fetchRecordById);
+export type SampleVariantConsequenceRouteData = { consequenceId: number } & SampleVariantRouteData;
+
+export default function SampleVariantConsequenceData({
+  params,
+  data,
+}: RouteDataFuncArgs): SampleVariantConsequenceRouteData {
   const consequenceId: number = parseInt(params.consequenceId);
-  return { sample, variant, consequenceId };
+  return { ...(data as SampleVariantRouteData), consequenceId };
 }

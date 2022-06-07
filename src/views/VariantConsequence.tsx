@@ -1,8 +1,6 @@
-import { Component, createResource, Resource, Show } from "solid-js";
+import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { Breadcrumb } from "../components/Breadcrumb";
@@ -19,12 +17,10 @@ import {
 } from "../utils/ApiUtils";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { VariantConsequenceRouteData } from "./data/VariantConsequenceData";
 
 export const VariantConsequence: Component = () => {
-  const {
-    variant,
-    consequenceId,
-  }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>>; consequenceId: number } = useRouteData();
+  const { variant, consequenceId } = useRouteData<VariantConsequenceRouteData>();
 
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: EMPTY_DECISION_TREE });

@@ -1,11 +1,11 @@
-import { Component, For, Resource, Show } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { Link, useRouteData } from "solid-app-router";
-import { Item, Sample as ApiSample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { Breadcrumb } from "../components/Breadcrumb";
+import { SampleRouteData } from "./data/SampleData";
 
 export const Sample: Component = () => {
-  const sample: Resource<Item<ApiSample>> = useRouteData();
+  const { sample } = useRouteData<SampleRouteData>();
 
   return (
     <Show when={!sample.loading} fallback={<Loader />}>

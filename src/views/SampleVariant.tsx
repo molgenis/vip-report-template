@@ -1,8 +1,6 @@
-import { Component, createResource, For, Resource, Show } from "solid-js";
+import { Component, createResource, For, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Loader } from "../components/Loader";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import {
   EMPTY_RECORDS_METADATA,
@@ -19,9 +17,10 @@ import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getRecordSamples } from "../utils/viewUtils";
+import { SampleVariantRouteData } from "./data/SampleVariantData";
 
 export const SampleVariant: Component = () => {
-  const { sample, variant }: { sample: Resource<Item<Sample>>; variant: Resource<Item<Record>> } = useRouteData();
+  const { sample, variant } = useRouteData<SampleVariantRouteData>();
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples, { initialValue: EMPTY_SAMPLES });
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });

@@ -1,6 +1,6 @@
-import { Component, createMemo, createResource, Resource, Show } from "solid-js";
+import { Component, createMemo, createResource, Show } from "solid-js";
 import { useRouteData, useSearchParams } from "solid-app-router";
-import { Item, Sample, SortOrder, SortPath } from "@molgenis/vip-report-api/src/Api";
+import { SortOrder, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
@@ -22,9 +22,10 @@ import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
 import { createSortOrder, Direction, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { parseSearchParams, RecordSearchParams } from "../utils/searchParamsUtils";
 import { findInfoField } from "../utils/field";
+import { SampleRouteData } from "./data/SampleData";
 
 export const SampleVariants: Component = () => {
-  const sample: Resource<Item<Sample>> = useRouteData();
+  const { sample } = useRouteData<SampleRouteData>();
 
   const [searchParams, setSearchParams] = useSearchParams<RecordSearchParams>();
   const params = () => ({ size: 20, ...parseSearchParams(searchParams) });
