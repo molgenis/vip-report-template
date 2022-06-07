@@ -1,6 +1,7 @@
 import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Loader } from "../components/Loader";
+import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { Breadcrumb } from "../components/Breadcrumb";
@@ -45,7 +46,7 @@ export const VariantConsequence: Component = () => {
             record={variant().data}
           ></ConsequenceTable>
         </div>
-        <Show when={decisionTree()}>
+        <Show when={!recordsMetadata.loading && !decisionTree.loading && (decisionTree() as DecisionTree)}>
           {(decisionTree) => (
             <div class="column">
               <h1 class="title is-5">Classification tree path</h1>

@@ -6,7 +6,6 @@
 ##CAPICE_CL=CAPICE classification
 ##CAPICE_SC=CAPICE score
 ##FILTER=<ID=PASS,Description="All filters passed">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
 ##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
 ##HPO=List of HPO terms for the gene
 ##INFO=<ID=BND_DEPTH,Number=1,Type=Integer,Description="Read depth at local translocation breakend">
