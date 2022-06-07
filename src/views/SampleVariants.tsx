@@ -1,6 +1,6 @@
 import { Component, createMemo, createResource, Resource, Show } from "solid-js";
 import { useRouteData, useSearchParams } from "solid-app-router";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample, SortOrder, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
@@ -19,8 +19,9 @@ import {
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
-import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+import { createSortOrder, Direction, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { parseSearchParams, RecordSearchParams } from "../utils/searchParamsUtils";
+import { findInfoField } from "../utils/field";
 
 export const SampleVariants: Component = () => {
   const sample: Resource<Item<Sample>> = useRouteData();
@@ -83,9 +84,26 @@ export const SampleVariants: Component = () => {
   });
 
   const sortOptions = () => {
+    let selectedFieldId: string | undefined, selectedDirection: Direction;
+
+    const sort = params().sort;
+    if (sort) {
+      selectedFieldId = findInfoField(recordsMetadata(), (sort as SortOrder).property as SortPath)?.id;
+      selectedDirection = (sort as SortOrder).compare == "asc" ? DIRECTION_ASCENDING : DIRECTION_DESCENDING;
+    } else {
+      selectedFieldId = "CAPICE_SC";
+      selectedDirection = DIRECTION_DESCENDING;
+    }
+
     return infoFields().flatMap((field) => [
-      { order: { field, direction: DIRECTION_ASCENDING } },
-      { order: { field, direction: DIRECTION_DESCENDING }, selected: field.id === "CAPICE_SC" ? true : undefined },
+      {
+        order: { field, direction: DIRECTION_ASCENDING },
+        selected: field.id === selectedFieldId && selectedDirection === DIRECTION_ASCENDING ? true : undefined,
+      },
+      {
+        order: { field, direction: DIRECTION_DESCENDING },
+        selected: field.id === selectedFieldId && selectedDirection === DIRECTION_DESCENDING ? true : undefined,
+      },
     ]);
   };
 
