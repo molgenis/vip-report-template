@@ -85,7 +85,7 @@ export const SampleVariant: Component = () => {
                   <VariantInfoNestedTable
                     infoValue={variant().data.n[infoField.id] as unknown as Value[][]}
                     infoField={infoField}
-                    sample={{ id: sample().data.index, label: sample().data.person.individualId }}
+                    sample={{ id: sample().id, label: sample().data.person.individualId }}
                     record={variant()}
                   />
                 </>

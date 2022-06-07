@@ -13,13 +13,13 @@ import { Abbr } from "./Abbr";
 import { abbreviateHeader } from "../utils/field";
 
 export const VariantsSampleTable: Component<{
-  sample: Sample;
+  item: Item<Sample>;
   pedigreeSamples: Sample[];
   records: Item<Record>[];
   recordsMetadata: Metadata;
   nestedFields: FieldMetadata[];
 }> = (props) => {
-  const samples = createMemo(() => [props.sample, ...props.pedigreeSamples]);
+  const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples]);
 
   return (
     <div style="display: grid">
@@ -31,7 +31,7 @@ export const VariantsSampleTable: Component<{
               <th>Position</th>
               <th>Reference</th>
               <For each={samples()}>
-                {(sample) => (
+                {(sample: Sample) => (
                   <th>
                     <Abbr
                       title={`${
@@ -52,7 +52,7 @@ export const VariantsSampleTable: Component<{
               {(record) => (
                 <tr>
                   <td>
-                    <Link href={`/samples/${props.sample.index}/variants/${record.id}`}>
+                    <Link href={`/samples/${props.item.id}/variants/${record.id}`}>
                       <Chrom value={record.data.c} />
                       <span>:</span>
                       <Pos value={record.data.p} />
@@ -62,7 +62,7 @@ export const VariantsSampleTable: Component<{
                     <Ref value={record.data.r} isAbbreviate={true} />
                   </td>
                   <For each={samples()}>
-                    {(sample) => (
+                    {(sample: Sample) => (
                       <td>
                         <GenotypeField
                           genotype={record.data.s[sample.index]["GT"] as Genotype}

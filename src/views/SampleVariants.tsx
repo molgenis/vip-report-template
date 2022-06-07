@@ -159,7 +159,7 @@ export const SampleVariants: Component = () => {
           <div class="columns">
             <Show when={!records.loading} fallback={<Loader />}>
               <VariantsSampleTable
-                sample={sample().data}
+                item={sample()}
                 pedigreeSamples={pedigreeSamples()}
                 records={records().items}
                 recordsMetadata={recordsMetadata()}

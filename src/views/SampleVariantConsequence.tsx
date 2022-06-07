@@ -42,9 +42,9 @@ export const SampleVariantConsequence: Component = () => {
           <Breadcrumb
             items={[
               { href: "/samples", text: "Samples" },
-              { href: `/samples/${sample().data.index}`, text: sample().data.person.individualId },
-              { href: `/samples/${sample().data.index}/variants`, text: "Variants" },
-              { href: `/samples/${sample().data.index}/variants/${variant().id}`, text: toString(variant()) },
+              { href: `/samples/${sample().id}`, text: sample().data.person.individualId },
+              { href: `/samples/${sample().id}/variants`, text: "Variants" },
+              { href: `/samples/${sample().id}/variants/${variant().id}`, text: toString(variant()) },
               { text: `Consequence #${consequenceId}` },
             ]}
           />
