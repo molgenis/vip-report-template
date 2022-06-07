@@ -4,7 +4,7 @@ import { useNavigate } from "solid-app-router";
 
 export const DatasetDropdown: Component = () => {
   const navigate = useNavigate();
-  const [selectedDataset, setSelectedDataset] = createSignal("Family GRCh37");
+  const [selectedDataset, setSelectedDataset] = createSignal("GRCh37 Family");
 
   function switchIt(datasetName: string) {
     setSelectedDataset(datasetName);
