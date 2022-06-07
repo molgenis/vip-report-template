@@ -38,7 +38,6 @@ export function parseSearchParams(recordParams: RecordSearchParams): Params {
   }
 
   if (recordParams.sort) {
-    console.log(recordParams.sort);
     try {
       params.sort = JSON.parse(recordParams.sort) as SortOrder | SortOrder[];
       // TODO validate that value is actually a SortOrder or SortOrder[]
