@@ -1,5 +1,4 @@
 import { Params, Query, SortOrder } from "@molgenis/vip-report-api/src/Api";
-import { Order, Sort } from "./sortUtils";
 
 export type RecordSearchParams = { page?: string; size?: string; query?: string; sort?: string };
 

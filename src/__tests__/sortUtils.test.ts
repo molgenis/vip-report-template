@@ -45,7 +45,7 @@ describe("sort utilities", () => {
 
   nString1Meta.parent = nObject0Meta;
   nString2Meta.parent = nObject0Meta;
-  nObject0Meta.nested!.items.push(nString1Meta, nString2Meta);
+  nObject0Meta.nested?.items.push(nString1Meta, nString2Meta);
 
   const metadata: Metadata = {
     lines: [],
