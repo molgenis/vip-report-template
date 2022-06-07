@@ -12,7 +12,7 @@ import {
   Phenotype,
   Sample,
 } from "@molgenis/vip-report-api/src/Api";
-import { samples1, samples100, samplesFamily } from "./static";
+import { samples1, samples100 } from "./static";
 import {
   bam as bamGRCh37,
   decisionTree as decisionTreeGRCh37,
@@ -23,6 +23,7 @@ import {
   vcfSamples0 as vcfSamples0GRCh37,
   vcfSamples1 as vcfSamples1GRCh37,
   vcfSamples100 as vcfSamples100GRCh37,
+  samplesFamily as samplesFamilyGRCh37,
 } from "./GRCh37/static";
 import {
   bam as bamGRCh38,
@@ -34,6 +35,7 @@ import {
   vcfSamples0 as vcfSamples0GRCh38,
   vcfSamples1 as vcfSamples1GRCh38,
   vcfSamples100 as vcfSamples100GRCh38,
+  samplesFamily as samplesFamilyGRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
@@ -123,7 +125,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh37",
         },
       } as Metadata,
-      data: samplesFamily,
+      data: samplesFamilyGRCh37,
       binary: {
         vcf: vcfFamilyGRCh37,
         fastaGz: fastaGzGRCh37,
@@ -148,7 +150,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh37",
         },
       } as Metadata,
-      data: samplesFamily,
+      data: samplesFamilyGRCh37,
       binary: {
         vcf: vcfNoVepGRCh37,
         fastaGz: fastaGzGRCh37,
@@ -242,7 +244,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh38",
         },
       } as Metadata,
-      data: samplesFamily,
+      data: samplesFamilyGRCh38,
       binary: {
         vcf: vcfFamilyGRCh38,
         fastaGz: fastaGzGRCh38,
@@ -267,7 +269,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh38",
         },
       } as Metadata,
-      data: samplesFamily,
+      data: samplesFamilyGRCh38,
       binary: {
         vcf: vcfNoVepGRCh38,
         fastaGz: fastaGzGRCh38,

@@ -80,3 +80,91 @@ export const vcfSamples0 = await fetchAsBytes(vcfUrlSamples0 as string);
 export const vcfSamples1 = await fetchAsBytes(vcfUrlSamples1 as string);
 
 export const vcfSamples100 = await fetchAsBytes(vcfUrlSamples100 as string);
+
+export const samplesFamily = {
+  samples: [
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Patient",
+        paternalId: "Father",
+        maternalId: "MotherHasQuiteALongName",
+        sex: "MALE",
+        affectedStatus: "AFFECTED",
+      },
+      index: 3,
+      proband: true,
+    },
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "MotherHasQuiteALongName",
+        paternalId: "0",
+        maternalId: "0",
+        sex: "FEMALE",
+        affectedStatus: "UNAFFECTED",
+      },
+      index: 1,
+      proband: false,
+    },
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Father",
+        paternalId: "0",
+        maternalId: "0",
+        sex: "MALE",
+        affectedStatus: "AFFECTED",
+      },
+      index: 0,
+      proband: false,
+    },
+  ],
+  phenotypes: [
+    {
+      phenotypicFeaturesList: [
+        {
+          type: {
+            id: "HP:0000951",
+            label: "HP:0000951",
+          },
+        },
+        {
+          type: {
+            id: "HP:0003124",
+            label: "HP:0003124",
+          },
+        },
+      ],
+      subject: {
+        id: "Patient",
+      },
+    },
+    {
+      phenotypicFeaturesList: [
+        {
+          type: {
+            id: "HP:0000951",
+            label: "HP:0000951",
+          },
+        },
+      ],
+      subject: {
+        id: "MotherHasQuiteALongName",
+      },
+    },
+    {
+      phenotypicFeaturesList: [
+        {
+          type: {
+            id: "HP:0000951",
+            label: "HP:0000951",
+          },
+        },
+      ],
+      subject: {
+        id: "Father",
+      },
+    },
+  ],
+};
