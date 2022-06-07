@@ -1,5 +1,5 @@
-import { Component, For } from "solid-js";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Component, For, Show } from "solid-js";
+import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
@@ -8,6 +8,10 @@ import { Item } from "@molgenis/vip-report-api/src/Api";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
+
+  if (infoField === undefined) {
+    throw new Error(`Missing nested metadata for '${nestedInfoField.id}' index [${index}]`);
+  }
 
   let empty;
   if (nestedInfoField.number.count === 0 || nestedInfoField.number.count === 1) {
