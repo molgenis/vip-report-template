@@ -15,9 +15,9 @@ import {
   faHome,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { hashIntegration, Router } from "solid-app-router";
+import { Provider } from "./store";
 
-library.add(faCircleXmark, faDownload, faHome, faSearch, faAngleDown, faAngleUp, faExternalLink, faCircleExclamation);
+library.add(faAngleDown, faAngleUp, faCircleExclamation, faCircleXmark, faDownload, faExternalLink, faHome, faSearch);
 
 function processIcons() {
   void dom.i2svg();
@@ -32,9 +32,9 @@ if (document.readyState === "complete") {
 
 render(
   () => (
-    <Router source={hashIntegration()}>
+    <Provider>
       <App />
-    </Router>
+    </Provider>
   ),
-  document.getElementById("app") as HTMLElement
+  document.body
 );
