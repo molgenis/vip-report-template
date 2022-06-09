@@ -20,7 +20,7 @@ export const Sample: Component = () => {
         </div>
       </div>
       <br />
-      <Link href={`/samples/${sample().data.index}/variants`}>Variants</Link>
+      <Link href={`/samples/${sample().id}/variants`}>Variants</Link>
     </Show>
   );
 };
