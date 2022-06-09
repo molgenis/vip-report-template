@@ -18,10 +18,11 @@ export const Checkbox: Component<{
   onMount(() => {
     if (props.default != undefined) {
       setChecked(props.default);
-      props.onChange({
-        value: props.value as string,
-        checked: props.default,
-      });
+      // FIXME
+      // props.onChange({
+      //   value: props.value as string,
+      //   checked: props.default,
+      // });
     }
   });
 

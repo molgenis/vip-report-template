@@ -72,7 +72,9 @@ function createDirection(compare?: "asc" | "desc" | CompareFn): Direction {
   else throw new Error(`invalid sort compare '${compare}'`);
 }
 
-export function createSortOrder(order: Order): SortOrder {
+export function createSortOrder(order: Order | null): SortOrder | null {
+  if (order === null) return null;
+
   let tokens;
   if (order.field.parent) {
     const fieldIndex = order.field.parent.nested?.items.findIndex((item) => item.id === order.field.id) || -1;

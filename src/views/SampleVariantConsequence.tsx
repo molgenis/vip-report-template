@@ -1,14 +1,7 @@
 import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Loader } from "../components/Loader";
-import {
-  EMPTY_RECORDS_METADATA,
-  EMPTY_SAMPLES,
-  fetchDecisionTree,
-  fetchPedigreeSamples,
-  fetchRecordsMeta,
-  toString,
-} from "../utils/ApiUtils";
+import { fetchDecisionTree, fetchPedigreeSamples, fetchRecordsMeta, toString } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
@@ -18,76 +11,108 @@ import { getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
 import { SampleVariantConsequenceRouteData } from "./data/SampleVariantConsequenceData";
+import { getSampleLabel } from "../utils/sample";
+import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
-export const SampleVariantConsequence: Component = () => {
+export const SampleVariantConsequenceView: Component = () => {
   const { sample, variant, consequenceId } = useRouteData<SampleVariantConsequenceRouteData>();
 
-  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples, { initialValue: EMPTY_SAMPLES });
-  const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
+  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
+  const [recordsMeta] = createResource(fetchRecordsMeta);
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
 
   return (
-    <>
-      {
-        <Show
-          when={
-            !sample.loading &&
-            !variant.loading &&
-            !recordsMetadata.loading &&
-            !pedigreeSamples.loading &&
-            !decisionTree.loading
-          }
-          fallback={<Loader />}
-        >
-          <Breadcrumb
-            items={[
-              { href: "/samples", text: "Samples" },
-              { href: `/samples/${sample().id}`, text: sample().data.person.individualId },
-              { href: `/samples/${sample().id}/variants`, text: "Variants" },
-              { href: `/samples/${sample().id}/variants/${variant().id}`, text: toString(variant()) },
-              { text: `Consequence #${consequenceId}` },
-            ]}
-          />
-          <div class="columns">
-            <div class="column is-6">
-              <h1 class="title is-5">Consequence</h1>
-              <ConsequenceTable
-                csqMetadata={recordsMetadata().info.CSQ.nested.items}
-                csqValues={getSpecificConsequence(variant().data.n.CSQ, consequenceId)}
-                record={variant().data}
-              ></ConsequenceTable>
-            </div>
-            {decisionTree() !== null && (
-              <div class="column">
-                <h1 class="title is-5">Classification tree path</h1>
-                <DecisionTreePath
-                  decisionTree={decisionTree()}
-                  path={getDecisionTreePath(recordsMetadata(), variant(), consequenceId)}
-                />
-              </div>
-            )}
-          </div>
-          <div class="columns">
-            <div class="column is-3">
-              <h1 class="title is-5">Record</h1>
-              <VariantTable variant={variant().data} />
-            </div>
-            <div class="column is-3">
-              <h1 class="title is-5">Info</h1>
-              <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
-            </div>
-            <div class="column">
-              <h1 class="title is-5">Samples</h1>
-              <VariantSampleTable
-                formatFields={recordsMetadata().format}
-                samples={[sample().data, ...pedigreeSamples()]}
-                sampleValues={getRecordSamples(variant().data, sample().data, pedigreeSamples())}
-                record={variant().data}
+    <Show when={sample()} fallback={<Loader />}>
+      {(sample) => (
+        <Show when={variant()} fallback={<Loader />}>
+          {(variant) => (
+            <>
+              <Breadcrumb
+                items={[
+                  { href: "/samples", text: "Samples" },
+                  { href: `/samples/${sample.id}`, text: getSampleLabel(sample) },
+                  { href: `/samples/${sample.id}/variants`, text: "Variants" },
+                  { href: `/samples/${sample.id}/variants/${variant.id}`, text: toString(variant) },
+                  { text: `Consequence #${consequenceId}` },
+                ]}
               />
-            </div>
-          </div>
+              <Show when={pedigreeSamples()} fallback={<Loader />}>
+                {(pedigreeSamples) => (
+                  <Show when={recordsMeta()} fallback={<Loader />}>
+                    {(recordsMeta) => (
+                      <SampleVariantConsequence
+                        sample={sample}
+                        pedigreeSamples={pedigreeSamples.items}
+                        recordsMeta={recordsMeta}
+                        variant={variant}
+                        consequenceId={consequenceId}
+                        decisionTree={decisionTree()}
+                      />
+                    )}
+                  </Show>
+                )}
+              </Show>
+            </>
+          )}
         </Show>
-      }
+      )}
+    </Show>
+  );
+};
+
+export const SampleVariantConsequence: Component<{
+  sample: Item<Sample>;
+  pedigreeSamples: Item<Sample>[];
+  recordsMeta: Metadata;
+  variant: Item<Record>;
+  consequenceId: number;
+  decisionTree: DecisionTree | null;
+}> = (props) => {
+  return (
+    <>
+      <div class="columns">
+        <div class="column is-6">
+          <h1 class="title is-5">Consequence</h1>
+          <ConsequenceTable
+            csqMetadata={props.recordsMeta.info.CSQ.nested.items}
+            csqValues={getSpecificConsequence(props.variant.data.n.CSQ, props.consequenceId)}
+            record={props.variant.data}
+          ></ConsequenceTable>
+        </div>
+        {props.decisionTree !== null && (
+          <div class="column">
+            <h1 class="title is-5">Classification tree path</h1>
+            <DecisionTreePath
+              decisionTree={props.decisionTree}
+              path={getDecisionTreePath(props.recordsMeta, props.variant, props.consequenceId)}
+            />
+          </div>
+        )}
+      </div>
+      <div class="columns">
+        <div class="column is-3">
+          <h1 class="title is-5">Record</h1>
+          <VariantTable variant={props.variant.data} />
+        </div>
+        <div class="column is-3">
+          <h1 class="title is-5">Info</h1>
+          <VariantInfoTable infoValues={props.variant.data.n} infoFields={props.recordsMeta.info} />
+        </div>
+        <div class="column">
+          <h1 class="title is-5">Samples</h1>
+          <VariantSampleTable
+            formatFields={props.recordsMeta.format}
+            samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
+            sampleValues={getRecordSamples(
+              props.variant.data,
+              props.sample.data,
+              props.pedigreeSamples.map((item) => item.data)
+            )}
+            record={props.variant.data}
+          />
+        </div>
+      </div>
     </>
   );
 };

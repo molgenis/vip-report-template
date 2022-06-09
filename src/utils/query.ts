@@ -3,6 +3,12 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters } from "../components/filter/Filters";
 
+//FIXME fix dummy implement
+export function createQuery(search: string | null, filters: Filters | null, metadata: Metadata): Query | null {
+  if (search === null) return null;
+  return createSearchQuery(search, metadata);
+}
+
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {
   const parts: Query[] = [];
   for (const infoKey in metadata.info) {

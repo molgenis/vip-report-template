@@ -1,7 +1,7 @@
 import { Component, createSignal } from "solid-js";
 
-export const SearchBox: Component<{ onInput: (value: string) => void }> = (props) => {
-  const [value, setValue] = createSignal("");
+export const SearchBox: Component<{ value?: string | null; onInput: (value: string) => void }> = (props) => {
+  const [value, setValue] = createSignal(props.value || "");
 
   return (
     <div class="field has-addons">

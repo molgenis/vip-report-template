@@ -7,11 +7,11 @@ import { Samples } from "./views/Samples";
 import SampleData from "./views/data/SampleData";
 import { Sample } from "./views/Sample";
 import { VariantConsequence } from "./views/VariantConsequence";
-import { SampleVariantConsequence } from "./views/SampleVariantConsequence";
-import { SampleVariants } from "./views/SampleVariants";
+import { SampleVariantConsequence, SampleVariantConsequenceView } from "./views/SampleVariantConsequence";
+import { SampleVariants, SampleVariantsView } from "./views/SampleVariants";
 import { Error } from "./components/Error";
 import SampleVariantData from "./views/data/SampleVariantData";
-import { SampleVariant } from "./views/SampleVariant";
+import { SampleVariant, SampleVariantView } from "./views/SampleVariant";
 import { Home } from "./views/Home";
 import api from "./Api";
 import { DatasetDropdown } from "./components/DatasetDropdown";
@@ -68,13 +68,13 @@ const App: Component = () => {
               <Route path="/:sampleId" data={SampleData}>
                 <Route path="/" element={<Sample />} />
                 <Route path="/variants">
-                  <Route path="/" element={<SampleVariants />} />
+                  <Route path="/" element={<SampleVariantsView />} />
                   <Route path="/:variantId" data={SampleVariantData}>
-                    <Route path="/" element={<SampleVariant />} />
+                    <Route path="/" element={<SampleVariantView />} />
                     <Route path="/consequences">
                       <Route
                         path="/:consequenceId"
-                        element={<SampleVariantConsequence />}
+                        element={<SampleVariantConsequenceView />}
                         data={SampleVariantConsequenceData}
                       />
                     </Route>

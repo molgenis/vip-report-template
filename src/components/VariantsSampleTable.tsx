@@ -14,12 +14,12 @@ import { abbreviateHeader } from "../utils/field";
 
 export const VariantsSampleTable: Component<{
   item: Item<Sample>;
-  pedigreeSamples: Sample[];
+  pedigreeSamples: Item<Sample>[];
   records: Item<Record>[];
   recordsMetadata: Metadata;
   nestedFields: FieldMetadata[];
 }> = (props) => {
-  const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples]);
+  const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
   return (
     <div style="display: grid">
