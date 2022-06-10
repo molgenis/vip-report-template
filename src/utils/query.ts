@@ -3,14 +3,28 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters } from "../components/filter/Filters";
 
-//FIXME fix dummy implement
 export function createQuery(
   search: string | undefined,
   filters: Filters | undefined,
   metadata: Metadata
 ): Query | null {
-  if (search === undefined) return null;
-  return createSearchQuery(search, metadata);
+  let query: Query | null;
+  if (search !== undefined && filters !== undefined) {
+    const searchQuery = createSearchQuery(search, metadata);
+    const filterQuery = createFilterQuery(filters);
+    if (searchQuery !== null) {
+      query = { operator: "and", args: [searchQuery, filterQuery] };
+    } else {
+      query = filterQuery;
+    }
+  } else if (search !== undefined && filters === undefined) {
+    query = createSearchQuery(search, metadata);
+  } else if (search === undefined && filters !== undefined) {
+    query = createFilterQuery(filters);
+  } else {
+    query = null;
+  }
+  return query;
 }
 
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {
