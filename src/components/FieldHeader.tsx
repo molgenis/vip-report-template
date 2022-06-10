@@ -15,7 +15,10 @@ export const FieldHeader: Component<{
       rowspan={props.rowspan}
       colspan={props.colspan}
     >
-      <Show when={props.field.description && props.field.description !== label()} fallback={<span>{label()}</span>}>
+      <Show
+        when={props.field.description && props.field.description !== label()}
+        fallback={<abbr title={props.field.label || props.field.id}>{label()}</abbr>}
+      >
         <abbr title={props.field.description}>{label()}</abbr>
       </Show>
     </th>

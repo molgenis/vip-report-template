@@ -9,7 +9,7 @@ import { EMPTY_PARAMS, EMPTY_PHENOTYPES, EMPTY_SAMPLES_PAGE, fetchPhenotypes, fe
 export const Samples: Component = () => {
   const [params, setParams] = createSignal(EMPTY_PARAMS);
   const [samples] = createResource(params, fetchSamples, { initialValue: EMPTY_SAMPLES_PAGE });
-  const [phenotypes] = createResource(params, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
+  const [phenotypes] = createResource(EMPTY_PARAMS, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
 
   const onPageChange = (page: number) => setParams({ page });
   const onSearchChange = (search: string) =>
