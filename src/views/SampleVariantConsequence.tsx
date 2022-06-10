@@ -1,7 +1,7 @@
 import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Loader } from "../components/Loader";
-import { fetchDecisionTree, fetchPedigreeSamples, fetchRecordsMeta, toString } from "../utils/ApiUtils";
+import { fetchDecisionTree, fetchPedigreeSamples, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
@@ -23,40 +23,26 @@ export const SampleVariantConsequenceView: Component = () => {
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
 
   return (
-    <Show when={sample()} fallback={<Loader />}>
-      {(sample) => (
-        <Show when={variant()} fallback={<Loader />}>
-          {(variant) => (
-            <>
-              <Breadcrumb
-                items={[
-                  { href: "/samples", text: "Samples" },
-                  { href: `/samples/${sample.id}`, text: getSampleLabel(sample) },
-                  { href: `/samples/${sample.id}/variants`, text: "Variants" },
-                  { href: `/samples/${sample.id}/variants/${variant.id}`, text: toString(variant) },
-                  { text: `Consequence #${consequenceId}` },
-                ]}
-              />
-              <Show when={pedigreeSamples()} fallback={<Loader />}>
-                {(pedigreeSamples) => (
-                  <Show when={recordsMeta()} fallback={<Loader />}>
-                    {(recordsMeta) => (
-                      <SampleVariantConsequence
-                        sample={sample}
-                        pedigreeSamples={pedigreeSamples.items}
-                        recordsMeta={recordsMeta}
-                        variant={variant}
-                        consequenceId={consequenceId}
-                        decisionTree={decisionTree()}
-                      />
-                    )}
-                  </Show>
-                )}
-              </Show>
-            </>
-          )}
-        </Show>
-      )}
+    <Show when={sample() && variant()} fallback={<Loader />}>
+      <Breadcrumb
+        items={[
+          { href: "/samples", text: "Samples" },
+          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!) },
+          { href: `/samples/${sample()!.id}/variants`, text: "Variants" },
+          { href: `/samples/${sample()!.id}/variants/${variant()!.id}`, text: getRecordLabel(variant()!) },
+          { text: `Consequence #${consequenceId}` },
+        ]}
+      />
+      <Show when={pedigreeSamples() && recordsMeta()} fallback={<Loader />}>
+        <SampleVariantConsequence
+          sample={sample()!}
+          pedigreeSamples={pedigreeSamples()!.items}
+          recordsMeta={recordsMeta()!}
+          variant={variant()!}
+          consequenceId={consequenceId}
+          decisionTree={decisionTree()}
+        />
+      </Show>
     </Show>
   );
 };

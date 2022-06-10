@@ -41,7 +41,7 @@ describe("field utilities", () => {
       info: {} as FieldMetadataContainer,
     } as Metadata;
 
-    expect(findInfoField(recordsMetadata, ["n", "field"])).toThrowError();
+    expect(() => findInfoField(recordsMetadata, ["n", "field"])).toThrowError();
   });
 
   test("find info field: nested", () => {
@@ -88,7 +88,7 @@ describe("field utilities", () => {
       } as FieldMetadataContainer,
     } as Metadata;
 
-    expect(findInfoField(recordsMetadata, ["n", "nestedField", 2])).toBe(childField1);
+    expect(() => findInfoField(recordsMetadata, ["n", "nestedField", 2])).toThrowError();
   });
 
   test("find info field: nested invalid index type", () => {
@@ -102,6 +102,6 @@ describe("field utilities", () => {
       } as FieldMetadataContainer,
     } as Metadata;
 
-    expect(findInfoField(recordsMetadata, ["n", "nestedField", "childField1"])).toBe(childField1);
+    expect(() => findInfoField(recordsMetadata, ["n", "nestedField", "childField1"])).toThrowError();
   });
 });

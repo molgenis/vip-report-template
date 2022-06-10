@@ -16,6 +16,7 @@ module.exports = {
     "plugin:solid/typescript",
   ],
   rules: {
+    "@typescript-eslint/no-non-null-assertion": "off",
     "solid/prefer-show": "off",
   },
   plugins: ["prettier", "@typescript-eslint"],

@@ -4,8 +4,12 @@ import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/Metada
 import { Filters } from "../components/filter/Filters";
 
 //FIXME fix dummy implement
-export function createQuery(search: string | null, filters: Filters | null, metadata: Metadata): Query | null {
-  if (search === null) return null;
+export function createQuery(
+  search: string | undefined,
+  filters: Filters | undefined,
+  metadata: Metadata
+): Query | null {
+  if (search === undefined) return null;
   return createSearchQuery(search, metadata);
 }
 

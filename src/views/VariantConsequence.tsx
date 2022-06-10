@@ -14,7 +14,7 @@ import {
   EMPTY_RECORDS_METADATA,
   fetchDecisionTree,
   fetchRecordsMeta,
-  toString,
+  getRecordLabel,
 } from "../utils/ApiUtils";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
@@ -33,7 +33,7 @@ export const VariantConsequence: Component = () => {
       <Breadcrumb
         items={[
           { href: "/variants", text: "Variants" },
-          { href: `/variants/${variant().id}`, text: toString(variant()) },
+          { href: `/variants/${variant().id}`, text: getRecordLabel(variant()) },
           { text: `Consequence #${consequenceId}` },
         ]}
       />

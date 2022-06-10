@@ -8,7 +8,7 @@ import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
 import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { EMPTY_RECORDS_METADATA, fetchRecordsMeta, toString } from "../utils/ApiUtils";
+import { EMPTY_RECORDS_METADATA, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
 import { VariantRouteData } from "./data/VariantData";
 
 export const Variant: Component = () => {
@@ -19,7 +19,7 @@ export const Variant: Component = () => {
   return (
     <>
       <Show when={!variant.loading} fallback={<Loader />}>
-        <Breadcrumb items={[{ href: "/variants", text: "Variants" }, { text: toString(variant()) }]} />
+        <Breadcrumb items={[{ href: "/variants", text: "Variants" }, { text: getRecordLabel(variant()) }]} />
         <GenomeBrowser contig={variant().data.c} position={variant().data.p} samples={[]} />
         <div class="columns">
           <div class="column is-3">

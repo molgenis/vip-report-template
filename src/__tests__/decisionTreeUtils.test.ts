@@ -36,7 +36,7 @@ test("Get DecisionTree Path", () => {
         CSQ: [["T", "gnomad&mvl&clinvar&exit", "MODERATE"]],
       },
     },
-  };
+  } as unknown as Item<Record>;
   expect(getDecisionTreePath({ info: { CSQ: fieldMetaCsq }, lines: [], format: {}, samples: [] }, variant, 0)).toBe(
     "gnomad&mvl&clinvar&exit"
   );
@@ -68,7 +68,7 @@ test("Get DecisionTree Path - no VIPP", () => {
         CSQ: [["T", "gnomad&mvl&clinvar&exit", "MODERATE"]],
       },
     },
-  };
+  } as unknown as Item<Record>;
   expect(getDecisionTreePath({ info: { CSQ: fieldMetaCsq }, lines: [], format: {}, samples: [] }, variant, 0)).toBe(
     undefined
   );

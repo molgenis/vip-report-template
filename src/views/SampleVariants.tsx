@@ -12,7 +12,7 @@ import { fetchPedigreeSamples, fetchRecords, fetchRecordsMeta } from "../utils/A
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
-import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING, Order } from "../utils/sortUtils";
 import { SampleRouteData } from "./data/SampleData";
 import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
@@ -81,38 +81,48 @@ export const SampleVariants: Component<{
       : [];
   });
 
-  const sortOptions = () =>
-    infoFields().flatMap((field) => [
-      {
-        order: { field, direction: DIRECTION_ASCENDING },
-        selected: field.id === sort()?.field.id && sort()?.direction === "asc" ? true : undefined,
-      },
-      {
-        order: { field, direction: DIRECTION_DESCENDING },
-        selected: field.id === sort()?.field.id && sort()?.direction === "desc" ? true : undefined,
-      },
-    ]);
+  const defaultSort = (): Order | null => {
+    const capiceScField = infoFields().find((field) => field.id === "CAPICE_SC" && field.parent?.id === "CSQ");
+    return capiceScField ? { field: capiceScField, direction: DIRECTION_DESCENDING } : null;
+  };
 
-  const page = () => state.samples[props.sample.id]?.variants?.page || 0;
-  const pageSize = () => state.samples[props.sample.id]?.variants?.pageSize || 5;
-  const searchQuery = () => state.samples[props.sample.id]?.variants?.searchQuery || null;
-  const filters = () => state.samples[props.sample.id]?.variants?.filters || null; // TODO set default
-  const sort = () => state.samples[props.sample.id]?.variants?.sort || null; // TODO set default
+  const page = () => state.samples[props.sample.id]?.variants?.page;
+  const pageSize = () => state.samples[props.sample.id]?.variants?.pageSize;
+  const searchQuery = () => state.samples[props.sample.id]?.variants?.searchQuery;
+  const filters = () => state.samples[props.sample.id]?.variants?.filters;
+  const sort = () => state.samples[props.sample.id]?.variants?.sort;
 
-  const onPageChange = (page: number | null) => actions.setVariantsPage(props.sample, page);
-  const onSearchChange = (search: string | null) => actions.setVariantsSearchQuery(props.sample, search);
+  if (page() === undefined) actions.setVariantsPage(props.sample, 0);
+  if (pageSize() === undefined) actions.setVariantsPageSize(props.sample, 5);
+  if (filters() === undefined) actions.setVariantsFilters(props.sample, { fields: [], samplesFields: [] });
+  if (sort() === undefined) actions.setVariantsSort(props.sample, defaultSort());
+
+  const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
+  const onSearchChange = (search: string) => actions.setVariantsSearchQuery(props.sample, search);
   const onFiltersChange = (event: FiltersChangeEvent) => actions.setVariantsFilters(props.sample, event.filters);
   const onSortChange = (event: SortEvent) => actions.setVariantsSort(props.sample, event.order);
   const onSortClear = () => actions.setVariantsSort(props.sample, null);
 
   const params = (): Params => ({
     query: createQuery(searchQuery(), filters(), props.recordsMeta) || undefined,
-    sort: createSortOrder(sort()) || undefined,
+    sort: createSortOrder(sort() || null) || undefined,
     page: page() || undefined,
     size: pageSize() || undefined,
   });
 
   const [records] = createResource(params, fetchRecords);
+
+  const sortOptions = () =>
+    infoFields().flatMap((field) => [
+      {
+        order: { field, direction: DIRECTION_ASCENDING },
+        selected: field.id === sort()?.field.id && sort()?.direction === DIRECTION_ASCENDING ? true : undefined,
+      },
+      {
+        order: { field, direction: DIRECTION_DESCENDING },
+        selected: field.id === sort()?.field.id && sort()?.direction === DIRECTION_DESCENDING ? true : undefined,
+      },
+    ]);
 
   return (
     <div class="columns">

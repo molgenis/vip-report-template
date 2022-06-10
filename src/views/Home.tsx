@@ -7,14 +7,14 @@ import {
   EMPTY_HTS_FILE_METADATA,
   EMPTY_PARAMS,
   EMPTY_PHENOTYPES,
+  EMPTY_RECORDS_METADATA,
   EMPTY_RECORDS_PAGE,
   EMPTY_SAMPLES_PAGE,
   fetchAppMetadata,
-  fetchRecordsMeta,
   fetchHtsFileMetadata,
-  EMPTY_RECORDS_METADATA,
   fetchPhenotypes,
   fetchRecords,
+  fetchRecordsMeta,
   fetchSamples,
 } from "../utils/ApiUtils";
 import { getHeaderValue } from "../utils/viewUtils";

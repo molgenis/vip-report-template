@@ -31,8 +31,6 @@ export const EMPTY_RECORDS_PAGE = createEmptyPagedItems() as PagedItems<Record>;
 
 export const EMPTY_SAMPLES_PAGE = createEmptyPagedItems() as PagedItems<Sample>;
 
-export const EMPTY_SAMPLES = [] as Sample[];
-
 const consequenceOrder = [
   "transcript_ablation",
   "splice_acceptor_variant",
@@ -115,7 +113,6 @@ function compareCsqDefault(aValue: Value[], bValue: Value[], pickIndex: number, 
 }
 
 export async function fetchRecords(params: Params) {
-  console.log("fetchRecords", params);
   const [recordsMeta, records] = await Promise.all([api.getRecordsMeta(), api.getRecords(params)]);
   if (recordsMeta.info.CSQ === undefined) {
     return records;
@@ -220,7 +217,7 @@ export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedI
   });
 }
 
-export function toString(item: Item<Record>) {
+export function getRecordLabel(item: Item<Record>) {
   const record = item.data;
   return `${record.c}:${record.p} ${record.a.map((a) => `${record.r}>${a !== null ? a : "."}`).join(" / ")}`;
 }

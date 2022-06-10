@@ -1,5 +1,5 @@
-import { Component, For, Show } from "solid-js";
-import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Component, For } from "solid-js";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";

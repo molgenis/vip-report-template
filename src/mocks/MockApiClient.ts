@@ -18,24 +18,24 @@ import {
   decisionTree as decisionTreeGRCh37,
   fastaGz as fastaGzGRCh37,
   genesGz as genesGzGRCh37,
+  samplesFamily as samplesFamilyGRCh37,
   vcfFamily as vcfFamilyGRCh37,
   vcfNoVep as vcfNoVepGRCh37,
   vcfSamples0 as vcfSamples0GRCh37,
   vcfSamples1 as vcfSamples1GRCh37,
   vcfSamples100 as vcfSamples100GRCh37,
-  samplesFamily as samplesFamilyGRCh37,
 } from "./GRCh37/static";
 import {
   bam as bamGRCh38,
   decisionTree as decisionTreeGRCh38,
   fastaGz as fastaGzGRCh38,
   genesGz as genesGzGRCh38,
+  samplesFamily as samplesFamilyGRCh38,
   vcfFamily as vcfFamilyGRCh38,
   vcfNoVep as vcfNoVepGRCh38,
   vcfSamples0 as vcfSamples0GRCh38,
   vcfSamples1 as vcfSamples1GRCh38,
   vcfSamples100 as vcfSamples100GRCh38,
-  samplesFamily as samplesFamilyGRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 

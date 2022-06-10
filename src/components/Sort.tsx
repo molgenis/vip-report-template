@@ -22,9 +22,6 @@ export const Sort: Component<{
     index === -1 ? props.onClear() : props.onChange({ order: sortableOptions()[index].order });
   };
 
-  const selectedOption = sortableOptions().find((option) => option.selected);
-  if (selectedOption) props.onChange({ order: selectedOption.order });
-
   return (
     <div class="field is-horizontal">
       <div class="field-label is-normal">
