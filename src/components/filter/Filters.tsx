@@ -6,7 +6,7 @@ import { SamplesFilterQueries, SamplesFilters, SamplesFiltersChangeEvent } from 
 import { EMPTY_PHENOTYPES, fetchPhenotypes } from "../../utils/ApiUtils";
 
 export type FilterQueries = {
-  queries: InfoFilterQueries;
+  infoQueries: InfoFilterQueries;
   samplesQueries: SamplesFilterQueries;
 };
 
@@ -21,12 +21,12 @@ export const Filters: Component<{
   sampleId?: string;
 }> = (props) => {
   const [phenotypes] = createResource({}, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
-  const queries: FilterQueries = { queries: {}, samplesQueries: {} }; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const queries: FilterQueries = { infoQueries: {}, samplesQueries: {} }; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const onFiltersChange = () => props.onChange({ queries });
 
   const onInfoFiltersChange = (event: InfoFiltersChangeEvent) => {
-    queries.queries = event.queries;
+    queries.infoQueries = event.queries;
     onFiltersChange();
   };
 

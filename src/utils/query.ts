@@ -3,14 +3,28 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../components/filter/Filters";
 
-//FIXME fix dummy implement
 export function createQuery(
   search: string | undefined,
   filters: FilterQueries | undefined,
   metadata: Metadata
 ): Query | null {
-  if (search === undefined) return null;
-  return createSearchQuery(search, metadata);
+  let query: Query | null;
+  if (search !== undefined && filters !== undefined) {
+    const searchQuery = createSearchQuery(search, metadata);
+    const filterQuery = createFilterQuery(filters);
+    if (searchQuery !== null) {
+      query = { operator: "and", args: [searchQuery, filterQuery] };
+    } else {
+      query = filterQuery;
+    }
+  } else if (search !== undefined && filters === undefined) {
+    query = createSearchQuery(search, metadata);
+  } else if (search === undefined && filters !== undefined) {
+    query = createFilterQuery(filters);
+  } else {
+    query = null;
+  }
+  return query;
 }
 
 export function createSearchQuery(search: string, metadata: Metadata): Query | null {
@@ -81,5 +95,25 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
 }
 
 export function createFilterQuery(filters: FilterQueries): Query {
-  throw new Error("FIXME");
+  const clauses: QueryClause[] = [];
+  for (const infoId in filters.infoQueries) {
+    const infoFilterQuery = filters.infoQueries[infoId];
+    clauses.push({
+      selector: getSelector(infoFilterQuery.field),
+      operator: infoFilterQuery.field.number.count === 1 ? "has_any" : "any_has_any",
+      args: infoFilterQuery.value as string | number | boolean | string[] | number[],
+    });
+  }
+  for (const sampleFilterId in filters.samplesQueries) {
+    const sampleFiltersQueries = filters.samplesQueries[sampleFilterId];
+    for (const sampleFiltersQueryId in sampleFiltersQueries) {
+      const sampleFilterQuery = sampleFiltersQueries[sampleFiltersQueryId];
+      clauses.push({
+        selector: ["s", sampleFilterQuery.sample.index, sampleFilterQuery.query.field.id],
+        operator: sampleFilterQuery.query.operator,
+        args: sampleFilterQuery.query.value as string | number | boolean | string[] | number[],
+      });
+    }
+  }
+  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
 }

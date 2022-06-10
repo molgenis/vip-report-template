@@ -94,7 +94,7 @@ export const SampleVariants: Component<{
 
   if (page() === undefined) actions.setVariantsPage(props.sample, 0);
   if (pageSize() === undefined) actions.setVariantsPageSize(props.sample, 5);
-  if (filters() === undefined) actions.setVariantsFilterQueries(props.sample, { queries: {}, samplesQueries: {} });
+  if (filters() === undefined) actions.setVariantsFilterQueries(props.sample, { infoQueries: {}, samplesQueries: {} });
   if (sort() === undefined) actions.setVariantsSort(props.sample, defaultSort());
 
   const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
