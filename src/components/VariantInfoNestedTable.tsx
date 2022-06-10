@@ -85,7 +85,7 @@ export const VariantInfoNestedTable: Component<{
               </tr>
             ) : (
               <For each={props.infoValue}>
-                {(value) => (
+                {(value, j) => (
                   <>
                     <tr>
                       <For each={props.infoField.nested.items}>
@@ -96,7 +96,7 @@ export const VariantInfoNestedTable: Component<{
                                 <Info
                                   info={value[i()] as Value}
                                   infoMetadata={infoFieldItem}
-                                  href={getHref(infoFieldItem, i())}
+                                  href={getHref(infoFieldItem, j())}
                                   variant={props.record.data}
                                 />
                               </td>
