@@ -1,12 +1,12 @@
 import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Filters } from "../components/filter/Filters";
+import { FilterQueries } from "../components/filter/Filters";
 
 //FIXME fix dummy implement
 export function createQuery(
   search: string | undefined,
-  filters: Filters | undefined,
+  filters: FilterQueries | undefined,
   metadata: Metadata
 ): Query | null {
   if (search === undefined) return null;
@@ -80,24 +80,6 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
   return selector;
 }
 
-export function createFilterQuery(filters: Filters): Query {
-  const clauses: QueryClause[] = [];
-  for (const filter of filters.fields) {
-    clauses.push({
-      selector: getSelector(filter.field),
-      operator: filter.field.number.count === 1 ? "has_any" : "any_has_any",
-      args: filter.value as string | number | boolean | string[] | number[],
-    });
-  }
-  for (const sampleFilters of filters.samplesFields) {
-    const sample = sampleFilters.sample;
-    for (const sampleFilter of sampleFilters.filters) {
-      clauses.push({
-        selector: ["s", sample.index, sampleFilter.field.id],
-        operator: sampleFilter.operator,
-        args: sampleFilter.value as string | number | boolean | string[] | number[],
-      });
-    }
-  }
-  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
+export function createFilterQuery(filters: FilterQueries): Query {
+  throw new Error("FIXME");
 }

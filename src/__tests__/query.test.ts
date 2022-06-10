@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { createFilterQuery, createSearchQuery } from "../utils/query";
-import { Filters } from "../components/filter/Filters";
+import { FilterQueries } from "../components/filter/Filters";
 
 const fieldMeta1: FieldMetadata = {
   description: "fake 1",
@@ -45,7 +45,7 @@ test("Create search query", () => {
 });
 
 test("Create filter query", () => {
-  const filters: Filters = {
+  const filters: FilterQueries = {
     fields: [
       { field: fieldMeta1, operator: "any_has_any", value: ["1", "2"] },
       { field: fieldMeta2, operator: "any_has_any", value: ["1"] },

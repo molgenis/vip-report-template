@@ -1,31 +1,23 @@
 import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
-import { FilterChangeEvent } from "./Filter";
-import { SampleFilters } from "./SampleFilters";
+import { SampleFilters, SampleFiltersChangeEvent } from "./SampleFilters";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 
-export type SampleFiltersChangeEvent = {
-  sample: Sample;
-  filters: FilterChangeEvent[];
-};
-
+export type SamplesFilterQueries = { [key: number]: SamplesFilterQueries };
+export type SamplesFiltersChangeEvent = { queries: SamplesFilterQueries };
 export type SampleFields = { sample: Sample; fields: FieldMetadata[] };
-
-export type SamplesFiltersChangeEvent = {
-  filters: SampleFiltersChangeEvent[];
-};
 
 export const SamplesFilters: Component<{
   samplesFields: SampleFields[];
   onChange: (event: SamplesFiltersChangeEvent) => void;
   defaultValues: { [key: string]: Value };
 }> = (props) => {
-  const filters: { [key: number]: SampleFiltersChangeEvent } = {};
+  const queries: SamplesFilterQueries = {};
 
   const onFiltersChange = (event: SampleFiltersChangeEvent) => {
-    filters[event.sample.index] = event;
-    props.onChange({ filters: Object.values(filters) });
+    queries[event.sample.index] = event.queries;
+    props.onChange({ queries });
   };
 
   return (

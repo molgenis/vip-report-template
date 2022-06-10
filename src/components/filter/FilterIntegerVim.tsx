@@ -11,7 +11,7 @@ export const FilterIntegerVim: Component<{
   defaultValue: Value | undefined;
 }> = (props) => {
   const onFilterChange = (event: CheckboxEvent) => {
-    if (event.checked) props.onChange({ field: props.field, operator: "==", value: 1 });
+    if (event.checked) props.onChange({ query: { field: props.field, operator: "==", value: 1 } });
     else props.onClear({ field: props.field });
   };
 

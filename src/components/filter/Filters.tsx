@@ -1,19 +1,17 @@
 import { Component, createResource, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
-import { InfoFilters, InfoFiltersChangeEvent } from "./InfoFilters";
-import { FilterChangeEvent } from "./Filter";
-import { SamplesFilters, SamplesFiltersChangeEvent } from "./SamplesFilters";
-import { SampleFiltersChangeEvent } from "./SampleFilters";
+import { InfoFilterQueries, InfoFilters, InfoFiltersChangeEvent } from "./InfoFilters";
+import { SamplesFilterQueries, SamplesFilters, SamplesFiltersChangeEvent } from "./SamplesFilters";
 import { EMPTY_PHENOTYPES, fetchPhenotypes } from "../../utils/ApiUtils";
 
-export type Filters = {
-  fields: FilterChangeEvent[];
-  samplesFields: SampleFiltersChangeEvent[];
+export type FilterQueries = {
+  queries: InfoFilterQueries;
+  samplesQueries: SamplesFilterQueries;
 };
 
 export type FiltersChangeEvent = {
-  filters: Filters;
+  queries: FilterQueries;
 };
 
 export const Filters: Component<{
@@ -23,17 +21,17 @@ export const Filters: Component<{
   sampleId?: string;
 }> = (props) => {
   const [phenotypes] = createResource({}, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
-  const filters: Filters = { fields: [], samplesFields: [] }; // eslint-disable-line @typescript-eslint/no-unused-vars
+  const queries: FilterQueries = { queries: {}, samplesQueries: {} }; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-  const onFiltersChange = () => props.onChange({ filters });
+  const onFiltersChange = () => props.onChange({ queries });
 
   const onInfoFiltersChange = (event: InfoFiltersChangeEvent) => {
-    filters.fields = event.filters;
+    queries.queries = event.queries;
     onFiltersChange();
   };
 
   const onSamplesFiltersChange = (event: SamplesFiltersChangeEvent) => {
-    filters.samplesFields = event.filters;
+    queries.samplesQueries = event.queries;
     onFiltersChange();
   };
   function getHpoTermsForSample(sampleId: string) {

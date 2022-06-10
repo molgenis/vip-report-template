@@ -3,7 +3,7 @@ import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Order } from "../utils/sortUtils";
-import { Filters } from "../components/filter/Filters";
+import { FilterQueries } from "../components/filter/Filters";
 
 // TODO clear store on dataset change
 export type AppState = {
@@ -13,7 +13,7 @@ export type AppState = {
         page?: number;
         pageSize?: number;
         searchQuery?: string;
-        filters?: Filters;
+        filterQueries?: FilterQueries;
         sort?: Order | null; // null: do not sort. undefined: sort undefined
       };
     };
@@ -25,7 +25,7 @@ export type AppActions = {
   setVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
   setVariantsSearchQuery(sample: Item<Sample>, search: string): void;
   clearVariantsSearchQuery(sample: Item<Sample>): void;
-  setVariantsFilters(sample: Item<Sample>, filters: Filters): void;
+  setVariantsFilterQueries(sample: Item<Sample>, filterQueries: FilterQueries): void;
   setVariantsSort(sample: Item<Sample>, order: Order | null): void;
 };
 
@@ -57,9 +57,9 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
       setState("samples", sample.id, "variants", "searchQuery", undefined);
       setState("samples", sample.id, "variants", "page", 0);
     },
-    setVariantsFilters(sample: Item<Sample>, filters: Filters) {
+    setVariantsFilterQueries(sample: Item<Sample>, filterQueries: FilterQueries) {
       if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "filters", filters);
+      setState("samples", sample.id, "variants", "filterQueries", filterQueries);
       setState("samples", sample.id, "variants", "page", 0);
     },
     setVariantsSort(sample: Item<Sample>, sort: Order | null) {

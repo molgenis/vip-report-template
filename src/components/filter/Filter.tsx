@@ -7,15 +7,13 @@ import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
 import { QueryOperator } from "@molgenis/vip-report-api/src/Api";
 
-export type FilterChangeEvent = {
+export type FilterQuery = {
   field: FieldMetadata;
   operator: QueryOperator;
   value: Value;
 };
-
-export type FilterClearEvent = {
-  field: FieldMetadata;
-};
+export type FilterChangeEvent = { query: FilterQuery };
+export type FilterClearEvent = { field: FieldMetadata };
 
 export const Filter: Component<{
   field: FieldMetadata;

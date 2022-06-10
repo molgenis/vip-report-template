@@ -89,17 +89,17 @@ export const SampleVariants: Component<{
   const page = () => state.samples[props.sample.id]?.variants?.page;
   const pageSize = () => state.samples[props.sample.id]?.variants?.pageSize;
   const searchQuery = () => state.samples[props.sample.id]?.variants?.searchQuery;
-  const filters = () => state.samples[props.sample.id]?.variants?.filters;
+  const filters = () => state.samples[props.sample.id]?.variants?.filterQueries;
   const sort = () => state.samples[props.sample.id]?.variants?.sort;
 
   if (page() === undefined) actions.setVariantsPage(props.sample, 0);
   if (pageSize() === undefined) actions.setVariantsPageSize(props.sample, 5);
-  if (filters() === undefined) actions.setVariantsFilters(props.sample, { fields: [], samplesFields: [] });
+  if (filters() === undefined) actions.setVariantsFilterQueries(props.sample, { queries: {}, samplesQueries: {} });
   if (sort() === undefined) actions.setVariantsSort(props.sample, defaultSort());
 
   const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
   const onSearchChange = (search: string) => actions.setVariantsSearchQuery(props.sample, search);
-  const onFiltersChange = (event: FiltersChangeEvent) => actions.setVariantsFilters(props.sample, event.filters);
+  const onFiltersChange = (event: FiltersChangeEvent) => actions.setVariantsFilterQueries(props.sample, event.queries);
   const onSortChange = (event: SortEvent) => actions.setVariantsSort(props.sample, event.order);
   const onSortClear = () => actions.setVariantsSort(props.sample, null);
 

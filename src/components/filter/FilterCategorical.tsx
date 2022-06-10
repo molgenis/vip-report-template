@@ -34,9 +34,11 @@ export const FilterCategorical: Component<{
       .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
       props.onChange({
-        field: props.field,
-        operator: props.field.number.count === 1 ? "has_any" : "any_has_any",
-        value: values,
+        query: {
+          field: props.field,
+          operator: props.field.number.count === 1 ? "has_any" : "any_has_any",
+          value: values,
+        },
       });
     } else {
       props.onClear({ field: props.field });
