@@ -11,18 +11,25 @@ export const InfoFilter: Component<{
 }> = (props) => {
   const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
 
+  const onChange = (event: FilterChangeEvent) => {
+    props.onChange({
+      query: { ...event.query, selector: ["n", ...event.query.selector] },
+    });
+  };
+
+  const onClear = (event: FilterClearEvent) => {
+    props.onClear({
+      selector: ["n", ...event.selector],
+    });
+  };
+
   return (
     <>
       <p class="has-text-weight-semibold">
         {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
       </p>
       <div class="field">
-        <Filter
-          field={props.field}
-          onChange={props.onChange}
-          onClear={props.onClear}
-          defaultValue={props.defaultValues}
-        />
+        <Filter field={props.field} onChange={onChange} onClear={onClear} defaultValue={props.defaultValues} />
       </div>
     </>
   );

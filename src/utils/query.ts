@@ -1,7 +1,7 @@
-import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
+import { Query, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterQueries } from "../components/filter/Filters";
+import { FilterQueries } from "../store";
 
 export function createQuery(
   search: string | undefined,
@@ -94,26 +94,28 @@ export function getSelector(fieldMetadata: FieldMetadata): Selector {
   return selector;
 }
 
-export function createFilterQuery(filters: FilterQueries): Query {
-  const clauses: QueryClause[] = [];
-  for (const infoId in filters.infoQueries) {
-    const infoFilterQuery = filters.infoQueries[infoId];
-    clauses.push({
-      selector: getSelector(infoFilterQuery.field),
-      operator: infoFilterQuery.field.number.count === 1 ? "has_any" : "any_has_any",
-      args: infoFilterQuery.value as string | number | boolean | string[] | number[],
-    });
-  }
-  for (const sampleFilterId in filters.samplesQueries) {
-    const sampleFiltersQueries = filters.samplesQueries[sampleFilterId];
-    for (const sampleFiltersQueryId in sampleFiltersQueries) {
-      const sampleFilterQuery = sampleFiltersQueries[sampleFiltersQueryId];
-      clauses.push({
-        selector: ["s", sampleFilterQuery.sample.index, sampleFilterQuery.query.field.id],
-        operator: sampleFilterQuery.query.operator,
-        args: sampleFilterQuery.query.value as string | number | boolean | string[] | number[],
-      });
-    }
-  }
-  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
+export function createFilterQuery(filterQueries: FilterQueries | undefined): Query {
+  return { operator: "and", args: [] };
+  // FIXME
+  // const clauses: QueryClause[] = [];
+  // for (const infoId in filters.infoQueries) {
+  //   const infoFilterQuery = filters.infoQueries[infoId];
+  //   clauses.push({
+  //     selector: getSelector(infoFilterQuery.field),
+  //     operator: infoFilterQuery.field.number.count === 1 ? "has_any" : "any_has_any",
+  //     args: infoFilterQuery.value as string | number | boolean | string[] | number[],
+  //   });
+  // }
+  // for (const sampleFilterId in filters.samplesQueries) {
+  //   const sampleFiltersQueries = filters.samplesQueries[sampleFilterId];
+  //   for (const sampleFiltersQueryId in sampleFiltersQueries) {
+  //     const sampleFilterQuery = sampleFiltersQueries[sampleFiltersQueryId];
+  //     clauses.push({
+  //       selector: ["s", sampleFilterQuery.sample.index, sampleFilterQuery.query.field.id],
+  //       operator: sampleFilterQuery.query.operator,
+  //       args: sampleFilterQuery.query.value as string | number | boolean | string[] | number[],
+  //     });
+  //   }
+  // }
+  // return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
 }
