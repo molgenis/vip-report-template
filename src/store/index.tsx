@@ -3,7 +3,7 @@ import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Item, QueryClause, Sample, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Order } from "../utils/sortUtils";
-import { selectorKey } from "../utils/field";
+import { selectorKey } from "../utils/query";
 
 export type FilterQueries = { [key: string]: QueryClause | undefined };
 

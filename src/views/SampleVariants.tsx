@@ -90,12 +90,11 @@ export const SampleVariants: Component<{
   const page = () => state.samples[props.sample.id]?.variants?.page;
   const pageSize = () => state.samples[props.sample.id]?.variants?.pageSize;
   const searchQuery = () => state.samples[props.sample.id]?.variants?.searchQuery;
-  const filters = () => state.samples[props.sample.id]?.variants?.filterQueries;
+  const filterQueries = () => state.samples[props.sample.id]?.variants?.filterQueries;
   const sort = () => state.samples[props.sample.id]?.variants?.sort;
 
   if (page() === undefined) actions.setVariantsPage(props.sample, 0);
   if (pageSize() === undefined) actions.setVariantsPageSize(props.sample, 5);
-  // TODO set default filters
   if (sort() === undefined) actions.setVariantsSort(props.sample, defaultSort());
 
   const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
@@ -107,7 +106,7 @@ export const SampleVariants: Component<{
 
   const params = (): Params => {
     return {
-      query: createQuery(searchQuery(), filters(), props.recordsMeta) || undefined,
+      query: createQuery(searchQuery(), filterQueries(), props.recordsMeta) || undefined,
       sort: createSortOrder(sort() || null) || undefined,
       page: page() || undefined,
       size: pageSize() || undefined,
@@ -135,6 +134,7 @@ export const SampleVariants: Component<{
         <Filters
           fields={infoFields()}
           samplesFields={[{ sample: props.sample.data, fields: formatFields() }]}
+          queries={filterQueries()}
           onChange={onFilterChange}
           onClear={onFilterClear}
           sampleId={props.sample.data.person.individualId}

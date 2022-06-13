@@ -1,46 +1,28 @@
-import { Component, createResource, Show } from "solid-js";
+import { Component } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Sample } from "@molgenis/vip-report-api/src/Api";
 import { InfoFilters } from "./InfoFilters";
 import { SamplesFilters } from "./SamplesFilters";
-import { EMPTY_PHENOTYPES, fetchPhenotypes } from "../../utils/ApiUtils";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
+import { FilterQueries } from "../../store";
 
 export const Filters: Component<{
   fields: FieldMetadata[];
   samplesFields: { sample: Sample; fields: FieldMetadata[] }[];
+  queries?: FilterQueries;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
   sampleId?: string;
 }> = (props) => {
-  const [phenotypes] = createResource({}, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
-
-  function getHpoTermsForSample(sampleId: string) {
-    const hpoTerms: string[] = [];
-    phenotypes().items.forEach((item: Item<Phenotype>) => {
-      if (item.data.subject.id === sampleId) {
-        item.data.phenotypicFeaturesList.forEach((phenotypicFeature: PhenotypicFeature) => {
-          hpoTerms.push(phenotypicFeature.type.id);
-        });
-      }
-    });
-    return hpoTerms;
-  }
-
   return (
-    <Show when={!phenotypes.loading}>
-      <InfoFilters
-        fields={props.fields}
-        onChange={props.onChange}
-        onClear={props.onClear}
-        defaultValues={props.sampleId !== undefined ? { HPO: getHpoTermsForSample(props.sampleId) } : {}}
-      />
+    <>
+      <InfoFilters fields={props.fields} queries={props.queries} onChange={props.onChange} onClear={props.onClear} />
       <SamplesFilters
         samplesFields={props.samplesFields}
+        queries={props.queries}
         onChange={props.onChange}
         onClear={props.onClear}
-        defaultValues={{ VIM: true, DP: true }}
       />
-    </Show>
+    </>
   );
 };

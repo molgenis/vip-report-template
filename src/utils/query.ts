@@ -1,4 +1,4 @@
-import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
+import { Query, QueryClause, QueryOperator, Sample, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../store";
@@ -90,4 +90,20 @@ export function selector(field: FieldMetadata): Selector {
   } while (currentField);
   selector.reverse();
   return selector;
+}
+
+export function selectorKey(selector: Selector): string {
+  return Array.isArray(selector) ? selector.join("/") : selector.toString();
+}
+
+export function fieldKey(field: FieldMetadata): string {
+  return selectorKey(selector(field));
+}
+
+export function infoFieldKey(field: FieldMetadata): string {
+  return `n/${selectorKey(fieldKey(field))}`;
+}
+
+export function sampleFieldKey(sample: Sample, field: FieldMetadata): string {
+  return `s/${sample.index}/${selectorKey(fieldKey(field))}`;
 }

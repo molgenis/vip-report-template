@@ -2,14 +2,14 @@ import { Component } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { selector } from "../../utils/query";
+import { QueryClause } from "@molgenis/vip-report-api/src/Api";
 
 export const FilterIntegerDp: Component<{
   field: FieldMetadata;
+  query?: QueryClause;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
-  defaultValue: Value | undefined;
 }> = (props) => {
   const onFilterChange = (event: CheckboxEvent) => {
     if (event.checked) props.onChange({ query: { selector: selector(props.field), operator: ">=", args: 20 } });
@@ -18,7 +18,7 @@ export const FilterIntegerDp: Component<{
 
   return (
     <div class="control">
-      <Checkbox label="Read depth >= 20" onChange={onFilterChange} default={props.defaultValue as boolean} />
+      <Checkbox label="Read depth >= 20" checked={props.query && props.query.args === true} onChange={onFilterChange} />
     </div>
   );
 };

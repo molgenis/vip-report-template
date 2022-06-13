@@ -1,13 +1,13 @@
 import { Component } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filter, FilterChangeEvent, FilterClearEvent } from "./Filter";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { QueryClause } from "@molgenis/vip-report-api/src/Api";
 
 export const InfoFilter: Component<{
   field: FieldMetadata;
+  query?: QueryClause;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
-  defaultValues: Value | undefined;
 }> = (props) => {
   const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
 
@@ -29,7 +29,7 @@ export const InfoFilter: Component<{
         {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
       </p>
       <div class="field">
-        <Filter field={props.field} onChange={onChange} onClear={onClear} defaultValue={props.defaultValues} />
+        <Filter field={props.field} query={props.query} onChange={onChange} onClear={onClear} />
       </div>
     </>
   );

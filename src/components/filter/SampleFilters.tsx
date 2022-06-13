@@ -2,14 +2,15 @@ import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
 import { Filter, FilterChangeEvent, FilterClearEvent } from "./Filter";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FilterQueries } from "../../store";
+import { sampleFieldKey } from "../../utils/query";
 
 export const SampleFilters: Component<{
   sample: Sample;
   fields: FieldMetadata[];
+  queries?: FilterQueries;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
-  defaultValues: { [key: string]: Value };
 }> = (props) => {
   const onChange = (event: FilterChangeEvent) => {
     props.onChange({
@@ -29,7 +30,12 @@ export const SampleFilters: Component<{
       <div class="field">
         <For each={props.fields}>
           {(field) => (
-            <Filter field={field} onChange={onChange} onClear={onClear} defaultValue={props.defaultValues[field.id]} />
+            <Filter
+              field={field}
+              query={props.queries ? props.queries[sampleFieldKey(props.sample, field)] : undefined}
+              onChange={onChange}
+              onClear={onClear}
+            />
           )}
         </For>
       </div>
