@@ -1,9 +1,11 @@
 import { hashIntegration, Router } from "solid-app-router";
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, QueryClause, Sample, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Order } from "../utils/sortUtils";
-import { FilterQueries } from "../components/filter/Filters";
+import { selectorKey } from "../utils/field";
+
+export type FilterQueries = { [key: string]: QueryClause | undefined };
 
 // TODO clear store on dataset change
 export type AppState = {
@@ -25,7 +27,8 @@ export type AppActions = {
   setVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
   setVariantsSearchQuery(sample: Item<Sample>, search: string): void;
   clearVariantsSearchQuery(sample: Item<Sample>): void;
-  setVariantsFilterQueries(sample: Item<Sample>, filterQueries: FilterQueries): void;
+  setVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
+  clearVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
   setVariantsSort(sample: Item<Sample>, order: Order | null): void;
 };
 
@@ -37,34 +40,52 @@ const StoreContext = createContext<AppStore>() as Context<AppStore>;
 
 export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
   const [state, setState] = createStore(defaultState);
+
+  function getVariants(sample: Item<Sample>) {
+    return state.samples[sample.id]?.variants || { filterQueries: {} };
+  }
+
   const actions: AppActions = {
     setVariantsPage(sample: Item<Sample>, page: number) {
-      if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "page", page);
+      setState({ samples: { [sample.id]: { variants: { ...getVariants(sample), page } } } });
     },
     setVariantsPageSize(sample: Item<Sample>, pageSize: number) {
-      if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "pageSize", pageSize);
-      setState("samples", sample.id, "variants", "page", 0);
+      setState({
+        samples: { [sample.id]: { variants: { ...getVariants(sample), pageSize, page: undefined } } },
+      });
     },
     setVariantsSearchQuery(sample: Item<Sample>, searchQuery: string) {
-      if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "searchQuery", searchQuery);
-      setState("samples", sample.id, "variants", "page", 0);
+      setState({
+        samples: { [sample.id]: { variants: { ...getVariants(sample), searchQuery, page: undefined } } },
+      });
     },
     clearVariantsSearchQuery(sample: Item<Sample>) {
-      if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "searchQuery", undefined);
-      setState("samples", sample.id, "variants", "page", 0);
+      setState({
+        samples: {
+          [sample.id]: { variants: { ...getVariants(sample), searchQuery: undefined, page: undefined } },
+        },
+      });
     },
-    setVariantsFilterQueries(sample: Item<Sample>, filterQueries: FilterQueries) {
-      if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "filterQueries", filterQueries);
-      setState("samples", sample.id, "variants", "page", 0);
+    setVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
+      const key = selectorKey(query.selector);
+      setState({
+        samples: {
+          [sample.id]: { variants: { ...getVariants(sample), filterQueries: { [key]: query }, page: undefined } },
+        },
+      });
+    },
+    clearVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
+      const key = selectorKey(selector);
+      setState({
+        samples: {
+          [sample.id]: { variants: { ...getVariants(sample), filterQueries: { [key]: undefined }, page: undefined } },
+        },
+      });
     },
     setVariantsSort(sample: Item<Sample>, sort: Order | null) {
-      if (!(sample.id in state.samples)) setState({ samples: { [sample.id]: { variants: {} } } });
-      setState("samples", sample.id, "variants", "sort", sort);
+      setState({
+        samples: { [sample.id]: { variants: { ...getVariants(sample), sort } } },
+      });
     },
   };
   const store: AppStore = [state, actions];

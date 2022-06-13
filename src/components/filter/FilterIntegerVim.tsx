@@ -3,6 +3,7 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { selector } from "../../utils/field";
 
 export const FilterIntegerVim: Component<{
   field: FieldMetadata;
@@ -11,8 +12,8 @@ export const FilterIntegerVim: Component<{
   defaultValue: Value | undefined;
 }> = (props) => {
   const onFilterChange = (event: CheckboxEvent) => {
-    if (event.checked) props.onChange({ query: { field: props.field, operator: "==", value: 1 } });
-    else props.onClear({ field: props.field });
+    if (event.checked) props.onChange({ query: { selector: selector(props.field), operator: "==", args: 1 } });
+    else props.onClear({ selector: selector(props.field) });
   };
 
   return (

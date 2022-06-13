@@ -3,6 +3,7 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { selector } from "../../utils/field";
 
 export type CheckboxGroup = {
   [key: string]: boolean;
@@ -35,13 +36,13 @@ export const FilterCategorical: Component<{
     if (values.length > 0) {
       props.onChange({
         query: {
-          field: props.field,
+          selector: selector(props.field),
           operator: props.field.number.count === 1 ? "has_any" : "any_has_any",
-          value: values,
+          args: values,
         },
       });
     } else {
-      props.onClear({ field: props.field });
+      props.onClear({ selector: selector(props.field) });
     }
   };
 

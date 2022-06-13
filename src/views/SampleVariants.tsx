@@ -11,12 +11,13 @@ import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Filters, FiltersChangeEvent } from "../components/filter/Filters";
+import { Filters } from "../components/filter/Filters";
 import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING, Order } from "../utils/sortUtils";
 import { SampleRouteData } from "./data/SampleData";
 import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
+import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -94,21 +95,24 @@ export const SampleVariants: Component<{
 
   if (page() === undefined) actions.setVariantsPage(props.sample, 0);
   if (pageSize() === undefined) actions.setVariantsPageSize(props.sample, 5);
-  if (filters() === undefined) actions.setVariantsFilterQueries(props.sample, { infoQueries: {}, samplesQueries: {} });
+  // TODO set default filters
   if (sort() === undefined) actions.setVariantsSort(props.sample, defaultSort());
 
   const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
   const onSearchChange = (search: string) => actions.setVariantsSearchQuery(props.sample, search);
-  const onFiltersChange = (event: FiltersChangeEvent) => actions.setVariantsFilterQueries(props.sample, event.queries);
+  const onFilterChange = (event: FilterChangeEvent) => actions.setVariantsFilterQuery(props.sample, event.query);
+  const onFilterClear = (event: FilterClearEvent) => actions.clearVariantsFilterQuery(props.sample, event.selector);
   const onSortChange = (event: SortEvent) => actions.setVariantsSort(props.sample, event.order);
   const onSortClear = () => actions.setVariantsSort(props.sample, null);
 
-  const params = (): Params => ({
-    query: createQuery(searchQuery(), filters(), props.recordsMeta) || undefined,
-    sort: createSortOrder(sort() || null) || undefined,
-    page: page() || undefined,
-    size: pageSize() || undefined,
-  });
+  const params = (): Params => {
+    return {
+      query: createQuery(searchQuery(), filters(), props.recordsMeta) || undefined,
+      sort: createSortOrder(sort() || null) || undefined,
+      page: page() || undefined,
+      size: pageSize() || undefined,
+    };
+  };
 
   const [records] = createResource(params, fetchRecords);
 
@@ -131,7 +135,8 @@ export const SampleVariants: Component<{
         <Filters
           fields={infoFields()}
           samplesFields={[{ sample: props.sample.data, fields: formatFields() }]}
-          onChange={onFiltersChange}
+          onChange={onFilterChange}
+          onClear={onFilterClear}
           sampleId={props.sample.data.person.individualId}
         />
       </div>

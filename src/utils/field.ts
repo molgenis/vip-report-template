@@ -1,7 +1,24 @@
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
-import { SortPath } from "@molgenis/vip-report-api/src/Api";
+import { Selector, SortPath } from "@molgenis/vip-report-api/src/Api";
+
+export function selector(field: FieldMetadata): Selector {
+  const path: Selector = [];
+
+  let currentField: FieldMetadata | undefined = field;
+  do {
+    path.push(currentField.id);
+    currentField = currentField.parent;
+  } while (currentField);
+
+  path.reverse();
+  return path;
+}
+
+export function selectorKey(selector: Selector): string {
+  return Array.isArray(selector) ? selector.join("/") : selector.toString();
+}
 
 const flattenFieldMetadataRec = (fieldMetadata: FieldMetadata): FieldMetadata[] => {
   return fieldMetadata.nested ? fieldMetadata.nested.items.flatMap(flattenFieldMetadataRec) : [fieldMetadata];

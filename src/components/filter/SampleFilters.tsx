@@ -1,30 +1,26 @@
 import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
-import { Filter, FilterChangeEvent, FilterClearEvent, FilterQuery } from "./Filter";
+import { Filter, FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-
-export type SampleFilterQuery = { sample: Sample; query: FilterQuery };
-export type SampleFilterQueries = { [key: string]: SampleFilterQuery };
-export type SampleFiltersChangeEvent = { sample: Sample; queries: SampleFilterQueries };
 
 export const SampleFilters: Component<{
   sample: Sample;
   fields: FieldMetadata[];
-  onChange: (event: SampleFiltersChangeEvent) => void;
+  onChange: (event: FilterChangeEvent) => void;
+  onClear: (event: FilterClearEvent) => void;
   defaultValues: { [key: string]: Value };
 }> = (props) => {
-  const queries: SampleFilterQueries = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
-
-  const onFiltersChange = () => props.onChange({ sample: props.sample, queries });
-
-  const onFilterChange = (event: FilterChangeEvent) => {
-    queries[event.query.field.id] = { sample: props.sample, query: event.query };
-    onFiltersChange();
+  const onChange = (event: FilterChangeEvent) => {
+    props.onChange({
+      query: { ...event.query, selector: ["s", props.sample.index.toString(), ...event.query.selector] },
+    });
   };
-  const onFilterClear = (event: FilterClearEvent) => {
-    delete queries[event.field.id];
-    onFiltersChange();
+
+  const onClear = (event: FilterClearEvent) => {
+    props.onClear({
+      selector: ["s", props.sample.index.toString(), ...event.selector],
+    });
   };
 
   return (
@@ -33,12 +29,7 @@ export const SampleFilters: Component<{
       <div class="field">
         <For each={props.fields}>
           {(field) => (
-            <Filter
-              field={field}
-              onChange={onFilterChange}
-              onClear={onFilterClear}
-              defaultValue={props.defaultValues[field.id]}
-            />
+            <Filter field={field} onChange={onChange} onClear={onClear} defaultValue={props.defaultValues[field.id]} />
           )}
         </For>
       </div>
