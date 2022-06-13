@@ -14,6 +14,7 @@ import { SampleVariantConsequenceRouteData } from "./data/SampleVariantConsequen
 import { getSampleLabel } from "../utils/sample";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export const SampleVariantConsequenceView: Component = () => {
   const { sample, variant, consequenceId } = useRouteData<SampleVariantConsequenceRouteData>();
@@ -61,8 +62,8 @@ export const SampleVariantConsequence: Component<{
         <div class="column is-6">
           <h1 class="title is-5">Consequence</h1>
           <ConsequenceTable
-            csqMetadata={props.recordsMeta.info.CSQ.nested.items}
-            csqValues={getSpecificConsequence(props.variant.data.n.CSQ, props.consequenceId)}
+            csqMetadata={props.recordsMeta.info.CSQ.nested !== undefined ? props.recordsMeta.info.CSQ.nested.items : []}
+            csqValues={getSpecificConsequence(props.variant.data.n.CSQ as ValueArray, props.consequenceId)}
             record={props.variant.data}
           ></ConsequenceTable>
         </div>
