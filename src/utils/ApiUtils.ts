@@ -226,3 +226,19 @@ export const EMPTY_RECORD_ITEM: Item<Record> = {
   id: -1,
   data: { c: "", p: -1, i: [], r: "", a: [], q: null, f: [], n: {}, s: [] },
 };
+
+export const EMPTY_SAMPLE_ITEM: Item<Sample> = {
+  id: -1,
+  data: {
+    person: {
+      familyId: "",
+      individualId: "",
+      paternalId: "",
+      maternalId: "",
+      sex: "UNKNOWN_SEX",
+      affectedStatus: "MISSING",
+    },
+    index: -1,
+    proband: false,
+  },
+};
