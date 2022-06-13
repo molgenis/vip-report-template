@@ -15,7 +15,7 @@ import { Item } from "@molgenis/vip-report-api/src/Api";
 import { FieldHeader } from "./FieldHeader";
 
 const computeRowspan = (recordsMetadata: Metadata) =>
-  Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : undefined;
+  Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : 1;
 const computeColspan = (field: FieldMetadata) => (field.nested ? field.nested.items.length : undefined);
 
 export const VariantsTable: Component<{
