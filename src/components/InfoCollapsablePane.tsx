@@ -24,20 +24,19 @@ export const InfoCollapsablePane: Component<{
     setCollapsed(!collapsed());
   }
 
-  // TODO throw error instead of returning null, remove type cast
-  const values = createMemo(
-    () =>
-      props.fields.map((field) =>
-        field.parent
-          ? (props.record.data.n[field.parent.id] as ValueArray).map((nestedValues) =>
-              field.parent && field.parent.nested
-                ? (nestedValues as ValueArray)[
-                    field.parent.nested.items.findIndex((nestedField) => nestedField.id === field.id)
-                  ]
-                : null
-            )
-          : null
-      ) as ValueArray[]
+  const values = createMemo(() =>
+    props.fields.map((field) => {
+      if (field.parent) {
+        return (props.record.data.n[field.parent.id] as ValueArray).map((nestedValues) =>
+          field.parent && field.parent.nested
+            ? (nestedValues as ValueArray)[
+                field.parent.nested.items.findIndex((nestedField) => nestedField.id === field.id)
+              ]
+            : null
+        );
+      }
+      throw new Error(`Nested field '${field.id}' needs to have a parent field.`);
+    })
   );
   return (
     <>
