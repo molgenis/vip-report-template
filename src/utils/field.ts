@@ -3,19 +3,6 @@ import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Selector, SortPath } from "@molgenis/vip-report-api/src/Api";
 
-export function selector(field: FieldMetadata): Selector {
-  const path: Selector = [];
-
-  let currentField: FieldMetadata | undefined = field;
-  do {
-    path.push(currentField.id);
-    currentField = currentField.parent;
-  } while (currentField);
-
-  path.reverse();
-  return path;
-}
-
 export function selectorKey(selector: Selector): string {
   return Array.isArray(selector) ? selector.join("/") : selector.toString();
 }

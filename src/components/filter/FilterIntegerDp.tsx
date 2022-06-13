@@ -3,7 +3,7 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { selector } from "../../utils/field";
+import { selector } from "../../utils/query";
 
 export const FilterIntegerDp: Component<{
   field: FieldMetadata;

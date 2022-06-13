@@ -1,4 +1,4 @@
-import { Query, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
+import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../store";
@@ -9,20 +9,13 @@ export function createQuery(
   metadata: Metadata
 ): Query | null {
   let query: Query | null;
-  if (search !== undefined && filters !== undefined) {
-    const searchQuery = createSearchQuery(search, metadata);
-    const filterQuery = createFilterQuery(filters);
-    if (searchQuery !== null) {
-      query = { operator: "and", args: [searchQuery, filterQuery] };
-    } else {
-      query = filterQuery;
-    }
-  } else if (search !== undefined && filters === undefined) {
-    query = createSearchQuery(search, metadata);
-  } else if (search === undefined && filters !== undefined) {
-    query = createFilterQuery(filters);
+
+  const searchQuery = search !== undefined ? createSearchQuery(search, metadata) : null;
+  const filterQuery = filters !== undefined ? createFilterQuery(filters) : null;
+  if (searchQuery !== null) {
+    query = filterQuery !== null ? { operator: "and", args: [searchQuery, filterQuery] } : searchQuery;
   } else {
-    query = null;
+    query = filterQuery !== null ? filterQuery : null;
   }
   return query;
 }
@@ -68,54 +61,33 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
   return clauses;
 }
 
-export function getSelector(fieldMetadata: FieldMetadata): Selector {
+function createFilterQuery(queries: FilterQueries): Query | null {
+  const queryClauses = Object.values(queries).filter((query) => query !== undefined) as QueryClause[];
+  if (queryClauses.length === 0) return null;
+  return queryClauses.length === 1 ? queryClauses[0] : { operator: "and", args: queryClauses };
+}
+
+export function selector(field: FieldMetadata): Selector {
   const selector: Selector = [];
-  let currentFieldMetadata: FieldMetadata | undefined = fieldMetadata;
+  let currentField: FieldMetadata | undefined = field;
   do {
-    if (currentFieldMetadata.parent && currentFieldMetadata.parent.nested) {
-      const items = currentFieldMetadata.parent.nested.items;
+    if (currentField.parent && currentField.parent.nested) {
+      const items = currentField.parent.nested.items;
       let i;
       for (i = 0; i < items.length; ++i) {
-        if (items[i].id === currentFieldMetadata.id) {
+        if (items[i].id === currentField.id) {
           break;
         }
       }
       selector.push(i);
-      if (currentFieldMetadata.parent.number.count !== 1) {
+      if (currentField.parent.number.count !== 1) {
         selector.push("*");
       }
     } else {
-      selector.push(currentFieldMetadata.id);
-      selector.push("n");
+      selector.push(currentField.id);
     }
-    currentFieldMetadata = currentFieldMetadata.parent;
-  } while (currentFieldMetadata);
+    currentField = currentField.parent;
+  } while (currentField);
   selector.reverse();
   return selector;
-}
-
-export function createFilterQuery(filterQueries: FilterQueries | undefined): Query {
-  return { operator: "and", args: [] };
-  // FIXME
-  // const clauses: QueryClause[] = [];
-  // for (const infoId in filters.infoQueries) {
-  //   const infoFilterQuery = filters.infoQueries[infoId];
-  //   clauses.push({
-  //     selector: getSelector(infoFilterQuery.field),
-  //     operator: infoFilterQuery.field.number.count === 1 ? "has_any" : "any_has_any",
-  //     args: infoFilterQuery.value as string | number | boolean | string[] | number[],
-  //   });
-  // }
-  // for (const sampleFilterId in filters.samplesQueries) {
-  //   const sampleFiltersQueries = filters.samplesQueries[sampleFilterId];
-  //   for (const sampleFiltersQueryId in sampleFiltersQueries) {
-  //     const sampleFilterQuery = sampleFiltersQueries[sampleFiltersQueryId];
-  //     clauses.push({
-  //       selector: ["s", sampleFilterQuery.sample.index, sampleFilterQuery.query.field.id],
-  //       operator: sampleFilterQuery.query.operator,
-  //       args: sampleFilterQuery.query.value as string | number | boolean | string[] | number[],
-  //     });
-  //   }
-  // }
-  // return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
 }
