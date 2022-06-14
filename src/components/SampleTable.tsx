@@ -60,14 +60,14 @@ export const SampleTable: Component<{
         <table class="table is-narrow">
           <thead>
             <tr>
-              <th>familyId</th>
-              <th>individualId</th>
-              <th>paternalId</th>
-              <th>maternalId</th>
-              <th>proband</th>
-              <th>sex</th>
-              <th>affected</th>
-              <th>phenotypes</th>
+              <th>Family</th>
+              <th>Individual</th>
+              <th>Father</th>
+              <th>Mother</th>
+              <th>Proband</th>
+              <th>Sex</th>
+              <th>Affected</th>
+              <th>Phenotypes</th>
               <th>VIBE</th>
             </tr>
           </thead>
