@@ -1,6 +1,6 @@
 import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample, SelectorPart } from "@molgenis/vip-report-api/src/Api";
 import { Filter, FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { FilterQueries } from "../../store";
 import { sampleFieldKey } from "../../utils/query";
@@ -14,13 +14,13 @@ export const SampleFilters: Component<{
 }> = (props) => {
   const onChange = (event: FilterChangeEvent) => {
     props.onChange({
-      query: { ...event.query, selector: ["s", props.sample.data.index, ...event.query.selector] },
+      query: { ...event.query, selector: ["s", props.sample.data.index, ...(event.query.selector as SelectorPart[])] },
     });
   };
 
   const onClear = (event: FilterClearEvent) => {
     props.onClear({
-      selector: ["s", props.sample.data.index, ...event.selector],
+      selector: ["s", props.sample.data.index, ...(event.selector as SelectorPart[])],
     });
   };
 
