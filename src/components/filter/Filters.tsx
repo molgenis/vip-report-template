@@ -13,14 +13,17 @@ export const Filters: Component<{
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
+  const onChange = (event: FilterChangeEvent) => props.onChange(event);
+  const onClear = (event: FilterClearEvent) => props.onClear(event);
+
   return (
     <>
-      <InfoFilters fields={props.fields} queries={props.queries} onChange={props.onChange} onClear={props.onClear} />
+      <InfoFilters fields={props.fields} queries={props.queries} onChange={onChange} onClear={onClear} />
       <SamplesFilters
         samplesFields={props.samplesFields}
         queries={props.queries}
-        onChange={props.onChange}
-        onClear={props.onClear}
+        onChange={onChange}
+        onClear={onClear}
       />
     </>
   );
