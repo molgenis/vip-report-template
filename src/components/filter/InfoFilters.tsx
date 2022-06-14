@@ -3,30 +3,17 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { InfoFilter } from "./InfoFilter";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-
-export type InfoFiltersChangeEvent = {
-  filters: FilterChangeEvent[];
-};
+import { FilterQueries } from "../../store";
+import { infoFieldKey } from "../../utils/query";
 
 export const InfoFilters: Component<{
   fields: FieldMetadata[];
-  onChange: (event: InfoFiltersChangeEvent) => void;
+  queries?: FilterQueries;
+  onChange: (event: FilterChangeEvent) => void;
+  onClear: (event: FilterClearEvent) => void;
   defaultValues?: { [key: string]: Value };
 }> = (props) => {
   const filterableFields = () => props.fields.filter((field) => field.type === "CATEGORICAL");
-
-  const filters: { [key: string]: FilterChangeEvent } = {}; // eslint-disable-line @typescript-eslint/no-unused-vars
-
-  const onFiltersChange = () => props.onChange({ filters: Object.values(filters) });
-
-  const onFilterChange = (event: FilterChangeEvent) => {
-    filters[event.field.id] = event;
-    onFiltersChange();
-  };
-  const onFilterClear = (event: FilterClearEvent) => {
-    delete filters[event.field.id];
-    onFiltersChange();
-  };
 
   return (
     <>
@@ -34,9 +21,9 @@ export const InfoFilters: Component<{
         {(field) => (
           <InfoFilter
             field={field}
-            onChange={onFilterChange}
-            onClear={onFilterClear}
-            defaultValues={props.defaultValues !== undefined ? props.defaultValues[field.id] : undefined}
+            query={props.queries ? props.queries[infoFieldKey(field)] : undefined}
+            onChange={props.onChange}
+            onClear={props.onClear}
           />
         )}
       </For>

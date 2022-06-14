@@ -1,4 +1,4 @@
-import { Component, createSignal, onMount, Show } from "solid-js";
+import { Component, createSignal, Show } from "solid-js";
 import { Abbr } from "./Abbr";
 
 export type CheckboxEvent = {
@@ -10,21 +10,10 @@ export const Checkbox: Component<{
   value?: string;
   label: string;
   desc?: string;
+  checked?: boolean;
   onChange: (event: CheckboxEvent) => void;
-  default?: boolean;
 }> = (props) => {
-  const [checked, setChecked] = createSignal(false);
-
-  onMount(() => {
-    if (props.default != undefined) {
-      setChecked(props.default);
-      // FIXME
-      // props.onChange({
-      //   value: props.value as string,
-      //   checked: props.default,
-      // });
-    }
-  });
+  const [checked, setChecked] = createSignal(!!props.checked);
 
   const onChange = (event: Event) => {
     const target = event.target as HTMLInputElement;

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { createRecordSort, createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+import { createRecordSort, DIRECTION_ASCENDING } from "../utils/sortUtils";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 
@@ -79,52 +79,5 @@ describe("sort utilities", () => {
         compare: "asc",
       })
     ).toThrowError();
-  });
-
-  test("create params sort order from record sort order with field", () => {
-    const field: FieldMetadata = {
-      id: "n_string1",
-      number: {
-        type: "NUMBER",
-        count: 1,
-      },
-      type: "STRING",
-    };
-
-    expect(createSortOrder({ field, direction: DIRECTION_ASCENDING })).toStrictEqual({
-      property: ["n", "n_string1"],
-      compare: "asc",
-    });
-  });
-
-  test("create params sort order from record sort order with nested field", () => {
-    expect(createSortOrder({ field: nString2Meta, direction: DIRECTION_DESCENDING })).toStrictEqual({
-      property: ["n", "n_object0", 1],
-      compare: "desc",
-    });
-  });
-
-  test("create params sort order from record sort order with invalid nested field", () => {
-    const nString1Meta: FieldMetadata = {
-      id: "n_string1",
-      number: {
-        type: "NUMBER",
-        count: 1,
-      },
-      type: "STRING",
-      parent: {
-        id: "n_object0",
-        number: {
-          type: "OTHER",
-        },
-        type: "STRING",
-        nested: {
-          items: [], // corrupt because n_string1 is missing
-          separator: ",",
-        },
-      },
-    };
-
-    expect(() => createSortOrder({ field: nString1Meta, direction: DIRECTION_DESCENDING })).toThrowError();
   });
 });

@@ -1,33 +1,18 @@
 import { Component, For } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Sample } from "@molgenis/vip-report-api/src/Api";
-import { FilterChangeEvent } from "./Filter";
 import { SampleFilters } from "./SampleFilters";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FilterChangeEvent, FilterClearEvent } from "./Filter";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { FilterQueries } from "../../store";
 
-export type SampleFiltersChangeEvent = {
-  sample: Sample;
-  filters: FilterChangeEvent[];
-};
-
-export type SampleFields = { sample: Sample; fields: FieldMetadata[] };
-
-export type SamplesFiltersChangeEvent = {
-  filters: SampleFiltersChangeEvent[];
-};
+export type SampleFields = { sample: Item<Sample>; fields: FieldMetadata[] };
 
 export const SamplesFilters: Component<{
   samplesFields: SampleFields[];
-  onChange: (event: SamplesFiltersChangeEvent) => void;
-  defaultValues: { [key: string]: Value };
+  queries?: FilterQueries;
+  onChange: (event: FilterChangeEvent) => void;
+  onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
-  const filters: { [key: number]: SampleFiltersChangeEvent } = {};
-
-  const onFiltersChange = (event: SampleFiltersChangeEvent) => {
-    filters[event.sample.index] = event;
-    props.onChange({ filters: Object.values(filters) });
-  };
-
   return (
     <>
       <For each={props.samplesFields}>
@@ -35,8 +20,9 @@ export const SamplesFilters: Component<{
           <SampleFilters
             sample={sampleField.sample}
             fields={sampleField.fields}
-            onChange={onFiltersChange}
-            defaultValues={props.defaultValues}
+            queries={props.queries}
+            onChange={props.onChange}
+            onClear={props.onClear}
           />
         )}
       </For>

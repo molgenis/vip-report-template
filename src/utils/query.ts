@@ -1,28 +1,30 @@
-import { Query, QueryClause, QueryOperator, Selector } from "@molgenis/vip-report-api/src/Api";
+import {
+  Item,
+  Query,
+  QueryClause,
+  QueryOperator,
+  Sample,
+  Selector,
+  SelectorPart,
+  SortPath,
+} from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Filters } from "../components/filter/Filters";
+import { FilterQueries } from "../store";
 
 export function createQuery(
   search: string | undefined,
-  filters: Filters | undefined,
+  filters: FilterQueries | undefined,
   metadata: Metadata
 ): Query | null {
   let query: Query | null;
-  if (search !== undefined && filters !== undefined) {
-    const searchQuery = createSearchQuery(search, metadata);
-    const filterQuery = createFilterQuery(filters);
-    if (searchQuery !== null) {
-      query = { operator: "and", args: [searchQuery, filterQuery] };
-    } else {
-      query = filterQuery;
-    }
-  } else if (search !== undefined && filters === undefined) {
-    query = createSearchQuery(search, metadata);
-  } else if (search === undefined && filters !== undefined) {
-    query = createFilterQuery(filters);
+
+  const searchQuery = search !== undefined ? createSearchQuery(search, metadata) : null;
+  const filterQuery = filters !== undefined ? createFilterQuery(filters) : null;
+  if (searchQuery !== null) {
+    query = filterQuery !== null ? { operator: "and", args: [searchQuery, filterQuery] } : searchQuery;
   } else {
-    query = null;
+    query = filterQuery !== null ? filterQuery : null;
   }
   return query;
 }
@@ -68,50 +70,61 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
   return clauses;
 }
 
-export function getSelector(fieldMetadata: FieldMetadata): Selector {
+function createFilterQuery(queries: FilterQueries): Query | null {
+  const queryClauses = Object.values(queries).filter((query) => query !== undefined) as QueryClause[];
+  if (queryClauses.length === 0) return null;
+  return queryClauses.length === 1 ? queryClauses[0] : { operator: "and", args: queryClauses };
+}
+
+export function selector(field: FieldMetadata): SelectorPart[] {
   const selector: Selector = [];
-  let currentFieldMetadata: FieldMetadata | undefined = fieldMetadata;
+  let currentField: FieldMetadata | undefined = field;
   do {
-    if (currentFieldMetadata.parent && currentFieldMetadata.parent.nested) {
-      const items = currentFieldMetadata.parent.nested.items;
+    if (currentField.parent && currentField.parent.nested) {
+      const items = currentField.parent.nested.items;
       let i;
       for (i = 0; i < items.length; ++i) {
-        if (items[i].id === currentFieldMetadata.id) {
+        if (items[i].id === currentField.id) {
           break;
         }
       }
       selector.push(i);
-      if (currentFieldMetadata.parent.number.count !== 1) {
+      if (currentField.parent.number.count !== 1) {
         selector.push("*");
       }
     } else {
-      selector.push(currentFieldMetadata.id);
-      selector.push("n");
+      selector.push(currentField.id);
     }
-    currentFieldMetadata = currentFieldMetadata.parent;
-  } while (currentFieldMetadata);
+    currentField = currentField.parent;
+  } while (currentField);
   selector.reverse();
   return selector;
 }
 
-export function createFilterQuery(filters: Filters): Query {
-  const clauses: QueryClause[] = [];
-  for (const filter of filters.fields) {
-    clauses.push({
-      selector: getSelector(filter.field),
-      operator: filter.field.number.count === 1 ? "has_any" : "any_has_any",
-      args: filter.value as string | number | boolean | string[] | number[],
-    });
-  }
-  for (const sampleFilters of filters.samplesFields) {
-    const sample = sampleFilters.sample;
-    for (const sampleFilter of sampleFilters.filters) {
-      clauses.push({
-        selector: ["s", sample.index, sampleFilter.field.id],
-        operator: sampleFilter.operator,
-        args: sampleFilter.value as string | number | boolean | string[] | number[],
-      });
-    }
-  }
-  return clauses.length === 1 ? clauses[0] : { operator: "and", args: clauses };
+export function infoSelector(field: FieldMetadata) {
+  return ["n", ...selector(field)];
+}
+
+export function sampleSelector(sample: Item<Sample>, field: FieldMetadata) {
+  return ["s", sample.data.index, ...selector(field)];
+}
+
+export function selectorKey(selector: Selector): string {
+  return Array.isArray(selector) ? selector.join("/") : selector.toString();
+}
+
+export function infoFieldKey(field: FieldMetadata): string {
+  return selectorKey(infoSelector(field));
+}
+
+export function sampleFieldKey(sample: Item<Sample>, field: FieldMetadata): string {
+  return selectorKey(sampleSelector(sample, field));
+}
+
+function sortPath(field: FieldMetadata): SortPath {
+  return selector(field).filter((part) => part !== "*");
+}
+
+export function infoSortPath(field: FieldMetadata): SortPath {
+  return ["n", ...sortPath(field)];
 }
