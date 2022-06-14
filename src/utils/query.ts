@@ -105,6 +105,11 @@ export function sampleSelector(sample: Item<Sample>, field: FieldMetadata) {
   return ["s", sample.data.index, ...fieldSelector];
 }
 
+export function infoSelector(field: FieldMetadata) {
+  const fieldSelector = selector(field) as SelectorPart[];
+  return ["n", ...fieldSelector];
+}
+
 export function selectorKey(selector: Selector): string {
   return Array.isArray(selector) ? selector.join("/") : selector.toString();
 }

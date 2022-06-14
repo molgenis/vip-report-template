@@ -7,6 +7,7 @@ import {
   PagedItems,
   Params,
   Phenotype,
+  PhenotypicFeature,
   Resource,
   Sample,
 } from "@molgenis/vip-report-api/src/Api";
@@ -215,6 +216,14 @@ export async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedI
     },
     size: Number.MAX_SAFE_INTEGER,
   });
+}
+
+export async function fetchPhenotypicFeatures(sample: Item<Sample>): Promise<PhenotypicFeature[]> {
+  const phenotypes = await fetchPhenotypes({
+    query: { selector: ["subject", "id"], operator: "==", args: sample.data.person.individualId },
+    size: Number.MAX_SAFE_INTEGER,
+  });
+  return phenotypes.items.map((item) => item.data).flatMap((phenotype) => phenotype.phenotypicFeaturesList);
 }
 
 export function getRecordLabel(item: Item<Record>) {

@@ -1,14 +1,14 @@
 import { Component, createMemo, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Params, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createQuery, sampleSelector, selector } from "../utils/query";
+import { createQuery, infoSelector, sampleSelector } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
-import { fetchPedigreeSamples, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
+import { fetchPedigreeSamples, fetchPhenotypicFeatures, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters } from "../components/filter/Filters";
@@ -23,6 +23,7 @@ export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
+  const [samplePhenotypes] = createResource(sample, fetchPhenotypicFeatures);
   const [recordsMeta] = createResource(fetchRecordsMeta);
 
   return (
@@ -34,8 +35,13 @@ export const SampleVariantsView: Component = () => {
           { text: "Variants" },
         ]}
       />
-      <Show when={pedigreeSamples() && recordsMeta()} fallback={<Loader />}>
-        <SampleVariants sample={sample()!} pedigreeSamples={pedigreeSamples()!.items} recordsMeta={recordsMeta()!} />
+      <Show when={pedigreeSamples() && samplePhenotypes() && recordsMeta()} fallback={<Loader />}>
+        <SampleVariants
+          sample={sample()!}
+          samplePhenotypes={samplePhenotypes()!}
+          pedigreeSamples={pedigreeSamples()!.items}
+          recordsMeta={recordsMeta()!}
+        />
       </Show>
     </Show>
   );
@@ -43,6 +49,7 @@ export const SampleVariantsView: Component = () => {
 
 export const SampleVariants: Component<{
   sample: Item<Sample>;
+  samplePhenotypes: PhenotypicFeature[];
   pedigreeSamples: Item<Sample>[];
   recordsMeta: Metadata;
 }> = (props) => {
@@ -51,6 +58,15 @@ export const SampleVariants: Component<{
   // state initialization - start
   actions.setVariantsPage(props.sample, 0);
   actions.setVariantsPageSize(props.sample, 5);
+
+  const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
+  if (hpoField) {
+    actions.setVariantsFilterQuery(props.sample, {
+      selector: infoSelector(hpoField),
+      operator: "any_has_any",
+      args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+    });
+  }
 
   const vimField = props.recordsMeta.format?.VIM;
   if (vimField) {
