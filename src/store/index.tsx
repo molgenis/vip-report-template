@@ -46,21 +46,25 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
 
   const actions: AppActions = {
     setVariantsPage(sample: Item<Sample>, page: number) {
-      setState({ samples: { [sample.id]: { variants: { ...getVariants(sample), page } } } });
+      setState({ samples: { ...state.samples, [sample.id]: { variants: { ...getVariants(sample), page } } } });
     },
     setVariantsPageSize(sample: Item<Sample>, pageSize: number) {
       setState({
-        samples: { [sample.id]: { variants: { ...getVariants(sample), pageSize, page: undefined } } },
+        samples: { ...state.samples, [sample.id]: { variants: { ...getVariants(sample), pageSize, page: undefined } } },
       });
     },
     setVariantsSearchQuery(sample: Item<Sample>, searchQuery: string) {
       setState({
-        samples: { [sample.id]: { variants: { ...getVariants(sample), searchQuery, page: undefined } } },
+        samples: {
+          ...state.samples,
+          [sample.id]: { variants: { ...getVariants(sample), searchQuery, page: undefined } },
+        },
       });
     },
     clearVariantsSearchQuery(sample: Item<Sample>) {
       setState({
         samples: {
+          ...state.samples,
           [sample.id]: { variants: { ...getVariants(sample), searchQuery: undefined, page: undefined } },
         },
       });
@@ -69,6 +73,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
       const variants = getVariants(sample);
       setState({
         samples: {
+          ...state.samples,
           [sample.id]: {
             variants: {
               ...variants,
@@ -83,6 +88,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
       const variants = getVariants(sample);
       setState({
         samples: {
+          ...state.samples,
           [sample.id]: {
             variants: {
               ...getVariants(sample),
@@ -95,7 +101,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
     },
     setVariantsSort(sample: Item<Sample>, sort: SortOrder | null) {
       setState({
-        samples: { [sample.id]: { variants: { ...getVariants(sample), sort } } },
+        samples: { ...state.samples, [sample.id]: { variants: { ...getVariants(sample), sort } } },
       });
     },
   };
