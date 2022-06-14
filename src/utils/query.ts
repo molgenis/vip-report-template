@@ -1,4 +1,12 @@
-import { Query, QueryClause, QueryOperator, Sample, Selector } from "@molgenis/vip-report-api/src/Api";
+import {
+  Item,
+  Query,
+  QueryClause,
+  QueryOperator,
+  Sample,
+  Selector,
+  SelectorPart,
+} from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../store";
@@ -90,6 +98,11 @@ export function selector(field: FieldMetadata): Selector {
   } while (currentField);
   selector.reverse();
   return selector;
+}
+
+export function sampleSelector(sample: Item<Sample>, field: FieldMetadata) {
+  const fieldSelector = selector(field) as SelectorPart[];
+  return ["s", sample.data.index, ...fieldSelector];
 }
 
 export function selectorKey(selector: Selector): string {

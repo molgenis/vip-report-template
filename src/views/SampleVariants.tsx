@@ -6,13 +6,13 @@ import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createQuery } from "../utils/query";
+import { createQuery, sampleSelector, selector } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters } from "../components/filter/Filters";
-import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING, Order } from "../utils/sortUtils";
+import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { SampleRouteData } from "./data/SampleData";
 import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
@@ -48,6 +48,32 @@ export const SampleVariants: Component<{
 }> = (props) => {
   const [state, actions] = useStore();
 
+  // state initialization - start
+  actions.setVariantsPage(props.sample, 0);
+  actions.setVariantsPageSize(props.sample, 5);
+
+  const vimField = props.recordsMeta.format?.VIM;
+  if (vimField) {
+    actions.setVariantsFilterQuery(props.sample, {
+      selector: sampleSelector(props.sample, vimField),
+      operator: "==",
+      args: 1,
+    });
+  }
+  const dpField = props.recordsMeta.format?.DP;
+  if (dpField) {
+    actions.setVariantsFilterQuery(props.sample, {
+      selector: sampleSelector(props.sample, dpField),
+      operator: ">=",
+      args: 20,
+    });
+  }
+  const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
+  if (capiceScField) {
+    actions.setVariantsSort(props.sample, { field: capiceScField, direction: DIRECTION_DESCENDING });
+  }
+  // state initialization - end
+
   const infoFields = createMemo(() => {
     const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
     const includedFields = [
@@ -82,20 +108,11 @@ export const SampleVariants: Component<{
       : [];
   });
 
-  const defaultSort = (): Order | null => {
-    const capiceScField = infoFields().find((field) => field.id === "CAPICE_SC" && field.parent?.id === "CSQ");
-    return capiceScField ? { field: capiceScField, direction: DIRECTION_DESCENDING } : null;
-  };
-
   const page = () => state.samples[props.sample.id]?.variants?.page;
   const pageSize = () => state.samples[props.sample.id]?.variants?.pageSize;
   const searchQuery = () => state.samples[props.sample.id]?.variants?.searchQuery;
   const filterQueries = () => state.samples[props.sample.id]?.variants?.filterQueries;
   const sort = () => state.samples[props.sample.id]?.variants?.sort;
-
-  if (page() === undefined) actions.setVariantsPage(props.sample, 0);
-  if (pageSize() === undefined) actions.setVariantsPageSize(props.sample, 5);
-  if (sort() === undefined) actions.setVariantsSort(props.sample, defaultSort());
 
   const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
   const onSearchChange = (search: string) => actions.setVariantsSearchQuery(props.sample, search);

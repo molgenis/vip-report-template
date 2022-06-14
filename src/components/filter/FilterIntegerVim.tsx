@@ -18,11 +18,7 @@ export const FilterIntegerVim: Component<{
 
   return (
     <div class="control">
-      <Checkbox
-        label="Inheritance: match"
-        checked={props.query && props.query.args === true}
-        onChange={onFilterChange}
-      />
+      <Checkbox label="Inheritance: match" checked={props.query && props.query.args === 1} onChange={onFilterChange} />
     </div>
   );
 };

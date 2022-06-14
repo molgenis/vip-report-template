@@ -18,7 +18,7 @@ export const FilterIntegerDp: Component<{
 
   return (
     <div class="control">
-      <Checkbox label="Read depth >= 20" checked={props.query && props.query.args === true} onChange={onFilterChange} />
+      <Checkbox label="Read depth >= 20" checked={props.query && props.query.args === 20} onChange={onFilterChange} />
     </div>
   );
 };

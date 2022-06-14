@@ -20,7 +20,7 @@ export const FilterIntegerVid: Component<{
     <div class="control">
       <Checkbox
         label="Inheritance: de novo"
-        checked={props.query && props.query.args === true}
+        checked={props.query && props.query.args === 1}
         onChange={onFilterChange}
       />
     </div>
