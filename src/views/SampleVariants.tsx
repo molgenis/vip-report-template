@@ -57,7 +57,7 @@ export const SampleVariants: Component<{
 
   // state initialization - start
   actions.setVariantsPage(props.sample, 0);
-  actions.setVariantsPageSize(props.sample, 5);
+  actions.setVariantsPageSize(props.sample, 20);
 
   const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
   if (hpoField) {
