@@ -95,13 +95,13 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
 };
 
 export const GenomeBrowser: Component<{ contig: string; position: number; samples: Sample[] }> = (props) => {
-  let div: HTMLDivElement;
+  let divRef: HTMLDivElement;
   let browser: unknown;
   onMount(() => {
     (async () => {
       const config = await createBrowserConfig(props.contig, props.position, props.samples);
       if (config !== null) {
-        browser = await igv.createBrowser(div, config);
+        browser = await igv.createBrowser(divRef, config);
       }
     })().catch((err) => console.error(err));
   });
@@ -110,7 +110,5 @@ export const GenomeBrowser: Component<{ contig: string; position: number; sample
       igv.removeBrowser(browser);
     }
   });
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return <div ref={div} />;
+  return <div ref={divRef!} />;
 };
