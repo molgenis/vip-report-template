@@ -45,7 +45,7 @@ const defaultState: AppState = { variants: {}, samples: {} };
 
 const StoreContext = createContext<AppStore>() as Context<AppStore>;
 
-export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
+export const Provider: ParentComponent = (props) => {
   const [state, setState] = createStore(defaultState);
 
   function getVariants(sample: Item<Sample>) {
