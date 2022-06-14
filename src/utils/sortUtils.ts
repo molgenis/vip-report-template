@@ -22,14 +22,6 @@ class InvalidSortPathError extends Error {
     this.name = "InvalidSortPathError";
   }
 }
-
-class InvalidOrderError extends Error {
-  constructor(order: Order) {
-    super(`invalid order field '${order.field.id}'`);
-    this.name = "InvalidSortPathError";
-  }
-}
-
 export function createRecordSort(recordsMeta: Metadata, sort?: SortOrder | SortOrder[]): Sort {
   const orders = sort ? (Array.isArray(sort) ? sort : [sort]) : [];
   return { orders: orders.map((order) => createOrder(order, recordsMeta)) };
