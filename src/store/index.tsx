@@ -6,34 +6,42 @@ import { selectorKey } from "../utils/query";
 
 export type FilterQueries = { [key: string]: QueryClause | undefined };
 
+type AppStateVariants = {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filterQueries?: FilterQueries;
+  sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
+};
+
 // TODO clear store on dataset change
 export type AppState = {
+  variants: AppStateVariants;
   samples: {
-    [key: string]: {
-      variants: {
-        page?: number;
-        pageSize?: number;
-        searchQuery?: string;
-        filterQueries?: FilterQueries;
-        sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
-      };
-    };
+    [key: string]: { variants: AppStateVariants };
   };
 };
 
 export type AppActions = {
-  setVariantsPage(sample: Item<Sample>, page: number): void;
-  setVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
-  setVariantsSearchQuery(sample: Item<Sample>, search: string): void;
-  clearVariantsSearchQuery(sample: Item<Sample>): void;
-  setVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
-  clearVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
-  setVariantsSort(sample: Item<Sample>, order: SortOrder | null): void;
+  setVariantsPage(page: number): void;
+  setVariantsPageSize(pageSize: number): void;
+  setVariantsSearchQuery(searchQuery: string): void;
+  clearVariantsSearchQuery(): void;
+  setVariantsFilterQuery(query: QueryClause): void;
+  clearVariantsFilterQuery(selector: Selector): void;
+  setVariantsSort(sort: SortOrder | null): void;
+  setSampleVariantsPage(sample: Item<Sample>, page: number): void;
+  setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
+  setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string): void;
+  clearSampleVariantsSearchQuery(sample: Item<Sample>): void;
+  setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
+  clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
+  setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null): void;
 };
 
 export type AppStore = [state: AppState, actions: AppActions];
 
-const defaultState: AppState = { samples: {} };
+const defaultState: AppState = { variants: {}, samples: {} };
 
 const StoreContext = createContext<AppStore>() as Context<AppStore>;
 
@@ -45,15 +53,51 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
   }
 
   const actions: AppActions = {
-    setVariantsPage(sample: Item<Sample>, page: number) {
+    setVariantsPage(page: number) {
+      setState({ variants: { ...state.variants, page } });
+    },
+    setVariantsPageSize(pageSize: number) {
+      setState({ variants: { ...state.variants, pageSize } });
+    },
+    setVariantsSearchQuery(searchQuery: string) {
+      setState({ variants: { ...state.variants, searchQuery } });
+    },
+    clearVariantsSearchQuery() {
+      setState({ variants: { ...state.variants, searchQuery: undefined } });
+    },
+    setVariantsFilterQuery(query: QueryClause) {
+      setState({
+        variants: {
+          ...state.variants,
+          filterQueries: { ...(state.variants.filterQueries || {}), [selectorKey(query.selector)]: query },
+        },
+      });
+    },
+    clearVariantsFilterQuery(selector: Selector) {
+      setState({
+        variants: {
+          ...state.variants,
+          filterQueries: { ...(state.variants.filterQueries || {}), [selectorKey(selector)]: undefined },
+        },
+      });
+    },
+    setVariantsSort(sort: SortOrder | null) {
+      setState({
+        variants: {
+          ...state.variants,
+          sort,
+        },
+      });
+    },
+    setSampleVariantsPage(sample: Item<Sample>, page: number) {
       setState({ samples: { ...state.samples, [sample.id]: { variants: { ...getVariants(sample), page } } } });
     },
-    setVariantsPageSize(sample: Item<Sample>, pageSize: number) {
+    setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number) {
       setState({
         samples: { ...state.samples, [sample.id]: { variants: { ...getVariants(sample), pageSize, page: undefined } } },
       });
     },
-    setVariantsSearchQuery(sample: Item<Sample>, searchQuery: string) {
+    setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string) {
       setState({
         samples: {
           ...state.samples,
@@ -61,7 +105,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
         },
       });
     },
-    clearVariantsSearchQuery(sample: Item<Sample>) {
+    clearSampleVariantsSearchQuery(sample: Item<Sample>) {
       setState({
         samples: {
           ...state.samples,
@@ -69,7 +113,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
         },
       });
     },
-    setVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
+    setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
       const variants = getVariants(sample);
       setState({
         samples: {
@@ -84,7 +128,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
         },
       });
     },
-    clearVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
+    clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
       const variants = getVariants(sample);
       setState({
         samples: {
@@ -99,7 +143,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
         },
       });
     },
-    setVariantsSort(sample: Item<Sample>, sort: SortOrder | null) {
+    setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null) {
       setState({
         samples: { ...state.samples, [sample.id]: { variants: { ...getVariants(sample), sort } } },
       });

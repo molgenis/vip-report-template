@@ -57,12 +57,12 @@ export const SampleVariants: Component<{
   const [state, actions] = useStore();
 
   // state initialization - start
-  actions.setVariantsPage(props.sample, 0);
-  actions.setVariantsPageSize(props.sample, 20);
+  actions.setSampleVariantsPage(props.sample, 0);
+  actions.setSampleVariantsPageSize(props.sample, 20);
 
   const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
   if (hpoField) {
-    actions.setVariantsFilterQuery(props.sample, {
+    actions.setSampleVariantsFilterQuery(props.sample, {
       selector: infoSelector(hpoField),
       operator: "any_has_any",
       args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
@@ -71,7 +71,7 @@ export const SampleVariants: Component<{
 
   const vimField = props.recordsMeta.format?.VIM;
   if (vimField) {
-    actions.setVariantsFilterQuery(props.sample, {
+    actions.setSampleVariantsFilterQuery(props.sample, {
       selector: sampleSelector(props.sample, vimField),
       operator: "==",
       args: 1,
@@ -79,7 +79,7 @@ export const SampleVariants: Component<{
   }
   const dpField = props.recordsMeta.format?.DP;
   if (dpField) {
-    actions.setVariantsFilterQuery(props.sample, {
+    actions.setSampleVariantsFilterQuery(props.sample, {
       selector: sampleSelector(props.sample, dpField),
       operator: ">=",
       args: 20,
@@ -87,7 +87,10 @@ export const SampleVariants: Component<{
   }
   const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
   if (capiceScField) {
-    actions.setVariantsSort(props.sample, { property: infoSortPath(capiceScField), compare: DIRECTION_DESCENDING });
+    actions.setSampleVariantsSort(props.sample, {
+      property: infoSortPath(capiceScField),
+      compare: DIRECTION_DESCENDING,
+    });
   }
   // state initialization - end
 
@@ -131,12 +134,13 @@ export const SampleVariants: Component<{
   const filterQueries = () => state.samples[props.sample.id]?.variants?.filterQueries;
   const sort = () => state.samples[props.sample.id]?.variants?.sort;
 
-  const onPageChange = (page: number) => actions.setVariantsPage(props.sample, page);
-  const onSearchChange = (search: string) => actions.setVariantsSearchQuery(props.sample, search);
-  const onFilterChange = (event: FilterChangeEvent) => actions.setVariantsFilterQuery(props.sample, event.query);
-  const onFilterClear = (event: FilterClearEvent) => actions.clearVariantsFilterQuery(props.sample, event.selector);
-  const onSortChange = (event: SortEvent) => actions.setVariantsSort(props.sample, event.order);
-  const onSortClear = () => actions.setVariantsSort(props.sample, null);
+  const onPageChange = (page: number) => actions.setSampleVariantsPage(props.sample, page);
+  const onSearchChange = (search: string) => actions.setSampleVariantsSearchQuery(props.sample, search);
+  const onFilterChange = (event: FilterChangeEvent) => actions.setSampleVariantsFilterQuery(props.sample, event.query);
+  const onFilterClear = (event: FilterClearEvent) =>
+    actions.clearSampleVariantsFilterQuery(props.sample, event.selector);
+  const onSortChange = (event: SortEvent) => actions.setSampleVariantsSort(props.sample, event.order);
+  const onSortClear = () => actions.setSampleVariantsSort(props.sample, null);
 
   const params = (): Params => {
     return {

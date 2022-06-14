@@ -1,6 +1,6 @@
 import { Component, ErrorBoundary, onMount } from "solid-js";
 import { Link, Route, Routes, useLocation, useNavigate } from "solid-app-router";
-import { Variants } from "./views/Variants";
+import { Variants, VariantsView } from "./views/Variants";
 import { Variant } from "./views/Variant";
 import VariantData from "./views/data/VariantData";
 import { Samples } from "./views/Samples";
@@ -83,7 +83,7 @@ const App: Component = () => {
               </Route>
             </Route>
             <Route path="/variants">
-              <Route path="/" element={<Variants />} />
+              <Route path="/" element={<VariantsView />} />
               <Route path="/:variantId" data={VariantData}>
                 <Route path="/" element={<Variant />} />
                 <Route path="/consequences">
