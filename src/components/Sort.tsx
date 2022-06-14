@@ -1,13 +1,15 @@
 import { Component, For } from "solid-js";
 import { isNumerical } from "../utils/field";
 import { DIRECTION_ASCENDING, Order } from "../utils/sortUtils";
+import { SortOrder } from "@molgenis/vip-report-api/src/Api";
+import { infoSortPath } from "../utils/query";
 
 export type SortOption = {
   order: Order;
   selected?: boolean;
 };
 
-export type SortEvent = { order: Order | null };
+export type SortEvent = { order: SortOrder };
 
 export const Sort: Component<{
   options: SortOption[];
@@ -19,7 +21,14 @@ export const Sort: Component<{
 
   const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);
-    index === -1 ? props.onClear() : props.onChange({ order: sortableOptions()[index].order });
+    index === -1
+      ? props.onClear()
+      : props.onChange({
+          order: {
+            property: infoSortPath(sortableOptions()[index].order.field),
+            compare: sortableOptions()[index].order.direction,
+          },
+        });
   };
 
   return (

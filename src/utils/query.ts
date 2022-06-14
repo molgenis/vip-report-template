@@ -6,6 +6,7 @@ import {
   Sample,
   Selector,
   SelectorPart,
+  SortPath,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
@@ -75,7 +76,7 @@ function createFilterQuery(queries: FilterQueries): Query | null {
   return queryClauses.length === 1 ? queryClauses[0] : { operator: "and", args: queryClauses };
 }
 
-export function selector(field: FieldMetadata): Selector {
+export function selector(field: FieldMetadata): SelectorPart[] {
   const selector: Selector = [];
   let currentField: FieldMetadata | undefined = field;
   do {
@@ -101,13 +102,11 @@ export function selector(field: FieldMetadata): Selector {
 }
 
 export function infoSelector(field: FieldMetadata) {
-  const fieldSelector = selector(field) as SelectorPart[];
-  return ["n", ...fieldSelector];
+  return ["n", ...selector(field)];
 }
 
 export function sampleSelector(sample: Item<Sample>, field: FieldMetadata) {
-  const fieldSelector = selector(field) as SelectorPart[];
-  return ["s", sample.data.index, ...fieldSelector];
+  return ["s", sample.data.index, ...selector(field)];
 }
 
 export function selectorKey(selector: Selector): string {
@@ -120,4 +119,12 @@ export function infoFieldKey(field: FieldMetadata): string {
 
 export function sampleFieldKey(sample: Item<Sample>, field: FieldMetadata): string {
   return selectorKey(sampleSelector(sample, field));
+}
+
+function sortPath(field: FieldMetadata): SortPath {
+  return selector(field).filter((part) => part !== "*");
+}
+
+export function infoSortPath(field: FieldMetadata): SortPath {
+  return ["n", ...sortPath(field)];
 }

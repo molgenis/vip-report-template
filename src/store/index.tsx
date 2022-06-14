@@ -1,8 +1,7 @@
 import { hashIntegration, Router } from "solid-app-router";
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Item, QueryClause, Sample, Selector } from "@molgenis/vip-report-api/src/Api";
-import { Order } from "../utils/sortUtils";
+import { Item, QueryClause, Sample, Selector, SortOrder } from "@molgenis/vip-report-api/src/Api";
 import { selectorKey } from "../utils/query";
 
 export type FilterQueries = { [key: string]: QueryClause | undefined };
@@ -16,7 +15,7 @@ export type AppState = {
         pageSize?: number;
         searchQuery?: string;
         filterQueries?: FilterQueries;
-        sort?: Order | null; // null: do not sort. undefined: sort undefined
+        sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
       };
     };
   };
@@ -29,7 +28,7 @@ export type AppActions = {
   clearVariantsSearchQuery(sample: Item<Sample>): void;
   setVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
   clearVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
-  setVariantsSort(sample: Item<Sample>, order: Order | null): void;
+  setVariantsSort(sample: Item<Sample>, order: SortOrder | null): void;
 };
 
 export type AppStore = [state: AppState, actions: AppActions];
@@ -94,7 +93,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
         },
       });
     },
-    setVariantsSort(sample: Item<Sample>, sort: Order | null) {
+    setVariantsSort(sample: Item<Sample>, sort: SortOrder | null) {
       setState({
         samples: { [sample.id]: { variants: { ...getVariants(sample), sort } } },
       });

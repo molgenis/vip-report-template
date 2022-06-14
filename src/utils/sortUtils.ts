@@ -71,17 +71,3 @@ function createDirection(compare?: "asc" | "desc" | CompareFn): Direction {
   else if (typeof compare === "function") throw new Error("cannot convert sort with custom compare function");
   else throw new Error(`invalid sort compare '${compare}'`);
 }
-
-export function createSortOrder(order: Order | null): SortOrder | null {
-  if (order === null) return null;
-
-  let tokens;
-  if (order.field.parent) {
-    const fieldIndex = order.field.parent.nested?.items.findIndex((item) => item.id === order.field.id) || -1;
-    if (fieldIndex === -1) throw new InvalidOrderError(order);
-    tokens = [order.field.parent.id, fieldIndex];
-  } else {
-    tokens = [order.field.id];
-  }
-  return { property: ["n", ...tokens], compare: order.direction };
-}

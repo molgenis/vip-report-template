@@ -1,23 +1,24 @@
 import { Component, createMemo, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Params, PhenotypicFeature, Sample, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createQuery, infoSelector, sampleSelector } from "../utils/query";
+import { createQuery, infoSelector, infoSortPath, sampleSelector } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import { fetchPedigreeSamples, fetchPhenotypicFeatures, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters } from "../components/filter/Filters";
-import { createSortOrder, DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { SampleRouteData } from "./data/SampleData";
 import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
 import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
+import { arrayEquals } from "../utils/utils";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -86,7 +87,7 @@ export const SampleVariants: Component<{
   }
   const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
   if (capiceScField) {
-    actions.setVariantsSort(props.sample, { field: capiceScField, direction: DIRECTION_DESCENDING });
+    actions.setVariantsSort(props.sample, { property: infoSortPath(capiceScField), compare: DIRECTION_DESCENDING });
   }
   // state initialization - end
 
@@ -140,7 +141,7 @@ export const SampleVariants: Component<{
   const params = (): Params => {
     return {
       query: createQuery(searchQuery(), filterQueries(), props.recordsMeta) || undefined,
-      sort: createSortOrder(sort() || null) || undefined,
+      sort: sort() || undefined,
       page: page() || undefined,
       size: pageSize() || undefined,
     };
@@ -152,11 +153,17 @@ export const SampleVariants: Component<{
     infoFields().flatMap((field) => [
       {
         order: { field, direction: DIRECTION_ASCENDING },
-        selected: field.id === sort()?.field.id && sort()?.direction === DIRECTION_ASCENDING ? true : undefined,
+        selected:
+          arrayEquals(infoSortPath(field), sort()?.property as SortPath) && sort()?.compare === DIRECTION_ASCENDING
+            ? true
+            : undefined,
       },
       {
         order: { field, direction: DIRECTION_DESCENDING },
-        selected: field.id === sort()?.field.id && sort()?.direction === DIRECTION_DESCENDING ? true : undefined,
+        selected:
+          arrayEquals(infoSortPath(field), sort()?.property as SortPath) && sort()?.compare === DIRECTION_DESCENDING
+            ? true
+            : undefined,
       },
     ]);
 

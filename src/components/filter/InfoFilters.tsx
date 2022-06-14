@@ -4,7 +4,7 @@ import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { InfoFilter } from "./InfoFilter";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FilterQueries } from "../../store";
-import { infoFieldKey, selectorKey } from "../../utils/query";
+import { infoFieldKey } from "../../utils/query";
 
 export const InfoFilters: Component<{
   fields: FieldMetadata[];
