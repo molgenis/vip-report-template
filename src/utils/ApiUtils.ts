@@ -230,3 +230,24 @@ export function getRecordLabel(item: Item<Record>) {
   const record = item.data;
   return `${record.c}:${record.p} ${record.a.map((a) => `${record.r}>${a !== null ? a : "."}`).join(" / ")}`;
 }
+
+export const EMPTY_RECORD_ITEM: Item<Record> = {
+  id: -1,
+  data: { c: "", p: -1, i: [], r: "", a: [], q: null, f: [], n: {}, s: [] },
+};
+
+export const EMPTY_SAMPLE_ITEM: Item<Sample> = {
+  id: -1,
+  data: {
+    person: {
+      familyId: "",
+      individualId: "",
+      paternalId: "",
+      maternalId: "",
+      sex: "UNKNOWN_SEX",
+      affectedStatus: "MISSING",
+    },
+    index: -1,
+    proband: false,
+  },
+};

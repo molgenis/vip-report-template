@@ -110,5 +110,7 @@ export const GenomeBrowser: Component<{ contig: string; position: number; sample
       igv.removeBrowser(browser);
     }
   });
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return <div ref={div} />;
 };

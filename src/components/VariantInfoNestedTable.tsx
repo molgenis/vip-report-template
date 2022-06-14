@@ -58,7 +58,7 @@ export const VariantInfoNestedTable: Component<{
       <div class="table-container">
         <table class="table is-narrow">
           <thead>
-            <For each={props.infoField.nested.items}>
+            <For each={props.infoField.nested !== undefined ? props.infoField.nested.items : []}>
               {(infoFieldItem, i) => (
                 <>
                   {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
@@ -88,13 +88,13 @@ export const VariantInfoNestedTable: Component<{
                 {(value, j) => (
                   <>
                     <tr>
-                      <For each={props.infoField.nested.items}>
+                      <For each={props.infoField.nested !== undefined ? props.infoField.nested.items : []}>
                         {(infoFieldItem, i) => (
                           <>
                             {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
                               <td>
                                 <Info
-                                  info={value[i()] as Value}
+                                  info={Array.isArray(value) ? value[i()] : null}
                                   infoMetadata={infoFieldItem}
                                   href={getHref(infoFieldItem, j())}
                                   variant={props.record.data}
