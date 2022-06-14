@@ -67,18 +67,30 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
       });
     },
     setVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
-      const key = selectorKey(query.selector);
+      const variants = getVariants(sample);
       setState({
         samples: {
-          [sample.id]: { variants: { ...getVariants(sample), filterQueries: { [key]: query }, page: undefined } },
+          [sample.id]: {
+            variants: {
+              ...variants,
+              filterQueries: { ...variants.filterQueries, [selectorKey(query.selector)]: query },
+              page: undefined,
+            },
+          },
         },
       });
     },
     clearVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
-      const key = selectorKey(selector);
+      const variants = getVariants(sample);
       setState({
         samples: {
-          [sample.id]: { variants: { ...getVariants(sample), filterQueries: { [key]: undefined }, page: undefined } },
+          [sample.id]: {
+            variants: {
+              ...getVariants(sample),
+              filterQueries: { ...variants.filterQueries, [selectorKey(selector)]: undefined },
+              page: undefined,
+            },
+          },
         },
       });
     },
