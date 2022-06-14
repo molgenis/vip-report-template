@@ -42,7 +42,7 @@ export const Samples: Component = () => {
           <p class="has-text-weight-semibold">Proband</p>
           <div class="field">
             <div class="control">
-              <Checkbox value={"proband"} onChange={onProbandFilterChange} />
+              <Checkbox value={"proband"} label="" onChange={onProbandFilterChange} />
             </div>
           </div>
         </div>
