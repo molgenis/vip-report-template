@@ -12,7 +12,6 @@ export const Filters: Component<{
   queries?: FilterQueries;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
-  sampleId?: string;
 }> = (props) => {
   return (
     <>

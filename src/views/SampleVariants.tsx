@@ -170,7 +170,6 @@ export const SampleVariants: Component<{
           queries={filterQueries()}
           onChange={onFilterChange}
           onClear={onFilterClear}
-          sampleId={props.sample.data.person.individualId}
         />
       </div>
       <div class="column">
