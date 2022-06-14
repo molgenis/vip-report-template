@@ -2,26 +2,52 @@ import { describe, expect, test } from "vitest";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FilterQueries } from "../store";
-import { createQuery } from "../utils/query";
-import { QueryClause } from "@molgenis/vip-report-api/src/Api";
+import {
+  createQuery,
+  infoFieldKey,
+  infoSelector,
+  infoSortPath,
+  sampleFieldKey,
+  sampleSelector,
+  selectorKey,
+} from "../utils/query";
+import { Person, QueryClause } from "@molgenis/vip-report-api/src/Api";
 
 describe("query utilities", () => {
+  let fieldMetaCsq: FieldMetadata = {
+    id: "CSQ",
+    number: { type: "NUMBER" },
+    type: "STRING",
+  };
+
   const fieldMeta1: FieldMetadata = {
     id: "field1",
     number: { type: "NUMBER" },
     type: "CATEGORICAL",
+    parent: fieldMetaCsq,
   };
+
   const fieldMeta2: FieldMetadata = {
     id: "field2",
     number: { type: "NUMBER" },
     type: "CATEGORICAL",
+    parent: fieldMetaCsq,
   };
 
-  const fieldMetaCsq: FieldMetadata = {
+  fieldMetaCsq = {
     id: "CSQ",
     number: { type: "NUMBER" },
     type: "STRING",
     nested: { items: [fieldMeta1, fieldMeta2], separator: "|" },
+  };
+
+  const person: Person = {
+    familyId: "FAM001",
+    individualId: "Patient",
+    sex: "FEMALE",
+    affectedStatus: "AFFECTED",
+    maternalId: "Mother",
+    paternalId: "Father",
   };
 
   const meta: Metadata = { info: { CSQ: fieldMetaCsq } } as unknown as Metadata;
@@ -95,5 +121,36 @@ describe("query utilities", () => {
       "CSQ/field1": queryClause,
     };
     expect(createQuery(undefined, filterQueries, meta)).toBe(queryClause);
+  });
+
+  test("infoSelector", () => {
+    expect(infoSelector(fieldMeta1)).toStrictEqual(["n", "CSQ", "field1"]);
+  });
+
+  test("sampleSelector", () => {
+    expect(sampleSelector({ id: 1, data: { person: person, index: 0, proband: false } }, fieldMeta1)).toStrictEqual([
+      "s",
+      0,
+      "CSQ",
+      "field1",
+    ]);
+  });
+
+  test("selectorKey", () => {
+    expect(selectorKey([1, "test", 2, "3"])).toStrictEqual("1/test/2/3");
+  });
+
+  test("infoFieldKey", () => {
+    expect(infoFieldKey(fieldMeta1)).toStrictEqual("n/CSQ/field1");
+  });
+
+  test("sampleFieldKey", () => {
+    expect(sampleFieldKey({ id: 1, data: { person: person, index: 0, proband: false } }, fieldMeta1)).toStrictEqual(
+      "s/0/CSQ/field1"
+    );
+  });
+
+  test("infoSortPath", () => {
+    expect(infoSortPath(fieldMetaCsq)).toStrictEqual(["n", "CSQ"]);
   });
 });
