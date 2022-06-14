@@ -2,10 +2,10 @@ import { Component, For } from "solid-js";
 import { SampleFilters } from "./SampleFilters";
 import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FilterQueries } from "../../store";
 
-export type SampleFields = { sample: Sample; fields: FieldMetadata[] };
+export type SampleFields = { sample: Item<Sample>; fields: FieldMetadata[] };
 
 export const SamplesFilters: Component<{
   samplesFields: SampleFields[];

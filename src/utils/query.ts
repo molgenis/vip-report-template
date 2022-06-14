@@ -100,28 +100,24 @@ export function selector(field: FieldMetadata): Selector {
   return selector;
 }
 
-export function sampleSelector(sample: Item<Sample>, field: FieldMetadata) {
-  const fieldSelector = selector(field) as SelectorPart[];
-  return ["s", sample.data.index, ...fieldSelector];
-}
-
 export function infoSelector(field: FieldMetadata) {
   const fieldSelector = selector(field) as SelectorPart[];
   return ["n", ...fieldSelector];
+}
+
+export function sampleSelector(sample: Item<Sample>, field: FieldMetadata) {
+  const fieldSelector = selector(field) as SelectorPart[];
+  return ["s", sample.data.index, ...fieldSelector];
 }
 
 export function selectorKey(selector: Selector): string {
   return Array.isArray(selector) ? selector.join("/") : selector.toString();
 }
 
-export function fieldKey(field: FieldMetadata): string {
-  return selectorKey(selector(field));
-}
-
 export function infoFieldKey(field: FieldMetadata): string {
-  return `n/${selectorKey(fieldKey(field))}`;
+  return selectorKey(infoSelector(field));
 }
 
-export function sampleFieldKey(sample: Sample, field: FieldMetadata): string {
-  return `s/${sample.index}/${selectorKey(fieldKey(field))}`;
+export function sampleFieldKey(sample: Item<Sample>, field: FieldMetadata): string {
+  return selectorKey(sampleSelector(sample, field));
 }

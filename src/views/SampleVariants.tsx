@@ -166,7 +166,7 @@ export const SampleVariants: Component<{
         <SearchBox value={searchQuery()} onInput={onSearchChange} />
         <Filters
           fields={infoFields()}
-          samplesFields={[{ sample: props.sample.data, fields: formatFields() }]}
+          samplesFields={[{ sample: props.sample, fields: formatFields() }]}
           queries={filterQueries()}
           onChange={onFilterChange}
           onClear={onFilterClear}
