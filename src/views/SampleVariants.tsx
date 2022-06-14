@@ -57,40 +57,49 @@ export const SampleVariants: Component<{
   const [state, actions] = useStore();
 
   // state initialization - start
-  actions.setSampleVariantsPage(props.sample, 0);
-  actions.setSampleVariantsPageSize(props.sample, 20);
-
-  const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
-  if (hpoField) {
-    actions.setSampleVariantsFilterQuery(props.sample, {
-      selector: infoSelector(hpoField),
-      operator: "any_has_any",
-      args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
-    });
+  if (state.samples[props.sample.id]?.variants?.page === undefined) {
+    actions.setSampleVariantsPage(props.sample, 0);
+  }
+  if (state.samples[props.sample.id]?.variants?.pageSize === undefined) {
+    actions.setSampleVariantsPageSize(props.sample, 20);
   }
 
-  const vimField = props.recordsMeta.format?.VIM;
-  if (vimField) {
-    actions.setSampleVariantsFilterQuery(props.sample, {
-      selector: sampleSelector(props.sample, vimField),
-      operator: "==",
-      args: 1,
-    });
+  if (state.samples[props.sample.id]?.variants?.filterQueries === undefined) {
+    const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
+    if (hpoField) {
+      actions.setSampleVariantsFilterQuery(props.sample, {
+        selector: infoSelector(hpoField),
+        operator: "any_has_any",
+        args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+      });
+    }
+
+    const vimField = props.recordsMeta.format?.VIM;
+    if (vimField) {
+      actions.setSampleVariantsFilterQuery(props.sample, {
+        selector: sampleSelector(props.sample, vimField),
+        operator: "==",
+        args: 1,
+      });
+    }
+    const dpField = props.recordsMeta.format?.DP;
+    if (dpField) {
+      actions.setSampleVariantsFilterQuery(props.sample, {
+        selector: sampleSelector(props.sample, dpField),
+        operator: ">=",
+        args: 20,
+      });
+    }
   }
-  const dpField = props.recordsMeta.format?.DP;
-  if (dpField) {
-    actions.setSampleVariantsFilterQuery(props.sample, {
-      selector: sampleSelector(props.sample, dpField),
-      operator: ">=",
-      args: 20,
-    });
-  }
-  const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
-  if (capiceScField) {
-    actions.setSampleVariantsSort(props.sample, {
-      property: infoSortPath(capiceScField),
-      compare: DIRECTION_DESCENDING,
-    });
+
+  if (state.samples[props.sample.id]?.variants?.sort === undefined) {
+    const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
+    if (capiceScField) {
+      actions.setSampleVariantsSort(props.sample, {
+        property: infoSortPath(capiceScField),
+        compare: DIRECTION_DESCENDING,
+      });
+    }
   }
   // state initialization - end
 

@@ -49,7 +49,6 @@ export const Variants: Component<{
   const onSortClear = () => actions.setVariantsSort(null);
 
   const params = (): Params => {
-    console.log(JSON.stringify(state));
     return {
       query: createQuery(searchQuery(), filterQueries(), props.recordsMeta) || undefined,
       sort: sort() || undefined,
