@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filter, FilterChangeEvent, FilterClearEvent } from "./Filter";
-import { QueryClause } from "@molgenis/vip-report-api/src/Api";
+import { QueryClause, SelectorPart } from "@molgenis/vip-report-api/src/Api";
 
 export const InfoFilter: Component<{
   field: FieldMetadata;
@@ -13,13 +13,13 @@ export const InfoFilter: Component<{
 
   const onChange = (event: FilterChangeEvent) => {
     props.onChange({
-      query: { ...event.query, selector: ["n", ...event.query.selector] },
+      query: { ...event.query, selector: ["n", ...(event.query.selector as SelectorPart[])] },
     });
   };
 
   const onClear = (event: FilterClearEvent) => {
     props.onClear({
-      selector: ["n", ...event.selector],
+      selector: ["n", ...(event.selector as SelectorPart[])],
     });
   };
 
