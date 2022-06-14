@@ -42,7 +42,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
   const [state, setState] = createStore(defaultState);
 
   function getVariants(sample: Item<Sample>) {
-    return state.samples[sample.id]?.variants || { filterQueries: {} };
+    return state.samples[sample.id]?.variants || {};
   }
 
   const actions: AppActions = {
@@ -73,7 +73,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
           [sample.id]: {
             variants: {
               ...variants,
-              filterQueries: { ...variants.filterQueries, [selectorKey(query.selector)]: query },
+              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(query.selector)]: query },
               page: undefined,
             },
           },
@@ -87,7 +87,7 @@ export const Provider: ParentComponent<{ value: AppStore }> = (props) => {
           [sample.id]: {
             variants: {
               ...getVariants(sample),
-              filterQueries: { ...variants.filterQueries, [selectorKey(selector)]: undefined },
+              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(selector)]: undefined },
               page: undefined,
             },
           },
