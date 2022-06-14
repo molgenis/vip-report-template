@@ -1,10 +1,10 @@
 import { Link } from "solid-app-router";
-import { Component, For, Show } from "solid-js";
+import { Component, createMemo, For, Show } from "solid-js";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "./record/info/HpoTerm";
 
 function getAffectedStatusLabel(affectedStatus: string) {
-  let label = "";
+  let label;
   switch (affectedStatus) {
     case "AFFECTED":
       label = "Affected";
@@ -14,12 +14,13 @@ function getAffectedStatusLabel(affectedStatus: string) {
       break;
     default:
       label = "?";
+      break;
   }
   return label;
 }
 
 function getSexLabel(sex: string) {
-  let label = "";
+  let label;
   switch (sex) {
     case "MALE":
       label = "Male";
@@ -29,6 +30,7 @@ function getSexLabel(sex: string) {
       break;
     default:
       label = "?";
+      break;
   }
   return label;
 }
@@ -45,10 +47,10 @@ export const SampleTable: Component<{
   samples: Item<Sample>[];
   phenotypes: Item<Phenotype>[];
 }> = (props) => {
-  const phenoMap = mapPhenotypes(props.phenotypes);
+  const phenoMap = createMemo(() => mapPhenotypes(props.phenotypes));
 
   function getPhenotypes(sampleId: string) {
-    return phenoMap[sampleId] !== undefined ? phenoMap[sampleId] : [];
+    return phenoMap()[sampleId] !== undefined ? phenoMap()[sampleId] : [];
   }
 
   return (
