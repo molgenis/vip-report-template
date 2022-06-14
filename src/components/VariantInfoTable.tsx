@@ -5,7 +5,7 @@ export const VariantInfoTable: Component<{ infoValues: InfoContainer; infoFields
   props
 ) => {
   return (
-    <div style="display: grid">
+    <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
       <div class="table-container">
         <table class="table is-borderless is-narrow">

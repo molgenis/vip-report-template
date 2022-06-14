@@ -10,7 +10,7 @@ import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
 export const VariantTable: Component<{ variant: Record }> = (props) => {
   return (
-    <div style="display: grid">
+    <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
       <div class="table-container">
         <table class="table is-borderless is-narrow">

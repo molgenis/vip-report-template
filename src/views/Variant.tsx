@@ -40,7 +40,7 @@ export const Variant: Component = () => {
           </Show>
         </div>
         <div class="columns">
-          <div class="column" style="max-width: 100%">
+          <div class="column" style={{ "max-width": "100%" }}>
             <For each={getNestedInfoFieldsWithValues(recordsMetadata().info, variant().data.n)}>
               {(infoField) => (
                 <>

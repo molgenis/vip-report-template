@@ -28,7 +28,7 @@ export const VariantsTable: Component<{
   const rowspan = createMemo(() => computeRowspan(props.recordsMetadata));
 
   return (
-    <div style="display: grid">
+    <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
       <div class="table-container">
         <table class="table is-narrow">

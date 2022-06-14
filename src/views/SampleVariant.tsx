@@ -93,7 +93,7 @@ export const SampleVariant: Component<{
         </div>
       </div>
       <div class="columns">
-        <div class="column" style="max-width: 100%">
+        <div class="column" style={{ "max-width": "100%" }}>
           <For each={getNestedInfoFieldsWithValues(props.recordsMeta.info, props.record.data.n)}>
             {(infoField) => (
               <>

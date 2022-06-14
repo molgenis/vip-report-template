@@ -22,7 +22,7 @@ export const VariantsSampleTable: Component<{
   const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
   return (
-    <div style="display: grid">
+    <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
       <div class="table-container">
         <table class="table is-narrow">
