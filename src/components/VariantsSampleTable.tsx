@@ -38,7 +38,7 @@ export const VariantsSampleTable: Component<{
                         sample.person.individualId
                       }: ${sample.person.sex.toLowerCase()}, ${sample.person.affectedStatus.toLowerCase()}`}
                       value={abbreviateHeader(sample.person.individualId)}
-                    ></Abbr>
+                    />
                   </th>
                 )}
               </For>

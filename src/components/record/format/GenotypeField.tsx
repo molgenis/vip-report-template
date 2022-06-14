@@ -55,7 +55,7 @@ export const GenotypeField: Component<{
       </For>
       <Show when={lowReadDepth || allelicImbalance}>
         <abbr title={getTitle(lowReadDepth, allelicImbalance)} class="ml-1">
-          <i class="fas fa-circle-exclamation has-text-danger"></i>
+          <i class="fas fa-circle-exclamation has-text-danger" />
         </abbr>
       </Show>
     </>

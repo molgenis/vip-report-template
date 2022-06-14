@@ -24,7 +24,7 @@ export const ConsequenceTable: Component<{ csqMetadata: FieldMetadata[]; csqValu
                   <tr>
                     <FieldHeader field={field} />
                     <td>
-                      <Info info={props.csqValues[index()]} infoMetadata={field} variant={props.record}></Info>
+                      <Info info={props.csqValues[index()]} infoMetadata={field} variant={props.record} />
                     </td>
                   </tr>
                 </Show>

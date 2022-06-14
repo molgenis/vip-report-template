@@ -22,7 +22,7 @@ export const VariantSampleTable: Component<{
         <table class="table is-narrow">
           <thead>
             <tr>
-              <th></th>
+              <th />
               <For each={sampleFields()}>{(formatField) => <FieldHeader field={formatField} />}</For>
             </tr>
           </thead>

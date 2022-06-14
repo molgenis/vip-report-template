@@ -10,7 +10,7 @@ export const FieldValueFloat: Component<{
         when={(props.value as number).toString().length > 6}
         fallback={<span>{(props.value as number).toString()}</span>}
       >
-        <Abbr title={(props.value as number).toString()} value={(props.value as number).toFixed(4)}></Abbr>
+        <Abbr title={(props.value as number).toString()} value={(props.value as number).toFixed(4)} />
       </Show>
     </Show>
   );

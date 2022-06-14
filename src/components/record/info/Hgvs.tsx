@@ -14,5 +14,5 @@ function abbreviate(notation: string): string {
 export const Hgvs: Component<{
   notation: string;
 }> = (props) => {
-  return <Abbr title={props.notation} value={abbreviate(props.notation)}></Abbr>;
+  return <Abbr title={props.notation} value={abbreviate(props.notation)} />;
 };

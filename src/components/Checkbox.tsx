@@ -28,7 +28,7 @@ export const Checkbox: Component<{
     <label class="checkbox">
       <input class="mr-1" type="checkbox" value={props.value} checked={checked()} onChange={onChange} />
       <Show when={props.desc !== undefined} fallback={<span>{props.label}</span>}>
-        <Abbr title={props.desc as string} value={props.label}></Abbr>
+        <Abbr title={props.desc as string} value={props.label} />
       </Show>
     </label>
   );

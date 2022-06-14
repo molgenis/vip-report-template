@@ -11,7 +11,7 @@ export const Consequence: Component<{
       {props.href ? <Link href={props.href}>{props.terms[0]}</Link> : <span>{props.terms[0]}</span>}
       {props.terms.length > 1 && (
         <span>
-          , <Abbr title={props.terms.slice(1).join(", ")} value="\u2026"></Abbr>
+          , <Abbr title={props.terms.slice(1).join(", ")} value="\u2026" />
         </span>
       )}
     </>

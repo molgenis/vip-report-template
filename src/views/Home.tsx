@@ -63,14 +63,8 @@ export const Home: Component = () => {
               <th>Arguments:</th>
               <td>{appMetadata().args}</td>
             </tr>
-            <VcfHeaderRow
-              value={getHeaderValue("VIP_Version", recordsMetadata().lines)}
-              title={"VIP Version"}
-            ></VcfHeaderRow>
-            <VcfHeaderRow
-              value={getHeaderValue("VIP_Command", recordsMetadata().lines)}
-              title={"VIP Command"}
-            ></VcfHeaderRow>
+            <VcfHeaderRow value={getHeaderValue("VIP_Version", recordsMetadata().lines)} title={"VIP Version"} />
+            <VcfHeaderRow value={getHeaderValue("VIP_Command", recordsMetadata().lines)} title={"VIP Command"} />
           </tbody>
         </table>
       </div>

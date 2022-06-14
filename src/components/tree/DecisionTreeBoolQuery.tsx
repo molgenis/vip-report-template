@@ -15,7 +15,7 @@ export const DecisionTreeBoolQuery: Component<{ query: BoolQuery }> = (props) =>
 
   return (
     <>
-      {label(value()) !== undefined && <Abbr title={value()} value={label(value()) as string}></Abbr>}
+      {label(value()) !== undefined && <Abbr title={value()} value={label(value()) as string} />}
       {label(value()) === undefined && <span>{value()}</span>}
     </>
   );

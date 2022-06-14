@@ -38,7 +38,7 @@ export const DecisionTreeNode: Component<{ nodeId: string; node: Node }> = (prop
         {!collapsed() && (
           <div class="card-content">
             <div class="content">
-              <Switch fallback={<Error error={`invalid node type ${props.node.type}`}></Error>}>
+              <Switch fallback={<Error error={`invalid node type ${props.node.type}`} />}>
                 <Match when={props.node.type === "BOOL"}>
                   <DecisionTreeNodeBool node={props.node as BoolNode} />
                 </Match>

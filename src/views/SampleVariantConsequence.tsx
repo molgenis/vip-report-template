@@ -65,7 +65,7 @@ export const SampleVariantConsequence: Component<{
             csqMetadata={props.recordsMeta.info.CSQ.nested !== undefined ? props.recordsMeta.info.CSQ.nested.items : []}
             csqValues={getSpecificConsequence(props.variant.data.n.CSQ as ValueArray, props.consequenceId)}
             record={props.variant.data}
-          ></ConsequenceTable>
+          />
         </div>
         {props.decisionTree !== null && (
           <div class="column">
