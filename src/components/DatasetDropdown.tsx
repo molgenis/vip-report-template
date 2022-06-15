@@ -1,14 +1,18 @@
 import { Component, createSignal, For } from "solid-js";
 import api from "../Api";
 import { useNavigate } from "solid-app-router";
+import { useStore } from "../store";
 
 export const DatasetDropdown: Component = () => {
+  const [, actions] = useStore();
+
   const navigate = useNavigate();
   const [selectedDataset, setSelectedDataset] = createSignal("GRCh37 Family");
 
   function switchIt(datasetName: string) {
     setSelectedDataset(datasetName);
     api.selectDataset(datasetName);
+    actions.reset();
     (async () => {
       navigate(`/`);
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });

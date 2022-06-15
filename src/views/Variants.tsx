@@ -35,11 +35,11 @@ export const Variants: Component<{
 }> = (props) => {
   const [state, actions] = useStore();
 
-  const page = () => state.variants.page;
-  const pageSize = () => state.variants.pageSize;
-  const searchQuery = () => state.variants.searchQuery;
-  const filterQueries = () => state.variants.filterQueries;
-  const sort = () => state.variants.sort;
+  const page = () => state.variants?.page;
+  const pageSize = () => state.variants?.pageSize;
+  const searchQuery = () => state.variants?.searchQuery;
+  const filterQueries = () => state.variants?.filterQueries;
+  const sort = () => state.variants?.sort;
 
   const onPageChange = (page: number) => actions.setVariantsPage(page);
   const onSearchChange = (search: string) => actions.setVariantsSearchQuery(search);

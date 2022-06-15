@@ -56,15 +56,19 @@ export const SampleVariants: Component<{
 }> = (props) => {
   const [state, actions] = useStore();
 
+  function getStateVariants() {
+    return state.samples ? state.samples[props.sample.id]?.variants : undefined;
+  }
+
   // state initialization - start
-  if (state.samples[props.sample.id]?.variants?.page === undefined) {
+  if (getStateVariants()?.page === undefined) {
     actions.setSampleVariantsPage(props.sample, 0);
   }
-  if (state.samples[props.sample.id]?.variants?.pageSize === undefined) {
+  if (getStateVariants()?.pageSize === undefined) {
     actions.setSampleVariantsPageSize(props.sample, 20);
   }
 
-  if (state.samples[props.sample.id]?.variants?.filterQueries === undefined) {
+  if (getStateVariants()?.filterQueries === undefined) {
     const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
     if (hpoField) {
       actions.setSampleVariantsFilterQuery(props.sample, {
@@ -92,7 +96,7 @@ export const SampleVariants: Component<{
     }
   }
 
-  if (state.samples[props.sample.id]?.variants?.sort === undefined) {
+  if (getStateVariants()?.sort === undefined) {
     const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
     if (capiceScField) {
       actions.setSampleVariantsSort(props.sample, {
@@ -137,11 +141,11 @@ export const SampleVariants: Component<{
       : [];
   });
 
-  const page = () => state.samples[props.sample.id]?.variants?.page;
-  const pageSize = () => state.samples[props.sample.id]?.variants?.pageSize;
-  const searchQuery = () => state.samples[props.sample.id]?.variants?.searchQuery;
-  const filterQueries = () => state.samples[props.sample.id]?.variants?.filterQueries;
-  const sort = () => state.samples[props.sample.id]?.variants?.sort;
+  const page = () => getStateVariants()?.page;
+  const pageSize = () => getStateVariants()?.pageSize;
+  const searchQuery = () => getStateVariants()?.searchQuery;
+  const filterQueries = () => getStateVariants()?.filterQueries;
+  const sort = () => getStateVariants()?.sort;
 
   const onPageChange = (page: number) => actions.setSampleVariantsPage(props.sample, page);
   const onSearchChange = (search: string) => actions.setSampleVariantsSearchQuery(props.sample, search);
