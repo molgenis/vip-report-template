@@ -75,7 +75,7 @@ export const SampleVariant: Component<{
         >
           <div class="column is-3">
             <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoValues={props.record.data.n} infoFields={props.recordsMeta.info} />
+            <VariantInfoTable infoFields={props.recordsMeta.info} record={props.record.data} />
           </div>
         </Show>
         <div class="column">

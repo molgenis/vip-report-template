@@ -84,7 +84,7 @@ export const SampleVariantConsequence: Component<{
         </div>
         <div class="column is-3">
           <h1 class="title is-5">Info</h1>
-          <VariantInfoTable infoValues={props.variant.data.n} infoFields={props.recordsMeta.info} />
+          <VariantInfoTable infoFields={props.recordsMeta.info} record={props.variant.data} />
         </div>
         <div class="column">
           <h1 class="title is-5">Samples</h1>
