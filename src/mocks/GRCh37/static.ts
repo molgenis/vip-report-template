@@ -136,7 +136,7 @@ export const samplesFamily = {
         paternalId: "0",
         maternalId: "0",
         sex: "MALE",
-        affectedStatus: "AFFECTED",
+        affectedStatus: "UNAFFECTED",
       },
       index: 1,
       proband: false,
@@ -173,19 +173,6 @@ export const samplesFamily = {
       ],
       subject: {
         id: "MotherHasQuiteALongName",
-      },
-    },
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-      ],
-      subject: {
-        id: "Father",
       },
     },
   ],
