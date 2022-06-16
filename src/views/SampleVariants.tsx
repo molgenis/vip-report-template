@@ -70,7 +70,7 @@ export const SampleVariants: Component<{
 
   if (getStateVariants()?.filterQueries === undefined) {
     const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
-    if (hpoField) {
+    if (hpoField && props.samplePhenotypes.length > 0) {
       actions.setSampleVariantsFilterQuery(props.sample, {
         selector: infoSelector(hpoField),
         operator: "any_has_any",
