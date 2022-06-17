@@ -35,7 +35,7 @@ export const Variant: Component = () => {
           >
             <div class="column is-3">
               <h1 class="title is-5">Info</h1>
-              <VariantInfoTable infoValues={variant().data.n} infoFields={recordsMetadata().info} />
+              <VariantInfoTable infoFields={recordsMetadata().info} record={variant().data} />
             </div>
           </Show>
         </div>
