@@ -15,6 +15,7 @@ import { SampleVariantRouteData } from "./data/SampleVariantData";
 import { getSampleLabel } from "../utils/sample";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Abbr } from "../components/Abbr";
 
 export const SampleVariantView: Component = () => {
   const { sample, variant } = useRouteData<SampleVariantRouteData>();
@@ -98,7 +99,9 @@ export const SampleVariant: Component<{
             {(infoField) => (
               <>
                 <h1 class="title is-5">{infoField.id}</h1>
-                <p class="mb-4">{infoField.description}</p>
+                <p class="mb-4">
+                  <Abbr value={infoField.description as string} title={infoField.description as string} />
+                </p>
                 <VariantInfoNestedTable
                   infoValue={props.record.data.n[infoField.id] as unknown as Value[][]}
                   infoField={infoField}
