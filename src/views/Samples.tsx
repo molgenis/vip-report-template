@@ -15,7 +15,7 @@ export const Samples: Component = () => {
   const onSearchChange = (search: string) =>
     setParams({
       page: 0,
-      query: search !== "" ? { selector: ["person", "individualId"], operator: "==", args: search } : undefined,
+      query: search !== "" ? { selector: ["person", "individualId"], operator: "~=", args: search } : undefined,
     });
   const onProbandFilterChange = (event: CheckboxEvent) => {
     setParams({
