@@ -16,6 +16,12 @@ export const FilterCategorical: Component<{
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
   const group: CheckboxGroup = {};
+  if (props.query !== undefined) {
+    (props.query?.args as string[]).forEach((key) => {
+      group[key] = true;
+    });
+  }
+
   const nullValue = "__null";
 
   // enable null category for any_has_any case if someone asks for it (requires query to be composed)
