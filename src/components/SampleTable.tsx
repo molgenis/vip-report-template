@@ -2,6 +2,7 @@ import { Link } from "solid-app-router";
 import { Component, createMemo, For, Show } from "solid-js";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "./record/info/HpoTerm";
+import { Anchor } from "./Anchor";
 
 function getAffectedStatusLabel(affectedStatus: string) {
   let label;
@@ -96,15 +97,14 @@ export const SampleTable: Component<{
                   </td>
                   <td>
                     <Show when={getPhenotypes(sample.data.person.individualId).length > 0}>
-                      <Link
+                      <Anchor
                         href={`https://vibe.molgeniscloud.org/?phenotypes=${getPhenotypes(
                           sample.data.person.individualId
                         )
                           .map((feature) => feature.type.id)
                           .join(",")}`}
-                      >
-                        <i class="fas fa-external-link" />
-                      </Link>
+                        value={<i class="fas fa-external-link" />}
+                      />
                     </Show>
                   </td>
                 </tr>
