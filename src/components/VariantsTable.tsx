@@ -109,7 +109,12 @@ export const VariantsTable: Component<{
                                   {(value, j) => (
                                     <>
                                       {j() !== 0 && <br />}
-                                      <Info info={value[i()]} infoMetadata={infoFieldNested} variant={record.data} />
+                                      <Info
+                                        info={value[i()]}
+                                        infoMetadata={infoFieldNested}
+                                        variant={record.data}
+                                        href={`/variants/${record.id}/consequences/${j()}`}
+                                      />
                                     </>
                                   )}
                                 </For>
