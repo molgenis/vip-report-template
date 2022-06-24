@@ -5,6 +5,7 @@ import { FilterIntegerVim } from "./FilterIntegerVim";
 import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
 import { QueryClause, Selector } from "@molgenis/vip-report-api/src/Api";
+import { FilterClinVar } from "./FilterClinVar";
 
 export type FilterChangeEvent = { query: QueryClause };
 export type FilterClearEvent = { selector: Selector };
@@ -28,6 +29,9 @@ export const Filter: Component<{
       </Match>
       <Match when={props.field.id === "VIM"}>
         <FilterIntegerVim field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
+      </Match>
+      <Match when={props.field.id === "clinVar_CLNSIG" && props.field.parent?.id === "CSQ"}>
+        <FilterClinVar field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
       </Match>
       <Match when={props.field.type === "CATEGORICAL"}>
         <FilterCategorical field={props.field} onChange={onChange} onClear={onClear} query={props.query} />

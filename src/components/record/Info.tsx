@@ -45,8 +45,8 @@ export const Info: Component<{
       >
         {props.info !== null && <Hgvs notation={props.info as string} />}
       </Match>
-      <Match when={props.infoMetadata.id === "CLIN_SIG" && props.infoMetadata.parent?.id === "CSQ"}>
-        {props.info !== null && <ClinVar value={props.info as string} />}
+      <Match when={props.infoMetadata.id === "clinVar_CLNSIG" && props.infoMetadata.parent?.id === "CSQ"}>
+        {props.info !== null && <ClinVar value={props.info as string[]} infoMetadata={props.infoMetadata} />}
       </Match>
     </Switch>
   );

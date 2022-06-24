@@ -9,8 +9,13 @@ export type CheckboxGroup = {
   [key: string]: boolean;
 };
 
+export type CategoryLabels = {
+  [key: string]: string;
+};
+
 export const FilterCategorical: Component<{
   field: FieldMetadata;
+  labels?: CategoryLabels;
   query?: QueryClause;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
@@ -52,7 +57,7 @@ export const FilterCategorical: Component<{
           <div class="control">
             <Checkbox
               value={category}
-              label={category}
+              label={props.labels ? props.labels[category] : category}
               checked={props.query && (props.query.args as string[]).includes(category)}
               onChange={onChange}
             />

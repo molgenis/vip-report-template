@@ -1,14 +1,15 @@
 import { Component } from "solid-js";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export const ClinVar: Component<{
-  value: string;
+  value: string[];
+  infoMetadata: FieldMetadata;
 }> = (props) => {
-  function getClass(value: string): string {
-    const vClasses = [];
-    for (const token of value) {
-      for (const subToken of token.split("/")) {
+  const label = () => {
+    return props.value
+      .map((token) => {
         let vClass;
-        switch (subToken) {
+        switch (token.toLowerCase()) {
           case "benign":
             vClass = "B";
             break;
@@ -24,14 +25,15 @@ export const ClinVar: Component<{
           case "pathogenic":
             vClass = "P";
             break;
+          case "conflicting_interpretations_of_pathogenicity":
+            vClass = "Conflict";
+            break;
           default:
-            vClass = value;
+            vClass = token;
         }
-        vClasses.push(vClass);
-      }
-    }
-    return [...new Set(vClasses)].sort().join("/");
-  }
-
-  return <span>{getClass(props.value)}</span>;
+        return vClass;
+      })
+      .join(", ");
+  };
+  return <span>{label()}</span>;
 };

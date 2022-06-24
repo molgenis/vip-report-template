@@ -121,7 +121,7 @@ export const SampleVariants: Component<{
       "VIPC",
       "UMCG_CL",
       "VKGL_CL",
-      "CLIN_SIG",
+      "clinVar_CLNSIG",
       "gnomAD_AF",
       "gnomAD_HN",
       "PUBMED",
