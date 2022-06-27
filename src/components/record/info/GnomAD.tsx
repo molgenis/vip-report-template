@@ -1,29 +1,49 @@
-import { Component, createResource, Show } from "solid-js";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Component, Show } from "solid-js";
 import { FieldValueFloat } from "../field/FieldValueFloat";
-import { EMPTY_HTS_FILE_METADATA, fetchHtsFileMetadata } from "../../../utils/ApiUtils";
-import { FieldValueInteger } from "../field/FieldValueInteger";
+import { FieldProps } from "../field/Field";
+import { ValueFloat } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Anchor } from "../../Anchor";
 
-export const GnomAD: Component<{
-  id: string;
-  variant: Record;
-  value: number;
-}> = (props) => {
-  const [htsFileMetadata] = createResource({}, fetchHtsFileMetadata, { initialValue: EMPTY_HTS_FILE_METADATA });
+export const GnomAD: Component<FieldProps> = (props) => {
+  const af = (): number | null => props.info.value as ValueFloat;
 
-  function getHref(genomeAssembly: string) {
-    return `https://gnomad.broadinstitute.org/variant/${encodeURIComponent(
-      [props.variant.c, props.variant.p, props.variant.r, props.variant.a].join("-")
-    )}?dataset=${genomeAssembly === "GRCh38" ? "gnomad_r3" : "gnomad_r2_1"}`;
-  }
+  const href = (): string | undefined => {
+    let href;
+    if (af()) {
+      let dataset;
+      switch (props.context.genomeAssembly) {
+        case "GRCh37":
+          dataset = "gnomad_r2_1";
+          break;
+        case "GRCh38":
+          dataset = "gnomad_r3";
+          break;
+        default:
+          dataset = null;
+          break;
+      }
+
+      if (dataset) {
+        const record = props.info.record.data;
+        // FIXME record.a incorrect: select record.a through CSQ:ALLELE_NUM
+        const variantId = [record.c, record.p, record.r, record.a].join("-");
+        href = `https://gnomad.broadinstitute.org/variant/${encodeURIComponent(variantId)}?dataset=${dataset}`;
+      }
+    }
+    return href;
+  };
 
   return (
-    <Show when={!htsFileMetadata.loading}>
-      <a href={getHref(htsFileMetadata().genomeAssembly)} target="_blank" rel="noopener noreferrer nofollow">
-        <Show when={props.id === "GNOMAD_AD"} fallback={<FieldValueFloat value={props.value} />}>
-          <FieldValueInteger value={props.value} />
+    <Show when={af()}>
+      {(af) => (
+        <Show when={href()} fallback={<FieldValueFloat value={af} />}>
+          {(href) => (
+            <Anchor href={href}>
+              <FieldValueFloat value={af} />
+            </Anchor>
+          )}
         </Show>
-      </a>
+      )}
     </Show>
   );
 };

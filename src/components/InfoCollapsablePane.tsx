@@ -1,39 +1,40 @@
 import { Component, createMemo, createSignal, For, Signal } from "solid-js";
-import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Item } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata, Item } from "@molgenis/vip-report-api/src/Api";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
-import { useLocation } from "solid-app-router";
+import { FieldValue } from "./record/field/Field";
+import { isCsqInfo } from "../utils/csqUtils";
+import { Link, useLocation } from "solid-app-router";
 
 export const InfoCollapsablePane: Component<{
   fields: FieldMetadata[];
   record: Item<Record>;
+  htsFileMeta: HtsFileMetadata;
 }> = (props) => {
   const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
-
-  function getHref(field: InfoMetadata, consequenceIndex: number): string | undefined {
-    let href;
-    if (field.id === "Consequence" && field.parent?.id === "CSQ") {
-      href = `${useLocation().pathname}/${props.record.id}/consequences/${consequenceIndex}`;
-    }
-    return href;
-  }
 
   function toggleCollapse() {
     setCollapsed(!collapsed());
   }
 
-  const values = createMemo(() =>
+  const values = createMemo((): FieldValue[][] =>
     props.fields.map((field) => {
       if (field.parent) {
-        return (props.record.data.n[field.parent.id] as ValueArray).map((nestedValues) =>
-          field.parent && field.parent.nested
-            ? (nestedValues as ValueArray)[
-                field.parent.nested.items.findIndex((nestedField) => nestedField.id === field.id)
-              ]
-            : null
-        );
+        return (props.record.data.n[field.parent.id] as ValueArray).map((nestedValues) => {
+          const value =
+            field.parent && field.parent.nested
+              ? (nestedValues as ValueArray)[
+                  field.parent.nested.items.findIndex((nestedField) => nestedField.id === field.id)
+                ]
+              : null;
+          return {
+            record: props.record,
+            value: value,
+            valueParent: nestedValues,
+          };
+        });
       }
       throw new Error(`Nested field '${field.id}' needs to have a parent field.`);
     })
@@ -54,9 +55,14 @@ export const InfoCollapsablePane: Component<{
               {(value, j) => (
                 <>
                   {j() != 0 && collapsed() && <br />}
-                  {(j() == 0 || collapsed()) && (
-                    <Info info={value} infoMetadata={field} href={getHref(field, j())} variant={props.record.data} />
-                  )}
+                  {(j() == 0 || collapsed()) &&
+                    (isCsqInfo(field, "Consequence") ? (
+                      <Link href={`${useLocation().pathname}/${props.record.id}/consequences/${j()}`}>
+                        <Info info={value} infoMeta={field} context={props.htsFileMeta} />
+                      </Link>
+                    ) : (
+                      <Info info={value} infoMeta={field} context={props.htsFileMeta} />
+                    ))}
                 </>
               )}
             </For>

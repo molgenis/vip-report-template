@@ -3,7 +3,7 @@ import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
 import { Link } from "solid-app-router";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";
 import { Component, createMemo, For } from "solid-js";
@@ -18,6 +18,7 @@ export const VariantsSampleTable: Component<{
   records: Item<Record>[];
   recordsMetadata: Metadata;
   nestedFields: FieldMetadata[];
+  htsFileMeta: HtsFileMetadata;
 }> = (props) => {
   const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
@@ -75,7 +76,7 @@ export const VariantsSampleTable: Component<{
                       </td>
                     )}
                   </For>
-                  <InfoCollapsablePane fields={props.nestedFields} record={record} />
+                  <InfoCollapsablePane fields={props.nestedFields} record={record} htsFileMeta={props.htsFileMeta} />
                 </tr>
               )}
             </For>

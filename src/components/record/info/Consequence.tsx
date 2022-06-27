@@ -1,17 +1,16 @@
 import { Component } from "solid-js";
+import { FieldProps } from "../field/Field";
 import { Abbr } from "../../Abbr";
-import { Link } from "solid-app-router";
 
-export const Consequence: Component<{
-  terms: string[];
-  href?: string;
-}> = (props) => {
+export const Consequence: Component<FieldProps> = (props) => {
+  const consequence = (): string[] => props.info.value as string[];
+
   return (
     <>
-      {props.href ? <Link href={props.href}>{props.terms[0]}</Link> : <span>{props.terms[0]}</span>}
-      {props.terms.length > 1 && (
+      <span>{consequence()[0]}</span>
+      {consequence().length > 1 && (
         <span>
-          , <Abbr title={props.terms.slice(1).join(", ")} value="\u2026" />
+          , <Abbr title={consequence().slice(1).join(", ")} value="\u2026" />
         </span>
       )}
     </>

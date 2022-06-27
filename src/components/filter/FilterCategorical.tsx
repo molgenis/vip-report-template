@@ -1,20 +1,21 @@
 import { Component, For } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
-import { FilterChangeEvent, FilterClearEvent } from "./Filter";
+import { FilterProps } from "./Filter";
 import { selector } from "../../utils/query";
-import { QueryClause } from "@molgenis/vip-report-api/src/Api";
 
 export type CheckboxGroup = {
   [key: string]: boolean;
 };
 
-export const FilterCategorical: Component<{
-  field: FieldMetadata;
-  query?: QueryClause;
-  onChange: (event: FilterChangeEvent) => void;
-  onClear: (event: FilterClearEvent) => void;
-}> = (props) => {
+export type CategoryLabels = {
+  [key: string]: string;
+};
+
+export const FilterCategorical: Component<
+  FilterProps & {
+    labels?: CategoryLabels;
+  }
+> = (props) => {
   const group: CheckboxGroup = {};
   if (props.query !== undefined) {
     (props.query?.args as string[]).forEach((key) => {
@@ -52,7 +53,7 @@ export const FilterCategorical: Component<{
           <div class="control">
             <Checkbox
               value={category}
-              label={category}
+              label={props.labels ? props.labels[category] : category}
               checked={props.query && (props.query.args as string[]).includes(category)}
               onChange={onChange}
             />

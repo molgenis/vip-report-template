@@ -1,7 +1,7 @@
 import { Component, createResource, createSignal, For, Show } from "solid-js";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { Item, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
-import { HpoTerm } from "../components/record/info/HpoTerm";
+import { HpoTerm } from "../components/HpoTerm";
 import {
   EMPTY_APP_METADATA,
   EMPTY_HTS_FILE_METADATA,

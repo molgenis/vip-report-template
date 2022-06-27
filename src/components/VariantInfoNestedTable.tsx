@@ -5,6 +5,8 @@ import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/Metada
 import { FieldHeader } from "./FieldHeader";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
+import { isCsqInfo } from "../utils/csqUtils";
+import { Link, useLocation } from "solid-app-router";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
@@ -43,15 +45,6 @@ export const VariantInfoNestedTable: Component<{
   record: Item<Record>;
   sample: { id: number; label: string } | null;
 }> = (props) => {
-  function getHref(field: InfoMetadata, consequenceIndex: number): string | undefined {
-    let href;
-    if (field.id === "Consequence" && field.parent?.id === "CSQ") {
-      href = `/variants/${props.record.id}/consequences/${consequenceIndex}`;
-      if (props.sample !== null) href = `/samples/${props.sample.id}` + href;
-    }
-    return href;
-  }
-
   return (
     <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
@@ -76,7 +69,7 @@ export const VariantInfoNestedTable: Component<{
                     <>
                       {isNonEmptyNestedInfoItem(props.infoField, -1, props.infoValue) && (
                         <td>
-                          <Info info={value} infoMetadata={props.infoField} variant={props.record.data} />
+                          <Info info={{ value: value, record: props.record }} infoMeta={props.infoField} context={{}} />
                         </td>
                       )}
                     </>
@@ -93,12 +86,29 @@ export const VariantInfoNestedTable: Component<{
                           <>
                             {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
                               <td>
-                                <Info
-                                  info={Array.isArray(value) ? value[i()] : null}
-                                  infoMetadata={infoFieldItem}
-                                  href={getHref(infoFieldItem, j())}
-                                  variant={props.record.data}
-                                />
+                                {isCsqInfo(infoFieldItem, "Consequence") ? (
+                                  <Link href={`${useLocation().pathname}/consequences/${j()}`}>
+                                    <Info
+                                      info={{
+                                        value: Array.isArray(value) ? value[i()] : null,
+                                        valueParent: value,
+                                        record: props.record,
+                                      }}
+                                      infoMeta={infoFieldItem}
+                                      context={{}}
+                                    />
+                                  </Link>
+                                ) : (
+                                  <Info
+                                    info={{
+                                      value: Array.isArray(value) ? value[i()] : null,
+                                      valueParent: value,
+                                      record: props.record,
+                                    }}
+                                    infoMeta={infoFieldItem}
+                                    context={{}}
+                                  />
+                                )}
                               </td>
                             )}
                           </>

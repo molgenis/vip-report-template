@@ -1,12 +1,15 @@
-import { Component, JSXElement } from "solid-js";
+import { ParentComponent, Show } from "solid-js";
 
-export const Anchor: Component<{
-  href: string;
-  value: string | number | JSXElement;
+export const Anchor: ParentComponent<{
+  href: string | null | undefined;
 }> = (props) => {
   return (
-    <a href={props.href} target="_blank" rel="noopener noreferrer nofollow">
-      {props.value}
-    </a>
+    <Show when={props.href} fallback={props.children}>
+      {(href) => (
+        <a href={href} target="_blank" rel="noopener noreferrer nofollow">
+          {props.children}
+        </a>
+      )}
+    </Show>
   );
 };

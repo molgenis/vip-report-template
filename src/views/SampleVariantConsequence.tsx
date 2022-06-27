@@ -1,7 +1,13 @@
 import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Loader } from "../components/Loader";
-import { fetchDecisionTree, fetchPedigreeSamples, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
+import {
+  fetchDecisionTree,
+  fetchHtsFileMetadata,
+  fetchPedigreeSamples,
+  fetchRecordsMeta,
+  getRecordLabel,
+} from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
@@ -22,6 +28,7 @@ export const SampleVariantConsequenceView: Component = () => {
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
+  const [htsFileMeta] = createResource(fetchHtsFileMetadata);
 
   return (
     <Show when={sample() && variant()} fallback={<Loader />}>
@@ -34,7 +41,7 @@ export const SampleVariantConsequenceView: Component = () => {
           { text: `Consequence #${consequenceId}` },
         ]}
       />
-      <Show when={pedigreeSamples() && recordsMeta()} fallback={<Loader />}>
+      <Show when={pedigreeSamples() && recordsMeta() && htsFileMeta()} fallback={<Loader />}>
         <SampleVariantConsequence
           sample={sample()!}
           pedigreeSamples={pedigreeSamples()!.items}
@@ -64,7 +71,7 @@ export const SampleVariantConsequence: Component<{
           <ConsequenceTable
             csqMetadata={props.recordsMeta.info.CSQ.nested !== undefined ? props.recordsMeta.info.CSQ.nested.items : []}
             csqValues={getSpecificConsequence(props.variant.data.n.CSQ as ValueArray, props.consequenceId)}
-            record={props.variant.data}
+            record={props.variant}
           />
         </div>
         {props.decisionTree !== null && (
@@ -84,7 +91,7 @@ export const SampleVariantConsequence: Component<{
         </div>
         <div class="column is-3">
           <h1 class="title is-5">Info</h1>
-          <VariantInfoTable infoFields={props.recordsMeta.info} record={props.variant.data} />
+          <VariantInfoTable infoFields={props.recordsMeta.info} record={props.variant} />
         </div>
         <div class="column">
           <h1 class="title is-5">Samples</h1>
@@ -96,7 +103,7 @@ export const SampleVariantConsequence: Component<{
               props.sample.data,
               props.pedigreeSamples.map((item) => item.data)
             )}
-            record={props.variant.data}
+            record={props.variant}
           />
         </div>
       </div>

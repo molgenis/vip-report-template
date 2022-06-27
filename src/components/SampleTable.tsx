@@ -1,7 +1,7 @@
 import { Link } from "solid-app-router";
 import { Component, createMemo, For, Show } from "solid-js";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
-import { HpoTerm } from "./record/info/HpoTerm";
+import { HpoTerm } from "./HpoTerm";
 import { Anchor } from "./Anchor";
 
 function getAffectedStatusLabel(affectedStatus: string) {
@@ -103,8 +103,9 @@ export const SampleTable: Component<{
                         )
                           .map((feature) => feature.type.id)
                           .join(",")}`}
-                        value={<i class="fas fa-external-link" />}
-                      />
+                      >
+                        <i class="fas fa-external-link" />
+                      </Anchor>
                     </Show>
                   </td>
                 </tr>

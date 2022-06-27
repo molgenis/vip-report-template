@@ -40,7 +40,7 @@ export const VariantConsequence: Component = () => {
       <div class="columns">
         <div class="column is-6">
           <h1 class="title is-5">Consequence</h1>
-          <ConsequenceTable csqMetadata={csqFields()} csqValues={csqValues()} record={variant().data} />
+          <ConsequenceTable csqMetadata={csqFields()} csqValues={csqValues()} record={variant()} />
         </div>
         <Show when={!recordsMetadata.loading && !decisionTree.loading && (decisionTree() as DecisionTree)}>
           {(decisionTree) => (
@@ -61,7 +61,7 @@ export const VariantConsequence: Component = () => {
         </div>
         <div class="column">
           <h1 class="title is-5">Info</h1>
-          <VariantInfoTable infoFields={recordsMetadata().info} record={variant().data} />
+          <VariantInfoTable infoFields={recordsMetadata().info} record={variant()} />
         </div>
       </div>
     </Show>

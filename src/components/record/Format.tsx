@@ -5,22 +5,31 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Field } from "./field/Field";
 import { GenotypeField } from "./format/GenotypeField";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
 export const Format: Component<{
   format: RecordSampleType;
   formatMetadata: FieldMetadata;
-  record: Record;
+  record: Item<Record>;
   isAbbreviate: boolean;
   allelicDepth: number[] | undefined;
   readDepth: number | undefined;
 }> = (props) => {
   return (
-    <Switch fallback={<Field info={props.format as Value | Value[]} infoMetadata={props.formatMetadata} />}>
+    <Switch
+      fallback={
+        <Field
+          info={{ value: props.format as Value | Value[], record: props.record }}
+          infoMeta={props.formatMetadata}
+          context={{}}
+        />
+      }
+    >
       <Match when={props.formatMetadata.id === "GT"}>
         <GenotypeField
           genotype={props.format as Genotype}
-          refAllele={props.record.r}
-          altAlleles={props.record.a}
+          refAllele={props.record.data.r}
+          altAlleles={props.record.data.a}
           isAbbreviate={props.isAbbreviate}
           allelicDepth={props.allelicDepth}
           readDepth={props.readDepth}
