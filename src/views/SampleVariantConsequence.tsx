@@ -1,7 +1,13 @@
 import { Component, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
 import { Loader } from "../components/Loader";
-import { fetchDecisionTree, fetchPedigreeSamples, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
+import {
+  fetchDecisionTree,
+  fetchHtsFileMetadata,
+  fetchPedigreeSamples,
+  fetchRecordsMeta,
+  getRecordLabel,
+} from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
@@ -22,6 +28,7 @@ export const SampleVariantConsequenceView: Component = () => {
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
+  const [htsFileMeta] = createResource(fetchHtsFileMetadata);
 
   return (
     <Show when={sample() && variant()} fallback={<Loader />}>
@@ -34,7 +41,7 @@ export const SampleVariantConsequenceView: Component = () => {
           { text: `Consequence #${consequenceId}` },
         ]}
       />
-      <Show when={pedigreeSamples() && recordsMeta()} fallback={<Loader />}>
+      <Show when={pedigreeSamples() && recordsMeta() && htsFileMeta()} fallback={<Loader />}>
         <SampleVariantConsequence
           sample={sample()!}
           pedigreeSamples={pedigreeSamples()!.items}

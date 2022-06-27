@@ -5,6 +5,8 @@ import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/Metada
 import { FieldHeader } from "./FieldHeader";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
+import { isCsqInfo } from "../utils/csqUtils";
+import { Link, useLocation } from "solid-app-router";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
@@ -76,7 +78,7 @@ export const VariantInfoNestedTable: Component<{
               </tr>
             ) : (
               <For each={props.infoValue}>
-                {(value) => (
+                {(value, j) => (
                   <>
                     <tr>
                       <For each={props.infoField.nested !== undefined ? props.infoField.nested.items : []}>
@@ -84,15 +86,29 @@ export const VariantInfoNestedTable: Component<{
                           <>
                             {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
                               <td>
-                                <Info
-                                  info={{
-                                    value: Array.isArray(value) ? value[i()] : null,
-                                    valueParent: value,
-                                    record: props.record,
-                                  }}
-                                  infoMeta={infoFieldItem}
-                                  context={{}}
-                                />
+                                {isCsqInfo(infoFieldItem, "Consequence") ? (
+                                  <Link href={`${useLocation().pathname}/consequences/${j()}`}>
+                                    <Info
+                                      info={{
+                                        value: Array.isArray(value) ? value[i()] : null,
+                                        valueParent: value,
+                                        record: props.record,
+                                      }}
+                                      infoMeta={infoFieldItem}
+                                      context={{}}
+                                    />
+                                  </Link>
+                                ) : (
+                                  <Info
+                                    info={{
+                                      value: Array.isArray(value) ? value[i()] : null,
+                                      valueParent: value,
+                                      record: props.record,
+                                    }}
+                                    infoMeta={infoFieldItem}
+                                    context={{}}
+                                  />
+                                )}
                               </td>
                             )}
                           </>
