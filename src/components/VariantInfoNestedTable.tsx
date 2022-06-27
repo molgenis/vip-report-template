@@ -43,15 +43,6 @@ export const VariantInfoNestedTable: Component<{
   record: Item<Record>;
   sample: { id: number; label: string } | null;
 }> = (props) => {
-  function getHref(field: InfoMetadata, consequenceIndex: number): string | undefined {
-    let href;
-    if (field.id === "Consequence" && field.parent?.id === "CSQ") {
-      href = `/variants/${props.record.id}/consequences/${consequenceIndex}`;
-      if (props.sample !== null) href = `/samples/${props.sample.id}` + href;
-    }
-    return href;
-  }
-
   return (
     <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
@@ -76,7 +67,7 @@ export const VariantInfoNestedTable: Component<{
                     <>
                       {isNonEmptyNestedInfoItem(props.infoField, -1, props.infoValue) && (
                         <td>
-                          <Info info={value} infoMetadata={props.infoField} variant={props.record.data} />
+                          <Info info={{ value: value, record: props.record }} infoMeta={props.infoField} context={{}} />
                         </td>
                       )}
                     </>
@@ -85,7 +76,7 @@ export const VariantInfoNestedTable: Component<{
               </tr>
             ) : (
               <For each={props.infoValue}>
-                {(value, j) => (
+                {(value) => (
                   <>
                     <tr>
                       <For each={props.infoField.nested !== undefined ? props.infoField.nested.items : []}>
@@ -94,10 +85,13 @@ export const VariantInfoNestedTable: Component<{
                             {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
                               <td>
                                 <Info
-                                  info={Array.isArray(value) ? value[i()] : null}
-                                  infoMetadata={infoFieldItem}
-                                  href={getHref(infoFieldItem, j())}
-                                  variant={props.record.data}
+                                  info={{
+                                    value: Array.isArray(value) ? value[i()] : null,
+                                    valueParent: value,
+                                    record: props.record,
+                                  }}
+                                  infoMeta={infoFieldItem}
+                                  context={{}}
                                 />
                               </td>
                             )}

@@ -6,10 +6,10 @@ import { InfoFilters } from "../components/filter/InfoFilters";
 import { Sort, SortEvent } from "../components/Sort";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
+import { fetchHtsFileMetadata, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
 import { flattenFieldMetadata } from "../utils/field";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
-import { Params, SortPath } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata, Params, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
 import { useStore } from "../store";
 import { createQuery, infoSortPath } from "../utils/query";
@@ -19,12 +19,13 @@ import { arrayEquals } from "../utils/utils";
 
 export const VariantsView: Component = () => {
   const [recordsMeta] = createResource(fetchRecordsMeta);
+  const [htsFileMeta] = createResource(fetchHtsFileMetadata);
 
   return (
     <>
       <Breadcrumb items={[{ text: "Variants" }]} />
-      <Show when={recordsMeta()} fallback={<Loader />}>
-        <Variants recordsMeta={recordsMeta()!} />
+      <Show when={recordsMeta() && htsFileMeta} fallback={<Loader />}>
+        <Variants recordsMeta={recordsMeta()!} htsFileMeta={htsFileMeta()!} />
       </Show>
     </>
   );
@@ -32,6 +33,7 @@ export const VariantsView: Component = () => {
 
 export const Variants: Component<{
   recordsMeta: Metadata;
+  htsFileMeta: HtsFileMetadata;
 }> = (props) => {
   const [state, actions] = useStore();
 
@@ -114,7 +116,11 @@ export const Variants: Component<{
             </div>
           </div>
           <div class="columns">
-            <VariantsTable records={records()!.items} recordsMetadata={props.recordsMeta} />
+            <VariantsTable
+              records={records()!.items}
+              recordsMetadata={props.recordsMeta}
+              htsFileMeta={props.htsFileMeta}
+            />
           </div>
         </div>
       </div>

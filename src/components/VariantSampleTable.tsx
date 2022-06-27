@@ -3,14 +3,14 @@ import { Record, RecordSample } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Format } from "./record/Format";
-import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FieldHeader } from "./FieldHeader";
 
 export const VariantSampleTable: Component<{
   formatFields: FieldMetadataContainer;
   samples: Sample[];
   sampleValues: RecordSample[];
-  record: Record;
+  record: Item<Record>;
 }> = (props) => {
   const sampleFields = createMemo((): FieldMetadata[] =>
     Object.keys(props.sampleValues[0]).map((fieldId) => props.formatFields[fieldId])
@@ -39,8 +39,8 @@ export const VariantSampleTable: Component<{
                           formatMetadata={formatField}
                           record={props.record}
                           isAbbreviate={false}
-                          allelicDepth={props.record.s[props.samples[i()].index]["AD"] as number[]}
-                          readDepth={props.record.s[props.samples[i()].index]["DP"] as number}
+                          allelicDepth={props.record.data.s[props.samples[i()].index]["AD"] as number[]}
+                          readDepth={props.record.data.s[props.samples[i()].index]["DP"] as number}
                         />
                       </td>
                     )}

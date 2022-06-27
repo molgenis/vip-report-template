@@ -8,11 +8,11 @@ import { Alt } from "./record/Alt";
 import { Qual } from "./record/Qual";
 import { Filter } from "./record/Filter";
 import { Info } from "./record/Info";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Link } from "solid-app-router";
-import { Item } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata, Item } from "@molgenis/vip-report-api/src/Api";
 import { FieldHeader } from "./FieldHeader";
+import { InfoCollapsablePane } from "./InfoCollapsablePane";
 
 const computeRowspan = (recordsMetadata: Metadata) =>
   Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : 1;
@@ -21,6 +21,7 @@ const computeColspan = (field: FieldMetadata) => (field.nested ? field.nested.it
 export const VariantsTable: Component<{
   records: Item<Record>[];
   recordsMetadata: Metadata;
+  htsFileMeta: HtsFileMetadata;
 }> = (props) => {
   const infoFields = () => Object.values(props.recordsMetadata.info);
   const infoFieldsNested = () => infoFields().filter((infoField) => infoField.nested);
@@ -93,38 +94,18 @@ export const VariantsTable: Component<{
                   <For each={infoFields()}>
                     {(infoField) =>
                       infoField.nested ? (
-                        <For each={infoField.nested.items}>
-                          {(infoFieldNested, i) => (
-                            <td>
-                              {infoField.number.count === 1 ? (
-                                <>
-                                  <Info
-                                    info={(record.data.n[infoField.id] as Value[])[i()]}
-                                    infoMetadata={infoFieldNested}
-                                    variant={record.data}
-                                  />
-                                </>
-                              ) : (
-                                <For each={record.data.n[infoField.id] as unknown as Value[][]}>
-                                  {(value, j) => (
-                                    <>
-                                      {j() !== 0 && <br />}
-                                      <Info
-                                        info={value[i()]}
-                                        infoMetadata={infoFieldNested}
-                                        variant={record.data}
-                                        href={`/variants/${record.id}/consequences/${j()}`}
-                                      />
-                                    </>
-                                  )}
-                                </For>
-                              )}
-                            </td>
-                          )}
-                        </For>
+                        <InfoCollapsablePane
+                          fields={infoField.nested.items}
+                          record={record}
+                          htsFileMeta={props.htsFileMeta}
+                        />
                       ) : (
                         <td>
-                          <Info info={record.data.n[infoField.id]} infoMetadata={infoField} variant={record.data} />
+                          <Info
+                            info={{ value: record.data.n[infoField.id], record: record }}
+                            infoMeta={infoField}
+                            context={props.htsFileMeta}
+                          />
                         </td>
                       )
                     }

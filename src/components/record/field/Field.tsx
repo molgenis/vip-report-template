@@ -3,17 +3,32 @@ import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldSingleValue } from "./FieldSingleValue";
 import { FieldMultipleValue } from "./FieldMultipleValue";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
-export const Field: Component<{
-  info: Value | Value[];
-  infoMetadata: FieldMetadata;
-}> = (props) => {
+export type FieldProps = {
+  info: FieldValue;
+  infoMeta: FieldMetadata;
+  context: FieldContext;
+};
+
+export type FieldValue = {
+  value: Value | Value[];
+  valueParent?: Value | Value[];
+  record: Item<Record>;
+};
+
+export type FieldContext = {
+  genomeAssembly?: string;
+};
+
+export const Field: Component<FieldProps> = (props) => {
   return (
     <>
-      {props.infoMetadata.number.count === 1 ? (
-        <FieldSingleValue info={props.info as Value} infoMetadata={props.infoMetadata} />
+      {props.infoMeta.number.count === 1 ? (
+        <FieldSingleValue info={props.info.value as Value} infoMetadata={props.infoMeta} />
       ) : (
-        <FieldMultipleValue info={props.info as Value[]} infoMetadata={props.infoMetadata} />
+        <FieldMultipleValue info={props.info.value as Value[]} infoMetadata={props.infoMeta} />
       )}
     </>
   );

@@ -1,11 +1,12 @@
 import { Component, For } from "solid-js";
-import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
+import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { Info } from "./record/Info";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
 export const VariantInfoTable: Component<{
   infoFields: FieldMetadataContainer;
-  record: Record;
+  record: Item<Record>;
 }> = (props) => {
   return (
     <div style={{ display: "grid" }}>
@@ -15,14 +16,18 @@ export const VariantInfoTable: Component<{
           <tbody>
             <For
               each={Object.values(props.infoFields).filter(
-                (info) => !info.nested && props.record.n[info.id] !== undefined
+                (info) => !info.nested && props.record.data.n[info.id] !== undefined
               )}
             >
               {(infoField) => (
                 <tr>
                   <td>{infoField.id}</td>
                   <td>
-                    <Info variant={props.record} info={props.record.n[infoField.id]} infoMetadata={infoField}></Info>
+                    <Info
+                      info={{ value: props.record.data.n[infoField.id], record: props.record }}
+                      infoMeta={infoField}
+                      context={{}}
+                    />
                   </td>
                 </tr>
               )}

@@ -1,39 +1,48 @@
-import { Component } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { Component, Show } from "solid-js";
+import { FieldProps } from "../field/Field";
+import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Anchor } from "../../Anchor";
 
-export const ClinVar: Component<{
-  value: string[];
-  infoMetadata: FieldMetadata;
-}> = (props) => {
+export const ClinVar: Component<FieldProps> = (props) => {
   const label = () => {
-    return props.value
-      .map((token) => {
-        let vClass;
-        switch (token.toLowerCase()) {
-          case "benign":
-            vClass = "B";
-            break;
-          case "likely_benign":
-            vClass = "LB";
-            break;
-          case "uncertain_significance":
-            vClass = "VUS";
-            break;
-          case "likely_pathogenic":
-            vClass = "LP";
-            break;
-          case "pathogenic":
-            vClass = "P";
-            break;
-          case "conflicting_interpretations_of_pathogenicity":
-            vClass = "Conflict";
-            break;
-          default:
-            vClass = token;
-        }
-        return vClass;
-      })
-      .join(", ");
+    const classes = props.info.value as string[] | null;
+    return classes
+      ? classes
+          .map((token) => {
+            switch (token.toLowerCase()) {
+              case "benign":
+                return "B";
+              case "likely_benign":
+                return "LB";
+              case "uncertain_significance":
+                return "VUS";
+              case "likely_pathogenic":
+                return "LP";
+              case "pathogenic":
+                return "P";
+              case "conflicting_interpretations_of_pathogenicity":
+                return "Conflict";
+              default:
+                return token;
+            }
+          })
+          .join(", ")
+      : null;
   };
-  return <span>{label()}</span>;
+
+  const href = () => {
+    const clinVarIdsField = props.infoMeta.parent?.nested?.items.findIndex((item) => item.id === "clinVar");
+    const clinVarIds = clinVarIdsField ? ((props.info.valueParent as Value[])[clinVarIdsField] as number[]) : [];
+    return clinVarIds.length === 1 ? `https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVarIds[0]}/` : undefined;
+  };
+
+  return (
+    <Show when={label()}>
+      {(label) => (
+        <Anchor href={href()}>
+          <span>{label}</span>
+        </Anchor>
+      )}
+    </Show>
+  );
 };

@@ -76,7 +76,7 @@ export const SampleVariant: Component<{
         >
           <div class="column is-3">
             <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoFields={props.recordsMeta.info} record={props.record.data} />
+            <VariantInfoTable infoFields={props.recordsMeta.info} record={props.record} />
           </div>
         </Show>
         <div class="column">
@@ -89,7 +89,7 @@ export const SampleVariant: Component<{
               props.sample.data,
               props.pedigreeSamples.map((item) => item.data)
             )}
-            record={props.record.data}
+            record={props.record}
           />
         </div>
       </div>

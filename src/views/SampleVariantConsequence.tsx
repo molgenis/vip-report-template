@@ -64,7 +64,7 @@ export const SampleVariantConsequence: Component<{
           <ConsequenceTable
             csqMetadata={props.recordsMeta.info.CSQ.nested !== undefined ? props.recordsMeta.info.CSQ.nested.items : []}
             csqValues={getSpecificConsequence(props.variant.data.n.CSQ as ValueArray, props.consequenceId)}
-            record={props.variant.data}
+            record={props.variant}
           />
         </div>
         {props.decisionTree !== null && (
@@ -84,7 +84,7 @@ export const SampleVariantConsequence: Component<{
         </div>
         <div class="column is-3">
           <h1 class="title is-5">Info</h1>
-          <VariantInfoTable infoFields={props.recordsMeta.info} record={props.variant.data} />
+          <VariantInfoTable infoFields={props.recordsMeta.info} record={props.variant} />
         </div>
         <div class="column">
           <h1 class="title is-5">Samples</h1>
@@ -96,7 +96,7 @@ export const SampleVariantConsequence: Component<{
               props.sample.data,
               props.pedigreeSamples.map((item) => item.data)
             )}
-            record={props.variant.data}
+            record={props.variant}
           />
         </div>
       </div>

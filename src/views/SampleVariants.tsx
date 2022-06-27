@@ -1,6 +1,6 @@
 import { Component, createMemo, createResource, Show } from "solid-js";
 import { useRouteData } from "solid-app-router";
-import { Item, Params, PhenotypicFeature, Sample, SortPath } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata, Item, Params, PhenotypicFeature, Sample, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
@@ -8,7 +8,13 @@ import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
 import { createQuery, infoSelector, infoSortPath, sampleSelector } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
-import { fetchPedigreeSamples, fetchPhenotypicFeatures, fetchRecords, fetchRecordsMeta } from "../utils/ApiUtils";
+import {
+  fetchHtsFileMetadata,
+  fetchPedigreeSamples,
+  fetchPhenotypicFeatures,
+  fetchRecords,
+  fetchRecordsMeta,
+} from "../utils/ApiUtils";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Filters } from "../components/filter/Filters";
@@ -26,6 +32,7 @@ export const SampleVariantsView: Component = () => {
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [samplePhenotypes] = createResource(sample, fetchPhenotypicFeatures);
   const [recordsMeta] = createResource(fetchRecordsMeta);
+  const [htsFileMeta] = createResource(fetchHtsFileMetadata);
 
   return (
     <Show when={sample()} fallback={<Loader />}>
@@ -36,12 +43,13 @@ export const SampleVariantsView: Component = () => {
           { text: "Variants" },
         ]}
       />
-      <Show when={pedigreeSamples() && samplePhenotypes() && recordsMeta()} fallback={<Loader />}>
+      <Show when={pedigreeSamples() && samplePhenotypes() && recordsMeta() && htsFileMeta()} fallback={<Loader />}>
         <SampleVariants
           sample={sample()!}
           samplePhenotypes={samplePhenotypes()!}
           pedigreeSamples={pedigreeSamples()!.items}
           recordsMeta={recordsMeta()!}
+          htsFileMeta={htsFileMeta()!}
         />
       </Show>
     </Show>
@@ -53,6 +61,7 @@ export const SampleVariants: Component<{
   samplePhenotypes: PhenotypicFeature[];
   pedigreeSamples: Item<Sample>[];
   recordsMeta: Metadata;
+  htsFileMeta: HtsFileMetadata;
 }> = (props) => {
   const [state, actions] = useStore();
 
@@ -238,6 +247,7 @@ export const SampleVariants: Component<{
                 records={records.items}
                 recordsMetadata={props.recordsMeta}
                 nestedFields={infoFields()}
+                htsFileMeta={props.htsFileMeta}
               />
             )}
           </Show>

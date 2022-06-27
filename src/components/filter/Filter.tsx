@@ -6,35 +6,35 @@ import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
 import { QueryClause, Selector } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
+import { isAnyCsqInfo } from "../../utils/csqUtils";
 
 export type FilterChangeEvent = { query: QueryClause };
 export type FilterClearEvent = { selector: Selector };
 
-export const Filter: Component<{
+export type FilterProps = {
   field: FieldMetadata;
   query?: QueryClause;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
-}> = (props) => {
-  const onChange = (event: FilterChangeEvent) => props.onChange(event);
-  const onClear = (event: FilterClearEvent) => props.onClear(event);
+};
 
+export const Filter: Component<FilterProps> = (props) => {
   return (
     <Switch>
       <Match when={props.field.id === "DP"}>
-        <FilterIntegerDp field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
+        <FilterIntegerDp {...props} />
       </Match>
       <Match when={props.field.id === "VID"}>
-        <FilterIntegerVid field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
+        <FilterIntegerVid {...props} />
       </Match>
       <Match when={props.field.id === "VIM"}>
-        <FilterIntegerVim field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
+        <FilterIntegerVim {...props} />
       </Match>
-      <Match when={props.field.id === "clinVar_CLNSIG" && props.field.parent?.id === "CSQ"}>
-        <FilterClinVar field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
+      <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>
+        <FilterClinVar {...props} />
       </Match>
       <Match when={props.field.type === "CATEGORICAL"}>
-        <FilterCategorical field={props.field} onChange={onChange} onClear={onClear} query={props.query} />
+        <FilterCategorical {...props} />
       </Match>
     </Switch>
   );
