@@ -122,7 +122,6 @@ export const SampleVariants: Component<{
       "Consequence",
       "SYMBOL",
       "InheritanceModesGene",
-      "IncompletePenetrance",
       "HPO",
       "HGVSc",
       "HGVSp",
