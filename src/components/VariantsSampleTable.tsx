@@ -11,6 +11,8 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
 import { abbreviateHeader } from "../utils/field";
+import { Checkbox, CheckboxEvent } from "./Checkbox";
+import { getRecordKey } from "../utils/utils";
 
 export const VariantsSampleTable: Component<{
   item: Item<Sample>;
@@ -19,6 +21,8 @@ export const VariantsSampleTable: Component<{
   recordsMetadata: Metadata;
   nestedFields: FieldMetadata[];
   htsFileMeta: HtsFileMetadata;
+  onSelectionChange: (event: CheckboxEvent) => void;
+  selected?: string[];
 }> = (props) => {
   const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
@@ -29,6 +33,9 @@ export const VariantsSampleTable: Component<{
         <table class="table is-narrow">
           <thead>
             <tr>
+              <th>
+                <i class="fas fa-download" />
+              </th>
               <th>Position</th>
               <th>Reference</th>
               <For each={samples()}>
@@ -52,6 +59,15 @@ export const VariantsSampleTable: Component<{
             <For each={props.records}>
               {(record) => (
                 <tr>
+                  <td>
+                    {/* eslint-disable-next-line @typescript-eslint/restrict-template-expressions */}
+                    <Checkbox
+                      value={getRecordKey(record.data)}
+                      label=""
+                      onChange={props.onSelectionChange}
+                      checked={props.selected !== undefined && props.selected.indexOf(getRecordKey(record.data)) !== -1}
+                    />
+                  </td>
                   <td>
                     <Link href={`/samples/${props.item.id}/variants/${record.id}`}>
                       <Chrom value={record.data.c} />

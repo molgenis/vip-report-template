@@ -1,17 +1,36 @@
 import { Component } from "solid-js";
 import { Query, Sample } from "@molgenis/vip-report-api/src/Api";
-import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../../Api";
 import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
+import { getRecordKey } from "../../utils/utils";
 
-export const RecordDownload: Component<{ recordsMetadata: Metadata; query?: Query; samples?: Sample[] }> = (props) => {
+export const RecordDownload: Component<{
+  recordsMetadata: Metadata;
+  query?: Query;
+  samples?: Sample[];
+  selection?: string[];
+}> = (props) => {
   const filter = (): Filter | undefined =>
     props.samples ? { samples: props.samples.map((sample) => sample.person.individualId) } : undefined;
+
+  function recordSelected(record: Record) {
+    if (props.selection !== undefined) {
+      return props.selection.indexOf(getRecordKey(record)) !== -1;
+    }
+    return true;
+  }
 
   function onClick() {
     const handler = async () => {
       const records = await api.getRecords({ query: props.query, size: Number.MAX_SAFE_INTEGER });
-      const vcf = writeVcf({ metadata: props.recordsMetadata, data: records.items.map((item) => item.data) }, filter());
+      const vcf = writeVcf(
+        {
+          metadata: props.recordsMetadata,
+          data: records.items.filter((record) => recordSelected(record.data)).map((item) => item.data),
+        },
+        filter()
+      );
 
       const url = window.URL.createObjectURL(new Blob([vcf]));
       const link = document.createElement("a");
