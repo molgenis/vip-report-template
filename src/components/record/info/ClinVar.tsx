@@ -1,8 +1,8 @@
 import { Component, Show } from "solid-js";
 import { FieldProps } from "../field/Field";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Anchor } from "../../Anchor";
 import { Abbr } from "../../Abbr";
+import { getCsqInfo, getCsqInfoIndex } from "../../../utils/csqUtils";
 
 export const ClinVar: Component<FieldProps> = (props) => {
   const label = () => {
@@ -32,14 +32,14 @@ export const ClinVar: Component<FieldProps> = (props) => {
   };
 
   const href = () => {
-    const clinVarIdsField = props.infoMeta.parent?.nested?.items.findIndex((item) => item.id === "clinVar");
-    const clinVarIds = clinVarIdsField ? ((props.info.valueParent as Value[])[clinVarIdsField] as number[]) : [];
+    const clinVarIdsField = getCsqInfoIndex(props.infoMeta, "clinVar");
+    const clinVarIds = clinVarIdsField ? (getCsqInfo(props.info, clinVarIdsField) as number[]) : [];
     return clinVarIds.length === 1 ? `https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVarIds[0]}/` : undefined;
   };
 
   const description = () => {
-    const statusField = props.infoMeta.parent?.nested?.items.findIndex((item) => item.id === "clinVar_CLNREVSTAT");
-    const status = statusField ? ((props.info.valueParent as Value[])[statusField] as string[]) : [];
+    const statusField = getCsqInfoIndex(props.infoMeta, "clinVar_CLNREVSTAT");
+    const status = statusField ? (getCsqInfo(props.info, statusField) as string[]) : [];
     if (status.length === 0) return;
 
     let description;
