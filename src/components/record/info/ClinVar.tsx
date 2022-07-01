@@ -46,22 +46,22 @@ export const ClinVar: Component<FieldProps> = (props) => {
     if (status.length === 1 && status.includes("practice_guideline")) {
       description = "\u2605\u2605\u2605\u2605";
     } else if (status.length === 1 && status.includes("reviewed_by_expert_panel")) {
-      description = "\u2606\u2605\u2605\u2605";
+      description = "\u2605\u2605\u2605\u2606";
     } else if (
       status.length === 3 &&
       status.includes("criteria_provided") &&
       status.includes("_multiple_submitters") &&
       status.includes("_no_conflicts")
     ) {
-      description = "\u2606\u2606\u2605\u2605";
+      description = "\u2605\u2605\u2606\u2606";
     } else if (
       status.length === 2 &&
       status.includes("criteria_provided") &&
       status.includes("_conflicting_interpretations")
     ) {
-      description = "\u2606\u2606\u2606\u2605";
+      description = "\u2605\u2606\u2606\u2606";
     } else if (status.length === 2 && status.includes("criteria_provided") && status.includes("_single_submitter")) {
-      description = "\u2606\u2606\u2606\u2605";
+      description = "\u2605\u2606\u2606\u2606";
     } else {
       description = "\u2606\u2606\u2606\u2606";
     }
