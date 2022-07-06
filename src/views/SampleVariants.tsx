@@ -6,7 +6,7 @@ import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createQuery, infoSelector, infoSortPath, sampleSelector } from "../utils/query";
+import { createSampleQuery, infoSelector, infoSortPath, sampleSelector } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import {
   fetchHtsFileMetadata,
@@ -165,7 +165,7 @@ export const SampleVariants: Component<{
 
   const params = (): Params => {
     return {
-      query: createQuery(searchQuery(), filterQueries(), props.recordsMeta) || undefined,
+      query: createSampleQuery(props.sample, searchQuery(), filterQueries(), props.recordsMeta) || undefined,
       sort: sort() || undefined,
       page: page() || undefined,
       size: pageSize() || undefined,
