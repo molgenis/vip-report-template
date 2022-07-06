@@ -11,7 +11,7 @@ function abbreviate(notation: string): string {
   } else {
     abbreviated = notation;
   }
-  return abbreviated;
+  return abbreviated.length > 20 ? abbreviated.slice(0, 18) + "\u2026" : abbreviated;
 }
 
 export const Hgvs: Component<FieldProps> = (props) => {
