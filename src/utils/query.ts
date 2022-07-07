@@ -12,6 +12,20 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../store";
 
+export function createSampleQuery(
+  sample: Item<Sample>,
+  search: string | undefined,
+  filters: FilterQueries | undefined,
+  metadata: Metadata
+): Query | null {
+  const sampleQuery: QueryClause = { selector: ["s", sample.data.index, "GT", "t"], operator: "!=", args: "hom_r" };
+  const searchFilterQuery = createQuery(search, filters, metadata);
+  const query: Query =
+    searchFilterQuery !== null ? { operator: "and", args: [sampleQuery, searchFilterQuery] } : sampleQuery;
+  console.log(query);
+  return query;
+}
+
 export function createQuery(
   search: string | undefined,
   filters: FilterQueries | undefined,
