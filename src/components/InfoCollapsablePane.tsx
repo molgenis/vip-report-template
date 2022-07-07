@@ -22,7 +22,8 @@ export const InfoCollapsablePane: Component<{
   const values = createMemo((): FieldValue[][] =>
     props.fields.map((field) => {
       if (field.parent) {
-        return (props.record.data.n[field.parent.id] as ValueArray).map((nestedValues) => {
+        const values = (props.record.data.n[field.parent.id] || []) as ValueArray;
+        return values.map((nestedValues) => {
           const value =
             field.parent && field.parent.nested
               ? (nestedValues as ValueArray)[
