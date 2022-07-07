@@ -132,15 +132,16 @@ export async function fetchRecords(params: Params) {
   const pickIndex = fieldMetas.findIndex((item) => item.id === "PICK");
 
   for (const record of records.items) {
-    const csqArray = record.data.n.CSQ as Value[][];
-
-    csqArray.sort((aValue, bValue) => {
-      for (const order of orders) {
-        const compareValue = compareCsq(aValue, bValue, order.field, order.direction);
-        if (compareValue !== 0) return compareValue;
-      }
-      return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
-    });
+    const csqArray = record.data.n.CSQ as Value[][] | undefined;
+    if (csqArray) {
+      csqArray.sort((aValue, bValue) => {
+        for (const order of orders) {
+          const compareValue = compareCsq(aValue, bValue, order.field, order.direction);
+          if (compareValue !== 0) return compareValue;
+        }
+        return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
+      });
+    }
   }
   return records;
 }
