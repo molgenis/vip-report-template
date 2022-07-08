@@ -18,7 +18,14 @@ export function createSampleQuery(
   filters: FilterQueries | undefined,
   metadata: Metadata
 ): Query | null {
-  const sampleQuery: QueryClause = { selector: ["s", sample.data.index, "GT", "t"], operator: "!=", args: "hom_r" };
+  const genotypeSelector: Selector = ["s", sample.data.index, "GT", "t"];
+  const sampleQuery: Query = {
+    operator: "and",
+    args: [
+      { selector: genotypeSelector, operator: "!=", args: "hom_r" },
+      { selector: genotypeSelector, operator: "!=", args: "miss" },
+    ],
+  };
   const searchFilterQuery = createQuery(search, filters, metadata);
   const query: Query =
     searchFilterQuery !== null ? { operator: "and", args: [sampleQuery, searchFilterQuery] } : sampleQuery;

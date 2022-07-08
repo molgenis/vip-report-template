@@ -12,7 +12,7 @@ import {
   sampleSelector,
   selectorKey,
 } from "../utils/query";
-import { Item, Person, QueryClause, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Person, Query, QueryClause, Sample } from "@molgenis/vip-report-api/src/Api";
 
 describe("query utilities", () => {
   let fieldMetaCsq: FieldMetadata = {
@@ -55,7 +55,13 @@ describe("query utilities", () => {
 
   test("create sample query - filters", () => {
     const sample = { data: { index: 1 } } as Item<Sample>;
-    const queryClause: QueryClause = { selector: ["s", 1, "GT", "t"], operator: "!=", args: "hom_r" };
+    const queryClause: Query = {
+      operator: "and",
+      args: [
+        { selector: ["s", 1, "GT", "t"], operator: "!=", args: "hom_r" },
+        { selector: ["s", 1, "GT", "t"], operator: "!=", args: "miss" },
+      ],
+    };
     const filterQueryClause: QueryClause = { selector: ["n", "CSQ", "*", 0], operator: "==", args: [0] };
     const filterQueries: FilterQueries = {
       "CSQ/field1": filterQueryClause,
@@ -68,7 +74,13 @@ describe("query utilities", () => {
 
   test("create sample query - undefined search and undefined filters", () => {
     const sample = { data: { index: 1 } } as Item<Sample>;
-    const queryClause: QueryClause = { selector: ["s", 1, "GT", "t"], operator: "!=", args: "hom_r" };
+    const queryClause: Query = {
+      operator: "and",
+      args: [
+        { selector: ["s", 1, "GT", "t"], operator: "!=", args: "hom_r" },
+        { selector: ["s", 1, "GT", "t"], operator: "!=", args: "miss" },
+      ],
+    };
     expect(createSampleQuery(sample, undefined, undefined, meta)).toStrictEqual(queryClause);
   });
 
