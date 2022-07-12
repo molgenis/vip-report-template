@@ -25,6 +25,7 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
 import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
 import { arrayEquals } from "../utils/utils";
+import { CheckboxEvent } from "../components/Checkbox";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -122,6 +123,7 @@ export const SampleVariants: Component<{
       "Consequence",
       "SYMBOL",
       "InheritanceModesGene",
+      "IncompletePenetrance",
       "HPO",
       "HGVSc",
       "HGVSp",
@@ -162,6 +164,9 @@ export const SampleVariants: Component<{
     actions.clearSampleVariantsFilterQuery(props.sample, event.selector);
   const onSortChange = (event: SortEvent) => actions.setSampleVariantsSort(props.sample, event.order);
   const onSortClear = () => actions.setSampleVariantsSort(props.sample, null);
+  const onSelectionchange = (event: CheckboxEvent) => {
+    actions.updateVariantsSelection(props.sample, event.value, "ADD");
+  };
 
   const params = (): Params => {
     return {
@@ -231,6 +236,7 @@ export const SampleVariants: Component<{
                     recordsMetadata={props.recordsMeta}
                     query={params().query}
                     samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
+                    selection={getStateVariants()?.selection}
                   />
                 </div>
               </div>
@@ -247,6 +253,8 @@ export const SampleVariants: Component<{
                 recordsMetadata={props.recordsMeta}
                 nestedFields={infoFields()}
                 htsFileMeta={props.htsFileMeta}
+                onSelectionChange={onSelectionchange}
+                selected={getStateVariants() !== undefined ? getStateVariants()?.selection : []}
               />
             )}
           </Show>

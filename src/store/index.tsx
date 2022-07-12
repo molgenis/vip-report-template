@@ -12,6 +12,7 @@ type AppStateVariants = {
   searchQuery?: string;
   filterQueries?: FilterQueries;
   sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
+  selection: string[];
 };
 
 export type AppState = {
@@ -33,6 +34,7 @@ export type AppActions = {
   setSampleVariantsPage(sample: Item<Sample>, page: number): void;
   setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
   setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string): void;
+  updateVariantsSelection(sample: Item<Sample>, key: string, action: string): void;
   clearSampleVariantsSearchQuery(sample: Item<Sample>): void;
   setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
   clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
@@ -72,7 +74,10 @@ export const Provider: ParentComponent = (props) => {
       setState({
         variants: {
           ...(state.variants || {}),
-          filterQueries: { ...(state.variants?.filterQueries || {}), [selectorKey(query.selector)]: query },
+          filterQueries: {
+            ...((state.variants?.filterQueries as FilterQueries) || {}),
+            [selectorKey(query.selector)]: query,
+          },
         },
       });
     },
@@ -127,7 +132,10 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...variants,
-              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(query.selector)]: query },
+              filterQueries: {
+                ...((variants.filterQueries as FilterQueries) || {}),
+                [selectorKey(query.selector)]: query,
+              },
               page: undefined,
             },
           },
@@ -142,7 +150,10 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...getVariants(sample),
-              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(selector)]: undefined },
+              filterQueries: {
+                ...((variants.filterQueries as FilterQueries) || {}),
+                [selectorKey(selector)]: undefined,
+              },
               page: undefined,
             },
           },
@@ -152,6 +163,33 @@ export const Provider: ParentComponent = (props) => {
     setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null) {
       setState({
         samples: { ...(state.samples || {}), [sample.id]: { variants: { ...getVariants(sample), sort } } },
+      });
+    },
+    updateVariantsSelection(sample: Item<Sample>, key: string, action: "ADD" | "REMOVE") {
+      let selection: string[] = state.samples ? Object.assign([], state.samples[sample.id]?.variants.selection) : [];
+      if (action === "ADD") {
+        if (selection) {
+          selection.push(key);
+        } else {
+          selection = [key];
+        }
+      } else {
+        const index = selection.indexOf(key);
+        if (index === -1) {
+          throw new Error("Attempting to remove non-existing key from  selection.");
+        }
+        selection.splice(index, 1);
+      }
+      setState({
+        samples: {
+          ...(state.samples || {}),
+          [sample.id]: {
+            variants: {
+              ...getVariants(sample),
+              selection,
+            },
+          },
+        },
       });
     },
   };
