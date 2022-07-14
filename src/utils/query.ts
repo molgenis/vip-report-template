@@ -29,7 +29,6 @@ export function createSampleQuery(
   const searchFilterQuery = createQuery(search, filters, metadata);
   const query: Query =
     searchFilterQuery !== null ? { operator: "and", args: [sampleQuery, searchFilterQuery] } : sampleQuery;
-  console.log(query);
   return query;
 }
 
