@@ -28,6 +28,8 @@ export const VariantConsequence: Component = () => {
 
   const csqFields = (): FieldMetadata[] => recordsMetadata().info.CSQ?.nested?.items || [];
   const csqValues = (): ValueArray => getSpecificConsequence(variant().data.n.CSQ as ValueArray, consequenceId);
+
+  const hasDecisionTreePathMeta = () => csqFields().findIndex((csq) => csq.id === "VIPP") !== -1;
   return (
     <Show when={!variant.loading} fallback={<Loader />}>
       <Breadcrumb
@@ -42,17 +44,19 @@ export const VariantConsequence: Component = () => {
           <h1 class="title is-5">Consequence</h1>
           <ConsequenceTable csqMetadata={csqFields()} csqValues={csqValues()} record={variant()} />
         </div>
-        <Show when={!recordsMetadata.loading && !decisionTree.loading && (decisionTree() as DecisionTree)}>
-          {(decisionTree) => (
-            <div class="column">
-              <h1 class="title is-5">Classification tree path</h1>
-              <DecisionTreePath
-                decisionTree={decisionTree}
-                path={getDecisionTreePath(recordsMetadata(), variant(), consequenceId)}
-              />
-            </div>
-          )}
-        </Show>
+        {hasDecisionTreePathMeta() && (
+          <Show when={!recordsMetadata.loading && !decisionTree.loading && (decisionTree() as DecisionTree)}>
+            {(decisionTree) => (
+              <div class="column">
+                <h1 class="title is-5">Classification tree path</h1>
+                <DecisionTreePath
+                  decisionTree={decisionTree}
+                  path={getDecisionTreePath(recordsMetadata(), variant(), consequenceId)}
+                />
+              </div>
+            )}
+          </Show>
+        )}
       </div>
       <div class="columns">
         <div class="column is-6">
