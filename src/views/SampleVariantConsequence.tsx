@@ -63,6 +63,9 @@ export const SampleVariantConsequence: Component<{
   consequenceId: number;
   decisionTree: DecisionTree | null;
 }> = (props) => {
+  const hasDecisionTreePathMeta = () =>
+    (props.recordsMeta.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
+
   return (
     <>
       <div class="columns">
@@ -74,7 +77,7 @@ export const SampleVariantConsequence: Component<{
             record={props.variant}
           />
         </div>
-        {props.decisionTree !== null && (
+        {props.decisionTree !== null && hasDecisionTreePathMeta() && (
           <div class="column">
             <h1 class="title is-5">Classification tree path</h1>
             <DecisionTreePath

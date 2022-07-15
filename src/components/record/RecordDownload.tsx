@@ -26,7 +26,11 @@ export const RecordDownload: Component<{ recordsMetadata: Metadata; query?: Quer
 
   return (
     <div class="control">
-      <button class="button is-info" onClick={onClick}>
+      <button
+        class="button is-info"
+        onClick={onClick}
+        title="Download vcf file with records matching filters and search queries"
+      >
         <span class="icon is-small">
           <i class="fas fa-download" />
         </span>
