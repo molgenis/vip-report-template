@@ -47,6 +47,10 @@ export const Samples: Component = () => {
           </div>
         </div>
         <div class="column">
+          <span class="is-italic">
+            Click on an individual id for detailed information for this sample. In this screen a link to the variants
+            for this sample is available.
+          </span>
           {!samples.loading && !phenotypes.loading && (
             <SampleTable samples={samples().items} phenotypes={phenotypes().items} />
           )}
