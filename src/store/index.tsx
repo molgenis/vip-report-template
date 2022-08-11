@@ -14,11 +14,18 @@ type AppStateVariants = {
   sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
 };
 
+type AppStateSamples = {
+  page?: number;
+  searchQuery?: string;
+  probandFilterValue?: boolean;
+};
+
 export type AppState = {
   variants?: AppStateVariants;
-  samples?: {
+  sampleVariants?: {
     [key: number]: { variants: AppStateVariants };
   };
+  samples?: AppStateSamples;
 };
 
 export type AppActions = {
@@ -37,11 +44,14 @@ export type AppActions = {
   setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
   clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
   setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null): void;
+  setSamplePage(page: number): void;
+  setSampleSearchQuery(searchQuery: string): void;
+  setSampleProbandFilterValue(probandFilterValue: boolean): void;
 };
 
 export type AppStore = [state: AppState, actions: AppActions];
 
-const defaultState: AppState = { variants: {}, samples: {} };
+const defaultState: AppState = { variants: {}, sampleVariants: {} };
 
 const StoreContext = createContext<AppStore>() as Context<AppStore>;
 
@@ -49,12 +59,12 @@ export const Provider: ParentComponent = (props) => {
   const [state, setState] = createStore(defaultState);
 
   function getVariants(sample: Item<Sample>) {
-    return state.samples ? state.samples[sample.id]?.variants || {} : {};
+    return state.sampleVariants ? state.sampleVariants[sample.id]?.variants || {} : {};
   }
 
   const actions: AppActions = {
     reset() {
-      setState({ variants: undefined, samples: undefined });
+      setState({ variants: undefined, sampleVariants: undefined, samples: undefined });
     },
     setVariantsPage(page: number) {
       setState({ variants: { ...(state.variants || {}), page } });
@@ -93,28 +103,33 @@ export const Provider: ParentComponent = (props) => {
       });
     },
     setSampleVariantsPage(sample: Item<Sample>, page: number) {
-      setState({ samples: { ...(state.samples || {}), [sample.id]: { variants: { ...getVariants(sample), page } } } });
+      setState({
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
+          [sample.id]: { variants: { ...getVariants(sample), page } },
+        },
+      });
     },
     setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number) {
       setState({
-        samples: {
-          ...(state.samples || {}),
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
           [sample.id]: { variants: { ...getVariants(sample), pageSize, page: undefined } },
         },
       });
     },
     setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string) {
       setState({
-        samples: {
-          ...(state.samples || {}),
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
           [sample.id]: { variants: { ...getVariants(sample), searchQuery, page: undefined } },
         },
       });
     },
     clearSampleVariantsSearchQuery(sample: Item<Sample>) {
       setState({
-        samples: {
-          ...(state.samples || {}),
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
           [sample.id]: { variants: { ...getVariants(sample), searchQuery: undefined, page: undefined } },
         },
       });
@@ -122,8 +137,8 @@ export const Provider: ParentComponent = (props) => {
     setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
       const variants = getVariants(sample);
       setState({
-        samples: {
-          ...(state.samples || {}),
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
           [sample.id]: {
             variants: {
               ...variants,
@@ -137,8 +152,8 @@ export const Provider: ParentComponent = (props) => {
     clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
       const variants = getVariants(sample);
       setState({
-        samples: {
-          ...(state.samples || {}),
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
           [sample.id]: {
             variants: {
               ...getVariants(sample),
@@ -151,8 +166,20 @@ export const Provider: ParentComponent = (props) => {
     },
     setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null) {
       setState({
-        samples: { ...(state.samples || {}), [sample.id]: { variants: { ...getVariants(sample), sort } } },
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
+          [sample.id]: { variants: { ...getVariants(sample), sort } },
+        },
       });
+    },
+    setSamplePage(page: number) {
+      setState({ samples: { ...(state.samples || {}), page } });
+    },
+    setSampleSearchQuery(searchQuery: string) {
+      setState({ samples: { ...(state.samples || {}), searchQuery } });
+    },
+    setSampleProbandFilterValue(probandFilterValue: boolean) {
+      setState({ samples: { ...(state.samples || {}), probandFilterValue } });
     },
   };
   const store: AppStore = [state, actions];
