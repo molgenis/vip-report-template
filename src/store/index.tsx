@@ -33,14 +33,12 @@ export type AppActions = {
   setVariantsPage(page: number): void;
   setVariantsPageSize(pageSize: number): void;
   setVariantsSearchQuery(searchQuery: string): void;
-  clearVariantsSearchQuery(): void;
   setVariantsFilterQuery(query: QueryClause): void;
   clearVariantsFilterQuery(selector: Selector): void;
   setVariantsSort(sort: SortOrder | null): void;
   setSampleVariantsPage(sample: Item<Sample>, page: number): void;
   setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
   setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string): void;
-  clearSampleVariantsSearchQuery(sample: Item<Sample>): void;
   setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
   clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
   setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null): void;
@@ -74,9 +72,6 @@ export const Provider: ParentComponent = (props) => {
     },
     setVariantsSearchQuery(searchQuery: string) {
       setState({ variants: { ...(state.variants || {}), searchQuery } });
-    },
-    clearVariantsSearchQuery() {
-      setState({ variants: { ...(state.variants || {}), searchQuery: undefined } });
     },
     setVariantsFilterQuery(query: QueryClause) {
       setState({
@@ -123,14 +118,6 @@ export const Provider: ParentComponent = (props) => {
         sampleVariants: {
           ...(state.sampleVariants || {}),
           [sample.id]: { variants: { ...getVariants(sample), searchQuery, page: undefined } },
-        },
-      });
-    },
-    clearSampleVariantsSearchQuery(sample: Item<Sample>) {
-      setState({
-        sampleVariants: {
-          ...(state.sampleVariants || {}),
-          [sample.id]: { variants: { ...getVariants(sample), searchQuery: undefined, page: undefined } },
         },
       });
     },
