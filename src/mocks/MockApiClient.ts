@@ -120,7 +120,7 @@ export class MockApiClient implements Api {
           args: "-i testdata_b37_vip.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
         },
         htsFile: {
-          uri: "testdata_b37_vip.vcf",
+          uri: "/path/to/testdata_b37_vip.vcf",
           htsFormat: "VCF",
           genomeAssembly: "GRCh37",
         },

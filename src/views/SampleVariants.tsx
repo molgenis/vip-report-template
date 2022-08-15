@@ -66,7 +66,7 @@ export const SampleVariants: Component<{
   const [state, actions] = useStore();
 
   function getStateVariants() {
-    return state.samples ? state.samples[props.sample.id]?.variants : undefined;
+    return state.sampleVariants ? state.sampleVariants[props.sample.id]?.variants : undefined;
   }
 
   // state initialization - start

@@ -1,12 +1,17 @@
 import { Component } from "solid-js";
-import { Query, Sample } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata, Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../../Api";
 import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
 
+const DOWNLOAD_POSTFIX = "_report.vcf";
 export const RecordDownload: Component<{ recordsMetadata: Metadata; query?: Query; samples?: Sample[] }> = (props) => {
   const filter = (): Filter | undefined =>
     props.samples ? { samples: props.samples.map((sample) => sample.person.individualId) } : undefined;
+
+  function parseFilename(htsFile: HtsFileMetadata) {
+    return htsFile.uri.split("\\").pop()?.split("/").pop()?.split(".").shift();
+  }
 
   function onClick() {
     const handler = async () => {
@@ -16,7 +21,9 @@ export const RecordDownload: Component<{ recordsMetadata: Metadata; query?: Quer
       const url = window.URL.createObjectURL(new Blob([vcf]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "data.vcf");
+      const htsFile = await api.getHtsFileMetadata();
+      const filename = parseFilename(htsFile) as string;
+      link.setAttribute("download", filename + DOWNLOAD_POSTFIX);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
