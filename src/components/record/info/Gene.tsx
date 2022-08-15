@@ -45,9 +45,9 @@ export const Gene: Component<FieldProps> = (props) => {
             <span>{symbol}</span>
           </Anchor>
           {incompletePenetrance() && (
-            <sup class="ml-1">
+            <span class="ml-1">
               <Abbr title="gene is known for incomplete penetrance" value="IP" />
-            </sup>
+            </span>
           )}
         </>
       )}
