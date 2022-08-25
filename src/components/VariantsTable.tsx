@@ -56,9 +56,12 @@ export const VariantsTable: Component<{
               <tr>
                 <For each={infoFieldsNested()}>
                   {(infoField) => (
-                    <For each={infoField.nested?.items}>
-                      {(nestedInfoField) => <FieldHeader field={nestedInfoField} />}
-                    </For>
+                    <>
+                      {infoField.number.count !== 1 && <th />}
+                      <For each={infoField.nested?.items}>
+                        {(nestedInfoField) => <FieldHeader field={nestedInfoField} />}
+                      </For>
+                    </>
                   )}
                 </For>
               </tr>
