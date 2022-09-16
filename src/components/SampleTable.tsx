@@ -76,7 +76,7 @@ export const SampleTable: Component<{
             <For each={props.samples}>
               {(sample) => (
                 <tr>
-                  <td>{sample.id}</td>
+                  <td>{sample.data.person.familyId}</td>
                   <td>
                     <Link href={`/samples/${sample.id}`}>{sample.data.person.individualId}</Link>
                   </td>
