@@ -40,7 +40,7 @@ export const Sort: Component<{
         <div class="field">
           <div class="select">
             <select onChange={onSortChange}>
-              <option value="-1" />
+              <option value="-1">Position</option>
               <For each={sortableOptions()}>
                 {(option, i) => (
                   <option value={i()} selected={option.selected === true}>
