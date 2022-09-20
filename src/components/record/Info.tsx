@@ -8,6 +8,7 @@ import { Hgvs } from "./info/Hgvs";
 import { ClinVar } from "./info/ClinVar";
 import { GnomAD } from "./info/GnomAD";
 import { isAnyCsqInfo, isCsqInfo } from "../../utils/csqUtils";
+import { Vkgl } from "./info/Vkgl";
 
 export const Info: Component<{
   info: FieldValue;
@@ -33,6 +34,9 @@ export const Info: Component<{
       </Match>
       <Match when={isCsqInfo(props.infoMeta, "clinVar_CLNSIG")}>
         <ClinVar {...props} />
+      </Match>
+      <Match when={isCsqInfo(props.infoMeta, "VKGL_CL")}>
+        <Vkgl {...props} />
       </Match>
     </Switch>
   );
