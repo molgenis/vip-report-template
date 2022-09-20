@@ -74,6 +74,7 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
         format: "bam",
         name: `Alignment (${sampleId})`,
         url: "data:application/gzip;base64," + fromByteArray(bam),
+        colorBy: "strand",
       });
     }
   }
