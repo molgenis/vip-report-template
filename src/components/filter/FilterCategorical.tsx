@@ -54,7 +54,7 @@ export const FilterCategorical: Component<
             <Checkbox
               value={category}
               label={props.labels ? props.labels[category] : category}
-              checked={props.query && (props.query.args as string[]).includes(category)}
+              checked={props.query && (props.query.args as (string | null)[]).includes(category)}
               onChange={onChange}
             />
           </div>
@@ -64,7 +64,7 @@ export const FilterCategorical: Component<
         <Checkbox
           value={nullValue}
           label="No value"
-          checked={props.query && (props.query.args as string[]).includes(nullValue)}
+          checked={props.query && (props.query.args as (string | null)[]).includes(null)}
           onChange={onChange}
         />
       )}
