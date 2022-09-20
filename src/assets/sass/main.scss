@@ -111,3 +111,9 @@ table.is-borderless td,
 .table.is-borderless th {
   border: 0;
 }
+
+.igv-center-line {
+  transform: translateX(-50%) translateX(-1px) !important;
+  border-left-width: 2px !important;
+  border-right-width: 2px !important;
+}
