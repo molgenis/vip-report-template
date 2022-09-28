@@ -3,7 +3,7 @@ import igv from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
+import { ComposedQuery, Cram, Sample } from "@molgenis/vip-report-api/src/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
@@ -34,12 +34,12 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     api.getFastaGz(contig, position),
     createVcf(contig, position, samples),
     api.getGenesGz(),
-    ...samples.map((sample) => api.getBam(sample.person.individualId)),
+    ...samples.map((sample) => api.getCram(sample.person.individualId)),
   ]);
   const fastaGz = data[0];
   const vcf = data[1];
   const genesGz = data[2];
-  const bams = data.slice(3);
+  const crams = data.slice(3) as (Cram | null)[];
 
   if (fastaGz === null) {
     return null;
@@ -64,16 +64,17 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
   });
 
   for (let i = 0; i < samples.length; ++i) {
-    const bam = bams[i];
+    const cram = crams[i];
 
-    if (bam !== null) {
+    if (cram !== null) {
       const sampleId = samples[i].person.individualId;
       tracks.push({
         order: order++,
         type: "alignment",
-        format: "bam",
+        format: "cram",
         name: `Alignment (${sampleId})`,
-        url: "data:application/gzip;base64," + fromByteArray(bam),
+        url: "data:application/octet-stream;base64," + fromByteArray(cram.cram),
+        indexURL: "data:application/octet-stream;base64," + fromByteArray(cram.crai),
         colorBy: "strand",
       });
     }
