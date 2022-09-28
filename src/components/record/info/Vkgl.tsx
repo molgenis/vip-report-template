@@ -31,9 +31,9 @@ export const Vkgl: Component<FieldProps> = (props) => {
     return descriptions.length > 0 ? descriptions.join(", ") : null;
   };
   return (
-    <Show when={value()}>
+    <Show when={value()} keyed>
       {(value) => (
-        <Show when={title()} fallback={<span>{value}</span>}>
+        <Show when={title()} fallback={<span>{value}</span>} keyed>
           {(title) => <Abbr title={title} value={value} />}
         </Show>
       )}

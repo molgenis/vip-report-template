@@ -70,7 +70,7 @@ export const ClinVar: Component<FieldProps> = (props) => {
   };
 
   return (
-    <Show when={label()}>
+    <Show when={label()} keyed>
       {(label) => (
         <Anchor href={href()}>
           {description() ? <Abbr title={description()!} value={label} /> : <span>{label}</span>}

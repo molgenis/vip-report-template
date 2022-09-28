@@ -38,7 +38,7 @@ export const Gene: Component<FieldProps> = (props) => {
   };
 
   return (
-    <Show when={symbol()}>
+    <Show when={symbol()} keyed>
       {(symbol) => (
         <>
           <Anchor href={href()}>

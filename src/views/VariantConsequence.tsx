@@ -45,7 +45,7 @@ export const VariantConsequence: Component = () => {
           <ConsequenceTable csqMetadata={csqFields()} csqValues={csqValues()} record={variant()} />
         </div>
         {hasDecisionTreePathMeta() && (
-          <Show when={!recordsMetadata.loading && !decisionTree.loading && (decisionTree() as DecisionTree)}>
+          <Show when={!recordsMetadata.loading && !decisionTree.loading && (decisionTree() as DecisionTree)} keyed>
             {(decisionTree) => (
               <div class="column">
                 <h1 class="title is-5">Classification tree path</h1>
