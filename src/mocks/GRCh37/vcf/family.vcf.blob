@@ -47,7 +47,7 @@
 ##VIPC=VIP decision tree classification
 ##VIPL=VIP decision tree labels (ampersand separated)
 ##VIPP=VIP decision tree path (ampersand separated)
-##VIP_Command=nextflow run ./main.nf --input /groups/solve-rd/tmp10/bcharbon/testdata/testdata_b37.vcf --output /groups/solve-rd/tmp10/projects/vip/testdata_out --keep --pedigree /groups/solve-rd/tmp10/bcharbon/example.ped --probands Patient --phenotypes 'HP:0000951;HP:0003124' --assembly GRCh37
+##VIP_Command=nextflow run ./main.nf --input /groups/solve-rd/tmp10/bcharbon/testdata/testdata_b37.vcf --output /groups/solve-rd/tmp10/projects/vip/testdata_out --keep --pedigree /groups/solve-rd/tmp10/bcharbon/example.ped --probands Patient --phenotypes 'HP:0000951;HP:0003124' --assembly GRCh37 --param_with_equals_sign x=y
 ##VIP_Version=4.3.0
 ##VIP_treeCommand=--input testdata_b37_chunk0_annotated.vcf.gz --config /groups/solve-rd/tmp10/projects/vip/git/vip/resources/decision_tree.json --labels 0 --path 0 --output testdata_b37_chunk0_classified.vcf.gz
 ##VIP_treeVersion=3.0.0

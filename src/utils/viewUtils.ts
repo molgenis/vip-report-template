@@ -21,18 +21,12 @@ export function getRecordSamples(record: Record, sample: Sample, pedigreeSamples
   return [record.s[sample.index], ...pedigreeSamples.map((pedigreeSample) => record.s[pedigreeSample.index])];
 }
 
-export function getHeaderValue(key: string, lines: string[]) {
-  let value = null;
-  lines.forEach((line: string) => {
-    if (line.startsWith(`##${key}`)) {
-      const splitted: string[] = line.split("=");
-      if (splitted.length === 2) {
-        value = splitted[1];
-        return;
-      } else {
-        throw new Error("Invalid header format for key");
-      }
+export function getHeaderValue(key: string, lines: string[]): string | null {
+  const token = `##${key}=`;
+  for (const line of lines) {
+    if (line.startsWith(token)) {
+      return line.substring(token.length);
     }
-  });
-  return value;
+  }
+  return null;
 }
