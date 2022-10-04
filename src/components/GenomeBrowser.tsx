@@ -1,5 +1,5 @@
 import { Component, onCleanup, onMount } from "solid-js";
-import igv from "igv";
+import igv, { Browser } from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
@@ -34,12 +34,10 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     api.getFastaGz(contig, position),
     createVcf(contig, position, samples),
     api.getGenesGz(),
-    ...samples.map((sample) => api.getCram(sample.person.individualId)),
   ]);
   const fastaGz = data[0];
   const vcf = data[1];
   const genesGz = data[2];
-  const crams = data.slice(3) as (Cram | null)[];
 
   if (fastaGz === null) {
     return null;
@@ -63,23 +61,6 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     url: "data:application/octet-stream;base64," + fromByteArray(vcf),
   });
 
-  for (let i = 0; i < samples.length; ++i) {
-    const cram = crams[i];
-
-    if (cram !== null) {
-      const sampleId = samples[i].person.individualId;
-      tracks.push({
-        order: order++,
-        type: "alignment",
-        format: "cram",
-        name: `Alignment (${sampleId})`,
-        url: "data:application/octet-stream;base64," + fromByteArray(cram.cram),
-        indexURL: "data:application/octet-stream;base64," + fromByteArray(cram.crai),
-        colorBy: "strand",
-      });
-    }
-  }
-
   const htsFileMetadata = await api.getHtsFileMetadata();
 
   return {
@@ -96,14 +77,37 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
   };
 };
 
+const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void> => {
+  const data = await Promise.all([...samples.map((sample) => api.getCram(sample.person.individualId))]);
+  const crams = data.slice(0);
+
+  for (let i = 0; i < samples.length; ++i) {
+    const cram = crams[i];
+
+    if (cram !== null) {
+      const sampleId = samples[i].person.individualId;
+      await browser.loadTrack({
+        type: "alignment",
+        format: "cram",
+        name: `Alignment (${sampleId})`,
+        url: "data:application/octet-stream;base64," + fromByteArray(cram.cram),
+        indexURL: "data:application/octet-stream;base64," + fromByteArray(cram.crai),
+        checkSequenceMD5: false, //  disable verifying the MD5 checksum of the reference sequence underlying a slice
+        colorBy: "strand",
+      });
+    }
+  }
+};
+
 export const GenomeBrowser: Component<{ contig: string; position: number; samples: Sample[] }> = (props) => {
   let divRef: HTMLDivElement;
-  let browser: unknown;
+  let browser: Browser;
   onMount(() => {
     (async () => {
       const config = await createBrowserConfig(props.contig, props.position, props.samples);
       if (config !== null) {
-        browser = await igv.createBrowser(divRef, config);
+        browser = igv.createBrowser(divRef, config);
+        await updateBrowser(browser, props.samples);
       }
     })().catch((err) => console.error(err));
   });
