@@ -106,7 +106,7 @@ export const GenomeBrowser: Component<{ contig: string; position: number; sample
     (async () => {
       const config = await createBrowserConfig(props.contig, props.position, props.samples);
       if (config !== null) {
-        browser = igv.createBrowser(divRef, config);
+        browser = await igv.createBrowser(divRef, config);
         await updateBrowser(browser, props.samples);
       }
     })().catch((err) => console.error(err));
