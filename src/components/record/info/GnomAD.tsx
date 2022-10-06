@@ -34,9 +34,9 @@ export const GnomAD: Component<FieldProps> = (props) => {
   };
 
   return (
-    <Show when={af()}>
+    <Show when={af()} keyed>
       {(af) => (
-        <Show when={href()} fallback={<FieldValueFloat value={af} />}>
+        <Show when={href()} fallback={<FieldValueFloat value={af} />} keyed>
           {(href) => (
             <Anchor href={href}>
               <FieldValueFloat value={af} />

@@ -75,7 +75,7 @@ export const Samples: Component = () => {
   return (
     <>
       <Breadcrumb items={[{ text: "Samples" }]} />
-      <Show when={samples()} fallback={<Loader />}>
+      <Show when={samples()} fallback={<Loader />} keyed>
         {(samples) => (
           <>
             <div class="columns">

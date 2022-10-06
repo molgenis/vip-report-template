@@ -210,14 +210,14 @@ export const SampleVariants: Component<{
             {infoFields().length > 0 && <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />}
           </div>
           <div class="column is-4">
-            <Show when={records()} fallback={<Loader />}>
+            <Show when={records()} fallback={<Loader />} keyed>
               {(records) => <Pager page={records.page} onPageChange={onPageChange} />}
             </Show>
           </div>
           <div class="column">
             <div class="columns">
               <div class="column is-10">
-                <Show when={records()} fallback={<Loader />}>
+                <Show when={records()} fallback={<Loader />} keyed>
                   {(records) => (
                     <span class="is-pulled-right" style={{ margin: "auto" }}>
                       {records.page.totalElements} records
@@ -238,7 +238,7 @@ export const SampleVariants: Component<{
           </div>
         </div>
         <div class="columns">
-          <Show when={records()} fallback={<Loader />}>
+          <Show when={records()} fallback={<Loader />} keyed>
             {(records) => (
               <VariantsSampleTable
                 item={props.sample}
