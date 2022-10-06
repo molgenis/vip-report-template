@@ -1,4 +1,5 @@
-import bamUrl from "./alignment.bam.blob";
+import cramUrl from "./alignment.cram.blob";
+import craiUrl from "./alignment.cram.crai.blob";
 import decisionTreeJson from "./decisionTree.json";
 import fastaUrl1_10042288_10042788 from "./fasta/1-10042288-10042788.fasta.gz.blob";
 import fastaUrl1_16375333_16375833 from "./fasta/1-16375333-16375833.fasta.gz.blob";
@@ -47,7 +48,8 @@ import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
 import { fetchAsBytes } from "../utils";
 import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
 
-export const bam = await fetchAsBytes(bamUrl as string);
+export const cram = await fetchAsBytes(cramUrl as string);
+export const crai = await fetchAsBytes(craiUrl as string);
 
 export const decisionTree: DecisionTree = decisionTreeJson as DecisionTree;
 

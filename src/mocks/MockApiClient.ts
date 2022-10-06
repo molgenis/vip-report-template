@@ -3,6 +3,7 @@ import { parseVcf } from "@molgenis/vip-report-vcf/src/VcfParser";
 import {
   Api,
   AppMetadata,
+  Cram,
   DecisionTree,
   HtsFileMetadata,
   Item,
@@ -14,7 +15,8 @@ import {
 } from "@molgenis/vip-report-api/src/Api";
 import { samples1, samples100 } from "./static";
 import {
-  bam as bamGRCh37,
+  cram as cramGRCh37,
+  crai as craiGRCh37,
   decisionTree as decisionTreeGRCh37,
   fastaGz as fastaGzGRCh37,
   genesGz as genesGzGRCh37,
@@ -26,7 +28,8 @@ import {
   vcfSamples100 as vcfSamples100GRCh37,
 } from "./GRCh37/static";
 import {
-  bam as bamGRCh38,
+  cram as cramGRCh38,
+  crai as craiGRCh38,
   decisionTree as decisionTreeGRCh38,
   fastaGz as fastaGzGRCh38,
   genesGz as genesGzGRCh38,
@@ -59,8 +62,8 @@ export class MockApiClient implements Api {
     return this.apiClient.getGenesGz();
   }
 
-  getBam(sampleId: string): Promise<Uint8Array | null> {
-    return this.apiClient.getBam(sampleId);
+  getCram(sampleId: string): Promise<Cram | null> {
+    return this.apiClient.getCram(sampleId);
   }
 
   getDecisionTree(): Promise<DecisionTree | null> {
@@ -130,8 +133,11 @@ export class MockApiClient implements Api {
         vcf: vcfFamilyGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
-        bam: {
-          Patient: bamGRCh37,
+        cram: {
+          Patient: {
+            cram: cramGRCh37,
+            crai: craiGRCh37,
+          },
         },
       },
       decisionTree: decisionTreeGRCh37,
@@ -155,8 +161,11 @@ export class MockApiClient implements Api {
         vcf: vcfNoVepGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
-        bam: {
-          Patient: bamGRCh37,
+        cram: {
+          Patient: {
+            cram: cramGRCh37,
+            crai: craiGRCh37,
+          },
         },
       },
       decisionTree: decisionTreeGRCh37,
@@ -180,8 +189,11 @@ export class MockApiClient implements Api {
         vcf: vcfSamples1GRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
-        bam: {
-          SAMPLE1: bamGRCh37,
+        cram: {
+          SAMPLE1: {
+            cram: cramGRCh37,
+            crai: craiGRCh37,
+          },
         },
       },
       decisionTree: decisionTreeGRCh37,
@@ -249,8 +261,11 @@ export class MockApiClient implements Api {
         vcf: vcfFamilyGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
-        bam: {
-          Patient: bamGRCh38,
+        cram: {
+          Patient: {
+            cram: cramGRCh38,
+            crai: craiGRCh38,
+          },
         },
       },
       decisionTree: decisionTreeGRCh38,
@@ -274,8 +289,11 @@ export class MockApiClient implements Api {
         vcf: vcfNoVepGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
-        bam: {
-          Patient: bamGRCh38,
+        cram: {
+          Patient: {
+            cram: cramGRCh38,
+            crai: craiGRCh38,
+          },
         },
       },
       decisionTree: decisionTreeGRCh38,
@@ -299,8 +317,11 @@ export class MockApiClient implements Api {
         vcf: vcfSamples1GRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
-        bam: {
-          SAMPLE1: bamGRCh38,
+        cram: {
+          SAMPLE1: {
+            cram: cramGRCh38,
+            crai: craiGRCh38,
+          },
         },
       },
       decisionTree: decisionTreeGRCh38,

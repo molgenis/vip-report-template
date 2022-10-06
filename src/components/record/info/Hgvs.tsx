@@ -16,5 +16,9 @@ function abbreviate(notation: string): string {
 
 export const Hgvs: Component<FieldProps> = (props) => {
   const value = () => props.info.value as ValueString;
-  return <Show when={value()}>{(value) => <Abbr title={value} value={abbreviate(value)} />}</Show>;
+  return (
+    <Show when={value()} keyed>
+      {(value) => <Abbr title={value} value={abbreviate(value)} />}
+    </Show>
+  );
 };
