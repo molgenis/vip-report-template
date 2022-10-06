@@ -38,7 +38,7 @@ import fastaUrl22_50721296_50721796 from "./fasta/22-50721296-50721796.fasta.gz.
 import fastaUrlX_48932771_48933271 from "./fasta/X-48932771-48933271.fasta.gz.blob";
 import fastaUrlY_2655391_2655891 from "./fasta/Y-2655391-2655891.fasta.gz.blob";
 import fastaUrlMT_15076_15576 from "./fasta/MT-15076-15576.fasta.gz.blob";
-import genesUrl from "./genes.txt.gz.blob";
+import genesUrl from "./genes.gff.gz.blob";
 import vcfUrlFamily from "./vcf/family.vcf.blob";
 import vcfUrlNoVep from "./vcf/no_vep.vcf.blob";
 import vcfUrlSamples0 from "./vcf/samples_0.vcf.blob";

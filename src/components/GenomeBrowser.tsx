@@ -48,7 +48,7 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     tracks.push({
       order: order++,
       type: "annotation",
-      format: "refGene",
+      format: "gff3",
       name: "Genes",
       url: "data:application/gzip;base64," + fromByteArray(genesGz),
     });
