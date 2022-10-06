@@ -3,7 +3,7 @@ node_js:
   - lts/*
 branches:
   only:
-    - master
+    - main
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 cache:
   npm: false
@@ -26,11 +26,9 @@ deploy:
       secure: TxQUU8xNTVTqhQ6pYTR+ic7Crv6rPZ7UbRo8HJJOGlFA30Vb/O36kh3Vgwx3fM5oinC1I38pzmHjJ4WVz2qiUZcgNzDHMorQhErbfSWLO8G7XTsVkMkyozPPtgdCCT2Z7FfdTKmY5an+V4ZJlreM83+vlJmUzMoGahZElESBk94QkTnPAqk46whXAf/zToEw7OJsxd2N3uPyPB8+rgg5VMApRBsCegt3KyetiMBIYWX+kJLxXEGK7OnJmxz1SGrYHR87YEDog7awBIhrXNcBWc4Lj55oWEqp3JQlpLnVDhEUCSO8cmQkyIMTYZ3eIKoyrDk9vfAYYbDsRvagFXKTZGvv0ZQv8s7a1lWAadTyvgbmo3cvX/KHfam5pGf2DFEXWIHZgvoIzq8GY6V4sjOEWRG2sAn+jKiNT5jPgG8sG0faP2JVr55WoN4jRthk5ABckyS8PByWrwcLILTeBPuX7DpiKtzUzzRw/qHAGo59+bFyZiKIc5I+S59fnttJ6Vz4jpjsavOzNsgIGUsTs3y1kosNLYoJVcI3RjpgHQuOfzawKb2l22B5wbJ1/1llhrSqYCtEjAhUuruB3bhy+/WiN4ulKp29Ct7/IEN3ctBXdMBm2xCPlsPSTBeXzwJNeWykTnpFx9qykjtSj3CwS8ZDnY3M+/dLhywrI46EGa03YRw=
     on:
       tags: true
-    edge: true
   - provider: releases
     token:
       secure: O4SoRwISsWIuVXjUyA1XCHUwRP0AHVMB+ICRk03rqVyQB11VdPe/GXHtC7VxmyWC3H7qsQACSJqPOQDwREngyyqNQLQosrPfOqt5ZMcNXQVGyoVjThs6uzwSEjxVMoOsDcuEPYbf8mII23TauDa7b7tLqyqZGPYWs/bA/Xula0m16Nvdr6iPWrG2F8/2JIn1NbpKdyA7okiqr06SVKgNK1drjwHQBoB5WvrTmh3v6rQnBT1HkC2OdNLUSkp01gPbxWgl88CJ1RreH2h3t7wgmfl46DTRbsigAZrrS5pwKvrNXn4fJq8ygPIa+wt7OpvuRRJH1hDhpFaMEvXE+kj2K0Anc6UqqbadPkon+3OmYIigBXKcsnp5C1Jdrc/FSbnrjKjrIpT4wIkraF3BbH1SG4Q39iXs/M7g2KE5YwhrqUaxqDEzOB3oLuu8Ep+PDIge4aB5uLqSK/DN3Div5NsS+DzDEj6uPSH6bjL1mq19PEPLASBb58MvyfhtjsR3QmnRKrN2crPVY09mWYYkN02EN/L9+5Vd7v3frrAsydVpnWBBezHqBcKjLc7jYJEe8gzAoqQl3lYR7B3L+2iiAB1gU9w1FkpGqJmkIokynSeoMTCkxVHYrLmMydqt8R6aVYUl0mmPLkcrZKkfiysupxXSGcANY9DnQdtewOfCjenLOPw=
     file: dist/vip-report-template.html
     on:
       tags: true
-    edge: true # opt in to dpl v2
