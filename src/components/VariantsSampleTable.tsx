@@ -6,7 +6,7 @@ import { Link } from "solid-app-router";
 import { HtsFileMetadata, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";
-import { Component, createMemo, For } from "solid-js";
+import { Component, createMemo, createSignal, For, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
@@ -22,6 +22,21 @@ export const VariantsSampleTable: Component<{
 }> = (props) => {
   const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
+  const proband: Sample = props.item.data;
+  const [father, setFather] = createSignal<Sample | undefined>(undefined);
+  const [mother, setMother] = createSignal<Sample | undefined>(undefined);
+  const otherFamilyMembers: Sample[] = [];
+
+  samples().forEach((sample) => {
+    if (proband.person.maternalId != "0" && sample.person.individualId === proband.person.maternalId) {
+      setMother(sample);
+    } else if (proband.person.paternalId != "0" && sample.person.individualId === proband.person.paternalId) {
+      setFather(sample);
+    } else if (sample.person.individualId !== proband.person.individualId) {
+      otherFamilyMembers.push(sample);
+    }
+  });
+
   return (
     <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
@@ -31,7 +46,39 @@ export const VariantsSampleTable: Component<{
             <tr>
               <th>Position</th>
               <th>Reference</th>
-              <For each={samples()}>
+              <th>
+                <Abbr
+                  title={`${
+                    proband.person.individualId
+                  }: ${proband.person.sex.toLowerCase()}, ${proband.person.affectedStatus.toLowerCase()}`}
+                  value="Proband"
+                />
+              </th>
+              <Show when={mother() !== undefined && (mother() as Sample)} keyed>
+                {(mother) => (
+                  <th>
+                    <Abbr
+                      title={`${
+                        mother.person.individualId
+                      }: ${mother.person.sex.toLowerCase()}, ${mother.person.affectedStatus.toLowerCase()}`}
+                      value="Mother"
+                    />
+                  </th>
+                )}
+              </Show>
+              <Show when={father() !== undefined && (father() as Sample)} keyed>
+                {(father) => (
+                  <th>
+                    <Abbr
+                      title={`${
+                        father.person.individualId
+                      }: ${father.person.sex.toLowerCase()}, ${father.person.affectedStatus.toLowerCase()}`}
+                      value="Father"
+                    />
+                  </th>
+                )}
+              </Show>
+              <For each={otherFamilyMembers}>
                 {(sample: Sample) => (
                   <th>
                     <Abbr
