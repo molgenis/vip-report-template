@@ -143,7 +143,7 @@ export const SampleVariants: Component<{
 
   const formatFields = createMemo(() => {
     const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "DP"];
+    const includedFields = ["VIM", "VID", "GQ"];
     return formatFieldMap
       ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
       : [];

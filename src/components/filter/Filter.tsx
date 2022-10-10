@@ -2,7 +2,7 @@ import { Component, Match, Switch } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
 import { FilterIntegerVim } from "./FilterIntegerVim";
-import { FilterIntegerDp } from "./FilterIntegerDp";
+import { FilterIntegerGq } from "./FilterIntegerGq";
 import { FilterIntegerVid } from "./FilterIntegerVid";
 import { QueryClause, Selector } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
@@ -21,8 +21,8 @@ export type FilterProps = {
 export const Filter: Component<FilterProps> = (props) => {
   return (
     <Switch>
-      <Match when={props.field.id === "DP"}>
-        <FilterIntegerDp {...props} />
+      <Match when={props.field.id === "GQ"}>
+        <FilterIntegerGq {...props} />
       </Match>
       <Match when={props.field.id === "VID"}>
         <FilterIntegerVid {...props} />
