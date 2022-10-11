@@ -25,6 +25,8 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
 import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
 import { arrayEquals } from "../utils/utils";
+import { CustomFilterChangeEvent, CustomFilterClearEvent } from "../components/filter/AllelicBalanceFilter";
+import { CustomFilters } from "../components/filter/CustomFilters";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -143,7 +145,7 @@ export const SampleVariants: Component<{
 
   const formatFields = createMemo(() => {
     const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "GQ"];
+    const includedFields = ["VIM", "VID", "GQ", "AD", "GT"];
     return formatFieldMap
       ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
       : [];
@@ -153,6 +155,7 @@ export const SampleVariants: Component<{
   const pageSize = () => getStateVariants()?.pageSize;
   const searchQuery = () => getStateVariants()?.searchQuery;
   const filterQueries = () => getStateVariants()?.filterQueries;
+  const customQueries = () => getStateVariants()?.customQueries;
   const sort = () => getStateVariants()?.sort;
 
   const onPageChange = (page: number) => actions.setSampleVariantsPage(props.sample, page);
@@ -160,12 +163,18 @@ export const SampleVariants: Component<{
   const onFilterChange = (event: FilterChangeEvent) => actions.setSampleVariantsFilterQuery(props.sample, event.query);
   const onFilterClear = (event: FilterClearEvent) =>
     actions.clearSampleVariantsFilterQuery(props.sample, event.selector);
+  const onCustomFilterChange = (event: CustomFilterChangeEvent) =>
+    actions.setSampleVariantsCustomQuery(props.sample, event.query, event.key);
+  const onCustomFilterClear = (event: CustomFilterClearEvent) =>
+    actions.clearSampleVariantsCustomQuery(props.sample, event.key);
   const onSortChange = (event: SortEvent) => actions.setSampleVariantsSort(props.sample, event.order);
   const onSortClear = () => actions.setSampleVariantsSort(props.sample, null);
 
   const params = (): Params => {
     return {
-      query: createSampleQuery(props.sample, searchQuery(), filterQueries(), props.recordsMeta) || undefined,
+      query:
+        createSampleQuery(props.sample, searchQuery(), filterQueries(), customQueries(), props.recordsMeta) ||
+        undefined,
       sort: sort() || undefined,
       page: page() || undefined,
       size: pageSize() || undefined,
@@ -202,6 +211,12 @@ export const SampleVariants: Component<{
           queries={filterQueries()}
           onChange={onFilterChange}
           onClear={onFilterClear}
+        />
+        <CustomFilters
+          samplesFields={[{ sample: props.sample, fields: formatFields() }]}
+          queries={customQueries()}
+          onCustomChange={onCustomFilterChange}
+          onCustomClear={onCustomFilterClear}
         />
       </div>
       <div class="column">

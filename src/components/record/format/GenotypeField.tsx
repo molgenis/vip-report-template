@@ -10,6 +10,13 @@ function isAllelicImbalance(genotype: Genotype, allelicDepth: number[] | undefin
     });
     const balance = allelicDepth[0] / total;
     return balance < 0.2 || balance > 0.8;
+  } else if ((genotype.t === "hom_a" || genotype.t === "hom_r") && allelicDepth !== undefined) {
+    let total = 0;
+    allelicDepth?.forEach((value) => {
+      total = total + value;
+    });
+    const balance = allelicDepth[0] / total;
+    return balance < 0.02;
   }
   return false;
 }

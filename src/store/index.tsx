@@ -3,14 +3,17 @@ import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Item, QueryClause, Sample, Selector, SortOrder } from "@molgenis/vip-report-api/src/Api";
 import { selectorKey } from "../utils/query";
+import { Query } from "../components/model/decisionTree";
 
 export type FilterQueries = { [key: string]: QueryClause | undefined };
+export type CustomQueries = { [key: string]: Query | undefined };
 
 type AppStateVariants = {
   page?: number;
   pageSize?: number;
   searchQuery?: string;
   filterQueries?: FilterQueries;
+  customQueries?: CustomQueries;
   sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
 };
 
@@ -41,6 +44,8 @@ export type AppActions = {
   setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string): void;
   setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
   clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
+  setSampleVariantsCustomQuery(sample: Item<Sample>, query: Query, key: string): void;
+  clearSampleVariantsCustomQuery(sample: Item<Sample>, key: string): void;
   setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null): void;
   setSamplePage(page: number): void;
   setSampleSearchQuery(searchQuery: string): void;
@@ -145,6 +150,36 @@ export const Provider: ParentComponent = (props) => {
             variants: {
               ...getVariants(sample),
               filterQueries: { ...(variants.filterQueries || {}), [selectorKey(selector)]: undefined },
+              page: undefined,
+            },
+          },
+        },
+      });
+    },
+    setSampleVariantsCustomQuery(sample: Item<Sample>, query: Query, key: string) {
+      const variants = getVariants(sample);
+      setState({
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
+          [sample.id]: {
+            variants: {
+              ...variants,
+              customQueries: { ...(variants.customQueries || {}), [key]: query },
+              page: undefined,
+            },
+          },
+        },
+      });
+    },
+    clearSampleVariantsCustomQuery(sample: Item<Sample>, key: string) {
+      const variants = getVariants(sample);
+      setState({
+        sampleVariants: {
+          ...(state.sampleVariants || {}),
+          [sample.id]: {
+            variants: {
+              ...getVariants(sample),
+              customQueries: { ...(variants.filterQueries || {}), [key]: undefined },
               page: undefined,
             },
           },
