@@ -107,10 +107,20 @@ describe("query utilities", () => {
         {
           operator: "and",
           args: [
-            { selector: ["n", "CSQ", "*", 0], operator: "==", args: [0] },
-            { selector: ["n", "CSQ", "*", 1], operator: "==", args: [1, 2] },
-            { selector: ["s", "CUSTOM", 0], operator: "==", args: 1 },
-            { selector: ["n", "CUSTOM", 1], operator: "==", args: "test" },
+            {
+              operator: "and",
+              args: [
+                { selector: ["n", "CSQ", "*", 0], operator: "==", args: [0] },
+                { selector: ["n", "CSQ", "*", 1], operator: "==", args: [1, 2] },
+              ],
+            },
+            {
+              operator: "and",
+              args: [
+                { selector: ["s", "CUSTOM", 0], operator: "==", args: 1 },
+                { selector: ["n", "CUSTOM", 1], operator: "==", args: "test" },
+              ],
+            },
           ],
         },
       ],

@@ -97,10 +97,10 @@ export const SampleVariants: Component<{
         args: 1,
       });
     }
-    const dpField = props.recordsMeta.format?.DP;
-    if (dpField) {
+    const gqField = props.recordsMeta.format?.GQ;
+    if (gqField) {
       actions.setSampleVariantsFilterQuery(props.sample, {
-        selector: sampleSelector(props.sample, dpField),
+        selector: sampleSelector(props.sample, gqField),
         operator: ">=",
         args: 20,
       });

@@ -15,7 +15,7 @@ export const AllelicBalanceFilter: Component<{
   onChange: (event: CustomFilterChangeEvent) => void;
   onClear: (event: CustomFilterClearEvent) => void;
 }> = (props) => {
-  const query: Query | undefined = props.queries ? props.queries["AlleleBalance"] : undefined;
+  const query: Query | undefined = props.queries ? props.queries["AllelicBalance"] : undefined;
 
   const hetQuery: ComposedQuery = {
     operator: "and",
@@ -54,8 +54,15 @@ export const AllelicBalanceFilter: Component<{
 
   const onFilterChange = (event: CheckboxEvent) => {
     if (event.checked) {
-      props.onChange({ query: combinedQuery, key: "AlleleBalance" });
-    } else props.onClear({ key: "AlleleBalance" });
+      props.onChange({ query: combinedQuery, key: "AllelicBalance" });
+    } else props.onClear({ key: "AllelicBalance" });
   };
-  return <Checkbox label="No allele imbalance" checked={query && query.args !== undefined} onChange={onFilterChange} />;
+  return (
+    <Checkbox
+      desc="Filter variants with allelic imbalance"
+      label="No allelic imbalance"
+      checked={query && query.args !== undefined}
+      onChange={onFilterChange}
+    />
+  );
 };

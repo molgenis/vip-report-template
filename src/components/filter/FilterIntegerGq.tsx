@@ -11,7 +11,12 @@ export const FilterIntegerGq: Component<FilterProps> = (props) => {
 
   return (
     <div class="control">
-      <Checkbox label="GT quality >= 20" checked={props.query && props.query.args === 20} onChange={onFilterChange} />
+      <Checkbox
+        desc="Genotype quality >= 20"
+        label="GT quality >= 20"
+        checked={props.query && props.query.args === 20}
+        onChange={onFilterChange}
+      />
     </div>
   );
 };

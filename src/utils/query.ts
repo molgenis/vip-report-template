@@ -30,7 +30,6 @@ export function createQuery(
   customFilters: CustomQueries | undefined,
   metadata: Metadata
 ): Query | null {
-  console.log(customFilters);
   let query: Query | null;
 
   const searchQuery = search !== undefined ? createSearchQuery(search, metadata) : null;
