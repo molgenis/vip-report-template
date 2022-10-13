@@ -75,8 +75,6 @@ export const VariantsSampleTable: Component<{
                             readDepth={record.data.s[sample.index]["DP"] as number}
                           />
                         </td>
-                        <td>{record.data.s[sample.index]["VIAB"] as number}</td>
-                        <td>{record.data.s[sample.index]["AD"] as number}</td>
                       </>
                     )}
                   </For>

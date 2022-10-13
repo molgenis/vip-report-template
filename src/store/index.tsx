@@ -1,9 +1,8 @@
 import { hashIntegration, Router } from "solid-app-router";
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Item, QueryClause, Sample, Selector, SortOrder } from "@molgenis/vip-report-api/src/Api";
+import { Item, QueryClause, Query, Sample, Selector, SortOrder } from "@molgenis/vip-report-api/src/Api";
 import { selectorKey } from "../utils/query";
-import { Query } from "../components/model/decisionTree";
 
 export type FilterQueries = { [key: string]: QueryClause | undefined };
 export type CustomQueries = { [key: string]: Query | undefined };
