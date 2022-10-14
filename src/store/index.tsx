@@ -139,7 +139,6 @@ export const Provider: ParentComponent = (props) => {
       });
     },
     clearSampleVariantsFilterQuery(sample: Item<Sample>, key: string) {
-      console.log("test - clear" + key);
       const variants = getVariants(sample);
       setState({
         sampleVariants: {
