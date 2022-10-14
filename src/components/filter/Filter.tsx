@@ -3,6 +3,7 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
 import { FilterIntegerVim } from "./FilterIntegerVim";
 import { FilterIntegerGq } from "./FilterIntegerGq";
+import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
 import { QueryClause, Selector } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
@@ -23,6 +24,9 @@ export const Filter: Component<FilterProps> = (props) => {
     <Switch>
       <Match when={props.field.id === "GQ"}>
         <FilterIntegerGq {...props} />
+      </Match>
+      <Match when={props.field.id === "DP"}>
+        <FilterIntegerDp {...props} />
       </Match>
       <Match when={props.field.id === "VID"}>
         <FilterIntegerVid {...props} />
