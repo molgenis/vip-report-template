@@ -10,7 +10,7 @@ import { fetchHtsFileMetadata, fetchRecords, fetchRecordsMeta } from "../utils/A
 import { flattenFieldMetadata } from "../utils/field";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { HtsFileMetadata, Params, SortPath } from "@molgenis/vip-report-api/src/Api";
-import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
+import { SimpleFilterChangeEvent, SimpleFilterClearEvent } from "../components/filter/Filter";
 import { useStore } from "../store";
 import { createQuery, infoSortPath } from "../utils/query";
 import { Loader } from "../components/Loader";
@@ -45,8 +45,8 @@ export const Variants: Component<{
 
   const onPageChange = (page: number) => actions.setVariantsPage(page);
   const onSearchChange = (search: string) => actions.setVariantsSearchQuery(search);
-  const onFilterChange = (event: FilterChangeEvent) => actions.setVariantsFilterQuery(event.query);
-  const onFilterClear = (event: FilterClearEvent) => actions.clearVariantsFilterQuery(event.selector);
+  const onFilterChange = (event: SimpleFilterChangeEvent) => actions.setVariantsFilterQuery(event.query);
+  const onFilterClear = (event: SimpleFilterClearEvent) => actions.clearVariantsFilterQuery(event.selector);
   const onSortChange = (event: SortEvent) => actions.setVariantsSort(event.order);
   const onSortClear = () => actions.setVariantsSort(null);
 

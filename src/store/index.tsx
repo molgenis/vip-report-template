@@ -41,10 +41,8 @@ export type AppActions = {
   setSampleVariantsPage(sample: Item<Sample>, page: number): void;
   setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
   setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string): void;
-  setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
-  clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
-  setSampleVariantsCustomQuery(sample: Item<Sample>, query: Query, key: string): void;
-  clearSampleVariantsCustomQuery(sample: Item<Sample>, key: string): void;
+  setSampleVariantsFilterQuery(sample: Item<Sample>, query: Query, key: string): void;
+  clearSampleVariantsFilterQuery(sample: Item<Sample>, key: string): void;
   setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null): void;
   setSamplePage(page: number): void;
   setSampleSearchQuery(searchQuery: string): void;
@@ -125,7 +123,7 @@ export const Provider: ParentComponent = (props) => {
         },
       });
     },
-    setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
+    setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause, key: string) {
       const variants = getVariants(sample);
       setState({
         sampleVariants: {
@@ -133,14 +131,15 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...variants,
-              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(query.selector)]: query },
+              filterQueries: { ...(variants.filterQueries || {}), [key]: query },
               page: undefined,
             },
           },
         },
       });
     },
-    clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
+    clearSampleVariantsFilterQuery(sample: Item<Sample>, key: string) {
+      console.log("test - clear" + key);
       const variants = getVariants(sample);
       setState({
         sampleVariants: {
@@ -148,37 +147,7 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...getVariants(sample),
-              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(selector)]: undefined },
-              page: undefined,
-            },
-          },
-        },
-      });
-    },
-    setSampleVariantsCustomQuery(sample: Item<Sample>, query: Query, key: string) {
-      const variants = getVariants(sample);
-      setState({
-        sampleVariants: {
-          ...(state.sampleVariants || {}),
-          [sample.id]: {
-            variants: {
-              ...variants,
-              customQueries: { ...(variants.customQueries || {}), [key]: query },
-              page: undefined,
-            },
-          },
-        },
-      });
-    },
-    clearSampleVariantsCustomQuery(sample: Item<Sample>, key: string) {
-      const variants = getVariants(sample);
-      setState({
-        sampleVariants: {
-          ...(state.sampleVariants || {}),
-          [sample.id]: {
-            variants: {
-              ...getVariants(sample),
-              customQueries: { ...(variants.filterQueries || {}), [key]: undefined },
+              filterQueries: { ...(variants.filterQueries || {}), [key]: undefined },
               page: undefined,
             },
           },

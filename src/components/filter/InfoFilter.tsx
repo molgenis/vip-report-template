@@ -1,17 +1,17 @@
 import { Component } from "solid-js";
-import { Filter, FilterChangeEvent, FilterClearEvent, FilterProps } from "./Filter";
+import { Filter, SimpleFilterChangeEvent, SimpleFilterClearEvent, FilterProps } from "./Filter";
 import { SelectorPart } from "@molgenis/vip-report-api/src/Api";
 
 export const InfoFilter: Component<FilterProps> = (props) => {
   const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
 
-  const onChange = (event: FilterChangeEvent) => {
+  const onChange = (event: SimpleFilterChangeEvent) => {
     props.onChange({
       query: { ...event.query, selector: ["n", ...(event.query.selector as SelectorPart[])] },
     });
   };
 
-  const onClear = (event: FilterClearEvent) => {
+  const onClear = (event: SimpleFilterClearEvent) => {
     props.onClear({
       selector: ["n", ...(event.selector as SelectorPart[])],
     });

@@ -1,19 +1,14 @@
 import { Component } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { ComposedQuery, Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FilterQueries } from "../../store";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
-
-export type CustomFilterChangeEvent = { query: Query; key: string };
-export type CustomFilterClearEvent = { key: string };
+import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export const AllelicBalanceFilter: Component<{
   sample: Item<Sample>;
-  gtField: FieldMetadata;
-  adField: FieldMetadata;
   queries?: FilterQueries;
-  onChange: (event: CustomFilterChangeEvent) => void;
-  onClear: (event: CustomFilterClearEvent) => void;
+  onChange: (event: FilterChangeEvent) => void;
+  onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
   const query: Query | undefined = props.queries ? props.queries["AllelicBalance"] : undefined;
 
