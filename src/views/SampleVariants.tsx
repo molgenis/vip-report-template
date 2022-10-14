@@ -24,6 +24,7 @@ import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
 import { arrayEquals } from "../utils/utils";
+import { getAllelicBalanceQuery } from "../components/filter/AllelicBalanceFilter";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -116,6 +117,11 @@ export const SampleVariants: Component<{
         },
         selectorKey(selectorGq)
       );
+    }
+    const adField = props.recordsMeta.format?.AD;
+    const gtField = props.recordsMeta.format?.GT;
+    if (adField && gtField) {
+      actions.setSampleVariantsFilterQuery(props.sample, getAllelicBalanceQuery(props.sample.id), "AllelicBalance");
     }
   }
 

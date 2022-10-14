@@ -34,7 +34,12 @@ export const SamplesFilters: Component<{
               onChange={onChange}
               onClear={onClear}
             />
-            <AllelicBalanceFilter sample={sampleField.sample} onChange={props.onChange} onClear={props.onClear} />
+            <AllelicBalanceFilter
+              sample={sampleField.sample}
+              onChange={props.onChange}
+              onClear={props.onClear}
+              queries={props.queries}
+            />
           </>
         )}
       </For>

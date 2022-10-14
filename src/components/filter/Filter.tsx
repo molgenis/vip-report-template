@@ -8,7 +8,6 @@ import { FilterIntegerVid } from "./FilterIntegerVid";
 import { Query, QueryClause, Selector } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
 import { isAnyCsqInfo } from "../../utils/csqUtils";
-import { AllelicBalanceFilter } from "./AllelicBalanceFilter";
 
 export type SimpleFilterChangeEvent = { query: QueryClause };
 export type SimpleFilterClearEvent = { selector: Selector };
