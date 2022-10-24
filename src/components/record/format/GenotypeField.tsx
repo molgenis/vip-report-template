@@ -2,10 +2,14 @@ import { Component, For, Show } from "solid-js";
 import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
 import { Allele } from "../Allele";
 
-function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefined) {
-  if (genotype.t === "het" && allelicBalance !== undefined) {
+function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefined | null) {
+  if (genotype.t === "het" && allelicBalance !== undefined && allelicBalance !== null) {
     return allelicBalance <= 0.2 || allelicBalance >= 0.8;
-  } else if ((genotype.t === "hom_a" || genotype.t === "hom_r") && allelicBalance !== undefined) {
+  } else if (
+    (genotype.t === "hom_a" || genotype.t === "hom_r") &&
+    allelicBalance !== undefined &&
+    allelicBalance !== null
+  ) {
     return allelicBalance > 0.02;
   }
   return false;
@@ -30,7 +34,7 @@ export const GenotypeField: Component<{
   refAllele: string;
   altAlleles: (string | null)[];
   isAbbreviate: boolean;
-  allelicBalance: number | undefined;
+  allelicBalance: number | undefined | null;
   readDepth: number | undefined;
 }> = (props) => {
   const allelicImbalance: boolean = isAllelicImbalance(props.genotype, props.allelicBalance);

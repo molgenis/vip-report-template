@@ -12,7 +12,7 @@ export const Format: Component<{
   formatMetadata: FieldMetadata;
   record: Item<Record>;
   isAbbreviate: boolean;
-  allelicBalance: number | undefined;
+  allelicBalance: number | undefined | null;
   readDepth: number | undefined;
 }> = (props) => {
   return (
