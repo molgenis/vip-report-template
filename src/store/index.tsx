@@ -33,8 +33,8 @@ export type AppActions = {
   setVariantsPage(page: number): void;
   setVariantsPageSize(pageSize: number): void;
   setVariantsSearchQuery(searchQuery: string): void;
-  setVariantsFilterQuery(query: QueryClause): void;
-  clearVariantsFilterQuery(selector: Selector): void;
+  setVariantsFilterQuery(query: Query, key: string): void;
+  clearVariantsFilterQuery(key: string): void;
   setVariantsSort(sort: SortOrder | null): void;
   setSampleVariantsPage(sample: Item<Sample>, page: number): void;
   setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
@@ -73,19 +73,19 @@ export const Provider: ParentComponent = (props) => {
     setVariantsSearchQuery(searchQuery: string) {
       setState({ variants: { ...(state.variants || {}), searchQuery } });
     },
-    setVariantsFilterQuery(query: QueryClause) {
+    setVariantsFilterQuery(query: Query, key: string) {
       setState({
         variants: {
           ...(state.variants || {}),
-          filterQueries: { ...(state.variants?.filterQueries || {}), [selectorKey(query.selector)]: query },
+          filterQueries: { ...(state.variants?.filterQueries || {}), [key]: query },
         },
       });
     },
-    clearVariantsFilterQuery(selector: Selector) {
+    clearVariantsFilterQuery(key: string) {
       setState({
         variants: {
           ...(state.variants || {}),
-          filterQueries: { ...(state.variants?.filterQueries || {}), [selectorKey(selector)]: undefined },
+          filterQueries: { ...(state.variants?.filterQueries || {}), [key]: undefined },
         },
       });
     },
@@ -121,7 +121,7 @@ export const Provider: ParentComponent = (props) => {
         },
       });
     },
-    setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause, key: string) {
+    setSampleVariantsFilterQuery(sample: Item<Sample>, query: Query, key: string) {
       const variants = getVariants(sample);
       setState({
         sampleVariants: {
