@@ -60,7 +60,7 @@ export const AllelicBalanceFilter: Component<{
   };
   return (
     <Checkbox
-      desc="Filter variants with allelic imbalance"
+      desc="Filter variants with allelic imbalance; For hetrozygote calls: AB < 0.2 or AB > 0.8 and for homozygote calls: AB > 0.02 are consided allelic imbalance"
       label="No allelic imbalance"
       checked={query && query.args !== undefined}
       onChange={onFilterChange}
