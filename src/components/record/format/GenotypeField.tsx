@@ -4,7 +4,7 @@ import { Allele } from "../Allele";
 
 function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefined) {
   if (genotype.t === "het" && allelicBalance !== undefined) {
-    return allelicBalance < 0.2 || allelicBalance > 0.8;
+    return allelicBalance <= 0.2 || allelicBalance >= 0.8;
   } else if ((genotype.t === "hom_a" || genotype.t === "hom_r") && allelicBalance !== undefined) {
     return allelicBalance > 0.02;
   }
