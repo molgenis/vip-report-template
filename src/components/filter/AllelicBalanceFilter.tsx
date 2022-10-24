@@ -12,8 +12,8 @@ export function getAllelicBalanceQuery(sampleId: number): ComposedQuery {
       {
         operator: "and",
         args: [
-          { selector: ["s", sampleId, "VIAB"], operator: ">=", args: 0.2 },
-          { selector: ["s", sampleId, "VIAB"], operator: "<=", args: 0.8 },
+          { selector: ["s", sampleId, "VIAB"], operator: ">", args: 0.2 },
+          { selector: ["s", sampleId, "VIAB"], operator: "<", args: 0.8 },
         ],
       },
     ],
