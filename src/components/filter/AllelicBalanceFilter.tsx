@@ -36,6 +36,8 @@ export function getAllelicBalanceQuery(sampleId: number): ComposedQuery {
     args: [
       { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "miss" },
       { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "part" },
+      { selector: ["s", sampleId, "VIAB"], operator: "==", args: null },
+      { selector: ["s", sampleId, "VIAB"], operator: "==", args: undefined },
     ],
   };
   const combinedQuery: ComposedQuery = { operator: "or", args: [hetQuery, homQuery, otherGtQuery] };
