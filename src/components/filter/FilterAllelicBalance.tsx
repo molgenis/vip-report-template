@@ -45,7 +45,7 @@ export function getAllelicBalanceQuery(sampleId: number): ComposedQuery {
   return combinedQuery;
 }
 
-export const AllelicBalanceFilter: Component<{
+export const FilterAllelicBalance: Component<{
   sample: Item<Sample>;
   queries?: FilterQueries;
   onChange: (event: FilterChangeEvent) => void;
@@ -59,11 +59,13 @@ export const AllelicBalanceFilter: Component<{
     } else props.onClear({ key: "AllelicBalance" });
   };
   return (
-    <Checkbox
-      desc="Filter variants with allelic imbalance; For hetrozygote calls: AB < 0.2 or AB > 0.8 and for homozygote calls: AB > 0.02 are consided allelic imbalance"
-      label="No allelic imbalance"
-      checked={query && query.args !== undefined}
-      onChange={onFilterChange}
-    />
+    <div class="control">
+      <Checkbox
+        desc="Filter variants with allelic imbalance; For hetrozygote calls: AB < 0.2 or AB > 0.8 and for homozygote calls: AB > 0.02 are consided allelic imbalance"
+        label="No allelic imbalance"
+        checked={query && query.args !== undefined}
+        onChange={onFilterChange}
+      />
+    </div>
   );
 };

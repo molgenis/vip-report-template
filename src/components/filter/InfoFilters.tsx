@@ -1,10 +1,9 @@
 import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { SimpleFilterChangeEvent, SimpleFilterClearEvent } from "./Filter";
 import { InfoFilter } from "./InfoFilter";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FilterQueries } from "../../store";
-import { infoFieldKey, selectorKey } from "../../utils/query";
+import { infoFieldKey } from "../../utils/query";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export const InfoFilters: Component<{
@@ -14,13 +13,6 @@ export const InfoFilters: Component<{
   onClear: (event: FilterClearEvent) => void;
   defaultValues?: { [key: string]: Value };
 }> = (props) => {
-  const onChange = (event: SimpleFilterChangeEvent) => {
-    {
-      props.onChange({ key: selectorKey(event.query.selector), query: event.query });
-    }
-  };
-  const onClear = (event: SimpleFilterClearEvent) => props.onClear({ key: selectorKey(event.selector) });
-
   const filterableFields = () => props.fields.filter((field) => field.type === "CATEGORICAL");
 
   return (
@@ -30,8 +22,8 @@ export const InfoFilters: Component<{
           <InfoFilter
             field={field}
             query={props.queries ? props.queries[infoFieldKey(field)] : undefined}
-            onChange={onChange}
-            onClear={onClear}
+            onChange={props.onChange}
+            onClear={props.onClear}
           />
         )}
       </For>

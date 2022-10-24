@@ -1,26 +1,32 @@
-import { Component, For } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Item, Sample, SelectorPart } from "@molgenis/vip-report-api/src/Api";
-import { Filter, SimpleFilterChangeEvent, SimpleFilterClearEvent } from "./Filter";
+import { Item, QueryClause, Sample, SelectorPart } from "@molgenis/vip-report-api/src/Api";
+import { Filter } from "./Filter";
 import { FilterQueries } from "../../store";
-import { sampleFieldKey } from "../../utils/query";
+import { sampleFieldKey, selectorKey } from "../../utils/query";
+import { FilterAllelicBalance } from "./FilterAllelicBalance";
+import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export const SampleFilters: Component<{
   sample: Item<Sample>;
   fields: FieldMetadata[];
   queries?: FilterQueries;
-  onChange: (event: SimpleFilterChangeEvent) => void;
-  onClear: (event: SimpleFilterClearEvent) => void;
+  onChange: (event: FilterChangeEvent) => void;
+  onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
-  const onChange = (event: SimpleFilterChangeEvent) => {
+  const onChange = (event: FilterChangeEvent) => {
     props.onChange({
-      query: { ...event.query, selector: ["s", props.sample.data.index, ...(event.query.selector as SelectorPart[])] },
+      key: selectorKey(["s", props.sample.data.index, event.key]),
+      query: {
+        ...event.query,
+        selector: ["s", props.sample.data.index, ...((event.query as QueryClause).selector as SelectorPart[])],
+      } as QueryClause,
     });
   };
 
-  const onClear = (event: SimpleFilterClearEvent) => {
+  const onClear = (event: FilterClearEvent) => {
     props.onClear({
-      selector: ["s", props.sample.data.index, ...(event.selector as SelectorPart[])],
+      key: selectorKey(["s", props.sample.data.index, event.key]),
     });
   };
 
@@ -30,12 +36,23 @@ export const SampleFilters: Component<{
       <div class="field">
         <For each={props.fields}>
           {(field) => (
-            <Filter
-              field={field}
-              query={props.queries ? props.queries[sampleFieldKey(props.sample, field)] : undefined}
-              onChange={onChange}
-              onClear={onClear}
-            />
+            <>
+              {" "}
+              <Filter
+                field={field}
+                query={props.queries ? props.queries[sampleFieldKey(props.sample, field)] : undefined}
+                onChange={onChange}
+                onClear={onClear}
+              />
+              <Show when={field.id === "AD"} keyed>
+                <FilterAllelicBalance
+                  sample={props.sample}
+                  onChange={props.onChange}
+                  onClear={props.onClear}
+                  queries={props.queries}
+                />
+              </Show>
+            </>
           )}
         </For>
       </div>

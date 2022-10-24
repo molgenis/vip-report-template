@@ -24,7 +24,7 @@ import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
 import { arrayEquals } from "../utils/utils";
-import { getAllelicBalanceQuery } from "../components/filter/AllelicBalanceFilter";
+import { getAllelicBalanceQuery } from "../components/filter/FilterAllelicBalance";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -173,7 +173,6 @@ export const SampleVariants: Component<{
   const pageSize = () => getStateVariants()?.pageSize;
   const searchQuery = () => getStateVariants()?.searchQuery;
   const filterQueries = () => getStateVariants()?.filterQueries;
-  const customQueries = () => getStateVariants()?.customQueries;
   const sort = () => getStateVariants()?.sort;
 
   const onPageChange = (page: number) => actions.setSampleVariantsPage(props.sample, page);
@@ -186,9 +185,7 @@ export const SampleVariants: Component<{
 
   const params = (): Params => {
     return {
-      query:
-        createSampleQuery(props.sample, searchQuery(), filterQueries(), customQueries(), props.recordsMeta) ||
-        undefined,
+      query: createSampleQuery(props.sample, searchQuery(), filterQueries(), props.recordsMeta) || undefined,
       sort: sort() || undefined,
       page: page() || undefined,
       size: pageSize() || undefined,

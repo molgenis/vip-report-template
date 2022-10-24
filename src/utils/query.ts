@@ -1,13 +1,12 @@
 import { Item, Query, QueryOperator, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { CustomQueries, FilterQueries } from "../store";
+import { FilterQueries } from "../store";
 
 export function createSampleQuery(
   sample: Item<Sample>,
   search: string | undefined,
   filters: FilterQueries | undefined,
-  customFilters: CustomQueries | undefined,
   metadata: Metadata
 ): Query | null {
   const genotypeSelector: Selector = ["s", sample.data.index, "GT", "t"];
@@ -18,7 +17,7 @@ export function createSampleQuery(
       { selector: genotypeSelector, operator: "!=", args: "miss" },
     ],
   };
-  const searchFilterQuery = createQuery(search, filters, customFilters, metadata);
+  const searchFilterQuery = createQuery(search, filters, metadata);
   const query: Query =
     searchFilterQuery !== null ? { operator: "and", args: [sampleQuery, searchFilterQuery] } : sampleQuery;
   return query;
@@ -27,13 +26,12 @@ export function createSampleQuery(
 export function createQuery(
   search: string | undefined,
   filters: FilterQueries | undefined,
-  customFilters: CustomQueries | undefined,
   metadata: Metadata
 ): Query | null {
   let query: Query | null;
 
   const searchQuery = search !== undefined ? createSearchQuery(search, metadata) : null;
-  const filterQuery = filters !== undefined ? createFilterQuery(filters, customFilters) : null;
+  const filterQuery = filters !== undefined ? createFilterQuery(filters) : null;
   if (searchQuery !== null) {
     query = filterQuery !== null ? { operator: "and", args: [searchQuery, filterQuery] } : searchQuery;
   } else {
@@ -83,26 +81,20 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
   return clauses;
 }
 
-function createFilterQuery(queries: FilterQueries, customQueries: CustomQueries | undefined): Query | null {
+function createFilterQuery(queries: FilterQueries): Query | null {
   const filterClauses = Object.values(queries).filter((query) => query !== undefined) as Query[];
-  const customClauses =
-    customQueries !== undefined ? (Object.values(customQueries).filter((query) => query !== undefined) as Query[]) : [];
 
   let query: Query;
-  if (filterClauses.length === 0 && customClauses.length === 0) {
+  if (filterClauses.length === 0) {
     return null;
-  } else if (filterClauses.length === 0 && customClauses.length !== 0) {
-    query = createQueryFromArray(customClauses);
-  } else if (filterClauses.length !== 0 && customClauses.length === 0) {
-    query = createQueryFromArray(filterClauses);
   } else {
-    query = { operator: "and", args: [createQueryFromArray(filterClauses), createQueryFromArray(customClauses)] };
+    query = createQueryFromArray(filterClauses);
   }
   return query;
 }
 
-function createQueryFromArray(queryClauses: Query[]): Query {
-  return queryClauses.length === 1 ? queryClauses[0] : { operator: "and", args: queryClauses };
+function createQueryFromArray(queries: Query[]): Query {
+  return queries.length === 1 ? queries[0] : { operator: "and", args: queries };
 }
 
 export function selector(field: FieldMetadata): SelectorPart[] {

@@ -1,7 +1,7 @@
 import { Component, For } from "solid-js";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterProps } from "./Filter";
-import { selector } from "../../utils/query";
+import { selector, selectorKey } from "../../utils/query";
 
 export type CheckboxGroup = {
   [key: string]: boolean;
@@ -35,6 +35,7 @@ export const FilterCategorical: Component<
       .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
       props.onChange({
+        key: selectorKey(selector(props.field)),
         query: {
           selector: selector(props.field),
           operator: props.field.number.count === 1 ? "has_any" : "any_has_any",
@@ -42,7 +43,7 @@ export const FilterCategorical: Component<
         },
       });
     } else {
-      props.onClear({ selector: selector(props.field) });
+      props.onClear({ key: selectorKey(selector(props.field)) });
     }
   };
 

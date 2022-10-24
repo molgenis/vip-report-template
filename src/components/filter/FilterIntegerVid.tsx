@@ -1,12 +1,16 @@
 import { Component } from "solid-js";
 import { FilterProps } from "./Filter";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
-import { selector } from "../../utils/query";
+import { selector, selectorKey } from "../../utils/query";
 
 export const FilterIntegerVid: Component<FilterProps> = (props) => {
   const onFilterChange = (event: CheckboxEvent) => {
-    if (event.checked) props.onChange({ query: { selector: selector(props.field), operator: "==", args: 1 } });
-    else props.onClear({ selector: selector(props.field) });
+    if (event.checked)
+      props.onChange({
+        key: selectorKey(selector(props.field)),
+        query: { selector: selector(props.field), operator: "==", args: 1 },
+      });
+    else props.onClear({ key: selectorKey(selector(props.field)) });
   };
 
   return (

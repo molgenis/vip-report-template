@@ -4,15 +4,13 @@ import { createStore } from "solid-js/store";
 import { Item, QueryClause, Query, Sample, Selector, SortOrder } from "@molgenis/vip-report-api/src/Api";
 import { selectorKey } from "../utils/query";
 
-export type FilterQueries = { [key: string]: QueryClause | undefined };
-export type CustomQueries = { [key: string]: Query | undefined };
+export type FilterQueries = { [key: string]: Query | undefined };
 
 type AppStateVariants = {
   page?: number;
   pageSize?: number;
   searchQuery?: string;
   filterQueries?: FilterQueries;
-  customQueries?: CustomQueries;
   sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
 };
 

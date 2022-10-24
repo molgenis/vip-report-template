@@ -5,18 +5,16 @@ import { FilterIntegerVim } from "./FilterIntegerVim";
 import { FilterIntegerGq } from "./FilterIntegerGq";
 import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
-import { Query, QueryClause, Selector } from "@molgenis/vip-report-api/src/Api";
+import { Query } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
 import { isAnyCsqInfo } from "../../utils/csqUtils";
-
-export type SimpleFilterChangeEvent = { query: QueryClause };
-export type SimpleFilterClearEvent = { selector: Selector };
+import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export type FilterProps = {
   field: FieldMetadata;
   query?: Query;
-  onChange: (event: SimpleFilterChangeEvent) => void;
-  onClear: (event: SimpleFilterClearEvent) => void;
+  onChange: (event: FilterChangeEvent) => void;
+  onClear: (event: FilterClearEvent) => void;
 };
 
 export const Filter: Component<FilterProps> = (props) => {
