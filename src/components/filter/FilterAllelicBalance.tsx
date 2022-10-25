@@ -1,8 +1,9 @@
 import { Component } from "solid-js";
-import { ComposedQuery, Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
-import { FilterQueries } from "../../store";
+import { ComposedQuery, Item, Query, Sample, Selector } from "@molgenis/vip-report-api/src/Api";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
+import { selector, selectorKey } from "../../utils/query";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
 export function getAllelicBalanceQuery(sampleIndex: number): ComposedQuery {
   const hetQuery: ComposedQuery = {
@@ -46,24 +47,27 @@ export function getAllelicBalanceQuery(sampleIndex: number): ComposedQuery {
 }
 
 export const FilterAllelicBalance: Component<{
-  sample: Item<Sample>;
-  queries?: FilterQueries;
+  field: FieldMetadata;
+  sample?: Item<Sample>;
+  query?: Query;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
-  const query: Query | undefined = props.queries ? props.queries["AllelicBalance"] : undefined;
-
   const onFilterChange = (event: CheckboxEvent) => {
+    const fieldSelector: Selector = ["s", (props.sample as Item<Sample>).data.index, ...selector(props.field)];
     if (event.checked) {
-      props.onChange({ query: getAllelicBalanceQuery(props.sample.data.index), key: "AllelicBalance" });
-    } else props.onClear({ key: "AllelicBalance" });
+      props.onChange({
+        query: getAllelicBalanceQuery((props.sample?.data as Sample).index),
+        key: selectorKey(fieldSelector),
+      });
+    } else props.onClear({ key: selectorKey(fieldSelector) });
   };
   return (
     <div class="control">
       <Checkbox
         desc="Filter variants with allelic imbalance; For hetrozygote calls: AB < 0.2 or AB > 0.8 and for homozygote calls: AB > 0.02 are consided allelic imbalance"
         label="No allelic imbalance"
-        checked={query && query.args !== undefined}
+        checked={props.query && props.query.args !== undefined}
         onChange={onFilterChange}
       />
     </div>

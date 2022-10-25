@@ -5,16 +5,18 @@ import { FilterIntegerVim } from "./FilterIntegerVim";
 import { FilterIntegerGq } from "./FilterIntegerGq";
 import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
-import { Query } from "@molgenis/vip-report-api/src/Api";
+import { Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
 import { isAnyCsqInfo } from "../../utils/csqUtils";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
+import { FilterAllelicBalance } from "./FilterAllelicBalance";
 
 export type FilterProps = {
   field: FieldMetadata;
   query?: Query;
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
+  sample?: Item<Sample>;
 };
 
 export const Filter: Component<FilterProps> = (props) => {
@@ -32,6 +34,9 @@ export const Filter: Component<FilterProps> = (props) => {
         </Match>
         <Match when={props.field.id === "VIM"}>
           <FilterIntegerVim {...props} />
+        </Match>
+        <Match when={props.field.id === "AD"}>
+          <FilterAllelicBalance {...props} />
         </Match>
         <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>
           <FilterClinVar {...props} />

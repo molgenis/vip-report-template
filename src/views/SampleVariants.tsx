@@ -6,7 +6,7 @@ import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createSampleQuery, infoSelector, infoSortPath, sampleSelector, selectorKey } from "../utils/query";
+import { createSampleQuery, infoSelector, infoSortPath, sampleSelector, selector, selectorKey } from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import {
   fetchHtsFileMetadata,
@@ -121,7 +121,11 @@ export const SampleVariants: Component<{
     const adField = props.recordsMeta.format?.AD;
     const gtField = props.recordsMeta.format?.GT;
     if (adField && gtField) {
-      actions.setSampleVariantsFilterQuery(props.sample, getAllelicBalanceQuery(props.sample.id), "AllelicBalance");
+      actions.setSampleVariantsFilterQuery(
+        props.sample,
+        getAllelicBalanceQuery(props.sample.id),
+        selectorKey(["s", props.sample.data.index, ...selector(adField)])
+      );
     }
   }
 

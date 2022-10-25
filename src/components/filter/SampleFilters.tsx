@@ -1,10 +1,9 @@
-import { Component, For, Show } from "solid-js";
+import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Item, QueryClause, Sample, SelectorPart } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Filter } from "./Filter";
 import { FilterQueries } from "../../store";
-import { sampleFieldKey, selectorKey } from "../../utils/query";
-import { FilterAllelicBalance } from "./FilterAllelicBalance";
+import { sampleFieldKey } from "../../utils/query";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export const SampleFilters: Component<{
@@ -14,21 +13,9 @@ export const SampleFilters: Component<{
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
-  const onChange = (event: FilterChangeEvent) => {
-    props.onChange({
-      key: selectorKey(["s", props.sample.data.index, event.key]),
-      query: {
-        ...event.query,
-        selector: ["s", props.sample.data.index, ...((event.query as QueryClause).selector as SelectorPart[])],
-      } as QueryClause,
-    });
-  };
-
-  const onClear = (event: FilterClearEvent) => {
-    props.onClear({
-      key: selectorKey(["s", props.sample.data.index, event.key]),
-    });
-  };
+  if (props.sample == undefined) {
+    throw Error("Cannot create Sample filters without a sample.");
+  }
 
   return (
     <>
@@ -41,17 +28,10 @@ export const SampleFilters: Component<{
               <Filter
                 field={field}
                 query={props.queries ? props.queries[sampleFieldKey(props.sample, field)] : undefined}
-                onChange={onChange}
-                onClear={onClear}
+                onChange={props.onChange}
+                onClear={props.onClear}
+                sample={props.sample}
               />
-              <Show when={field.id === "AD"} keyed>
-                <FilterAllelicBalance
-                  sample={props.sample}
-                  onChange={props.onChange}
-                  onClear={props.onClear}
-                  queries={props.queries}
-                />
-              </Show>
             </>
           )}
         </For>
