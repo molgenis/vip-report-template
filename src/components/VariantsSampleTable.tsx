@@ -71,8 +71,8 @@ export const VariantsSampleTable: Component<{
                             refAllele={record.data.r}
                             altAlleles={record.data.a}
                             isAbbreviate={true}
-                            allelicBalance={record.data.s[sample.index]["VIAB"] as number}
-                            readDepth={record.data.s[sample.index]["DP"] as number}
+                            allelicBalance={record.data.s[sample.index]["VIAB"] as number | undefined | null}
+                            readDepth={record.data.s[sample.index]["DP"] as number | undefined}
                           />
                         </td>
                       </>

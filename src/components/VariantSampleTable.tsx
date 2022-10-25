@@ -42,7 +42,7 @@ export const VariantSampleTable: Component<{
                           allelicBalance={
                             props.record.data.s[props.samples[i()].index]["VIAB"] as number | undefined | null
                           }
-                          readDepth={props.record.data.s[props.samples[i()].index]["DP"] as number}
+                          readDepth={props.record.data.s[props.samples[i()].index]["DP"] as number | undefined}
                         />
                       </td>
                     )}

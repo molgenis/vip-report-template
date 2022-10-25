@@ -84,9 +84,9 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
 function createFilterQuery(queries: FilterQueries): Query | null {
   const filterClauses = Object.values(queries).filter((query) => query !== undefined) as Query[];
 
-  let query: Query;
+  let query: Query | null;
   if (filterClauses.length === 0) {
-    return null;
+    query = null;
   } else {
     query = createQueryFromArray(filterClauses);
   }

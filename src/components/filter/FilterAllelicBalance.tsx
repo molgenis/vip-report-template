@@ -4,16 +4,16 @@ import { FilterQueries } from "../../store";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
-export function getAllelicBalanceQuery(sampleId: number): ComposedQuery {
+export function getAllelicBalanceQuery(sampleIndex: number): ComposedQuery {
   const hetQuery: ComposedQuery = {
     operator: "and",
     args: [
-      { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "het" },
+      { selector: ["s", sampleIndex, "GT", "t"], operator: "==", args: "het" },
       {
         operator: "and",
         args: [
-          { selector: ["s", sampleId, "VIAB"], operator: ">", args: 0.2 },
-          { selector: ["s", sampleId, "VIAB"], operator: "<", args: 0.8 },
+          { selector: ["s", sampleIndex, "VIAB"], operator: ">", args: 0.2 },
+          { selector: ["s", sampleIndex, "VIAB"], operator: "<", args: 0.8 },
         ],
       },
     ],
@@ -24,20 +24,20 @@ export function getAllelicBalanceQuery(sampleId: number): ComposedQuery {
       {
         operator: "or",
         args: [
-          { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "hom_a" },
-          { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "hom_r" },
+          { selector: ["s", sampleIndex, "GT", "t"], operator: "==", args: "hom_a" },
+          { selector: ["s", sampleIndex, "GT", "t"], operator: "==", args: "hom_r" },
         ],
       },
-      { selector: ["s", sampleId, "VIAB"], operator: "<", args: 0.02 },
+      { selector: ["s", sampleIndex, "VIAB"], operator: "<", args: 0.02 },
     ],
   };
   const otherGtQuery: ComposedQuery = {
     operator: "or",
     args: [
-      { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "miss" },
-      { selector: ["s", sampleId, "GT", "t"], operator: "==", args: "part" },
-      { selector: ["s", sampleId, "VIAB"], operator: "==", args: null },
-      { selector: ["s", sampleId, "VIAB"], operator: "==", args: undefined },
+      { selector: ["s", sampleIndex, "GT", "t"], operator: "==", args: "miss" },
+      { selector: ["s", sampleIndex, "GT", "t"], operator: "==", args: "part" },
+      { selector: ["s", sampleIndex, "VIAB"], operator: "==", args: null },
+      { selector: ["s", sampleIndex, "VIAB"], operator: "==", args: undefined },
     ],
   };
   const combinedQuery: ComposedQuery = { operator: "or", args: [hetQuery, homQuery, otherGtQuery] };
@@ -55,7 +55,7 @@ export const FilterAllelicBalance: Component<{
 
   const onFilterChange = (event: CheckboxEvent) => {
     if (event.checked) {
-      props.onChange({ query: getAllelicBalanceQuery(props.sample.id), key: "AllelicBalance" });
+      props.onChange({ query: getAllelicBalanceQuery(props.sample.data.index), key: "AllelicBalance" });
     } else props.onClear({ key: "AllelicBalance" });
   };
   return (
