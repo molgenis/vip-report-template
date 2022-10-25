@@ -13,9 +13,7 @@ export const VariantSampleTable: Component<{
   record: Item<Record>;
 }> = (props) => {
   const sampleFields = createMemo((): FieldMetadata[] =>
-    Object.keys(props.sampleValues[0])
-      .map((fieldId) => props.formatFields[fieldId])
-      .filter((field) => field !== undefined)
+    Object.keys(props.sampleValues[0]).map((fieldId) => props.formatFields[fieldId])
   );
   return (
     <div style={{ display: "grid" }}>

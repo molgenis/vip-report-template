@@ -118,13 +118,13 @@ export const SampleVariants: Component<{
         selectorKey(selectorGq)
       );
     }
-    const adField = props.recordsMeta.format?.AD;
-    const gtField = props.recordsMeta.format?.GT;
-    if (adField && gtField) {
+    console.log(props.recordsMeta.format);
+    const viabField = props.recordsMeta.format?.VIAB;
+    if (viabField) {
       actions.setSampleVariantsFilterQuery(
         props.sample,
         getAllelicBalanceQuery(props.sample.id),
-        selectorKey(["s", props.sample.data.index, ...selector(adField)])
+        selectorKey(["s", props.sample.data.index, ...selector(viabField)])
       );
     }
   }
@@ -167,7 +167,7 @@ export const SampleVariants: Component<{
 
   const formatFields = createMemo(() => {
     const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "GQ", "AD", "GT", "DP"];
+    const includedFields = ["VIM", "VID", "GQ", "VIAB", "GT", "DP"];
     return formatFieldMap
       ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
       : [];

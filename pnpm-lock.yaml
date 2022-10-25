@@ -3,8 +3,8 @@ lockfileVersion: 5.3
 specifiers:
   '@fortawesome/fontawesome-svg-core': ^6.2.0
   '@fortawesome/free-solid-svg-icons': ^6.2.0
-  '@molgenis/vip-report-api': ^4.3.0
-  '@molgenis/vip-report-vcf': ^1.3.1
+  '@molgenis/vip-report-api': ^4.3.1
+  '@molgenis/vip-report-vcf': ^1.3.2
   '@molgenis/vite-plugin-inline': ^1.0.9
   '@typescript-eslint/eslint-plugin': ^5.38.1
   '@typescript-eslint/parser': ^5.38.1
@@ -29,8 +29,8 @@ specifiers:
 dependencies:
   '@fortawesome/fontawesome-svg-core': 6.2.0
   '@fortawesome/free-solid-svg-icons': 6.2.0
-  '@molgenis/vip-report-api': 4.3.0
-  '@molgenis/vip-report-vcf': 1.3.1
+  '@molgenis/vip-report-api': 4.3.1
+  '@molgenis/vip-report-vcf': 1.3.2
   base64-js: 1.5.1
   igv: 2.13.3
   solid-app-router: 0.4.2_solid-js@1.5.6
@@ -497,14 +497,14 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@molgenis/vip-report-api/4.3.0:
-    resolution: {integrity: sha512-bFYi66zLhvJhvGGA5+acvUo5OYWBw/bLYGmSdCC7KBuDTm6Kunah08MGXDT0b0h94I//SbY7ps8OrTqdyz8+aQ==}
+  /@molgenis/vip-report-api/4.3.1:
+    resolution: {integrity: sha512-Q8+NHreR0TBKObEnIqPJFYFrNxpZ80qWPOmSVAU5Ghydv6M86Jrcn1xjBQKQFz6D7iiWvl3ef55wcAF+e4Tntg==}
     dependencies:
-      '@molgenis/vip-report-vcf': 1.3.1
+      '@molgenis/vip-report-vcf': 1.3.2
     dev: false
 
-  /@molgenis/vip-report-vcf/1.3.1:
-    resolution: {integrity: sha512-y59aWVhhHOhvZUBohPQmqmuS61fsJK0lKhtZaTk5k7V3MU78BIO5x2JK/uzQGspbpsDv55Vwmhopf8oQ6GbZcg==}
+  /@molgenis/vip-report-vcf/1.3.2:
+    resolution: {integrity: sha512-4Qui6pVkiX3iIFvZOn70eJfeiAm23HJVwqSfefSXU6SjdKhbn2ZMCm7nvJpcy+6oySFaNx8WN2+OUD2KfyoFrw==}
     dev: false
 
   /@molgenis/vite-plugin-inline/1.0.9_sass@1.55.0:

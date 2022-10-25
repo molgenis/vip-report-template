@@ -13,7 +13,7 @@ export const FilterIntegerVim: Component<FilterProps> = (props) => {
         query: {
           selector: fieldSelector,
           operator: "==",
-          args: "1",
+          args: 1,
         },
       });
     else props.onClear({ key: selectorKey(fieldSelector) });

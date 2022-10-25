@@ -1,4 +1,4 @@
-import { Component, Match, Show, Switch } from "solid-js";
+import { Component, Match, Switch } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
 import { FilterIntegerVim } from "./FilterIntegerVim";
@@ -35,7 +35,7 @@ export const Filter: Component<FilterProps> = (props) => {
         <Match when={props.field.id === "VIM"}>
           <FilterIntegerVim {...props} />
         </Match>
-        <Match when={props.field.id === "AD"}>
+        <Match when={props.field.id === "VIAB"}>
           <FilterAllelicBalance {...props} />
         </Match>
         <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>

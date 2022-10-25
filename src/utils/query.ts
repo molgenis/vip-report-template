@@ -1,4 +1,13 @@
-import { Item, Query, QueryOperator, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api/src/Api";
+import {
+  Item,
+  Query,
+  QueryClause,
+  QueryOperator,
+  Sample,
+  Selector,
+  SelectorPart,
+  SortPath,
+} from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../store";
@@ -82,19 +91,9 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
 }
 
 function createFilterQuery(queries: FilterQueries): Query | null {
-  const filterClauses = Object.values(queries).filter((query) => query !== undefined) as Query[];
-
-  let query: Query | null;
-  if (filterClauses.length === 0) {
-    query = null;
-  } else {
-    query = createQueryFromArray(filterClauses);
-  }
-  return query;
-}
-
-function createQueryFromArray(queries: Query[]): Query {
-  return queries.length === 1 ? queries[0] : { operator: "and", args: queries };
+  const queryClauses = Object.values(queries).filter((query) => query !== undefined) as QueryClause[];
+  if (queryClauses.length === 0) return null;
+  return queryClauses.length === 1 ? queryClauses[0] : { operator: "and", args: queryClauses };
 }
 
 export function selector(field: FieldMetadata): SelectorPart[] {
