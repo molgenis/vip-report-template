@@ -1,10 +1,9 @@
 import { hashIntegration, Router } from "solid-app-router";
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Item, QueryClause, Sample, Selector, SortOrder } from "@molgenis/vip-report-api/src/Api";
-import { selectorKey } from "../utils/query";
+import { Item, Query, Sample, SortOrder } from "@molgenis/vip-report-api/src/Api";
 
-export type FilterQueries = { [key: string]: QueryClause | undefined };
+export type FilterQueries = { [key: string]: Query | undefined };
 
 type AppStateVariants = {
   page?: number;
@@ -33,14 +32,14 @@ export type AppActions = {
   setVariantsPage(page: number): void;
   setVariantsPageSize(pageSize: number): void;
   setVariantsSearchQuery(searchQuery: string): void;
-  setVariantsFilterQuery(query: QueryClause): void;
-  clearVariantsFilterQuery(selector: Selector): void;
+  setVariantsFilterQuery(query: Query, key: string): void;
+  clearVariantsFilterQuery(key: string): void;
   setVariantsSort(sort: SortOrder | null): void;
   setSampleVariantsPage(sample: Item<Sample>, page: number): void;
   setSampleVariantsPageSize(sample: Item<Sample>, pageSize: number): void;
   setSampleVariantsSearchQuery(sample: Item<Sample>, searchQuery: string): void;
-  setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause): void;
-  clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector): void;
+  setSampleVariantsFilterQuery(sample: Item<Sample>, query: Query, key: string): void;
+  clearSampleVariantsFilterQuery(sample: Item<Sample>, key: string): void;
   setSampleVariantsSort(sample: Item<Sample>, sort: SortOrder | null): void;
   setSamplePage(page: number): void;
   setSampleSearchQuery(searchQuery: string): void;
@@ -73,19 +72,19 @@ export const Provider: ParentComponent = (props) => {
     setVariantsSearchQuery(searchQuery: string) {
       setState({ variants: { ...(state.variants || {}), searchQuery } });
     },
-    setVariantsFilterQuery(query: QueryClause) {
+    setVariantsFilterQuery(query: Query, key: string) {
       setState({
         variants: {
           ...(state.variants || {}),
-          filterQueries: { ...(state.variants?.filterQueries || {}), [selectorKey(query.selector)]: query },
+          filterQueries: { ...(state.variants?.filterQueries || {}), [key]: query },
         },
       });
     },
-    clearVariantsFilterQuery(selector: Selector) {
+    clearVariantsFilterQuery(key: string) {
       setState({
         variants: {
           ...(state.variants || {}),
-          filterQueries: { ...(state.variants?.filterQueries || {}), [selectorKey(selector)]: undefined },
+          filterQueries: { ...(state.variants?.filterQueries || {}), [key]: undefined },
         },
       });
     },
@@ -121,7 +120,7 @@ export const Provider: ParentComponent = (props) => {
         },
       });
     },
-    setSampleVariantsFilterQuery(sample: Item<Sample>, query: QueryClause) {
+    setSampleVariantsFilterQuery(sample: Item<Sample>, query: Query, key: string) {
       const variants = getVariants(sample);
       setState({
         sampleVariants: {
@@ -129,14 +128,14 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...variants,
-              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(query.selector)]: query },
+              filterQueries: { ...(variants.filterQueries || {}), [key]: query },
               page: undefined,
             },
           },
         },
       });
     },
-    clearSampleVariantsFilterQuery(sample: Item<Sample>, selector: Selector) {
+    clearSampleVariantsFilterQuery(sample: Item<Sample>, key: string) {
       const variants = getVariants(sample);
       setState({
         sampleVariants: {
@@ -144,7 +143,7 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...getVariants(sample),
-              filterQueries: { ...(variants.filterQueries || {}), [selectorKey(selector)]: undefined },
+              filterQueries: { ...(variants.filterQueries || {}), [key]: undefined },
               page: undefined,
             },
           },

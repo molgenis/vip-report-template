@@ -10,12 +10,12 @@ import { fetchHtsFileMetadata, fetchRecords, fetchRecordsMeta } from "../utils/A
 import { flattenFieldMetadata } from "../utils/field";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { HtsFileMetadata, Params, SortPath } from "@molgenis/vip-report-api/src/Api";
-import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filter";
 import { useStore } from "../store";
 import { createQuery, infoSortPath } from "../utils/query";
 import { Loader } from "../components/Loader";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { arrayEquals } from "../utils/utils";
+import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filters";
 
 export const VariantsView: Component = () => {
   const [recordsMeta] = createResource(fetchRecordsMeta);
@@ -45,8 +45,8 @@ export const Variants: Component<{
 
   const onPageChange = (page: number) => actions.setVariantsPage(page);
   const onSearchChange = (search: string) => actions.setVariantsSearchQuery(search);
-  const onFilterChange = (event: FilterChangeEvent) => actions.setVariantsFilterQuery(event.query);
-  const onFilterClear = (event: FilterClearEvent) => actions.clearVariantsFilterQuery(event.selector);
+  const onFilterChange = (event: FilterChangeEvent) => actions.setVariantsFilterQuery(event.query, event.key);
+  const onFilterClear = (event: FilterClearEvent) => actions.clearVariantsFilterQuery(event.key);
   const onSortChange = (event: SortEvent) => actions.setVariantsSort(event.order);
   const onSortClear = () => actions.setVariantsSort(null);
 

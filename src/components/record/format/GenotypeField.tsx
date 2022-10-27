@@ -2,14 +2,15 @@ import { Component, For, Show } from "solid-js";
 import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
 import { Allele } from "../Allele";
 
-function isAllelicImbalance(genotype: Genotype, allelicDepth: number[] | undefined) {
-  if (genotype.t === "het" && allelicDepth !== undefined) {
-    let total = 0;
-    allelicDepth?.forEach((value) => {
-      total = total + value;
-    });
-    const balance = allelicDepth[0] / total;
-    return balance < 0.2 || balance > 0.8;
+function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefined | null) {
+  if (genotype.t === "het" && allelicBalance !== undefined && allelicBalance !== null) {
+    return allelicBalance < 0.2 || allelicBalance > 0.8;
+  } else if (
+    (genotype.t === "hom_a" || genotype.t === "hom_r") &&
+    allelicBalance !== undefined &&
+    allelicBalance !== null
+  ) {
+    return allelicBalance > 0.02;
   }
   return false;
 }
@@ -33,10 +34,10 @@ export const GenotypeField: Component<{
   refAllele: string;
   altAlleles: (string | null)[];
   isAbbreviate: boolean;
-  allelicDepth: number[] | undefined;
+  allelicBalance: number | undefined | null;
   readDepth: number | undefined;
 }> = (props) => {
-  const allelicImbalance: boolean = isAllelicImbalance(props.genotype, props.allelicDepth);
+  const allelicImbalance: boolean = isAllelicImbalance(props.genotype, props.allelicBalance);
   const lowReadDepth = props.readDepth !== undefined && props.readDepth < 20;
   return (
     <>

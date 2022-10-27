@@ -12,7 +12,7 @@ export const Format: Component<{
   formatMetadata: FieldMetadata;
   record: Item<Record>;
   isAbbreviate: boolean;
-  allelicDepth: number[] | undefined;
+  allelicBalance: number | undefined | null;
   readDepth: number | undefined;
 }> = (props) => {
   return (
@@ -31,7 +31,7 @@ export const Format: Component<{
           refAllele={props.record.data.r}
           altAlleles={props.record.data.a}
           isAbbreviate={props.isAbbreviate}
-          allelicDepth={props.allelicDepth}
+          allelicBalance={props.allelicBalance}
           readDepth={props.readDepth}
         />
       </Match>

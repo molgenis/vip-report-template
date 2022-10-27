@@ -39,8 +39,10 @@ export const VariantSampleTable: Component<{
                           formatMetadata={formatField}
                           record={props.record}
                           isAbbreviate={false}
-                          allelicDepth={props.record.data.s[props.samples[i()].index]["AD"] as number[]}
-                          readDepth={props.record.data.s[props.samples[i()].index]["DP"] as number}
+                          allelicBalance={
+                            props.record.data.s[props.samples[i()].index]["VIAB"] as number | undefined | null
+                          }
+                          readDepth={props.record.data.s[props.samples[i()].index]["DP"] as number | undefined}
                         />
                       </td>
                     )}

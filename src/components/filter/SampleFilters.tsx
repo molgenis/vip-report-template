@@ -1,9 +1,10 @@
 import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Item, Sample, SelectorPart } from "@molgenis/vip-report-api/src/Api";
-import { Filter, FilterChangeEvent, FilterClearEvent } from "./Filter";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Filter } from "./Filter";
 import { FilterQueries } from "../../store";
 import { sampleFieldKey } from "../../utils/query";
+import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export const SampleFilters: Component<{
   sample: Item<Sample>;
@@ -12,17 +13,9 @@ export const SampleFilters: Component<{
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
-  const onChange = (event: FilterChangeEvent) => {
-    props.onChange({
-      query: { ...event.query, selector: ["s", props.sample.data.index, ...(event.query.selector as SelectorPart[])] },
-    });
-  };
-
-  const onClear = (event: FilterClearEvent) => {
-    props.onClear({
-      selector: ["s", props.sample.data.index, ...(event.selector as SelectorPart[])],
-    });
-  };
+  if (props.sample == undefined) {
+    throw Error("Cannot create Sample filters without a sample.");
+  }
 
   return (
     <>
@@ -30,12 +23,16 @@ export const SampleFilters: Component<{
       <div class="field">
         <For each={props.fields}>
           {(field) => (
-            <Filter
-              field={field}
-              query={props.queries ? props.queries[sampleFieldKey(props.sample, field)] : undefined}
-              onChange={onChange}
-              onClear={onClear}
-            />
+            <>
+              {" "}
+              <Filter
+                field={field}
+                query={props.queries ? props.queries[sampleFieldKey(props.sample, field)] : undefined}
+                onChange={props.onChange}
+                onClear={props.onClear}
+                sample={props.sample}
+              />
+            </>
           )}
         </For>
       </div>

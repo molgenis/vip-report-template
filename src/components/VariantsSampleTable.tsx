@@ -64,16 +64,18 @@ export const VariantsSampleTable: Component<{
                   </td>
                   <For each={samples()}>
                     {(sample: Sample) => (
-                      <td>
-                        <GenotypeField
-                          genotype={record.data.s[sample.index]["GT"] as Genotype}
-                          refAllele={record.data.r}
-                          altAlleles={record.data.a}
-                          isAbbreviate={true}
-                          allelicDepth={record.data.s[sample.index]["AD"] as number[]}
-                          readDepth={record.data.s[sample.index]["DP"] as number}
-                        />
-                      </td>
+                      <>
+                        <td>
+                          <GenotypeField
+                            genotype={record.data.s[sample.index]["GT"] as Genotype}
+                            refAllele={record.data.r}
+                            altAlleles={record.data.a}
+                            isAbbreviate={true}
+                            allelicBalance={record.data.s[sample.index]["VIAB"] as number | undefined | null}
+                            readDepth={record.data.s[sample.index]["DP"] as number | undefined}
+                          />
+                        </td>
+                      </>
                     )}
                   </For>
                   <InfoCollapsablePane fields={props.nestedFields} record={record} htsFileMeta={props.htsFileMeta} />

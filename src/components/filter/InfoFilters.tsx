@@ -1,10 +1,10 @@
 import { Component, For } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterChangeEvent, FilterClearEvent } from "./Filter";
 import { InfoFilter } from "./InfoFilter";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { FilterQueries } from "../../store";
 import { infoFieldKey } from "../../utils/query";
+import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 
 export const InfoFilters: Component<{
   fields: FieldMetadata[];
