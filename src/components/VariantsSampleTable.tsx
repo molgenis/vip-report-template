@@ -6,7 +6,7 @@ import { Link } from "solid-app-router";
 import { HtsFileMetadata, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";
-import { Component, createMemo, createSignal, For, Show } from "solid-js";
+import { Component, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
@@ -22,19 +22,30 @@ export const VariantsSampleTable: Component<{
 }> = (props) => {
   const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
-  const proband: Sample = props.item.data;
-  const [father, setFather] = createSignal<Sample | undefined>(undefined);
-  const [mother, setMother] = createSignal<Sample | undefined>(undefined);
-  const otherFamilyMembers: Sample[] = [];
+  const [proband, setProband] = createSignal<Sample | undefined>();
+  const [father, setFather] = createSignal<Sample | undefined>();
+  const [mother, setMother] = createSignal<Sample | undefined>();
+  const [otherFamilyMembers, setOtherFamilyMembers] = createSignal<Sample[]>([]);
 
-  samples().forEach((sample) => {
-    if (proband.person.maternalId != "0" && sample.person.individualId === proband.person.maternalId) {
-      setMother(sample);
-    } else if (proband.person.paternalId != "0" && sample.person.individualId === proband.person.paternalId) {
-      setFather(sample);
-    } else if (sample.person.individualId !== proband.person.individualId) {
-      otherFamilyMembers.push(sample);
-    }
+  onMount(() => {
+    const familyMembers: Sample[] = [];
+    setProband(props.item.data);
+    samples().forEach((sample) => {
+      if (
+        (proband() as Sample).person.maternalId !== "0" &&
+        sample.person.individualId === (proband() as Sample).person.maternalId
+      ) {
+        setMother(sample);
+      } else if (
+        (proband() as Sample).person.paternalId !== "0" &&
+        sample.person.individualId === (proband() as Sample).person.paternalId
+      ) {
+        setFather(sample);
+      } else if (sample.person.individualId !== (proband() as Sample).person.individualId) {
+        familyMembers.push(sample);
+      }
+    });
+    setOtherFamilyMembers(familyMembers);
   });
 
   return (
@@ -46,15 +57,19 @@ export const VariantsSampleTable: Component<{
             <tr>
               <th>Position</th>
               <th>Reference</th>
-              <th>
-                <Abbr
-                  title={`${
-                    proband.person.individualId
-                  }: ${proband.person.sex.toLowerCase()}, ${proband.person.affectedStatus.toLowerCase()}`}
-                  value="Proband"
-                />
-              </th>
-              <Show when={mother() !== undefined && (mother() as Sample)} keyed>
+              <Show when={proband()} keyed>
+                {(proband) => (
+                  <th>
+                    <Abbr
+                      title={`${
+                        proband.person.individualId
+                      }: ${proband.person.sex.toLowerCase()}, ${proband.person.affectedStatus.toLowerCase()}`}
+                      value="Proband"
+                    />
+                  </th>
+                )}
+              </Show>
+              <Show when={mother()} keyed>
                 {(mother) => (
                   <th>
                     <Abbr
@@ -66,7 +81,7 @@ export const VariantsSampleTable: Component<{
                   </th>
                 )}
               </Show>
-              <Show when={father() !== undefined && (father() as Sample)} keyed>
+              <Show when={father()} keyed>
                 {(father) => (
                   <th>
                     <Abbr
@@ -78,7 +93,7 @@ export const VariantsSampleTable: Component<{
                   </th>
                 )}
               </Show>
-              <For each={otherFamilyMembers}>
+              <For each={otherFamilyMembers()}>
                 {(sample: Sample) => (
                   <th>
                     <Abbr
@@ -109,7 +124,49 @@ export const VariantsSampleTable: Component<{
                   <td>
                     <Ref value={record.data.r} isAbbreviate={true} />
                   </td>
-                  <For each={samples()}>
+                  <Show when={proband()} keyed>
+                    {(proband) => (
+                      <td>
+                        <GenotypeField
+                          genotype={record.data.s[proband.index]["GT"] as Genotype}
+                          refAllele={record.data.r}
+                          altAlleles={record.data.a}
+                          isAbbreviate={true}
+                          allelicBalance={record.data.s[proband.index]["VIAB"] as number | undefined | null}
+                          readDepth={record.data.s[proband.index]["DP"] as number | undefined}
+                        />
+                      </td>
+                    )}
+                  </Show>
+                  <Show when={mother()} keyed>
+                    {(mother) => (
+                      <td>
+                        <GenotypeField
+                          genotype={record.data.s[mother.index]["GT"] as Genotype}
+                          refAllele={record.data.r}
+                          altAlleles={record.data.a}
+                          isAbbreviate={true}
+                          allelicBalance={record.data.s[mother.index]["VIAB"] as number | undefined | null}
+                          readDepth={record.data.s[mother.index]["DP"] as number | undefined}
+                        />
+                      </td>
+                    )}
+                  </Show>
+                  <Show when={father()} keyed>
+                    {(father) => (
+                      <td>
+                        <GenotypeField
+                          genotype={record.data.s[father.index]["GT"] as Genotype}
+                          refAllele={record.data.r}
+                          altAlleles={record.data.a}
+                          isAbbreviate={true}
+                          allelicBalance={record.data.s[father.index]["VIAB"] as number | undefined | null}
+                          readDepth={record.data.s[father.index]["DP"] as number | undefined}
+                        />
+                      </td>
+                    )}
+                  </Show>
+                  <For each={otherFamilyMembers()}>
                     {(sample: Sample) => (
                       <>
                         <td>
