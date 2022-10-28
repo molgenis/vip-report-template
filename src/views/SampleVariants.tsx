@@ -118,7 +118,6 @@ export const SampleVariants: Component<{
         selectorKey(selectorGq)
       );
     }
-    console.log(props.recordsMeta.format);
     const viabField = props.recordsMeta.format?.VIAB;
     if (viabField) {
       actions.setSampleVariantsFilterQuery(
