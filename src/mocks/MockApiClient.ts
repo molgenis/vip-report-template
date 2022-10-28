@@ -26,6 +26,7 @@ import {
   vcfSamples0 as vcfSamples0GRCh37,
   vcfSamples1 as vcfSamples1GRCh37,
   vcfSamples100 as vcfSamples100GRCh37,
+  samplesFamilyDuoPlusSister as samplesFamilyDuoPlusSisterGRCh37,
 } from "./GRCh37/static";
 import {
   cram as cramGRCh38,
@@ -156,7 +157,7 @@ export class MockApiClient implements Api {
           genomeAssembly: "GRCh37",
         },
       } as Metadata,
-      data: samplesFamilyGRCh37,
+      data: samplesFamilyDuoPlusSisterGRCh37,
       binary: {
         vcf: vcfNoVepGRCh37,
         fastaGz: fastaGzGRCh37,

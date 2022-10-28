@@ -179,3 +179,77 @@ export const samplesFamily = {
     },
   ],
 };
+export const samplesFamilyDuoPlusSister = {
+  samples: [
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Patient",
+        paternalId: "Father",
+        maternalId: "0",
+        sex: "MALE",
+        affectedStatus: "AFFECTED",
+      },
+      index: 0,
+      proband: true,
+    },
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Sister",
+        paternalId: "0",
+        maternalId: "0",
+        sex: "FEMALE",
+        affectedStatus: "UNAFFECTED",
+      },
+      index: 3,
+      proband: false,
+    },
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Father",
+        paternalId: "0",
+        maternalId: "0",
+        sex: "MALE",
+        affectedStatus: "UNAFFECTED",
+      },
+      index: 1,
+      proband: false,
+    },
+  ],
+  phenotypes: [
+    {
+      phenotypicFeaturesList: [
+        {
+          type: {
+            id: "HP:0000951",
+            label: "HP:0000951",
+          },
+        },
+        {
+          type: {
+            id: "HP:0003124",
+            label: "HP:0003124",
+          },
+        },
+      ],
+      subject: {
+        id: "Patient",
+      },
+    },
+    {
+      phenotypicFeaturesList: [
+        {
+          type: {
+            id: "HP:0000951",
+            label: "HP:0000951",
+          },
+        },
+      ],
+      subject: {
+        id: "Sister",
+      },
+    },
+  ],
+};
