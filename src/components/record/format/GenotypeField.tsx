@@ -10,7 +10,7 @@ function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefin
     allelicBalance !== undefined &&
     allelicBalance !== null
   ) {
-    return allelicBalance > 0.02;
+    return allelicBalance > 0.02 && allelicBalance < 0.98;
   }
   return false;
 }
