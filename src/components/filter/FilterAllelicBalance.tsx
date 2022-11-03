@@ -29,7 +29,13 @@ export function getAllelicBalanceQuery(sampleIndex: number): ComposedQuery {
           { selector: ["s", sampleIndex, "GT", "t"], operator: "==", args: "hom_r" },
         ],
       },
-      { selector: ["s", sampleIndex, "VIAB"], operator: "<", args: 0.02 },
+      {
+        operator: "or",
+        args: [
+          { selector: ["s", sampleIndex, "VIAB"], operator: "<", args: 0.02 },
+          { selector: ["s", sampleIndex, "VIAB"], operator: ">", args: 0.98 },
+        ],
+      },
     ],
   };
   const otherGtQuery: ComposedQuery = {
