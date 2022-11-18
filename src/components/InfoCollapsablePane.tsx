@@ -12,6 +12,7 @@ export const InfoCollapsablePane: Component<{
   fields: FieldMetadata[];
   record: Item<Record>;
   htsFileMeta: HtsFileMetadata;
+  isPossibleCompound?: boolean;
 }> = (props) => {
   const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
 
@@ -59,10 +60,24 @@ export const InfoCollapsablePane: Component<{
                   {(j() == 0 || collapsed()) &&
                     (isCsqInfo(field, "Consequence") ? (
                       <Link href={`${useLocation().pathname}/${props.record.id}/consequences/${j()}`}>
-                        <Info info={value} infoMeta={field} context={props.htsFileMeta} />
+                        <Info
+                          info={value}
+                          infoMeta={field}
+                          context={{
+                            genomeAssembly: props.htsFileMeta.genomeAssembly,
+                            isPossibleCompound: props.isPossibleCompound,
+                          }}
+                        />
                       </Link>
                     ) : (
-                      <Info info={value} infoMeta={field} context={props.htsFileMeta} />
+                      <Info
+                        info={value}
+                        infoMeta={field}
+                        context={{
+                          genomeAssembly: props.htsFileMeta.genomeAssembly,
+                          isPossibleCompound: props.isPossibleCompound,
+                        }}
+                      />
                     ))}
                 </>
               )}

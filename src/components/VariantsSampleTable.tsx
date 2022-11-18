@@ -11,6 +11,7 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
 import { abbreviateHeader } from "../utils/field";
+import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export const VariantsSampleTable: Component<{
   item: Item<Sample>;
@@ -182,7 +183,16 @@ export const VariantsSampleTable: Component<{
                       </>
                     )}
                   </For>
-                  <InfoCollapsablePane fields={props.nestedFields} record={record} htsFileMeta={props.htsFileMeta} />
+                  <Show when={proband()} keyed>
+                    {(proband) => (
+                      <InfoCollapsablePane
+                        fields={props.nestedFields}
+                        record={record}
+                        htsFileMeta={props.htsFileMeta}
+                        isPossibleCompound={(record.data.s[proband.index]["VIC"] as ValueString) !== null}
+                      />
+                    )}
+                  </Show>
                 </tr>
               )}
             </For>
