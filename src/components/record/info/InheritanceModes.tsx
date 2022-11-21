@@ -13,8 +13,7 @@ export const InheritanceModes: Component<FieldProps> = (props) => {
     <>
       <FieldMultipleValue info={props.info.value as Value[]} infoMetadata={props.infoMeta} />
       <Show when={isArInheritance} keyed>
-        &nbsp
-        <abbr title="Variant is possibly part of a compound.">
+        <abbr title="Variant is possibly part of a compound." class="ml-1 is-clickable">
           <i class="fas fa-circle-exclamation has-text-info" />
         </abbr>
       </Show>
