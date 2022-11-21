@@ -9,6 +9,7 @@ import { ClinVar } from "./info/ClinVar";
 import { GnomAD } from "./info/GnomAD";
 import { isAnyCsqInfo, isCsqInfo } from "../../utils/csqUtils";
 import { Vkgl } from "./info/Vkgl";
+import { InheritanceModes } from "./info/InheritanceModes";
 
 export const Info: Component<{
   info: FieldValue;
@@ -25,6 +26,9 @@ export const Info: Component<{
       </Match>
       <Match when={isCsqInfo(props.infoMeta, "SYMBOL")}>
         <Gene {...props} />
+      </Match>
+      <Match when={isCsqInfo(props.infoMeta, "InheritanceModesGene")}>
+        <InheritanceModes {...props} />
       </Match>
       <Match when={isCsqInfo(props.infoMeta, "gnomAD_AF")}>
         <GnomAD {...props} />

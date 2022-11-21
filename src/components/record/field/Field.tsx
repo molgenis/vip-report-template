@@ -20,6 +20,7 @@ export type FieldValue = {
 
 export type FieldContext = {
   genomeAssembly?: string;
+  isPossibleCompound?: boolean;
 };
 
 export const Field: Component<FieldProps> = (props) => {
