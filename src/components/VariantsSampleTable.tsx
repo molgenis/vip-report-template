@@ -189,7 +189,10 @@ export const VariantsSampleTable: Component<{
                         fields={props.nestedFields}
                         record={record}
                         htsFileMeta={props.htsFileMeta}
-                        isPossibleCompound={(record.data.s[proband.index]["VIC"] as ValueString) !== null}
+                        isPossibleCompound={
+                          record.data.s[proband.index]["VIC"] !== null &&
+                          record.data.s[proband.index]["VIC"] !== undefined
+                        }
                       />
                     )}
                   </Show>
