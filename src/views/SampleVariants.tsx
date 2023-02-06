@@ -98,9 +98,19 @@ export const SampleVariants: Component<{
       actions.setSampleVariantsFilterQuery(
         props.sample,
         {
-          selector: selectorVim,
-          operator: "==",
-          args: 1,
+          operator: "or",
+          args: [
+            {
+              selector: selectorVim,
+              operator: "==",
+              args: 1,
+            },
+            {
+              selector: selectorVim,
+              operator: "==",
+              args: null,
+            },
+          ],
         },
         selectorKey(selectorVim)
       );

@@ -11,9 +11,19 @@ export const FilterIntegerVim: Component<FilterProps> = (props) => {
       props.onChange({
         key: selectorKey(fieldSelector),
         query: {
-          selector: fieldSelector,
-          operator: "==",
-          args: 1,
+          operator: "or",
+          args: [
+            {
+              selector: fieldSelector,
+              operator: "==",
+              args: 1,
+            },
+            {
+              selector: fieldSelector,
+              operator: "==",
+              args: null,
+            },
+          ],
         },
       });
     else props.onClear({ key: selectorKey(fieldSelector) });
@@ -21,7 +31,11 @@ export const FilterIntegerVim: Component<FilterProps> = (props) => {
 
   return (
     <div class="control">
-      <Checkbox label="Inheritance: match" checked={props.query && props.query.args === 1} onChange={onFilterChange} />
+      <Checkbox
+        label="Inheritance: match"
+        checked={props.query && props.query.args !== undefined}
+        onChange={onFilterChange}
+      />
     </div>
   );
 };
