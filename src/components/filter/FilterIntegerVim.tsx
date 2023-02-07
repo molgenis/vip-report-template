@@ -23,6 +23,11 @@ export const FilterIntegerVim: Component<FilterProps> = (props) => {
               operator: "==",
               args: null,
             },
+            {
+              selector: fieldSelector,
+              operator: "==",
+              args: undefined,
+            },
           ],
         },
       });
