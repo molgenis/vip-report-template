@@ -110,6 +110,11 @@ export const SampleVariants: Component<{
               operator: "==",
               args: null,
             },
+            {
+              selector: selectorVim,
+              operator: "==",
+              args: undefined,
+            },
           ],
         },
         selectorKey(selectorVim)
