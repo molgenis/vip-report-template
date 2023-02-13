@@ -5,7 +5,7 @@ export const SearchBox: Component<{ value?: string | null; onInput: (value: stri
 
   return (
     <div class="field has-addons">
-      <p class="control has-icons-right is-expanded">
+      <div class="control has-icons-right is-expanded">
         <input
           class="input"
           type="text"
@@ -31,7 +31,7 @@ export const SearchBox: Component<{ value?: string | null; onInput: (value: stri
             <i class="fas fa-circle-xmark" />
           </span>
         )}
-      </p>
+      </div>
       <div class="control">
         <a class="button is-info" onClick={() => props.onInput(value())}>
           <span class="icon is-left">
