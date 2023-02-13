@@ -16,7 +16,8 @@ import { InfoCollapsablePane } from "./InfoCollapsablePane";
 
 const computeRowspan = (recordsMetadata: Metadata) =>
   Object.values(recordsMetadata.info).find((field) => field.nested) !== undefined ? 2 : 1;
-const computeColspan = (field: FieldMetadata) => (field.nested ? field.nested.items.length : undefined);
+// '+1' for the column with the collapse button
+const computeColspan = (field: FieldMetadata) => (field.nested ? field.nested.items.length + 1 : undefined);
 
 export const VariantsTable: Component<{
   records: Item<Record>[];
