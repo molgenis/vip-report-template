@@ -137,7 +137,7 @@ export const SampleVariants: Component<{
     if (viabField) {
       actions.setSampleVariantsFilterQuery(
         props.sample,
-        getAllelicBalanceQuery(props.sample.id),
+        getAllelicBalanceQuery(props.sample.data.index),
         selectorKey(["s", props.sample.data.index, ...selector(viabField)])
       );
     }
