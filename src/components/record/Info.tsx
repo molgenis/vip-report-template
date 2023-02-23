@@ -10,6 +10,7 @@ import { GnomAD } from "./info/GnomAD";
 import { isAnyCsqInfo, isCsqInfo } from "../../utils/csqUtils";
 import { Vkgl } from "./info/Vkgl";
 import { InheritanceModes } from "./info/InheritanceModes";
+import { Hpo } from "./info/Hpo";
 
 export const Info: Component<{
   info: FieldValue;
@@ -41,6 +42,9 @@ export const Info: Component<{
       </Match>
       <Match when={isCsqInfo(props.infoMeta, "VKGL_CL")}>
         <Vkgl {...props} />
+      </Match>
+      <Match when={isCsqInfo(props.infoMeta, "HPO")}>
+        <Hpo {...props} />
       </Match>
     </Switch>
   );
