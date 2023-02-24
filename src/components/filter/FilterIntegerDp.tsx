@@ -13,7 +13,7 @@ export const FilterIntegerDp: Component<FilterProps> = (props) => {
         query: {
           selector: fieldSelector,
           operator: ">=",
-          args: 10,
+          args: 20,
         },
       });
     else props.onClear({ key: selectorKey(fieldSelector) });
@@ -22,9 +22,9 @@ export const FilterIntegerDp: Component<FilterProps> = (props) => {
   return (
     <div class="control">
       <Checkbox
-        desc="Sequencing depth >= 10"
-        label="Depth >= 10"
-        checked={props.query && props.query.args === 10}
+        desc="Sequencing depth >= 20"
+        label="Depth >= 20"
+        checked={props.query && props.query.args === 20}
         onChange={onFilterChange}
       />
     </div>
