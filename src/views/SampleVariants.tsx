@@ -25,6 +25,7 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { getSampleLabel } from "../utils/sample";
 import { arrayEquals } from "../utils/utils";
 import { getAllelicBalanceQuery } from "../components/filter/FilterAllelicBalance";
+import { RecordsPerPage, RecordsPerPageEvent } from "../components/RecordsPerPage";
 
 export const SampleVariantsView: Component = () => {
   const { sample } = useRouteData<SampleRouteData>();
@@ -200,6 +201,8 @@ export const SampleVariants: Component<{
   const onFilterClear = (event: FilterClearEvent) => actions.clearSampleVariantsFilterQuery(props.sample, event.key);
   const onSortChange = (event: SortEvent) => actions.setSampleVariantsSort(props.sample, event.order);
   const onSortClear = () => actions.setSampleVariantsSort(props.sample, null);
+  const onRecordsPerPageChange = (event: RecordsPerPageEvent) =>
+    actions.setSampleVariantsPageSize(props.sample, event.number);
 
   const params = (): Params => {
     return {
@@ -231,7 +234,7 @@ export const SampleVariants: Component<{
     ]);
 
   return (
-    <div class="columns">
+    <div class="columns is-variable is-1">
       <div class="column is-1-fullhd is-2">
         <SearchBox value={searchQuery()} onInput={onSearchChange} />
         <Filters
@@ -243,9 +246,13 @@ export const SampleVariants: Component<{
         />
       </div>
       <div class="column">
-        <div class="columns">
+        <div class="columns is-gapless">
           <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-            {infoFields().length > 0 && <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />}
+            <Show when={records()} fallback={<Loader />} keyed>
+              {(records) => (
+                <span class="is-pulled-left inline-control-text ml-2">{records.page.totalElements} records</span>
+              )}
+            </Show>
           </div>
           <div class="column is-4">
             <Show when={records()} fallback={<Loader />} keyed>
@@ -253,41 +260,45 @@ export const SampleVariants: Component<{
             </Show>
           </div>
           <div class="column">
-            <div class="columns">
-              <div class="column is-10">
-                <Show when={records()} fallback={<Loader />} keyed>
-                  {(records) => (
-                    <span class="is-pulled-right" style={{ margin: "auto" }}>
-                      {records.page.totalElements} records
-                    </span>
-                  )}
-                </Show>
-              </div>
-              <div class="column">
-                <div class="is-pulled-right">
-                  <RecordDownload
-                    recordsMetadata={props.recordsMeta}
-                    query={params().query}
-                    samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
-                  />
-                </div>
-              </div>
+            <div class="field is-grouped is-grouped-right">
+              {infoFields().length > 0 && (
+                <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />
+              )}
+              <RecordDownload
+                recordsMetadata={props.recordsMeta}
+                query={params().query}
+                samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
+              />
             </div>
           </div>
         </div>
-        <div class="columns">
-          <Show when={records()} fallback={<Loader />} keyed>
-            {(records) => (
-              <VariantsSampleTable
-                item={props.sample}
-                pedigreeSamples={props.pedigreeSamples}
-                records={records.items}
-                recordsMetadata={props.recordsMeta}
-                nestedFields={infoFields()}
-                htsFileMeta={props.htsFileMeta}
-              />
-            )}
-          </Show>
+        <div class="columns is-gapless">
+          <div class="column is-full">
+            <Show when={records()} fallback={<Loader />} keyed>
+              {(records) => (
+                <>
+                  <VariantsSampleTable
+                    item={props.sample}
+                    pedigreeSamples={props.pedigreeSamples}
+                    records={records.items}
+                    recordsMetadata={props.recordsMeta}
+                    nestedFields={infoFields()}
+                    htsFileMeta={props.htsFileMeta}
+                  />
+                  <div class="columns is-gapless">
+                    <div class="column">
+                      <div class="field is-grouped is-grouped-right">
+                        <RecordsPerPage
+                          initialValue={getStateVariants()?.pageSize || 20}
+                          onChange={onRecordsPerPageChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </Show>
+          </div>
         </div>
       </div>
     </div>

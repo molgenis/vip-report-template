@@ -16,6 +16,7 @@ import { Loader } from "../components/Loader";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { arrayEquals } from "../utils/utils";
 import { FilterChangeEvent, FilterClearEvent } from "../components/filter/Filters";
+import { RecordsPerPage, RecordsPerPageEvent } from "../components/RecordsPerPage";
 
 export const VariantsView: Component = () => {
   const [recordsMeta] = createResource(fetchRecordsMeta);
@@ -49,7 +50,7 @@ export const Variants: Component<{
   const onFilterClear = (event: FilterClearEvent) => actions.clearVariantsFilterQuery(event.key);
   const onSortChange = (event: SortEvent) => actions.setVariantsSort(event.order);
   const onSortClear = () => actions.setVariantsSort(null);
-
+  const onRecordsPerPageChange = (event: RecordsPerPageEvent) => actions.setVariantsPageSize(event.number);
   const params = (): Params => {
     return {
       query: createQuery(searchQuery(), filterQueries(), props.recordsMeta) || undefined,
@@ -81,49 +82,60 @@ export const Variants: Component<{
   };
 
   return (
-    <Show when={records()} fallback={<Loader />}>
-      <div class="columns">
-        <div class="column is-1-fullhd is-2">
-          <SearchBox onInput={onSearchChange} />
-          <InfoFilters
-            fields={flattenFieldMetadata(props.recordsMeta.info)}
-            queries={filterQueries()}
-            onChange={onFilterChange}
-            onClear={onFilterClear}
-          />
-        </div>
-        <div class="column">
-          <div class="columns">
-            <div class="column is-offset-1-fullhd is-3-fullhd is-4">
+    <div class="columns is-variable is-1">
+      <div class="column is-1-fullhd is-2">
+        <SearchBox onInput={onSearchChange} />
+        <InfoFilters
+          fields={flattenFieldMetadata(props.recordsMeta.info)}
+          queries={filterQueries()}
+          onChange={onFilterChange}
+          onClear={onFilterClear}
+        />
+      </div>
+      <div class="column">
+        <div class="columns is-gapless">
+          <div class="column is-offset-1-fullhd is-3-fullhd is-4">
+            <Show when={records()} fallback={<Loader />} keyed>
+              {(records) => (
+                <span class="is-pulled-left inline-control-text ml-2">{records.page.totalElements} records</span>
+              )}
+            </Show>
+          </div>
+          <div class="column is-4">
+            <Show when={records()} fallback={<Loader />} keyed>
+              {(records) => <Pager page={records.page} onPageChange={onPageChange} />}
+            </Show>
+          </div>
+          <div class="column">
+            <div class="field is-grouped is-grouped-right">
               <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />
-            </div>
-            <div class="column is-4">
-              <Pager page={records()!.page} onPageChange={onPageChange} />
-            </div>
-            <div class="column">
-              <div class="columns">
-                <div class="column is-10">
-                  <span class="is-pulled-right" style={{ margin: "auto" }}>
-                    {records()!.page.totalElements} records
-                  </span>
-                </div>
-                <div class="column">
-                  <div class="is-pulled-right">
-                    <RecordDownload recordsMetadata={props.recordsMeta} query={params().query} />
-                  </div>
-                </div>
-              </div>
+              <RecordDownload recordsMetadata={props.recordsMeta} query={params().query} />
             </div>
           </div>
-          <div class="columns">
-            <VariantsTable
-              records={records()!.items}
-              recordsMetadata={props.recordsMeta}
-              htsFileMeta={props.htsFileMeta}
-            />
+        </div>
+        <div class="columns is-gapless">
+          <div class="column is-full">
+            <Show when={records()} fallback={<Loader />} keyed>
+              {(records) => (
+                <>
+                  <VariantsTable
+                    records={records.items}
+                    recordsMetadata={props.recordsMeta}
+                    htsFileMeta={props.htsFileMeta}
+                  />
+                  <div class="columns is-gapless">
+                    <div class="column">
+                      <div class="field is-grouped is-grouped-right">
+                        <RecordsPerPage initialValue={pageSize() || 20} onChange={onRecordsPerPageChange} />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </Show>
           </div>
         </div>
       </div>
-    </Show>
+    </div>
   );
 };
