@@ -32,26 +32,20 @@ export const Sort: Component<{
   };
 
   return (
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label">Sort by:</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="select">
-            <select onChange={onSortChange}>
-              <option value="-1">Position</option>
-              <For each={sortableOptions()}>
-                {(option, i) => (
-                  <option value={i()} selected={option.selected === true}>
-                    {option.order.field.label || option.order.field.id}{" "}
-                    {option.order.direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}
-                  </option>
-                )}
-              </For>
-            </select>
-          </div>
-        </div>
+    <div class="control">
+      <span class="inline-control-text mr-2">Sort by</span>
+      <div class="select">
+        <select onChange={onSortChange}>
+          <option value="-1">{"Position"}</option>
+          <For each={sortableOptions()}>
+            {(option, i) => (
+              <option value={i()} selected={option.selected === true}>
+                {option.order.field.label || option.order.field.id}{" "}
+                {option.order.direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}
+              </option>
+            )}
+          </For>
+        </select>
       </div>
     </div>
   );
