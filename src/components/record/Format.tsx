@@ -13,7 +13,7 @@ export const Format: Component<{
   record: Item<Record>;
   isAbbreviate: boolean;
   allelicBalance: number | undefined | null;
-  readDepth: number | undefined;
+  readDepth: number | undefined | null;
 }> = (props) => {
   return (
     <Switch
