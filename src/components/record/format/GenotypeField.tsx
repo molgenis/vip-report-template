@@ -35,10 +35,10 @@ export const GenotypeField: Component<{
   altAlleles: (string | null)[];
   isAbbreviate: boolean;
   allelicBalance: number | undefined | null;
-  readDepth: number | undefined;
+  readDepth: number | undefined | null;
 }> = (props) => {
   const allelicImbalance: boolean = isAllelicImbalance(props.genotype, props.allelicBalance);
-  const lowReadDepth = props.readDepth !== undefined && props.readDepth < 20;
+  const lowReadDepth = props.readDepth !== undefined && props.readDepth !== null && props.readDepth < 20;
   return (
     <>
       <For each={props.genotype.a}>
