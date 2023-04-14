@@ -1,5 +1,5 @@
 import { Component, createResource, For, Show } from "solid-js";
-import { useRouteData } from "solid-app-router";
+import { useRouteData } from "@solidjs/router";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { Loader } from "../components/Loader";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";

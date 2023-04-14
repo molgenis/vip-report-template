@@ -1,6 +1,6 @@
 import { Component, createSignal, For } from "solid-js";
 import api from "../Api";
-import { useNavigate } from "solid-app-router";
+import { useNavigate } from "@solidjs/router";
 import { useStore } from "../store";
 
 export const DatasetDropdown: Component = () => {

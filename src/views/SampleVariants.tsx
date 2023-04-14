@@ -1,5 +1,5 @@
 import { Component, createMemo, createResource, Show } from "solid-js";
-import { useRouteData } from "solid-app-router";
+import { useRouteData } from "@solidjs/router";
 import { HtsFileMetadata, Item, Params, PhenotypicFeature, Sample, SortPath } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";

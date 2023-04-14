@@ -9,7 +9,7 @@ import { Qual } from "./record/Qual";
 import { Filter } from "./record/Filter";
 import { Info } from "./record/Info";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Link } from "solid-app-router";
+import { Link } from "@solidjs/router";
 import { HtsFileMetadata, Item } from "@molgenis/vip-report-api/src/Api";
 import { FieldHeader } from "./FieldHeader";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";

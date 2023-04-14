@@ -2,7 +2,7 @@ import { Genotype, Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
-import { Link } from "solid-app-router";
+import { Link } from "@solidjs/router";
 import { HtsFileMetadata, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";

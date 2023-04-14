@@ -1,4 +1,4 @@
-import { Link } from "solid-app-router";
+import { Link } from "@solidjs/router";
 import { Component, For } from "solid-js";
 
 export type BreadCrumbItem = { href?: string; text: string };
