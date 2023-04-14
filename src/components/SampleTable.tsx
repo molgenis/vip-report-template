@@ -1,4 +1,4 @@
-import { Link } from "solid-app-router";
+import { Link } from "@solidjs/router";
 import { Component, createMemo, For, Show } from "solid-js";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "./HpoTerm";

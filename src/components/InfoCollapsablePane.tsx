@@ -6,7 +6,7 @@ import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldValue } from "./record/field/Field";
 import { isCsqInfo } from "../utils/csqUtils";
-import { Link, useLocation } from "solid-app-router";
+import { Link, useLocation } from "@solidjs/router";
 
 export const InfoCollapsablePane: Component<{
   fields: FieldMetadata[];

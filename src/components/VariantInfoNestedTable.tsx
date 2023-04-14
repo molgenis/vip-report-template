@@ -6,7 +6,7 @@ import { FieldHeader } from "./FieldHeader";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { isCsqInfo } from "../utils/csqUtils";
-import { Link, useLocation } from "solid-app-router";
+import { Link, useLocation } from "@solidjs/router";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];

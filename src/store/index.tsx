@@ -1,4 +1,4 @@
-import { hashIntegration, Router } from "solid-app-router";
+import { hashIntegration, Router } from "@solidjs/router";
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Item, Query, Sample, SortOrder } from "@molgenis/vip-report-api/src/Api";

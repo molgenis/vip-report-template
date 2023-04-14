@@ -1,5 +1,5 @@
 import { Component, For, Show } from "solid-js";
-import { Link, useRouteData } from "solid-app-router";
+import { Link, useRouteData } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { SampleRouteData } from "./data/SampleData";

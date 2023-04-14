@@ -1,5 +1,5 @@
 import { Component, createResource, Show } from "solid-js";
-import { useRouteData } from "solid-app-router";
+import { useRouteData } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import {
   fetchDecisionTree,

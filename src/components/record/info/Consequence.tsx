@@ -10,7 +10,7 @@ export const Consequence: Component<FieldProps> = (props) => {
       <span>{consequence()[0]}</span>
       {consequence().length > 1 && (
         <span>
-          , <Abbr title={consequence().slice(1).join(", ")} value="\u2026" />
+          , <Abbr title={consequence().slice(1).join(", ")} value={"\u2026"} />
         </span>
       )}
     </>

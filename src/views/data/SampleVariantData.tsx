@@ -1,5 +1,5 @@
 import { createResource, Resource } from "solid-js";
-import { RouteDataFuncArgs } from "solid-app-router/dist/types";
+import { RouteDataFuncArgs } from "@solidjs/router/dist/types";
 import { fetchRecordById } from "../../utils/ApiUtils";
 import { SampleRouteData } from "./SampleData";
 import { Item } from "@molgenis/vip-report-api/src/Api";

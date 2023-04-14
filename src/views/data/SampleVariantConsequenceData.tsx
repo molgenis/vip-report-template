@@ -1,4 +1,4 @@
-import { RouteDataFuncArgs } from "solid-app-router/dist/types";
+import { RouteDataFuncArgs } from "@solidjs/router/dist/types";
 import { SampleVariantRouteData } from "./SampleVariantData";
 
 export type SampleVariantConsequenceRouteData = { consequenceId: number } & SampleVariantRouteData;

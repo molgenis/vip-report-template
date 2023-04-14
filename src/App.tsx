@@ -1,5 +1,5 @@
 import { Component, ErrorBoundary, onMount } from "solid-js";
-import { Link, Route, Routes, useLocation, useNavigate } from "solid-app-router";
+import { Link, Route, Routes, useLocation, useNavigate } from "@solidjs/router";
 import { VariantsView } from "./views/Variants";
 import { Variant } from "./views/Variant";
 import VariantData from "./views/data/VariantData";
