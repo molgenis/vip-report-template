@@ -11,7 +11,6 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
 import { abbreviateHeader } from "../utils/field";
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export const VariantsSampleTable: Component<{
   item: Item<Sample>;
