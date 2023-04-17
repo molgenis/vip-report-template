@@ -1,6 +1,6 @@
 {
   "name": "@molgenis/vip-report-template",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Report Template for Variant Call Format (VCF) Report Generator",
   "scripts": {
     "build": "vite build",
