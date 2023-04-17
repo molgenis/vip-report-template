@@ -20,8 +20,8 @@ dependencies:
     specifier: ^1.5.1
     version: 1.5.1
   igv:
-    specifier: ^2.15.3
-    version: 2.15.3
+    specifier: ^2.15.4
+    version: 2.15.4
   solid-js:
     specifier: ^1.7.3
     version: 1.7.3
@@ -2069,8 +2069,8 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
-  /igv@2.15.3:
-    resolution: {integrity: sha512-W2L99QeO1r8NwV5rU66vJYjJOr/ffmRmEmCTR1qf6FShAnIalV0jXbcYdNquj+7B6Xgn0i/l8uNXcWodomkBCg==}
+  /igv@2.15.4:
+    resolution: {integrity: sha512-EZzE7qLPsjq7nXQ2Rn2+Vp8266RAVvZSzSwRZFmy7as3ybwDlHOVZnSwZglEOv2F9nIe8i8dxroDIuTIK4HuCQ==}
     dev: false
 
   /immutable@4.3.0:
