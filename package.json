@@ -1,6 +1,6 @@
 {
   "name": "@molgenis/vip-report-template",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Report Template for Variant Call Format (VCF) Report Generator",
   "scripts": {
     "build": "vite build",
@@ -40,7 +40,7 @@
     "@molgenis/vip-report-vcf": "^1.3.5",
     "@solidjs/router": "^0.8.2",
     "base64-js": "^1.5.1",
-    "igv": "^2.15.3",
+    "igv": "^2.15.4",
     "solid-js": "^1.7.3"
   },
   "lint-staged": {
