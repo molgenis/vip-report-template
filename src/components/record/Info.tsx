@@ -12,6 +12,7 @@ import { Vkgl } from "./info/Vkgl";
 import { InheritanceModes } from "./info/InheritanceModes";
 import { Hpo } from "./info/Hpo";
 import { VipC } from "./info/VipC";
+
 export const Info: Component<{
   info: FieldValue;
   infoMeta: FieldMetadata;
