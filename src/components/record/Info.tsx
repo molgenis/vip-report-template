@@ -11,6 +11,7 @@ import { isAnyCsqInfo, isCsqInfo } from "../../utils/csqUtils";
 import { Vkgl } from "./info/Vkgl";
 import { InheritanceModes } from "./info/InheritanceModes";
 import { Hpo } from "./info/Hpo";
+import { VipC } from "./info/VipC";
 
 export const Info: Component<{
   info: FieldValue;
@@ -45,6 +46,9 @@ export const Info: Component<{
       </Match>
       <Match when={isCsqInfo(props.infoMeta, "HPO")}>
         <Hpo {...props} />
+      </Match>
+      <Match when={isCsqInfo(props.infoMeta, "VIPC")}>
+        <VipC {...props} />
       </Match>
     </Switch>
   );
