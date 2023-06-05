@@ -162,6 +162,7 @@ export const SampleVariants: Component<{
       "SYMBOL",
       "InheritanceModesGene",
       "HPO",
+      "Zscore",
       "HGVSc",
       "HGVSp",
       "CAPICE_SC",

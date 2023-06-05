@@ -17,7 +17,10 @@ export const Sort: Component<{
   onClear: () => void;
 }> = (props) => {
   const sortableOptions = () =>
-    props.options.filter((option) => isNumerical(option.order.field) && option.order.field.number.count === 1);
+    props.options.filter(
+      (option) =>
+        (isNumerical(option.order.field) && option.order.field.number.count === 1) || option.order.field.id === "Zscore"
+    );
 
   const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);

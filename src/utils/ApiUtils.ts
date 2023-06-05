@@ -122,9 +122,8 @@ export async function fetchRecords(params: Params) {
   const orders = createRecordSort(recordsMeta, params.sort).orders.filter(
     (order) =>
       order.field.parent?.id === "CSQ" &&
-      isNumerical(order.field) &&
-      order.field.number.type === "NUMBER" &&
-      order.field.number.count === 1
+      ((isNumerical(order.field) && order.field.number.type === "NUMBER" && order.field.number.count === 1) ||
+        order.field.id === "Zscore")
   );
 
   const fieldMetas = (recordsMeta.info.CSQ.nested as NestedFieldMetadata).items;
