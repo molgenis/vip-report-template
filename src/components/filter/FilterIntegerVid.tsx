@@ -23,6 +23,12 @@ export const FilterIntegerVid: Component<FilterProps> = (props) => {
     <div class="control">
       <Checkbox
         label="Inheritance: de novo"
+        desc="Inheritance De Novo:
+        On autosomes:
+        - available parents do not have the variant, or genotype is missing.
+        On the X chromosome:
+        - Female proband: same as autosomes.
+        - Male proband: Mother does not have the variant, or mother genotype missing."
         checked={props.query && props.query.args === 1}
         onChange={onFilterChange}
       />
