@@ -94,9 +94,14 @@ export const SampleVariants: Component<{
       const selectorHpo = infoSelector(hpoField);
       const queries: QueryClause[] = [
         {
-          selector: selectorHpo,
-          operator: "any_has_any",
-          args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+          operator: "or",
+          args: [
+            {
+              selector: selectorHpo,
+              operator: "any_has_any",
+              args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+            },
+          ],
         },
       ];
       if (gadoField) {
