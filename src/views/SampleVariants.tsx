@@ -85,9 +85,14 @@ export const SampleVariants: Component<{
       actions.setSampleVariantsFilterQuery(
         props.sample,
         {
-          selector: selectorHpo,
-          operator: "any_has_any",
-          args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+          operator: "or",
+          args: [
+            {
+              selector: selectorHpo,
+              operator: "any_has_any",
+              args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+            },
+          ],
         },
         selectorKey(selectorHpo)
       );
