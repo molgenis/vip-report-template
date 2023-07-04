@@ -16,7 +16,7 @@ export const Hpo: Component<FieldProps> = (props) => {
       href: `https://hpo.jax.org/app/browse/term/${encodeURI(hpoTermId)}`,
     }));
 
-  const gadoIndex = getCsqInfoIndex(props.infoMeta, "GADO_CL");
+  const gadoIndex = getCsqInfoIndex(props.infoMeta, "GADO_PD");
   const gadoClass = gadoIndex != -1 ? (getCsqInfo(props.info, gadoIndex) as string) : null;
 
   return (

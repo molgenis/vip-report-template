@@ -27,7 +27,7 @@ export const FilterHpo: Component<
 
   let gadoMeta: FieldMetadata | null = null;
   csqMeta?.nested?.items.forEach((meta) => {
-    if (meta.id === "GADO_CL") {
+    if (meta.id === "GADO_PD") {
       gadoMeta = meta;
     }
   });
@@ -129,7 +129,7 @@ export const FilterHpo: Component<
         <Checkbox
           value="gado_hc"
           label="GADO hc"
-          desc="Gene predicted to have a relation with the probands phenotypes with high confidence (Z-Score above 5)."
+          desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with high confidence (Z-Score above 5)."
           checked={gadoHcChecked}
           onChange={onChange}
         />
@@ -138,7 +138,7 @@ export const FilterHpo: Component<
         <Checkbox
           value="gado_lc"
           label="GADO lc"
-          desc="Gene predicted to have a relation with the probands phenotypes with low confidence (Z-Score above 3 but below 5)."
+          desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with low confidence (Z-Score above 3 but below 5)."
           checked={gadoLcChecked}
           onChange={onChange}
         />
