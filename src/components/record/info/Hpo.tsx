@@ -1,10 +1,7 @@
-import { Component, createMemo, For, Show } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { Anchor } from "../../Anchor";
 import { FieldProps } from "../field/Field";
-import { ValueFlag, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getCsqInfo, getCsqInfoIndex } from "../../../utils/csqUtils";
-import { Abbr } from "../../Abbr";
-import { FieldSingleValue } from "../field/FieldSingleValue";
 import { FieldValueString } from "../field/FieldValueString";
 
 type HpoTerm = {
@@ -19,6 +16,9 @@ export const Hpo: Component<FieldProps> = (props) => {
       href: `https://hpo.jax.org/app/browse/term/${encodeURI(hpoTermId)}`,
     }));
 
+  const gadoIndex = (): number => getCsqInfoIndex(props.infoMeta, "GADO_PD");
+  const gadoClass = (): string | null => (gadoIndex() !== -1 ? (getCsqInfo(props.info, gadoIndex()) as string) : null);
+
   return (
     <>
       <For each={hpoTerms()}>
@@ -31,6 +31,22 @@ export const Hpo: Component<FieldProps> = (props) => {
           </>
         )}
       </For>
+      <Show when={gadoClass() !== null && gadoClass() === "LC"} keyed>
+        <abbr
+          title="Gene phenotype relation predicted by GADO with low confidence; Z-Score greater than 3 but below 5."
+          class="ml-1 is-clickable"
+        >
+          <i class="fas fa-question-circle has-text-info" />
+        </abbr>
+      </Show>
+      <Show when={gadoClass() !== null && gadoClass() === "HC"} keyed>
+        <abbr
+          title="Gene phenotype relation predicted by GADO with high confidence; Z-Score greater than 5."
+          class="ml-1 is-clickable"
+        >
+          <i class="fas fa-info-circle has-text-info" />
+        </abbr>
+      </Show>
     </>
   );
 };

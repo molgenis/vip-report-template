@@ -10,6 +10,8 @@ import {
   faAngleUp,
   faCircleExclamation,
   faCircleXmark,
+  faCircleInfo,
+  faCircleQuestion,
   faDownload,
   faExternalLink,
   faHome,
@@ -17,7 +19,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
 
-library.add(faAngleDown, faAngleUp, faCircleExclamation, faCircleXmark, faDownload, faExternalLink, faHome, faSearch);
+library.add(
+  faAngleDown,
+  faAngleUp,
+  faCircleExclamation,
+  faCircleXmark,
+  faCircleInfo,
+  faCircleQuestion,
+  faDownload,
+  faExternalLink,
+  faHome,
+  faSearch
+);
 
 function processIcons() {
   void dom.i2svg();
