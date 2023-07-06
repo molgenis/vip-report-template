@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterProps } from "./Filter";
 import { infoSelector, selector, selectorKey } from "../../utils/query";
@@ -77,17 +77,19 @@ export const FilterHpo: Component<
       .filter((key) => group[key])
       .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
-      if (values.includes("gado_lc")) {
-        queries.push(gadoLcQuery);
-        gadoLcChecked = true;
-      } else {
-        gadoHcChecked = false;
-      }
-      if (values.includes("gado_hc")) {
-        queries.push(gadoHcQuery);
-        gadoHcChecked = true;
-      } else {
-        gadoHcChecked = false;
+      if (gadoMeta !== null) {
+        if (values.includes("gado_lc")) {
+          queries.push(gadoLcQuery);
+          gadoLcChecked = true;
+        } else {
+          gadoHcChecked = false;
+        }
+        if (values.includes("gado_hc")) {
+          queries.push(gadoHcQuery);
+          gadoHcChecked = true;
+        } else {
+          gadoHcChecked = false;
+        }
       }
       hpoValues = values.filter((key) => key !== "gado_lc" && key !== "gado_hc");
       if (hpoValues.length > 0) {
@@ -97,9 +99,10 @@ export const FilterHpo: Component<
           args: hpoValues,
         };
         queries.push(hpoQuery);
+      } else if (gadoMeta !== null) {
+        props.onClear({ key: selectorKey(hpoSelector) });
       }
 
-      console.log(queries);
       props.onChange({
         key: selectorKey(hpoSelector),
         query: {
@@ -125,24 +128,26 @@ export const FilterHpo: Component<
           </div>
         )}
       </For>
-      <div class="control">
-        <Checkbox
-          value="gado_hc"
-          label="GADO hc"
-          desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with high confidence (Z-Score above 5)."
-          checked={gadoHcChecked}
-          onChange={onChange}
-        />
-      </div>
-      <div class="control">
-        <Checkbox
-          value="gado_lc"
-          label="GADO lc"
-          desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with low confidence (Z-Score above 3 but below 5)."
-          checked={gadoLcChecked}
-          onChange={onChange}
-        />
-      </div>
+      <Show when={gadoMeta !== null}>
+        <div class="control">
+          <Checkbox
+            value="gado_hc"
+            label="GADO hc"
+            desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with high confidence (Z-Score above 5)."
+            checked={gadoHcChecked}
+            onChange={onChange}
+          />
+        </div>
+        <div class="control">
+          <Checkbox
+            value="gado_lc"
+            label="GADO lc"
+            desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with low confidence (Z-Score above 3 but below 5)."
+            checked={gadoLcChecked}
+            onChange={onChange}
+          />
+        </div>
+      </Show>
     </>
   );
 };
