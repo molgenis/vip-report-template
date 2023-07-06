@@ -39,7 +39,7 @@ export const Hpo: Component<FieldProps> = (props) => {
           <i class="fas fa-question-circle has-text-info" />
         </abbr>
       </Show>
-      <Show when={gadoClass !== null && gadoClass === "HC"} keyed>
+      <Show when={gadoClass() !== null && gadoClass() === "HC"} keyed>
         <abbr
           title="Gene phenotype relation predicted by GADO with high confidence; Z-Score greater than 5."
           class="ml-1 is-clickable"
