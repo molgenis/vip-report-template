@@ -17,7 +17,7 @@ export const Hpo: Component<FieldProps> = (props) => {
     }));
 
   const gadoIndex = getCsqInfoIndex(props.infoMeta, "GADO_PD");
-  const gadoClass = gadoIndex != -1 ? (getCsqInfo(props.info, gadoIndex) as string) : null;
+  const gadoClass = (): string | null => (gadoIndex() !== -1 ? (getCsqInfo(props.info, gadoIndex()) as string) : null);
 
   return (
     <>
