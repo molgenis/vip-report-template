@@ -43,10 +43,10 @@ export const FilterHpo: Component<
         gadoMeta &&
         selectorKey((childQuery as QueryClause).selector) === selectorKey(infoSelector(gadoMeta))
       ) {
-        if ((childQuery.args as string) === "LC") {
+        if ((childQuery.args as string[]).indexOf("LC") !== -1) {
           gadoLcChecked = true;
         }
-        if ((childQuery.args as string) === "HC") {
+        if ((childQuery.args as string[]).indexOf("HC") !== -1) {
           gadoHcChecked = true;
         }
       }

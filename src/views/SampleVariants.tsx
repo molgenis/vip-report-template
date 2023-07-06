@@ -1,6 +1,15 @@
 import { Component, createMemo, createResource, Show } from "solid-js";
 import { useRouteData } from "@solidjs/router";
-import { HtsFileMetadata, Item, Params, PhenotypicFeature, Sample, SortPath } from "@molgenis/vip-report-api/src/Api";
+import {
+  HtsFileMetadata,
+  Item,
+  Params,
+  PhenotypicFeature,
+  QueryClause,
+  Sample,
+  SelectorPart,
+  SortPath,
+} from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
 import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
@@ -80,19 +89,29 @@ export const SampleVariants: Component<{
 
   if (getStateVariants()?.filterQueries === undefined) {
     const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
+    const gadoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "GADO_PD");
     if (hpoField && props.samplePhenotypes.length > 0) {
       const selectorHpo = infoSelector(hpoField);
+      const queries: QueryClause[] = [
+        {
+          selector: selectorHpo,
+          operator: "any_has_any",
+          args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
+        },
+      ];
+      if (gadoField) {
+        const selectorGado = infoSelector(gadoField);
+        queries.push({
+          selector: selectorGado,
+          operator: "any_has_any",
+          args: ["HC"],
+        });
+      }
       actions.setSampleVariantsFilterQuery(
         props.sample,
         {
           operator: "or",
-          args: [
-            {
-              selector: selectorHpo,
-              operator: "any_has_any",
-              args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
-            },
-          ],
+          args: queries,
         },
         selectorKey(selectorHpo)
       );
