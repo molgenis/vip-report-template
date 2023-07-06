@@ -1,4 +1,4 @@
-import { Component, createMemo, For, Show } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { Anchor } from "../../Anchor";
 import { FieldProps } from "../field/Field";
 import { getCsqInfo, getCsqInfoIndex } from "../../../utils/csqUtils";
