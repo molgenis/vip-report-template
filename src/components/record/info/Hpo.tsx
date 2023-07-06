@@ -36,7 +36,7 @@ export const Hpo: Component<FieldProps> = (props) => {
           title="Gene phenotype relation predicted by GADO with low confidence; Z-Score greater than 3 but below 5."
           class="ml-1 is-clickable"
         >
-          <i class="fas fa-circle-exclamation has-text-warning" />
+          <i class="fas fa-question-circle has-text-info" />
         </abbr>
       </Show>
       <Show when={gadoClass !== null && gadoClass === "HC"} keyed>
@@ -44,7 +44,7 @@ export const Hpo: Component<FieldProps> = (props) => {
           title="Gene phenotype relation predicted by GADO with high confidence; Z-Score greater than 5."
           class="ml-1 is-clickable"
         >
-          <i class="fas fa-circle-exclamation has-text-success" />
+          <i class="fas fa-info-circle has-text-info" />
         </abbr>
       </Show>
     </>

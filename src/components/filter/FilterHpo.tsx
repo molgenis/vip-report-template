@@ -132,7 +132,7 @@ export const FilterHpo: Component<
         <div class="control">
           <Checkbox
             value="gado_hc"
-            label="GADO hc"
+            label="GADO high"
             desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with high confidence (Z-Score above 5)."
             checked={gadoHcChecked}
             onChange={onChange}
@@ -141,7 +141,7 @@ export const FilterHpo: Component<
         <div class="control">
           <Checkbox
             value="gado_lc"
-            label="GADO lc"
+            label="GADO low"
             desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with low confidence (Z-Score above 3 but below 5)."
             checked={gadoLcChecked}
             onChange={onChange}
