@@ -31,7 +31,7 @@ export const Hpo: Component<FieldProps> = (props) => {
           </>
         )}
       </For>
-      <Show when={gadoClass !== null && gadoClass === "LC"} keyed>
+      <Show when={gadoClass() !== null && gadoClass() === "LC"} keyed>
         <abbr
           title="Gene phenotype relation predicted by GADO with low confidence; Z-Score greater than 3 but below 5."
           class="ml-1 is-clickable"
