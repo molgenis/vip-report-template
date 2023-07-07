@@ -7,7 +7,6 @@ import {
   PhenotypicFeature,
   QueryClause,
   Sample,
-  SelectorPart,
   SortPath,
 } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
@@ -94,21 +93,16 @@ export const SampleVariants: Component<{
       const selectorHpo = infoSelector(hpoField);
       const queries: QueryClause[] = [
         {
-          operator: "or",
-          args: [
-            {
-              selector: selectorHpo,
-              operator: "any_has_any",
-              args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
-            },
-          ],
+          selector: selectorHpo,
+          operator: "any_has_any",
+          args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
         },
       ];
       if (gadoField) {
         const selectorGado = infoSelector(gadoField);
         queries.push({
           selector: selectorGado,
-          operator: "any_has_any",
+          operator: "has_any",
           args: ["HC"],
         });
       }
