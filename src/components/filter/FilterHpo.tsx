@@ -60,13 +60,13 @@ export const FilterHpo: Component<
   if (gadoMeta !== null) {
     gadoLcQuery = {
       selector: selector(gadoMeta),
-      operator: "any_has_any",
+      operator: "has_any",
       args: ["LC"],
     };
 
     gadoHcQuery = {
       selector: selector(gadoMeta),
-      operator: "any_has_any",
+      operator: "has_any",
       args: ["HC"],
     };
   }
