@@ -44,9 +44,11 @@ export const FilterHpo: Component<
         selectorKey((childQuery as QueryClause).selector) === selectorKey(infoSelector(gadoMeta))
       ) {
         if ((childQuery.args as string[]).indexOf("LC") !== -1) {
+          group["gado_lc"] = true;
           gadoLcChecked = true;
         }
         if ((childQuery.args as string[]).indexOf("HC") !== -1) {
+          group["gado_hc"] = true;
           gadoHcChecked = true;
         }
       }
@@ -73,18 +75,21 @@ export const FilterHpo: Component<
   const onChange = (event: CheckboxEvent) => {
     const queries: Query[] = [];
     group[event.value !== undefined ? event.value : nullValue] = event.checked;
+    console.log(Object.keys(group));
     const values = Object.keys(group)
       .filter((key) => group[key])
       .map((key) => (key !== nullValue ? key : null));
     if (values.length > 0) {
       if (gadoMeta !== null) {
         if (values.includes("gado_lc")) {
+          console.log("gado_lc");
           queries.push(gadoLcQuery);
           gadoLcChecked = true;
         } else {
           gadoHcChecked = false;
         }
         if (values.includes("gado_hc")) {
+          console.log("gado_hc");
           queries.push(gadoHcQuery);
           gadoHcChecked = true;
         } else {
