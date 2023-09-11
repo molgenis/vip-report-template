@@ -38,7 +38,7 @@ test("Get DecisionTree Path", () => {
     },
   } as unknown as Item<Record>;
   expect(getDecisionTreePath({ info: { CSQ: fieldMetaCsq }, lines: [], format: {}, samples: [] }, variant, 0)).toBe(
-    "gnomad&mvl&clinvar&exit"
+    "gnomad&mvl&clinvar&exit",
   );
 });
 
@@ -70,6 +70,6 @@ test("Get DecisionTree Path - no VIPP", () => {
     },
   } as unknown as Item<Record>;
   expect(getDecisionTreePath({ info: { CSQ: fieldMetaCsq }, lines: [], format: {}, samples: [] }, variant, 0)).toBe(
-    undefined
+    undefined,
   );
 });

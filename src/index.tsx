@@ -29,7 +29,7 @@ library.add(
   faDownload,
   faExternalLink,
   faHome,
-  faSearch
+  faSearch,
 );
 
 function processIcons() {
@@ -49,5 +49,5 @@ render(
       <App />
     </Provider>
   ),
-  document.body
+  document.body,
 );

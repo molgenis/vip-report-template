@@ -33,13 +33,13 @@ test("Get specific consequence - out of bounds", () => {
 
 test("Get specific consequence - -1", () => {
   expect(() => getSpecificConsequence([valueArraya, valueArrayb], -1)).toThrowError(
-    "Consequences index must be 0 or higher."
+    "Consequences index must be 0 or higher.",
   );
 });
 
 test("Get Consequence Label", () => {
   expect(getConsequenceLabel([valueArraya, valueArrayb], 1, [fieldMeta1, fieldMetaCsq, fieldMeta2])).toBe(
-    "testValue2b"
+    "testValue2b",
   );
 });
 

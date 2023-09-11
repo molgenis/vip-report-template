@@ -178,7 +178,7 @@ describe("query utilities", () => {
 
   test("sampleFieldKey", () => {
     expect(sampleFieldKey({ id: 1, data: { person: person, index: 0, proband: false } }, fieldMeta1)).toStrictEqual(
-      "s/0/CSQ/field1"
+      "s/0/CSQ/field1",
     );
   });
 

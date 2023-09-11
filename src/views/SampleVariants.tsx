@@ -112,7 +112,7 @@ export const SampleVariants: Component<{
           operator: "or",
           args: queries,
         },
-        selectorKey(selectorHpo)
+        selectorKey(selectorHpo),
       );
     }
 
@@ -141,7 +141,7 @@ export const SampleVariants: Component<{
             },
           ],
         },
-        selectorKey(selectorVim)
+        selectorKey(selectorVim),
       );
     }
     const gqField = props.recordsMeta.format?.GQ;
@@ -154,7 +154,7 @@ export const SampleVariants: Component<{
           operator: ">=",
           args: 20,
         },
-        selectorKey(selectorGq)
+        selectorKey(selectorGq),
       );
     }
     const viabField = props.recordsMeta.format?.VIAB;
@@ -162,7 +162,7 @@ export const SampleVariants: Component<{
       actions.setSampleVariantsFilterQuery(
         props.sample,
         getAllelicBalanceQuery(props.sample.data.index),
-        selectorKey(["s", props.sample.data.index, ...selector(viabField)])
+        selectorKey(["s", props.sample.data.index, ...selector(viabField)]),
       );
     }
   }

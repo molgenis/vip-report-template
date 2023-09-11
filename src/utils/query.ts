@@ -16,7 +16,7 @@ export function createSampleQuery(
   sample: Item<Sample>,
   search: string | undefined,
   filters: FilterQueries | undefined,
-  metadata: Metadata
+  metadata: Metadata,
 ): Query | null {
   const genotypeSelector: Selector = ["s", sample.data.index, "GT", "t"];
   const sampleQuery: Query = {
@@ -35,7 +35,7 @@ export function createSampleQuery(
 export function createQuery(
   search: string | undefined,
   filters: FilterQueries | undefined,
-  metadata: Metadata
+  metadata: Metadata,
 ): Query | null {
   let query: Query | null;
 
@@ -63,7 +63,7 @@ function createSearchQueryClausesInfo(search: string, infoMetadata: InfoMetadata
   if (infoMetadata.nested) {
     for (let i = 0; i < infoMetadata.nested.items.length; ++i) {
       clauses.push(
-        ...createSearchQueryClausesInfo(search, infoMetadata.nested.items[i], [...selector, "*", i.toString()])
+        ...createSearchQueryClausesInfo(search, infoMetadata.nested.items[i], [...selector, "*", i.toString()]),
       );
     }
   } else {

@@ -29,7 +29,7 @@ export const Variant: Component = () => {
           <Show
             when={
               Object.values(recordsMetadata().info).filter(
-                (info) => !info.nested && variant().data.n[info.id] !== undefined
+                (info) => !info.nested && variant().data.n[info.id] !== undefined,
               ).length > 0
             }
           >

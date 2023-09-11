@@ -1,6 +1,6 @@
 {
   "name": "@molgenis/vip-report-template",
-  "version": "5.5.3",
+  "version": "5.5.4",
   "description": "Report Template for Variant Call Format (VCF) Report Generator",
   "scripts": {
     "build": "vite build",
@@ -16,32 +16,32 @@
   "license": "LGPL-3.0",
   "devDependencies": {
     "@molgenis/vite-plugin-inline": "^1.0.13",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "@vitest/coverage-v8": "^0.32.4",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "@vitest/coverage-v8": "^0.34.4",
     "bulma": "^0.9.4",
-    "eslint": "^8.44.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-solid": "^0.12.1",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-solid": "^0.13.0",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
-    "prettier": "^2.8.8",
-    "sass": "^1.63.6",
-    "typescript": "^5.1.6",
-    "vite": "^4.4.0",
+    "prettier": "^3.0.3",
+    "sass": "^1.66.1",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
     "vite-plugin-solid": "^2.7.0",
-    "vitest": "^0.32.4"
+    "vitest": "^0.34.4"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.0",
-    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@molgenis/vip-report-api": "^4.4.2",
     "@molgenis/vip-report-vcf": "^1.4.2",
-    "@solidjs/router": "^0.8.2",
+    "@solidjs/router": "^0.8.3",
     "base64-js": "^1.5.1",
-    "igv": "^2.15.8",
-    "solid-js": "^1.7.7"
+    "igv": "^2.15.10",
+    "solid-js": "^1.7.11"
   },
   "lint-staged": {
     "src/**/*.{tsx,ts}": [
