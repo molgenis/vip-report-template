@@ -59,7 +59,7 @@ describe("sort utilities", () => {
       createRecordSort(metadata, {
         property: ["n", "n_string0"],
         compare: "asc",
-      })
+      }),
     ).toStrictEqual({ orders: [{ field: nString0Meta, direction: DIRECTION_ASCENDING }] });
   });
 
@@ -68,7 +68,7 @@ describe("sort utilities", () => {
       createRecordSort(metadata, {
         property: ["n", "n_object0", 1],
         compare: "asc",
-      })
+      }),
     ).toStrictEqual({ orders: [{ field: nString2Meta, direction: DIRECTION_ASCENDING }] });
   });
 
@@ -77,7 +77,7 @@ describe("sort utilities", () => {
       createRecordSort(metadata, {
         property: ["n", "n_unknown"],
         compare: "asc",
-      })
+      }),
     ).toThrowError();
   });
 });

@@ -104,7 +104,7 @@ export const SampleVariantConsequence: Component<{
             sampleValues={getRecordSamples(
               props.variant.data,
               props.sample.data,
-              props.pedigreeSamples.map((item) => item.data)
+              props.pedigreeSamples.map((item) => item.data),
             )}
             record={props.variant}
           />

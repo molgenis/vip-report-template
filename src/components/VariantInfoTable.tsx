@@ -16,7 +16,7 @@ export const VariantInfoTable: Component<{
           <tbody>
             <For
               each={Object.values(props.infoFields).filter(
-                (info) => !info.nested && props.record.data.n[info.id] !== undefined
+                (info) => !info.nested && props.record.data.n[info.id] !== undefined,
               )}
             >
               {(infoField) => (

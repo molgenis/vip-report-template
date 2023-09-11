@@ -124,7 +124,7 @@ export async function fetchRecords(params: Params) {
       order.field.parent?.id === "CSQ" &&
       isNumerical(order.field) &&
       order.field.number.type === "NUMBER" &&
-      order.field.number.count === 1
+      order.field.number.count === 1,
   );
 
   const fieldMetas = (recordsMeta.info.CSQ.nested as NestedFieldMetadata).items;

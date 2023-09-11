@@ -39,7 +39,7 @@ export const InfoCollapsablePane: Component<{
         });
       }
       throw new Error(`Nested field '${field.id}' needs to have a parent field.`);
-    })
+    }),
   );
   return (
     <>
