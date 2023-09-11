@@ -14,7 +14,15 @@ import { SearchBox } from "../components/SearchBox";
 import { Sort, SortEvent } from "../components/Sort";
 import { Pager } from "../components/record/Pager";
 import { RecordDownload } from "../components/record/RecordDownload";
-import { createSampleQuery, infoSelector, infoSortPath, sampleSelector, selector, selectorKey } from "../utils/query";
+import {
+  createSampleQuery,
+  infoSelector,
+  infoSortPath,
+  sampleCustomKey,
+  sampleSelector,
+  selector,
+  selectorKey,
+} from "../utils/query";
 import { VariantsSampleTable } from "../components/VariantsSampleTable";
 import {
   fetchHtsFileMetadata,
@@ -129,19 +137,9 @@ export const SampleVariants: Component<{
               operator: "==",
               args: 1,
             },
-            {
-              selector: selectorVim,
-              operator: "==",
-              args: null,
-            },
-            {
-              selector: selectorVim,
-              operator: "==",
-              args: undefined,
-            },
           ],
         },
-        selectorKey(selectorVim)
+        sampleCustomKey(props.sample, "VIP_Inheritance")
       );
     }
     const gqField = props.recordsMeta.format?.GQ;

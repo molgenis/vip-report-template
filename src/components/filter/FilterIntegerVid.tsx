@@ -22,8 +22,8 @@ export const FilterIntegerVid: Component<FilterProps> = (props) => {
   return (
     <div class="control">
       <Checkbox
-        label="Inheritance: de novo"
-        desc="Inheritance De Novo:
+        label="De novo"
+        desc="De Novo:
         On autosomes:
         - available parents do not have the variant, or genotype is missing.
         On the X chromosome:

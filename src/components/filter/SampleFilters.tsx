@@ -1,10 +1,11 @@
-import { Component, For } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Filter } from "./Filter";
 import { FilterQueries } from "../../store";
-import { sampleFieldKey } from "../../utils/query";
+import { sampleCustomKey, sampleFieldKey } from "../../utils/query";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
+import { FilterInheritance } from "./FilterInheritance";
 
 export const SampleFilters: Component<{
   sample: Item<Sample>;
@@ -17,11 +18,38 @@ export const SampleFilters: Component<{
     throw Error("Cannot create Sample filters without a sample.");
   }
 
+  const qualityFields = props.fields.filter((field) => field.id !== "VIM" && field.id !== "VID");
+  let vimField: FieldMetadata | undefined;
+  let vidField: FieldMetadata | undefined;
+  props.fields.forEach((field) => {
+    if (field.id === "VIM") {
+      vimField = field;
+    } else if (field.id === "VID") {
+      vidField = field;
+    }
+  });
+
+  const inheritanceFilterKey: string = sampleCustomKey(props.sample, "VIP_Inheritance");
   return (
     <>
-      <p class="has-text-weight-semibold">{props.sample.data.person.individualId}</p>
+      <Show when={vimField !== undefined && vidField !== undefined}>
+        <p class="has-text-weight-semibold">{props.sample.data.person.individualId}: Inheritance</p>
+        <div class="field">
+          {" "}
+          <FilterInheritance
+            vimField={vimField as FieldMetadata}
+            vidField={vidField as FieldMetadata}
+            query={props.queries ? props.queries[inheritanceFilterKey] : undefined}
+            onChange={props.onChange}
+            onClear={props.onClear}
+            sample={props.sample}
+            key={inheritanceFilterKey}
+          />
+        </div>
+      </Show>
+      <p class="has-text-weight-semibold">{props.sample.data.person.individualId}: Quality</p>
       <div class="field">
-        <For each={props.fields}>
+        <For each={qualityFields}>
           {(field) => (
             <>
               {" "}

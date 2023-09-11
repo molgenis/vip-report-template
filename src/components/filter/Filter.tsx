@@ -1,7 +1,7 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
-import { FilterIntegerVim } from "./FilterIntegerVim";
+import { FilterInheritance } from "./FilterInheritance";
 import { FilterIntegerGq } from "./FilterIntegerGq";
 import { FilterIntegerDp } from "./FilterIntegerDp";
 import { FilterIntegerVid } from "./FilterIntegerVid";
@@ -29,12 +29,6 @@ export const Filter: Component<FilterProps> = (props) => {
         </Match>
         <Match when={props.field.id === "DP"}>
           <FilterIntegerDp {...props} />
-        </Match>
-        <Match when={props.field.id === "VID"}>
-          <FilterIntegerVid {...props} />
-        </Match>
-        <Match when={props.field.id === "VIM"}>
-          <FilterIntegerVim {...props} />
         </Match>
         <Match when={props.field.id === "VIAB"}>
           <FilterAllelicBalance {...props} />
