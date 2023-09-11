@@ -15,7 +15,7 @@
   },
   "license": "LGPL-3.0",
   "devDependencies": {
-    "@molgenis/vite-plugin-inline": "^1.0.13",
+    "@molgenis/vite-plugin-inline": "^1.0.14",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
     "@vitest/coverage-v8": "^0.34.4",
@@ -36,8 +36,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@molgenis/vip-report-api": "^4.4.2",
-    "@molgenis/vip-report-vcf": "^1.4.2",
+    "@molgenis/vip-report-api": "^4.4.3",
+    "@molgenis/vip-report-vcf": "^1.4.3",
     "@solidjs/router": "^0.8.3",
     "base64-js": "^1.5.1",
     "igv": "^2.15.10",

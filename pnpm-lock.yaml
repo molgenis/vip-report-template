@@ -12,11 +12,11 @@ dependencies:
     specifier: ^6.4.2
     version: 6.4.2
   '@molgenis/vip-report-api':
-    specifier: ^4.4.2
-    version: 4.4.2
+    specifier: ^4.4.3
+    version: 4.4.3
   '@molgenis/vip-report-vcf':
-    specifier: ^1.4.2
-    version: 1.4.2
+    specifier: ^1.4.3
+    version: 1.4.3
   '@solidjs/router':
     specifier: ^0.8.3
     version: 0.8.3(solid-js@1.7.11)
@@ -32,8 +32,8 @@ dependencies:
 
 devDependencies:
   '@molgenis/vite-plugin-inline':
-    specifier: ^1.0.13
-    version: 1.0.13
+    specifier: ^1.0.14
+    version: 1.0.14
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.6.0
     version: 6.6.0(@typescript-eslint/parser@6.6.0)(eslint@8.49.0)(typescript@5.2.2)
@@ -741,19 +741,19 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@molgenis/vip-report-api@4.4.2:
-    resolution: {integrity: sha512-3qFgiHhafX0afLC8AMlIsbGlIa8gy6M1HWerS0FqSzkuHcGZ2i1aMoAHQlseU5wByYB0BLIhe8lvbDHtHgJAAA==}
+  /@molgenis/vip-report-api@4.4.3:
+    resolution: {integrity: sha512-XvUhnGDKH2LT3aBgmX0HuGYAdup9cNwkhXZgIv1+Vtq5emfAAVeUZkZk8EUzroHz/TCwrH1rKxk+0soRN7J4+Q==}
     dependencies:
-      '@molgenis/vip-report-vcf': 1.4.2
+      '@molgenis/vip-report-vcf': 1.4.3
     dev: false
 
-  /@molgenis/vip-report-vcf@1.4.2:
-    resolution: {integrity: sha512-LpzMSIu3mdp6fwXdxLR09HTzdSebKXJRGI20k3RH6AQbqK0VxAnz7vMLz1Hf0mAv/qVJ+VIv5VnlwhAhfeM5xA==}
+  /@molgenis/vip-report-vcf@1.4.3:
+    resolution: {integrity: sha512-LJRU0TWgFyQUotzIfRfWFZcKLQoc4CzzqXd+yu5Nobynt1qhQIQR/85IpyJQbzQJlvH+1qz3N/GvA/cuDToMtA==}
     requiresBuild: true
     dev: false
 
-  /@molgenis/vite-plugin-inline@1.0.13:
-    resolution: {integrity: sha512-C9SBRzvtka+8BvJwFIKUaZAr+cy+vpBWeJvz/1qO2JCaVOEfDoq4n37M2RLmGxRDF7rlIfclEUKCaXHQd1ATUw==}
+  /@molgenis/vite-plugin-inline@1.0.14:
+    resolution: {integrity: sha512-vdXWfqJtw9c/tlhju4KMS7Ak3KURllHSkDL1HaN4YVyTPNIQzJ+ev+S6W2W76makCESDq66XnB9iiy15ZXOUeg==}
     dependencies:
       fflate: 0.8.0
     dev: true
