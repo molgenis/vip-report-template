@@ -119,10 +119,10 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
           value={VID}
           label="De novo"
           desc="On autosomes:
-        - available parents do not have the variant, or genotype is missing.
-        On the X chromosome:
-        - Female proband: same as autosomes.
-        - Male proband: Mother does not have the variant, or mother genotype missing."
+- available parents do not have the variant, or genotype is missing.
+On the X chromosome:
+- Female proband: same as autosomes.
+- Male proband: Mother does not have the variant, or mother genotype missing."
           checked={isVidChecked}
           onChange={onFilterChange}
         />
