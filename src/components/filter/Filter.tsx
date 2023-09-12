@@ -1,10 +1,8 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
-import { FilterInheritance } from "./FilterInheritance";
 import { FilterIntegerGq } from "./FilterIntegerGq";
 import { FilterIntegerDp } from "./FilterIntegerDp";
-import { FilterIntegerVid } from "./FilterIntegerVid";
 import { Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
 import { isAnyCsqInfo } from "../../utils/csqUtils";
