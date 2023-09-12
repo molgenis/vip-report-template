@@ -42,7 +42,6 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
     });
   }
   const onFilterChange = (event: CheckboxEvent) => {
-    console.log(event);
     const queries: QueryClause[] = [];
     if ((event.value === VIM_TRUE && event.checked) || (isVimTrueChecked && event.value !== VIM_TRUE)) {
       queries.push({
@@ -100,11 +99,8 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
       <div class="control">
         <Checkbox
           value={VIM_TRUE}
-          label="Inheritance match"
-          desc="Inheritance Match: Genotypes, affected statuses and known gene inheritance patterns match.
-        Please note that this field is only true if there are known inheritance modes for the genes associated with the variant.
-        To investigate genes with no known inheritance modes the 'Inheritance: possible match' checkbox can be used.
-        "
+          label="Match"
+          desc="Genotypes, affected statuses and known gene inheritance patterns match."
           checked={isVimTrueChecked}
           onChange={onFilterChange}
         />
@@ -112,11 +108,8 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
       <div class="control">
         <Checkbox
           value={VIM_MISSING}
-          label="Possible inheritance match"
-          desc="Inheritance Match: Genotypes and affected statuses match.
-        Please note that this filter is only true if there are no known inheritance modes for the genes associated with the variant.
-        To investigate genes with known inheritance modes the 'Inheritance: match' checkbox can be used.
-        "
+          label="Match: Possible"
+          desc="Genotypes, affected statuses match but gene inheritance pattern is unknown.        "
           checked={isVimMissingChecked}
           onChange={onFilterChange}
         />
@@ -125,8 +118,7 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
         <Checkbox
           value={VID}
           label="De novo"
-          desc="De Novo:
-        On autosomes:
+          desc="On autosomes:
         - available parents do not have the variant, or genotype is missing.
         On the X chromosome:
         - Female proband: same as autosomes.
