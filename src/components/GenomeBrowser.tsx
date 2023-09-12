@@ -3,7 +3,7 @@ import igv, { Browser } from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Cram, Sample } from "@molgenis/vip-report-api/src/Api";
+import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
@@ -22,14 +22,14 @@ async function createVcf(contig: string, position: number, samples: Sample[]): P
   const data = await Promise.all([api.getRecordsMeta(), api.getRecords({ query, size: Number.MAX_SAFE_INTEGER })]);
   const vcf = writeVcf(
     { metadata: data[0], data: data[1].items.map((item) => item.data) },
-    { samples: samples.map((sample) => sample.person.individualId) }
+    { samples: samples.map((sample) => sample.person.individualId) },
   );
   return toBytes(vcf);
 }
 
 const toBytes = (str: string): Uint8Array => Uint8Array.from(str.split("").map((letter) => letter.charCodeAt(0)));
 
-const createBrowserConfig = async (contig: string, position: number, samples: Sample[]): Promise<unknown | null> => {
+const createBrowserConfig = async (contig: string, position: number, samples: Sample[]): Promise<unknown> => {
   const data = await Promise.all([
     api.getFastaGz(contig, position),
     createVcf(contig, position, samples),

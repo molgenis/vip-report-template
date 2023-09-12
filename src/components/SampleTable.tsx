@@ -99,7 +99,7 @@ export const SampleTable: Component<{
                     <Show when={getPhenotypes(sample.data.person.individualId).length > 0}>
                       <Anchor
                         href={`https://vibe.molgeniscloud.org/?phenotypes=${getPhenotypes(
-                          sample.data.person.individualId
+                          sample.data.person.individualId,
                         )
                           .map((feature) => feature.type.id)
                           .join(",")}`}

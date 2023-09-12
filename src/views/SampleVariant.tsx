@@ -70,7 +70,7 @@ export const SampleVariant: Component<{
         <Show
           when={
             Object.values(props.recordsMeta.info).filter(
-              (info) => !info.nested && props.record.data.n[info.id] !== undefined
+              (info) => !info.nested && props.record.data.n[info.id] !== undefined,
             ).length > 0
           }
         >
@@ -87,7 +87,7 @@ export const SampleVariant: Component<{
             sampleValues={getRecordSamples(
               props.record.data,
               props.sample.data,
-              props.pedigreeSamples.map((item) => item.data)
+              props.pedigreeSamples.map((item) => item.data),
             )}
             record={props.record}
           />
