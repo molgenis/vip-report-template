@@ -141,6 +141,10 @@ export function sampleFieldKey(sample: Item<Sample>, field: FieldMetadata): stri
   return selectorKey(sampleSelector(sample, field));
 }
 
+export function sampleCustomKey(sample: Item<Sample>, key: string): string {
+  return selectorKey(["s", sample.data.index, key]);
+}
+
 function sortPath(field: FieldMetadata): SortPath {
   return selector(field).filter((part) => part !== "*");
 }
