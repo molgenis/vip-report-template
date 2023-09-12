@@ -66,7 +66,7 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
           selector: vimFieldSelector,
           operator: "==",
           args: undefined,
-        }
+        },
       );
       isVimMissingChecked = true;
     } else if (isVimMissingChecked && event.value === VIM_MISSING && !event.checked) {
