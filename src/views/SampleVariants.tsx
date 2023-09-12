@@ -137,6 +137,16 @@ export const SampleVariants: Component<{
               operator: "==",
               args: 1,
             },
+            {
+              selector: selectorVim,
+              operator: "==",
+              args: null,
+            },
+            {
+              selector: selectorVim,
+              operator: "==",
+              args: undefined,
+            },
           ],
         },
         sampleCustomKey(props.sample, "VIP_Inheritance"),
