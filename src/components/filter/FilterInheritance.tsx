@@ -100,7 +100,7 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
         <Checkbox
           value={VIM_TRUE}
           label="Match"
-          desc="Genotypes, affected statuses and known gene inheritance patterns match."
+          desc="Genotypes, affected statuses and known gene inheritance patterns match (can include de novo variants)."
           checked={isVimTrueChecked}
           onChange={onFilterChange}
         />
@@ -109,7 +109,7 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
         <Checkbox
           value={VIM_MISSING}
           label="Match: Possible"
-          desc="Genotypes, affected statuses match but gene inheritance pattern is unknown.        "
+          desc="Genotypes, affected statuses match but gene inheritance pattern is unknown (can include de novo variants)."
           checked={isVimMissingChecked}
           onChange={onFilterChange}
         />
@@ -119,7 +119,7 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
           value={VID}
           label="De novo"
           desc="On autosomes:
-- available parents do not have the variant, or genotype is missing.
+- Available parents do not have the variant, or genotype is missing.
 On the X chromosome:
 - Female proband: same as autosomes.
 - Male proband: Mother does not have the variant, or mother genotype missing."
