@@ -32,7 +32,7 @@ export const ClinVar: Component<FieldProps> = (props) => {
   };
 
   const href = () => {
-    const clinVarIdsField = getCsqInfoIndex(props.infoMeta, "clinVar");
+    const clinVarIdsField = getCsqInfoIndex(props.infoMeta, "clinVar_CLNID");
     const clinVarIds = clinVarIdsField !== -1 ? (getCsqInfo(props.info, clinVarIdsField) as number[]) : [];
     return clinVarIds.length === 1 ? `https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVarIds[0]}/` : undefined;
   };

@@ -12,11 +12,11 @@ dependencies:
     specifier: ^6.4.2
     version: 6.4.2
   '@molgenis/vip-report-api':
-    specifier: ^4.4.3
-    version: 4.4.3
+    specifier: ^4.4.4
+    version: 4.4.4
   '@molgenis/vip-report-vcf':
-    specifier: ^1.4.3
-    version: 1.4.3
+    specifier: ^1.4.4
+    version: 1.4.4
   '@solidjs/router':
     specifier: ^0.8.3
     version: 0.8.3(solid-js@1.7.11)
@@ -741,14 +741,14 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@molgenis/vip-report-api@4.4.3:
-    resolution: {integrity: sha512-XvUhnGDKH2LT3aBgmX0HuGYAdup9cNwkhXZgIv1+Vtq5emfAAVeUZkZk8EUzroHz/TCwrH1rKxk+0soRN7J4+Q==}
+  /@molgenis/vip-report-api@4.4.4:
+    resolution: {integrity: sha512-No+kU8LWYjkaGc8PydcuOPM5u26HrOi682gFZuWpuuzS0zVVhxcazfpKs0kizNP+2uvL3BHQgJk/ZM8z8Y9XaA==}
     dependencies:
-      '@molgenis/vip-report-vcf': 1.4.3
+      '@molgenis/vip-report-vcf': 1.4.4
     dev: false
 
-  /@molgenis/vip-report-vcf@1.4.3:
-    resolution: {integrity: sha512-LJRU0TWgFyQUotzIfRfWFZcKLQoc4CzzqXd+yu5Nobynt1qhQIQR/85IpyJQbzQJlvH+1qz3N/GvA/cuDToMtA==}
+  /@molgenis/vip-report-vcf@1.4.4:
+    resolution: {integrity: sha512-P4oT13xT2G90i5bDE/f+zfAe3soF/CgCt9Oi1YJnR7BL6FWFE7ceLtG4JxcnxOMcXjnN3F9JvhODaZRwpoeE/g==}
     requiresBuild: true
     dev: false
 
