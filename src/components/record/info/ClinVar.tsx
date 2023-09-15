@@ -33,13 +33,13 @@ export const ClinVar: Component<FieldProps> = (props) => {
 
   const href = () => {
     const clinVarIdsField = getCsqInfoIndex(props.infoMeta, "clinVar");
-    const clinVarIds = clinVarIdsField ? (getCsqInfo(props.info, clinVarIdsField) as number[]) : [];
+    const clinVarIds = clinVarIdsField !== -1 ? (getCsqInfo(props.info, clinVarIdsField) as number[]) : [];
     return clinVarIds.length === 1 ? `https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVarIds[0]}/` : undefined;
   };
 
   const description = () => {
     const statusField = getCsqInfoIndex(props.infoMeta, "clinVar_CLNREVSTAT");
-    const status = statusField ? (getCsqInfo(props.info, statusField) as string[]) : [];
+    const status = statusField !== -1 ? (getCsqInfo(props.info, statusField) as string[]) : [];
     if (status.length === 0) return;
 
     let description;
