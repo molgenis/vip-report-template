@@ -17,6 +17,7 @@ import api from "./Api";
 import { DatasetDropdown } from "./components/DatasetDropdown";
 import SampleVariantConsequenceData from "./views/data/SampleVariantConsequenceData";
 import VariantConsequenceData from "./views/data/VariantConsequenceData";
+import { Help } from "./views/Help";
 
 const App: Component = () => {
   const navigate = useNavigate();
@@ -57,6 +58,11 @@ const App: Component = () => {
             </Link>
             {api.isDatasetSupport() && <DatasetDropdown />}
           </div>
+          <div class="navbar-end">
+            <Link class="navbar-item" href="/help">
+              Help
+            </Link>
+          </div>
         </div>
       </nav>
       <div class="container is-fluid">
@@ -91,6 +97,7 @@ const App: Component = () => {
                 </Route>
               </Route>
             </Route>
+            <Route path="/help" element={<Help />} />
           </Routes>
         </ErrorBoundary>
       </div>
