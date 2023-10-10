@@ -4,9 +4,9 @@ import { FieldProps } from "../field/Field";
 import { FieldMultipleValue } from "../field/FieldMultipleValue";
 
 export const InheritanceModes: Component<FieldProps> = (props) => {
-  const inheritanceModesGene: string | null = props.info.value as ValueString;
+  const inheritanceModesGene: ValueString[] = props.info.value as ValueString[];
   let isArInheritance = false;
-  if (inheritanceModesGene === null || inheritanceModesGene.includes("AR")) {
+  if (inheritanceModesGene.includes("AR") || inheritanceModesGene.length === 0) {
     isArInheritance = props.context.isPossibleCompound !== undefined && props.context.isPossibleCompound;
   }
   return (
