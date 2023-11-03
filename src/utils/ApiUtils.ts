@@ -229,7 +229,12 @@ export async function fetchPhenotypicFeatures(sample: Item<Sample>): Promise<Phe
 
 export function getRecordLabel(item: Item<Record>) {
   const record = item.data;
-  return `${record.c}:${record.p} ${record.a.map((a) => `${record.r}>${a !== null ? a : "."}`).join(" / ")}`;
+  return `${record.c}:${record.p} ${record.a
+    .map(
+      (a) =>
+        `${record.r}>${a !== null ? (a.length > 4 ? a.substring(0, 2) + "\u2026" + a.charAt(a.length - 1) : a) : "."}`,
+    )
+    .join(" / ")}`;
 }
 
 export const EMPTY_RECORD_ITEM: Item<Record> = {
