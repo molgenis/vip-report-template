@@ -11,9 +11,24 @@ export const FilterIntegerGq: Component<FilterProps> = (props) => {
       props.onChange({
         key: selectorKey(fieldSelector),
         query: {
-          selector: fieldSelector,
-          operator: ">=",
-          args: 20,
+          operator: "or",
+          args: [
+            {
+              selector: fieldSelector,
+              operator: ">=",
+              args: 20,
+            },
+            {
+              selector: fieldSelector,
+              operator: "==",
+              args: null,
+            },
+            {
+              selector: fieldSelector,
+              operator: "==",
+              args: undefined,
+            },
+          ],
         },
       });
     else props.onClear({ key: selectorKey(fieldSelector) });
@@ -24,7 +39,7 @@ export const FilterIntegerGq: Component<FilterProps> = (props) => {
       <Checkbox
         desc="Genotype quality >= 20"
         label="GT quality >= 20"
-        checked={props.query && props.query.args === 20}
+        checked={props.query && props.query.args !== undefined}
         onChange={onFilterChange}
       />
     </div>
