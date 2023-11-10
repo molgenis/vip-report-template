@@ -158,9 +158,24 @@ export const SampleVariants: Component<{
       actions.setSampleVariantsFilterQuery(
         props.sample,
         {
-          selector: selectorGq,
-          operator: ">=",
-          args: 20,
+          operator: "or",
+          args: [
+            {
+              selector: selectorGq,
+              operator: ">=",
+              args: 20,
+            },
+            {
+              selector: selectorGq,
+              operator: "==",
+              args: null,
+            },
+            {
+              selector: selectorGq,
+              operator: "==",
+              args: undefined,
+            },
+          ],
         },
         selectorKey(selectorGq),
       );
