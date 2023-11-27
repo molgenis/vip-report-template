@@ -13,7 +13,8 @@ export const InfoFilters: Component<{
   onClear: (event: FilterClearEvent) => void;
   defaultValues?: { [key: string]: Value };
 }> = (props) => {
-  const filterableFields = () => props.fields.filter((field) => field.type === "CATEGORICAL");
+  const filterableFields = () =>
+    props.fields.filter((field) => field.type === "CATEGORICAL" || field.id === "IncompletePenetrance");
 
   return (
     <>

@@ -234,6 +234,20 @@ export const SampleVariants: Component<{
       : [];
   });
 
+  const filterInfoFields = createMemo(() => {
+    const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
+    const additionalFieldsIds = ["IncompletePenetrance"];
+    const additionalFields = csqNestedFields
+      ? (additionalFieldsIds
+          .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
+          .filter((field) => field !== undefined) as FieldMetadata[])
+      : [];
+    const includedFields = infoFields();
+    includedFields.push(...additionalFields);
+    console.log(includedFields);
+    return includedFields;
+  });
+
   const page = () => getStateVariants()?.page;
   const pageSize = () => getStateVariants()?.pageSize;
   const searchQuery = () => getStateVariants()?.searchQuery;
@@ -284,7 +298,7 @@ export const SampleVariants: Component<{
       <div class="column is-1-fullhd is-2">
         <SearchBox value={searchQuery()} onInput={onSearchChange} />
         <Filters
-          fields={infoFields()}
+          fields={filterInfoFields()}
           samplesFields={[{ sample: props.sample, fields: formatFields() }]}
           queries={filterQueries()}
           onChange={onFilterChange}
