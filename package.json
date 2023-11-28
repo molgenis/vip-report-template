@@ -37,7 +37,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@molgenis/vip-report-api": "^4.5.0",
-    "@molgenis/vip-report-vcf": "^1.5.0",
+    "@molgenis/vip-report-vcf": "^1.6.0",
     "@solidjs/router": "^0.8.3",
     "base64-js": "^1.5.1",
     "igv": "^2.15.10",

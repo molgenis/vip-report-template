@@ -188,6 +188,19 @@ export const SampleVariants: Component<{
         selectorKey(["s", props.sample.data.index, ...selector(viabField)]),
       );
     }
+    const viField = props.recordsMeta.format?.VI;
+    if (viField) {
+      const selectorVi = sampleSelector(props.sample, viField);
+      actions.setSampleVariantsFilterQuery(
+        props.sample,
+        {
+          selector: selectorVi,
+          operator: "has_any",
+          args: ["AD", "AR", "AR_C", "XLD", "XLR"],
+        },
+        selectorKey(selectorVi),
+      );
+    }
   }
 
   if (getStateVariants()?.sort === undefined) {
@@ -228,7 +241,7 @@ export const SampleVariants: Component<{
 
   const formatFields = createMemo(() => {
     const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "GQ", "VIAB", "GT", "DP"];
+    const includedFields = ["VIM", "VID", "VI", "GQ", "VIAB", "GT", "DP"];
     return formatFieldMap
       ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
       : [];
@@ -244,7 +257,6 @@ export const SampleVariants: Component<{
       : [];
     const includedFields = infoFields();
     includedFields.push(...additionalFields);
-    console.log(includedFields);
     return includedFields;
   });
 

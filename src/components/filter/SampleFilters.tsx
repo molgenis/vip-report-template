@@ -6,6 +6,7 @@ import { FilterQueries } from "../../store";
 import { sampleCustomKey, sampleFieldKey } from "../../utils/query";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 import { FilterInheritance } from "./FilterInheritance";
+import { FilterVI } from "./FilterVI";
 
 export const SampleFilters: Component<{
   sample: Item<Sample>;
@@ -18,14 +19,17 @@ export const SampleFilters: Component<{
     throw Error("Cannot create Sample filters without a sample.");
   }
 
-  const qualityFields = props.fields.filter((field) => field.id !== "VIM" && field.id !== "VID");
+  const qualityFields = props.fields.filter((field) => field.id !== "VIM" && field.id !== "VID" && field.id !== "VI");
   let vimField: FieldMetadata | undefined;
   let vidField: FieldMetadata | undefined;
+  let viField: FieldMetadata | undefined;
   props.fields.forEach((field) => {
     if (field.id === "VIM") {
       vimField = field;
     } else if (field.id === "VID") {
       vidField = field;
+    } else if (field.id === "VI") {
+      viField = field;
     }
   });
 
@@ -33,7 +37,9 @@ export const SampleFilters: Component<{
   return (
     <>
       <Show when={vimField !== undefined && vidField !== undefined}>
-        <p class="has-text-weight-semibold">{props.sample.data.person.individualId}: Inheritance</p>
+        <abbr class="has-text-weight-semibold" title="Inheritance Match">
+          {props.sample.data.person.individualId} Inh. Match
+        </abbr>
         <div class="field">
           {" "}
           <FilterInheritance
@@ -44,6 +50,24 @@ export const SampleFilters: Component<{
             onClear={props.onClear}
             sample={props.sample}
             key={inheritanceFilterKey}
+          />
+        </div>
+      </Show>
+      <Show when={viField !== undefined}>
+        <abbr
+          class="has-text-weight-semibold"
+          title="Inheritance Modes that are suitable for the pedigree genotypes and affected statuses"
+        >
+          {props.sample.data.person.individualId} Inh. Modes
+        </abbr>
+        <div class="field">
+          {" "}
+          <FilterVI
+            field={viField as FieldMetadata}
+            query={props.queries ? props.queries[sampleFieldKey(props.sample, viField as FieldMetadata)] : undefined}
+            onChange={props.onChange}
+            onClear={props.onClear}
+            sample={props.sample}
           />
         </div>
       </Show>
