@@ -14,7 +14,9 @@ export const InfoFilters: Component<{
   defaultValues?: { [key: string]: Value };
 }> = (props) => {
   const filterableFields = () =>
-    props.fields.filter((field) => field.type === "CATEGORICAL" || field.id === "IncompletePenetrance");
+    props.fields.filter(
+      (field) => field.type === "CATEGORICAL" || field.id === "IncompletePenetrance" || field.id === "SVTYPE",
+    );
 
   return (
     <>

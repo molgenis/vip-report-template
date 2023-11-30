@@ -11,6 +11,7 @@ import { FilterAllelicBalance } from "./FilterAllelicBalance";
 import { FilterHpo } from "./FilterHpo";
 import { FilterIP } from "./FilterIP";
 import { FilterVI } from "./FilterVI";
+import { FilterVariantType } from "./FilterVariantType";
 
 export type FilterProps = {
   field: FieldMetadata;
@@ -35,6 +36,9 @@ export const Filter: Component<FilterProps> = (props) => {
         </Match>
         <Match when={props.field.id === "VI"}>
           <FilterVI {...props} />
+        </Match>
+        <Match when={props.field.id === "SVTYPE"}>
+          <FilterVariantType {...props} />
         </Match>
         <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>
           <FilterClinVar {...props} />

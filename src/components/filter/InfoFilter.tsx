@@ -5,8 +5,6 @@ import { ComposedQuery, Query, QueryClause, SelectorPart } from "@molgenis/vip-r
 import { selectorKey } from "../../utils/query";
 
 export const InfoFilter: Component<FilterProps> = (props) => {
-  const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
-
   const onChange = (event: FilterChangeEvent) => {
     props.onChange({
       key: selectorKey(["n", event.key]),
@@ -37,15 +35,5 @@ export const InfoFilter: Component<FilterProps> = (props) => {
       key: selectorKey(["n", event.key]),
     });
   };
-
-  return (
-    <>
-      <p class="has-text-weight-semibold">
-        {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
-      </p>
-      <div class="field">
-        <Filter field={props.field} query={props.query} onChange={onChange} onClear={onClear} />
-      </div>
-    </>
-  );
+  return <Filter field={props.field} query={props.query} onChange={onChange} onClear={onClear} />;
 };

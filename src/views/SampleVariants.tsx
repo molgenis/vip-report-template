@@ -124,6 +124,66 @@ export const SampleVariants: Component<{
       );
     }
 
+    const svField = props.recordsMeta.info.SVTYPE;
+    if (svField) {
+      const selectorSv = infoSelector(svField);
+      const queries: QueryClause[] = [
+        {
+          operator: "or",
+          args: [
+            {
+              operator: "or",
+              args: [
+                {
+                  selector: selectorSv,
+                  operator: "==",
+                  args: null,
+                },
+                {
+                  selector: selectorSv,
+                  operator: "==",
+                  args: undefined,
+                },
+              ],
+            },
+            {
+              selector: selectorSv,
+              operator: "==",
+              args: ["STR"],
+            },
+            {
+              operator: "and",
+              args: [
+                {
+                  selector: selectorSv,
+                  operator: "!=",
+                  args: "STR",
+                },
+                {
+                  selector: selectorSv,
+                  operator: "!=",
+                  args: null,
+                },
+                {
+                  selector: selectorSv,
+                  operator: "!=",
+                  args: undefined,
+                },
+              ],
+            },
+          ],
+        },
+      ];
+      actions.setSampleVariantsFilterQuery(
+        props.sample,
+        {
+          operator: "or",
+          args: queries,
+        },
+        selectorKey(selectorSv),
+      );
+    }
+
     const vimField = props.recordsMeta.format?.VIM;
     if (vimField) {
       const selectorVim = sampleSelector(props.sample, vimField);
@@ -249,14 +309,20 @@ export const SampleVariants: Component<{
 
   const filterInfoFields = createMemo(() => {
     const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
-    const additionalFieldsIds = ["IncompletePenetrance"];
-    const additionalFields = csqNestedFields
-      ? (additionalFieldsIds
+    const includedFields = [];
+    const additionalCsqFieldsIds = ["IncompletePenetrance"];
+    const filterInfoFieldsIds = ["SVTYPE"];
+    const additionalCsqFields = csqNestedFields
+      ? (additionalCsqFieldsIds
           .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
           .filter((field) => field !== undefined) as FieldMetadata[])
       : [];
-    const includedFields = infoFields();
-    includedFields.push(...additionalFields);
+    const filterInfoFields = filterInfoFieldsIds
+      .map((fieldId) => props.recordsMeta.info[fieldId])
+      .filter((field) => field !== undefined);
+    includedFields.push(...infoFields());
+    includedFields.push(...additionalCsqFields);
+    includedFields.push(...filterInfoFields);
     return includedFields;
   });
 
