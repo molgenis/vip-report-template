@@ -3,8 +3,7 @@ import { FilterProps } from "./Filter";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { selector, selectorKey } from "../../utils/query";
 
-export const FilterIP: Component<FilterProps> = (props) => {
-  const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
+export const FilterGene: Component<FilterProps> = (props) => {
   const onFilterChange = (event: CheckboxEvent) => {
     const fieldSelector = selector(props.field);
     if (event.checked) {
@@ -21,13 +20,11 @@ export const FilterIP: Component<FilterProps> = (props) => {
 
   return (
     <>
-      <p class="has-text-weight-semibold">
-        {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
-      </p>
+      <p class="has-text-weight-semibold">{<span>Various</span>}</p>
       <div class="field">
         <Checkbox
           desc="Gene is associated with incomplete penetrance"
-          label="True"
+          label="Inc. Penetrance"
           checked={props.query && props.query.args !== undefined}
           onChange={onFilterChange}
         />

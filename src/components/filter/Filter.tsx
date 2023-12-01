@@ -9,7 +9,7 @@ import { isAnyCsqInfo } from "../../utils/csqUtils";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 import { FilterAllelicBalance } from "./FilterAllelicBalance";
 import { FilterHpo } from "./FilterHpo";
-import { FilterIP } from "./FilterIP";
+import { FilterGene } from "./FilterGene";
 import { FilterVI } from "./FilterVI";
 import { FilterVariantType } from "./FilterVariantType";
 
@@ -47,7 +47,7 @@ export const Filter: Component<FilterProps> = (props) => {
           <FilterHpo {...props} />
         </Match>
         <Match when={props.field.id === "IncompletePenetrance"}>
-          <FilterIP {...props} />
+          <FilterGene {...props} />
         </Match>
         <Match when={props.field.type === "CATEGORICAL"}>
           <FilterCategorical {...props} />
