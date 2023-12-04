@@ -124,66 +124,6 @@ export const SampleVariants: Component<{
       );
     }
 
-    const svField = props.recordsMeta.info.SVTYPE;
-    if (svField) {
-      const selectorSv = infoSelector(svField);
-      const queries: QueryClause[] = [
-        {
-          operator: "or",
-          args: [
-            {
-              operator: "or",
-              args: [
-                {
-                  selector: selectorSv,
-                  operator: "==",
-                  args: null,
-                },
-                {
-                  selector: selectorSv,
-                  operator: "==",
-                  args: undefined,
-                },
-              ],
-            },
-            {
-              selector: selectorSv,
-              operator: "==",
-              args: ["STR"],
-            },
-            {
-              operator: "and",
-              args: [
-                {
-                  selector: selectorSv,
-                  operator: "!=",
-                  args: "STR",
-                },
-                {
-                  selector: selectorSv,
-                  operator: "!=",
-                  args: null,
-                },
-                {
-                  selector: selectorSv,
-                  operator: "!=",
-                  args: undefined,
-                },
-              ],
-            },
-          ],
-        },
-      ];
-      actions.setSampleVariantsFilterQuery(
-        props.sample,
-        {
-          operator: "or",
-          args: queries,
-        },
-        selectorKey(selectorSv),
-      );
-    }
-
     const vimField = props.recordsMeta.format?.VIM;
     if (vimField) {
       const selectorVim = sampleSelector(props.sample, vimField);
