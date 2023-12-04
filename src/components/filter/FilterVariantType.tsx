@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterProps } from "./Filter";
-import { infoSelector, selectorKey } from "../../utils/query";
+import { selector, selectorKey } from "../../utils/query";
 import { ComposedQuery, Query, QueryClause } from "@molgenis/vip-report-api/src/Api";
 
 export type CheckboxGroup = {
@@ -21,7 +21,7 @@ export const FilterVariantType: Component<
   let snvChecked = false;
   let strChecked = false;
   let svChecked = false;
-  const svSelector = infoSelector(props.field);
+  const svSelector = selector(props.field);
   const strQuery: QueryClause = {
     selector: svSelector,
     operator: "==",
@@ -66,6 +66,7 @@ export const FilterVariantType: Component<
   };
 
   if (props.query !== undefined && props.query.args.length > 0) {
+    console.log(props.query);
     const query: Query = props.query.args[0] as Query;
     (query.args as Query[]).forEach((childQuery) => {
       if (childQuery.operator == "and") {
