@@ -21,6 +21,7 @@ export const FilterHpo: Component<
   const group: CheckboxGroup = {};
   const hpoSelector = selector(props.field);
   const csqMeta = props.field.parent;
+  const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
   let gadoHcChecked = false;
   let gadoLcChecked = false;
   let hpoValues: (string | null)[] = [];
@@ -118,38 +119,43 @@ export const FilterHpo: Component<
   };
   return (
     <>
-      <For each={props.field.categories}>
-        {(category) => (
+      <p class="has-text-weight-semibold">
+        {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
+      </p>
+      <div class="field">
+        <For each={props.field.categories}>
+          {(category) => (
+            <div class="control">
+              <Checkbox
+                value={category}
+                label={props.labels ? props.labels[category] : category}
+                checked={hpoValues && hpoValues.includes(category)}
+                onChange={onChange}
+              />
+            </div>
+          )}
+        </For>
+        <Show when={gadoMeta !== null}>
           <div class="control">
             <Checkbox
-              value={category}
-              label={props.labels ? props.labels[category] : category}
-              checked={hpoValues && hpoValues.includes(category)}
+              value="gado_hc"
+              label="GADO high"
+              desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with high confidence (Z-Score above 5)."
+              checked={gadoHcChecked}
               onChange={onChange}
             />
           </div>
-        )}
-      </For>
-      <Show when={gadoMeta !== null}>
-        <div class="control">
-          <Checkbox
-            value="gado_hc"
-            label="GADO high"
-            desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with high confidence (Z-Score above 5)."
-            checked={gadoHcChecked}
-            onChange={onChange}
-          />
-        </div>
-        <div class="control">
-          <Checkbox
-            value="gado_lc"
-            label="GADO low"
-            desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with low confidence (Z-Score above 3 but below 5)."
-            checked={gadoLcChecked}
-            onChange={onChange}
-          />
-        </div>
-      </Show>
+          <div class="control">
+            <Checkbox
+              value="gado_lc"
+              label="GADO low"
+              desc="Gene predicted to have a relation with phenotypes of the proband (phenotypes of other samples are ignored!) with low confidence (Z-Score above 3 but below 5)."
+              checked={gadoLcChecked}
+              onChange={onChange}
+            />
+          </div>
+        </Show>
+      </div>
     </>
   );
 };

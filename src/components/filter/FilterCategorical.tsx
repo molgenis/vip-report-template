@@ -17,6 +17,7 @@ export const FilterCategorical: Component<
   }
 > = (props) => {
   const group: CheckboxGroup = {};
+  const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
   if (props.query !== undefined) {
     (props.query?.args as string[]).forEach((key) => {
       group[key] = true;
@@ -49,26 +50,32 @@ export const FilterCategorical: Component<
 
   return (
     <>
-      <For each={props.field.categories}>
-        {(category) => (
-          <div class="control">
-            <Checkbox
-              value={category}
-              label={props.labels ? props.labels[category] : category}
-              checked={props.query && (props.query.args as (string | null)[]).includes(category)}
-              onChange={onChange}
-            />
-          </div>
+      <p class="has-text-weight-semibold">
+        {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
+      </p>
+
+      <div class="field">
+        <For each={props.field.categories}>
+          {(category) => (
+            <div class="control">
+              <Checkbox
+                value={category}
+                label={props.labels ? props.labels[category] : category}
+                checked={props.query && (props.query.args as (string | null)[]).includes(category)}
+                onChange={onChange}
+              />
+            </div>
+          )}
+        </For>
+        {includeNullCategory() && (
+          <Checkbox
+            value={nullValue}
+            label="No value"
+            checked={props.query && (props.query.args as (string | null)[]).includes(null)}
+            onChange={onChange}
+          />
         )}
-      </For>
-      {includeNullCategory() && (
-        <Checkbox
-          value={nullValue}
-          label="No value"
-          checked={props.query && (props.query.args as (string | null)[]).includes(null)}
-          onChange={onChange}
-        />
-      )}
+      </div>
     </>
   );
 };

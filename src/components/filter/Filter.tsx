@@ -9,6 +9,9 @@ import { isAnyCsqInfo } from "../../utils/csqUtils";
 import { FilterChangeEvent, FilterClearEvent } from "./Filters";
 import { FilterAllelicBalance } from "./FilterAllelicBalance";
 import { FilterHpo } from "./FilterHpo";
+import { FilterGene } from "./FilterGene";
+import { FilterVI } from "./FilterVI";
+import { FilterVariantType } from "./FilterVariantType";
 
 export type FilterProps = {
   field: FieldMetadata;
@@ -31,11 +34,20 @@ export const Filter: Component<FilterProps> = (props) => {
         <Match when={props.field.id === "VIAB"}>
           <FilterAllelicBalance {...props} />
         </Match>
+        <Match when={props.field.id === "VI"}>
+          <FilterVI {...props} />
+        </Match>
+        <Match when={props.field.id === "SVTYPE"}>
+          <FilterVariantType {...props} />
+        </Match>
         <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>
           <FilterClinVar {...props} />
         </Match>
         <Match when={props.field.id === "HPO"}>
           <FilterHpo {...props} />
+        </Match>
+        <Match when={props.field.id === "IncompletePenetrance"}>
+          <FilterGene {...props} />
         </Match>
         <Match when={props.field.type === "CATEGORICAL"}>
           <FilterCategorical {...props} />

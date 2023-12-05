@@ -188,6 +188,19 @@ export const SampleVariants: Component<{
         selectorKey(["s", props.sample.data.index, ...selector(viabField)]),
       );
     }
+    const viField = props.recordsMeta.format?.VI;
+    if (viField) {
+      const selectorVi = sampleSelector(props.sample, viField);
+      actions.setSampleVariantsFilterQuery(
+        props.sample,
+        {
+          selector: selectorVi,
+          operator: "has_any",
+          args: ["AD", "AR", "AR_C", "XLD", "XLR"],
+        },
+        selectorKey(selectorVi),
+      );
+    }
   }
 
   if (getStateVariants()?.sort === undefined) {
@@ -228,10 +241,29 @@ export const SampleVariants: Component<{
 
   const formatFields = createMemo(() => {
     const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "GQ", "VIAB", "GT", "DP"];
+    const includedFields = ["VIM", "VID", "VI", "GQ", "VIAB", "GT", "DP"];
     return formatFieldMap
       ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
       : [];
+  });
+
+  const filterInfoFields = createMemo(() => {
+    const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
+    const includedFields = [];
+    const additionalCsqFieldsIds = ["IncompletePenetrance"];
+    const filterInfoFieldsIds = ["SVTYPE"];
+    const additionalCsqFields = csqNestedFields
+      ? (additionalCsqFieldsIds
+          .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
+          .filter((field) => field !== undefined) as FieldMetadata[])
+      : [];
+    const filterInfoFields = filterInfoFieldsIds
+      .map((fieldId) => props.recordsMeta.info[fieldId])
+      .filter((field) => field !== undefined);
+    includedFields.push(...infoFields());
+    includedFields.push(...additionalCsqFields);
+    includedFields.push(...filterInfoFields);
+    return includedFields;
   });
 
   const page = () => getStateVariants()?.page;
@@ -284,7 +316,7 @@ export const SampleVariants: Component<{
       <div class="column is-1-fullhd is-2">
         <SearchBox value={searchQuery()} onInput={onSearchChange} />
         <Filters
-          fields={infoFields()}
+          fields={filterInfoFields()}
           samplesFields={[{ sample: props.sample, fields: formatFields() }]}
           queries={filterQueries()}
           onChange={onFilterChange}

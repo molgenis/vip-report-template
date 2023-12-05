@@ -17,11 +17,13 @@ export type FilterInheritanceProps = {
 export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
   const VIM_TRUE = "VIM_true";
   const VIM_MISSING = "VIM_missing";
-  const VID = "VID";
+  const VID = "VID_true";
+  const VID_MISSING = "VID_missing";
 
   let isVimMissingChecked = false;
   let isVimTrueChecked = false;
-  let isVidChecked = false;
+  let isVidTrueChecked = false;
+  let isVidMissingChecked = false;
 
   const vimFieldSelector: Selector = ["s", props.sample.data.index, ...selector(props.vimField)];
   const vidFieldSelector: Selector = ["s", props.sample.data.index, ...selector(props.vidField)];
@@ -37,7 +39,12 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
       ) {
         isVimMissingChecked = true;
       } else if (selectorKeyValue === selectorKey(vidFieldSelector) && query.args === 1) {
-        isVidChecked = true;
+        isVidTrueChecked = true;
+      } else if (
+        selectorKeyValue === selectorKey(vidFieldSelector) &&
+        (query.args === null || query.args === undefined)
+      ) {
+        isVidMissingChecked = true;
       }
     });
   }
@@ -71,15 +78,29 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
     } else if (isVimMissingChecked && event.value === VIM_MISSING && !event.checked) {
       isVimMissingChecked = false;
     }
-    if ((event.value === VID && event.checked) || (isVidChecked && event.value !== VID)) {
+    if ((event.value === VID && event.checked) || (isVidTrueChecked && event.value !== VID)) {
       queries.push({
         selector: vidFieldSelector,
         operator: "==",
         args: 1,
       });
-      isVidChecked = true;
-    } else if (isVidChecked && event.value === VID && !event.checked) {
-      isVidChecked = false;
+      isVidTrueChecked = true;
+    } else if ((event.value === VID_MISSING && event.checked) || (isVidMissingChecked && event.value !== VID_MISSING)) {
+      queries.push(
+        {
+          selector: vidFieldSelector,
+          operator: "==",
+          args: null,
+        },
+        {
+          selector: vidFieldSelector,
+          operator: "==",
+          args: undefined,
+        },
+      );
+      isVimMissingChecked = true;
+    } else if (isVidTrueChecked && event.value === VID && !event.checked) {
+      isVidTrueChecked = false;
     }
     if (queries.length > 0) {
       props.onChange({
@@ -108,7 +129,7 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
       <div class="control">
         <Checkbox
           value={VIM_MISSING}
-          label="Match: Possible"
+          label="Match: Potential"
           desc="Genotypes, affected statuses match but gene inheritance pattern is unknown (can include de novo variants)."
           checked={isVimMissingChecked}
           onChange={onFilterChange}
@@ -123,7 +144,16 @@ export const FilterInheritance: Component<FilterInheritanceProps> = (props) => {
 On the X chromosome:
 - Female proband: same as autosomes.
 - Male proband: Mother does not have the variant, or mother genotype missing."
-          checked={isVidChecked}
+          checked={isVidTrueChecked}
+          onChange={onFilterChange}
+        />
+      </div>
+      <div class="control">
+        <Checkbox
+          value={VID_MISSING}
+          label="De novo: Potential"
+          desc="Variant could be denovo but some genotype data of the sample or parents is missing."
+          checked={isVidTrueChecked}
           onChange={onFilterChange}
         />
       </div>
