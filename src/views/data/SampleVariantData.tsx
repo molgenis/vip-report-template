@@ -8,6 +8,7 @@ import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 export type SampleVariantRouteData = SampleRouteData & { variant: Resource<Item<Record> | undefined> };
 
 export default function SampleVariantData({ params, data }: RouteDataFuncArgs): SampleVariantRouteData {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
   const [variant] = createResource(() => params.variantId, fetchRecordById);
   return { ...(data as SampleRouteData), variant };
 }
