@@ -15,7 +15,7 @@ export const GnomAD: Component<FieldProps> = (props) => {
 
   const href = (): string | undefined => {
     let href;
-    if (af()) {
+    if (af() !== null) {
       const record = props.info.record.data;
       // FIXME record.a incorrect: select record.a through CSQ:ALLELE_NUM
       const variantId = [record.c, record.p, record.r, record.a].join("-");
