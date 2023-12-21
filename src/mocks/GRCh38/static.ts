@@ -1,5 +1,6 @@
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
+import bedmethylUrl from "./mod/alignment_WDR45.bedmethyl.blob";
 import fastaUrl_chr1_9982230_9982730 from "./fasta/chr1-9982230-9982730.fasta.gz.blob";
 import fastaUrl_chr1_16049667_16050167 from "./fasta/chr1-16049667-16050167.fasta.gz.blob";
 import fastaUrl_chr1_17022474_17022974 from "./fasta/chr1-17022474-17022974.fasta.gz.blob";
@@ -72,6 +73,8 @@ export const fastaGz = {
 };
 
 export const genesGz = await fetchAsBytes(genesUrl as string);
+
+export const bedmethyl = await fetchAsBytes(bedmethylUrl as string);
 
 export const vcfFamily = await fetchAsBytes(vcfUrlFamily as string);
 

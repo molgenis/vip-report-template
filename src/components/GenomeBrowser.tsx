@@ -3,7 +3,7 @@ import igv, { Browser } from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
+import { ComposedQuery, Sample } from "../../../vip-report-api/src/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
@@ -34,10 +34,12 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     api.getFastaGz(contig, position),
     createVcf(contig, position, samples),
     api.getGenesGz(),
+    api.getBedmethyl(),
   ]);
   const fastaGz = data[0];
   const vcf = data[1];
   const genesGz = data[2];
+  const bedmethyl = data[3];
 
   if (fastaGz === null) {
     return null;
@@ -60,6 +62,16 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     name: "Variants",
     url: "data:application/octet-stream;base64," + fromByteArray(vcf),
   });
+  if (bedmethyl !== null) {
+    tracks.push({
+      order: order++,
+      type: "annotation",
+      format: "bedmethyl",
+      name: "bedmethyl",
+      url: "data:application/octet-stream;base64," + fromByteArray(bedmethyl),
+      checkSequenceMD5: false,
+    });
+  }
 
   const htsFileMetadata = await api.getHtsFileMetadata();
 
