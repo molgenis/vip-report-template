@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.5.1
@@ -12,11 +8,11 @@ dependencies:
     specifier: ^6.5.1
     version: 6.5.1
   '@molgenis/vip-report-api':
-    specifier: ^4.7.0
-    version: 4.7.0
+    specifier: ^4.8.0
+    version: 4.8.0
   '@molgenis/vip-report-vcf':
-    specifier: ^1.7.0
-    version: 1.7.0
+    specifier: ^1.8.0
+    version: 1.8.0
   '@solidjs/router':
     specifier: ^0.9.1
     version: 0.9.1(solid-js@1.8.7)
@@ -741,14 +737,14 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@molgenis/vip-report-api@4.7.0:
-    resolution: {integrity: sha512-roqsGC1asRK97JbZHUdd+X76YT84Iw8qGp+0vip6re6Ezc+qpACZhfpsYOItsJf531BvvNyZWjkoPpkXwg8uHA==}
+  /@molgenis/vip-report-api@4.8.0:
+    resolution: {integrity: sha512-XlojGemr1r6ooePorXLAVY6r/2DmF7cZ+ReEBAyL4XT9LLWG/D8hVl7U4PRySxCdf8BDvz1NPTg5LHpNDCA8Vg==}
     dependencies:
-      '@molgenis/vip-report-vcf': 1.7.0
+      '@molgenis/vip-report-vcf': 1.8.0
     dev: false
 
-  /@molgenis/vip-report-vcf@1.7.0:
-    resolution: {integrity: sha512-tQj4EFHpu6GpCVKlBps4EHlvxbktIG3xHjVyksdOM3qS0xxhEvxD5CdaujAh2mgd1lQ+1zo0cEIE5aoTG399NA==}
+  /@molgenis/vip-report-vcf@1.8.0:
+    resolution: {integrity: sha512-gAQr8hC8WYd5pYuVzSdA/gi9x2cJBAkpa2C8aiYk1as5IsumDpBafJ7C8a83FW3vW3MRhQeoBtKmdfRSJeHOBg==}
     requiresBuild: true
     dev: false
 
@@ -3717,3 +3713,7 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
