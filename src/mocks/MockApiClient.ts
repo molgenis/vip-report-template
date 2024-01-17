@@ -1,4 +1,4 @@
-import { ApiClient, ReportData } from "@molgenis/vip-report-api/src/ApiClient";
+import { ApiClient, ReportData } from "../../../vip-report-api/src/ApiClient"; // CHANGES HERE
 import { parseVcf } from "@molgenis/vip-report-vcf/src/VcfParser";
 import {
   Api,
@@ -12,7 +12,7 @@ import {
   Params,
   Phenotype,
   Sample,
-} from "@molgenis/vip-report-api/src/Api";
+} from "../../../vip-report-api/src/Api"; // CHANGES HERE
 import { samples1, samples100 } from "./static";
 import {
   cram as cramGRCh37,
@@ -20,6 +20,7 @@ import {
   decisionTree as decisionTreeGRCh37,
   fastaGz as fastaGzGRCh37,
   genesGz as genesGzGRCh37,
+  bedmethyl as bedmethylGRCh37,
   samplesFamily as samplesFamilyGRCh37,
   vcfFamily as vcfFamilyGRCh37,
   vcfNoVep as vcfNoVepGRCh37,
@@ -34,6 +35,7 @@ import {
   decisionTree as decisionTreeGRCh38,
   fastaGz as fastaGzGRCh38,
   genesGz as genesGzGRCh38,
+  bedmethyl as bedmethylGRCh38,
   samplesFamily as samplesFamilyGRCh38,
   vcfFamily as vcfFamilyGRCh38,
   vcfNoVep as vcfNoVepGRCh38,
@@ -53,6 +55,10 @@ export class MockApiClient implements Api {
   constructor() {
     this.datasets = MockApiClient.createDatasets();
     this.apiClient = this.createApiClient(this.getDatasetIds()[0]);
+  }
+
+  getBedmethyl(sampleId: string): Promise<Uint8Array | null> {
+    return this.apiClient.getBedmethyl(sampleId);
   }
 
   getFastaGz(contig: string, pos: number): Promise<Uint8Array | null> {
@@ -134,6 +140,9 @@ export class MockApiClient implements Api {
         vcf: vcfFamilyGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
+        bedmethyl: {
+          Patient: bedmethylGRCh37,
+        },
         cram: {
           Patient: {
             cram: cramGRCh37,
@@ -162,6 +171,9 @@ export class MockApiClient implements Api {
         vcf: vcfNoVepGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
+        bedmethyl: {
+          Patient: bedmethylGRCh37,
+        },
         cram: {
           Patient: {
             cram: cramGRCh37,
@@ -190,6 +202,9 @@ export class MockApiClient implements Api {
         vcf: vcfSamples1GRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
+        bedmethyl: {
+          SAMPLE1: bedmethylGRCh37,
+        },
         cram: {
           SAMPLE1: {
             cram: cramGRCh37,
@@ -262,6 +277,9 @@ export class MockApiClient implements Api {
         vcf: vcfFamilyGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
+        bedmethyl: {
+          Patient: bedmethylGRCh38,
+        },
         cram: {
           Patient: {
             cram: cramGRCh38,
@@ -290,6 +308,9 @@ export class MockApiClient implements Api {
         vcf: vcfNoVepGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
+        bedmethyl: {
+          Patient: bedmethylGRCh38,
+        },
         cram: {
           Patient: {
             cram: cramGRCh38,
@@ -318,6 +339,9 @@ export class MockApiClient implements Api {
         vcf: vcfSamples1GRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
+        bedmethyl: {
+          SAMPLE1: bedmethylGRCh38,
+        },
         cram: {
           SAMPLE1: {
             cram: cramGRCh38,

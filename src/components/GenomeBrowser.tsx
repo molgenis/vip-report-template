@@ -3,7 +3,7 @@ import igv, { Browser } from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
+import { ComposedQuery, Sample } from "../../../vip-report-api/src/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
@@ -78,11 +78,26 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
 };
 
 const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void> => {
-  const data = await Promise.all([...samples.map((sample) => api.getCram(sample.person.individualId))]);
-  const crams = data.slice(0);
+  const cramData = await Promise.all([...samples.map((sample) => api.getCram(sample.person.individualId))]);
+  const crams = cramData.slice(0);
+
+  const bedmethylData = await Promise.all([...samples.map((sample) => api.getBedmethyl(sample.person.individualId))]);
+  const bedmethyls = bedmethylData.slice(0);
 
   for (let i = 0; i < samples.length; ++i) {
     const cram = crams[i];
+    const bedmethyl = bedmethyls[i];
+
+    if (bedmethyl !== null) {
+      const sampleId = samples[i].person.individualId;
+      await browser.loadTrack({
+        type: "annotation",
+        format: "bedMethyl",
+        name: `Bedmethyl (${sampleId})`,
+        url: "data:application/octet-stream;base64," + fromByteArray(bedmethyl),
+        checkSequenceMD5: false,
+      });
+    }
 
     if (cram !== null) {
       const sampleId = samples[i].person.individualId;
@@ -93,7 +108,7 @@ const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void>
         url: "data:application/octet-stream;base64," + fromByteArray(cram.cram),
         indexURL: "data:application/octet-stream;base64," + fromByteArray(cram.crai),
         checkSequenceMD5: false, //  disable verifying the MD5 checksum of the reference sequence underlying a slice
-        colorBy: "strand",
+        colorBy: "basemod2",
       });
     }
   }

@@ -33,8 +33,8 @@ export const GnomAD: Component<FieldProps> = (props) => {
             <Anchor href={href}>
               <FieldValueFloat value={af()} />
             </Anchor>
-            <Show when={qc().length > 0}>
-              <abbr title={"Failed quality control filters: " + qc().join(", ")} class="ml-1 is-clickable">
+            <Show when={qc() != null && qc().length > 0}>
+              <abbr title="Failed quality control filters: <workaround:disabled>" class="ml-1 is-clickable">
                 <i class="fas fa-circle-exclamation has-text-warning" />
               </abbr>
             </Show>
