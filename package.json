@@ -40,7 +40,7 @@
     "@molgenis/vip-report-vcf": "^1.7.0",
     "@solidjs/router": "^0.9.1",
     "base64-js": "^1.5.1",
-    "igv": "^2.15.11",
+    "igv": "link:..\\igv.js",
     "solid-js": "^1.8.7"
   },
   "lint-staged": {
