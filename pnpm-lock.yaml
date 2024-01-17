@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.5.1
@@ -8,8 +12,8 @@ dependencies:
     specifier: ^6.5.1
     version: 6.5.1
   '@molgenis/vip-report-api':
-    specifier: ^4.8.0
-    version: 4.8.0
+    specifier: link:..\vip-report-api
+    version: link:../vip-report-api
   '@molgenis/vip-report-vcf':
     specifier: ^1.8.0
     version: 1.8.0
@@ -736,12 +740,6 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
-
-  /@molgenis/vip-report-api@4.8.0:
-    resolution: {integrity: sha512-XlojGemr1r6ooePorXLAVY6r/2DmF7cZ+ReEBAyL4XT9LLWG/D8hVl7U4PRySxCdf8BDvz1NPTg5LHpNDCA8Vg==}
-    dependencies:
-      '@molgenis/vip-report-vcf': 1.8.0
-    dev: false
 
   /@molgenis/vip-report-vcf@1.8.0:
     resolution: {integrity: sha512-gAQr8hC8WYd5pYuVzSdA/gi9x2cJBAkpa2C8aiYk1as5IsumDpBafJ7C8a83FW3vW3MRhQeoBtKmdfRSJeHOBg==}
@@ -3713,7 +3711,3 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
     dev: true
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
