@@ -21,6 +21,7 @@ import {
   fastaGz as fastaGzGRCh37,
   genesGz as genesGzGRCh37,
   samplesFamily as samplesFamilyGRCh37,
+  vcfMeta as vcfMetaGRCh37,
   vcfFamily as vcfFamilyGRCh37,
   vcfNoVep as vcfNoVepGRCh37,
   vcfSamples0 as vcfSamples0GRCh37,
@@ -35,6 +36,7 @@ import {
   fastaGz as fastaGzGRCh38,
   genesGz as genesGzGRCh38,
   samplesFamily as samplesFamilyGRCh38,
+  vcfMeta as vcfMetaGRCh38,
   vcfFamily as vcfFamilyGRCh38,
   vcfNoVep as vcfNoVepGRCh38,
   vcfSamples0 as vcfSamples0GRCh38,
@@ -132,6 +134,7 @@ export class MockApiClient implements Api {
       data: samplesFamilyGRCh37,
       binary: {
         vcf: vcfFamilyGRCh37,
+        vcfMeta: vcfMetaGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
         cram: {
@@ -160,6 +163,7 @@ export class MockApiClient implements Api {
       data: samplesFamilyDuoPlusSisterGRCh37,
       binary: {
         vcf: vcfNoVepGRCh37,
+        vcfMeta: vcfMetaGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
         cram: {
@@ -188,6 +192,7 @@ export class MockApiClient implements Api {
       data: samples1,
       binary: {
         vcf: vcfSamples1GRCh37,
+        vcfMeta: vcfMetaGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
         cram: {
@@ -216,6 +221,7 @@ export class MockApiClient implements Api {
       data: samples100,
       binary: {
         vcf: vcfSamples100GRCh37,
+        vcfMeta: vcfMetaGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
       },
@@ -238,6 +244,7 @@ export class MockApiClient implements Api {
       data: { samples: [], phenotypes: [] },
       binary: {
         vcf: vcfSamples0GRCh37,
+        vcfMeta: vcfMetaGRCh37,
         fastaGz: fastaGzGRCh37,
         genesGz: genesGzGRCh37,
       },
@@ -260,6 +267,7 @@ export class MockApiClient implements Api {
       data: samplesFamilyGRCh38,
       binary: {
         vcf: vcfFamilyGRCh38,
+        vcfMeta: vcfMetaGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
         cram: {
@@ -288,6 +296,7 @@ export class MockApiClient implements Api {
       data: samplesFamilyGRCh38,
       binary: {
         vcf: vcfNoVepGRCh38,
+        vcfMeta: vcfMetaGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
         cram: {
@@ -316,6 +325,7 @@ export class MockApiClient implements Api {
       data: samples1,
       binary: {
         vcf: vcfSamples1GRCh38,
+        vcfMeta: vcfMetaGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
         cram: {
@@ -344,6 +354,7 @@ export class MockApiClient implements Api {
       data: samples100,
       binary: {
         vcf: vcfSamples100GRCh38,
+        vcfMeta: vcfMetaGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
       },
@@ -366,6 +377,7 @@ export class MockApiClient implements Api {
       data: { samples: [], phenotypes: [] },
       binary: {
         vcf: vcfSamples0GRCh38,
+        vcfMeta: vcfMetaGRCh38,
         fastaGz: fastaGzGRCh38,
         genesGz: genesGzGRCh38,
       },
@@ -388,7 +400,7 @@ export class MockApiClient implements Api {
 
   private createApiClient(id: string): Api {
     const reportData = this.datasets[id];
-    const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf));
+    const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf), reportData.binary.vcfMeta);
     reportData.metadata.records = vcf.metadata;
     reportData.data.records = vcf.data;
 

@@ -9,10 +9,9 @@ export default defineConfig({
     charset: "ascii",
   },
   build: {
-    polyfillDynamicImport: false,
     // inline plugin build options
     rollupOptions: {
-      input: ["./index.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader.js"],
+      input: ["./index.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader.mjs"],
       output: {
         manualChunks: undefined,
       },
