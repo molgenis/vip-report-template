@@ -36,7 +36,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@molgenis/vip-report-api": "^5.0.1",
+    "@molgenis/vip-report-api": "^5.0.2",
     "@molgenis/vip-report-vcf": "^2.0.0",
     "@solidjs/router": "^0.9.1",
     "base64-js": "^1.5.1",

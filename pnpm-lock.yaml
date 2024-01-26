@@ -12,8 +12,8 @@ dependencies:
     specifier: ^6.5.1
     version: 6.5.1
   '@molgenis/vip-report-api':
-    specifier: ^5.0.1
-    version: 5.0.1
+    specifier: ^5.0.2
+    version: 5.0.2
   '@molgenis/vip-report-vcf':
     specifier: ^2.0.0
     version: 2.0.0
@@ -643,8 +643,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@molgenis/vip-report-api@5.0.1:
-    resolution: {integrity: sha512-WKvVU1cRrL2R/K/7iy14ryRclqmIVh5d/anLtuQdOSU4e6dgIQ7Ve6ebTNP5vjkEFLDr4m5ct9Y1BD7wL0gOAw==}
+  /@molgenis/vip-report-api@5.0.2:
+    resolution: {integrity: sha512-JvSPoNwISbrgBCkQT6GD3BtuFGknzAjjG0NjAoHDaJWEQ7CwZJt7Ucs5HUYBPLzuiRToebMkMZauuRCSfzj/jQ==}
     dependencies:
       '@molgenis/vip-report-vcf': 2.0.0
     dev: false
