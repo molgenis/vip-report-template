@@ -196,7 +196,7 @@ export const SampleVariants: Component<{
         {
           selector: selectorVi,
           operator: "has_any",
-          args: ["AD", "AR", "AR_C", "XLD", "XLR"],
+          args: ["AD", "AR", "AR_C", "XLD", "XLR", "YL", "MT"],
         },
         selectorKey(selectorVi),
       );
