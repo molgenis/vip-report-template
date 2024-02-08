@@ -66,14 +66,12 @@ export const FilterVariantType: Component<
   };
 
   if (props.query !== undefined && props.query.args.length > 0) {
-    console.log(props.query);
-    const query: Query = props.query.args[0] as Query;
-    (query.args as Query[]).forEach((childQuery) => {
-      if (childQuery.operator == "and") {
+    (props.query.args as Query[]).forEach((childQuery) => {
+      if (childQuery.operator == "or") {
         group["SNV"] = true;
         snvChecked = true;
       }
-      if (childQuery.operator == "or") {
+      if (childQuery.operator == "and") {
         group["SV"] = true;
         svChecked = true;
       }
