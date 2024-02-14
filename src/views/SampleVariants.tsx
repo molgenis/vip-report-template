@@ -196,7 +196,7 @@ export const SampleVariants: Component<{
         {
           selector: selectorVi,
           operator: "has_any",
-          args: ["AD", "AR", "AR_C", "XLD", "XLR"],
+          args: ["AD", "AR", "AR_C", "XLD", "XLR", "YL", "MT"],
         },
         selectorKey(selectorVi),
       );
@@ -241,7 +241,7 @@ export const SampleVariants: Component<{
 
   const formatFields = createMemo(() => {
     const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "VI", "GQ", "VIAB", "GT", "DP"];
+    const includedFields = ["VIM", "VID", "VI", "GQ", "VIAB", "GT", "DP", "MAE_PVAL", "FRASER_PVAL", "OUTRIDER_PVAL"];
     return formatFieldMap
       ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
       : [];

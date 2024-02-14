@@ -3,6 +3,7 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
 import { FilterIntegerGq } from "./FilterIntegerGq";
 import { FilterIntegerDp } from "./FilterIntegerDp";
+import { FilterMaeEvent, FilterFraserEvent, FilterOutriderEvent } from "./FilterRnaEvents";
 import { Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
 import { isAnyCsqInfo } from "../../utils/csqUtils";
@@ -30,6 +31,15 @@ export const Filter: Component<FilterProps> = (props) => {
         </Match>
         <Match when={props.field.id === "DP"}>
           <FilterIntegerDp {...props} />
+        </Match>
+        <Match when={props.field.id == "MAE_PVAL"}>
+          <FilterMaeEvent {...props} />
+        </Match>
+        <Match when={props.field.id == "OUTRIDER_PVAL"}>
+          <FilterOutriderEvent {...props} />
+        </Match>
+        <Match when={props.field.id == "FRASER_PVAL"}>
+          <FilterFraserEvent {...props} />
         </Match>
         <Match when={props.field.id === "VIAB"}>
           <FilterAllelicBalance {...props} />
