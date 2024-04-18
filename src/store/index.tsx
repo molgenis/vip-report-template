@@ -67,16 +67,17 @@ export const Provider: ParentComponent = (props) => {
       setState({ variants: { ...(state.variants || {}), page } });
     },
     setVariantsPageSize(pageSize: number) {
-      setState({ variants: { ...(state.variants || {}), pageSize } });
+      setState({ variants: { ...(state.variants || {}), pageSize, page: undefined } });
     },
     setVariantsSearchQuery(searchQuery: string) {
-      setState({ variants: { ...(state.variants || {}), searchQuery } });
+      setState({ variants: { ...(state.variants || {}), searchQuery, page: undefined } });
     },
     setVariantsFilterQuery(query: Query, key: string) {
       setState({
         variants: {
           ...(state.variants || {}),
           filterQueries: { ...(state.variants?.filterQueries || {}), [key]: query },
+          page: undefined,
         },
       });
     },
@@ -85,6 +86,7 @@ export const Provider: ParentComponent = (props) => {
         variants: {
           ...(state.variants || {}),
           filterQueries: { ...(state.variants?.filterQueries || {}), [key]: undefined },
+          page: undefined,
         },
       });
     },
@@ -162,10 +164,10 @@ export const Provider: ParentComponent = (props) => {
       setState({ samples: { ...(state.samples || {}), page } });
     },
     setSampleSearchQuery(searchQuery: string) {
-      setState({ samples: { ...(state.samples || {}), searchQuery } });
+      setState({ samples: { ...(state.samples || {}), searchQuery, page: undefined } });
     },
     setSampleProbandFilterValue(probandFilterValue: boolean) {
-      setState({ samples: { ...(state.samples || {}), probandFilterValue } });
+      setState({ samples: { ...(state.samples || {}), probandFilterValue, page: undefined } });
     },
   };
   const store: AppStore = [state, actions];
