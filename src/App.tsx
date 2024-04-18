@@ -45,19 +45,29 @@ const App: Component = () => {
       <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <Link class="navbar-item has-text-weight-semibold" href="/">
-            VCF Report
+            Variant Interpretation Pipeline
           </Link>
         </div>
         <div class="navbar-menu">
-          <div class="navbar-start">
-            <Link class="navbar-item" href="/samples">
-              Samples
+          <div class="navbar-item has-dropdown is-hoverable">
+            <Link class="navbar-link" href="/">
+              Report
             </Link>
-            <Link class="navbar-item" href="/variants">
-              Variants
-            </Link>
-            {api.isDatasetSupport() && <DatasetDropdown />}
+            <div class="navbar-dropdown">
+              <Link class="navbar-item" href="/samples">
+                Samples
+              </Link>
+              <hr class="navbar-divider" />
+              <Link class="navbar-item" href="/variants">
+                Variants
+              </Link>
+            </div>
           </div>
+          {api.isDatasetSupport() && (
+            <div class="navbar-start">
+              <DatasetDropdown />
+            </div>
+          )}
           <div class="navbar-end">
             <Link class="navbar-item" href="/help">
               Help

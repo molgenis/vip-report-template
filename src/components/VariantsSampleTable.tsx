@@ -11,6 +11,14 @@ import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
 import { abbreviateHeader } from "../utils/field";
+import {
+  getSampleAffectedStatusLabel,
+  getSampleFamilyMembersWithoutParents,
+  getSampleFather,
+  getSampleLabel,
+  getSampleMother,
+  getSampleSexLabel,
+} from "../utils/sample";
 
 export const VariantsSampleTable: Component<{
   item: Item<Sample>;
@@ -28,25 +36,15 @@ export const VariantsSampleTable: Component<{
   const [otherFamilyMembers, setOtherFamilyMembers] = createSignal<Sample[]>([]);
 
   onMount(() => {
-    const familyMembers: Sample[] = [];
     setProband(props.item.data);
-    samples().forEach((sample) => {
-      if (
-        (proband() as Sample).person.maternalId !== "0" &&
-        sample.person.individualId === (proband() as Sample).person.maternalId
-      ) {
-        setMother(sample);
-      } else if (
-        (proband() as Sample).person.paternalId !== "0" &&
-        sample.person.individualId === (proband() as Sample).person.paternalId
-      ) {
-        setFather(sample);
-      } else if (sample.person.individualId !== (proband() as Sample).person.individualId) {
-        familyMembers.push(sample);
-      }
-    });
-    setOtherFamilyMembers(familyMembers);
+    setMother(getSampleMother(proband() as Sample, samples()));
+    setFather(getSampleFather(proband() as Sample, samples()));
+    setOtherFamilyMembers(getSampleFamilyMembersWithoutParents(proband() as Sample, samples()));
   });
+
+  function getSampleHeaderDescription(sample: Sample): string {
+    return `${getSampleLabel(sample)}: ${getSampleSexLabel(sample)}, ${getSampleAffectedStatusLabel(sample)}`;
+  }
 
   return (
     <div style={{ display: "grid" }}>
@@ -60,48 +58,28 @@ export const VariantsSampleTable: Component<{
               <Show when={proband()} keyed>
                 {(proband) => (
                   <th>
-                    <Abbr
-                      title={`${
-                        proband.person.individualId
-                      }: ${proband.person.sex.toLowerCase()}, ${proband.person.affectedStatus.toLowerCase()}`}
-                      value="Proband"
-                    />
+                    <Abbr title={getSampleHeaderDescription(proband)} value="Proband" />
                   </th>
                 )}
               </Show>
               <Show when={mother()} keyed>
                 {(mother) => (
                   <th>
-                    <Abbr
-                      title={`${
-                        mother.person.individualId
-                      }: ${mother.person.sex.toLowerCase()}, ${mother.person.affectedStatus.toLowerCase()}`}
-                      value="Mother"
-                    />
+                    <Abbr title={getSampleHeaderDescription(mother)} value="Mother" />
                   </th>
                 )}
               </Show>
               <Show when={father()} keyed>
                 {(father) => (
                   <th>
-                    <Abbr
-                      title={`${
-                        father.person.individualId
-                      }: ${father.person.sex.toLowerCase()}, ${father.person.affectedStatus.toLowerCase()}`}
-                      value="Father"
-                    />
+                    <Abbr title={getSampleHeaderDescription(father)} value="Father" />
                   </th>
                 )}
               </Show>
               <For each={otherFamilyMembers()}>
                 {(sample: Sample) => (
                   <th>
-                    <Abbr
-                      title={`${
-                        sample.person.individualId
-                      }: ${sample.person.sex.toLowerCase()}, ${sample.person.affectedStatus.toLowerCase()}`}
-                      value={abbreviateHeader(sample.person.individualId)}
-                    />
+                    <Abbr title={getSampleHeaderDescription(sample)} value={abbreviateHeader(getSampleLabel(sample))} />
                   </th>
                 )}
               </For>

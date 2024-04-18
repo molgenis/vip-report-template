@@ -1,4 +1,4 @@
-import { Component, createMemo, createResource, Show } from "solid-js";
+import { Component, createMemo, createResource, createSignal, onMount, Show } from "solid-js";
 import { useRouteData } from "@solidjs/router";
 import {
   HtsFileMetadata,
@@ -38,7 +38,14 @@ import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 import { SampleRouteData } from "./data/SampleData";
 import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
-import { getSampleLabel } from "../utils/sample";
+import {
+  getSampleAffectedStatusLabel,
+  getSampleFamilyMembersWithoutParents,
+  getSampleFather,
+  getSampleLabel,
+  getSampleMother,
+  getSampleSexLabel,
+} from "../utils/sample";
 import { arrayEquals } from "../utils/utils";
 import { getAllelicBalanceQuery } from "../components/filter/FilterAllelicBalance";
 import { RecordsPerPage, RecordsPerPageEvent } from "../components/RecordsPerPage";
@@ -56,7 +63,7 @@ export const SampleVariantsView: Component = () => {
       <Breadcrumb
         items={[
           { href: "/samples", text: "Samples" },
-          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!) },
+          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!.data) },
           { text: "Variants" },
         ]}
       />
@@ -81,6 +88,20 @@ export const SampleVariants: Component<{
   htsFileMeta: HtsFileMetadata;
 }> = (props) => {
   const [state, actions] = useStore();
+
+  const samples = createMemo(() => [props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]);
+
+  const [proband, setProband] = createSignal<Sample | undefined>();
+  const [father, setFather] = createSignal<Sample | undefined>();
+  const [mother, setMother] = createSignal<Sample | undefined>();
+  const [otherFamilyMembers, setOtherFamilyMembers] = createSignal<Sample[]>([]);
+
+  onMount(() => {
+    setProband(props.sample.data);
+    setMother(getSampleMother(proband() as Sample, samples()));
+    setFather(getSampleFather(proband() as Sample, samples()));
+    setOtherFamilyMembers(getSampleFamilyMembersWithoutParents(proband() as Sample, samples()));
+  });
 
   function getStateVariants() {
     return state.sampleVariants ? state.sampleVariants[props.sample.id]?.variants : undefined;
@@ -311,6 +332,48 @@ export const SampleVariants: Component<{
       },
     ]);
 
+  function getTitleSampleSexLabel(sample: Sample): string {
+    const label = getSampleSexLabel(sample);
+    return label !== "?" ? label : "sex:?";
+  }
+
+  function getTitleAffectedStatusLabel(sample: Sample): string {
+    const label = getSampleAffectedStatusLabel(sample);
+    return label !== "?" ? label : "affected status:?";
+  }
+
+  const title = (): string => {
+    return `Reported variants for ${getSampleLabel(props.sample.data)} (${getTitleSampleSexLabel(props.sample.data)} ${getTitleAffectedStatusLabel(props.sample.data)})`;
+  };
+
+  const subtitle = (): string | undefined => {
+    const sampleFather = father();
+    const sampleMother = mother();
+    const sampleOtherFamilyMembers = otherFamilyMembers();
+
+    if (sampleFather === undefined && sampleMother === undefined && sampleOtherFamilyMembers.length === 0) {
+      return undefined;
+    }
+
+    const tokens: string[] = [];
+    if (sampleMother !== undefined) {
+      tokens.push(`mother (${getTitleAffectedStatusLabel(sampleMother)})`);
+    }
+    if (sampleFather !== undefined) {
+      tokens.push(`father (${getTitleAffectedStatusLabel(sampleFather)})`);
+    }
+
+    for (const familyMember of sampleOtherFamilyMembers) {
+      tokens.push(
+        `${getSampleLabel(familyMember)} (${getTitleSampleSexLabel(familyMember)} ${getTitleAffectedStatusLabel(familyMember)})`,
+      );
+    }
+
+    let str = tokens.pop() as string;
+    if (tokens.length > 0) str = `${tokens.join(", ")} and ${str}`;
+    return `Includes genotypes for ${str}`;
+  };
+
   return (
     <div class="columns is-variable is-1">
       <div class="column is-1-fullhd is-2">
@@ -324,6 +387,14 @@ export const SampleVariants: Component<{
         />
       </div>
       <div class="column">
+        <div class="columns is-gapless">
+          <div class="column">
+            <p class="title is-3">{title()}</p>
+            <Show when={subtitle()} keyed>
+              {(subtitle) => <p class="subtitle is-5">{subtitle}</p>}
+            </Show>
+          </div>
+        </div>
         <div class="columns is-gapless">
           <div class="column is-offset-1-fullhd is-3-fullhd is-4">
             <Show when={records()} fallback={<Loader />} keyed>

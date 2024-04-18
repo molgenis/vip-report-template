@@ -75,42 +75,44 @@ export const Samples: Component = () => {
   return (
     <>
       <Breadcrumb items={[{ text: "Samples" }]} />
-      <Show when={samples()} fallback={<Loader />} keyed>
-        {(samples) => (
-          <>
-            <div class="columns">
-              <div class="column is-4 is-offset-3">{<Pager page={samples.page} onPageChange={onPageChange} />}</div>
-              <div class="column is-2 is-offset-1">
-                {<span class="is-pulled-right">{samples.page.totalElements} records</span>}
-              </div>
-            </div>
-
-            <div class="columns">
-              <div class="column is-1-fullhd is-2">
-                <SearchBox onInput={onSearchChange} value={state.samples?.searchQuery} />
-                <p class="has-text-weight-semibold">Proband</p>
-                <div class="field">
-                  <div class="control">
-                    <Checkbox
-                      value={"proband"}
-                      label=""
-                      onChange={onProbandFilterChange}
-                      checked={state.samples?.probandFilterValue}
-                    />
+      <div class="columns is-centered">
+        <div class="column is-three-quarters-widescreen">
+          <p class="title is-2">Samples</p>
+          <p class="subtitle is-4">Explore samples and sample variants</p>
+          <Show when={samples()} fallback={<Loader />} keyed>
+            {(samples) => (
+              <>
+                <div class="columns">
+                  <div class="column is-4 is-offset-3">{<Pager page={samples.page} onPageChange={onPageChange} />}</div>
+                  <div class="column is-2 is-offset-1">
+                    {<span class="is-pulled-right">{samples.page.totalElements} records</span>}
                   </div>
                 </div>
-              </div>
-              <div class="column">
-                <span class="is-italic">
-                  Click on an individual id for detailed information for this sample. In this screen a link to the
-                  variants for this sample is available.
-                </span>
-                {!phenotypes.loading && <SampleTable samples={samples.items} phenotypes={phenotypes().items} />}
-              </div>
-            </div>
-          </>
-        )}
-      </Show>
+
+                <div class="columns">
+                  <div class="column is-2-widescreen is-3">
+                    <SearchBox onInput={onSearchChange} value={state.samples?.searchQuery} />
+                    <p class="has-text-weight-semibold">Proband</p>
+                    <div class="field">
+                      <div class="control">
+                        <Checkbox
+                          value={"proband"}
+                          label=""
+                          onChange={onProbandFilterChange}
+                          checked={state.samples?.probandFilterValue}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    {!phenotypes.loading && <SampleTable samples={samples.items} phenotypes={phenotypes().items} />}
+                  </div>
+                </div>
+              </>
+            )}
+          </Show>
+        </div>
+      </div>
     </>
   );
 };

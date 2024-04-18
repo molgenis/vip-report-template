@@ -9,13 +9,14 @@ export const Breadcrumb: Component<{
   return (
     <div class="columns is-gapless">
       <div class="column">
-        <nav class="breadcrumb">
+        <nav class="breadcrumb has-succeeds-separator">
           <ul>
             <li classList={{ "is-active": props.items.length === 0 }}>
               <Link href="/">
-                <span class="icon">
+                <span class="icon is-small mr-2">
                   <i class="fas fa-home" />
                 </span>
+                <span>Report</span>
               </Link>
             </li>
             <For each={props.items}>
