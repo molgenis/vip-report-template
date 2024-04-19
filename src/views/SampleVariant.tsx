@@ -28,7 +28,7 @@ export const SampleVariantView: Component = () => {
       <Breadcrumb
         items={[
           { href: "/samples", text: "Samples" },
-          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!) },
+          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!.data) },
           { href: `/samples/${sample()!.id}/variants`, text: "Variants" },
           { text: getRecordLabel(variant()!) },
         ]}

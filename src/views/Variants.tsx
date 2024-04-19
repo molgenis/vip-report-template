@@ -94,6 +94,12 @@ export const Variants: Component<{
       </div>
       <div class="column">
         <div class="columns is-gapless">
+          <div class="column">
+            <p class="title is-3">Reported variants</p>
+            <p class="subtitle is-5">Includes all reported variants without genotypes</p>
+          </div>
+        </div>
+        <div class="columns is-gapless">
           <div class="column is-offset-1-fullhd is-3-fullhd is-4">
             <Show when={records()} fallback={<Loader />} keyed>
               {(records) => (
