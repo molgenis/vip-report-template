@@ -12,6 +12,7 @@ import { FilterHpo } from "./FilterHpo";
 import { FilterGene } from "./FilterGene";
 import { FilterVI } from "./FilterVI";
 import { FilterVariantType } from "./FilterVariantType";
+import { FilterGETx } from "./FilterGETx";
 
 export type FilterProps = {
   field: FieldMetadata;
@@ -45,6 +46,9 @@ export const Filter: Component<FilterProps> = (props) => {
         </Match>
         <Match when={props.field.id === "HPO"}>
           <FilterHpo {...props} />
+        </Match>
+        <Match when={props.field.id === "GTEx_Tissues"}>
+          <FilterGETx {...props} />
         </Match>
         <Match when={props.field.id === "IncompletePenetrance"}>
           <FilterGene {...props} />

@@ -120,7 +120,7 @@ export const samplesFamily = {
         sex: "MALE",
         affectedStatus: "AFFECTED",
       },
-      index: 0,
+      index: 2,
       proband: true,
     },
     {

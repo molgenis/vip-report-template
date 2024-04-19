@@ -12,6 +12,7 @@ import { Vkgl } from "./info/Vkgl";
 import { InheritanceModes } from "./info/InheritanceModes";
 import { Hpo } from "./info/Hpo";
 import { VipC } from "./info/VipC";
+import { GTEx } from "./info/GTEx";
 
 export const Info: Component<{
   info: FieldValue;
@@ -49,6 +50,9 @@ export const Info: Component<{
       </Match>
       <Match when={isCsqInfo(props.infoMeta, "VIPC")}>
         <VipC {...props} />
+      </Match>
+      <Match when={isCsqInfo(props.infoMeta, "GTEx_Tissues")}>
+        <GTEx {...props} />
       </Match>
     </Switch>
   );

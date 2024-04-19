@@ -15,7 +15,11 @@ export const InfoFilters: Component<{
 }> = (props) => {
   const filterableFields = () =>
     props.fields.filter(
-      (field) => field.type === "CATEGORICAL" || field.id === "IncompletePenetrance" || field.id === "SVTYPE",
+      (field) =>
+        field.type === "CATEGORICAL" ||
+        field.id === "IncompletePenetrance" ||
+        field.id === "SVTYPE" ||
+        field.id === "GTEx_Tissues",
     );
 
   return (

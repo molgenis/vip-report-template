@@ -15,6 +15,7 @@ export const Filters: Component<{
   onChange: (event: FilterChangeEvent) => void;
   onClear: (event: FilterClearEvent) => void;
 }> = (props) => {
+  console.log(props);
   return (
     <>
       <InfoFilters fields={props.fields} queries={props.queries} onChange={props.onChange} onClear={props.onClear} />

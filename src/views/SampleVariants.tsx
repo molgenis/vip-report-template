@@ -231,6 +231,7 @@ export const SampleVariants: Component<{
       "gnomAD_AF",
       "gnomAD_HN",
       "PUBMED",
+      "GTEx_Tissues",
     ];
     return csqNestedFields
       ? (includedFields

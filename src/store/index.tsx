@@ -11,6 +11,7 @@ type AppStateVariants = {
   searchQuery?: string;
   filterQueries?: FilterQueries;
   sort?: SortOrder | null; // null: do not sort. undefined: sort undefined
+  tissues: string[];
 };
 
 type AppStateSamples = {
@@ -25,6 +26,7 @@ export type AppState = {
     [key: number]: { variants: AppStateVariants };
   };
   samples?: AppStateSamples;
+  tissues?: string[];
 };
 
 export type AppActions = {
@@ -44,6 +46,8 @@ export type AppActions = {
   setSamplePage(page: number): void;
   setSampleSearchQuery(searchQuery: string): void;
   setSampleProbandFilterValue(probandFilterValue: boolean): void;
+  setTissues(tissues: string[]): void;
+  clearTissues(): void;
 };
 
 export type AppStore = [state: AppState, actions: AppActions];
@@ -128,7 +132,8 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...variants,
-              filterQueries: { ...(variants.filterQueries || {}), [key]: query },
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              filterQueries: { ...(variants?.filterQueries || {}), [key]: query },
               page: undefined,
             },
           },
@@ -143,7 +148,8 @@ export const Provider: ParentComponent = (props) => {
           [sample.id]: {
             variants: {
               ...getVariants(sample),
-              filterQueries: { ...(variants.filterQueries || {}), [key]: undefined },
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              filterQueries: { ...(variants?.filterQueries || {}), [key]: undefined },
               page: undefined,
             },
           },
@@ -166,6 +172,12 @@ export const Provider: ParentComponent = (props) => {
     },
     setSampleProbandFilterValue(probandFilterValue: boolean) {
       setState({ samples: { ...(state.samples || {}), probandFilterValue } });
+    },
+    setTissues(tissues: string[]) {
+      setState({ tissues: tissues });
+    },
+    clearTissues() {
+      setState({ tissues: undefined });
     },
   };
   const store: AppStore = [state, actions];

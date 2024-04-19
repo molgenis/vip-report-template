@@ -76,6 +76,7 @@ export const InfoCollapsablePane: Component<{
                         context={{
                           genomeAssembly: props.htsFileMeta.genomeAssembly,
                           isPossibleCompound: props.isPossibleCompound,
+                          hideDetails: true,
                         }}
                       />
                     ))}
