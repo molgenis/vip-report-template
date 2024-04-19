@@ -22,12 +22,12 @@ export const GTEx: Component<FieldProps> = (props) => {
           state.tissues.length > 0 &&
           tissues !== undefined &&
           tissues.length > 0 &&
-          state.tissues.every((i) => i !== null && tissueStrings.includes(i))
+          state.tissues.some((i) => i !== null && tissueStrings.includes(i))
         }
         keyed
       >
         <abbr title="Transcript associated with selected tissues." class="ml-1 is-clickable">
-          <i class="fas fa-circle-exclamation has-text-success" />
+          associated
         </abbr>
       </Show>
     </>

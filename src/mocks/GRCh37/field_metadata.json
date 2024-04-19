@@ -272,8 +272,8 @@
           "type": "STRING"
         },
         "GTEx_Tissues": {
-          "label": "GTEx Tissues",
-          "description": "GTEx_Tissues with a TPM > 1.",
+          "label": "Tissues",
+          "description": "Tissues with a TPM > 1.",
           "numberType": "OTHER",
           "separator": "&",
           "type": "STRING"

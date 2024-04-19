@@ -1,8 +1,8 @@
 import { Component, For } from "solid-js";
 import { Checkbox, CheckboxEvent } from "../Checkbox";
 import { FilterProps } from "./Filter";
-import { infoSelector, selector, selectorKey } from "../../utils/query";
-import { Query, QueryClause } from "@molgenis/vip-report-api/src/Api";
+import { selector, selectorKey } from "../../utils/query";
+import { Query } from "@molgenis/vip-report-api/src/Api";
 import { useStore } from "../../store";
 
 export type CheckboxGroup = {
@@ -91,13 +91,9 @@ export const FilterGETx: Component<
   });
 
   if (props.query !== undefined) {
-    (props.query.args as Query[]).forEach((childQuery) => {
-      if (selectorKey((childQuery as QueryClause).selector) === selectorKey(infoSelector(props.field))) {
-        (childQuery.args as string[]).forEach((key) => {
-          group[key] = true;
-          selectedTissues.push(key);
-        });
-      }
+    (props.query?.args as string[]).forEach((key) => {
+      group[key] = true;
+      selectedTissues.push(key);
     });
   }
   const onChange = (event: CheckboxEvent) => {
