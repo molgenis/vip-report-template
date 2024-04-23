@@ -1,4 +1,3 @@
-import { hashIntegration, Router } from "@solidjs/router";
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Item, Query, Sample, SortOrder } from "@molgenis/vip-report-api/src/Api";
@@ -172,11 +171,7 @@ export const Provider: ParentComponent = (props) => {
   };
   const store: AppStore = [state, actions];
 
-  return (
-    <Router source={hashIntegration()}>
-      <StoreContext.Provider value={store}>{props.children}</StoreContext.Provider>
-    </Router>
-  );
+  return <StoreContext.Provider value={store}>{props.children}</StoreContext.Provider>;
 };
 
 export function useStore() {

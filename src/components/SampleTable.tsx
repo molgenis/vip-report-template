@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
 import { Component, createMemo, For, Show } from "solid-js";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "./HpoTerm";
@@ -66,7 +66,7 @@ export const SampleTable: Component<{
                 <tr>
                   <td>{sample.data.person.familyId}</td>
                   <td>
-                    <Link href={`/samples/${sample.id}`}>{getSampleLabel(sample.data)}</Link>
+                    <a href={`/samples/${sample.id}`}>{getSampleLabel(sample.data)}</a>
                   </td>
                   <td>{sampleFatherLabel(sample.data)}</td>
                   <td>{sampleMotherLabel(sample.data)}</td>

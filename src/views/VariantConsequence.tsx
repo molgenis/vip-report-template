@@ -1,5 +1,5 @@
 import { Component, createResource, Show } from "solid-js";
-import { useRouteData } from "@solidjs/router";
+import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
 import { VariantTable } from "../components/VariantTable";
@@ -18,10 +18,11 @@ import {
 } from "../utils/ApiUtils";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { VariantConsequenceRouteData } from "./data/VariantConsequenceData";
+import { getVariant } from "./data/data";
 
-export const VariantConsequence: Component = () => {
-  const { variant, consequenceId } = useRouteData<VariantConsequenceRouteData>();
+export const VariantConsequence: Component<RouteSectionProps> = (props) => {
+  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
+  const consequenceId = () => Number(props.params.consequenceId);
 
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: EMPTY_DECISION_TREE });
@@ -30,14 +31,14 @@ export const VariantConsequence: Component = () => {
 
   const hasDecisionTreePathMeta = () => csqFields().findIndex((csq) => csq.id === "VIPP") !== -1;
   return (
-    <Show when={!variant.loading && variant()} fallback={<Loader />} keyed>
+    <Show when={variant()} fallback={<Loader />} keyed>
       {(variant) => (
         <>
           <Breadcrumb
             items={[
               { href: "/variants", text: "Variants" },
               { href: `/variants/${variant.id}`, text: getRecordLabel(variant) },
-              { text: `Consequence #${consequenceId}` },
+              { text: `Consequence #${consequenceId.toString()}` },
             ]}
           />
           <div class="columns">
@@ -45,7 +46,7 @@ export const VariantConsequence: Component = () => {
               <h1 class="title is-5">Consequence</h1>
               <ConsequenceTable
                 csqMetadata={csqFields()}
-                csqValues={getSpecificConsequence(variant.data.n.CSQ as ValueArray, consequenceId)}
+                csqValues={getSpecificConsequence(variant.data.n.CSQ as ValueArray, consequenceId())}
                 record={variant}
               />
             </div>
@@ -56,7 +57,7 @@ export const VariantConsequence: Component = () => {
                     <h1 class="title is-5">Classification tree path</h1>
                     <DecisionTreePath
                       decisionTree={decisionTree}
-                      path={getDecisionTreePath(recordsMetadata(), variant, consequenceId)}
+                      path={getDecisionTreePath(recordsMetadata(), variant, consequenceId())}
                     />
                   </div>
                 )}

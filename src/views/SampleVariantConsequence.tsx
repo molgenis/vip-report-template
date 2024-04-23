@@ -1,13 +1,7 @@
 import { Component, createResource, Show } from "solid-js";
-import { useRouteData } from "@solidjs/router";
+import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
-import {
-  fetchDecisionTree,
-  fetchHtsFileMetadata,
-  fetchPedigreeSamples,
-  fetchRecordsMeta,
-  getRecordLabel,
-} from "../utils/ApiUtils";
+import { fetchDecisionTree, fetchPedigreeSamples, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
@@ -16,41 +10,59 @@ import { ConsequenceTable } from "../components/ConsequenceTable";
 import { getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
-import { SampleVariantConsequenceRouteData } from "./data/SampleVariantConsequenceData";
 import { getSampleLabel } from "../utils/sample";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { getSample, getVariant } from "./data/data";
 
-export const SampleVariantConsequenceView: Component = () => {
-  const { sample, variant, consequenceId } = useRouteData<SampleVariantConsequenceRouteData>();
+export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props) => {
+  const sample = createAsync(() => getSample(Number(props.params.sampleId)));
+  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
+  const consequenceId = () => Number(props.params.consequenceId);
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
-  const [htsFileMeta] = createResource(fetchHtsFileMetadata);
 
   return (
-    <Show when={sample() && variant()} fallback={<Loader />}>
-      <Breadcrumb
-        items={[
-          { href: "/samples", text: "Samples" },
-          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!.data) },
-          { href: `/samples/${sample()!.id}/variants`, text: "Variants" },
-          { href: `/samples/${sample()!.id}/variants/${variant()!.id}`, text: getRecordLabel(variant()!) },
-          { text: `Consequence #${consequenceId}` },
-        ]}
-      />
-      <Show when={pedigreeSamples() && recordsMeta() && htsFileMeta()} fallback={<Loader />}>
-        <SampleVariantConsequence
-          sample={sample()!}
-          pedigreeSamples={pedigreeSamples()!.items}
-          recordsMeta={recordsMeta()!}
-          variant={variant()!}
-          consequenceId={consequenceId}
-          decisionTree={decisionTree()}
-        />
-      </Show>
+    <Show when={sample()} fallback={<Loader />}>
+      {(sample) => (
+        <Show when={variant()} fallback={<Loader />}>
+          {(variant) => (
+            <>
+              <Breadcrumb
+                items={[
+                  { href: "/samples", text: "Samples" },
+                  { href: `/samples/${sample().id}`, text: getSampleLabel(sample().data) },
+                  { href: `/samples/${sample().id}/variants`, text: "Variants" },
+                  {
+                    href: `/samples/${sample().id}/variants/${variant().id}`,
+                    text: getRecordLabel(variant()),
+                  },
+                  { text: `Consequence #${consequenceId.toString()}` },
+                ]}
+              />
+              <Show when={pedigreeSamples()} fallback={<Loader />}>
+                {(pedigreeSamples) => (
+                  <Show when={recordsMeta()} fallback={<Loader />}>
+                    {(recordsMeta) => (
+                      <SampleVariantConsequence
+                        sample={sample()}
+                        pedigreeSamples={pedigreeSamples().items}
+                        recordsMeta={recordsMeta()}
+                        variant={variant()}
+                        consequenceId={consequenceId()}
+                        decisionTree={decisionTree()}
+                      />
+                    )}
+                  </Show>
+                )}
+              </Show>
+            </>
+          )}
+        </Show>
+      )}
     </Show>
   );
 };

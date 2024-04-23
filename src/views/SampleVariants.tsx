@@ -1,5 +1,4 @@
 import { Component, createMemo, createResource, createSignal, onMount, Show } from "solid-js";
-import { useRouteData } from "@solidjs/router";
 import {
   HtsFileMetadata,
   Item,
@@ -35,7 +34,6 @@ import { Breadcrumb } from "../components/Breadcrumb";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterChangeEvent, FilterClearEvent, Filters } from "../components/filter/Filters";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
-import { SampleRouteData } from "./data/SampleData";
 import { useStore } from "../store";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import {
@@ -49,9 +47,11 @@ import {
 import { arrayEquals } from "../utils/utils";
 import { getAllelicBalanceQuery } from "../components/filter/FilterAllelicBalance";
 import { RecordsPerPage, RecordsPerPageEvent } from "../components/RecordsPerPage";
+import { createAsync, RouteSectionProps } from "@solidjs/router";
+import { getSample } from "./data/data";
 
-export const SampleVariantsView: Component = () => {
-  const { sample } = useRouteData<SampleRouteData>();
+export const SampleVariantsView: Component<RouteSectionProps> = (props) => {
+  const sample = createAsync(() => getSample(Number(props.params.sampleId)));
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [samplePhenotypes] = createResource(sample, fetchPhenotypicFeatures);
