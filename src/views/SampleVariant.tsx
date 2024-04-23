@@ -1,5 +1,5 @@
 import { Component, createResource, For, Show } from "solid-js";
-import { useRouteData } from "@solidjs/router";
+import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import { GenomeBrowser } from "../components/GenomeBrowser";
 import { fetchPedigreeSamples, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
@@ -11,36 +11,51 @@ import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getRecordSamples } from "../utils/viewUtils";
-import { SampleVariantRouteData } from "./data/SampleVariantData";
 import { getSampleLabel } from "../utils/sample";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Abbr } from "../components/Abbr";
+import { getSample, getVariant } from "./data/data";
 
-export const SampleVariantView: Component = () => {
-  const { sample, variant } = useRouteData<SampleVariantRouteData>();
+export const SampleVariantView: Component<RouteSectionProps> = (props) => {
+  const sample = createAsync(() => getSample(Number(props.params.sampleId)));
+  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
 
   return (
-    <Show when={sample() && variant()} fallback={<Loader />}>
-      <Breadcrumb
-        items={[
-          { href: "/samples", text: "Samples" },
-          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!.data) },
-          { href: `/samples/${sample()!.id}/variants`, text: "Variants" },
-          { text: getRecordLabel(variant()!) },
-        ]}
-      />
-      <Show when={pedigreeSamples() && recordsMeta()} fallback={<Loader />}>
-        <SampleVariant
-          sample={sample()!}
-          pedigreeSamples={pedigreeSamples()!.items}
-          recordsMeta={recordsMeta()!}
-          record={variant()!}
-        />
-      </Show>
+    <Show when={sample()} fallback={<Loader />}>
+      {(sample) => (
+        <Show when={variant()} fallback={<Loader />}>
+          {(variant) => (
+            <>
+              <Breadcrumb
+                items={[
+                  { href: "/samples", text: "Samples" },
+                  { href: `/samples/${sample().id}`, text: getSampleLabel(sample().data) },
+                  { href: `/samples/${sample().id}/variants`, text: "Variants" },
+                  { text: getRecordLabel(variant()) },
+                ]}
+              />
+              <Show when={pedigreeSamples()} fallback={<Loader />}>
+                {(pedigreeSamples) => (
+                  <Show when={recordsMeta()} fallback={<Loader />}>
+                    {(recordsMeta) => (
+                      <SampleVariant
+                        sample={sample()}
+                        pedigreeSamples={pedigreeSamples().items}
+                        recordsMeta={recordsMeta()}
+                        record={variant()}
+                      />
+                    )}
+                  </Show>
+                )}
+              </Show>
+            </>
+          )}
+        </Show>
+      )}
     </Show>
   );
 };

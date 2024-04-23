@@ -38,10 +38,10 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@molgenis/vip-report-api": "^5.0.2",
     "@molgenis/vip-report-vcf": "^2.0.0",
-    "@solidjs/router": "^0.9.1",
+    "@solidjs/router": "^0.13.2",
     "base64-js": "^1.5.1",
     "igv": "^2.15.11",
-    "solid-js": "^1.8.12"
+    "solid-js": "^1.8.17"
   },
   "lint-staged": {
     "src/**/*.{tsx,ts}": [
