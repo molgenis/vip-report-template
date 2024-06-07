@@ -34,4 +34,5 @@ deploy:
     file: dist/vip-report-template.html
     on:
       tags: true
-    edge: true # opt in to dpl v2
+    edge:
+      branch: v2.0.3-beta.4 # workaround for https://travis-ci.community/t/builds-suddenly-fail-with-error-installing-dpl/14270/3
