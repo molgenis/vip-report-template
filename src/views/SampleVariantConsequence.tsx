@@ -20,7 +20,6 @@ export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props
   const sample = createAsync(() => getSample(Number(props.params.sampleId)));
   const variant = createAsync(() => getVariant(Number(props.params.variantId)));
   const consequenceId = () => Number(props.params.consequenceId);
-
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
@@ -40,7 +39,7 @@ export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props
                     href: `/samples/${sample().id}/variants/${variant().id}`,
                     text: getRecordLabel(variant()),
                   },
-                  { text: `Consequence #${consequenceId.toString()}` },
+                  { text: `Consequence #${consequenceId()}` },
                 ]}
               />
               <Show when={pedigreeSamples()} fallback={<Loader />}>
