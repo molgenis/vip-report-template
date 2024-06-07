@@ -58,7 +58,7 @@ export const InfoCollapsablePane: Component<{
                 <>
                   {j() != 0 && collapsed() && <br />}
                   {(j() == 0 || collapsed()) &&
-                    (isCsqInfo(field, "Consequence") ? (
+                    (isCsqInfo(field, "VIPC") ? (
                       <a href={`${useLocation().pathname}/${props.record.id}/consequences/${j()}`}>
                         <Info
                           info={value}
