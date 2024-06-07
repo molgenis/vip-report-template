@@ -312,8 +312,8 @@ export const SampleVariants: Component<{
     ]);
 
   return (
-    <div class="columns is-variable is-1">
-      <div class="column is-1-fullhd is-2">
+    <div class="variants columns is-variable is-1">
+      <div class="scrolling-div column is-1-fullhd is-2">
         <SearchBox value={searchQuery()} onInput={onSearchChange} />
         <Filters
           fields={filterInfoFields()}
@@ -323,7 +323,7 @@ export const SampleVariants: Component<{
           onClear={onFilterClear}
         />
       </div>
-      <div class="column">
+      <div class="scrolling-div column">
         <div class="columns is-gapless">
           <div class="column is-offset-1-fullhd is-3-fullhd is-4">
             <Show when={records()} fallback={<Loader />} keyed>
