@@ -80,3 +80,9 @@ table.is-borderless td,
 .inline-control-text {
   line-height: 32.5px
 }
+
+.scrolling-div {
+  margin-top: 8px;
+  overflow-y: auto;
+  max-height: calc(100vh - 78px) !important;
+}

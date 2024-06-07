@@ -83,7 +83,7 @@ export const Variants: Component<{
 
   return (
     <div class="columns is-variable is-1">
-      <div class="column is-1-fullhd is-2">
+      <div class="scrolling-div column is-1-fullhd is-2">
         <SearchBox onInput={onSearchChange} />
         <InfoFilters
           fields={flattenFieldMetadata(props.recordsMeta.info)}
@@ -92,7 +92,7 @@ export const Variants: Component<{
           onClear={onFilterClear}
         />
       </div>
-      <div class="column">
+      <div class="scrolling-div column">
         <div class="columns is-gapless">
           <div class="column">
             <p class="title is-3">Reported variants</p>
