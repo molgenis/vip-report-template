@@ -21,7 +21,7 @@ export const ClinVar: Component<FieldProps> = (props) => {
                 return "LP";
               case "pathogenic":
                 return "P";
-              case "conflicting_interpretations_of_pathogenicity":
+              case "_conflicting_classifications":
                 return "Conflict";
               default:
                 return token;
