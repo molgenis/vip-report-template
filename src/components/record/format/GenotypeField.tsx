@@ -15,18 +15,8 @@ function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefin
   return false;
 }
 
-function getTitle(lowReadDepth: boolean, allelicImbalance: boolean) {
-  let title = "";
-  if (lowReadDepth) {
-    title = "Read depth < 20";
-  }
-  if (allelicImbalance) {
-    if (lowReadDepth) {
-      title = `${title}, `;
-    }
-    title = `${title}Allelic imbalance`;
-  }
-  return title;
+function getTitle(allelicImbalance: boolean) {
+  return allelicImbalance ? `Allelic imbalance` : ``;
 }
 
 export const GenotypeField: Component<{
@@ -38,7 +28,6 @@ export const GenotypeField: Component<{
   readDepth: number | undefined | null;
 }> = (props) => {
   const allelicImbalance: boolean = isAllelicImbalance(props.genotype, props.allelicBalance);
-  const lowReadDepth = props.readDepth !== undefined && props.readDepth !== null && props.readDepth < 20;
   return (
     <>
       <For each={props.genotype.a}>
@@ -54,8 +43,8 @@ export const GenotypeField: Component<{
           </>
         )}
       </For>
-      <Show when={lowReadDepth || allelicImbalance}>
-        <abbr title={getTitle(lowReadDepth, allelicImbalance)} class="ml-1 is-clickable">
+      <Show when={allelicImbalance}>
+        <abbr title={getTitle(allelicImbalance)} class="ml-1 is-clickable">
           <i class="fas fa-circle-exclamation has-text-danger" />
         </abbr>
       </Show>

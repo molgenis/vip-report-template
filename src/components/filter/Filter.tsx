@@ -2,7 +2,6 @@ import { Component, Match, Switch } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterCategorical } from "./FilterCategorical";
 import { FilterIntegerGq } from "./FilterIntegerGq";
-import { FilterIntegerDp } from "./FilterIntegerDp";
 import { Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FilterClinVar } from "./FilterClinVar";
 import { isAnyCsqInfo } from "../../utils/csqUtils";
@@ -27,9 +26,6 @@ export const Filter: Component<FilterProps> = (props) => {
       <Switch>
         <Match when={props.field.id === "GQ"}>
           <FilterIntegerGq {...props} />
-        </Match>
-        <Match when={props.field.id === "DP"}>
-          <FilterIntegerDp {...props} />
         </Match>
         <Match when={props.field.id === "VIAB"}>
           <FilterAllelicBalance {...props} />

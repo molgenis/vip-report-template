@@ -38,7 +38,7 @@ export const VariantConsequence: Component<RouteSectionProps> = (props) => {
             items={[
               { href: "/variants", text: "Variants" },
               { href: `/variants/${variant.id}`, text: getRecordLabel(variant) },
-              { text: `Consequence #${consequenceId.toString()}` },
+              { text: `Consequence #${consequenceId()}` },
             ]}
           />
           <div class="columns">
