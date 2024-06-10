@@ -235,7 +235,7 @@ export const SampleVariants: Component<{
   }
   // state initialization - end
 
-  const infoFields = createMemo(() => {
+  const nestedFields = createMemo(() => {
     const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
     const includedFields = [
       "Consequence",
@@ -256,6 +256,19 @@ export const SampleVariants: Component<{
     return csqNestedFields
       ? (includedFields
           .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
+          .filter((field) => field !== undefined) as FieldMetadata[])
+      : [];
+  });
+
+  const infoFields = createMemo(() => {
+    const includedFields = ["VIPC_S"];
+    return includedFields
+      ? (includedFields
+          .map((fieldId) =>
+            Object.keys(props.recordsMeta.info)
+              .map((fieldId) => props.recordsMeta.info[fieldId])
+              .find((field) => field.id === fieldId),
+          )
           .filter((field) => field !== undefined) as FieldMetadata[])
       : [];
   });
@@ -281,7 +294,7 @@ export const SampleVariants: Component<{
     const filterInfoFields = filterInfoFieldsIds
       .map((fieldId) => props.recordsMeta.info[fieldId])
       .filter((field) => field !== undefined);
-    includedFields.push(...infoFields());
+    includedFields.push(...nestedFields());
     includedFields.push(...additionalCsqFields);
     includedFields.push(...filterInfoFields);
     return includedFields;
@@ -315,7 +328,7 @@ export const SampleVariants: Component<{
   const [records] = createResource(params, fetchRecords);
 
   const sortOptions = () =>
-    infoFields().flatMap((field) => [
+    nestedFields().flatMap((field) => [
       {
         order: { field, direction: DIRECTION_ASCENDING },
         selected:
@@ -410,7 +423,7 @@ export const SampleVariants: Component<{
           </div>
           <div class="column">
             <div class="field is-grouped is-grouped-right">
-              {infoFields().length > 0 && (
+              {nestedFields().length > 0 && (
                 <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />
               )}
               <RecordDownload
@@ -431,7 +444,8 @@ export const SampleVariants: Component<{
                     pedigreeSamples={props.pedigreeSamples}
                     records={records.items}
                     recordsMetadata={props.recordsMeta}
-                    nestedFields={infoFields()}
+                    fields={infoFields()}
+                    nestedFields={nestedFields()}
                     htsFileMeta={props.htsFileMeta}
                   />
                   <div class="columns is-gapless">

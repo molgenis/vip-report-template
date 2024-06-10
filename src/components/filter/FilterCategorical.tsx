@@ -39,8 +39,8 @@ export const FilterCategorical: Component<
         key: selectorKey(selector(props.field)),
         query: {
           selector: selector(props.field),
-          operator: props.field.number.count === 1 ? "has_any" : "any_has_any",
-          args: values,
+          operator: "has_any",
+          args: [null],
         },
       });
     } else {

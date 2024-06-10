@@ -18,15 +18,19 @@ import {
   getSampleMother,
   getSampleSexLabel,
 } from "../utils/sample";
+import { FieldValue } from "./record/field/Field";
+import { Info } from "./record/Info";
 
 export const VariantsSampleTable: Component<{
   item: Item<Sample>;
   pedigreeSamples: Item<Sample>[];
   records: Item<Record>[];
   recordsMetadata: Metadata;
+  fields: FieldMetadata[];
   nestedFields: FieldMetadata[];
   htsFileMeta: HtsFileMetadata;
 }> = (props) => {
+  console.log(props.fields);
   const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
 
   const [proband, setProband] = createSignal<Sample | undefined>();
@@ -155,6 +159,15 @@ export const VariantsSampleTable: Component<{
                             allelicBalance={record.data.s[sample.index]["VIAB"] as number | undefined | null}
                             readDepth={record.data.s[sample.index]["DP"] as number | undefined}
                           />
+                        </td>
+                      </>
+                    )}
+                  </For>
+                  <For each={props.fields}>
+                    {(field: FieldMetadata) => (
+                      <>
+                        <td>
+                          <Info info={record.data.i[field.id] as FieldValue} infoMeta={field} context={{}} />
                         </td>
                       </>
                     )}
