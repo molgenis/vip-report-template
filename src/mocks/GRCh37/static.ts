@@ -1,6 +1,7 @@
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
 import decisionTreeJson from "./decisionTree.json";
+import sampleTreeJson from "./sampleTree.json";
 import fastaUrl1_10042288_10042788 from "./fasta/1-10042288-10042788.fasta.gz.blob";
 import fastaUrl1_16375333_16375833 from "./fasta/1-16375333-16375833.fasta.gz.blob";
 import fastaUrl1_16376162_16376662 from "./fasta/1-16376162-16376662.fasta.gz.blob";
@@ -54,6 +55,7 @@ export const cram = await fetchAsBytes(cramUrl as string);
 export const crai = await fetchAsBytes(craiUrl as string);
 
 export const decisionTree: DecisionTree = decisionTreeJson as unknown as DecisionTree;
+export const sampleTree: DecisionTree = sampleTreeJson as unknown as DecisionTree;
 
 export const fastaGz = {
   "1:10042288-10042788": await fetchAsBytes(fastaUrl1_10042288_10042788 as string),

@@ -18,6 +18,7 @@ import {
   cram as cramGRCh37,
   crai as craiGRCh37,
   decisionTree as decisionTreeGRCh37,
+  sampleTree as sampleTreeGRCh37,
   fastaGz as fastaGzGRCh37,
   genesGz as genesGzGRCh37,
   samplesFamily as samplesFamilyGRCh37,
@@ -71,6 +72,10 @@ export class MockApiClient implements Api {
 
   getDecisionTree(): Promise<DecisionTree | null> {
     return this.apiClient.getDecisionTree();
+  }
+
+  getSampleTree(): Promise<DecisionTree | null> {
+    return this.apiClient.getSampleTree();
   }
 
   getHtsFileMetadata(): Promise<HtsFileMetadata> {
@@ -144,6 +149,7 @@ export class MockApiClient implements Api {
         },
       },
       decisionTree: decisionTreeGRCh37,
+      sampleTree: sampleTreeGRCh37,
       vcfMeta: vcfMetaGRCh37,
     };
 
