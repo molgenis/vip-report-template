@@ -95,7 +95,7 @@ export const SampleVariantConsequence: Component<{
             <h1 class="title is-5">Info</h1>
             <VariantInfoTable infoFields={props.recordsMeta.info} record={props.variant} />
           </div>
-          <div class="margin-top">
+          <div class="mt-3">
             <h1 class="title is-5">Consequence</h1>
             <ConsequenceTable
               csqMetadata={
@@ -105,7 +105,7 @@ export const SampleVariantConsequence: Component<{
               record={props.variant}
             />
           </div>
-          <div class="margin-top">
+          <div class="mt-3">
             <h1 class="title is-5">Record</h1>
             <VariantTable variant={props.variant.data} />
           </div>
@@ -124,7 +124,7 @@ export const SampleVariantConsequence: Component<{
               record={props.variant}
             />
           </div>
-          <div class="columns margin-top">
+          <div class="columns mt-3">
             {props.decisionTree !== null && hasDecisionTreePathMeta() && (
               <div class="column is-6">
                 <h1 class="title is-5">Variant classification tree path</h1>
