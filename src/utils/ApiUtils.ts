@@ -161,6 +161,10 @@ export async function fetchDecisionTree() {
   return await api.getDecisionTree();
 }
 
+export async function fetchSampleTree() {
+  return await api.getSampleTree();
+}
+
 export async function fetchSampleById(id: string) {
   return await api.getSampleById(Number(id));
 }

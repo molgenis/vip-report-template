@@ -12,3 +12,20 @@ export function getDecisionTreePath(recordsMetadata: Metadata, variant: Item<Rec
     recordsMetadata.info.CSQ.nested.items.findIndex((csq) => csq.id === "VIPP")
   ] as DecisionTreePath;
 }
+
+export function getSampleTreePath(
+  recordsMetadata: Metadata,
+  sampleIndex: number,
+  variant: Item<Record>,
+  csqId: number,
+): DecisionTreePath {
+  const vipp_s = variant.data.s[sampleIndex].VIPP_S as ValueArray;
+  let sampleTreePath: DecisionTreePath = [];
+  if (vipp_s !== undefined) {
+    const sampleTreePathString = vipp_s[csqId] as string | null;
+    if (sampleTreePathString !== null) {
+      sampleTreePath = sampleTreePathString.split("&") as DecisionTreePath;
+    }
+  }
+  return sampleTreePath;
+}

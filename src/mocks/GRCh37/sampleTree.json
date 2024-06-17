@@ -1,0 +1,123 @@
+{
+  "rootNode": "gt",
+  "nodes": {
+    "GT": {
+      "description": "Genotype",
+      "type": "CATEGORICAL",
+      "field": "FORMAT/GENOTYPE/TYPE",
+      "outcomeMap": {
+        "HET": {
+          "nextNode": "gq"
+        },
+        "HOM_REF": {
+          "nextNode": "exit_u3"
+        },
+        "HOM_VAR": {
+          "nextNode": "gq"
+        },
+        "MIXED": {
+          "nextNode": "gq"
+        },
+        "NO_CALL": {
+          "nextNode": "exit_u3"
+        },
+        "UNAVAILABLE": {
+          "nextNode": "exit_u3"
+        }
+      },
+      "outcomeMissing": {
+        "nextNode": "gq"
+      },
+      "outcomeDefault": {
+        "nextNode": "gq"
+      }
+    },
+    "GQ": {
+      "type": "BOOL",
+      "description": "Genotype quality",
+      "query": {
+        "field": "FORMAT/GQ",
+        "operator": ">=",
+        "value": 20
+      },
+      "outcomeTrue": {
+        "nextNode": "dp"
+      },
+      "outcomeFalse": {
+        "nextNode": "exit_u3"
+      },
+      "outcomeMissing": {
+        "nextNode": "dp"
+      }
+    },
+    "DP": {
+      "type": "BOOL",
+      "description": "Sequencing depth",
+      "query": {
+        "field": "FORMAT/DP",
+        "operator": ">=",
+        "value": 10
+      },
+      "outcomeTrue": {
+        "nextNode": "vim"
+      },
+      "outcomeFalse": {
+        "nextNode": "exit_u3"
+      },
+      "outcomeMissing": {
+        "nextNode": "vim"
+      }
+    },
+    "VIM": {
+      "type": "BOOL",
+      "description": "Inheritance match",
+      "query": {
+        "field": "FORMAT/VIG",
+        "operator": "contains",
+        "value": "field:INFO/CSQ/Gene"
+      },
+      "outcomeTrue": {
+        "nextNode": "exit_u1"
+      },
+      "outcomeFalse": {
+        "nextNode": "vid"
+      },
+      "outcomeMissing": {
+        "nextNode": "exit_u2"
+      }
+    },
+    "VID": {
+      "type": "BOOL",
+      "description": "Inheritance denovo",
+      "query": {
+        "field": "FORMAT/VID",
+        "operator": "==",
+        "value": 1
+      },
+      "outcomeTrue": {
+        "nextNode": "exit_u1"
+      },
+      "outcomeFalse": {
+        "nextNode": "exit_u3"
+      },
+      "outcomeMissing": {
+        "nextNode": "exit_u2"
+      }
+    },
+    "exit_u1": {
+      "description": "Usable: probably",
+      "type": "LEAF",
+      "class": "U1"
+    },
+    "exit_u2": {
+      "description": "Usable: maybe",
+      "type": "LEAF",
+      "class": "U2"
+    },
+    "exit_u3": {
+      "description": "Usable: probably not",
+      "type": "LEAF",
+      "class": "U3"
+    }
+  }
+}
