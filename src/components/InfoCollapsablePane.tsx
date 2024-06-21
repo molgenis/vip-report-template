@@ -6,7 +6,7 @@ import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Info } from "./record/Info";
 import { FieldValue } from "./record/field/Field";
 import { isCsqInfo } from "../utils/csqUtils";
-import { useLocation } from "@solidjs/router";
+import { useLocation, A } from "@solidjs/router";
 
 export const InfoCollapsablePane: Component<{
   fields: FieldMetadata[];
@@ -59,7 +59,7 @@ export const InfoCollapsablePane: Component<{
                   {j() != 0 && collapsed() && <br />}
                   {(j() == 0 || collapsed()) &&
                     (isCsqInfo(field, "VIPC") ? (
-                      <a href={`${useLocation().pathname}/${props.record.id}/consequences/${j()}`}>
+                      <A href={`${useLocation().pathname}/${props.record.id}/consequences/${j()}`}>
                         <Info
                           info={value}
                           infoMeta={field}
@@ -68,7 +68,7 @@ export const InfoCollapsablePane: Component<{
                             isPossibleCompound: props.isPossibleCompound,
                           }}
                         />
-                      </a>
+                      </A>
                     ) : (
                       <Info
                         info={value}

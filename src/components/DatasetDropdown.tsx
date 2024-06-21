@@ -1,6 +1,6 @@
 import { Component, createSignal, For } from "solid-js";
 import api from "../Api";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, A } from "@solidjs/router";
 import { useStore } from "../store";
 
 export const DatasetDropdown: Component = () => {
@@ -28,18 +28,18 @@ export const DatasetDropdown: Component = () => {
 
   return (
     <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">{selectedDataset()}</a>
+      <A class="navbar-link">{selectedDataset()}</A>
       <div class="navbar-dropdown">
         <For each={api.getDatasetIds()}>
           {(dataset: string) => (
-            <a
+            <A
               class="navbar-item"
               onClick={() => {
                 switchIt(dataset);
               }}
             >
               {dataset}
-            </a>
+            </A>
           )}
         </For>
       </div>

@@ -1,5 +1,5 @@
 import { onMount, ParentComponent } from "solid-js";
-import { useLocation, useNavigate } from "@solidjs/router";
+import { useLocation, useNavigate, A } from "@solidjs/router";
 import api from "./Api";
 import { DatasetDropdown } from "./components/DatasetDropdown";
 
@@ -28,23 +28,23 @@ const App: ParentComponent = (props) => {
     <>
       <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="navbar-item has-text-weight-semibold" href="/">
+          <A class="navbar-item has-text-weight-semibold" href="/">
             Variant Interpretation Pipeline
-          </a>
+          </A>
         </div>
         <div class="navbar-menu">
           <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link" href="/">
+            <A class="navbar-link" href="/">
               Report
-            </a>
+            </A>
             <div class="navbar-dropdown">
-              <a class="navbar-item" href="/samples">
+              <A class="navbar-item" href="/samples">
                 Samples
-              </a>
+              </A>
               <hr class="navbar-divider" />
-              <a class="navbar-item" href="/variants">
+              <A class="navbar-item" href="/variants">
                 Variants
-              </a>
+              </A>
             </div>
           </div>
           {api.isDatasetSupport() && (
@@ -53,9 +53,9 @@ const App: ParentComponent = (props) => {
             </div>
           )}
           <div class="navbar-end">
-            <a class="navbar-item" href="/help">
+            <A class="navbar-item" href="/help">
               Help
-            </a>
+            </A>
           </div>
         </div>
       </nav>

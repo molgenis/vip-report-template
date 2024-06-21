@@ -1,4 +1,5 @@
 import { Component, For } from "solid-js";
+import { A } from "@solidjs/router";
 
 export type BreadCrumbItem = { href?: string; text: string };
 
@@ -11,17 +12,17 @@ export const Breadcrumb: Component<{
         <nav class="breadcrumb has-succeeds-separator">
           <ul>
             <li classList={{ "is-active": props.items.length === 0 }}>
-              <a href="/">
+              <A href="/">
                 <span class="icon is-small mr-2">
                   <i class="fas fa-home" />
                 </span>
                 <span>Report</span>
-              </a>
+              </A>
             </li>
             <For each={props.items}>
               {(link, i) => (
                 <li classList={{ "is-active": i() === props.items.length - 1 }}>
-                  <a href={link.href || "#"}>{link.text}</a>
+                  <A href={link.href || "#"}>{link.text}</A>
                 </li>
               )}
             </For>

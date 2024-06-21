@@ -6,7 +6,7 @@ import { FieldHeader } from "./FieldHeader";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { isCsqInfo } from "../utils/csqUtils";
-import { useLocation } from "@solidjs/router";
+import { useLocation, A } from "@solidjs/router";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
@@ -87,7 +87,7 @@ export const VariantInfoNestedTable: Component<{
                             {isNonEmptyNestedInfoItem(props.infoField, i(), props.infoValue) && (
                               <td>
                                 {isCsqInfo(infoFieldItem, "Consequence") ? (
-                                  <a href={`${useLocation().pathname}/consequences/${j()}`}>
+                                  <A href={`${useLocation().pathname}/consequences/${j()}`}>
                                     <Info
                                       info={{
                                         value: Array.isArray(value) ? value[i()] : null,
@@ -97,7 +97,7 @@ export const VariantInfoNestedTable: Component<{
                                       infoMeta={infoFieldItem}
                                       context={{}}
                                     />
-                                  </a>
+                                  </A>
                                 ) : (
                                   <Info
                                     info={{
