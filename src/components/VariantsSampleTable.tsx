@@ -6,6 +6,7 @@ import { HtsFileMetadata, Item, Sample } from "@molgenis/vip-report-api/src/Api"
 import { GenotypeField } from "./record/format/GenotypeField";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";
 import { Component, createMemo, createSignal, For, onMount, Show } from "solid-js";
+import { A } from "@solidjs/router";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
@@ -92,11 +93,11 @@ export const VariantsSampleTable: Component<{
               {(record) => (
                 <tr>
                   <td>
-                    <a href={`/samples/${props.item.id}/variants/${record.id}`}>
+                    <A href={`/samples/${props.item.id}/variants/${record.id}`}>
                       <Chrom value={record.data.c} />
                       <span>:</span>
                       <Pos value={record.data.p} />
-                    </a>
+                    </A>
                   </td>
                   <td>
                     <Ref value={record.data.r} isAbbreviate={true} />

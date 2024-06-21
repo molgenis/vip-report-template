@@ -1,5 +1,6 @@
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Component, createMemo, For } from "solid-js";
+import { A } from "@solidjs/router";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
@@ -75,9 +76,9 @@ export const VariantsTable: Component<{
                     <Chrom value={record.data.c} />
                   </td>
                   <td>
-                    <a href={`/variants/${record.id}`}>
+                    <A href={`/variants/${record.id}`}>
                       <Pos value={record.data.p} />
-                    </a>
+                    </A>
                   </td>
                   <td>
                     <Id value={record.data.i} />
