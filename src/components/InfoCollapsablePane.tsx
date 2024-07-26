@@ -7,6 +7,7 @@ import { Info } from "./record/Info";
 import { FieldValue } from "./record/field/Field";
 import { isCsqInfo } from "../utils/csqUtils";
 import { useLocation, A } from "@solidjs/router";
+import { FieldHeader } from "./FieldHeader";
 
 export const InfoCollapsablePane: Component<{
   fields: FieldMetadata[];
@@ -14,7 +15,7 @@ export const InfoCollapsablePane: Component<{
   htsFileMeta: HtsFileMetadata;
   isPossibleCompound?: boolean;
 }> = (props) => {
-  const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
+  const [collapsed, setCollapsed]: Signal<boolean> = createSignal(true);
 
   function toggleCollapse() {
     setCollapsed(!collapsed());
@@ -53,6 +54,7 @@ export const InfoCollapsablePane: Component<{
       <For each={props.fields}>
         {(field, i) => (
           <td>
+            <FieldHeader field={field} />
             <For each={values()[i()]}>
               {(value, j) => (
                 <>
