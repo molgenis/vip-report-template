@@ -20,7 +20,7 @@ script:
   - pnpm run test
 before_deploy:
   - pnpm run build
-  - mv dist/index.html dist/vip-report-template.html
+  - mv dist/vip-template-6.2.0-str-poc.html dist/vip-report-template.html
 deploy:
   - provider: npm
     api_token:
