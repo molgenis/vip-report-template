@@ -8,11 +8,11 @@ dependencies:
     specifier: ^6.5.2
     version: 6.5.2
   '@molgenis/vip-report-api':
-    specifier: ^5.0.4
-    version: 5.1.0
+    specifier: link:C:/Users/bartc/WebstormProjects/vip-report-api/
+    version: link:../vip-report-api
   '@molgenis/vip-report-vcf':
-    specifier: ^2.0.2
-    version: 2.0.2
+    specifier: link:C:/Users/bartc/WebstormProjects/vip-report-vcf/
+    version: link:../vip-report-vcf
   '@solidjs/router':
     specifier: ^0.13.5
     version: 0.13.5(solid-js@1.8.17)
@@ -672,16 +672,6 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
-
-  /@molgenis/vip-report-api@5.1.0:
-    resolution: {integrity: sha512-lJoQejesLemsQApHzHNEHfWM0WHIzgQo8mVa3cc/hWkIX3fgsSGgeTFZOiklyNaBvFd3IrrCv0aCOYpKovsNFQ==}
-    dependencies:
-      '@molgenis/vip-report-vcf': 2.0.2
-    dev: false
-
-  /@molgenis/vip-report-vcf@2.0.2:
-    resolution: {integrity: sha512-Jykui54hW69ZoimqDgVSlDwFZbDMAkMGmJMn4Gsj22xNILfmDRL2M9dWmeO9KVSZDJaylN8mNo82GanN5gRPGw==}
-    dev: false
 
   /@molgenis/vite-plugin-inline@1.0.24(vite@5.2.12):
     resolution: {integrity: sha512-fR3MTbO0Mb0xYs2+GRDGglTue2S6eoWn7oUHGB5YsgWJANsYolKYeQTCwHsGrInXCI6364ALSmspQmEGCz7Lpg==}

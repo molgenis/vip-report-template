@@ -124,17 +124,6 @@ export const VariantsSampleTable: Component<{
                               allelicBalance={record.data.s[proband.index]["VIAB"] as number | undefined | null}
                               readDepth={record.data.s[proband.index]["DP"] as number | undefined}
                             />
-                            <br />
-                            (
-                            <Format
-                              format={record.data.s[proband.index]["ACR"]}
-                              formatMetadata={props.recordsMetadata.format["ACR"]}
-                              record={record}
-                              isAbbreviate={false}
-                              allelicBalance={record.data.s[proband.index]["VIAB"] as number | undefined | null}
-                              readDepth={record.data.s[proband.index]["DP"] as number | undefined}
-                            />
-                            )
                           </Match>
                         </Switch>
                       </td>
@@ -245,8 +234,8 @@ export const VariantsSampleTable: Component<{
                             <br />
                             <b>Called repeat / catalog repeat: </b>
                             <Info
-                              info={{ value: record.data.n["MOTIF"], record: record }}
-                              infoMeta={props.recordsMetadata.info["MOTIF"]}
+                              info={{ value: record.data.n["RU"], record: record }}
+                              infoMeta={props.recordsMetadata.info["RU"]}
                               context={{}}
                             />{" "}
                             /{" "}
