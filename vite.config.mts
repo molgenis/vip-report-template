@@ -11,7 +11,7 @@ export default defineConfig({
   build: {
     // inline plugin build options
     rollupOptions: {
-      input: ["./dist/vip-template-6.2.0-str-poc.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader.mjs"],
+      input: ["./index.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader.mjs"],
       output: {
         manualChunks: undefined,
       },

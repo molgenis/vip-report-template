@@ -77,14 +77,14 @@
 ##SpliceAI_pred_DS_DL=SpliceAI predicted effect on splicing. Delta score for donor loss
 ##SpliceAI_pred_SYMBOL=SpliceAI gene symbol
 ##VEP-command-line='vep --allele_number --allow_non_variant --assembly GRCh38 --buffer_size 1000 --cache --compress_output bgzip --custom [PATH]/hg38.phyloP100way.bw,phyloP,bigwig,exact,0 --database 0 --dir_cache [PATH]/cache --dir_plugins [PATH]/plugins --dont_skip --exclude_predicted --fasta [PATH]/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz --flag_pick_allele --fork 4 --format vcf --hgvs --input_file FAY04760_FAY04796_normalized.vcf.gz --no_stats --numbers --offline --output_file FAY04760_FAY04796_annotated.vcf.gz --plugin [PATH]/GRCh38_ReMM.tsv.gz --polyphen s --pubmed --refseq --safe --shift_3prime --sift s --symbol --total_length --use_given_ref --vcf'
-##VEP="v111" time="2024-08-27 08:06:45" cache="/groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/vep/cache/homo_sapiens_refseq/111_GRCh38" ensembl-variation=111.d616b1e ensembl-funcgen=111.5327cdd ensembl=111.a6cc543 ensembl-io=111.dbba8d6 1000genomes="phase3" COSMIC="98" ClinVar="202306" HGMD-PUBLIC="20204" assembly="GRCh38.p14" dbSNP="156" gencode="GENCODE 45" genebuild="2014-07" gnomADe="r2.1.1" gnomADg="v3.1.2" polyphen="2.2.3" refseq="GCF_000001405.40-RS_2023_03 - GCF_000001405.40_GRCh38.p14_genomic.gff" regbuild="1.0" sift="6.2.1"
+##VEP="v111" time="2024-08-27 13:29:29" cache="/groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/vep/cache/homo_sapiens_refseq/111_GRCh38" ensembl=111.a6cc543 ensembl-funcgen=111.5327cdd ensembl-io=111.dbba8d6 ensembl-variation=111.d616b1e 1000genomes="phase3" COSMIC="98" ClinVar="202306" HGMD-PUBLIC="20204" assembly="GRCh38.p14" dbSNP="156" gencode="GENCODE 45" genebuild="2014-07" gnomADe="r2.1.1" gnomADg="v3.1.2" polyphen="2.2.3" refseq="GCF_000001405.40-RS_2023_03 - GCF_000001405.40_GRCh38.p14_genomic.gff" regbuild="1.0" sift="6.2.1"
 ##VIPC=VIP decision tree classification
 ##VIPP=VIP decision tree path (ampersand separated)
 ##VIP_treeCommand=--input FAY04760_FAY04796_annotated.vcf.gz --metadata /groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/field_metadata.json --config /groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/decision_tree_GRCh38.json --path --output FAY04760_FAY04796_classified.vcf.gz
 ##VIP_treeVersion=4.2.0
 ##VKGL=file:/groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/GRCh38/vkgl_consensus_20240401.tsv'
 ##VKGL_CL=VKGL consensus variant classification.
-##bcftools_annotateCommand=annotate -a /groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/GRCh38/str_catalog_v1.beta.txt -c CHROM,FROM,TO,repeat_unit,Repeat_id,Gene_id,Disease,HGNCId,-,-,LocusStructure,NormalMax,PathogenicMin -i SVTYPE="STR" -h /groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/GRCh38/str_header.hdr; Date=Tue Aug 27 08:09:26 2024
+##bcftools_annotateCommand=annotate -a /groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/GRCh38/str_catalog_v1.beta.txt -c CHROM,FROM,TO,repeat_unit,Repeat_id,Gene_id,Disease,HGNCId,-,-,LocusStructure,NormalMax,PathogenicMin -i SVTYPE="STR" -h /groups/umcg-gcc/tmp02/users/umcg-bcharbon/vip/resources/GRCh38/str_header.hdr; Date=Tue Aug 27 13:35:24 2024
 ##bcftools_annotateVersion=1.17+htslib-1.17
 ##clinVar_CLNID=ClinVar variation identifier
 ##clinVar_CLNREVSTAT=ClinVar review status for the Variation ID
