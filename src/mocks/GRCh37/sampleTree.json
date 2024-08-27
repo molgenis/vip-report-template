@@ -1,7 +1,25 @@
 {
-  "rootNode": "gt",
+  "rootNode": "vipc",
   "nodes": {
-    "GT": {
+    "vipc": {
+      "type": "BOOL",
+      "description": "Genotype quality",
+      "query": {
+        "field": "INFO/CSQ/VIPC",
+        "operator": "==",
+        "value": "s"
+      },
+      "outcomeTrue": {
+        "nextNode": "str_pathogenic_min"
+      },
+      "outcomeFalse": {
+        "nextNode": "gt"
+      },
+      "outcomeMissing": {
+        "nextNode": "gt"
+      }
+    },
+    "gt": {
       "description": "Genotype",
       "type": "CATEGORICAL",
       "field": "FORMAT/GENOTYPE/TYPE",
@@ -32,7 +50,7 @@
         "nextNode": "gq"
       }
     },
-    "GQ": {
+    "gq": {
       "type": "BOOL",
       "description": "Genotype quality",
       "query": {
@@ -41,24 +59,6 @@
         "value": 20
       },
       "outcomeTrue": {
-        "nextNode": "dp"
-      },
-      "outcomeFalse": {
-        "nextNode": "exit_u3"
-      },
-      "outcomeMissing": {
-        "nextNode": "dp"
-      }
-    },
-    "DP": {
-      "type": "BOOL",
-      "description": "Sequencing depth",
-      "query": {
-        "field": "FORMAT/DP",
-        "operator": ">=",
-        "value": 10
-      },
-      "outcomeTrue": {
         "nextNode": "vim"
       },
       "outcomeFalse": {
@@ -68,7 +68,7 @@
         "nextNode": "vim"
       }
     },
-    "VIM": {
+    "vim": {
       "type": "BOOL",
       "description": "Inheritance match",
       "query": {
@@ -86,7 +86,7 @@
         "nextNode": "exit_u2"
       }
     },
-    "VID": {
+    "vid": {
       "type": "BOOL",
       "description": "Inheritance denovo",
       "query": {
@@ -104,6 +104,44 @@
         "nextNode": "exit_u2"
       }
     },
+    "str_pathogenic_min": {
+      "description": "Nr of repeat units above pathogenic_min",
+      "type": "BOOL",
+      "query": {
+        "multiMode": "ANY",
+        "field": "FORMAT/AC",
+        "operator": ">=",
+        "value": "field:INFO/PathogenicMin"
+      },
+      "outcomeTrue": {
+        "nextNode": "exit_lp"
+      },
+      "outcomeMissing": {
+        "nextNode": "exit_vus"
+      },
+      "outcomeFalse": {
+        "nextNode": "str_normal_max"
+      }
+    },
+    "str_normal_max": {
+      "description": "Range of repeat units below normal_max",
+      "type": "BOOL",
+      "query": {
+        "multiMode": "ANY",
+        "field": "FORMAT/ACR",
+        "operator": "range_below",
+        "value": "field:INFO/NormalMax"
+      },
+      "outcomeTrue": {
+        "nextNode": "exit_lb"
+      },
+      "outcomeMissing": {
+        "nextNode": "exit_vus"
+      },
+      "outcomeFalse": {
+        "nextNode": "exit_vus"
+      }
+    },
     "exit_u1": {
       "description": "Usable: probably",
       "type": "LEAF",
@@ -118,6 +156,21 @@
       "description": "Usable: probably not",
       "type": "LEAF",
       "class": "U3"
+    },
+    "exit_lb": {
+      "description": "STR Likely Benign",
+      "type": "LEAF",
+      "class": "LB"
+    },
+    "exit_vus": {
+      "description": "STR VUS",
+      "type": "LEAF",
+      "class": "VUS"
+    },
+    "exit_lp": {
+      "description": "STR Likely Pathogenic",
+      "type": "LEAF",
+      "class": "LP"
     }
   }
 }

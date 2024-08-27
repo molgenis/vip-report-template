@@ -86,3 +86,6 @@ table.is-borderless td,
   overflow-y: auto;
   max-height: calc(100vh - 78px) !important;
 }
+
+table.alternating tr:nth-child(even) {background-color: #DCDCDC;}
+table.not_alternating tr {background-color: transparent;}

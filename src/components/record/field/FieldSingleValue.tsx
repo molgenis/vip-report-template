@@ -15,7 +15,7 @@ export const FieldSingleValue: Component<{
   const type = () => props.infoMetadata.type;
   return (
     <Switch fallback={<Error error={`invalid info type ${type()}`} />}>
-      <Match when={type() === "CATEGORICAL" || type() === "STRING"}>
+      <Match when={type() === "CATEGORICAL" || type() === "STRING" || type() === "RANGE"}>
         <FieldValueString value={props.info as string} />
       </Match>
       <Match when={type() === "CHARACTER"}>
