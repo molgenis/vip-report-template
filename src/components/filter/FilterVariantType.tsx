@@ -135,7 +135,13 @@ export const FilterVariantType: Component<
           />
         </div>
         <div class="control">
-          <Checkbox value="SV" label="SV" desc="Structural variants." checked={svChecked} onChange={onChange} />
+          <Checkbox
+            value="SV"
+            label="SV/CNV"
+            desc="Structural variants, including copy number variants."
+            checked={svChecked}
+            onChange={onChange}
+          />
         </div>
         <div class="control">
           <Checkbox value="STR" label="STR" desc="Short Tandem Repeats." checked={strChecked} onChange={onChange} />
