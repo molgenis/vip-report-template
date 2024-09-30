@@ -1,81 +1,83 @@
-import { Component, For } from "solid-js";
-import { Checkbox, CheckboxEvent } from "../Checkbox";
-import { FilterProps } from "./Filter";
-import { selector, selectorKey } from "../../utils/query";
+import { Component, createEffect, createSignal, For, Show } from "solid-js";
+import { Filter, FilterTypedProps } from "./Filter";
+import { Checkbox, CheckboxEvent } from "./Checkbox";
+import { FilterCategory, FilterCategoryId, FilterValueCategorical } from "../../types/filter";
 
-export type CheckboxGroup = {
-  [key: string]: boolean;
-};
+type FilterValueCategoricalMap = { [key: FilterCategoryId]: null };
 
-export type CategoryLabels = {
-  [key: string]: string;
-};
+export interface FilterCategoricalProps extends FilterTypedProps<FilterValueCategorical> {
+  categories: FilterCategory[];
+}
 
-export const FilterCategorical: Component<
-  FilterProps & {
-    labels?: CategoryLabels;
-  }
-> = (props) => {
-  const group: CheckboxGroup = {};
-  const label = () => (props.field.label !== undefined ? props.field.label : props.field.id);
-  if (props.query !== undefined) {
-    (props.query?.args as string[]).forEach((key) => {
-      group[key] = true;
-    });
-  }
+export const FilterCategorical: Component<FilterCategoricalProps> = (props) => {
+  const [values, setValues] = createSignal<FilterValueCategoricalMap>({});
 
-  const nullValue = "__null";
+  createEffect(() => {
+    if (props.value && props.value.length > 0) {
+      const newValues: FilterValueCategoricalMap = props.value.reduce((acc, v) => ({ ...acc, [v]: null }), {});
+      setValues(newValues);
+    }
+  });
 
-  // enable null category for any_has_any case if someone asks for it (requires query to be composed)
-  const includeNullCategory = () => !props.field.required && props.field.number.count === 1;
+  const allSelected = () => Object.keys(values()).length === props.categories.length;
+  const noneSelected = () => Object.keys(values()).length === 0;
 
+  // event handling
   const onChange = (event: CheckboxEvent) => {
-    group[event.value !== undefined ? event.value : nullValue] = event.checked;
-    const values = Object.keys(group)
-      .filter((key) => group[key])
-      .map((key) => (key !== nullValue ? key : null));
-    if (values.length > 0) {
-      props.onChange({
-        key: selectorKey(selector(props.field)),
-        query: {
-          selector: selector(props.field),
-          operator: props.field.number.count === 1 ? "has_any" : "any_has_any",
-          args: values,
-        },
-      });
+    const newValues: FilterValueCategoricalMap = { ...values() };
+    if (event.checked) newValues[event.value] = null;
+    else delete newValues[event.value];
+    onValuesChange(newValues);
+  };
+
+  const onSelectAll = () => {
+    const newValues: FilterValueCategoricalMap = props.categories.reduce(
+      (acc, category) => ({ ...acc, [category.id]: null }),
+      {},
+    );
+    onValuesChange(newValues);
+  };
+
+  const onDeselectAll = () => {
+    onValuesChange({});
+  };
+
+  const onValuesChange = (values: FilterValueCategoricalMap) => {
+    setValues(values);
+
+    if (Object.keys(values).length > 0) {
+      props.onValueChange({ value: Object.keys(values) as FilterValueCategorical });
     } else {
-      props.onClear({ key: selectorKey(selector(props.field)) });
+      props.onValueClear();
     }
   };
 
   return (
-    <>
-      <p class="has-text-weight-semibold">
-        {props.field.description ? <abbr title={props.field.description}>{label()}</abbr> : <span>{label()}</span>}
-      </p>
-
+    <Filter {...props}>
       <div class="field">
-        <For each={props.field.categories}>
+        <For each={props.categories}>
           {(category) => (
             <div class="control">
-              <Checkbox
-                value={category}
-                label={props.labels ? props.labels[category] : category}
-                checked={props.query && (props.query.args as (string | null)[]).includes(category)}
-                onChange={onChange}
-              />
+              <Checkbox value={category.id} checked={values()[category.id] === null} onChange={onChange}>
+                <span>{category.label}</span>
+                <Show when={category.count !== undefined}>
+                  <span class="is-family-monospace is-pulled-right">({category.count})</span>
+                </Show>
+              </Checkbox>
             </div>
           )}
         </For>
-        {includeNullCategory() && (
-          <Checkbox
-            value={nullValue}
-            label="No value"
-            checked={props.query && (props.query.args as (string | null)[]).includes(null)}
-            onChange={onChange}
-          />
-        )}
+        <Show when={props.categories.length > 6}>
+          <div class="buttons are-small">
+            <button class="button is-ghost" disabled={allSelected()} onClick={onSelectAll}>
+              Select all
+            </button>
+            <button class="button is-ghost" disabled={noneSelected()} onClick={onDeselectAll}>
+              Deselect all
+            </button>
+          </div>
+        </Show>
       </div>
-    </>
+    </Filter>
   );
 };

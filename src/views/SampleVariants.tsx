@@ -1,57 +1,58 @@
-import { Component, createMemo, createResource, createSignal, onMount, Show } from "solid-js";
-import {
-  HtsFileMetadata,
-  Item,
-  Params,
-  PhenotypicFeature,
-  QueryClause,
-  Sample,
-  SortPath,
-} from "@molgenis/vip-report-api/src/Api";
+import { Component, createMemo, createResource, Show } from "solid-js";
 import { Loader } from "../components/Loader";
-import { SearchBox } from "../components/SearchBox";
-import { Sort, SortEvent } from "../components/Sort";
-import { Pager } from "../components/record/Pager";
-import { RecordDownload } from "../components/record/RecordDownload";
 import {
-  createSampleQuery,
-  infoSelector,
-  infoSortPath,
-  sampleCustomKey,
-  sampleSelector,
-  selector,
-  selectorKey,
-} from "../utils/query";
-import { VariantsSampleTable } from "../components/VariantsSampleTable";
-import {
+  composeMetadata,
+  composeSample,
   fetchHtsFileMetadata,
   fetchPedigreeSamples,
   fetchPhenotypicFeatures,
   fetchRecords,
   fetchRecordsMeta,
+  MetadataContainer,
+  SampleContainer,
 } from "../utils/ApiUtils";
-import { Breadcrumb } from "../components/Breadcrumb";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterChangeEvent, FilterClearEvent, Filters } from "../components/filter/Filters";
-import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
-import { useStore } from "../store";
-import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
-import {
-  getSampleAffectedStatusLabel,
-  getSampleFamilyMembersWithoutParents,
-  getSampleFather,
-  getSampleLabel,
-  getSampleMother,
-  getSampleSexLabel,
-} from "../utils/sample";
-import { arrayEquals } from "../utils/utils";
-import { getAllelicBalanceQuery } from "../components/filter/FilterAllelicBalance";
-import { RecordsPerPage, RecordsPerPageEvent } from "../components/RecordsPerPage";
-import { createAsync, RouteSectionProps } from "@solidjs/router";
+import { Breadcrumb, BreadCrumbItem } from "../components/Breadcrumb";
+import { getSampleLabel } from "../utils/sample";
+import { createAsync, RouteSectionProps, useNavigate } from "@solidjs/router";
 import { getSample } from "./data/data";
+import { mapVariantTypeIdToVariantType, VariantType } from "../utils/variantTypeUtils";
+import { Item, Params, Sample, SortOrder } from "@molgenis/vip-report-api/src/Api";
+import { VariantTypeChangeEvent, VariantTypeSelect } from "../components/VariantTypeSelect";
+import { RecordsPerPageChangeEvent } from "../components/RecordsPerPage";
+import { SortChangeEvent } from "../components/Sort";
+import { PageChangeEvent } from "../components/record/Pager";
+import api from "../Api";
+import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
+import {
+  FilterChangeEvent,
+  FilterClearEvent,
+  FilterValueMap,
+  SampleRecordsFilters,
+} from "../components/SampleRecordsFilters";
+import { createStore } from "solid-js/store";
+import { createDownloadFilename } from "../utils/downloadUtils";
+import { createQuery } from "../utils/query";
+import { SampleRecordsResults } from "../components/SampleRecordsResults";
+import { createColumns, createFilterConfigs } from "../utils/filterUtils";
 
 export const SampleVariantsView: Component<RouteSectionProps> = (props) => {
   const sample = createAsync(() => getSample(Number(props.params.sampleId)));
+  const variantType = () => (props.params.variantType ? mapVariantTypeIdToVariantType(props.params.variantType) : null);
+
+  function createBreadCrumbItems(sample: Item<Sample>, variantType: VariantType | null): BreadCrumbItem[] {
+    const items: BreadCrumbItem[] = [
+      { href: "/samples", text: "Samples" },
+      { href: `/samples/${sample.id}`, text: getSampleLabel(sample.data) },
+    ];
+
+    if (variantType !== null) {
+      items.push({ href: `/samples/${sample.id}/variants`, text: "Variants" });
+      items.push({ text: variantType.label });
+    } else {
+      items.push({ text: "Variants" });
+    }
+    return items;
+  }
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [samplePhenotypes] = createResource(sample, fetchPhenotypicFeatures);
@@ -60,395 +61,146 @@ export const SampleVariantsView: Component<RouteSectionProps> = (props) => {
 
   return (
     <Show when={sample()} fallback={<Loader />}>
-      <Breadcrumb
-        items={[
-          { href: "/samples", text: "Samples" },
-          { href: `/samples/${sample()!.id}`, text: getSampleLabel(sample()!.data) },
-          { text: "Variants" },
-        ]}
-      />
-      <Show when={pedigreeSamples() && samplePhenotypes() && recordsMeta() && htsFileMeta()} fallback={<Loader />}>
-        <SampleVariants
-          sample={sample()!}
-          samplePhenotypes={samplePhenotypes()!}
-          pedigreeSamples={pedigreeSamples()!.items}
-          recordsMeta={recordsMeta()!}
-          htsFileMeta={htsFileMeta()!}
-        />
-      </Show>
+      {(sample) => (
+        <>
+          <Breadcrumb items={createBreadCrumbItems(sample(), variantType())} />
+          <Show when={pedigreeSamples()} fallback={<Loader />}>
+            {(pedigreeSamples) => (
+              <Show when={samplePhenotypes()} fallback={<Loader />}>
+                {(samplePhenotypes) => (
+                  <Show when={recordsMeta()} fallback={<Loader />}>
+                    {(recordsMeta) => (
+                      <Show when={htsFileMeta()} fallback={<Loader />}>
+                        {(htsFileMeta) => (
+                          <SampleVariants
+                            metadata={composeMetadata(htsFileMeta(), recordsMeta())}
+                            sample={composeSample(sample(), samplePhenotypes(), pedigreeSamples())}
+                            variantType={variantType()}
+                          />
+                        )}
+                      </Show>
+                    )}
+                  </Show>
+                )}
+              </Show>
+            )}
+          </Show>
+        </>
+      )}
     </Show>
   );
 };
 
+export type SampleVariantsState = {
+  filterValues: FilterValueMap;
+  page: { number: number; size: number };
+  sort?: SortOrder;
+};
+
 export const SampleVariants: Component<{
-  sample: Item<Sample>;
-  samplePhenotypes: PhenotypicFeature[];
-  pedigreeSamples: Item<Sample>[];
-  recordsMeta: Metadata;
-  htsFileMeta: HtsFileMetadata;
+  metadata: MetadataContainer;
+  sample: SampleContainer;
+  variantType: VariantType | null;
 }> = (props) => {
-  const [state, actions] = useStore();
+  const [state, setState] = createStore<SampleVariantsState>({ filterValues: {}, page: { number: 0, size: 10 } }); // FIXME default sort order
+  const navigate = useNavigate();
 
-  const samples = createMemo(() => [props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]);
+  const filterConfigs = createMemo(() => createFilterConfigs(props.variantType, props.metadata, props.sample));
+  const recordsColumns = createMemo(() => createColumns(props.variantType));
 
-  const [proband, setProband] = createSignal<Sample | undefined>();
-  const [father, setFather] = createSignal<Sample | undefined>();
-  const [mother, setMother] = createSignal<Sample | undefined>();
-  const [otherFamilyMembers, setOtherFamilyMembers] = createSignal<Sample[]>([]);
+  const query = () => createQuery(props.sample, props.variantType, filterConfigs(), state.filterValues);
 
-  onMount(() => {
-    setProband(props.sample.data);
-    setMother(getSampleMother(proband() as Sample, samples()));
-    setFather(getSampleFather(proband() as Sample, samples()));
-    setOtherFamilyMembers(getSampleFamilyMembersWithoutParents(proband() as Sample, samples()));
-  });
+  const [records] = createResource(
+    (): Params => ({ query: query(), page: state.page.number, size: state.page.size, sort: state.sort }),
+    fetchRecords,
+  );
 
-  function getStateVariants() {
-    return state.sampleVariants ? state.sampleVariants[props.sample.id]?.variants : undefined;
-  }
-
-  // state initialization - start
-  if (getStateVariants()?.page === undefined) {
-    actions.setSampleVariantsPage(props.sample, 0);
-  }
-  if (getStateVariants()?.pageSize === undefined) {
-    actions.setSampleVariantsPageSize(props.sample, 20);
-  }
-
-  if (getStateVariants()?.filterQueries === undefined) {
-    const hpoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "HPO");
-    const gadoField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "GADO_PD");
-    if (hpoField && props.samplePhenotypes.length > 0) {
-      const selectorHpo = infoSelector(hpoField);
-      const queries: QueryClause[] = [
-        {
-          selector: selectorHpo,
-          operator: "any_has_any",
-          args: props.samplePhenotypes.map((phenotype) => phenotype.type.id),
-        },
-      ];
-      if (gadoField) {
-        const selectorGado = infoSelector(gadoField);
-        queries.push({
-          selector: selectorGado,
-          operator: "has_any",
-          args: ["HC"],
-        });
-      }
-      actions.setSampleVariantsFilterQuery(
-        props.sample,
-        {
-          operator: "or",
-          args: queries,
-        },
-        selectorKey(selectorHpo),
-      );
-    }
-
-    const vimField = props.recordsMeta.format?.VIM;
-    if (vimField) {
-      const selectorVim = sampleSelector(props.sample, vimField);
-      actions.setSampleVariantsFilterQuery(
-        props.sample,
-        {
-          operator: "or",
-          args: [
-            {
-              selector: selectorVim,
-              operator: "==",
-              args: 1,
-            },
-            {
-              selector: selectorVim,
-              operator: "==",
-              args: null,
-            },
-            {
-              selector: selectorVim,
-              operator: "==",
-              args: undefined,
-            },
-          ],
-        },
-        sampleCustomKey(props.sample, "VIP_Inheritance"),
-      );
-    }
-    const gqField = props.recordsMeta.format?.GQ;
-    if (gqField) {
-      const selectorGq = sampleSelector(props.sample, gqField);
-      actions.setSampleVariantsFilterQuery(
-        props.sample,
-        {
-          operator: "or",
-          args: [
-            {
-              selector: selectorGq,
-              operator: ">=",
-              args: 20,
-            },
-            {
-              selector: selectorGq,
-              operator: "==",
-              args: null,
-            },
-            {
-              selector: selectorGq,
-              operator: "==",
-              args: undefined,
-            },
-          ],
-        },
-        selectorKey(selectorGq),
-      );
-    }
-    const viabField = props.recordsMeta.format?.VIAB;
-    if (viabField) {
-      actions.setSampleVariantsFilterQuery(
-        props.sample,
-        getAllelicBalanceQuery(props.sample.data.index),
-        selectorKey(["s", props.sample.data.index, ...selector(viabField)]),
-      );
-    }
-    const viField = props.recordsMeta.format?.VI;
-    if (viField) {
-      const selectorVi = sampleSelector(props.sample, viField);
-      actions.setSampleVariantsFilterQuery(
-        props.sample,
-        {
-          selector: selectorVi,
-          operator: "has_any",
-          args: ["AD", "AR", "AR_C", "XLD", "XLR", "YL", "MT"],
-        },
-        selectorKey(selectorVi),
-      );
-    }
-  }
-
-  if (getStateVariants()?.sort === undefined) {
-    const capiceScField = props.recordsMeta.info?.CSQ?.nested?.items?.find((field) => field.id === "CAPICE_SC");
-    if (capiceScField) {
-      actions.setSampleVariantsSort(props.sample, {
-        property: infoSortPath(capiceScField),
-        compare: DIRECTION_DESCENDING,
-      });
-    }
-  }
-  // state initialization - end
-
-  const infoFields = createMemo(() => {
-    const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
-    const includedFields = [
-      "Consequence",
-      "SYMBOL",
-      "InheritanceModesGene",
-      "HPO",
-      "HGVSc",
-      "HGVSp",
-      "CAPICE_SC",
-      "VIPC",
-      "UMCG_CL",
-      "VKGL_CL",
-      "clinVar_CLNSIG",
-      "gnomAD_AF",
-      "gnomAD_HN",
-      "PUBMED",
-    ];
-    return csqNestedFields
-      ? (includedFields
-          .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
-          .filter((field) => field !== undefined) as FieldMetadata[])
-      : [];
-  });
-
-  const formatFields = createMemo(() => {
-    const formatFieldMap = props.recordsMeta.format;
-    const includedFields = ["VIM", "VID", "VI", "GQ", "VIAB", "GT", "DP"];
-    return formatFieldMap
-      ? includedFields.map((fieldId) => formatFieldMap[fieldId]).filter((field) => field !== undefined)
-      : [];
-  });
-
-  const filterInfoFields = createMemo(() => {
-    const csqNestedFields = props.recordsMeta.info.CSQ?.nested?.items;
-    const includedFields = [];
-    const additionalCsqFieldsIds = ["IncompletePenetrance"];
-    const filterInfoFieldsIds = ["SVTYPE"];
-    const additionalCsqFields = csqNestedFields
-      ? (additionalCsqFieldsIds
-          .map((fieldId) => csqNestedFields.find((field) => field.id === fieldId))
-          .filter((field) => field !== undefined) as FieldMetadata[])
-      : [];
-    const filterInfoFields = filterInfoFieldsIds
-      .map((fieldId) => props.recordsMeta.info[fieldId])
-      .filter((field) => field !== undefined);
-    includedFields.push(...infoFields());
-    includedFields.push(...additionalCsqFields);
-    includedFields.push(...filterInfoFields);
-    return includedFields;
-  });
-
-  const page = () => getStateVariants()?.page;
-  const pageSize = () => getStateVariants()?.pageSize;
-  const searchQuery = () => getStateVariants()?.searchQuery;
-  const filterQueries = () => getStateVariants()?.filterQueries;
-  const sort = () => getStateVariants()?.sort;
-
-  const onPageChange = (page: number) => actions.setSampleVariantsPage(props.sample, page);
-  const onSearchChange = (search: string) => actions.setSampleVariantsSearchQuery(props.sample, search);
-  const onFilterChange = (event: FilterChangeEvent) =>
-    actions.setSampleVariantsFilterQuery(props.sample, event.query, event.key);
-  const onFilterClear = (event: FilterClearEvent) => actions.clearSampleVariantsFilterQuery(props.sample, event.key);
-  const onSortChange = (event: SortEvent) => actions.setSampleVariantsSort(props.sample, event.order);
-  const onSortClear = () => actions.setSampleVariantsSort(props.sample, null);
-  const onRecordsPerPageChange = (event: RecordsPerPageEvent) =>
-    actions.setSampleVariantsPageSize(props.sample, event.number);
-
-  const params = (): Params => {
-    return {
-      query: createSampleQuery(props.sample, searchQuery(), filterQueries(), props.recordsMeta) || undefined,
-      sort: sort() || undefined,
-      page: page() || undefined,
-      size: pageSize() || undefined,
-    };
+  const onFilterChange = (event: FilterChangeEvent) => {
+    setState("filterValues", event.id, event.value);
   };
-
-  const [records] = createResource(params, fetchRecords);
-
-  const sortOptions = () =>
-    infoFields().flatMap((field) => [
-      {
-        order: { field, direction: DIRECTION_ASCENDING },
-        selected:
-          arrayEquals(infoSortPath(field), sort()?.property as SortPath) && sort()?.compare === DIRECTION_ASCENDING
-            ? true
-            : undefined,
-      },
-      {
-        order: { field, direction: DIRECTION_DESCENDING },
-        selected:
-          arrayEquals(infoSortPath(field), sort()?.property as SortPath) && sort()?.compare === DIRECTION_DESCENDING
-            ? true
-            : undefined,
-      },
+  const onFilterClear = (event: FilterClearEvent) => {
+    setState("filterValues", event.id, undefined); // FIXME ESLint error: false positive?
+  };
+  const onPageChange = (event: PageChangeEvent) => {
+    setState("page", "number", event.page);
+  };
+  const onRecordsDownload = () => {
+    const samples = createMemo(() => [
+      props.sample.item.data,
+      ...props.sample.pedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
     ]);
+    const filter = (): Filter | undefined =>
+      samples() ? { samples: samples().map((sample) => sample.person.individualId) } : undefined;
 
-  function getTitleSampleSexLabel(sample: Sample): string {
-    const label = getSampleSexLabel(sample);
-    return label !== "?" ? label : "sex:?";
-  }
-
-  function getTitleAffectedStatusLabel(sample: Sample): string {
-    const label = getSampleAffectedStatusLabel(sample);
-    return label !== "?" ? label : "affected status:?";
-  }
-
-  const title = (): string => {
-    return `Reported variants for ${getSampleLabel(props.sample.data)} (${getTitleSampleSexLabel(props.sample.data)} ${getTitleAffectedStatusLabel(props.sample.data)})`;
-  };
-
-  const subtitle = (): string | undefined => {
-    const sampleFather = father();
-    const sampleMother = mother();
-    const sampleOtherFamilyMembers = otherFamilyMembers();
-
-    if (sampleFather === undefined && sampleMother === undefined && sampleOtherFamilyMembers.length === 0) {
-      return undefined;
-    }
-
-    const tokens: string[] = [];
-    if (sampleMother !== undefined) {
-      tokens.push(`mother (${getTitleAffectedStatusLabel(sampleMother)})`);
-    }
-    if (sampleFather !== undefined) {
-      tokens.push(`father (${getTitleAffectedStatusLabel(sampleFather)})`);
-    }
-
-    for (const familyMember of sampleOtherFamilyMembers) {
-      tokens.push(
-        `${getSampleLabel(familyMember)} (${getTitleSampleSexLabel(familyMember)} ${getTitleAffectedStatusLabel(familyMember)})`,
+    const handler = async () => {
+      // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
+      const records = await api.getRecords({ query: query(), page: 0, size: Number.MAX_SAFE_INTEGER });
+      const vcf = writeVcf(
+        { metadata: props.metadata.records, data: records.items.map((item) => item.data) },
+        filter(),
       );
-    }
 
-    let str = tokens.pop() as string;
-    if (tokens.length > 0) str = `${tokens.join(", ")} and ${str}`;
-    return `Includes genotypes for ${str}`;
+      const url = window.URL.createObjectURL(new Blob([vcf]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", createDownloadFilename(props.metadata.htsFile));
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+    handler().catch((error) => console.error(error)); // FIXME ESLint warning
+  };
+  const onRecordsPerPageChange = (event: RecordsPerPageChangeEvent) => {
+    setState("page", { number: 0, size: event.number });
+  };
+  const onSortChange = (event: SortChangeEvent) => {
+    setState("sort", event.order);
+  };
+  const onSortClear = () => {
+    setState("sort", undefined);
+  };
+  const onVariantTypeChange = (event: VariantTypeChangeEvent) => {
+    navigate(`/samples/${props.sample.item.id}/variants/${event.id}`);
   };
 
   return (
-    <div class="variants columns is-variable is-1">
-      <div class="scrolling-div column is-1-fullhd is-2">
-        <SearchBox value={searchQuery()} onInput={onSearchChange} />
-        <Filters
-          fields={filterInfoFields()}
-          samplesFields={[{ sample: props.sample, fields: formatFields() }]}
-          queries={filterQueries()}
-          onChange={onFilterChange}
-          onClear={onFilterClear}
-        />
-      </div>
-      <div class="scrolling-div column">
-        <div class="columns is-gapless">
-          <div class="column">
-            <p class="title is-3">{title()}</p>
-            <Show when={subtitle()} keyed>
-              {(subtitle) => <p class="subtitle is-5">{subtitle}</p>}
-            </Show>
-          </div>
-        </div>
-        <div class="columns is-gapless">
-          <div class="column is-offset-1-fullhd is-3-fullhd is-4">
-            <Show when={records()} fallback={<Loader />} keyed>
-              {(records) => (
-                <span class="is-pulled-left inline-control-text ml-2">{records.page.totalElements} records</span>
-              )}
-            </Show>
-          </div>
-          <div class="column is-4">
-            <Show when={records()} fallback={<Loader />} keyed>
-              {(records) => <Pager page={records.page} onPageChange={onPageChange} />}
-            </Show>
-          </div>
-          <div class="column">
-            <div class="field is-grouped is-grouped-right">
-              {infoFields().length > 0 && (
-                <Sort options={sortOptions()} onChange={onSortChange} onClear={onSortClear} />
-              )}
-              <RecordDownload
-                recordsMetadata={props.recordsMeta}
-                query={params().query}
-                samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
-              />
+    <div class="columns is-1">
+      <div class="column is-2-fullhd is-3">
+        <Show when={props.variantType === null}>
+          <div class="columns">
+            <div class="column">
+              <VariantTypeSelect onChange={onVariantTypeChange} />
             </div>
           </div>
-        </div>
-        <div class="columns is-gapless">
-          <div class="column is-full">
-            <Show when={records()} fallback={<Loader />} keyed>
-              {(records) => (
-                <>
-                  <VariantsSampleTable
-                    item={props.sample}
-                    pedigreeSamples={props.pedigreeSamples}
-                    records={records.items}
-                    recordsMetadata={props.recordsMeta}
-                    nestedFields={infoFields()}
-                    htsFileMeta={props.htsFileMeta}
-                  />
-                  <div class="columns is-gapless">
-                    <div class="column">
-                      <div class="field is-grouped is-grouped-right">
-                        <RecordsPerPage
-                          initialValue={getStateVariants()?.pageSize || 20}
-                          onChange={onRecordsPerPageChange}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </Show>
+        </Show>
+        <div class="columns">
+          <div class="column">
+            <SampleRecordsFilters
+              sample={props.sample}
+              filters={filterConfigs()}
+              filtersValue={state.filterValues}
+              onFilterChange={onFilterChange}
+              onFilterClear={onFilterClear}
+            />
           </div>
         </div>
+      </div>
+      <div class="column">
+        <Show when={records()} fallback={<Loader />}>
+          {(records) => (
+            <SampleRecordsResults
+              metadata={props.metadata}
+              sample={props.sample}
+              records={records()}
+              recordsColumns={recordsColumns()}
+              onPageChange={onPageChange}
+              onRecordsPerPageChange={onRecordsPerPageChange}
+              onRecordsDownload={onRecordsDownload}
+              onSortChange={onSortChange}
+              onSortClear={onSortClear}
+            />
+          )}
+        </Show>
       </div>
     </div>
   );

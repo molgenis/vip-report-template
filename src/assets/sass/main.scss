@@ -81,8 +81,16 @@ table.is-borderless td,
   line-height: 32.5px
 }
 
-.scrolling-div {
-  margin-top: 8px;
-  overflow-y: auto;
-  max-height: calc(100vh - 78px) !important;
+.tooltip {
+  position: absolute;
+  z-index: 10;
+  margin: 0.5rem 0 0 0.5rem;
+  padding: 0.5rem;
+  cursor: default;
+}
+
+.control {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -1,13 +1,12 @@
-import { Genotype, Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Genotype, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Ref } from "./record/Ref";
 import { Chrom } from "./record/Chrom";
 import { Pos } from "./record/Pos";
-import { HtsFileMetadata, Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { GenotypeField } from "./record/format/GenotypeField";
 import { InfoCollapsablePane } from "./InfoCollapsablePane";
 import { Component, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { A } from "@solidjs/router";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FieldHeader } from "./FieldHeader";
 import { Abbr } from "./Abbr";
 import { abbreviateHeader } from "../utils/field";
@@ -19,16 +18,34 @@ import {
   getSampleMother,
   getSampleSexLabel,
 } from "../utils/sample";
+import { createFieldMap, FieldMap, MetadataContainer, SampleContainer } from "../utils/ApiUtils";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 
-export const VariantsSampleTable: Component<{
-  item: Item<Sample>;
-  pedigreeSamples: Item<Sample>[];
+export type FieldId = string;
+
+export interface Column {
+  fieldId: FieldId;
+}
+
+export type NestedFieldId = string;
+
+export interface NestedColumn extends Column {
+  children: NestedFieldId[];
+}
+
+export type Columns = (Column | NestedColumn)[];
+
+export const SampleRecordsTable: Component<{
+  metadata: MetadataContainer;
+  sample: SampleContainer;
+  columns: Columns;
   records: Item<Record>[];
-  recordsMetadata: Metadata;
-  nestedFields: FieldMetadata[];
-  htsFileMeta: HtsFileMetadata;
 }> = (props) => {
-  const samples = createMemo(() => [props.item.data, ...props.pedigreeSamples.map((item) => item.data)]);
+  const samples = createMemo(() => [
+    props.sample.item.data,
+    ...props.sample.pedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
+  ]);
+  const fieldMap = createMemo((): FieldMap => createFieldMap(props.metadata.records));
 
   const [proband, setProband] = createSignal<Sample | undefined>();
   const [father, setFather] = createSignal<Sample | undefined>();
@@ -36,7 +53,7 @@ export const VariantsSampleTable: Component<{
   const [otherFamilyMembers, setOtherFamilyMembers] = createSignal<Sample[]>([]);
 
   onMount(() => {
-    setProband(props.item.data);
+    setProband(props.sample.item.data);
     setMother(getSampleMother(proband() as Sample, samples()));
     setFather(getSampleFather(proband() as Sample, samples()));
     setOtherFamilyMembers(getSampleFamilyMembersWithoutParents(proband() as Sample, samples()));
@@ -45,6 +62,13 @@ export const VariantsSampleTable: Component<{
   function getSampleHeaderDescription(sample: Sample): string {
     return `${getSampleLabel(sample)}: ${getSampleSexLabel(sample)}, ${getSampleAffectedStatusLabel(sample)}`;
   }
+
+  const nestedFields = (): FieldMetadata[] => {
+    const nestedColumn = props.columns[0] as NestedColumn; // FIXME
+    return nestedColumn.children
+      .map((childCol) => fieldMap()[nestedColumn.fieldId + "/" + childCol])
+      .filter((field) => field !== null);
+  };
 
   return (
     <div style={{ display: "grid" }}>
@@ -85,7 +109,7 @@ export const VariantsSampleTable: Component<{
               </For>
               {/* column containing collapse/expand icon */}
               <th />
-              <For each={props.nestedFields}>{(field) => <FieldHeader field={field} />}</For>
+              <For each={nestedFields()}>{(field) => <FieldHeader field={field} />}</For>
             </tr>
           </thead>
           <tbody>
@@ -93,7 +117,7 @@ export const VariantsSampleTable: Component<{
               {(record) => (
                 <tr>
                   <td>
-                    <A href={`/samples/${props.item.id}/variants/${record.id}`}>
+                    <A href={`/samples/${props.sample.item.id}/variant/${record.id}`}>
                       <Chrom value={record.data.c} />
                       <span>:</span>
                       <Pos value={record.data.p} />
@@ -163,9 +187,9 @@ export const VariantsSampleTable: Component<{
                   <Show when={proband()} keyed>
                     {(proband) => (
                       <InfoCollapsablePane
-                        fields={props.nestedFields}
+                        fields={nestedFields()}
                         record={record}
-                        htsFileMeta={props.htsFileMeta}
+                        htsFileMeta={props.metadata.htsFile}
                         isPossibleCompound={
                           record.data.s[proband.index]["VIC"] !== null &&
                           record.data.s[proband.index]["VIC"] !== undefined

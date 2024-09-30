@@ -43,7 +43,7 @@ export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props
                   { href: `/samples/${sample().id}`, text: getSampleLabel(sample().data) },
                   { href: `/samples/${sample().id}/variants`, text: "Variants" },
                   {
-                    href: `/samples/${sample().id}/variants/${variant().id}`,
+                    href: `/samples/${sample().id}/variant/${variant().id}`,
                     text: getRecordLabel(variant()),
                   },
                   { text: `Consequence #${consequenceId()}` },

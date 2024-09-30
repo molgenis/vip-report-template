@@ -38,7 +38,7 @@ export const GnomAD: Component<FieldProps> = (props) => {
                 <i class="fas fa-circle-exclamation has-text-warning" />
               </abbr>
             </Show>
-            <Show when={cov() != null && cov() < 0.5}>
+            <Show when={cov() != null && cov()! < 0.5}>
               <abbr
                 title="This variant is covered in fewer than 50% of individuals in gnomAD. This may indicate a low-quality site."
                 class="ml-1 is-clickable"

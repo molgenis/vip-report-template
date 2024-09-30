@@ -7,6 +7,7 @@ import App from "./App";
 import { dom, library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleDown,
+  faAngleRight,
   faAngleUp,
   faCircleExclamation,
   faCircleXmark,
@@ -15,6 +16,7 @@ import {
   faDownload,
   faExternalLink,
   faHome,
+  faInfo,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
@@ -24,16 +26,17 @@ import { HashRouter, Route } from "@solidjs/router";
 import { Home } from "./views/Home";
 import { Samples } from "./views/Samples";
 import { Sample } from "./views/Sample";
-import { SampleVariantsView } from "./views/SampleVariants";
 import { SampleVariantView } from "./views/SampleVariant";
 import { SampleVariantConsequenceView } from "./views/SampleVariantConsequence";
 import { VariantsView } from "./views/Variants";
 import { Variant } from "./views/Variant";
 import { VariantConsequence } from "./views/VariantConsequence";
 import { Help } from "./views/Help";
+import { SampleVariantsView } from "./views/SampleVariants";
 
 library.add(
   faAngleDown,
+  faAngleRight,
   faAngleUp,
   faCircleExclamation,
   faCircleXmark,
@@ -42,6 +45,7 @@ library.add(
   faDownload,
   faExternalLink,
   faHome,
+  faInfo,
   faSearch,
 );
 
@@ -68,6 +72,11 @@ render(
               <Route path="/" component={Sample} />
               <Route path="/variants">
                 <Route path="/" component={SampleVariantsView} />
+                <Route path="/:variantType">
+                  <Route path="/" component={SampleVariantsView} />
+                </Route>
+              </Route>
+              <Route path="/variant">
                 <Route path="/:variantId">
                   <Route path="/" component={SampleVariantView} />
                   <Route path="/consequences">

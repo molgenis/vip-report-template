@@ -9,6 +9,7 @@ import {
   Phenotype,
   PhenotypicFeature,
   Resource,
+  Sample as ApiSample,
   Sample,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
@@ -241,23 +242,83 @@ export function getRecordLabel(item: Item<Record>) {
     .join(" / ")}`;
 }
 
-export const EMPTY_RECORD_ITEM: Item<Record> = {
-  id: -1,
-  data: { c: "", p: -1, i: [], r: "", a: [], q: null, f: [], n: {}, s: [] },
+export function parseContigIds(metadata: Metadata) {
+  return metadata.lines
+    .filter((line) => line.startsWith("##contig="))
+    .map((line) => {
+      const tokens: { [index: string]: string } = {};
+      for (const token of line.substring(10, line.length - 1).split(",")) {
+        const keyValue = token.split("=");
+        tokens[keyValue[0]] = keyValue[1];
+      }
+      return tokens["ID"];
+    });
+}
+
+export type FieldPath = string;
+export type FieldMap = { [key: FieldPath]: FieldMetadata };
+
+export function createFieldMap(metadata: Metadata): FieldMap {
+  //FIXME recursive to support deep nesting
+  //TODO merge INFO and FORMAT code paths
+  const fields: { [key: string]: FieldMetadata } = {};
+  Object.entries(metadata.info).forEach(([key, value]) => {
+    fields[`INFO/${key}`] = value;
+    if (value.nested) {
+      for (const fieldMetadata of value.nested.items) {
+        fields[`INFO/${value.id}/${fieldMetadata.id}`] = fieldMetadata;
+      }
+    }
+  });
+
+  Object.entries(metadata.format).forEach(([key, value]) => {
+    if (value.nested) {
+      for (const fieldMetadata of value.nested.items) {
+        fields[`FORMAT/${value.id}/${fieldMetadata.id}`] = fieldMetadata;
+      }
+    } else {
+      fields[`FORMAT/${key}`] = value;
+    }
+  });
+  return fields;
+}
+
+export type SampleContainer = {
+  item: Item<ApiSample>;
+  phenotypes: PhenotypicFeature[];
+  pedigreeSamples: SampleContainer[];
 };
 
-export const EMPTY_SAMPLE_ITEM: Item<Sample> = {
-  id: -1,
-  data: {
-    person: {
-      familyId: "",
-      individualId: "",
-      paternalId: "",
-      maternalId: "",
-      sex: "UNKNOWN_SEX",
-      affectedStatus: "MISSING",
-    },
-    index: -1,
-    proband: false,
-  },
+/**
+ * Compose sample from API sample, API sample phenotypes and API pedigree samples data
+ *
+ * @param sample API sample
+ * @param samplePhenotypes API sample phenotypes
+ * @param pedigreeSamples API samples from same pedigree
+ */
+export function composeSample(
+  sample: Item<Sample>,
+  samplePhenotypes?: PhenotypicFeature[],
+  pedigreeSamples?: PagedItems<Sample>,
+): SampleContainer {
+  return {
+    item: sample,
+    phenotypes: samplePhenotypes || [],
+    pedigreeSamples: pedigreeSamples?.items.map((pedigreeSample) => composeSample(pedigreeSample)) || [],
+  };
+}
+
+export type MetadataContainer = {
+  htsFile: HtsFileMetadata;
+  records: Metadata;
 };
+
+/**
+ * Compose metadata from API HTS file metadata and API records metadata
+ *
+ * @param htsFile API HTS file metadata
+ * @param recordsMetadata API records metadata
+ */
+export function composeMetadata(htsFile: HtsFileMetadata, recordsMetadata: Metadata): MetadataContainer {
+  return { htsFile: htsFile, records: recordsMetadata };
+}

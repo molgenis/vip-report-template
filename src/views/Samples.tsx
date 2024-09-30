@@ -1,6 +1,6 @@
 import { Component, createResource, Show } from "solid-js";
 import { SampleTable } from "../components/SampleTable";
-import { Pager } from "../components/record/Pager";
+import { PageChangeEvent, Pager } from "../components/record/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Checkbox, CheckboxEvent } from "../components/Checkbox";
 import { Breadcrumb } from "../components/Breadcrumb";
@@ -21,7 +21,7 @@ export const Samples: Component = () => {
     actions.setSamplePage(0);
   }
 
-  const onPageChange = (page: number) => actions.setSamplePage(page);
+  const onPageChange = (event: PageChangeEvent) => actions.setSamplePage(event.page);
   const onSearchChange = (search: string) => {
     actions.setSampleSearchQuery(search);
     actions.setSamplePage(0);
@@ -49,11 +49,10 @@ export const Samples: Component = () => {
         args.push(probandQuery);
       }
       if (args.length > 0) {
-        const query: Query = {
+        return {
           operator: "and",
           args: args,
         };
-        return query;
       }
     }
     return null;

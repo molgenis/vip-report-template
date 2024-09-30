@@ -290,7 +290,8 @@
           "description": "The gene is associated with Incomplete Penetrance (1:true)",
           "numberType": "NUMBER",
           "numberCount": 1,
-          "type": "STRING"
+          "type": "CATEGORICAL",
+          "categories": ["1"]
         },
         "InheritanceModesGene": {
           "label": "Inh.Pat.",

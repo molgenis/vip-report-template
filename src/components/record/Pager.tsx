@@ -13,9 +13,12 @@ const createPages = (page: number, pages: number): (number | null)[] => {
   }
 };
 
+export type PageChangeEvent = { page: number };
+export type PageChangeCallback = (event: PageChangeEvent) => void;
+
 export const Pager: Component<{
   page: Page;
-  onPageChange: (page: number) => void;
+  onPageChange: PageChangeCallback;
 }> = (props) => {
   const currentPage = () => props.page.number;
   const nrPages = createMemo(() => Math.ceil(props.page.totalElements / props.page.size));
@@ -29,7 +32,7 @@ export const Pager: Component<{
             <li>
               <a
                 classList={{ "pagination-previous": true, "is-invisible": currentPage() === 0 }}
-                onClick={currentPage() > 0 ? () => props.onPageChange(currentPage() - 1) : undefined}
+                onClick={currentPage() > 0 ? () => props.onPageChange({ page: currentPage() - 1 }) : undefined}
               >
                 Previous
               </a>
@@ -39,7 +42,7 @@ export const Pager: Component<{
                 page !== null ? (
                   <a
                     classList={{ "pagination-link": true, "is-current": page === currentPage() }}
-                    onClick={page !== currentPage() ? () => props.onPageChange(page) : undefined}
+                    onClick={page !== currentPage() ? () => props.onPageChange({ page }) : undefined}
                   >
                     {page + 1}
                   </a>
@@ -51,7 +54,9 @@ export const Pager: Component<{
             <li>
               <a
                 classList={{ "pagination-next": true, "is-invisible": currentPage() === nrPages() - 1 }}
-                onClick={currentPage() < nrPages() - 1 ? () => props.onPageChange(currentPage() + 1) : undefined}
+                onClick={
+                  currentPage() < nrPages() - 1 ? () => props.onPageChange({ page: currentPage() + 1 }) : undefined
+                }
               >
                 Next
               </a>

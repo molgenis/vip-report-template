@@ -1,54 +1,63 @@
-import { Component, Match, Switch } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterCategorical } from "./FilterCategorical";
-import { FilterIntegerGq } from "./FilterIntegerGq";
-import { Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
-import { FilterClinVar } from "./FilterClinVar";
-import { isAnyCsqInfo } from "../../utils/csqUtils";
-import { FilterChangeEvent, FilterClearEvent } from "./Filters";
-import { FilterAllelicBalance } from "./FilterAllelicBalance";
-import { FilterHpo } from "./FilterHpo";
-import { FilterGene } from "./FilterGene";
-import { FilterVI } from "./FilterVI";
-import { FilterVariantType } from "./FilterVariantType";
+import "./Filter.scss";
+import { createSignal, JSX, ParentComponent, Show, Signal } from "solid-js";
 
-export type FilterProps = {
-  field: FieldMetadata;
-  query?: Query;
-  onChange: (event: FilterChangeEvent) => void;
-  onClear: (event: FilterClearEvent) => void;
-  sample?: Item<Sample>;
-};
+export interface FilterValueChangeEvent<FilterValueType> {
+  value: FilterValueType;
+}
+export type FilterValueChangeCallback<FilterValueType> = (event: FilterValueChangeEvent<FilterValueType>) => void;
+export type FilterValueClearCallback = () => void;
 
-export const Filter: Component<FilterProps> = (props) => {
+export interface FilterProps {
+  label: string;
+  tooltip?: JSX.Element;
+  isCollapsible?: boolean;
+}
+
+export interface FilterTypedProps<FilterValueType> extends FilterProps {
+  value?: FilterValueType;
+  onValueChange: FilterValueChangeCallback<FilterValueType>;
+  onValueClear: FilterValueClearCallback;
+}
+
+export const Filter: ParentComponent<FilterProps> = (props) => {
+  const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
+  const [showTooltip, setShowTooltip]: Signal<boolean> = createSignal(false);
+
+  function toggleShowTooltip() {
+    setShowTooltip(!showTooltip());
+  }
+
+  function toggleCollapse() {
+    setCollapsed(!collapsed());
+  }
+
   return (
-    <>
-      <Switch>
-        <Match when={props.field.id === "GQ"}>
-          <FilterIntegerGq {...props} />
-        </Match>
-        <Match when={props.field.id === "VIAB"}>
-          <FilterAllelicBalance {...props} />
-        </Match>
-        <Match when={props.field.id === "VI"}>
-          <FilterVI {...props} />
-        </Match>
-        <Match when={props.field.id === "SVTYPE"}>
-          <FilterVariantType {...props} />
-        </Match>
-        <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>
-          <FilterClinVar {...props} />
-        </Match>
-        <Match when={props.field.id === "HPO"}>
-          <FilterHpo {...props} />
-        </Match>
-        <Match when={props.field.id === "IncompletePenetrance"}>
-          <FilterGene {...props} />
-        </Match>
-        <Match when={props.field.type === "CATEGORICAL"}>
-          <FilterCategorical {...props} />
-        </Match>
-      </Switch>
-    </>
+    <div class="filter">
+      <header class="filter-header">
+        <p class="filter-header-title">{props.label}</p>
+        <Show when={props.tooltip}>
+          <button class="filter-header-icon" onClick={toggleShowTooltip}>
+            <span class="icon">
+              <i class="fas fa-info" />
+            </span>
+            <Show when={showTooltip()}>
+              <div class="tooltip has-background-dark has-text-light">{props.tooltip}</div>
+            </Show>
+          </button>
+        </Show>
+        <Show when={props.isCollapsible}>
+          <button class="filter-header-icon" onClick={toggleCollapse}>
+            <span class="icon">
+              <Show when={collapsed()} fallback={<i class="fas fa-angle-up" />}>
+                <i class="fas fa-angle-down" />
+              </Show>
+            </span>
+          </button>
+        </Show>
+      </header>
+      <Show when={!collapsed()}>
+        <div class="filter-container">{props.children}</div>
+      </Show>
+    </div>
   );
 };
