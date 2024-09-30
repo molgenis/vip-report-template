@@ -1,7 +1,7 @@
+/* eslint-disable */
+// @ts-nocheck
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
-import decisionTreeJson from "./decisionTree.json";
-import sampleTreeJson from "./sampleTree.json";
 import fastaUrl1_10042288_10042788 from "./fasta/1-10042288-10042788.fasta.gz.blob";
 import fastaUrl1_16375333_16375833 from "./fasta/1-16375333-16375833.fasta.gz.blob";
 import fastaUrl1_16376162_16376662 from "./fasta/1-16376162-16376662.fasta.gz.blob";
@@ -40,16 +40,14 @@ import fastaUrlX_48932771_48933271 from "./fasta/X-48932771-48933271.fasta.gz.bl
 import fastaUrlY_2655391_2655891 from "./fasta/Y-2655391-2655891.fasta.gz.blob";
 import fastaUrlMT_15076_15576 from "./fasta/MT-15076-15576.fasta.gz.blob";
 import genesUrl from "./genes.gff.gz.blob";
-import vcfMetaJson from "./field_metadata.json";
 import vcfUrlFamily from "./vcf/family.vcf.blob";
-import vcfUrlNoVep from "./vcf/no_vep.vcf.blob";
-import vcfUrlSamples0 from "./vcf/samples_0.vcf.blob";
-import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
-import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
-
+/* eslint-enable */
+import decisionTreeJson from "./decisionTree.json";
+import sampleTreeJson from "./sampleTree.json";
+import vcfMetaJson from "./field_metadata.json";
 import { fetchAsBytes } from "../utils";
-import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
-import { Metadata } from "@molgenis/vip-report-vcf/src/FieldMetadata";
+import { DecisionTree } from "@molgenis/vip-report-api";
+import { SupplementaryMetadata } from "@molgenis/vip-report-vcf";
 
 export const cram = await fetchAsBytes(cramUrl as string);
 export const crai = await fetchAsBytes(craiUrl as string);
@@ -99,17 +97,9 @@ export const fastaGz = {
 
 export const genesGz = await fetchAsBytes(genesUrl as string);
 
-export const vcfMeta = vcfMetaJson as unknown as Metadata;
+export const vcfMeta = vcfMetaJson as unknown as SupplementaryMetadata;
 
 export const vcfFamily = await fetchAsBytes(vcfUrlFamily as string);
-
-export const vcfNoVep = await fetchAsBytes(vcfUrlNoVep as string);
-
-export const vcfSamples0 = await fetchAsBytes(vcfUrlSamples0 as string);
-
-export const vcfSamples1 = await fetchAsBytes(vcfUrlSamples1 as string);
-
-export const vcfSamples100 = await fetchAsBytes(vcfUrlSamples100 as string);
 
 export const samplesFamily = {
   samples: [
@@ -181,80 +171,6 @@ export const samplesFamily = {
       ],
       subject: {
         id: "MotherHasQuiteALongName",
-      },
-    },
-  ],
-};
-export const samplesFamilyDuoPlusSister = {
-  samples: [
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Patient",
-        paternalId: "Father",
-        maternalId: "0",
-        sex: "MALE",
-        affectedStatus: "AFFECTED",
-      },
-      index: 0,
-      proband: true,
-    },
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Sister",
-        paternalId: "0",
-        maternalId: "0",
-        sex: "FEMALE",
-        affectedStatus: "UNAFFECTED",
-      },
-      index: 3,
-      proband: false,
-    },
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Father",
-        paternalId: "0",
-        maternalId: "0",
-        sex: "MALE",
-        affectedStatus: "UNAFFECTED",
-      },
-      index: 1,
-      proband: false,
-    },
-  ],
-  phenotypes: [
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-        {
-          type: {
-            id: "HP:0003124",
-            label: "HP:0003124",
-          },
-        },
-      ],
-      subject: {
-        id: "Patient",
-      },
-    },
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-      ],
-      subject: {
-        id: "Sister",
       },
     },
   ],

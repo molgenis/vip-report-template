@@ -1,37 +1,39 @@
 import { Component, For } from "solid-js";
-import { isNumerical } from "../utils/field";
-import { DIRECTION_ASCENDING, Order } from "../utils/sortUtils";
-import { SortOrder } from "@molgenis/vip-report-api/src/Api";
-import { infoSortPath } from "../utils/query";
+import { isNumerical } from "../utils/vcf.ts";
+import { SortOrder } from "@molgenis/vip-report-api";
+import { DIRECTION_ASCENDING, mapOrder } from "../utils/query/sort.ts";
+import { ConfigSort, ConfigSortOrder } from "../types/configSort";
 
-export type SortOption = {
-  order: Order;
-  selected?: boolean;
-};
-
-export type SortEvent = { order: SortOrder };
+export type SortChangeEvent = { order: SortOrder | SortOrder[] };
+export type SortChangeCallback = (event: SortChangeEvent) => void;
+export type SortClearCallback = () => void;
 
 export const Sort: Component<{
-  options: SortOption[];
-  onChange: (event: SortEvent) => void;
-  onClear: () => void;
+  options: ConfigSort[];
+  onChange: SortChangeCallback;
+  onClear: SortClearCallback;
 }> = (props) => {
   const sortableOptions = () =>
-    props.options.filter((option) => isNumerical(option.order.field) && option.order.field.number.count === 1);
-
+    props.options.filter((option) =>
+      option.orders.every((order) => isNumerical(order.field) && order.field.number.count === 1),
+    );
   const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);
     if (index === -1) {
       props.onClear();
     } else {
+      const sortOption = sortableOptions()[index]!;
       props.onChange({
-        order: {
-          property: infoSortPath(sortableOptions()[index].order.field),
-          compare: sortableOptions()[index].order.direction,
-        },
+        order: sortOption.orders.map((order) => mapOrder(order)),
       });
     }
   };
+
+  function getLabel(orders: ConfigSortOrder[]) {
+    return orders.length > 0 && orders[0] !== undefined
+      ? `${orders[0].field.label || orders[0].field.id} ${orders[0].direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}`
+      : " ";
+  }
 
   return (
     <div class="control">
@@ -42,8 +44,7 @@ export const Sort: Component<{
           <For each={sortableOptions()}>
             {(option, i) => (
               <option value={i()} selected={option.selected === true}>
-                {option.order.field.label || option.order.field.id}{" "}
-                {option.order.direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}
+                {getLabel(option.orders)}
               </option>
             )}
           </For>

@@ -1,5 +1,5 @@
 import { Component, createMemo } from "solid-js";
-import { BoolQuery } from "@molgenis/vip-report-api/src/Api";
+import { BoolQuery } from "@molgenis/vip-report-api";
 import { Abbr } from "../Abbr";
 
 export const DecisionTreeBoolQuery: Component<{ query: BoolQuery }> = (props) => {

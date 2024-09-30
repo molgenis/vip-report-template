@@ -1,0 +1,97 @@
+import { Component, For, Show } from "solid-js";
+import { MetadataContainer, SampleContainer } from "../utils/api.ts";
+import { Item, Sample } from "@molgenis/vip-report-api";
+import { FieldMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { GenomeBrowser } from "./GenomeBrowser.tsx";
+import { VariantTable } from "./VariantTable.tsx";
+import { VariantInfoTable } from "./VariantInfoTable.tsx";
+import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
+import { RecordsTable } from "./RecordsTable.tsx";
+import { ConfigCells } from "../types/config";
+import { VariantType } from "../utils/variantType.ts";
+import { initConfigCells } from "../utils/config/configCells.ts";
+import { getPedigreeSamples } from "../utils/sample.ts";
+
+export const VariantContainer: Component<{
+  metadata: MetadataContainer;
+  variantType: VariantType;
+  record: Item<VcfRecord>;
+  sample: SampleContainer | null;
+}> = (props) => {
+  const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
+
+  const nestedTableConfigs = (): ConfigCells[] => {
+    function createTableConfig(fieldMetadata: FieldMetadata) {
+      return initConfigCells(
+        [
+          {
+            type: "group",
+            fields: fieldMetadata.nested!.items.map((childFieldMetadata) => {
+              const name = `${fieldMetadata.id}/${childFieldMetadata.id}`;
+              return name === "CSQ/VIPC"
+                ? { type: "composed", name: "vipC" }
+                : {
+                    type: "info",
+                    name: name,
+                  };
+            }),
+          },
+        ],
+        props.variantType,
+        props.metadata,
+        props.sample,
+      );
+    }
+
+    return Object.values(props.metadata.records.info)
+      .filter((fieldMetadata) => fieldMetadata.nested && props.record.data.n[fieldMetadata.id] !== undefined)
+      .map((fieldMetadata) => createTableConfig(fieldMetadata));
+  };
+
+  return (
+    <>
+      <div class="columns">
+        <div class="column">
+          <GenomeBrowser metadata={props.metadata} samples={samples()} record={props.record} />
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-3">
+          <h1 class="title is-5">Record</h1>
+          <VariantTable variant={props.record.data} />
+        </div>
+        <Show
+          when={
+            Object.values(props.metadata.records.info).filter(
+              (info) => !info.nested && props.record.data.n[info.id] !== undefined,
+            ).length > 0
+          }
+        >
+          <div class="column is-3">
+            <h1 class="title is-5">Info</h1>
+            <VariantInfoTable infoMetadataContainer={props.metadata.records.info} infoContainer={props.record.data.n} />
+          </div>
+        </Show>
+        <Show when={samples().length > 0}>
+          <div class="column">
+            <h1 class="title is-5">Samples</h1>
+            <VariantGenotypeTable
+              samples={samples()}
+              formatMetadataContainer={props.metadata.records.format}
+              recordSamples={props.record.data.s}
+            />
+          </div>
+        </Show>
+      </div>
+      <For each={nestedTableConfigs()}>
+        {(nestedTableConfig) => (
+          <div class="columns">
+            <div class="column is-full">
+              <RecordsTable fieldConfigs={nestedTableConfig} records={[props.record]} verticalHeaders={true} />
+            </div>
+          </div>
+        )}
+      </For>
+    </>
+  );
+};

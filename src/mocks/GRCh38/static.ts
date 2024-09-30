@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
 import fastaUrl_chr1_9982230_9982730 from "./fasta/chr1-9982230-9982730.fasta.gz.blob";
@@ -27,22 +29,27 @@ import fastaUrl_chrM_15075_15575 from "./fasta/chrM-15075-15575.fasta.gz.blob";
 import fastaUrl_chrX_49075112_49075612 from "./fasta/chrX-49075112-49075612.fasta.gz.blob";
 import fastaUrl_chrY_2787350_2787850 from "./fasta/chrY-2787350-2787850.fasta.gz.blob";
 import genesUrl from "./genes.gff.gz.blob";
-import vcfMetaJson from "./field_metadata.json";
 import vcfUrlFamily from "./vcf/family.vcf.blob";
 import vcfUrlNoVep from "./vcf/no_vep.vcf.blob";
 import vcfUrlSamples0 from "./vcf/samples_0.vcf.blob";
 import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
-
-import { fetchAsBytes } from "../utils";
+import vcfUrlStr from "./vcf/str.vcf.blob";
+/* eslint-enable */
 import decisionTreeJson from "./decisionTree.json";
-import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
-import { Metadata } from "@molgenis/vip-report-vcf/src/FieldMetadata";
+import decisionTreeStrJson from "./decisionTreeStr.json";
+import sampleTreeJson from "./sampleTree.json";
+import vcfMetaJson from "./field_metadata.json";
+import { fetchAsBytes } from "../utils";
+import { DecisionTree } from "@molgenis/vip-report-api";
+import { SupplementaryMetadata } from "@molgenis/vip-report-vcf";
 
 export const cram = await fetchAsBytes(cramUrl as string);
 export const crai = await fetchAsBytes(craiUrl as string);
 
 export const decisionTree: DecisionTree = decisionTreeJson as unknown as DecisionTree;
+export const decisionTreeStr: DecisionTree = decisionTreeStrJson as unknown as DecisionTree;
+export const sampleTree: DecisionTree = sampleTreeJson as unknown as DecisionTree;
 
 export const fastaGz = {
   "chr1:9982230-9982730": await fetchAsBytes(fastaUrl_chr1_9982230_9982730 as string),
@@ -75,7 +82,7 @@ export const fastaGz = {
 
 export const genesGz = await fetchAsBytes(genesUrl as string);
 
-export const vcfMeta = vcfMetaJson as unknown as Metadata;
+export const vcfMeta = vcfMetaJson as unknown as SupplementaryMetadata;
 
 export const vcfFamily = await fetchAsBytes(vcfUrlFamily as string);
 
@@ -86,6 +93,24 @@ export const vcfSamples0 = await fetchAsBytes(vcfUrlSamples0 as string);
 export const vcfSamples1 = await fetchAsBytes(vcfUrlSamples1 as string);
 
 export const vcfSamples100 = await fetchAsBytes(vcfUrlSamples100 as string);
+
+export const vcfStr = await fetchAsBytes(vcfUrlStr as string);
+
+export const samplesStr = {
+  samples: [
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Patient",
+        sex: "FEMALE",
+        affectedStatus: "AFFECTED",
+      },
+      index: 0,
+      proband: true,
+    },
+  ],
+  phenotypes: [],
+};
 
 export const samplesFamily = {
   samples: [
@@ -100,6 +125,7 @@ export const samplesFamily = {
       },
       index: 3,
       proband: true,
+      filter_classes: ["U1", "U2"],
     },
     {
       person: {

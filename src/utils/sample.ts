@@ -1,11 +1,12 @@
-import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api";
+import { SampleContainer } from "./api.ts";
 
-export function getSampleLabel(sample: Sample) {
-  return sample.person.individualId;
+export function getSampleLabel(sample: Item<Sample>) {
+  return sample.data.person.individualId;
 }
 
-export function getSampleSexLabel(sample: Sample): string {
-  switch (sample.person.sex) {
+export function getSampleSexLabel(sample: Item<Sample>): string {
+  switch (sample.data.person.sex) {
     case "FEMALE":
       return "female";
     case "MALE":
@@ -15,8 +16,8 @@ export function getSampleSexLabel(sample: Sample): string {
   }
 }
 
-export function getSampleAffectedStatusLabel(sample: Sample): string {
-  switch (sample.person.affectedStatus) {
+export function getSampleAffectedStatusLabel(sample: Item<Sample>): string {
+  switch (sample.data.person.affectedStatus) {
     case "AFFECTED":
       return "affected";
     case "UNAFFECTED":
@@ -30,36 +31,19 @@ function isFamily(sample: Sample, samples: Sample): boolean {
   return sample.person.familyId === samples.person.familyId;
 }
 
-function isSampleMother(sample: Sample, samples: Sample): boolean {
-  return isFamily(sample, samples) && samples.person.individualId === sample.person.maternalId;
+export function isSampleMother(sample: Sample, sampleMaternal: Sample): boolean {
+  return isFamily(sample, sampleMaternal) && sampleMaternal.person.individualId === sample.person.maternalId;
 }
 
-export function getSampleMother(sample: Sample, samples: Sample[]): Sample | undefined {
-  if (sample.person.maternalId !== "0") {
-    for (const otherSample of samples) {
-      if (isSampleMother(sample, otherSample)) return otherSample;
-    }
-  }
+export function isSampleFather(sample: Sample, samplePaternal: Sample): boolean {
+  return isFamily(sample, samplePaternal) && samplePaternal.person.individualId === sample.person.paternalId;
 }
 
-function isSampleFather(sample: Sample, samples: Sample): boolean {
-  return isFamily(sample, samples) && samples.person.individualId === sample.person.paternalId;
-}
-
-export function getSampleFather(sample: Sample, samples: Sample[]): Sample | undefined {
-  if (sample.person.paternalId !== "0") {
-    for (const otherSample of samples) {
-      if (isSampleFather(sample, otherSample)) return otherSample;
-    }
-  }
-}
-
-export function getSampleFamilyMembersWithoutParents(sample: Sample, samples: Sample[]): Sample[] {
-  const familyMembersWithoutParents: Sample[] = [];
-  for (const otherSample of samples) {
-    if (isFamily(sample, otherSample) && !isSampleFather(sample, otherSample) && !isSampleMother(sample, otherSample)) {
-      if (sample.person.individualId !== otherSample.person.individualId) familyMembersWithoutParents.push(otherSample);
-    }
-  }
-  return familyMembersWithoutParents;
+/**
+ * Returns all samples for the given sample pedigree including the given sample itself
+ */
+export function getPedigreeSamples(sample: SampleContainer): Item<Sample>[] {
+  return [sample.item, sample.maternalSample, sample.paternalSample, ...sample.otherPedigreeSamples].filter(
+    (sample) => sample !== null,
+  );
 }

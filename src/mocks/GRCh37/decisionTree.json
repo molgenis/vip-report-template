@@ -7,9 +7,7 @@
       "query": {
         "field": "FILTER",
         "operator": "==",
-        "value": [
-          "PASS"
-        ]
+        "value": ["PASS"]
       },
       "outcomeTrue": {
         "nextNode": "vkgl"
@@ -119,10 +117,7 @@
     "gnomad": {
       "type": "BOOL_MULTI",
       "description": "gnomAD_AF < 0.02 && gnomAD_HN < 5",
-      "fields": [
-        "INFO/CSQ/gnomAD_AF",
-        "INFO/CSQ/gnomAD_HN"
-      ],
+      "fields": ["INFO/CSQ/gnomAD_AF", "INFO/CSQ/gnomAD_HN"],
       "outcomes": [
         {
           "operator": "OR",
@@ -170,9 +165,7 @@
     },
     "clinVar": {
       "type": "BOOL_MULTI",
-      "fields": [
-        "INFO/CSQ/CLIN_SIG"
-      ],
+      "fields": ["INFO/CSQ/CLIN_SIG"],
       "outcomes": [
         {
           "queries": [
@@ -195,10 +188,7 @@
             {
               "field": "INFO/CSQ/CLIN_SIG",
               "operator": "contains_any",
-              "value": [
-                "likely_benign",
-                "benign"
-              ]
+              "value": ["likely_benign", "benign"]
             }
           ],
           "outcomeTrue": {
@@ -210,10 +200,7 @@
             {
               "field": "INFO/CSQ/CLIN_SIG",
               "operator": "contains_any",
-              "value": [
-                "likely_pathogenic",
-                "pathogenic"
-              ]
+              "value": ["likely_pathogenic", "pathogenic"]
             }
           ],
           "outcomeTrue": {
@@ -249,9 +236,7 @@
     "polyphen": {
       "description": "PolyPhen qualitative prediction",
       "type": "BOOL_MULTI",
-      "fields": [
-        "INFO/CSQ/PolyPhen"
-      ],
+      "fields": ["INFO/CSQ/PolyPhen"],
       "outcomes": [
         {
           "queries": [
@@ -325,7 +310,7 @@
         "nextNode": "exit_vus"
       }
     },
-    "exit_lq": {
+    "exit_rm": {
       "description": "Low quality variants.",
       "type": "LEAF",
       "class": "LQ"
