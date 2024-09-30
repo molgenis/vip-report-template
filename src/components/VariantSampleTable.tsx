@@ -1,8 +1,7 @@
 import { Component, createMemo, For } from "solid-js";
 import { Record, RecordSample } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Format } from "./record/Format";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { FieldHeader } from "./FieldHeader";
 
@@ -34,16 +33,20 @@ export const VariantSampleTable: Component<{
                   <For each={sampleFields()}>
                     {(formatField) => (
                       <td>
-                        <Format
-                          format={sampleValue[formatField.id]}
-                          formatMetadata={formatField}
-                          record={props.record}
-                          isAbbreviate={false}
-                          allelicBalance={
-                            props.record.data.s[props.samples[i()].index]["VIAB"] as number | undefined | null
-                          }
-                          readDepth={props.record.data.s[props.samples[i()].index]["DP"] as number | undefined | null}
-                        />
+                        <span>{JSON.stringify(formatField)}</span>
+                        {/* FIXME */}
+                        {/*<FieldGenotype*/}
+                        {/*  format={sampleValue[formatField.id]}*/}
+                        {/*  config={formatField}*/}
+                        {/*  record={props.record}*/}
+                        {/*  isAbbreviate={false}*/}
+                        {/*  allelicBalance={*/}
+                        {/*    getRecordSample(props.record, props.samples[i()].index)["VIAB"] as number | undefined | null*/}
+                        {/*  }*/}
+                        {/*  readDepth={*/}
+                        {/*    getRecordSample(props.record, props.samples[i()].index)["DP"] as number | undefined | null*/}
+                        {/*  }*/}
+                        {/*/>*/}
                       </td>
                     )}
                   </For>

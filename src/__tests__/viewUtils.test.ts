@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { getConsequenceLabel, getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";

@@ -8,15 +8,18 @@ import {
   Params,
   Phenotype,
   PhenotypicFeature,
+  Query,
   Resource,
   Sample,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import api from "../Api";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { FieldMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { Value, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata, NestedFieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { isNumerical } from "./field";
 import { createRecordSort, Direction } from "./sortUtils";
+import { mapSvTypeToVariantTypeId, VariantTypeId } from "./variantTypeUtils";
+import { createQuerySample } from "./query";
 
 export const EMPTY_PARAMS: Params = {};
 
@@ -114,6 +117,7 @@ function compareCsqDefault(aValue: Value[], bValue: Value[], pickIndex: number, 
 }
 
 export async function fetchRecords(params: Params) {
+  console.log("fetch records", JSON.stringify(params));
   const [recordsMeta, records] = await Promise.all([api.getRecordsMeta(), api.getRecords(params)]);
   if (recordsMeta.info.CSQ === undefined) {
     return records;
@@ -241,23 +245,79 @@ export function getRecordLabel(item: Item<Record>) {
     .join(" / ")}`;
 }
 
-export const EMPTY_RECORD_ITEM: Item<Record> = {
-  id: -1,
-  data: { c: "", p: -1, i: [], r: "", a: [], q: null, f: [], n: {}, s: [] },
+export function parseContigIds(metadata: Metadata) {
+  return metadata.lines
+    .filter((line) => line.startsWith("##contig="))
+    .map((line) => {
+      const tokens: { [index: string]: string } = {};
+      for (const token of line.substring(10, line.length - 1).split(",")) {
+        const keyValue = token.split("=");
+        tokens[keyValue[0]] = keyValue[1];
+      }
+      return tokens["ID"];
+    });
+}
+
+export type FieldPath = string;
+export type FieldMap = { [key: FieldPath]: FieldMetadata };
+
+export function createFieldMap(metadata: Metadata): FieldMap {
+  //FIXME recursive to support deep nesting
+  //TODO merge INFO and FORMAT code paths
+  const fields: { [key: string]: FieldMetadata } = {};
+  Object.entries(metadata.info).forEach(([key, value]) => {
+    fields[`INFO/${key}`] = value;
+    if (value.nested) {
+      for (const fieldMetadata of value.nested.items) {
+        fields[`INFO/${value.id}/${fieldMetadata.id}`] = fieldMetadata;
+      }
+    }
+  });
+
+  Object.entries(metadata.format).forEach(([key, value]) => {
+    if (value.nested) {
+      for (const fieldMetadata of value.nested.items) {
+        fields[`FORMAT/${value.id}/${fieldMetadata.id}`] = fieldMetadata;
+      }
+    } else {
+      fields[`FORMAT/${key}`] = value;
+    }
+  });
+  return fields;
+}
+
+export type MetadataContainer = {
+  htsFile: HtsFileMetadata;
+  records: Metadata;
 };
 
-export const EMPTY_SAMPLE_ITEM: Item<Sample> = {
-  id: -1,
-  data: {
-    person: {
-      familyId: "",
-      individualId: "",
-      paternalId: "",
-      maternalId: "",
-      sex: "UNKNOWN_SEX",
-      affectedStatus: "MISSING",
-    },
-    index: -1,
-    proband: false,
-  },
-};
+/**
+ * Compose metadata from API HTS file metadata and API records metadata
+ *
+ * @param htsFile API HTS file metadata
+ * @param recordsMetadata API records metadata
+ */
+export function composeMetadata(htsFile: HtsFileMetadata, recordsMetadata: Metadata): MetadataContainer {
+  return { htsFile: htsFile, records: recordsMetadata };
+}
+
+export async function fetchSampleVariantTypeIds(sample: Item<Sample>): Promise<Set<VariantTypeId>> {
+  const query = createQuerySample(sample);
+  return fetchVariantTypeIdsQuery(query);
+}
+
+export async function fetchVariantTypeIds(): Promise<Set<VariantTypeId>> {
+  return fetchVariantTypeIdsQuery();
+}
+
+async function fetchVariantTypeIdsQuery(query?: Query): Promise<Set<VariantTypeId>> {
+  const records = await api.getRecords({ query });
+
+  const variantTypeIds = new Set<VariantTypeId>();
+  records.items.forEach((record) => {
+    const svType = record.data.n["SVTYPE"] as ValueString | undefined;
+    const variantTypeId = mapSvTypeToVariantTypeId(svType);
+    variantTypeIds.add(variantTypeId);
+  });
+  return variantTypeIds;
+}

@@ -11,18 +11,29 @@ import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getRecordSamples } from "../utils/viewUtils";
-import { getSampleLabel } from "../utils/sample";
+import { getSampleItemLabel } from "../utils/sample";
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Abbr } from "../components/Abbr";
 import { getSample, getVariant } from "./data/data";
+import { parseVariantType, VariantType } from "../utils/variantTypeUtils";
 
 export const SampleVariantView: Component<RouteSectionProps> = (props) => {
-  const sample = createAsync(() => getSample(Number(props.params.sampleId)));
-  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
+  const variantType = () => parseVariantType(props.params.variantType);
+  const sample = createAsync(() => getSample(props.params.sampleId));
+  const variant = createAsync(() => getVariant(props.params.variantId));
 
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
+
+  function createBreadcrumbItems(sample: Item<Sample>, variant: Item<Record>, variantType: VariantType) {
+    return [
+      { href: "/samples", text: "Samples" },
+      { href: `/samples/${sample.id}`, text: getSampleItemLabel(sample) },
+      { href: `/samples/${sample.id}/variants/${variantType.id}`, text: "Variants" },
+      { text: getRecordLabel(variant) },
+    ];
+  }
 
   return (
     <Show when={sample()} fallback={<Loader />}>
@@ -30,14 +41,7 @@ export const SampleVariantView: Component<RouteSectionProps> = (props) => {
         <Show when={variant()} fallback={<Loader />}>
           {(variant) => (
             <>
-              <Breadcrumb
-                items={[
-                  { href: "/samples", text: "Samples" },
-                  { href: `/samples/${sample().id}`, text: getSampleLabel(sample().data) },
-                  { href: `/samples/${sample().id}/variants`, text: "Variants" },
-                  { text: getRecordLabel(variant()) },
-                ]}
-              />
+              <Breadcrumb items={createBreadcrumbItems(sample(), variant(), variantType())} />
               <Show when={pedigreeSamples()} fallback={<Loader />}>
                 {(pedigreeSamples) => (
                   <Show when={recordsMeta()} fallback={<Loader />}>

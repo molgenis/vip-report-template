@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { abbreviateHeader, findInfoField, isNumerical } from "../utils/field";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 

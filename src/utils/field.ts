@@ -1,7 +1,8 @@
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata, ValueDescription } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { SortPath } from "@molgenis/vip-report-api/src/Api";
+import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 const flattenFieldMetadataRec = (fieldMetadata: FieldMetadata): FieldMetadata[] => {
   return fieldMetadata.nested ? fieldMetadata.nested.items.flatMap(flattenFieldMetadataRec) : [fieldMetadata];
@@ -46,4 +47,25 @@ export function findInfoField(recordsMetadata: Metadata, path: SortPath): FieldM
     field = fieldItems[fieldIndex];
   }
   return field;
+}
+
+export function getCategoryLabelAndDescription(
+  value: ValueString | undefined,
+  infoMetadata: FieldMetadata,
+): ValueDescription {
+  if (infoMetadata.categories === undefined) throw new Error();
+
+  let valueDescription: ValueDescription;
+  if (value !== null && value !== undefined) {
+    const categoryRecord = infoMetadata.categories[value];
+    if (categoryRecord === undefined) {
+      throw new Error(
+        `invalid categorical field '${infoMetadata.id}' value '${value}' is not one of [${Object.keys(infoMetadata.categories).join(", ")}]`,
+      );
+    }
+    valueDescription = categoryRecord;
+  } else {
+    valueDescription = infoMetadata.nullValue || { label: "" };
+  }
+  return valueDescription;
 }

@@ -1,12 +1,11 @@
 import { Component, For } from "solid-js";
 import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { Info } from "./record/Info";
-import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { FieldHeader } from "./FieldHeader";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { isCsqInfo } from "../utils/csqUtils";
-import { useLocation, A } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
 
 function isNonEmptyNestedInfoItem(nestedInfoField: FieldMetadata, index: number, value: Value[] | Value[][]): boolean {
   const infoField = nestedInfoField.nested?.items[index];
@@ -69,7 +68,9 @@ export const VariantInfoNestedTable: Component<{
                     <>
                       {isNonEmptyNestedInfoItem(props.infoField, -1, props.infoValue) && (
                         <td>
-                          <Info info={{ value: value, record: props.record }} infoMeta={props.infoField} context={{}} />
+                          <span>{JSON.stringify(value)}</span>
+                          {/* FIXME */}
+                          {/*<FieldInfo info={{ value: value, record: props.record }} infoMeta={props.infoField} />*/}
                         </td>
                       )}
                     </>
@@ -78,7 +79,7 @@ export const VariantInfoNestedTable: Component<{
               </tr>
             ) : (
               <For each={props.infoValue}>
-                {(value, j) => (
+                {(_value, j) => (
                   <>
                     <tr>
                       <For each={props.infoField.nested !== undefined ? props.infoField.nested.items : []}>
@@ -88,26 +89,19 @@ export const VariantInfoNestedTable: Component<{
                               <td>
                                 {isCsqInfo(infoFieldItem, "Consequence") ? (
                                   <A href={`${useLocation().pathname}/consequences/${j()}`}>
-                                    <Info
-                                      info={{
-                                        value: Array.isArray(value) ? value[i()] : null,
-                                        valueParent: value,
-                                        record: props.record,
-                                      }}
-                                      infoMeta={infoFieldItem}
-                                      context={{}}
-                                    />
+                                    <span>FIXME</span>
+                                    {/* FIXME */}
+                                    {/*<FieldInfo*/}
+                                    {/*  info={{*/}
+                                    {/*    value: Array.isArray(value) ? value[i()] : null,*/}
+                                    {/*    valueParent: value,*/}
+                                    {/*    record: props.record,*/}
+                                    {/*  }}*/}
+                                    {/*  infoMeta={infoFieldItem}*/}
+                                    {/*/>*/}
                                   </A>
                                 ) : (
-                                  <Info
-                                    info={{
-                                      value: Array.isArray(value) ? value[i()] : null,
-                                      valueParent: value,
-                                      record: props.record,
-                                    }}
-                                    infoMeta={infoFieldItem}
-                                    context={{}}
-                                  />
+                                  <span>FIXME</span>
                                 )}
                               </td>
                             )}

@@ -3,7 +3,7 @@ import igv, { Browser } from "igv";
 import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
+import { ComposedQuery, Cram, Sample } from "@molgenis/vip-report-api/src/Api";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
@@ -82,10 +82,10 @@ const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void>
   const crams = data.slice(0);
 
   for (let i = 0; i < samples.length; ++i) {
-    const cram = crams[i];
+    const cram = crams[i] as Cram | null;
 
     if (cram !== null) {
-      const sampleId = samples[i].person.individualId;
+      const sampleId = (samples[i] as Sample).person.individualId;
       await browser.loadTrack({
         type: "alignment",
         format: "cram",
@@ -116,5 +116,6 @@ export const GenomeBrowser: Component<{ contig: string; position: number; sample
       igv.removeBrowser(browser);
     }
   });
+  // noinspection JSUnusedAssignment
   return <div ref={divRef!} />;
 };

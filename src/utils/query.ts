@@ -9,8 +9,319 @@ import {
   SortPath,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
-import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { CategoryRecord, FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { FilterQueries } from "../store";
+import {
+  ConfigFilter,
+  ConfigFilterField,
+  ConfigFilterFormat,
+  FilterValue,
+  FilterValueCategorical,
+  FilterValueInterval,
+  FilterValueMap,
+  FilterValueString,
+} from "../types/configFilter";
+import { VariantType } from "./variantTypeUtils";
+
+import { SampleContainer } from "./sample";
+import { ConfigFilters } from "../types/config";
+import { ConfigFilterComposed } from "../types/configFilterComposed";
+import { createQueryFilterComposed } from "./queryComposed";
+import { UnexpectedEnumValueException } from "./error";
+
+type ComposedQueryOperator = "and" | "or"; // TODO move to API.d.ts in vip-report-api
+
+export function createQuery(
+  variantType: VariantType,
+  sample: SampleContainer | null,
+  filterConfigs: ConfigFilters,
+  filterValues: FilterValueMap,
+): Query | null {
+  const queryParts: Query[] = [];
+
+  const queryVariantType = createQueryVariantType(variantType);
+  if (queryVariantType !== null) {
+    queryParts.push(queryVariantType);
+  }
+
+  if (sample !== null) {
+    const querySample = createQuerySample(sample.item);
+    queryParts.push(querySample);
+  }
+
+  const queryFilters = createQueryFilters(filterConfigs, filterValues);
+  if (queryFilters !== null) {
+    queryParts.push(queryFilters);
+  }
+  return queryParts.length > 0 ? createQueryComposed(queryParts, "and") : null;
+}
+
+export function createQueryComposed(queryParts: Query[], operator: ComposedQueryOperator): Query {
+  const query: Query | null = createQueryComposedNullable(queryParts, operator);
+  if (query === null) {
+    throw new Error("query cannot be null");
+  }
+  return query;
+}
+
+function createQueryComposedNullable(queryParts: Query[], operator: ComposedQueryOperator): Query | null {
+  let query: Query | null;
+  if (queryParts.length === 0) {
+    query = null;
+  } else if (queryParts.length === 1) {
+    query = queryParts[0]!;
+  } else {
+    query = { operator, args: queryParts };
+  }
+  return query;
+}
+
+export function createQuerySample(sample: Item<Sample>): Query {
+  const selector: Selector = ["s", sample.data.index, "GT", "t"];
+
+  const queryParts: Query[] = [
+    { selector, operator: "!=", args: "hom_r" },
+    { selector, operator: "!=", args: "miss" },
+  ];
+  return createQueryComposed(queryParts, "and");
+}
+
+/**
+ * Create API query for state of list of filters
+ *
+ * @param filterConfigs filter configurations
+ * @param filterValues filter values
+ */
+function createQueryFilters(filterConfigs: ConfigFilters, filterValues: FilterValueMap): Query | null {
+  const queryParts = filterConfigs
+    .map((filter) => createQueryFilter(filter, filterValues[filter.id]!))
+    .filter((query) => query !== null);
+  return createQueryComposedNullable(queryParts, "and");
+}
+
+/**
+ * Create API query for state of one filter
+ *
+ * @param filterConfig filter configuration
+ * @param filterValue filter value
+ */
+function createQueryFilter(filterConfig: ConfigFilter, filterValue: FilterValue): Query | null {
+  let query: Query | null;
+  if (filterValue !== undefined) {
+    switch (filterConfig.type) {
+      case "composed":
+        query = createQueryFilterComposed(filterConfig as ConfigFilterComposed, filterValue);
+        break;
+      case "genotype":
+      case "info":
+        query = createQueryFilterField(filterConfig as ConfigFilterField, filterValue);
+        break;
+      default:
+        throw new UnexpectedEnumValueException(filterConfig.type);
+    }
+  } else {
+    query = null;
+  }
+  return query;
+}
+
+function createQueryFilterField(filter: ConfigFilterField, filterValue: FilterValue): Query {
+  let query: Query;
+  switch (filter.field.type) {
+    case "CATEGORICAL":
+      query = createQueryFilterCategorical(filter, filterValue as FilterValueCategorical);
+      break;
+    case "CHARACTER":
+    case "STRING":
+      query = createQueryFilterString(filter, filterValue as FilterValueString);
+      break;
+    case "INTEGER":
+      query = createQueryFilterInteger(filter, filterValue as FilterValueInterval);
+      break;
+    case "FLAG":
+      query = createQueryFilterFlag(filter, filterValue);
+      break;
+    case "FLOAT":
+      query = createQueryFilterFloat(filter, filterValue);
+      break;
+    default:
+      throw new UnexpectedEnumValueException(filter.field.type);
+  }
+  return query;
+}
+
+function createQueryFilterCategorical(filter: ConfigFilterField, filterValue: FilterValueCategorical): Query {
+  const selector = createSelectorFilter(filter);
+  const nonNullFilterValues = filterValue.filter((value) => value !== "__null");
+
+  const queryParts: Query[] = [];
+  if (nonNullFilterValues.length > 0) {
+    queryParts.push({
+      selector,
+      operator: filter.field.parent
+        ? filter.field.number.count === 1
+          ? "has_any"
+          : "any_has_any"
+        : filter.field.number.count === 1
+          ? "in"
+          : "has_any",
+      args: nonNullFilterValues,
+    });
+  }
+
+  if (nonNullFilterValues.length < filterValue.length) {
+    // workaround: use '!has_any' and '!any_has_any' since '== null' and '== []' do not work
+    queryParts.push({
+      selector,
+      operator: filter.field.parent
+        ? filter.field.number.count === 1
+          ? "!has_any"
+          : "!any_has_any"
+        : filter.field.number.count === 1
+          ? "!in"
+          : "!has_any",
+      args: Object.keys(filter.field.categories as CategoryRecord),
+    });
+  }
+  return createQueryComposed(queryParts, "or");
+}
+
+function createQueryFilterInteger(filter: ConfigFilterField, filterValue: FilterValueInterval): Query {
+  const selector = createSelectorFilter(filter);
+
+  const queryParts: Query[] = [];
+  if (filterValue.left !== undefined) {
+    queryParts.push({
+      selector,
+      operator: ">=",
+      args: filterValue.left,
+    });
+  }
+  if (filterValue.right !== undefined) {
+    queryParts.push({
+      selector,
+      operator: "<=",
+      args: filterValue.right,
+    });
+  }
+  const query = createQueryComposed(queryParts, "and");
+  if (query === null) throw Error("query cannot be null");
+  return query;
+}
+
+function createQueryFilterFlag(filter: ConfigFilterField, filterValue: FilterValue): Query {
+  throw new Error("FIXME implement:" + filter + "," + filterValue);
+}
+
+function createQueryFilterFloat(filter: ConfigFilterField, filterValue: FilterValue): Query {
+  throw new Error("FIXME implement:" + filter + "," + filterValue);
+}
+
+function createQueryFilterString(filter: ConfigFilterField, filterValue: FilterValueString): Query {
+  return {
+    selector: createSelectorFilter(filter),
+    operator: filter.field.number.count === 1 ? "has_any" : "any_has_any",
+    args: filterValue,
+  };
+}
+
+function createQueryVariantType(variantType: VariantType): Query | null {
+  let query: Query | null;
+  switch (variantType.id) {
+    case "all":
+      query = null;
+      break;
+    case "snv":
+      query = createQueryVariantTypeSnv();
+      break;
+    case "str":
+      query = createQueryVariantTypeStr();
+      break;
+    case "sv":
+      query = createQueryVariantTypeSv();
+      break;
+    default:
+      throw new UnexpectedEnumValueException(variantType.id);
+  }
+  return query;
+}
+
+function createQueryVariantTypeSnv(): Query {
+  const queryParts: Query[] = [
+    {
+      selector: createSelectorVariantType(),
+      operator: "==",
+      args: null,
+    },
+    {
+      selector: createSelectorVariantType(),
+      operator: "==",
+      args: undefined,
+    },
+  ];
+  return createQueryComposed(queryParts, "or");
+}
+
+function createQueryVariantTypeStr(): Query {
+  return {
+    selector: createSelectorVariantType(),
+    operator: "==",
+    args: "STR",
+  };
+}
+
+function createQueryVariantTypeSv(): Query {
+  return {
+    operator: "and",
+    args: [
+      {
+        selector: createSelectorVariantType(),
+        operator: "!=",
+        args: "STR",
+      },
+      {
+        selector: createSelectorVariantType(),
+        operator: "!=",
+        args: null,
+      },
+      {
+        selector: createSelectorVariantType(),
+        operator: "!=",
+        args: undefined,
+      },
+    ],
+  };
+}
+
+function createSelectorFilter(filter: ConfigFilterField) {
+  let selector: SelectorPart[];
+  switch (filter.type) {
+    case "genotype":
+      selector = createSelectorFilterFormat(filter as ConfigFilterFormat);
+      break;
+    case "info":
+      selector = createSelectorFilterInfo(filter);
+      break;
+    case "composed":
+    default:
+      throw new UnexpectedEnumValueException(filter.type);
+  }
+  return selector;
+}
+
+function createSelectorFilterFormat(filter: ConfigFilterFormat): SelectorPart[] {
+  return ["s", filter.sample.item.data.index, ...selector(filter.field)];
+}
+
+function createSelectorFilterInfo(filter: ConfigFilterField): SelectorPart[] {
+  return ["n", ...selector(filter.field)];
+}
+
+function createSelectorVariantType(): SelectorPart[] {
+  return ["n", "SVTYPE"];
+}
+
+// TODO cleanup - start
 
 export function createSampleQuery(
   sample: Item<Sample>,
@@ -26,13 +337,11 @@ export function createSampleQuery(
       { selector: genotypeSelector, operator: "!=", args: "miss" },
     ],
   };
-  const searchFilterQuery = createQuery(search, filters, metadata);
-  const query: Query =
-    searchFilterQuery !== null ? { operator: "and", args: [sampleQuery, searchFilterQuery] } : sampleQuery;
-  return query;
+  const searchFilterQuery = createQueryOld(search, filters, metadata);
+  return searchFilterQuery !== null ? { operator: "and", args: [sampleQuery, searchFilterQuery] } : sampleQuery;
 }
 
-export function createQuery(
+export function createQueryOld(
   search: string | undefined,
   filters: FilterQueries | undefined,
   metadata: Metadata,
@@ -152,3 +461,5 @@ function sortPath(field: FieldMetadata): SortPath {
 export function infoSortPath(field: FieldMetadata): SortPath {
   return ["n", ...sortPath(field)];
 }
+
+// TODO cleanup - stop

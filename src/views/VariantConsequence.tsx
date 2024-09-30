@@ -16,12 +16,12 @@ import {
   fetchRecordsMeta,
   getRecordLabel,
 } from "../utils/ApiUtils";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getVariant } from "./data/data";
 
 export const VariantConsequence: Component<RouteSectionProps> = (props) => {
-  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
+  const variant = createAsync(() => getVariant(props.params.variantId));
   const consequenceId = () => Number(props.params.consequenceId);
 
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });

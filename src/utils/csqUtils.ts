@@ -1,6 +1,7 @@
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FieldValue } from "../components/record/field/Field";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 
 function is(infoMeta: FieldMetadata, id: string) {
   return infoMeta.id === id;
@@ -18,10 +19,29 @@ export function isAnyCsqInfo(infoMeta: FieldMetadata, ids: string[]) {
   return isCsq(infoMeta) && ids.some((id) => is(infoMeta, id));
 }
 
-export function getCsqInfoIndex(infoMeta: FieldMetadata, id: string): number {
-  return infoMeta.parent?.nested?.items.findIndex((item) => item.id === id) || -1;
+export function getNestedFieldIndices(fieldMetadata: FieldMetadata, ids: string[]): number[] {
+  return ids.map((id) => getNestedFieldIndex(fieldMetadata, id));
 }
 
-export function getCsqInfo(info: FieldValue, infoIndex: number): Value {
-  return (info.valueParent as Value[])[infoIndex];
+export function getNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
+  if (fieldMetadata.nested === undefined) throw new Error(`field '${fieldMetadata.id}' is not nested`);
+  return fieldMetadata.nested.items.findIndex((childFieldMetadata) => childFieldMetadata.id === id) || -1;
+}
+
+export function getFieldMultilineValue(
+  fieldMetadata: FieldMetadata,
+  record: Item<Record>,
+  valueIndex: number,
+  fieldIndex: number,
+): Value | undefined {
+  const csqValue = getNestedFieldValues(fieldMetadata, record)[valueIndex] as Value[];
+  return csqValue[fieldIndex];
+}
+
+export function getFieldValueCount(fieldMetadata: FieldMetadata | undefined, record: Item<Record>) {
+  return fieldMetadata ? getNestedFieldValues(fieldMetadata, record).length : 0;
+}
+
+function getNestedFieldValues(csqFieldMetadata: FieldMetadata, record: Item<Record>): ValueArray {
+  return record.data.n[csqFieldMetadata.id] as ValueArray;
 }

@@ -15,11 +15,11 @@ importers:
         specifier: ^6.6.0
         version: 6.6.0
       '@molgenis/vip-report-api':
-        specifier: ^5.1.1
-        version: 5.1.1
+        specifier: link:C:\Users\Dennis Hendriksen\Dev\vip-report-api
+        version: link:../vip-report-api
       '@molgenis/vip-report-vcf':
-        specifier: ^2.0.3
-        version: 2.0.3
+        specifier: link:C:\Users\Dennis Hendriksen\Dev\vip-report-vcf
+        version: link:../vip-report-vcf
       '@solidjs/router':
         specifier: ^0.14.3
         version: 0.14.3(solid-js@1.8.22)
@@ -382,12 +382,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
-
-  '@molgenis/vip-report-api@5.1.1':
-    resolution: {integrity: sha512-5QspmDkc9UTOrsNfX7yZuSJ+Z96KifQMHA0cnK2WVDuGK8WDftPolCmiULbgykjmf2TxgcXMty8Q29pq3P+W0w==}
-
-  '@molgenis/vip-report-vcf@2.0.3':
-    resolution: {integrity: sha512-ANBvSoCHTOuXVfGY1kBJsIR/rbsG5TX/P1YrJERvwiQYmc7ItvSR2d7lf4CDMb1di0jGJv2yrGNlKuosJWm8xw==}
 
   '@molgenis/vite-plugin-inline@1.0.25':
     resolution: {integrity: sha512-eVezkw63OhhI59KvJ6Y8eFQXQ7jFFkHutugm7qlDYMAeQojBvS8ch7sVrChcc20WE6413e2t5dUA6tmW6Aj2+A==}
@@ -1928,12 +1922,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
-
-  '@molgenis/vip-report-api@5.1.1':
-    dependencies:
-      '@molgenis/vip-report-vcf': 2.0.3
-
-  '@molgenis/vip-report-vcf@2.0.3': {}
 
   '@molgenis/vite-plugin-inline@1.0.25(vite@5.4.2(sass@1.77.8))':
     dependencies:

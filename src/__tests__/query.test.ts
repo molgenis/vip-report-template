@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FilterQueries } from "../store";
 import {
-  createQuery,
+  createQueryOld,
   createSampleQuery,
   infoFieldKey,
   infoSelector,
@@ -90,7 +90,7 @@ describe("query utilities", () => {
       "CSQ/field1": { selector: ["n", "CSQ", "*", 0], operator: "==", args: [0] },
       "CSQ/field2": { selector: ["n", "CSQ", "*", 1], operator: "==", args: [1, 2] },
     };
-    expect(createQuery(searchText, filterQueries, meta)).toStrictEqual({
+    expect(createQueryOld(searchText, filterQueries, meta)).toStrictEqual({
       operator: "and",
       args: [
         {
@@ -112,20 +112,20 @@ describe("query utilities", () => {
   });
 
   test("create query: undefined search and undefined filters", () => {
-    expect(createQuery(undefined, undefined, meta)).toBe(null);
+    expect(createQueryOld(undefined, undefined, meta)).toBe(null);
   });
 
   test("create query: undefined search and empty filters", () => {
-    expect(createQuery(undefined, {}, meta)).toBe(null);
+    expect(createQueryOld(undefined, {}, meta)).toBe(null);
   });
 
   test("create query: undefined search and empty filters with keys", () => {
-    expect(createQuery(undefined, { filterId: undefined }, meta)).toBe(null);
+    expect(createQueryOld(undefined, { filterId: undefined }, meta)).toBe(null);
   });
 
   test("create query - search query only", () => {
     const searchText = "searchString";
-    expect(createQuery(searchText, undefined, meta)).toStrictEqual({
+    expect(createQueryOld(searchText, undefined, meta)).toStrictEqual({
       args: [
         {
           args: ["searchString"],
@@ -142,17 +142,17 @@ describe("query utilities", () => {
     });
   });
 
-  test("create query - filter queries only", () => {
+  test("create query - filter_old queries only", () => {
     const filterQueries = {};
-    expect(createQuery(undefined, filterQueries, meta)).toBe(null);
+    expect(createQueryOld(undefined, filterQueries, meta)).toBe(null);
   });
 
-  test("create query - one filter query", () => {
+  test("create query - one filter_old query", () => {
     const queryClause: QueryClause = { selector: ["n", "CSQ", "*", 0], operator: "==", args: [0] };
     const filterQueries: FilterQueries = {
       "CSQ/field1": queryClause,
     };
-    expect(createQuery(undefined, filterQueries, meta)).toBe(queryClause);
+    expect(createQueryOld(undefined, filterQueries, meta)).toBe(queryClause);
   });
 
   test("infoSelector", () => {

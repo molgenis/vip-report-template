@@ -1,0 +1,7 @@
+/* from https://stackoverflow.com/a/29806043 */
+select:required:invalid {
+  color: var(--bulma-input-placeholder-color)
+}
+option {
+  color: black;
+}

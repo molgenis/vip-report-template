@@ -12,18 +12,24 @@ import { EMPTY_RECORDS_METADATA, fetchRecordsMeta, getRecordLabel } from "../uti
 import { getVariant } from "./data/data";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { parseVariantType, VariantType } from "../utils/variantTypeUtils";
 
 export const Variant: Component<RouteSectionProps<Promise<Item<Record>>>> = (props) => {
-  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
+  const variantType = () => parseVariantType(props.params.variantType);
+  const variant = createAsync(() => getVariant(props.params.variantId));
 
   const [recordsMetadata] = createResource(fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
+
+  function createBreadcrumbItems(variant: Item<Record>, variantType: VariantType) {
+    return [{ href: `/variants/${variantType.id}`, text: "Variants" }, { text: getRecordLabel(variant) }];
+  }
 
   return (
     <>
       <Show when={variant()} fallback={<Loader />}>
         {(variant) => (
           <>
-            <Breadcrumb items={[{ href: "/variants", text: "Variants" }, { text: getRecordLabel(variant()) }]} />
+            <Breadcrumb items={createBreadcrumbItems(variant(), variantType())} />
             <GenomeBrowser contig={variant().data.c} position={variant().data.p} samples={[]} />
             <div class="columns">
               <div class="column is-3">

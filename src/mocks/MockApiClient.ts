@@ -15,34 +15,37 @@ import {
 } from "@molgenis/vip-report-api/src/Api";
 import { samples1, samples100 } from "./static";
 import {
-  cram as cramGRCh37,
   crai as craiGRCh37,
+  cram as cramGRCh37,
   decisionTree as decisionTreeGRCh37,
-  sampleTree as sampleTreeGRCh37,
   fastaGz as fastaGzGRCh37,
   genesGz as genesGzGRCh37,
   samplesFamily as samplesFamilyGRCh37,
-  vcfMeta as vcfMetaGRCh37,
+  samplesFamilyDuoPlusSister as samplesFamilyDuoPlusSisterGRCh37,
+  sampleTree as sampleTreeGRCh37,
   vcfFamily as vcfFamilyGRCh37,
+  vcfMeta as vcfMetaGRCh37,
   vcfNoVep as vcfNoVepGRCh37,
   vcfSamples0 as vcfSamples0GRCh37,
   vcfSamples1 as vcfSamples1GRCh37,
   vcfSamples100 as vcfSamples100GRCh37,
-  samplesFamilyDuoPlusSister as samplesFamilyDuoPlusSisterGRCh37,
 } from "./GRCh37/static";
 import {
-  cram as cramGRCh38,
   crai as craiGRCh38,
+  cram as cramGRCh38,
   decisionTree as decisionTreeGRCh38,
+  decisionTreeStr as decisionTreeStrGRCh38,
   fastaGz as fastaGzGRCh38,
   genesGz as genesGzGRCh38,
   samplesFamily as samplesFamilyGRCh38,
-  vcfMeta as vcfMetaGRCh38,
+  samplesStr,
   vcfFamily as vcfFamilyGRCh38,
+  vcfMeta as vcfMetaGRCh38,
   vcfNoVep as vcfNoVepGRCh38,
   vcfSamples0 as vcfSamples0GRCh38,
   vcfSamples1 as vcfSamples1GRCh38,
   vcfSamples100 as vcfSamples100GRCh38,
+  vcfStr as vcfStrGRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
@@ -367,6 +370,27 @@ export class MockApiClient implements Api {
       vcfMeta: vcfMetaGRCh38,
     };
 
+    const mockReportDataStrGRCh38: ReportData = {
+      metadata: {
+        app: {
+          name: "vcf-report",
+          version: "0.0.8",
+          args: "-i testdata_b38_100Samples.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
+        },
+        htsFile: {
+          uri: "testdata_b38_100Samples.vcf",
+          htsFormat: "VCF",
+          genomeAssembly: "GRCh38",
+        },
+      } as Metadata,
+      data: samplesStr,
+      binary: {
+        vcf: vcfStrGRCh38,
+      },
+      decisionTree: decisionTreeStrGRCh38,
+      vcfMeta: vcfMetaGRCh38,
+    };
+
     const mockReportDataNoSampleGRCh38: ReportData = {
       metadata: {
         app: {
@@ -401,6 +425,7 @@ export class MockApiClient implements Api {
     datasets["GRCh38 Samples 0"] = mockReportDataNoSampleGRCh38;
     datasets["GRCh38 Samples 1"] = mockReportData1SampleGRCh38;
     datasets["GRCh38 Samples 100"] = mockReportData100SamplesGRCh38;
+    datasets["GRCh38 Samples 1 STR"] = mockReportDataStrGRCh38;
     return datasets;
   }
 

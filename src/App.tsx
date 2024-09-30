@@ -1,5 +1,5 @@
 import { onMount, ParentComponent } from "solid-js";
-import { useLocation, useNavigate, A } from "@solidjs/router";
+import { A, useLocation, useNavigate } from "@solidjs/router";
 import api from "./Api";
 import { DatasetDropdown } from "./components/DatasetDropdown";
 
@@ -14,7 +14,7 @@ const App: ParentComponent = (props) => {
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
       if (location.pathname === "/") {
         if (samples.page.totalElements === 1) {
-          navigate(`/samples/${samples.items[0].id}/variants`);
+          navigate(`/samples/${samples.items[0]!.id}/variants`);
         } else if (samples.total === 0) {
           navigate(`/variants`);
         } else {

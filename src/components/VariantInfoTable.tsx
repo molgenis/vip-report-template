@@ -1,6 +1,5 @@
 import { Component, For } from "solid-js";
 import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
-import { Info } from "./record/Info";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 
@@ -23,11 +22,12 @@ export const VariantInfoTable: Component<{
                 <tr>
                   <td>{infoField.id}</td>
                   <td>
-                    <Info
-                      info={{ value: props.record.data.n[infoField.id], record: props.record }}
-                      infoMeta={infoField}
-                      context={{}}
-                    />
+                    <span>FIXME</span>
+                    {/* FIXME */}
+                    {/*<FieldInfo*/}
+                    {/*  info={{ value: props.record.data.n[infoField.id], record: props.record }}*/}
+                    {/*  infoMeta={infoField}*/}
+                    {/*/>*/}
                   </td>
                 </tr>
               )}

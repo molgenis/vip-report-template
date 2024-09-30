@@ -1,4 +1,4 @@
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api/src/Api";
 
@@ -22,6 +22,7 @@ class InvalidSortPathError extends Error {
     this.name = "InvalidSortPathError";
   }
 }
+
 export function createRecordSort(recordsMeta: Metadata, sort?: SortOrder | SortOrder[]): Sort {
   const orders = sort ? (Array.isArray(sort) ? sort : [sort]) : [];
   return { orders: orders.map((order) => createOrder(order, recordsMeta)) };
@@ -60,6 +61,6 @@ function createDirection(compare?: "asc" | "desc" | CompareFn): Direction {
   if (compare === undefined) return DIRECTION_ASCENDING;
   else if (compare === DIRECTION_ASCENDING) return DIRECTION_ASCENDING;
   else if (compare === DIRECTION_DESCENDING) return DIRECTION_DESCENDING;
-  else if (typeof compare === "function") throw new Error("cannot convert sort with custom compare function");
+  else if (typeof compare === "function") throw new Error("cannot convert sort with composed compare function");
   else throw new Error(`invalid sort compare '${compare}'`);
 }

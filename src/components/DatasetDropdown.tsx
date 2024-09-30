@@ -17,7 +17,7 @@ export const DatasetDropdown: Component = () => {
       navigate(`/`);
       const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
       if (samples.page.totalElements === 1) {
-        navigate(`/samples/${samples.items[0].id}/variants`);
+        navigate(`/samples/${samples.items[0]!.id}/variants`);
       } else if (samples.total === 0) {
         navigate(`/variants`);
       } else {

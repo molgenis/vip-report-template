@@ -1,4 +1,4 @@
-import { useNavigate, A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import { Component, createMemo, For, Show } from "solid-js";
 import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "./HpoTerm";
@@ -70,7 +70,7 @@ export const SampleTable: Component<{
                   </td>
                   <td>{sampleFatherLabel(sample.data)}</td>
                   <td>{sampleMotherLabel(sample.data)}</td>
-                  <td>{sample.data.proband === true ? "True" : "False"}</td>
+                  <td>{sample.data.proband ? "True" : "False"}</td>
                   <td>{getSampleSexLabel(sample.data)}</td>
                   <td>{getSampleAffectedStatusLabel(sample.data)}</td>
                   <td>

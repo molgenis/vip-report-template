@@ -1,7 +1,7 @@
 import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Sample } from "@molgenis/vip-report-api/src/Api";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 
 export function getSpecificConsequence(csqs: ValueArray, rowIndex: number): ValueArray {
   if (rowIndex < 0) {

@@ -1,8 +1,8 @@
 import { Component, createResource, Show } from "solid-js";
 import { SampleTable } from "../components/SampleTable";
-import { Pager } from "../components/record/Pager";
+import { PageChangeEvent, Pager } from "../components/Pager";
 import { SearchBox } from "../components/SearchBox";
-import { Checkbox, CheckboxEvent } from "../components/Checkbox";
+import { CheckboxDeprecated, CheckboxEvent } from "../components/form/CheckboxDeprecated";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { EMPTY_PARAMS, EMPTY_PHENOTYPES, fetchPhenotypes, fetchSamples } from "../utils/ApiUtils";
 import { useStore } from "../store";
@@ -21,7 +21,7 @@ export const Samples: Component = () => {
     actions.setSamplePage(0);
   }
 
-  const onPageChange = (page: number) => actions.setSamplePage(page);
+  const onPageChange = (event: PageChangeEvent) => actions.setSamplePage(event.page);
   const onSearchChange = (search: string) => {
     actions.setSampleSearchQuery(search);
     actions.setSamplePage(0);
@@ -49,11 +49,10 @@ export const Samples: Component = () => {
         args.push(probandQuery);
       }
       if (args.length > 0) {
-        const query: Query = {
+        return {
           operator: "and",
           args: args,
         };
-        return query;
       }
     }
     return null;
@@ -95,7 +94,7 @@ export const Samples: Component = () => {
                     <p class="has-text-weight-semibold">Proband</p>
                     <div class="field">
                       <div class="control">
-                        <Checkbox
+                        <CheckboxDeprecated
                           value={"proband"}
                           label=""
                           onChange={onProbandFilterChange}

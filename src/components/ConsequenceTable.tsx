@@ -1,7 +1,6 @@
 import { Component, For, Show } from "solid-js";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { Info } from "./record/Info";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { FieldHeader } from "./FieldHeader";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
@@ -27,11 +26,12 @@ export const ConsequenceTable: Component<{
                   <tr>
                     <FieldHeader field={field} />
                     <td>
-                      <Info
-                        info={{ value: props.csqValues[index()], valueParent: props.csqValues, record: props.record }}
-                        infoMeta={field}
-                        context={{}}
-                      />
+                      <span>FIXME</span>
+                      {/* FIXME */}
+                      {/*<FieldTyped*/}
+                      {/*  value={{ value: props.csqValues[index()], valueParent: props.csqValues, record: props.record }}*/}
+                      {/*  metadata={field}*/}
+                      {/*/>*/}
                     </td>
                   </tr>
                 </Show>

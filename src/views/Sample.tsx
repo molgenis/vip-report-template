@@ -1,11 +1,11 @@
 import { Component, For, Show } from "solid-js";
-import { createAsync, RouteSectionProps, A } from "@solidjs/router";
+import { A, createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getSample } from "./data/data";
 
 export const Sample: Component<RouteSectionProps> = (props) => {
-  const sample = createAsync(() => getSample(Number(props.params.sampleId)));
+  const sample = createAsync(() => getSample(props.params.sampleId));
 
   return (
     <Show when={sample()} fallback={<Loader />}>

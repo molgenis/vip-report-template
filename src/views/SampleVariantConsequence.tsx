@@ -2,10 +2,10 @@ import { Component, createResource, Show } from "solid-js";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import {
-  fetchSampleTree,
   fetchDecisionTree,
   fetchPedigreeSamples,
   fetchRecordsMeta,
+  fetchSampleTree,
   getRecordLabel,
 } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
@@ -16,15 +16,15 @@ import { ConsequenceTable } from "../components/ConsequenceTable";
 import { getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath, getSampleTreePath } from "../utils/decisionTreeUtils";
-import { getSampleLabel } from "../utils/sample";
+import { getSampleItemLabel } from "../utils/sample";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getSample, getVariant } from "./data/data";
 
 export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props) => {
-  const sample = createAsync(() => getSample(Number(props.params.sampleId)));
-  const variant = createAsync(() => getVariant(Number(props.params.variantId)));
+  const sample = createAsync(() => getSample(props.params.sampleId));
+  const variant = createAsync(() => getVariant(props.params.variantId));
   const consequenceId = () => Number(props.params.consequenceId);
   const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
   const [recordsMeta] = createResource(fetchRecordsMeta);
@@ -40,10 +40,10 @@ export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props
               <Breadcrumb
                 items={[
                   { href: "/samples", text: "Samples" },
-                  { href: `/samples/${sample().id}`, text: getSampleLabel(sample().data) },
+                  { href: `/samples/${sample().id}`, text: getSampleItemLabel(sample()) },
                   { href: `/samples/${sample().id}/variants`, text: "Variants" },
                   {
-                    href: `/samples/${sample().id}/variants/${variant().id}`,
+                    href: `/samples/${sample().id}/variant/${variant().id}`,
                     text: getRecordLabel(variant()),
                   },
                   { text: `Consequence #${consequenceId()}` },
