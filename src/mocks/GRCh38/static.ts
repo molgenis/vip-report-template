@@ -33,9 +33,11 @@ import vcfUrlNoVep from "./vcf/no_vep.vcf.blob";
 import vcfUrlSamples0 from "./vcf/samples_0.vcf.blob";
 import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
+import vcfUrlStr from "./vcf/str.vcf.blob";
 
 import { fetchAsBytes } from "../utils";
 import decisionTreeJson from "./decisionTree.json";
+import decisionTreeStrJson from "./decisionTreeStr.json";
 import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
 import { Metadata } from "@molgenis/vip-report-vcf/src/FieldMetadata";
 
@@ -43,6 +45,7 @@ export const cram = await fetchAsBytes(cramUrl as string);
 export const crai = await fetchAsBytes(craiUrl as string);
 
 export const decisionTree: DecisionTree = decisionTreeJson as unknown as DecisionTree;
+export const decisionTreeStr: DecisionTree = decisionTreeStrJson as unknown as DecisionTree;
 
 export const fastaGz = {
   "chr1:9982230-9982730": await fetchAsBytes(fastaUrl_chr1_9982230_9982730 as string),
@@ -86,6 +89,24 @@ export const vcfSamples0 = await fetchAsBytes(vcfUrlSamples0 as string);
 export const vcfSamples1 = await fetchAsBytes(vcfUrlSamples1 as string);
 
 export const vcfSamples100 = await fetchAsBytes(vcfUrlSamples100 as string);
+
+export const vcfStr = await fetchAsBytes(vcfUrlStr as string);
+
+export const samplesStr = {
+  samples: [
+    {
+      person: {
+        familyId: "FAM001",
+        individualId: "Patient",
+        sex: "FEMALE",
+        affectedStatus: "AFFECTED",
+      },
+      index: 0,
+      proband: true,
+    },
+  ],
+  phenotypes: [],
+};
 
 export const samplesFamily = {
   samples: [

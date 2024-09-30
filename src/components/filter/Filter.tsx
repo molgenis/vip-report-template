@@ -1,54 +1,37 @@
 import { Component, Match, Switch } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterCategorical } from "./FilterCategorical";
-import { FilterIntegerGq } from "./FilterIntegerGq";
-import { Item, Query, Sample } from "@molgenis/vip-report-api/src/Api";
-import { FilterClinVar } from "./FilterClinVar";
-import { isAnyCsqInfo } from "../../utils/csqUtils";
-import { FilterChangeEvent, FilterClearEvent } from "./Filters";
-import { FilterAllelicBalance } from "./FilterAllelicBalance";
-import { FilterHpo } from "./FilterHpo";
-import { FilterGene } from "./FilterGene";
-import { FilterVI } from "./FilterVI";
-import { FilterVariantType } from "./FilterVariantType";
+import { FilterValueChangeCallback, FilterValueClearCallback } from "./FilterWrapper";
+import { ConfigFilter, ConfigFilterField, FilterValue, FilterValueField } from "../../types/configFilter";
+import { FilterTyped } from "./typed/FilterTyped";
+import { ConfigFilterComposed, FilterValueComposed } from "../../types/configFilterComposed";
+import { FilterComposed } from "./composed/FilterComposed";
+import { ErrorNotification } from "../ErrorNotification";
 
-export type FilterProps = {
-  field: FieldMetadata;
-  query?: Query;
-  onChange: (event: FilterChangeEvent) => void;
-  onClear: (event: FilterClearEvent) => void;
-  sample?: Item<Sample>;
-};
+export const Filter: Component<{
+  config: ConfigFilter;
+  value?: FilterValueField;
+  onValueChange: FilterValueChangeCallback<FilterValue>;
+  onValueClear: FilterValueClearCallback;
+}> = (props) => {
+  const type = () => props.config.type;
 
-export const Filter: Component<FilterProps> = (props) => {
   return (
-    <>
-      <Switch>
-        <Match when={props.field.id === "GQ"}>
-          <FilterIntegerGq {...props} />
-        </Match>
-        <Match when={props.field.id === "VIAB"}>
-          <FilterAllelicBalance {...props} />
-        </Match>
-        <Match when={props.field.id === "VI"}>
-          <FilterVI {...props} />
-        </Match>
-        <Match when={props.field.id === "SVTYPE"}>
-          <FilterVariantType {...props} />
-        </Match>
-        <Match when={isAnyCsqInfo(props.field, ["clinVar_CLNSIG", "clinVar_CLNSIGINCL"])}>
-          <FilterClinVar {...props} />
-        </Match>
-        <Match when={props.field.id === "HPO"}>
-          <FilterHpo {...props} />
-        </Match>
-        <Match when={props.field.id === "IncompletePenetrance"}>
-          <FilterGene {...props} />
-        </Match>
-        <Match when={props.field.type === "CATEGORICAL"}>
-          <FilterCategorical {...props} />
-        </Match>
-      </Switch>
-    </>
+    <Switch fallback={<ErrorNotification error={`unexpected field type ${type()}`} />}>
+      <Match when={type() === "info" || type() === "genotype"}>
+        <FilterTyped
+          field={(props.config as ConfigFilterField).field}
+          value={props.value as FilterValueField | undefined}
+          onValueChange={props.onValueChange}
+          onValueClear={props.onValueClear}
+        />
+      </Match>
+      <Match when={type() === "composed"}>
+        <FilterComposed
+          config={props.config as ConfigFilterComposed}
+          value={props.value as FilterValueComposed | undefined}
+          onValueChange={props.onValueChange}
+          onValueClear={props.onValueClear}
+        />
+      </Match>
+    </Switch>
   );
 };

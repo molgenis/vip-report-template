@@ -1,9 +1,11 @@
 import { Component, For } from "solid-js";
-export type RecordsPerPageEvent = { number: number };
+
+export type RecordsPerPageChangeEvent = { number: number };
+export type RecordsPerPageChangeCallback = (event: RecordsPerPageChangeEvent) => void;
 
 export const RecordsPerPage: Component<{
   initialValue: number;
-  onChange: (event: RecordsPerPageEvent) => void;
+  onChange: (event: RecordsPerPageChangeEvent) => void;
 }> = (props) => {
   const options = [10, 20, 50, 100];
   const onRecordsPerPageChange = (event: Event) => {

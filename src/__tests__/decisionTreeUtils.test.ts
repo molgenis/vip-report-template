@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 
 test("Get DecisionTree Path", () => {
   const fieldMetaVIPP: FieldMetadata = {

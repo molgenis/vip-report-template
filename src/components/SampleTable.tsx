@@ -1,45 +1,16 @@
-import { useNavigate, A } from "@solidjs/router";
-import { Component, createMemo, For, Show } from "solid-js";
-import { Item, Phenotype, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
+import { A, useNavigate } from "@solidjs/router";
+import { Component, For, Show } from "solid-js";
+import { Item, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
 import { HpoTerm } from "./HpoTerm";
 import { Anchor } from "./Anchor";
-import {
-  getSampleAffectedStatusLabel,
-  getSampleFather,
-  getSampleLabel,
-  getSampleMother,
-  getSampleSexLabel,
-} from "../utils/sample";
-
-function mapPhenotypes(phenotypes: Item<Phenotype>[]) {
-  const phenoMap: { [key: string]: PhenotypicFeature[] } = {};
-  phenotypes.forEach((item: Item<Phenotype>) => {
-    phenoMap[item.data.subject.id] = item.data.phenotypicFeaturesList;
-  });
-  return phenoMap;
-}
+import { getSampleAffectedStatusLabel, getSampleLabel, getSampleSexLabel } from "../utils/sample";
+import { href } from "../utils/utils.ts";
+import { SampleContainer } from "../Api.ts";
 
 export const SampleTable: Component<{
-  samples: Item<Sample>[];
-  phenotypes: Item<Phenotype>[];
+  samples: Item<SampleContainer>[];
 }> = (props) => {
   const navigate = useNavigate();
-  const samples = createMemo(() => props.samples.map((item) => item.data));
-  const phenoMap = createMemo(() => mapPhenotypes(props.phenotypes));
-
-  const samplePhenotypes = (sample: Sample): PhenotypicFeature[] => {
-    return phenoMap()[sample.person.individualId] ?? [];
-  };
-
-  const sampleFatherLabel = (sample: Sample): string => {
-    const sampleFather = getSampleFather(sample, samples());
-    return sampleFather ? getSampleLabel(sampleFather) : "";
-  };
-
-  const sampleMotherLabel = (sample: Sample): string => {
-    const sampleMother = getSampleMother(sample, samples());
-    return sampleMother ? getSampleLabel(sampleMother) : "";
-  };
 
   return (
     <div style={{ display: "grid" }}>
@@ -61,20 +32,22 @@ export const SampleTable: Component<{
             </tr>
           </thead>
           <tbody>
-            <For each={props.samples}>
+            <For each={props.samples.map((sample) => sample.data)}>
               {(sample) => (
                 <tr>
-                  <td>{sample.data.person.familyId}</td>
+                  <td>{sample.item.data.person.familyId}</td>
                   <td>
-                    <A href={`/samples/${sample.id}`}>{getSampleLabel(sample.data)}</A>
+                    <A href={href(["samples", sample.item.id])} end={true}>
+                      {getSampleLabel(sample.item)}
+                    </A>
                   </td>
-                  <td>{sampleFatherLabel(sample.data)}</td>
-                  <td>{sampleMotherLabel(sample.data)}</td>
-                  <td>{sample.data.proband === true ? "True" : "False"}</td>
-                  <td>{getSampleSexLabel(sample.data)}</td>
-                  <td>{getSampleAffectedStatusLabel(sample.data)}</td>
+                  <td>{sample.paternalSample ? getSampleLabel(sample.paternalSample) : ""}</td>
+                  <td>{sample.maternalSample ? getSampleLabel(sample.maternalSample) : ""}</td>
+                  <td>{sample.item.data.proband ? "True" : "False"}</td>
+                  <td>{getSampleSexLabel(sample.item)}</td>
+                  <td>{getSampleAffectedStatusLabel(sample.item)}</td>
                   <td>
-                    <For each={samplePhenotypes(sample.data)}>
+                    <For each={sample.phenotypes}>
                       {(phenotypicFeature: PhenotypicFeature, i) => (
                         <>
                           {i() > 0 ? ", " : ""}
@@ -84,9 +57,9 @@ export const SampleTable: Component<{
                     </For>
                   </td>
                   <td>
-                    <Show when={samplePhenotypes(sample.data).length > 0}>
+                    <Show when={sample.phenotypes.length > 0}>
                       <Anchor
-                        href={`https://vibe.molgeniscloud.org/?phenotypes=${samplePhenotypes(sample.data)
+                        href={`https://vibe.molgeniscloud.org/?phenotypes=${sample.phenotypes
                           .map((feature) => feature.type.id)
                           .join(",")}`}
                       >
@@ -95,7 +68,10 @@ export const SampleTable: Component<{
                     </Show>
                   </td>
                   <td>
-                    <button class="button is-primary py-1" onClick={() => navigate(`/samples/${sample.id}/variants`)}>
+                    <button
+                      class="button is-primary py-1"
+                      onClick={() => navigate(href(["samples", sample.item.id, "variants"]))}
+                    >
                       Explore Variants
                     </button>
                   </td>

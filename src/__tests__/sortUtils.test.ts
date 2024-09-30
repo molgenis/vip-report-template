@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { createRecordSort, DIRECTION_ASCENDING } from "../utils/sortUtils";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
+import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 
 describe("sort utilities", () => {

@@ -1,6 +1,6 @@
 import { Component, createSignal, Match, Show, Signal, Switch } from "solid-js";
 import { BoolMultiNode, BoolNode, CategoricalNode, ExistsNode, LeafNode, Node } from "@molgenis/vip-report-api/src/Api";
-import { Error } from "../Error";
+import { ErrorNotification } from "../ErrorNotification";
 import { DecisionTreeNodeBool } from "./DecisionTreeNodeBool";
 import { DecisionTreeNodeBoolMulti } from "./DecisionTreeNodeBoolMulti";
 import { DecisionTreeNodeCategorical } from "./DecisionTreeNodeCategorical";
@@ -38,7 +38,7 @@ export const DecisionTreeNode: Component<{ nodeId: string; node: Node }> = (prop
         {!collapsed() && (
           <div class="card-content">
             <div class="content">
-              <Switch fallback={<Error error={`invalid node type ${props.node.type}`} />}>
+              <Switch fallback={<ErrorNotification error={`invalid node type ${props.node.type}`} />}>
                 <Match when={props.node.type === "BOOL"}>
                   <DecisionTreeNodeBool node={props.node as BoolNode} />
                 </Match>
