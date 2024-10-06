@@ -9,7 +9,6 @@ import {
   Phenotype,
   PhenotypicFeature,
   Resource,
-  Sample as ApiSample,
   Sample,
 } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
@@ -281,31 +280,6 @@ export function createFieldMap(metadata: Metadata): FieldMap {
     }
   });
   return fields;
-}
-
-export type SampleContainer = {
-  item: Item<ApiSample>;
-  phenotypes: PhenotypicFeature[];
-  pedigreeSamples: SampleContainer[];
-};
-
-/**
- * Compose sample from API sample, API sample phenotypes and API pedigree samples data
- *
- * @param sample API sample
- * @param samplePhenotypes API sample phenotypes
- * @param pedigreeSamples API samples from same pedigree
- */
-export function composeSample(
-  sample: Item<Sample>,
-  samplePhenotypes?: PhenotypicFeature[],
-  pedigreeSamples?: PagedItems<Sample>,
-): SampleContainer {
-  return {
-    item: sample,
-    phenotypes: samplePhenotypes || [],
-    pedigreeSamples: pedigreeSamples?.items.map((pedigreeSample) => composeSample(pedigreeSample)) || [],
-  };
 }
 
 export type MetadataContainer = {

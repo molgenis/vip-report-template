@@ -12,26 +12,27 @@ import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
 import { FilterQueries } from "../store";
 import {
-  FilterConfig,
-  FilterConfigCustom,
-  FilterConfigField,
-  FilterConfigFormat,
+  ConfigFilter,
+  ConfigFilterField,
+  ConfigFilterFormat,
   FilterValue,
   FilterValueCategorical,
   FilterValueInterval,
-  FilterValueLocus,
   FilterValueMap,
   FilterValueString,
 } from "../types/filter";
 import { VariantType } from "./variantTypeUtils";
-import { SampleContainer } from "./ApiUtils";
+
+import { SampleContainer } from "./sample";
+import { ConfigFilters } from "../types/config";
+import { ConfigFilterCustom, FilterValueLocus } from "../types/filterCustom";
 
 type ComposedQueryOperator = "and" | "or"; // TODO move to API.d.ts in vip-report-api
 
 export function createQuery(
   sample: SampleContainer,
   variantType: VariantType | null,
-  filterConfigs: FilterConfig[],
+  filterConfigs: ConfigFilters,
   filterValues: FilterValueMap,
 ): Query {
   const queryParts: Query[] = [];
@@ -88,7 +89,7 @@ function createQuerySample(sample: SampleContainer): Query {
  * @param filterConfigs filter configurations
  * @param filterValues filter values
  */
-function createQueryFilters(filterConfigs: FilterConfig[], filterValues: FilterValueMap): Query | null {
+function createQueryFilters(filterConfigs: ConfigFilters, filterValues: FilterValueMap): Query | null {
   const queryParts = filterConfigs
     .map((filter) => createQueryFilter(filter, filterValues[filter.id]))
     .filter((query) => query !== null);
@@ -101,16 +102,16 @@ function createQueryFilters(filterConfigs: FilterConfig[], filterValues: FilterV
  * @param filterConfig filter configuration
  * @param filterValue filter value
  */
-function createQueryFilter(filterConfig: FilterConfig, filterValue: FilterValue): Query | null {
+function createQueryFilter(filterConfig: ConfigFilter, filterValue: FilterValue): Query | null {
   let query: Query | null;
   if (filterValue !== undefined) {
     switch (filterConfig.type) {
       case "custom":
-        query = createQueryFilterCustom(filterConfig as FilterConfigCustom, filterValue);
+        query = createQueryFilterCustom(filterConfig as ConfigFilterCustom, filterValue);
         break;
       case "format":
       case "info":
-        query = createQueryFilterField(filterConfig as FilterConfigField, filterValue);
+        query = createQueryFilterField(filterConfig as ConfigFilterField, filterValue);
         break;
       default:
         throw new Error(`unexpected filter type '${filterConfig.type}'`);
@@ -121,7 +122,7 @@ function createQueryFilter(filterConfig: FilterConfig, filterValue: FilterValue)
   return query;
 }
 
-function createQueryFilterCustom(filter: FilterConfigCustom, filterValue: FilterValue): Query {
+function createQueryFilterCustom(filter: ConfigFilterCustom, filterValue: FilterValue): Query {
   let query: Query;
   switch (filter.id) {
     case "custom/locus":
@@ -158,7 +159,7 @@ function createQueryFilterCustomLocus(filterValue: FilterValueLocus): Query {
   return createQueryComposed(queryParts, "and");
 }
 
-function createQueryFilterField(filter: FilterConfigField, filterValue: FilterValue): Query {
+function createQueryFilterField(filter: ConfigFilterField, filterValue: FilterValue): Query {
   let query: Query;
   switch (filter.field.type) {
     case "CATEGORICAL":
@@ -183,8 +184,8 @@ function createQueryFilterField(filter: FilterConfigField, filterValue: FilterVa
   return query;
 }
 
-function createQueryFilterCategorical(filter: FilterConfigField, filterValue: FilterValueCategorical): Query {
-  const selector = createSelector(filter);
+function createQueryFilterCategorical(filter: ConfigFilterField, filterValue: FilterValueCategorical): Query {
+  const selector = createSelectorFilter(filter);
   const nonNullFilterValues = filterValue.filter((value) => value !== "__null");
 
   const queryParts: Query[] = [];
@@ -207,8 +208,8 @@ function createQueryFilterCategorical(filter: FilterConfigField, filterValue: Fi
   return createQueryComposed(queryParts, "or");
 }
 
-function createQueryFilterInteger(filter: FilterConfigField, filterValue: FilterValueInterval): Query {
-  const selector = createSelector(filter);
+function createQueryFilterInteger(filter: ConfigFilterField, filterValue: FilterValueInterval): Query {
+  const selector = createSelectorFilter(filter);
 
   const queryParts: Query[] = [];
   if (filterValue.left !== undefined) {
@@ -230,17 +231,17 @@ function createQueryFilterInteger(filter: FilterConfigField, filterValue: Filter
   return query;
 }
 
-function createQueryFilterFlag(filter: FilterConfigField, filterValue: FilterValue): Query {
+function createQueryFilterFlag(filter: ConfigFilterField, filterValue: FilterValue): Query {
   throw new Error("FIXME implement:" + filter + "," + filterValue);
 }
 
-function createQueryFilterFloat(filter: FilterConfigField, filterValue: FilterValue): Query {
+function createQueryFilterFloat(filter: ConfigFilterField, filterValue: FilterValue): Query {
   throw new Error("FIXME implement:" + filter + "," + filterValue);
 }
 
-function createQueryFilterString(filter: FilterConfigField, filterValue: FilterValueString): Query {
+function createQueryFilterString(filter: ConfigFilterField, filterValue: FilterValueString): Query {
   return {
-    selector: createSelector(filter),
+    selector: createSelectorFilter(filter),
     operator: filter.field.number.count === 1 ? "has_any" : "any_has_any",
     args: filterValue,
   };
@@ -311,11 +312,11 @@ function createQueryVariantTypeSv(): Query {
   };
 }
 
-function createSelector(filter: FilterConfigField) {
+function createSelectorFilter(filter: ConfigFilterField) {
   let selector: SelectorPart[];
   switch (filter.type) {
     case "format":
-      selector = createSelectorFilterFormat(filter as FilterConfigFormat);
+      selector = createSelectorFilterFormat(filter as ConfigFilterFormat);
       break;
     case "info":
       selector = createSelectorFilterInfo(filter);
@@ -327,11 +328,11 @@ function createSelector(filter: FilterConfigField) {
   return selector;
 }
 
-function createSelectorFilterFormat(filter: FilterConfigFormat): SelectorPart[] {
+function createSelectorFilterFormat(filter: ConfigFilterFormat): SelectorPart[] {
   return ["s", filter.sample.item.data.index, ...selector(filter.field)];
 }
 
-function createSelectorFilterInfo(filter: FilterConfigField): SelectorPart[] {
+function createSelectorFilterInfo(filter: ConfigFilterField): SelectorPart[] {
   return ["n", ...selector(filter.field)];
 }
 

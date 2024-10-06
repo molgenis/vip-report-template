@@ -1,5 +1,7 @@
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { SampleContainer } from "../utils/ApiUtils";
+
+import { SampleContainer } from "../utils/sample";
+import { ConfigFilterCustom, FilterValueCustom } from "./filterCustom";
 
 export type FilterId = string;
 export type FilterType = "custom" | "format" | "info";
@@ -14,28 +16,22 @@ export type FilterValueString = string[];
 export type ValueNumber = number | undefined;
 export type FilterValueInterval = { left: ValueNumber; right: ValueNumber };
 export type FilterValueField = FilterValueCategorical | FilterValueString | FilterValueInterval;
-export type ChromosomeId = string;
-export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?: number };
-export type FilterValue = FilterValueField | FilterValueLocus;
+export type FilterValue = FilterValueField | FilterValueCustom;
 export type FilterValueMap = { [key: FilterId]: FilterValue };
 
-export type FilterConfig = FilterConfigBase | FilterConfigField | FilterConfigFormat;
+export type ConfigFilter = ConfigFilterCustom | ConfigFilterField | ConfigFilterFormat;
 
-export interface FilterConfigBase {
+export interface ConfigFilterBase {
   id: FilterId;
   type: FilterType;
 }
 
-export type FilterConfigCustom = FilterConfigCustomLocus;
-
-export interface FilterConfigCustomLocus extends FilterConfigBase {
-  chromosomes: ChromosomeId[];
-}
-
-export interface FilterConfigField extends FilterConfigBase {
+export interface ConfigFilterField extends ConfigFilterBase {
   field: FieldMetadata;
 }
 
-export interface FilterConfigFormat extends FilterConfigField {
+export interface ConfigFilterFormat extends ConfigFilterField {
   sample: SampleContainer;
 }
+
+// note: add custom filters to filterCustom.d.ts

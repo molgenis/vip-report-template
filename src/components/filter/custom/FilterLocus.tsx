@@ -1,10 +1,10 @@
 import { Component, createEffect, createSignal } from "solid-js";
-import { Filter, FilterTypedProps } from "./Filter";
-import { ButtonApply } from "./ButtonApply";
-import { Select } from "./Select";
-import { ButtonReset } from "./ButtonReset";
-import { Input } from "./Input";
-import { ChromosomeId, FilterValueLocus } from "../../types/filter";
+import { Filter, FilterTypedProps } from "../Filter";
+import { ButtonApply } from "../ButtonApply";
+import { Select } from "../Select";
+import { ButtonReset } from "../ButtonReset";
+import { Input } from "../Input";
+import { ChromosomeId, FilterValueLocus } from "../../../types/filterCustom";
 
 export interface FilterLocusProps extends FilterTypedProps<FilterValueLocus> {
   chromosomes: ChromosomeId[];

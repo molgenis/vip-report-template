@@ -3,7 +3,7 @@ import { PagedItems, Sample } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "./Loader";
 import { SortChangeCallback, SortClearCallback } from "./Sort";
 import { PageChangeCallback, Pager } from "./record/Pager";
-import { Columns, SampleRecordsTable } from "./SampleRecordsTable";
+import { RecordsTable } from "./RecordsTable";
 import {
   getSampleAffectedStatusLabel,
   getSampleFamilyMembersWithoutParents,
@@ -11,18 +11,20 @@ import {
   getSampleLabel,
   getSampleMother,
   getSampleSexLabel,
+  SampleContainer,
 } from "../utils/sample";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { ButtonDownload } from "./ButtonDownload";
-import { MetadataContainer, SampleContainer } from "../utils/ApiUtils";
+import { MetadataContainer } from "../utils/ApiUtils";
+import { ConfigFields } from "../types/config";
 
 export type RecordsDownloadCallback = () => void;
 
 export const SampleRecordsResults: Component<{
   metadata: MetadataContainer;
   sample: SampleContainer;
-  recordsColumns: Columns;
+  fieldConfigs: ConfigFields;
   records: PagedItems<Record>;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
@@ -32,7 +34,7 @@ export const SampleRecordsResults: Component<{
 }> = (props) => {
   const samples = createMemo(() => [
     props.sample.item.data,
-    ...props.sample.pedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
+    ...props.sample.otherPedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
   ]);
 
   const [proband, setProband] = createSignal<Sample>();
@@ -132,12 +134,7 @@ export const SampleRecordsResults: Component<{
           <Show when={props.records} fallback={<Loader />} keyed>
             {(records) => (
               <>
-                <SampleRecordsTable
-                  metadata={props.metadata}
-                  sample={props.sample}
-                  columns={props.recordsColumns}
-                  records={records.items}
-                />
+                <RecordsTable fieldConfigs={props.fieldConfigs} records={records.items} />
                 <div class="columns is-gapless">
                   <div class="column">
                     <div class="field is-grouped is-grouped-right">

@@ -2,17 +2,15 @@ import { Component, createMemo, createResource, Show } from "solid-js";
 import { Loader } from "../components/Loader";
 import {
   composeMetadata,
-  composeSample,
   fetchHtsFileMetadata,
   fetchPedigreeSamples,
   fetchPhenotypicFeatures,
   fetchRecords,
   fetchRecordsMeta,
   MetadataContainer,
-  SampleContainer,
 } from "../utils/ApiUtils";
 import { Breadcrumb, BreadCrumbItem } from "../components/Breadcrumb";
-import { getSampleLabel } from "../utils/sample";
+import { composeSample, getSampleLabel, SampleContainer } from "../utils/sample";
 import { createAsync, RouteSectionProps, useNavigate } from "@solidjs/router";
 import { getSample } from "./data/data";
 import { mapVariantTypeIdToVariantType, VariantType } from "../utils/variantTypeUtils";
@@ -33,7 +31,7 @@ import { createStore } from "solid-js/store";
 import { createDownloadFilename } from "../utils/downloadUtils";
 import { createQuery } from "../utils/query";
 import { SampleRecordsResults } from "../components/SampleRecordsResults";
-import { createColumns, createFilterConfigs } from "../utils/filterUtils";
+import { createConfig } from "../config/config";
 
 export const SampleVariantsView: Component<RouteSectionProps> = (props) => {
   const sample = createAsync(() => getSample(Number(props.params.sampleId)));
@@ -105,10 +103,9 @@ export const SampleVariants: Component<{
   const [state, setState] = createStore<SampleVariantsState>({ filterValues: {}, page: { number: 0, size: 10 } }); // FIXME default sort order
   const navigate = useNavigate();
 
-  const filterConfigs = createMemo(() => createFilterConfigs(props.variantType, props.metadata, props.sample));
-  const recordsColumns = createMemo(() => createColumns(props.variantType));
+  const config = () => createConfig(props.variantType, props.metadata, props.sample);
 
-  const query = () => createQuery(props.sample, props.variantType, filterConfigs(), state.filterValues);
+  const query = () => createQuery(props.sample, props.variantType, config().filters, state.filterValues);
 
   const [records] = createResource(
     (): Params => ({ query: query(), page: state.page.number, size: state.page.size, sort: state.sort }),
@@ -127,7 +124,7 @@ export const SampleVariants: Component<{
   const onRecordsDownload = () => {
     const samples = createMemo(() => [
       props.sample.item.data,
-      ...props.sample.pedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
+      ...props.sample.otherPedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
     ]);
     const filter = (): Filter | undefined =>
       samples() ? { samples: samples().map((sample) => sample.person.individualId) } : undefined;
@@ -177,8 +174,8 @@ export const SampleVariants: Component<{
           <div class="column">
             <SampleRecordsFilters
               sample={props.sample}
-              filters={filterConfigs()}
-              filtersValue={state.filterValues}
+              filterConfigs={config().filters}
+              filterValues={state.filterValues}
               onFilterChange={onFilterChange}
               onFilterClear={onFilterClear}
             />
@@ -191,8 +188,8 @@ export const SampleVariants: Component<{
             <SampleRecordsResults
               metadata={props.metadata}
               sample={props.sample}
+              fieldConfigs={config().fields}
               records={records()}
-              recordsColumns={recordsColumns()}
               onPageChange={onPageChange}
               onRecordsPerPageChange={onRecordsPerPageChange}
               onRecordsDownload={onRecordsDownload}

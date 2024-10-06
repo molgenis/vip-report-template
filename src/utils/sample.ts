@@ -1,4 +1,4 @@
-import { Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, PagedItems, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
 
 export function getSampleLabel(sample: Sample) {
   return sample.person.individualId;
@@ -62,4 +62,47 @@ export function getSampleFamilyMembersWithoutParents(sample: Sample, samples: Sa
     }
   }
   return familyMembersWithoutParents;
+}
+
+export type SampleContainer = {
+  item: Item<Sample>;
+  paternalSample: SampleContainer | null;
+  maternalSample: SampleContainer | null;
+  phenotypes: PhenotypicFeature[];
+  otherPedigreeSamples: SampleContainer[];
+};
+
+/**
+ * Compose sample from API sample, API sample phenotypes and API pedigree samples data
+ *
+ * @param sample API sample
+ * @param samplePhenotypes API sample phenotypes
+ * @param pedigreeSamples API samples from same pedigree
+ */
+export function composeSample(
+  sample: Item<Sample>,
+  samplePhenotypes?: PhenotypicFeature[],
+  pedigreeSamples?: PagedItems<Sample>,
+): SampleContainer {
+  let paternalSample: SampleContainer | null = null;
+  let maternalSample: SampleContainer | null = null;
+  const otherPedigreeSamples: SampleContainer[] = [];
+
+  pedigreeSamples?.items.forEach((pedigreeSample) => {
+    if (isSampleFather(sample.data, pedigreeSample.data)) {
+      paternalSample = composeSample(pedigreeSample);
+    } else if (isSampleMother(sample.data, pedigreeSample.data)) {
+      maternalSample = composeSample(pedigreeSample);
+    } else {
+      otherPedigreeSamples.push(composeSample(pedigreeSample));
+    }
+  });
+
+  return {
+    item: sample,
+    paternalSample,
+    maternalSample,
+    phenotypes: samplePhenotypes || [],
+    otherPedigreeSamples,
+  };
 }

@@ -1,16 +1,16 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { FilterValueChangeCallback, FilterValueClearCallback } from "../Filter";
-import { FilterCategorical } from "../FilterCategorical";
-import { FilterString } from "../FilterString";
-import { FilterInterval } from "../FilterInterval";
+import { FilterValueChangeCallback, FilterValueClearCallback } from "./Filter";
+import { FilterCategorical } from "./FilterCategorical";
+import { FilterString } from "./FilterString";
+import { FilterInterval } from "./FilterInterval";
 import {
   FilterCategory,
   FilterValueCategorical,
   FilterValueField,
   FilterValueInterval,
   FilterValueString,
-} from "../../../types/filter";
+} from "../../types/filter";
 
 export const FilterField: Component<{
   field: FieldMetadata;

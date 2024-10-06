@@ -1,17 +1,11 @@
 import { Component, For, Match, Switch } from "solid-js";
-import { FilterLocus } from "./filter/FilterLocus";
-import { FilterField } from "./filter/vcf/FilterField";
-import { SampleContainer } from "../utils/ApiUtils";
+import { FilterLocus } from "./filter/custom/FilterLocus";
+import { FilterField } from "./filter/FilterField";
 import { FilterValueChangeEvent } from "./filter/Filter";
-import {
-  FilterConfig,
-  FilterConfigCustomLocus,
-  FilterConfigField,
-  FilterId,
-  FilterValue,
-  FilterValueField,
-  FilterValueLocus,
-} from "../types/filter";
+import { ConfigFilterField, FilterId, FilterValue, FilterValueField } from "../types/filter";
+import { SampleContainer } from "../utils/sample";
+import { ConfigFilters } from "../types/config";
+import { ConfigFilterCustomLocus, FilterValueLocus } from "../types/filterCustom";
 
 export type FilterValueMap = { [key: FilterId]: FilterValue };
 export interface FilterChangeEvent extends FilterValueChangeEvent<FilterValue> {
@@ -23,22 +17,23 @@ export type FilterClearEvent = {
 };
 export type FilterClearCallback = (event: FilterClearEvent) => void;
 
+// TODO refactor: move custom stuff to separate component
 export const SampleRecordsFilters: Component<{
   sample: SampleContainer | null;
-  filters: FilterConfig[];
-  filtersValue: FilterValueMap;
+  filterConfigs: ConfigFilters;
+  filterValues: FilterValueMap;
   onFilterChange: FilterChangeCallback;
   onFilterClear: FilterClearCallback;
 }> = (props) => {
   return (
     <>
-      <For each={props.filters}>
+      <For each={props.filterConfigs}>
         {(filter) => (
           <Switch>
             <Match when={filter.type === "format" || filter.type === "info"}>
               <FilterField
-                field={(filter as FilterConfigField).field}
-                value={props.filtersValue[filter.id] as FilterValueField | undefined}
+                field={(filter as ConfigFilterField).field}
+                value={props.filterValues[filter.id] as FilterValueField | undefined}
                 onValueChange={(event) => props.onFilterChange({ id: filter.id, ...event })}
                 onValueClear={() => props.onFilterClear({ id: filter.id })}
               />
@@ -48,8 +43,8 @@ export const SampleRecordsFilters: Component<{
                 <Match when={filter.id === "custom/locus"}>
                   <FilterLocus
                     label={"Locus"}
-                    chromosomes={(filter as FilterConfigCustomLocus).chromosomes}
-                    value={props.filtersValue[filter.id] as FilterValueLocus | undefined}
+                    chromosomes={(filter as ConfigFilterCustomLocus).chromosomes}
+                    value={props.filterValues[filter.id] as FilterValueLocus | undefined}
                     onValueChange={(event) => props.onFilterChange({ id: filter.id, ...event })}
                     onValueClear={() => props.onFilterClear({ id: filter.id })}
                   />
