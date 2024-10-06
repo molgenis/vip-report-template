@@ -3,12 +3,11 @@ import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Component, For, Match, Show, Switch } from "solid-js";
 import { ConfigFieldFormat, ConfigFieldGroup, ConfigFieldInfo, ConfigFieldItem } from "../types/field";
 import { FieldCustom } from "./record/field/custom/FieldCustom";
-import { FieldInfo } from "./record/field/FieldInfo";
-import { FieldFormat } from "./record/field/FieldFormat";
 import { ConfigFieldCustom } from "../types/fieldCustom";
 import { ConfigFields } from "../types/config";
 import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
+import { Field } from "./record/field/Field";
 
 export const RecordsTable: Component<{
   fieldConfigs: ConfigFields;
@@ -156,11 +155,21 @@ const RecordsTableCellDataFormat: Component<{
   };
 
   return (
-    <Show when={isMultilineValue()} fallback={<FieldFormat fieldConfig={props.fieldConfig} value={value()} />}>
+    <Show
+      when={isMultilineValue()}
+      fallback={
+        <Field
+          infoMeta={props.fieldConfig.field}
+          info={{ value: value() as Value, record: props.record }}
+          context={{}}
+        />
+      }
+    >
+      {/* // FIXME remove cast to value in Show above */}
       <For each={value() as ValueArray}>
         {(aValue) => (
           <div>
-            <FieldFormat fieldConfig={props.fieldConfig} value={aValue} />
+            <Field infoMeta={props.fieldConfig.field} info={{ value: aValue, record: props.record }} context={{}} />
           </div>
         )}
       </For>
@@ -195,11 +204,16 @@ const RecordsTableCellDataInfo: Component<{
   };
 
   return (
-    <Show when={isMultilineValue()} fallback={<FieldInfo fieldConfig={props.fieldConfig} value={value()} />}>
+    <Show
+      when={isMultilineValue()}
+      fallback={
+        <Field infoMeta={props.fieldConfig.field} info={{ value: value(), record: props.record }} context={{}} />
+      }
+    >
       <For each={value() as ValueArray}>
         {(aValue) => (
           <div>
-            <FieldInfo fieldConfig={props.fieldConfig} value={aValue} />
+            <Field infoMeta={props.fieldConfig.field} info={{ value: aValue, record: props.record }} context={{}} />
           </div>
         )}
       </For>

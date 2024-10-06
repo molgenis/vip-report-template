@@ -6,6 +6,7 @@ import { FieldMultipleValue } from "./FieldMultipleValue";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 
+// FIXME move to /types
 export type FieldProps = {
   info: FieldValue;
   infoMeta: FieldMetadata;
@@ -18,6 +19,7 @@ export type FieldValue = {
   record: Item<Record>;
 };
 
+// FIXME remove
 export type FieldContext = {
   genomeAssembly?: string;
   isPossibleCompound?: boolean;
