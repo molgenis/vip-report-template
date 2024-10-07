@@ -33,6 +33,7 @@ import {
 import {
   crai as craiGRCh38,
   cram as cramGRCh38,
+  decisionTree as decisionTreeGRCh38,
   decisionTreeStr as decisionTreeStrGRCh38,
   fastaGz as fastaGzGRCh38,
   genesGz as genesGzGRCh38,
