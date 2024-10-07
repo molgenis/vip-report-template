@@ -1,4 +1,4 @@
-import { FieldId } from "../types/field";
+import { FieldId } from "../types/configField";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { getSampleLabel, SampleContainer } from "./sample";
@@ -7,18 +7,18 @@ import {
   ConfigFieldCustomGenotype,
   ConfigFieldCustomLocus,
   ConfigFieldCustomRef,
-} from "../types/fieldCustom";
+} from "../types/configFieldCustom";
 
 export function createConfigFieldCustom(id: FieldId, sample: SampleContainer): ConfigFieldCustom {
   let fieldConfig: ConfigFieldCustom;
   switch (id) {
-    case "custom/genotype":
+    case "genotype":
       fieldConfig = createConfigFieldCustomGenotype(sample);
       break;
-    case "custom/locus":
+    case "locus":
       fieldConfig = createConfigFieldCustomLocus(sample);
       break;
-    case "custom/ref":
+    case "ref":
       fieldConfig = createConfigFieldCustomRef();
       break;
     default:
@@ -30,7 +30,7 @@ export function createConfigFieldCustom(id: FieldId, sample: SampleContainer): C
 function createConfigFieldCustomGenotype(sample: SampleContainer): ConfigFieldCustomGenotype {
   return {
     type: "custom",
-    id: "custom/genotype",
+    id: "genotype",
     label: getSampleLabel(sample.item.data),
     sample: sample,
   };
@@ -39,7 +39,7 @@ function createConfigFieldCustomGenotype(sample: SampleContainer): ConfigFieldCu
 function createConfigFieldCustomLocus(sample: SampleContainer): ConfigFieldCustomLocus {
   return {
     type: "custom",
-    id: "custom/locus",
+    id: "locus",
     label: "Position",
     href: (record: Item<Record>) => `/samples/${sample.item.id}/variant/${record.id}`,
   };
@@ -48,7 +48,7 @@ function createConfigFieldCustomLocus(sample: SampleContainer): ConfigFieldCusto
 function createConfigFieldCustomRef(): ConfigFieldCustomRef {
   return {
     type: "custom",
-    id: "custom/ref",
+    id: "ref",
     label: "Reference",
   };
 }

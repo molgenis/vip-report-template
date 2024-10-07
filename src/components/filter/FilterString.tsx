@@ -3,7 +3,7 @@ import { Filter, FilterTypedProps } from "./Filter";
 import { ButtonApply } from "./ButtonApply";
 import { Input } from "./Input";
 
-import { FilterValueString } from "../../types/filter";
+import { FilterValueString } from "../../types/configFilter";
 
 export interface FilterStringProps extends FilterTypedProps<FilterValueString> {
   placeholder?: string | undefined;

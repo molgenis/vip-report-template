@@ -1,6 +1,6 @@
 import { Component, For, Show } from "solid-js";
 import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
-import { ConfigFieldCustomGenotype } from "../../../../types/field";
+import { ConfigFieldCustomGenotype } from "../../../../types/configField";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Allele } from "../../Allele";

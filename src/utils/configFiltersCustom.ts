@@ -1,11 +1,12 @@
-import { FilterId } from "../types/filter";
+import { FilterId } from "../types/configFilter";
 import { MetadataContainer, parseContigIds } from "./ApiUtils";
-import { ConfigFilterCustom, ConfigFilterCustomLocus } from "../types/filterCustom";
+import { ConfigFilterCustom, ConfigFilterCustomLocus } from "../types/configFilterCustom";
+import { FieldId } from "../types/configField";
 
-export function createConfigFilterCustom(id: FilterId, metadata: MetadataContainer): ConfigFilterCustom {
+export function createConfigFilterCustom(id: FieldId, metadata: MetadataContainer): ConfigFilterCustom {
   let filter: ConfigFilterCustom;
   switch (id) {
-    case "custom/locus":
+    case "locus":
       filter = createConfigFilterCustomLocus(id, metadata);
       break;
     default:

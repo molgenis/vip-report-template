@@ -4,7 +4,7 @@ import { ButtonApply } from "../ButtonApply";
 import { Select } from "../Select";
 import { ButtonReset } from "../ButtonReset";
 import { Input } from "../Input";
-import { ChromosomeId, FilterValueLocus } from "../../../types/filterCustom";
+import { ChromosomeId, FilterValueLocus } from "../../../types/configFilterCustom";
 
 export interface FilterLocusProps extends FilterTypedProps<FilterValueLocus> {
   chromosomes: ChromosomeId[];

@@ -10,7 +10,7 @@ import {
   FilterValueField,
   FilterValueInterval,
   FilterValueString,
-} from "../../types/filter";
+} from "../../types/configFilter";
 
 export const FilterField: Component<{
   field: FieldMetadata;

@@ -31,7 +31,7 @@ import { createStore } from "solid-js/store";
 import { createDownloadFilename } from "../utils/downloadUtils";
 import { createQuery } from "../utils/query";
 import { SampleRecordsResults } from "../components/SampleRecordsResults";
-import { createConfig } from "../config/config";
+import { createConfig } from "../utils/config";
 
 export const SampleVariantsView: Component<RouteSectionProps> = (props) => {
   const sample = createAsync(() => getSample(Number(props.params.sampleId)));

@@ -20,12 +20,13 @@ import {
   FilterValueInterval,
   FilterValueMap,
   FilterValueString,
-} from "../types/filter";
+} from "../types/configFilter";
 import { VariantType } from "./variantTypeUtils";
 
 import { SampleContainer } from "./sample";
 import { ConfigFilters } from "../types/config";
-import { ConfigFilterCustom, FilterValueLocus } from "../types/filterCustom";
+import { ConfigFilterCustom } from "../types/configFilterCustom";
+import { createQueryFilterCustom } from "./queryCustom";
 
 type ComposedQueryOperator = "and" | "or"; // TODO move to API.d.ts in vip-report-api
 
@@ -53,7 +54,7 @@ export function createQuery(
   return createQueryComposed(queryParts, "and");
 }
 
-function createQueryComposed(queryParts: Query[], operator: ComposedQueryOperator): Query {
+export function createQueryComposed(queryParts: Query[], operator: ComposedQueryOperator): Query {
   const query: Query | null = createQueryComposedNullable(queryParts, operator);
   if (query == null) {
     throw new Error("query cannot be null");
@@ -120,43 +121,6 @@ function createQueryFilter(filterConfig: ConfigFilter, filterValue: FilterValue)
     query = null;
   }
   return query;
-}
-
-function createQueryFilterCustom(filter: ConfigFilterCustom, filterValue: FilterValue): Query {
-  let query: Query;
-  switch (filter.id) {
-    case "custom/locus":
-      query = createQueryFilterCustomLocus(filterValue as FilterValueLocus);
-      break;
-    default:
-      throw new Error(`unexpected filter id '${filter.id}'`);
-  }
-  return query;
-}
-
-function createQueryFilterCustomLocus(filterValue: FilterValueLocus): Query {
-  const queryParts: Query[] = [
-    {
-      operator: "==",
-      selector: "c",
-      args: filterValue.chromosome,
-    },
-  ];
-  if (filterValue.start !== undefined) {
-    queryParts.push({
-      operator: ">=",
-      selector: "p",
-      args: filterValue.start,
-    });
-  }
-  if (filterValue.end !== undefined) {
-    queryParts.push({
-      operator: "<=",
-      selector: "p",
-      args: filterValue.end,
-    });
-  }
-  return createQueryComposed(queryParts, "and");
 }
 
 function createQueryFilterField(filter: ConfigFilterField, filterValue: FilterValue): Query {
@@ -480,4 +444,5 @@ function sortPath(field: FieldMetadata): SortPath {
 export function infoSortPath(field: FieldMetadata): SortPath {
   return ["n", ...sortPath(field)];
 }
+
 // TODO cleanup - stop

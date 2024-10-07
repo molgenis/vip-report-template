@@ -1,0 +1,244 @@
+{
+  "fields": {
+    "variantType": {
+      "str": [
+        {
+          "type": "custom",
+          "name": "locus"
+        },
+        {
+          "type": "custom",
+          "name": "ref"
+        },
+        {
+          "type": "custom",
+          "name": "genotype"
+        },
+        {
+          "type": "group",
+          "fields": [
+            {
+              "type": "info",
+              "name": "CSQ/SYMBOL"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/InheritanceModesGene"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/VIPC"
+            }
+          ]
+        },
+        {
+          "type": "info",
+          "name": "STR_NORMAL_MAX"
+        },
+        {
+          "type": "info",
+          "name": "STR_PATHOLOGIC_MIN"
+        },
+        {
+          "type": "format",
+          "name": "REPCI"
+        },
+        {
+          "type": "format",
+          "name": "REPCN"
+        },
+        {
+          "type": "format",
+          "name": "LC"
+        },
+        {
+          "type": "format",
+          "name": "ADSP"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/Consequence"
+        }
+      ]
+    },
+    "default": [
+      {
+        "type": "custom",
+        "name": "locus"
+      },
+      {
+        "type": "custom",
+        "name": "ref"
+      },
+      {
+        "type": "custom",
+        "name": "genotype"
+      },
+      {
+        "type": "group",
+        "fields": [
+          {
+            "type": "info",
+            "name": "CSQ/Consequence"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/SYMBOL"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/InheritanceModesGene"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/HGVSc"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/HGVSp"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/CAPICE_SC"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/VIPC"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/VKGL_CL"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/clinVar_CLNSIG"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/gnomAD_AF"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/gnomAD_HN"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/PUBMED"
+          }
+        ]
+      }
+    ]
+  },
+  "filters": {
+    "variantType": {
+      "str": [
+        {
+          "type": "custom",
+          "name": "locus"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/HPO"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/GADO_PD"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/SYMBOL"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/IncompletePenetrance"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/VIPC"
+        },
+        {
+          "type": "info",
+          "name": "RU"
+        },
+        {
+          "type": "info",
+          "name": "STR_STATUS"
+        },
+        {
+          "type": "info",
+          "name": "STR_NORMAL_MAX"
+        },
+        {
+          "type": "info",
+          "name": "STR_PATHOLOGIC_MIN"
+        },
+        {
+          "type": "format",
+          "name": "REPCI"
+        },
+        {
+          "type": "format",
+          "name": "REPCN"
+        }
+      ]
+    },
+    "default": [
+      {
+        "type": "custom",
+        "name": "locus"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/HPO"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/GADO_PD"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/SYMBOL"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/IncompletePenetrance"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/VIPC"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/VKGL_CL"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/clinVar_CLNSIG"
+      },
+      {
+        "type": "format",
+        "name": "VI"
+      },
+      {
+        "type": "format",
+        "name": "VIC"
+      },
+      {
+        "type": "format",
+        "name": "VID"
+      },
+      {
+        "type": "format",
+        "name": "VIG"
+      },
+      {
+        "type": "format",
+        "name": "VIM"
+      },
+      {
+        "type": "format",
+        "name": "VIAB"
+      }
+    ]
+  }
+}

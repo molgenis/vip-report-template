@@ -1,9 +1,9 @@
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Component, For, Match, Show, Switch } from "solid-js";
-import { ConfigFieldFormat, ConfigFieldGroup, ConfigFieldInfo, ConfigFieldItem } from "../types/field";
+import { ConfigFieldFormat, ConfigFieldGroup, ConfigFieldInfo, ConfigFieldItem } from "../types/configField";
 import { FieldCustom } from "./record/field/custom/FieldCustom";
-import { ConfigFieldCustom } from "../types/fieldCustom";
+import { ConfigFieldCustom } from "../types/configFieldCustom";
 import { ConfigFields } from "../types/config";
 import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
@@ -128,11 +128,13 @@ const RecordsTableCellDataCustom: Component<{
   return <FieldCustom fieldConfig={props.fieldConfig} record={props.record} />;
 };
 
+// TODO remove code duplication with RecordsTableCellDataInfo
 const RecordsTableCellDataFormat: Component<{
   fieldConfig: ConfigFieldFormat;
   record: Item<Record>;
 }> = (props) => {
-  const isMultilineValue = () => props.fieldConfig.field.parent?.number.count !== 1;
+  const isMultilineValue = () =>
+    (props.fieldConfig.field.parent && props.fieldConfig.field.parent.number.count !== 1) || false;
 
   const value = () => {
     const recordSample = props.record.data.s[props.fieldConfig.sample.item.data.index];
@@ -148,9 +150,8 @@ const RecordsTableCellDataFormat: Component<{
         value = parentValue[parentValueIndex];
       }
     } else {
-      value = recordSample[props.fieldConfig.id];
+      value = recordSample[props.fieldConfig.field.id];
     }
-
     return value;
   };
 
@@ -177,11 +178,13 @@ const RecordsTableCellDataFormat: Component<{
   );
 };
 
+// TODO remove code duplication with RecordsTableCellDataFormat
 const RecordsTableCellDataInfo: Component<{
   fieldConfig: ConfigFieldInfo;
   record: Item<Record>;
 }> = (props) => {
-  const isMultilineValue = () => props.fieldConfig.field.parent?.number.count !== 1;
+  const isMultilineValue = () =>
+    (props.fieldConfig.field.parent && props.fieldConfig.field.parent.number.count !== 1) || false;
 
   const value = () => {
     const infoContainer = props.record.data.n;
@@ -197,7 +200,7 @@ const RecordsTableCellDataInfo: Component<{
         value = parentValue[parentValueIndex];
       }
     } else {
-      value = infoContainer[props.fieldConfig.id];
+      value = infoContainer[props.fieldConfig.field.id];
     }
 
     return value;

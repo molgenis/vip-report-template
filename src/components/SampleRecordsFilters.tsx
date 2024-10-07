@@ -2,15 +2,17 @@ import { Component, For, Match, Switch } from "solid-js";
 import { FilterLocus } from "./filter/custom/FilterLocus";
 import { FilterField } from "./filter/FilterField";
 import { FilterValueChangeEvent } from "./filter/Filter";
-import { ConfigFilterField, FilterId, FilterValue, FilterValueField } from "../types/filter";
+import { ConfigFilterField, FilterId, FilterValue, FilterValueField } from "../types/configFilter";
 import { SampleContainer } from "../utils/sample";
 import { ConfigFilters } from "../types/config";
-import { ConfigFilterCustomLocus, FilterValueLocus } from "../types/filterCustom";
+import { ConfigFilterCustomLocus, FilterValueLocus } from "../types/configFilterCustom";
 
 export type FilterValueMap = { [key: FilterId]: FilterValue };
+
 export interface FilterChangeEvent extends FilterValueChangeEvent<FilterValue> {
   id: FilterId;
 }
+
 export type FilterChangeCallback = (event: FilterChangeEvent) => void;
 export type FilterClearEvent = {
   id: FilterId;
@@ -40,7 +42,7 @@ export const SampleRecordsFilters: Component<{
             </Match>
             <Match when={filter.type === "custom"}>
               <Switch>
-                <Match when={filter.id === "custom/locus"}>
+                <Match when={filter.id === "locus"}>
                   <FilterLocus
                     label={"Locus"}
                     chromosomes={(filter as ConfigFilterCustomLocus).chromosomes}

@@ -1,4 +1,4 @@
-import { ConfigFilterBase } from "./filter";
+import { ConfigFilterBase } from "./configFilter";
 
 export type ChromosomeId = string;
 export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?: number };

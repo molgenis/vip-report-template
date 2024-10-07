@@ -4,7 +4,7 @@ import { Input } from "../Input";
 import { ButtonApply } from "./ButtonApply";
 import { ButtonReset } from "./ButtonReset";
 
-import { FilterValueInterval } from "../../types/filter";
+import { FilterValueInterval } from "../../types/configFilter";
 
 export type FilterIntervalProps = FilterTypedProps<FilterValueInterval>;
 

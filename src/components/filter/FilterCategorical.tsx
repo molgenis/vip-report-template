@@ -1,7 +1,7 @@
 import { Component, createEffect, createSignal, For, Show } from "solid-js";
 import { Filter, FilterTypedProps } from "./Filter";
 import { Checkbox, CheckboxEvent } from "./Checkbox";
-import { FilterCategory, FilterCategoryId, FilterValueCategorical } from "../../types/filter";
+import { FilterCategory, FilterCategoryId, FilterValueCategorical } from "../../types/configFilter";
 
 type FilterValueCategoricalMap = { [key: FilterCategoryId]: null };
 

@@ -1,20 +1,19 @@
 import { SampleContainer } from "../utils/sample";
 import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/MetadataParser";
-import { ConfigFieldCustom } from "./fieldCustom";
+import { ConfigFieldCustom } from "./configFieldCustom";
 
 export type FieldId = string;
-export type FieldType = "custom" | "format" | "group" | "info";
+export type FieldType = "custom" | "format" | "info";
 export type FieldIndex = number;
-export type FieldGroupId = string;
 
 interface ConfigFieldBase {
-  id: FieldId;
   type: FieldType;
-  parentFieldValueIndex?: FieldIndex;
+  parentFieldValueIndex?: FieldIndex; // workaround, because index is not readily available through API
 }
 
 interface ConfigFieldCustomBase extends ConfigFieldBase {
   type: "custom";
+  id: FieldId;
   label: string;
 }
 
@@ -24,17 +23,18 @@ export interface ConfigFieldFormat extends ConfigFieldBase {
   sample: SampleContainer;
 }
 
-export interface ConfigFieldGroup extends ConfigFieldBase {
-  type: "group";
-  fieldConfigs: ConfigFieldItem[];
-}
-
 export interface ConfigFieldInfo extends ConfigFieldBase {
   type: "info";
   field: InfoMetadata;
 }
 
 export type ConfigFieldItem = ConfigFieldCustom | ConfigFieldFormat | ConfigFieldInfo;
+
+export interface ConfigFieldGroup {
+  type: "group";
+  fieldConfigs: ConfigFieldItem[];
+}
+
 export type ConfigField = ConfigFieldItem | ConfigFieldGroup;
 
-// note: add custom field to fieldCustom.d.ts
+// note: add custom field to configFieldCustom.d.ts

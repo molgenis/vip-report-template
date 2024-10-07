@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { Allele } from "../../Allele";
-import { ConfigFieldCustomRef } from "../../../../types/field";
+import { ConfigFieldCustomRef } from "../../../../types/configField";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
