@@ -8,6 +8,8 @@ import { ConfigFields } from "../types/config";
 import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
 import { Field } from "./record/field/Field";
+import { Info } from "./record/Info";
+import { getInfoValue, isMultilineValue } from "../utils/recordUtils";
 
 export const RecordsTable: Component<{
   fieldConfigs: ConfigFields;
@@ -183,40 +185,22 @@ const RecordsTableCellDataInfo: Component<{
   fieldConfig: ConfigFieldInfo;
   record: Item<Record>;
 }> = (props) => {
-  const isMultilineValue = () =>
-    (props.fieldConfig.field.parent && props.fieldConfig.field.parent.number.count !== 1) || false;
-
-  const value = () => {
-    const infoContainer = props.record.data.n;
-    const parentField = props.fieldConfig.field.parent;
-
-    let value: Value;
-    if (parentField) {
-      const parentValue = infoContainer[parentField.id] as ValueArray;
-      const parentValueIndex = props.fieldConfig.parentFieldValueIndex as number; // FIXME remove cast
-      if (isMultilineValue()) {
-        value = parentValue.map((value) => (value as ValueArray)[parentValueIndex]) as ValueArray;
-      } else {
-        value = parentValue[parentValueIndex];
-      }
-    } else {
-      value = infoContainer[props.fieldConfig.field.id];
-    }
-
-    return value;
-  };
+  const multilineValue = () => isMultilineValue(props.fieldConfig);
+  const value = () => getInfoValue(props.record, props.fieldConfig);
 
   return (
     <Show
-      when={isMultilineValue()}
+      when={multilineValue()}
       fallback={
-        <Field infoMeta={props.fieldConfig.field} info={{ value: value(), record: props.record }} context={{}} />
+        <Info infoMeta={props.fieldConfig.field} info={{ value: value(), record: props.record }} context={{}} />
       }
     >
       <For each={value() as ValueArray}>
         {(aValue) => (
           <div>
-            <Field infoMeta={props.fieldConfig.field} info={{ value: aValue, record: props.record }} context={{}} />
+            <Info infoMeta={props.fieldConfig.field} info={{ value: aValue, record: props.record }} context={{}} />
+            {/* FIXME more elegant solution to ensure that div renders one (empty) line */}
+            <span>&nbsp;</span>
           </div>
         )}
       </For>

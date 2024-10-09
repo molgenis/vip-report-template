@@ -19,11 +19,26 @@ export const FilterField: Component<{
   onValueClear: FilterValueClearCallback;
 }> = (props) => {
   const label = () => props.field.label || props.field.id;
-  const tooltip = () => (props.field.description ? <p>{props.field.description}</p> : undefined);
-  const categories = (): FilterCategory[] =>
-    props.field.categories
-      ?.map((category) => ({ id: category, label: category }))
-      .concat(!props.field.required ? { id: "__null", label: "Unspecified" } : []) || [];
+  const tooltip = () => (props.field.description ? <p>{props.field.description}</p> : undefined); // FIXME add categories descriptions
+  const categories = (): FilterCategory[] => {
+    if (props.field.categories === undefined) throw new Error();
+
+    return (
+      Object.entries(props.field.categories)
+        .map(([id, value]) => ({
+          id,
+          label: value.label,
+        }))
+        .concat(
+          !props.field.required
+            ? {
+                id: "__null",
+                label: props.field.nullValue ? props.field.nullValue.label : "Unspecified",
+              }
+            : [],
+        ) || []
+    );
+  };
 
   return (
     <Switch>

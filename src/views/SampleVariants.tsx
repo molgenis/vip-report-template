@@ -163,13 +163,11 @@ export const SampleVariants: Component<{
   return (
     <div class="columns is-1">
       <div class="column is-2-fullhd is-3">
-        <Show when={props.variantType === null}>
-          <div class="columns">
-            <div class="column">
-              <VariantTypeSelect onChange={onVariantTypeChange} />
-            </div>
+        <div classList={{ columns: true, "is-invisible": props.variantType !== null }}>
+          <div class="column">
+            <VariantTypeSelect onChange={onVariantTypeChange} />
           </div>
-        </Show>
+        </div>
         <div class="columns">
           <div class="column">
             <SampleRecordsFilters

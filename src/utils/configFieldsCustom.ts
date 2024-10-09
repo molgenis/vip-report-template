@@ -15,6 +15,9 @@ export function createConfigFieldCustom(id: FieldId, sample: SampleContainer): C
     case "genotype":
       fieldConfig = createConfigFieldCustomGenotype(sample);
       break;
+    case "genotype_str":
+      fieldConfig = createConfigFieldCustomGenotypeStr(sample);
+      break;
     case "locus":
       fieldConfig = createConfigFieldCustomLocus(sample);
       break;
@@ -31,6 +34,15 @@ function createConfigFieldCustomGenotype(sample: SampleContainer): ConfigFieldCu
   return {
     type: "custom",
     id: "genotype",
+    label: getSampleLabel(sample.item.data),
+    sample: sample,
+  };
+}
+
+function createConfigFieldCustomGenotypeStr(sample: SampleContainer): ConfigFieldCustomGenotype {
+  return {
+    type: "custom",
+    id: "genotype_str",
     label: getSampleLabel(sample.item.data),
     sample: sample,
   };

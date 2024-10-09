@@ -50,8 +50,9 @@ export function createQuery(
   if (queryFilters !== null) {
     queryParts.push(queryFilters);
   }
-  console.log("query", JSON.stringify(createQueryComposed(queryParts, "and")));
-  return createQueryComposed(queryParts, "and");
+  const queryComposed = createQueryComposed(queryParts, "and");
+  console.log("query.createQuery", JSON.stringify(queryComposed));
+  return queryComposed;
 }
 
 export function createQueryComposed(queryParts: Query[], operator: ComposedQueryOperator): Query {
@@ -166,7 +167,7 @@ function createQueryFilterCategorical(filter: ConfigFilterField, filterValue: Fi
     queryParts.push({
       selector,
       operator: filter.field.number.count === 1 ? "!has_any" : "!any_has_any",
-      args: filter.field.categories,
+      args: filter.field.categories?.map((category) => category.id),
     });
   }
   return createQueryComposed(queryParts, "or");

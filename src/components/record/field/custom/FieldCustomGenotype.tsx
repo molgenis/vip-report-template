@@ -1,9 +1,9 @@
 import { Component, For, Show } from "solid-js";
 import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
-import { ConfigFieldCustomGenotype } from "../../../../types/configField";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Allele } from "../../Allele";
+import { ConfigFieldCustomGenotype } from "../../../../types/configFieldCustom";
 
 function isAllelicImbalance(genotype: Genotype, allelicBalance: number | undefined | null) {
   if (genotype.t === "het" && allelicBalance !== undefined && allelicBalance !== null) {
@@ -22,7 +22,7 @@ function getTitle(allelicImbalance: boolean) {
   return allelicImbalance ? `Allelic imbalance` : ``;
 }
 
-export const FieldCustomGenotypeField: Component<{
+export const FieldCustomGenotype: Component<{
   fieldConfig: ConfigFieldCustomGenotype;
   record: Item<Record>;
 }> = (props) => {
