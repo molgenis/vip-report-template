@@ -1,10 +1,10 @@
 import { VariantType } from "./variantTypeUtils";
-import { createFieldMap, FieldMap, MetadataContainer } from "./ApiUtils";
-import { SampleContainer } from "./sample";
 import { Config, ConfigStatic, ConfigStaticField, ConfigStaticVariantTypeFields } from "../types/config";
 import { createConfigFilters } from "./configFilters";
 import { createConfigFields } from "./configFields";
 import config from "../config/config.json";
+import { MetadataContainer, SampleContainer } from "../Api.ts";
+import { createFieldMap, FieldMap } from "./utils.ts";
 
 export function createConfig(
   metadata: MetadataContainer,

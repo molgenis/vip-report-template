@@ -4,10 +4,11 @@ import { PageChangeEvent, Pager } from "../components/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { CheckboxDeprecated, CheckboxEvent } from "../components/form/CheckboxDeprecated";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { EMPTY_PARAMS, EMPTY_PHENOTYPES, fetchPhenotypes, fetchSamples } from "../utils/ApiUtils";
 import { useStore } from "../store";
 import { Params, Query, QueryClause } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
+import { fetchPhenotypes, fetchSamples } from "../Api.ts";
+import { EMPTY_PARAMS, EMPTY_PHENOTYPES } from "../utils/utils.ts";
 
 export const Samples: Component = () => {
   const [state, actions] = useStore();

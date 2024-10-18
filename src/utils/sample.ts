@@ -1,4 +1,5 @@
 import { Item, PagedItems, PhenotypicFeature, Sample } from "@molgenis/vip-report-api/src/Api";
+import { SampleContainer } from "../Api.ts";
 
 export function getSampleContainerLabel(sample: SampleContainer) {
   return getSampleItemLabel(sample.item);
@@ -71,14 +72,6 @@ export function getSampleFamilyMembersWithoutParents(sample: Sample, samples: Sa
   }
   return familyMembersWithoutParents;
 }
-
-export type SampleContainer = {
-  item: Item<Sample>;
-  paternalSample: SampleContainer | null;
-  maternalSample: SampleContainer | null;
-  phenotypes: PhenotypicFeature[];
-  otherPedigreeSamples: SampleContainer[];
-};
 
 /**
  * Compose sample from API sample, API sample phenotypes and API pedigree samples data

@@ -1,7 +1,7 @@
 import { onMount, ParentComponent } from "solid-js";
 import { A, useLocation, useNavigate } from "@solidjs/router";
-import api from "./Api";
 import { DatasetDropdown } from "./components/DatasetDropdown";
+import { fetchSampleProbandIds, isDatasetSupport } from "./Api.ts";
 
 const App: ParentComponent = (props) => {
   const navigate = useNavigate();
@@ -9,13 +9,12 @@ const App: ParentComponent = (props) => {
 
   onMount(() => {
     (async () => {
-      const htsFile = await api.getHtsFileMetadata();
-      document.title = `VCF Report (${htsFile.uri})`;
-      const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
+      document.title = `VCF Report`; // FIXME reintroduce custom name
+      const sampleIds = await fetchSampleProbandIds();
       if (location.pathname === "/") {
-        if (samples.page.totalElements === 1) {
-          navigate(`/samples/${samples.items[0]!.id}/variants`);
-        } else if (samples.total === 0) {
+        if (sampleIds.length === 1) {
+          navigate(`/samples/${sampleIds[0]!}/variants`);
+        } else if (sampleIds.length === 0) {
           navigate(`/variants`);
         } else {
           navigate(`/samples`);
@@ -47,7 +46,7 @@ const App: ParentComponent = (props) => {
               </A>
             </div>
           </div>
-          {api.isDatasetSupport() && (
+          {isDatasetSupport() && (
             <div class="navbar-start">
               <DatasetDropdown />
             </div>

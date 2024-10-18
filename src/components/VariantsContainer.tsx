@@ -1,8 +1,6 @@
 import { VariantFilters } from "./VariantFilters";
 import { Params, SortOrder } from "@molgenis/vip-report-api/src/Api";
 import { Component, createMemo, createResource, Show } from "solid-js";
-import { fetchRecords, MetadataContainer } from "../utils/ApiUtils";
-import { SampleContainer } from "../utils/sample";
 import { VariantType, VariantTypeId } from "../utils/variantTypeUtils";
 import { createStore, produce } from "solid-js/store";
 import { useNavigate } from "@solidjs/router";
@@ -10,7 +8,7 @@ import { createConfig } from "../utils/config";
 import { createQuery } from "../utils/query";
 import { PageChangeEvent } from "./Pager";
 import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import api from "../Api";
+import { fetchRecords, MetadataContainer, SampleContainer } from "../Api";
 import { createDownloadFilename } from "../utils/downloadUtils";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";
 import { SortChangeEvent } from "./Sort";
@@ -77,7 +75,7 @@ export const VariantsContainer: Component<{
 
     const handler = async () => {
       // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
-      const records = await api.getRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
+      const records = await fetchRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
       const vcf = writeVcf(
         { metadata: props.metadata.records, data: records.items.map((item) => item.data) },
         filter(),

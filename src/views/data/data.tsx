@@ -1,7 +1,7 @@
 import { cache } from "@solidjs/router";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import api from "../../Api";
+import { fetchMetadata, fetchRecordById, fetchSampleById, MetadataContainer, SampleContainer } from "../../Api";
 import { InvalidIdException } from "../../utils/error";
 
 /**
@@ -15,12 +15,14 @@ function parseId(id: string | undefined): number {
   return number;
 }
 
-export const getSample = cache(
-  async (id: string | undefined): Promise<Item<Sample>> => api.getSampleById(parseId(id)),
+export const getMetadata = cache(async (): Promise<MetadataContainer> => fetchMetadata(), "metadata");
+
+export const getSampleById = cache(
+  async (id: string | undefined): Promise<SampleContainer> => fetchSampleById(parseId(id)),
   "sample",
 );
 
-export const getVariant = cache(
-  async (id: string | undefined): Promise<Item<Record>> => api.getRecordById(parseId(id)),
+export const getRecordById = cache(
+  async (id: string | undefined): Promise<Item<Record>> => fetchRecordById(parseId(id)),
   "variant",
 );

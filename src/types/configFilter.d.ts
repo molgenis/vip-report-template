@@ -1,8 +1,8 @@
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 
-import { SampleContainer } from "../utils/sample";
 import { ConfigFilterComposed, FilterValueComposed } from "./configFilterComposed";
 import { FieldIndex } from "./configCell";
+import { SampleContainer } from "../Api.ts";
 
 export type FilterId = string;
 export type FilterType = "composed" | "genotype" | "info";

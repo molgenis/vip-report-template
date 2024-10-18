@@ -1,10 +1,10 @@
 import { ConfigFilters, ConfigStaticField, ConfigStaticFieldItem } from "../types/config";
-import { FieldMap, MetadataContainer } from "./ApiUtils";
-import { SampleContainer } from "./sample";
 import { ConfigFilter, ConfigFilterField, ConfigFilterFormat } from "../types/configFilter";
 import { createConfigFilterComposed } from "./configFiltersComposed";
 import { CellId } from "../types/configCell";
 import { UnexpectedEnumValueException } from "./error";
+import { MetadataContainer, SampleContainer } from "../Api.ts";
+import { FieldMap } from "./utils.ts";
 
 export function createConfigFilters(
   configStaticFields: ConfigStaticField[],

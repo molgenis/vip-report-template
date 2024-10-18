@@ -1,9 +1,9 @@
 import { Component, onCleanup, onMount } from "solid-js";
 import igv, { Browser } from "igv";
-import api from "../Api";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
 import { ComposedQuery, Cram, Sample } from "@molgenis/vip-report-api/src/Api";
+import { fetchCram, fetchFastaGz, fetchGenesGz, fetchMetadata, fetchRecords } from "../Api.ts";
 
 async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
   const query: ComposedQuery = {
@@ -19,9 +19,9 @@ async function createVcf(contig: string, position: number, samples: Sample[]): P
       },
     ],
   };
-  const data = await Promise.all([api.getRecordsMeta(), api.getRecords({ query, size: Number.MAX_SAFE_INTEGER })]);
+  const [metadata, data] = await Promise.all([fetchMetadata(), fetchRecords({ query, size: Number.MAX_SAFE_INTEGER })]);
   const vcf = writeVcf(
-    { metadata: data[0], data: data[1].items.map((item) => item.data) },
+    { metadata: metadata, data: data.items.map((item) => item.data) },
     { samples: samples.map((sample) => sample.person.individualId) },
   );
   return toBytes(vcf);
@@ -31,9 +31,9 @@ const toBytes = (str: string): Uint8Array => Uint8Array.from(str.split("").map((
 
 const createBrowserConfig = async (contig: string, position: number, samples: Sample[]): Promise<unknown> => {
   const data = await Promise.all([
-    api.getFastaGz(contig, position),
+    fetchFastaGz(contig, position),
     createVcf(contig, position, samples),
-    api.getGenesGz(),
+    fetchGenesGz(),
   ]);
   const fastaGz = data[0];
   const vcf = data[1];
@@ -61,7 +61,7 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     url: "data:application/octet-stream;base64," + fromByteArray(vcf),
   });
 
-  const htsFileMetadata = await api.getHtsFileMetadata();
+  const htsFileMetadata = (await fetchMetadata()).htsFile;
 
   return {
     reference: {
@@ -78,7 +78,7 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
 };
 
 const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void> => {
-  const data = await Promise.all([...samples.map((sample) => api.getCram(sample.person.individualId))]);
+  const data = await Promise.all([...samples.map((sample) => fetchCram(sample.person.individualId))]);
   const crams = data.slice(0);
 
   for (let i = 0; i < samples.length; ++i) {

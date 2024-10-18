@@ -1,8 +1,8 @@
 import { Component, createResource, Show } from "solid-js";
 import { Navigate, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
-import { fetchVariantTypeIds } from "../utils/ApiUtils";
 import { VariantTypeId } from "../utils/variantTypeUtils";
+import { fetchVariantTypeIds } from "../Api.ts";
 
 export const Variants: Component<RouteSectionProps> = () => {
   const [variantTypeIds] = createResource(fetchVariantTypeIds);

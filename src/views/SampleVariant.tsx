@@ -1,8 +1,7 @@
-import { Component, createResource, For, Show } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
 import { GenomeBrowser } from "../components/GenomeBrowser";
-import { fetchPedigreeSamples, fetchRecordsMeta, getRecordLabel } from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantInfoNestedTable } from "../components/VariantInfoNestedTable";
@@ -11,26 +10,28 @@ import { getNestedInfoFieldsWithValues } from "../utils/field";
 import { VariantSampleTable } from "../components/VariantSampleTable";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { getRecordSamples } from "../utils/viewUtils";
-import { getSampleItemLabel } from "../utils/sample";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { getSampleContainerLabel } from "../utils/sample";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Abbr } from "../components/Abbr";
-import { getSample, getVariant } from "./data/data";
+import { getMetadata, getRecordById, getSampleById } from "./data/data";
 import { parseVariantType, VariantType } from "../utils/variantTypeUtils";
+
+import { getRecordLabel } from "../utils/utils.ts";
+import { SampleContainer } from "../Api.ts";
 
 export const SampleVariantView: Component<RouteSectionProps> = (props) => {
   const variantType = () => parseVariantType(props.params.variantType);
-  const sample = createAsync(() => getSample(props.params.sampleId));
-  const variant = createAsync(() => getVariant(props.params.variantId));
 
-  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
-  const [recordsMeta] = createResource(fetchRecordsMeta);
+  const metadata = createAsync(() => getMetadata());
+  const sample = createAsync(() => getSampleById(props.params.sampleId));
+  const variant = createAsync(() => getRecordById(props.params.variantId));
 
-  function createBreadcrumbItems(sample: Item<Sample>, variant: Item<Record>, variantType: VariantType) {
+  function createBreadcrumbItems(sample: SampleContainer, variant: Item<Record>, variantType: VariantType) {
     return [
       { href: "/samples", text: "Samples" },
-      { href: `/samples/${sample.id}`, text: getSampleItemLabel(sample) },
-      { href: `/samples/${sample.id}/variants/${variantType.id}`, text: "Variants" },
+      { href: `/samples/${sample.item.id}`, text: getSampleContainerLabel(sample) },
+      { href: `/samples/${sample.item.id}/variants/${variantType.id}`, text: "Variants" },
       { text: getRecordLabel(variant) },
     ];
   }
@@ -42,19 +43,8 @@ export const SampleVariantView: Component<RouteSectionProps> = (props) => {
           {(variant) => (
             <>
               <Breadcrumb items={createBreadcrumbItems(sample(), variant(), variantType())} />
-              <Show when={pedigreeSamples()} fallback={<Loader />}>
-                {(pedigreeSamples) => (
-                  <Show when={recordsMeta()} fallback={<Loader />}>
-                    {(recordsMeta) => (
-                      <SampleVariant
-                        sample={sample()}
-                        pedigreeSamples={pedigreeSamples().items}
-                        recordsMeta={recordsMeta()}
-                        record={variant()}
-                      />
-                    )}
-                  </Show>
-                )}
+              <Show when={metadata()} fallback={<Loader />}>
+                {(metadata) => <SampleVariant sample={sample()} recordsMeta={metadata().records} record={variant()} />}
               </Show>
             </>
           )}
@@ -65,8 +55,7 @@ export const SampleVariantView: Component<RouteSectionProps> = (props) => {
 };
 
 export const SampleVariant: Component<{
-  sample: Item<Sample>;
-  pedigreeSamples: Item<Sample>[];
+  sample: SampleContainer;
   recordsMeta: Metadata;
   record: Item<Record>;
 }> = (props) => {
@@ -77,7 +66,7 @@ export const SampleVariant: Component<{
           <GenomeBrowser
             contig={props.record.data.c}
             position={props.record.data.p}
-            samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
+            samples={[props.sample.item.data, ...props.pedigreeSamples.map((item) => item.data)]}
           />
         </div>
       </div>
@@ -102,7 +91,7 @@ export const SampleVariant: Component<{
           <h1 class="title is-5">Samples</h1>
           <VariantSampleTable
             formatFields={props.recordsMeta.format}
-            samples={[props.sample.data, ...props.pedigreeSamples.map((item) => item.data)]}
+            samples={[props.sample.item.data, ...props.pedigreeSamples.map((item) => item.data)]}
             sampleValues={getRecordSamples(
               props.record.data,
               props.sample.data,
@@ -124,7 +113,7 @@ export const SampleVariant: Component<{
                 <VariantInfoNestedTable
                   infoValue={props.record.data.n[infoField.id] as unknown as Value[][]}
                   infoField={infoField}
-                  sample={{ id: props.sample.id, label: props.sample.data.person.individualId }}
+                  sample={{ id: props.sample.item.id, label: props.sample.item.data.person.individualId }}
                   record={props.record}
                 />
               </>

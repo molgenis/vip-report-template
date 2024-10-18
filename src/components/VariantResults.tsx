@@ -7,10 +7,11 @@ import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { ButtonDownload } from "./form/ButtonDownload";
-import { MetadataContainer } from "../utils/ApiUtils";
 import { ConfigCells } from "../types/config";
 import { ConfigCellGroup, ConfigCellInfo } from "../types/configCell";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
+
+import { MetadataContainer } from "../Api.ts";
 
 export type RecordsDownloadCallback = () => void;
 

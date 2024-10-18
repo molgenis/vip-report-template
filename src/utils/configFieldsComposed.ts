@@ -1,7 +1,7 @@
 import { CellId, ConfigCellCustom, RecordContext } from "../types/configCell";
 import { Genotype, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
-import { getSampleContainerLabel, SampleContainer } from "./sample";
+import { getSampleContainerLabel } from "./sample";
 import {
   CellValueClinVar,
   CellValueCustom,
@@ -15,7 +15,6 @@ import {
   CellValueVipC,
   CellValueVkgl,
 } from "../types/configCellComposed";
-import { FieldMap } from "./ApiUtils";
 import { ValueFlag, ValueFloat, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getFieldMultilineValue, getFieldValueCount, getNestedFieldIndices } from "./csqUtils";
 import { getCategoryLabelAndDescription } from "./field";
@@ -23,6 +22,8 @@ import { getRecordSample } from "./recordUtils";
 import { InfoMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
+import { SampleContainer } from "../Api.ts";
+import { FieldMap } from "./utils.ts";
 
 export function createConfigFieldComposed(
   id: CellId,

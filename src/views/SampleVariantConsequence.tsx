@@ -1,13 +1,6 @@
 import { Component, createResource, Show } from "solid-js";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
-import {
-  fetchDecisionTree,
-  fetchPedigreeSamples,
-  fetchRecordsMeta,
-  fetchSampleTree,
-  getRecordLabel,
-} from "../utils/ApiUtils";
 import { VariantTable } from "../components/VariantTable";
 import { VariantInfoTable } from "../components/VariantInfoTable";
 import { VariantSampleTable } from "../components/VariantSampleTable";
@@ -16,18 +9,21 @@ import { ConsequenceTable } from "../components/ConsequenceTable";
 import { getRecordSamples, getSpecificConsequence } from "../utils/viewUtils";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getDecisionTreePath, getSampleTreePath } from "../utils/decisionTreeUtils";
-import { getSampleItemLabel } from "../utils/sample";
-import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { getSampleContainerLabel } from "../utils/sample";
+import { DecisionTree, Item } from "@molgenis/vip-report-api/src/Api";
 import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { getSample, getVariant } from "./data/data";
+import { getMetadata, getRecordById, getSampleById } from "./data/data";
+import { fetchDecisionTree, fetchSampleTree, SampleContainer } from "../Api.ts";
+import { getRecordLabel } from "../utils/utils.ts";
 
 export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props) => {
-  const sample = createAsync(() => getSample(props.params.sampleId));
-  const variant = createAsync(() => getVariant(props.params.variantId));
   const consequenceId = () => Number(props.params.consequenceId);
-  const [pedigreeSamples] = createResource(sample, fetchPedigreeSamples);
-  const [recordsMeta] = createResource(fetchRecordsMeta);
+
+  const metadata = createAsync(() => getMetadata());
+  const sample = createAsync(() => getSampleById(props.params.sampleId));
+  const variant = createAsync(() => getRecordById(props.params.variantId));
+
   const [decisionTree] = createResource(fetchDecisionTree, { initialValue: null });
   const [sampleTree] = createResource(fetchSampleTree, { initialValue: null });
 
@@ -40,30 +36,25 @@ export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props
               <Breadcrumb
                 items={[
                   { href: "/samples", text: "Samples" },
-                  { href: `/samples/${sample().id}`, text: getSampleItemLabel(sample()) },
-                  { href: `/samples/${sample().id}/variants`, text: "Variants" },
+                  { href: `/samples/${sample().item.id}`, text: getSampleContainerLabel(sample()) },
+                  { href: `/samples/${sample().item.id}/variants`, text: "Variants" },
                   {
-                    href: `/samples/${sample().id}/variant/${variant().id}`,
+                    href: `/samples/${sample().item.id}/variant/${variant().id}`,
                     text: getRecordLabel(variant()),
                   },
                   { text: `Consequence #${consequenceId()}` },
                 ]}
               />
-              <Show when={pedigreeSamples()} fallback={<Loader />}>
-                {(pedigreeSamples) => (
-                  <Show when={recordsMeta()} fallback={<Loader />}>
-                    {(recordsMeta) => (
-                      <SampleVariantConsequence
-                        sample={sample()}
-                        pedigreeSamples={pedigreeSamples().items}
-                        recordsMeta={recordsMeta()}
-                        variant={variant()}
-                        consequenceId={consequenceId()}
-                        decisionTree={decisionTree()}
-                        sampleTree={sampleTree()}
-                      />
-                    )}
-                  </Show>
+              <Show when={metadata()} fallback={<Loader />}>
+                {(metadata) => (
+                  <SampleVariantConsequence
+                    sample={sample()}
+                    recordsMeta={metadata().records}
+                    variant={variant()}
+                    consequenceId={consequenceId()}
+                    decisionTree={decisionTree()}
+                    sampleTree={sampleTree()}
+                  />
                 )}
               </Show>
             </>
@@ -75,8 +66,7 @@ export const SampleVariantConsequenceView: Component<RouteSectionProps> = (props
 };
 
 export const SampleVariantConsequence: Component<{
-  sample: Item<Sample>;
-  pedigreeSamples: Item<Sample>[];
+  sample: SampleContainer;
   recordsMeta: Metadata;
   variant: Item<Record>;
   consequenceId: number;

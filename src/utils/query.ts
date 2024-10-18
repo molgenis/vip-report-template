@@ -23,11 +23,11 @@ import {
 } from "../types/configFilter";
 import { VariantType } from "./variantTypeUtils";
 
-import { SampleContainer } from "./sample";
 import { ConfigFilters } from "../types/config";
 import { ConfigFilterComposed } from "../types/configFilterComposed";
 import { createQueryFilterComposed } from "./queryComposed";
 import { UnexpectedEnumValueException } from "./error";
+import { SampleContainer } from "../Api.ts";
 
 type ComposedQueryOperator = "and" | "or"; // TODO move to API.d.ts in vip-report-api
 

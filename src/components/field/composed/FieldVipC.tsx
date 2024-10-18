@@ -1,17 +1,25 @@
 import { Component, Show } from "solid-js";
 import { CellValueVipC } from "../../../types/configCellComposed";
 import { Abbr } from "../../Abbr";
-import { A } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
 
 export const FieldVipC: Component<{
   value: CellValueVipC;
 }> = (props) => {
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    if (props.value.href) {
+      // use 'navigate' instead of '<A href=' such that cache is used
+      navigate(props.value.href);
+    }
+  };
+
   return (
-    <A href={props.value.href || "#"}>
-      {/* FIXME see '#'*/}
+    <a onClick={onClick}>
       <Show when={props.value.vipP} fallback={<span>props.value.vipC</span>} keyed>
         {(vipPItem) => <Abbr title={vipPItem.join(", ")} value={props.value.vipC} />}
       </Show>
-    </A>
+    </a>
   );
 };

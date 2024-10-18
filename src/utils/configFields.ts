@@ -1,4 +1,3 @@
-import { FieldMap } from "./ApiUtils";
 import {
   CellId,
   CellValueAlt,
@@ -24,7 +23,6 @@ import {
   ConfigCellRef,
   RecordContext,
 } from "../types/configCell";
-import { SampleContainer } from "./sample";
 import { createConfigFieldComposed } from "./configFieldsComposed";
 import { ConfigCells, ConfigStaticField, ConfigStaticFieldItem, ConfigStaticFieldItemGroup } from "../types/config";
 import { ValueDescription } from "@molgenis/vip-report-vcf/src/types/Metadata";
@@ -36,6 +34,8 @@ import { CellValueCustom } from "../types/configCellComposed";
 import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
 import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
+import { SampleContainer } from "../Api.ts";
+import { FieldMap } from "./utils.ts";
 
 export function createConfigFields(
   configStaticFields: ConfigStaticField[],

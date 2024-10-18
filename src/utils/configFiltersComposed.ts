@@ -1,8 +1,9 @@
 import { FilterId } from "../types/configFilter";
-import { MetadataContainer, parseContigIds } from "./ApiUtils";
 import { ConfigFilterComposed, ConfigFilterLocus } from "../types/configFilterComposed";
 import { CellId } from "../types/configCell";
 import { UnexpectedEnumValueException } from "./error";
+import { parseContigIds } from "./utils.ts";
+import { MetadataContainer } from "../Api.ts";
 
 export function createConfigFilterComposed(id: CellId, metadata: MetadataContainer): ConfigFilterComposed {
   let filter: ConfigFilterComposed;

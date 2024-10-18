@@ -1,10 +1,6 @@
 import { Component, Show } from "solid-js";
-import {
-  getSampleAffectedStatusLabel,
-  getSampleContainerLabel,
-  getSampleSexLabel,
-  SampleContainer,
-} from "../utils/sample";
+import { getSampleAffectedStatusLabel, getSampleContainerLabel, getSampleSexLabel } from "../utils/sample";
+import { SampleContainer } from "../Api.ts";
 
 export const VariantsContainerHeader: Component<{
   sample: SampleContainer | null;

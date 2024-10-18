@@ -1,7 +1,7 @@
 import { Component, createSignal, For } from "solid-js";
-import api from "../Api";
 import { useNavigate } from "@solidjs/router";
 import { useStore } from "../store";
+import { fetchSampleProbandIds, getDatasetIds, selectDataset } from "../Api.ts";
 
 export const DatasetDropdown: Component = () => {
   const [, actions] = useStore();
@@ -11,14 +11,14 @@ export const DatasetDropdown: Component = () => {
 
   function switchIt(datasetName: string) {
     setSelectedDataset(datasetName);
-    api.selectDataset(datasetName);
+    selectDataset(datasetName);
     actions.reset();
     (async () => {
       navigate(`/`);
-      const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
-      if (samples.page.totalElements === 1) {
-        navigate(`/samples/${samples.items[0]!.id}/variants`);
-      } else if (samples.total === 0) {
+      const samples = await fetchSampleProbandIds();
+      if (samples.length === 1) {
+        navigate(`/samples/${samples[0]!}/variants`);
+      } else if (samples.length === 0) {
         navigate(`/variants`);
       } else {
         navigate(`/samples`);
@@ -30,7 +30,7 @@ export const DatasetDropdown: Component = () => {
     <div class="navbar-item has-dropdown is-hoverable">
       <a class="navbar-link">{selectedDataset()}</a>
       <div class="navbar-dropdown">
-        <For each={api.getDatasetIds()}>
+        <For each={getDatasetIds()}>
           {(dataset: string) => (
             <a
               class="navbar-item"
