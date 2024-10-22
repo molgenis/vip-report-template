@@ -2,15 +2,15 @@ import { Component, onCleanup, onMount } from "solid-js";
 import igv, { Browser } from "igv";
 import { fromByteArray } from "base64-js";
 import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Cram, Item } from "@molgenis/vip-report-api/src/Api";
-import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, MetadataContainer, SampleContainer } from "../Api.ts";
+import { ComposedQuery, Cram, Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, MetadataContainer } from "../Api.ts";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
 async function fetchVcf(
   metadata: MetadataContainer,
   contig: string,
   position: number,
-  samples: SampleContainer[],
+  samples: Item<Sample>[],
 ): Promise<Uint8Array> {
   const query: ComposedQuery = {
     operator: "and",
@@ -28,7 +28,7 @@ async function fetchVcf(
   const records = await fetchRecords({ query, size: Number.MAX_SAFE_INTEGER });
   const vcf = writeVcf(
     { metadata: metadata.records, data: records.items.map((item) => item.data) },
-    { samples: samples.map((sample) => sample.item.data.person.individualId) },
+    { samples: samples.map((sample) => sample.data.person.individualId) },
   );
   return toBytes(vcf);
 }
@@ -38,7 +38,7 @@ const toBytes = (str: string): Uint8Array => Uint8Array.from(str.split("").map((
 const createBrowserConfig = async (
   metadata: MetadataContainer,
   record: Item<Record>,
-  samples: SampleContainer[],
+  samples: Item<Sample>[],
 ): Promise<unknown> => {
   const contig = record.data.c;
   const position = record.data.p;
@@ -88,15 +88,15 @@ const createBrowserConfig = async (
   };
 };
 
-const updateBrowser = async (browser: Browser, samples: SampleContainer[]): Promise<void> => {
-  const data = await Promise.all([...samples.map((sample) => fetchCram(sample.item.data.person.individualId))]);
+const updateBrowser = async (browser: Browser, samples: Item<Sample>[]): Promise<void> => {
+  const data = await Promise.all([...samples.map((sample) => fetchCram(sample.data.person.individualId))]);
   const crams = data.slice(0);
 
   for (let i = 0; i < samples.length; ++i) {
     const cram = crams[i] as Cram | null;
 
     if (cram !== null) {
-      const sampleId = samples[i]!.item.data.person.individualId;
+      const sampleId = samples[i]!.data.person.individualId;
       await browser.loadTrack({
         type: "alignment",
         format: "cram",
@@ -113,7 +113,7 @@ const updateBrowser = async (browser: Browser, samples: SampleContainer[]): Prom
 export const GenomeBrowser: Component<{
   metadata: MetadataContainer;
   record: Item<Record>;
-  samples: SampleContainer[];
+  samples: Item<Sample>[];
 }> = (props) => {
   let divRef: HTMLDivElement;
   let browser: Browser;

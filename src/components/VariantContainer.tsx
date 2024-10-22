@@ -1,6 +1,6 @@
 import { Component, For, Show } from "solid-js";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
-import { Item } from "../../../vip-report-api/src/Api";
+import { Item, Sample } from "../../../vip-report-api/src/Api";
 import { Record } from "../../../vip-report-vcf/src/Vcf.ts";
 import { GenomeBrowser } from "./GenomeBrowser.tsx";
 import { VariantTable } from "./VariantTable.tsx";
@@ -16,10 +16,10 @@ export const VariantContainer: Component<{
   record: Item<Record>;
   sample: SampleContainer | null;
 }> = (props) => {
-  const samples = (): SampleContainer[] =>
+  const samples = (): Item<Sample>[] =>
     props.sample
       ? [
-          props.sample,
+          props.sample.item,
           props.sample.maternalSample,
           props.sample.paternalSample,
           ...props.sample.otherPedigreeSamples,
