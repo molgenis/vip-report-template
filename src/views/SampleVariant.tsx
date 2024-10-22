@@ -20,7 +20,14 @@ export const SampleVariant: Component<RouteSectionProps> = (props) => {
             <>
               <VariantBreadcrumb variantType={variantType()} sample={sample()} record={record()} />
               <Show when={metadata()} fallback={<Loader />}>
-                {(metadata) => <VariantContainer sample={sample()} metadata={metadata()} record={record()} />}
+                {(metadata) => (
+                  <VariantContainer
+                    metadata={metadata()}
+                    variantType={variantType()}
+                    record={record()}
+                    sample={sample()}
+                  />
+                )}
               </Show>
             </>
           )}

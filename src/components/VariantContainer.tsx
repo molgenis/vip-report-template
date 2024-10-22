@@ -6,13 +6,16 @@ import { GenomeBrowser } from "./GenomeBrowser.tsx";
 import { VariantTable } from "./VariantTable.tsx";
 import { VariantInfoTable } from "./VariantInfoTable.tsx";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
-import { getNestedInfoFieldsWithValues } from "../utils/field.ts";
-import { Abbr } from "./Abbr.tsx";
-import { VariantInfoNestedTable } from "./VariantInfoNestedTable.tsx";
-import { Value } from "../../../vip-report-vcf/src/ValueParser.ts";
+import { RecordsTable } from "./RecordsTable.tsx";
+import { ConfigCells } from "../types/config";
+import { VariantType } from "../utils/variantTypeUtils.ts";
+import { createConfigFields } from "../utils/configFields.ts";
+import { createFieldMap } from "../utils/utils.ts";
+import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
 
 export const VariantContainer: Component<{
   metadata: MetadataContainer;
+  variantType: VariantType;
   record: Item<Record>;
   sample: SampleContainer | null;
 }> = (props) => {
@@ -25,6 +28,36 @@ export const VariantContainer: Component<{
           ...props.sample.otherPedigreeSamples,
         ].filter((id) => id !== null)
       : [];
+
+  const nestedTableConfigs = (): ConfigCells[] => {
+    const fieldMap = createFieldMap(props.metadata.records);
+
+    function createTableConfig(fieldMetadata: FieldMetadata) {
+      return createConfigFields(
+        [
+          {
+            type: "group",
+            fields: fieldMetadata.nested!.items.map((childFieldMetadata) => {
+              const name = `${fieldMetadata.id}/${childFieldMetadata.id}`;
+              return name === "CSQ/VIPC"
+                ? { type: "composed", name: "vipC" }
+                : {
+                    type: "info",
+                    name: name,
+                  };
+            }),
+          },
+        ],
+        fieldMap,
+        props.sample,
+        props.variantType,
+      );
+    }
+
+    return Object.values(props.metadata.records.info)
+      .filter((fieldMetadata) => fieldMetadata.nested && props.record.data.n[fieldMetadata.id] !== undefined)
+      .map((fieldMetadata) => createTableConfig(fieldMetadata));
+  };
 
   return (
     <>
@@ -61,25 +94,15 @@ export const VariantContainer: Component<{
           </div>
         </Show>
       </div>
-      <div class="columns">
-        <div class="column" style={{ "max-width": "100%" }}>
-          <For each={getNestedInfoFieldsWithValues(props.metadata.records.info, props.record.data.n)}>
-            {(infoField) => (
-              <>
-                <h1 class="title is-5">{infoField.id}</h1>
-                <p class="mb-4">
-                  <Abbr value={infoField.description as string} title={infoField.description as string} />
-                </p>
-                <VariantInfoNestedTable
-                  infoValue={props.record.data.n[infoField.id] as unknown as Value[][]}
-                  infoField={infoField}
-                  record={props.record}
-                />
-              </>
-            )}
-          </For>
-        </div>
-      </div>
+      <For each={nestedTableConfigs()}>
+        {(nestedTableConfig) => (
+          <div class="columns">
+            <div class="column is-full">
+              <RecordsTable fieldConfigs={nestedTableConfig} records={[props.record]} verticalHeaders={true} />
+            </div>
+          </div>
+        )}
+      </For>
     </>
   );
 };

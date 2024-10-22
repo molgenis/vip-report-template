@@ -10,13 +10,14 @@ import { Field } from "./field/Field";
 export const RecordsTable: Component<{
   fieldConfigs: ConfigCells;
   records: Item<Record>[];
+  verticalHeaders?: boolean;
 }> = (props) => {
   return (
     <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
       <div class="table-container">
         <table class="table is-narrow">
-          <RecordsTableHeader fieldConfigs={props.fieldConfigs} />
+          <RecordsTableHeader fieldConfigs={props.fieldConfigs} verticalHeaders={props.verticalHeaders} />
           <RecordsTableBody fieldConfigs={props.fieldConfigs} records={props.records} />
         </table>
       </div>
@@ -26,10 +27,11 @@ export const RecordsTable: Component<{
 
 const RecordsTableHeader: Component<{
   fieldConfigs: ConfigCells;
+  verticalHeaders?: boolean;
 }> = (props) => {
   return (
     <thead>
-      <tr>
+      <tr style={props.verticalHeaders ? { "writing-mode": "vertical-rl" } : undefined}>
         <For each={props.fieldConfigs}>
           {(fieldConfig) => (
             <Switch fallback={<RecordsTableHeaderCell fieldConfig={fieldConfig as ConfigCellItem} />}>

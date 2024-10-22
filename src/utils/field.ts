@@ -1,14 +1,9 @@
 import { FieldMetadata, ValueDescription } from "@molgenis/vip-report-vcf/src/types/Metadata";
-import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
 import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 
 export const isNumerical = (fieldMetadata: FieldMetadata): boolean => {
   return fieldMetadata.type === "FLOAT" || fieldMetadata.type === "INTEGER";
 };
-
-export function getNestedInfoFieldsWithValues(infoFields: FieldMetadataContainer, infoValues: InfoContainer) {
-  return Object.values(infoFields).filter((infoField) => infoField.nested && infoValues[infoField.id] !== undefined);
-}
 
 export function abbreviateHeader(header: string) {
   return header.length > 13 ? header.slice(0, 11) + "\u2026" : header;
