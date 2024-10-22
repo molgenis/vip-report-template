@@ -15,7 +15,7 @@
   },
   "license": "LGPL-3.0",
   "devDependencies": {
-    "@molgenis/vite-plugin-inline": "^1.0.25",
+    "@molgenis/vite-plugin-inline": "link:C:/Users/Dennis Hendriksen/Dev/vite-plugin-inline",
     "@vitest/coverage-v8": "^2.1.3",
     "bulma": "^1.0.2",
     "eslint": "^9.13.0",
