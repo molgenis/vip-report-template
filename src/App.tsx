@@ -3,11 +3,12 @@ import { A, Location, Navigator, useLocation, useNavigate } from "@solidjs/route
 import { DatasetDropdown } from "./components/DatasetDropdown";
 import { fetchSampleProbandIds, isDatasetSupport } from "./Api.ts";
 import { href } from "./utils/utils.ts";
+import { getMetadata } from "./views/data/data.tsx";
 
 // export for development purposes
 export function init(navigate: Navigator, location?: Location) {
   (async () => {
-    document.title = `VCF Report`; // FIXME reintroduce custom name
+    document.title = `VCF Report (${(await getMetadata()).htsFile.uri})`;
     const sampleIds = await fetchSampleProbandIds();
     if (location === undefined || location.pathname === "/") {
       let components: (string | number)[];
