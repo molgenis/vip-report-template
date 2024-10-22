@@ -65,10 +65,7 @@ export const VariantsContainer: Component<{
   const onRecordsDownload = () => {
     const samples = createMemo(() =>
       props.sample
-        ? [
-            props.sample.item.data,
-            ...props.sample.otherPedigreeSamples.map((pedigreeSample) => pedigreeSample.item.data),
-          ]
+        ? [props.sample.item.data, ...props.sample.otherPedigreeSamples.map((pedigreeSample) => pedigreeSample.data)]
         : [],
     );
     const filter = (): Filter | undefined =>
