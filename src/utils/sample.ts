@@ -1,4 +1,5 @@
 import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { SampleContainer } from "../Api.ts";
 
 export function getSampleLabel(sample: Item<Sample>) {
   return sample.data.person.individualId;
@@ -36,4 +37,10 @@ export function isSampleMother(sample: Sample, samples: Sample): boolean {
 
 export function isSampleFather(sample: Sample, samples: Sample): boolean {
   return isFamily(sample, samples) && samples.person.individualId === sample.person.paternalId;
+}
+
+export function getPedigreeSamples(sample: SampleContainer): Item<Sample>[] {
+  return [sample.item, sample.maternalSample, sample.paternalSample, ...sample.otherPedigreeSamples].filter(
+    (id) => id !== null,
+  );
 }

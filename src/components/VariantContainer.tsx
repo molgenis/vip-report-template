@@ -12,6 +12,7 @@ import { VariantType } from "../utils/variantTypeUtils.ts";
 import { createConfigFields } from "../utils/configFields.ts";
 import { createFieldMap } from "../utils/utils.ts";
 import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
+import { getPedigreeSamples } from "../utils/sample.ts";
 
 export const VariantContainer: Component<{
   metadata: MetadataContainer;
@@ -19,15 +20,7 @@ export const VariantContainer: Component<{
   record: Item<Record>;
   sample: SampleContainer | null;
 }> = (props) => {
-  const samples = (): Item<Sample>[] =>
-    props.sample
-      ? [
-          props.sample.item,
-          props.sample.maternalSample,
-          props.sample.paternalSample,
-          ...props.sample.otherPedigreeSamples,
-        ].filter((id) => id !== null)
-      : [];
+  const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
 
   const nestedTableConfigs = (): ConfigCells[] => {
     const fieldMap = createFieldMap(props.metadata.records);

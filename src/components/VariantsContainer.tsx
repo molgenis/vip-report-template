@@ -18,6 +18,7 @@ import { VariantResults } from "./VariantResults";
 import { FilterChangeEvent, FilterClearEvent, FilterValueMap } from "../types/filter";
 import { VariantsContainerHeader } from "./VariantsContainerHeader";
 import { href } from "../utils/utils.ts";
+import { getPedigreeSamples } from "../utils/sample.ts";
 
 type VariantsStore = {
   filterValues: FilterValueMap;
@@ -63,13 +64,9 @@ export const VariantsContainer: Component<{
     setStore("page", "number", event.page);
   };
   const onRecordsDownload = () => {
-    const samples = createMemo(() =>
-      props.sample
-        ? [props.sample.item.data, ...props.sample.otherPedigreeSamples.map((pedigreeSample) => pedigreeSample.data)]
-        : [],
-    );
+    const samples = createMemo(() => (props.sample ? getPedigreeSamples(props.sample) : []));
     const filter = (): Filter | undefined =>
-      samples() ? { samples: samples().map((sample) => sample.person.individualId) } : undefined;
+      samples() ? { samples: samples().map((sample) => sample.data.person.individualId) } : undefined;
 
     const handler = async () => {
       // create vcf using all records that match filters, use default sort to ensure valid vcf ordering

@@ -11,6 +11,7 @@ import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { DecisionTreePath } from "./tree/DecisionTreePath.tsx";
 import { getDecisionTreePath, getSampleTreePath } from "../utils/decisionTreeUtils.ts";
 import { VariantType } from "../utils/variantTypeUtils.ts";
+import { getPedigreeSamples } from "../utils/sample.ts";
 
 export const VariantConsequenceContainer: Component<{
   metadata: Metadata;
@@ -21,15 +22,7 @@ export const VariantConsequenceContainer: Component<{
   decisionTree: DecisionTree | null;
   sampleTree: DecisionTree | null;
 }> = (props) => {
-  const samples = (): Item<Sample>[] =>
-    props.sample
-      ? [
-          props.sample.item,
-          props.sample.maternalSample,
-          props.sample.paternalSample,
-          ...props.sample.otherPedigreeSamples,
-        ].filter((id) => id !== null)
-      : [];
+  const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
 
   const hasDecisionTreePathMeta = () =>
     (props.metadata.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
