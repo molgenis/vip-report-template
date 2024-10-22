@@ -7,7 +7,7 @@ export const FieldInheritanceModes: Component<{ value: CellValueInheritanceModes
   const inheritanceModesGene = (): ValueString[] => props.value.inheritanceModesGene;
   const isArInheritance = () => {
     let isArInheritance = false;
-    if (inheritanceModesGene.length === 0 || inheritanceModesGene().includes("AR")) {
+    if (inheritanceModesGene().length === 0 || inheritanceModesGene().includes("AR")) {
       isArInheritance = props.value.isPossibleCompound !== undefined && props.value.isPossibleCompound;
     }
     return isArInheritance;
