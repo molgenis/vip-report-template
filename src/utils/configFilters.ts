@@ -1,12 +1,31 @@
 import {
   ConfigFilters,
   ConfigStaticField,
-  ConfigStaticFieldComposed,
+  ConfigStaticFieldAlt,
+  ConfigStaticFieldChrom,
+  ConfigStaticFieldFilter,
+  ConfigStaticFieldFixed,
   ConfigStaticFieldGenotype,
+  ConfigStaticFieldId,
   ConfigStaticFieldInfo,
   ConfigStaticFieldItem,
+  ConfigStaticFieldPos,
+  ConfigStaticFieldQual,
+  ConfigStaticFieldRef,
 } from "../types/config";
-import { ConfigFilter, ConfigFilterField, ConfigFilterFormat } from "../types/configFilter";
+import {
+  ConfigFilter,
+  ConfigFilterAlt,
+  ConfigFilterChrom,
+  ConfigFilterField,
+  ConfigFilterFilter,
+  ConfigFilterFixed,
+  ConfigFilterFormat,
+  ConfigFilterId,
+  ConfigFilterPos,
+  ConfigFilterQual,
+  ConfigFilterRef,
+} from "../types/configFilter";
 import { createConfigFilterComposed } from "./configFiltersComposed";
 import { UnexpectedEnumValueException } from "./error";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
@@ -30,6 +49,69 @@ export function createConfigFilters(
   return configFilters.filter((configFilter) => configFilter !== null);
 }
 
+function createConfigFilterChrom(configStatic: ConfigStaticFieldChrom): ConfigFilterChrom {
+  return {
+    type: "fixed",
+    id: "chrom",
+    label: () => configStatic.label || "Chromosome",
+    description: () => configStatic.description || null,
+  };
+}
+
+function createConfigFilterPos(configStatic: ConfigStaticFieldPos): ConfigFilterPos {
+  return {
+    type: "fixed",
+    id: "pos",
+    label: () => configStatic.label || "Position",
+    description: () => configStatic.description || null,
+  };
+}
+
+function createConfigFilterId(configStatic: ConfigStaticFieldId): ConfigFilterId {
+  return {
+    type: "fixed",
+    id: "id",
+    label: () => configStatic.label || "Identifiers",
+    description: () => configStatic.description || null,
+  };
+}
+
+function createConfigFilterRef(configStatic: ConfigStaticFieldRef): ConfigFilterRef {
+  return {
+    type: "fixed",
+    id: "ref",
+    label: () => configStatic.label || "Reference",
+    description: () => configStatic.description || null,
+  };
+}
+
+function createConfigFilterAlt(configStatic: ConfigStaticFieldAlt): ConfigFilterAlt {
+  return {
+    type: "fixed",
+    id: "alt",
+    label: () => configStatic.label || "Alt",
+    description: () => configStatic.description || null,
+  };
+}
+
+function createConfigFilterQual(configStatic: ConfigStaticFieldQual): ConfigFilterQual {
+  return {
+    type: "fixed",
+    id: "qual",
+    label: () => configStatic.label || "Quality",
+    description: () => configStatic.description || null,
+  };
+}
+
+function createConfigFilterFilter(configStatic: ConfigStaticFieldFilter): ConfigFilterFilter {
+  return {
+    type: "fixed",
+    id: "filter",
+    label: () => configStatic.label || "Filter",
+    description: () => configStatic.description || null,
+  };
+}
+
 function createConfigFilterGenotype(
   configStatic: ConfigStaticFieldGenotype,
   sample: SampleContainer | null,
@@ -49,6 +131,36 @@ function createConfigFilterGenotype(
     field,
     sample,
   };
+}
+
+function createConfigFilterFixed(configStaticField: ConfigStaticFieldFixed): ConfigFilterFixed {
+  let configFilter: ConfigFilterFixed;
+  switch (configStaticField.name) {
+    case "chrom":
+      configFilter = createConfigFilterChrom(configStaticField);
+      break;
+    case "pos":
+      configFilter = createConfigFilterPos(configStaticField);
+      break;
+    case "id":
+      configFilter = createConfigFilterId(configStaticField);
+      break;
+    case "ref":
+      configFilter = createConfigFilterRef(configStaticField);
+      break;
+    case "alt":
+      configFilter = createConfigFilterAlt(configStaticField);
+      break;
+    case "qual":
+      configFilter = createConfigFilterQual(configStaticField);
+      break;
+    case "filter":
+      configFilter = createConfigFilterFilter(configStaticField);
+      break;
+    default:
+      throw new UnexpectedEnumValueException(configStaticField["name"]);
+  }
+  return configFilter;
 }
 
 function createConfigFilterInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigFilterField | null {
@@ -73,29 +185,20 @@ function createConfigFilterItem(
 ) {
   let configFilter: ConfigFilter | null;
   switch (configStaticField.type) {
-    case "info":
-      configFilter = createConfigFilterInfo(configStaticField as ConfigStaticFieldInfo, fieldMap);
+    case "fixed":
+      configFilter = createConfigFilterFixed(configStaticField);
       break;
+    case "info":
+      configFilter = createConfigFilterInfo(configStaticField, fieldMap);
+      break;
+    case "format":
+      throw new Error(`unsupported config filter type '${configStaticField.type}'`); // not exposed by vip-report-api
     case "genotype":
-      configFilter = createConfigFilterGenotype(configStaticField as ConfigStaticFieldGenotype, sample, fieldMap);
+      configFilter = createConfigFilterGenotype(configStaticField, sample, fieldMap);
       break;
     case "composed":
-      configFilter = createConfigFilterComposed(
-        configStaticField as ConfigStaticFieldComposed,
-        metadata,
-        sample,
-        fieldMap,
-      );
+      configFilter = createConfigFilterComposed(configStaticField, metadata, sample, fieldMap);
       break;
-    case "chrom": // TODO discuss: support some of these such as 'filter'?
-    case "pos":
-    case "id":
-    case "ref":
-    case "alt":
-    case "qual":
-    case "filter":
-    case "format":
-      throw new Error(`unsupported config filter type '${configStaticField.type}'`);
     default:
       throw new UnexpectedEnumValueException(configStaticField["type"]);
   }

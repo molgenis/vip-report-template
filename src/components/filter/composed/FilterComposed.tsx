@@ -16,7 +16,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
   const id = () => props.config.id;
 
   return (
-    <Switch fallback={<ErrorNotification error={`unexpected field type ${id()}`} />}>
+    <Switch fallback={<ErrorNotification error={`unexpected field id ${id()}`} />}>
       <Match when={id() === "hpo"}>
         <FilterHpo
           config={props.config as ConfigFilterHpo}

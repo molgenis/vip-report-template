@@ -70,6 +70,15 @@ export interface ConfigCellFilter extends ConfigCellBase<string[]> {
   type: "filter";
 }
 
+export type ConfigCellFixed =
+  | ConfigCellChrom
+  | ConfigCellPos
+  | ConfigCellId
+  | ConfigCellRef
+  | ConfigCellAlt
+  | ConfigCellQual
+  | ConfigCellFilter;
+
 export type CellValueInfo = Value | undefined;
 
 export interface ConfigCellInfo extends ConfigCellBase<CellValueInfo> {
@@ -96,13 +105,7 @@ interface ConfigCellCustom<T extends CellValueCustom> extends ConfigCellBase<T> 
 }
 
 export type ConfigCellItem =
-  | ConfigCellChrom
-  | ConfigCellPos
-  | ConfigCellId
-  | ConfigCellRef
-  | ConfigCellAlt
-  | ConfigCellQual
-  | ConfigCellFilter
+  | ConfigCellFixed
   | ConfigCellFormat
   | ConfigCellInfo
   | ConfigCellGenotype
@@ -115,17 +118,15 @@ export interface ConfigCellGroup {
 
 export type ConfigCell = ConfigCellItem | ConfigCellGroup;
 
-export type CellValue =
+export type CellValueFixed =
   | CellValueChrom
   | CellValuePos
   | CellValueId
   | CellValueRef
   | CellValueAlt
   | CellValueQual
-  | CellValueFilter
-  | CellValueFormat
-  | CellValueInfo
-  | CellValueGenotype
-  | CellValueCustom;
+  | CellValueFilter;
+
+export type CellValue = CellValueFixed | CellValueFormat | CellValueInfo | CellValueGenotype | CellValueCustom;
 
 // note: add composed field to configCellComposed.d.ts

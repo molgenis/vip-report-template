@@ -11,6 +11,7 @@ import {
   ConfigCellAlt,
   ConfigCellChrom,
   ConfigCellFilter,
+  ConfigCellFixed,
   ConfigCellGenotype,
   ConfigCellGroup,
   ConfigCellId,
@@ -28,6 +29,7 @@ import {
   ConfigStaticFieldAlt,
   ConfigStaticFieldChrom,
   ConfigStaticFieldFilter,
+  ConfigStaticFieldFixed,
   ConfigStaticFieldGenotype,
   ConfigStaticFieldId,
   ConfigStaticFieldInfo,
@@ -44,6 +46,7 @@ import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser"
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
+import { UnexpectedEnumValueException } from "./error.ts";
 
 export function createConfigFields(
   configStaticFields: ConfigStaticField[],
@@ -162,6 +165,36 @@ function createConfigFieldFilter(configStatic: ConfigStaticFieldFilter): ConfigC
   };
 }
 
+function createConfigFieldFixed(configStaticField: ConfigStaticFieldFixed): ConfigCellFixed {
+  let configField: ConfigCellFixed;
+  switch (configStaticField.name) {
+    case "chrom":
+      configField = createConfigFieldChrom(configStaticField);
+      break;
+    case "pos":
+      configField = createConfigFieldPos(configStaticField);
+      break;
+    case "id":
+      configField = createConfigFieldId(configStaticField);
+      break;
+    case "ref":
+      configField = createConfigFieldRef(configStaticField);
+      break;
+    case "alt":
+      configField = createConfigFieldAlt(configStaticField);
+      break;
+    case "qual":
+      configField = createConfigFieldQual(configStaticField);
+      break;
+    case "filter":
+      configField = createConfigFieldFilter(configStaticField);
+      break;
+    default:
+      throw new UnexpectedEnumValueException(configStaticField["name"]);
+  }
+  return configField;
+}
+
 function createConfigFieldInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigCellInfo | null {
   const id = configStatic.name;
   const field = fieldMap[`INFO/${id}`];
@@ -265,26 +298,8 @@ function createConfigFieldItem(
 
   let configField: ConfigCell | null;
   switch (type) {
-    case "chrom":
-      configField = createConfigFieldChrom(configStaticField);
-      break;
-    case "pos":
-      configField = createConfigFieldPos(configStaticField);
-      break;
-    case "id":
-      configField = createConfigFieldId(configStaticField);
-      break;
-    case "ref":
-      configField = createConfigFieldRef(configStaticField);
-      break;
-    case "alt":
-      configField = createConfigFieldAlt(configStaticField);
-      break;
-    case "qual":
-      configField = createConfigFieldQual(configStaticField);
-      break;
-    case "filter":
-      configField = createConfigFieldFilter(configStaticField);
+    case "fixed":
+      configField = createConfigFieldFixed(configStaticField);
       break;
     case "info":
       configField = createConfigFieldInfo(configStaticField, fieldMap);

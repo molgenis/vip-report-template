@@ -3,13 +3,16 @@ import {
   ConfigFilter,
   ConfigFilterBase,
   ConfigFilterField,
+  ConfigFilterFixed,
   FilterValue,
   FilterValueField,
+  FilterValueFixed,
 } from "../../types/configFilter";
 import { FilterTyped } from "./typed/FilterTyped";
 import { ConfigFilterComposed, FilterValueComposed } from "../../types/configFilterComposed";
 import { FilterComposed } from "./composed/FilterComposed";
 import { ErrorNotification } from "../ErrorNotification";
+import { FilterFixed } from "./fixed/FilterFixed.tsx";
 
 export interface FilterValueChangeEvent<FilterValueType> {
   value: FilterValueType;
@@ -30,6 +33,14 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
 
   return (
     <Switch fallback={<ErrorNotification error={`unexpected field type ${type()}`} />}>
+      <Match when={type() === "fixed"}>
+        <FilterFixed
+          config={props.config as ConfigFilterFixed}
+          value={props.value as FilterValueFixed}
+          onValueChange={props.onValueChange}
+          onValueClear={props.onValueClear}
+        />
+      </Match>
       <Match when={type() === "info" || type() === "genotype"}>
         <FilterTyped
           config={props.config as ConfigFilterField}

@@ -56,11 +56,11 @@ function createConfigFiltersVariantType(
 function createConfigStatic(metadata: MetadataContainer): ConfigStatic {
   const cells: ConfigStaticField[] = [
     { type: "composed", name: "locus" },
-    { type: "id" },
-    { type: "ref" },
-    { type: "alt" },
-    { type: "qual" },
-    { type: "filter" },
+    { type: "fixed", name: "id" },
+    { type: "fixed", name: "ref" },
+    { type: "fixed", name: "alt" },
+    { type: "fixed", name: "qual" },
+    { type: "fixed", name: "filter" },
   ];
 
   const cellsInfo: ConfigStaticField[] = Object.values(metadata.records.info).map((infoMetadata) =>
@@ -85,6 +85,13 @@ function createConfigStatic(metadata: MetadataContainer): ConfigStatic {
       type: "composed",
       name: "locus",
     },
+    { type: "fixed", name: "chrom" }, // FIXME added for testing, remove
+    { type: "fixed", name: "pos" }, // FIXME added for testing, remove
+    { type: "fixed", name: "id" },
+    { type: "fixed", name: "ref" },
+    { type: "fixed", name: "alt" },
+    { type: "fixed", name: "qual" },
+    { type: "fixed", name: "filter" },
   ];
 
   const filtersInfo: ConfigStaticField[] = Object.values(metadata.records.info).flatMap((infoMetadata) =>

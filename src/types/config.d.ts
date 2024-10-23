@@ -1,21 +1,11 @@
 import { ConfigFilter } from "./configFilter";
 import { ConfigCell } from "./configCell";
 
-export type ConfigStaticFieldType =
-  | "chrom"
-  | "pos"
-  | "id"
-  | "ref"
-  | "alt"
-  | "qual"
-  | "filter"
-  | "info"
-  | "format"
-  | "genotype"
-  | "composed";
+export type ConfigStaticFieldType = "fixed" | "info" | "format" | "genotype" | "composed";
 
 export interface ConfigStaticFieldTyped {
   type: ConfigStaticFieldType;
+  name: ConfigStaticFieldName;
   // overwrites existing label
   label?: string;
   // overwrites existing description
@@ -24,39 +14,42 @@ export interface ConfigStaticFieldTyped {
 
 export type ConfigStaticFieldName = string;
 
-export interface ConfigStaticFieldNamed extends ConfigStaticFieldTyped {
-  name: ConfigStaticFieldName;
-}
-
 export interface ConfigStaticFieldChrom extends ConfigStaticFieldTyped {
-  type: "chrom";
+  type: "fixed";
+  name: "chrom";
 }
 
 export interface ConfigStaticFieldPos extends ConfigStaticFieldTyped {
-  type: "pos";
+  type: "fixed";
+  name: "pos";
 }
 
 export interface ConfigStaticFieldId extends ConfigStaticFieldTyped {
-  type: "id";
+  type: "fixed";
+  name: "id";
 }
 
 export interface ConfigStaticFieldRef extends ConfigStaticFieldTyped {
-  type: "ref";
+  type: "fixed";
+  name: "ref";
 }
 
 export interface ConfigStaticFieldAlt extends ConfigStaticFieldTyped {
-  type: "alt";
+  type: "fixed";
+  name: "alt";
 }
 
 export interface ConfigStaticFieldQual extends ConfigStaticFieldTyped {
-  type: "qual";
+  type: "fixed";
+  name: "qual";
 }
 
 export interface ConfigStaticFieldFilter extends ConfigStaticFieldTyped {
-  type: "filter";
+  type: "fixed";
+  name: "filter";
 }
 
-export interface ConfigStaticFieldInfo extends ConfigStaticFieldNamed {
+export interface ConfigStaticFieldInfo extends ConfigStaticFieldTyped {
   type: "info";
 }
 
@@ -64,22 +57,25 @@ export interface ConfigStaticFieldFormat extends ConfigStaticFieldTyped {
   type: "format";
 }
 
-export interface ConfigStaticFieldGenotype extends ConfigStaticFieldNamed {
+export interface ConfigStaticFieldGenotype extends ConfigStaticFieldTyped {
   type: "genotype";
 }
 
-export interface ConfigStaticFieldComposed extends ConfigStaticFieldNamed {
+export interface ConfigStaticFieldComposed extends ConfigStaticFieldTyped {
   type: "composed";
 }
 
-export type ConfigStaticFieldItem =
+export type ConfigStaticFieldFixed =
   | ConfigStaticFieldChrom
   | ConfigStaticFieldPos
   | ConfigStaticFieldId
   | ConfigStaticFieldRef
   | ConfigStaticFieldAlt
   | ConfigStaticFieldQual
-  | ConfigStaticFieldFilter
+  | ConfigStaticFieldFilter;
+
+export type ConfigStaticFieldItem =
+  | ConfigStaticFieldFixed
   | ConfigStaticFieldInfo
   | ConfigStaticFieldFormat
   | ConfigStaticFieldGenotype
