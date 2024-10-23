@@ -1,16 +1,13 @@
 import { Component, createEffect, createSignal } from "solid-js";
-import { FilterTypedProps, FilterWrapper } from "../FilterWrapper";
+import { FilterWrapper } from "../FilterWrapper";
 import { ButtonApply } from "../../form/ButtonApply";
 import { ButtonReset } from "../../form/ButtonReset";
-import { ChromosomeId, FilterValueLocus } from "../../../types/configFilterComposed";
+import { ConfigFilterLocus, FilterValueLocus } from "../../../types/configFilterComposed";
 import { Select } from "../../form/Select";
 import { Input } from "../../form/Input";
+import { FilterProps } from "../Filter.tsx";
 
-export interface FilterLocusProps extends FilterTypedProps<FilterValueLocus> {
-  chromosomes: ChromosomeId[];
-}
-
-export const FilterLocus: Component<FilterLocusProps> = (props) => {
+export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLocus>> = (props) => {
   const [chromosome, setChromosome] = createSignal<string>();
   const [startPosition, setStartPosition] = createSignal<string>();
   const [endPosition, setEndPosition] = createSignal<string>();
@@ -43,13 +40,13 @@ export const FilterLocus: Component<FilterLocusProps> = (props) => {
   };
 
   return (
-    <FilterWrapper label={props.label}>
+    <FilterWrapper config={props.config}>
       <div class="field is-grouped">
         <div class="control">
           <Select
             placeholder={"Contig"}
             value={chromosome()}
-            options={props.chromosomes.map((chromosome) => ({ id: chromosome, label: chromosome }))}
+            options={props.config.chromosomes.map((chromosome) => ({ id: chromosome, label: chromosome }))}
             onValueChange={(e) => setChromosome(e.value)}
           />
         </div>

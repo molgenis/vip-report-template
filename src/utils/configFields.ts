@@ -1,5 +1,4 @@
 import {
-  CellId,
   CellValueAlt,
   CellValueChrom,
   CellValueFilter,
@@ -11,7 +10,6 @@ import {
   ConfigCell,
   ConfigCellAlt,
   ConfigCellChrom,
-  ConfigCellCustom,
   ConfigCellFilter,
   ConfigCellGenotype,
   ConfigCellGroup,
@@ -24,14 +22,25 @@ import {
   RecordContext,
 } from "../types/configCell";
 import { createConfigFieldComposed } from "./configFieldsComposed";
-import { ConfigCells, ConfigStaticField, ConfigStaticFieldItem, ConfigStaticFieldItemGroup } from "../types/config";
-import { ValueDescription } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import {
+  ConfigCells,
+  ConfigStaticField,
+  ConfigStaticFieldAlt,
+  ConfigStaticFieldChrom,
+  ConfigStaticFieldFilter,
+  ConfigStaticFieldGenotype,
+  ConfigStaticFieldId,
+  ConfigStaticFieldInfo,
+  ConfigStaticFieldItem,
+  ConfigStaticFieldItemGroup,
+  ConfigStaticFieldPos,
+  ConfigStaticFieldQual,
+  ConfigStaticFieldRef,
+} from "../types/config";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { CellValueCustom } from "../types/configCellComposed";
 import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
-import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
@@ -81,63 +90,80 @@ function createConfigFieldItemGroup(
   return fieldConfig;
 }
 
-function createConfigFieldChrom(): ConfigCellChrom {
+function createConfigFieldChrom(configStatic: ConfigStaticFieldChrom): ConfigCellChrom {
   return {
     type: "chrom",
+    label: () => configStatic.label || "Chromosome",
+    description: () => configStatic.description || null,
     value: (record: Item<Record>): CellValueChrom => record.data.c,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldPos(): ConfigCellPos {
+function createConfigFieldPos(configStatic: ConfigStaticFieldPos): ConfigCellPos {
   return {
     type: "pos",
+    label: () => configStatic.label || "Position",
+    description: () => configStatic.description || null,
     value: (record: Item<Record>): CellValuePos => record.data.p,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldId(): ConfigCellId {
+function createConfigFieldId(configStatic: ConfigStaticFieldId): ConfigCellId {
   return {
     type: "id",
+    label: () => configStatic.label || "Ids",
+    description: () => configStatic.description || null,
     value: (record: Item<Record>): CellValueId => record.data.i,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldRef(): ConfigCellRef {
+function createConfigFieldRef(configStatic: ConfigStaticFieldRef): ConfigCellRef {
   return {
     type: "ref",
+    label: () => configStatic.label || "Ref",
+    description: () => configStatic.description || "Reference base(s)",
     value: (record: Item<Record>): CellValueRef => record.data.r,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldAlt(): ConfigCellAlt {
+function createConfigFieldAlt(configStatic: ConfigStaticFieldAlt): ConfigCellAlt {
   return {
     type: "alt",
+    label: () => configStatic.label || "Alt",
+    description: () => configStatic.description || "Alternate base(s): list of alternate non-reference alleles",
     value: (record: Item<Record>): CellValueAlt => record.data.a,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldQual(): ConfigCellQual {
+function createConfigFieldQual(configStatic: ConfigStaticFieldQual): ConfigCellQual {
   return {
     type: "qual",
+    label: () => configStatic.label || "Qual",
+    description: () => configStatic.description || "Quality: phred-scaled quality score for the 'Alt' assertions",
     value: (record: Item<Record>): CellValueQual => record.data.q,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldFilter(): ConfigCellFilter {
+function createConfigFieldFilter(configStatic: ConfigStaticFieldFilter): ConfigCellFilter {
   return {
     type: "filter",
+    label: () => configStatic.label || "Filters",
+    description: () =>
+      configStatic.description ||
+      "Filter status: PASS if this position has passed all filter, otherwise a list of codes for filters that fail",
     value: (record: Item<Record>): CellValueFilter => record.data.f,
     valueCount: () => 1,
   };
 }
 
-function createConfigFieldInfo(id: CellId, fieldMap: FieldMap): ConfigCellInfo | null {
+function createConfigFieldInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigCellInfo | null {
+  const id = configStatic.name;
   const field = fieldMap[`INFO/${id}`];
 
   let fieldConfig: ConfigCellInfo | null;
@@ -150,6 +176,8 @@ function createConfigFieldInfo(id: CellId, fieldMap: FieldMap): ConfigCellInfo |
 
     fieldConfig = {
       type: "info",
+      label: () => configStatic.label || field.label || field.id,
+      description: () => configStatic.description || field.description || null,
       valueCount: (record: Item<Record>) => {
         return fieldParent
           ? fieldParent.number.count !== 1
@@ -179,7 +207,12 @@ function createConfigFieldInfo(id: CellId, fieldMap: FieldMap): ConfigCellInfo |
   return fieldConfig;
 }
 
-function createConfigFieldGenotype(id: CellId, fieldMap: FieldMap, sample: SampleContainer): ConfigCellGenotype | null {
+function createConfigFieldGenotype(
+  configStatic: ConfigStaticFieldGenotype,
+  fieldMap: FieldMap,
+  sample: SampleContainer,
+): ConfigCellGenotype | null {
+  const id = configStatic.name;
   const field = fieldMap[`FORMAT/${id}`];
 
   let fieldConfig: ConfigCellGenotype | null;
@@ -192,6 +225,8 @@ function createConfigFieldGenotype(id: CellId, fieldMap: FieldMap, sample: Sampl
 
     fieldConfig = {
       type: "genotype",
+      label: () => configStatic.label || field.label || field.id,
+      description: () => configStatic.description || field.description || null,
       valueCount: (record: Item<Record>) => {
         const fieldParent = field.parent;
         return fieldParent
@@ -226,83 +261,43 @@ function createConfigFieldItem(
   sample: SampleContainer | null,
   variantType: VariantType,
 ) {
+  const type = configStaticField.type;
+
   let configField: ConfigCell | null;
-  switch (configStaticField.type) {
+  switch (type) {
     case "chrom":
-      configField = createConfigFieldChrom();
+      configField = createConfigFieldChrom(configStaticField);
       break;
     case "pos":
-      configField = createConfigFieldPos();
+      configField = createConfigFieldPos(configStaticField);
       break;
     case "id":
-      configField = createConfigFieldId();
+      configField = createConfigFieldId(configStaticField);
       break;
     case "ref":
-      configField = createConfigFieldRef();
+      configField = createConfigFieldRef(configStaticField);
       break;
     case "alt":
-      configField = createConfigFieldAlt();
+      configField = createConfigFieldAlt(configStaticField);
       break;
     case "qual":
-      configField = createConfigFieldQual();
+      configField = createConfigFieldQual(configStaticField);
       break;
     case "filter":
-      configField = createConfigFieldFilter();
+      configField = createConfigFieldFilter(configStaticField);
       break;
     case "info":
-      configField = createConfigFieldInfo(configStaticField.name, fieldMap);
+      configField = createConfigFieldInfo(configStaticField, fieldMap);
       break;
     case "format":
-      throw new Error(`unsupported field type '${configStaticField.type}', did you mean to use 'genotype'?`);
+      throw new Error(`unsupported field type '${type}', did you mean to use 'genotype'?`);
     case "genotype":
-      if (sample === null) throw new Error(`cannot create field, field type ${configStaticField.type} requires sample`);
-      configField = createConfigFieldGenotype(configStaticField.name, fieldMap, sample);
+      if (sample === null) throw new Error(`cannot create field, field type ${type} requires sample`);
+      configField = createConfigFieldGenotype(configStaticField, fieldMap, sample);
       break;
     case "composed":
-      configField = createConfigFieldComposed(configStaticField.name, fieldMap, sample, variantType);
+      configField = createConfigFieldComposed(configStaticField, fieldMap, sample, variantType);
       break;
   }
   return configField;
-}
-
-export function getConfigFieldLabelAndDescription(configField: ConfigCell): ValueDescription {
-  let valueDescription: ValueDescription;
-  switch (configField.type) {
-    case "chrom":
-      valueDescription = { label: "Chromosome" };
-      break;
-    case "pos":
-      valueDescription = { label: "Position" };
-      break;
-    case "id":
-      valueDescription = { label: "Identifier" };
-      break;
-    case "ref":
-      valueDescription = { label: "Reference allele" };
-      break;
-    case "alt":
-      valueDescription = { label: "Alternate alleles" };
-      break;
-    case "qual":
-      valueDescription = { label: "Quality" };
-      break;
-    case "filter":
-      valueDescription = { label: "Filter" };
-      break;
-    case "info":
-    case "genotype": {
-      const field = (configField as ConfigCellInfo | ConfigCellGenotype).field;
-      valueDescription = { label: field.label || field.id, description: field.description };
-      break;
-    }
-    case "composed": {
-      const field = configField as ConfigCellCustom<CellValueCustom>;
-      valueDescription = { label: field.label, description: field.description };
-      break;
-    }
-    case "format":
-    default:
-      throw new UnexpectedEnumValueException(configField.type);
-  }
-  return valueDescription;
 }

@@ -1,14 +1,11 @@
 import { Component, createEffect, createSignal } from "solid-js";
-import { FilterTypedProps, FilterWrapper } from "../FilterWrapper";
-import { FilterValueString } from "../../../types/configFilter";
+import { FilterWrapper } from "../FilterWrapper";
+import { ConfigFilterField, FilterValueString } from "../../../types/configFilter";
 import { Input } from "../../form/Input";
 import { ButtonApply } from "../../form/ButtonApply";
+import { FilterProps } from "../Filter.tsx";
 
-export interface FilterStringProps extends FilterTypedProps<FilterValueString> {
-  placeholder?: string | undefined;
-}
-
-export const FilterString: Component<FilterStringProps> = (props) => {
+export const FilterString: Component<FilterProps<ConfigFilterField, FilterValueString>> = (props) => {
   const [inputValue, setInputValue] = createSignal<string>("");
 
   createEffect(() => {
@@ -27,14 +24,10 @@ export const FilterString: Component<FilterStringProps> = (props) => {
   };
 
   return (
-    <FilterWrapper {...props}>
+    <FilterWrapper config={props.config}>
       <div class="field is-grouped">
         <div class="control is-expanded has-icons-right">
-          <Input
-            placeholder={props.placeholder}
-            value={inputValue()}
-            onValueChange={(event) => setInputValue(event.value)}
-          />
+          <Input value={inputValue()} onValueChange={(event) => setInputValue(event.value)} />
           {inputValue().length > 0 && (
             <span class="icon is-clickable is-right" onClick={() => setInputValue("")}>
               <i class="fas fa-circle-xmark" />

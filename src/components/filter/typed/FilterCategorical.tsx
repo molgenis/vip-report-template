@@ -1,53 +1,50 @@
-import { Component, createEffect, createSignal, For, Show } from "solid-js";
-import { FilterTypedProps, FilterWrapper } from "../FilterWrapper";
-import { FilterCategory, FilterCategoryId, FilterValueCategorical } from "../../../types/configFilter";
+import { Component, createEffect, createSignal, For, JSX, Show } from "solid-js";
+import { FilterWrapper } from "../FilterWrapper";
+import {
+  ConfigFilterField,
+  FilterCategory,
+  FilterCategoryId,
+  FilterValueCategorical,
+} from "../../../types/configFilter";
 import { Checkbox, CheckboxEvent } from "../../form/Checkbox";
-import { CategoryRecord, ValueDescription } from "../../../../../vip-report-vcf/src/types/Metadata";
+import { FilterProps } from "../Filter.tsx";
 
 type FilterValueCategoricalMap = { [key: FilterCategoryId]: null };
 
-export interface FilterCategoricalProps extends FilterTypedProps<FilterValueCategorical> {
-  categories: CategoryRecord;
-  nullCategory: ValueDescription | null | undefined;
-}
-
-export const FilterCategorical: Component<FilterCategoricalProps> = (props) => {
+export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterValueCategorical>> = (props) => {
   const [values, setValues] = createSignal<FilterValueCategoricalMap>({});
 
   const categories = (): FilterCategory[] => {
-    const categories = Object.entries(props.categories).map(([id, value]) => ({
+    const categories = Object.entries(props.config.field.categories!).map(([id, value]) => ({
       id,
       label: value.label,
     }));
-    if (props.nullCategory !== undefined) {
+    if (!props.config.field.required) {
       categories.push({
         id: "__null",
-        label: props.nullCategory !== null ? props.nullCategory.label : "Unspecified",
+        label: props.config.field.nullValue?.label || "Unspecified",
       });
     }
     return categories;
   };
 
-  const tooltip = () => {
-    const categoryValues = Object.values(props.categories);
+  const tooltipContentElement = (): JSX.Element | null => {
+    const categoryValues = Object.values(props.config.field.categories!);
     const hasCategoryDescriptions = categoryValues.findIndex((category) => category.description !== undefined);
-    if (hasCategoryDescriptions === -1) return props.tooltip;
+    if (hasCategoryDescriptions === -1) return null;
 
     // add categorical descriptions to tooltip if available
     return (
-      <>
-        {props.tooltip}
-        <ul>
-          <For each={categoryValues}>
-            {(categoryValue) => (
-              <li>
-                {categoryValue.label}
-                {categoryValue.description ? `: ${categoryValue.description}` : ""}
-              </li>
-            )}
-          </For>
-        </ul>
-      </>
+      <ul>
+        <For each={categoryValues}>
+          {(categoryValue) => (
+            <li>
+              {categoryValue.label}
+              {categoryValue.description ? `: ${categoryValue.description}` : ""}
+            </li>
+          )}
+        </For>
+      </ul>
     );
   };
 
@@ -92,7 +89,7 @@ export const FilterCategorical: Component<FilterCategoricalProps> = (props) => {
   };
 
   return (
-    <FilterWrapper {...props} tooltip={tooltip()}>
+    <FilterWrapper config={props.config} tooltipContentElement={tooltipContentElement()}>
       <div class="field">
         <For each={categories()}>
           {(category) => (

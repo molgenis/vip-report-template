@@ -1,7 +1,10 @@
 import { FilterId, FilterValue } from "./configFilter";
-import { FilterValueChangeEvent } from "../components/filter/FilterWrapper";
 
 export type FilterValueMap = { [key: FilterId]: FilterValue };
+
+export interface FilterValueChangeEvent<FilterValueType> {
+  value: FilterValueType;
+}
 
 export interface FilterChangeEvent extends FilterValueChangeEvent<FilterValue> {
   id: FilterId;

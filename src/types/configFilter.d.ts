@@ -1,7 +1,6 @@
 import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 
 import { ConfigFilterComposed, FilterValueComposed } from "./configFilterComposed";
-import { FieldIndex } from "./configCell";
 import { SampleContainer } from "../Api.ts";
 
 export type FilterId = string;
@@ -24,9 +23,10 @@ export type FilterValueMap = { [key: FilterId]: FilterValue };
 export type ConfigFilter = ConfigFilterComposed | ConfigFilterField | ConfigFilterFormat;
 
 export interface ConfigFilterBase {
-  id: FilterId;
   type: FilterType;
-  parentFieldValueIndex?: FieldIndex; // workaround, because index is not readily available through API
+  id: FilterId;
+  label: () => string;
+  description: () => string | null;
 }
 
 export interface ConfigFilterField extends ConfigFilterBase {

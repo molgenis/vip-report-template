@@ -16,6 +16,10 @@ export type ConfigStaticFieldType =
 
 export interface ConfigStaticFieldTyped {
   type: ConfigStaticFieldType;
+  // overwrites existing label
+  label?: string;
+  // overwrites existing description
+  description?: string;
 }
 
 export type ConfigStaticFieldName = string;

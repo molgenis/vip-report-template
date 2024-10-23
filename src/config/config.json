@@ -11,7 +11,8 @@
       },
       {
         "type": "info",
-        "name": "SVTYPE"
+        "name": "SVTYPE",
+        "label": "Type"
       },
       {
         "type": "composed",
@@ -216,11 +217,13 @@
       },
       {
         "type": "composed",
-        "name": "hpo"
+        "name": "hpo",
+        "label": "Gene-phenotype association (HPO)"
       },
       {
         "type": "info",
-        "name": "CSQ/GADO_PD"
+        "name": "CSQ/GADO_PD",
+        "label": "Gene-phenotype association (GADO)"
       },
       {
         "type": "info",
@@ -251,11 +254,13 @@
         },
         {
           "type": "info",
-          "name": "CSQ/HPO"
+          "name": "CSQ/HPO",
+          "label": "Gene-phenotype association (HPO)"
         },
         {
           "type": "info",
-          "name": "CSQ/GADO_PD"
+          "name": "CSQ/GADO_PD",
+          "label": "Gene-phenotype association (GADO)"
         },
         {
           "type": "info",

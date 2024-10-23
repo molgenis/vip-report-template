@@ -3,7 +3,6 @@ import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Component, For, Match, Show, Switch } from "solid-js";
 import { CellValue, ConfigCellGroup, ConfigCellItem } from "../types/configCell";
 import { ConfigCells } from "../types/config";
-import { getConfigFieldLabelAndDescription } from "../utils/configFields";
 import { Abbr } from "./Abbr";
 import { Field } from "./field/Field";
 
@@ -51,12 +50,13 @@ const RecordsTableHeader: Component<{
 const RecordsTableHeaderCell: Component<{
   fieldConfig: ConfigCellItem;
 }> = (props) => {
-  const labelAndDescription = () => getConfigFieldLabelAndDescription(props.fieldConfig);
+  const label = () => props.fieldConfig.label();
+  const description = () => props.fieldConfig.description();
 
   return (
     <th>
-      <Show when={labelAndDescription().description} fallback={labelAndDescription().label}>
-        {(description) => <Abbr title={description()} value={labelAndDescription().label} />}
+      <Show when={description()} fallback={label()}>
+        {(description) => <Abbr title={description()} value={label()} />}
       </Show>
     </th>
   );

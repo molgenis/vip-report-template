@@ -1,7 +1,13 @@
-import { ConfigFilters, ConfigStaticField, ConfigStaticFieldItem } from "../types/config";
+import {
+  ConfigFilters,
+  ConfigStaticField,
+  ConfigStaticFieldComposed,
+  ConfigStaticFieldGenotype,
+  ConfigStaticFieldInfo,
+  ConfigStaticFieldItem,
+} from "../types/config";
 import { ConfigFilter, ConfigFilterField, ConfigFilterFormat } from "../types/configFilter";
 import { createConfigFilterComposed } from "./configFiltersComposed";
-import { CellId } from "../types/configCell";
 import { UnexpectedEnumValueException } from "./error";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { FieldMap } from "./utils.ts";
@@ -24,37 +30,39 @@ export function createConfigFilters(
   return configFilters.filter((configFilter) => configFilter !== null);
 }
 
-function createConfigFilterFormat(
-  id: CellId,
+function createConfigFilterGenotype(
+  configStatic: ConfigStaticFieldGenotype,
   sample: SampleContainer | null,
   fieldMap: FieldMap,
 ): ConfigFilterFormat | null {
   if (sample === null) return null;
-  const field = fieldMap[`FORMAT/${id}`];
-  return field !== undefined ? { type: "genotype", id, field, sample } : null;
+
+  const id = configStatic.name;
+  const field = fieldMap[`INFO/${id}`];
+  if (field === undefined) return null;
+
+  return {
+    type: "genotype",
+    id,
+    label: () => configStatic.label || field.label || field.id,
+    description: () => configStatic.description || field.description || null,
+    field,
+    sample,
+  };
 }
 
-function createConfigFilterInfo(id: CellId, fieldMap: FieldMap): ConfigFilterField | null {
+function createConfigFilterInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigFilterField | null {
+  const id = configStatic.name;
   const field = fieldMap[`INFO/${id}`];
+  if (field === undefined) return null;
 
-  let filterConfig: ConfigFilterField | null;
-  if (field === undefined) {
-    filterConfig = null;
-  } else {
-    filterConfig = { type: "info", id, field };
-    const parentFilter = field.parent;
-    if (parentFilter !== undefined) {
-      if (parentFilter.nested !== undefined) {
-        const index = parentFilter.nested.items.findIndex((nestedFilter) => nestedFilter.id === field.id);
-        if (index === -1) {
-          throw new Error(); // should never happen
-        }
-        filterConfig.parentFieldValueIndex = index;
-      }
-    }
-  }
-
-  return filterConfig;
+  return {
+    type: "info",
+    id,
+    label: () => configStatic.label || field.label || field.id,
+    description: () => configStatic.description || field.description || null,
+    field,
+  };
 }
 
 function createConfigFilterItem(
@@ -66,13 +74,18 @@ function createConfigFilterItem(
   let configFilter: ConfigFilter | null;
   switch (configStaticField.type) {
     case "info":
-      configFilter = createConfigFilterInfo(configStaticField.name, fieldMap);
+      configFilter = createConfigFilterInfo(configStaticField as ConfigStaticFieldInfo, fieldMap);
       break;
     case "genotype":
-      configFilter = createConfigFilterFormat(configStaticField.name, sample, fieldMap);
+      configFilter = createConfigFilterGenotype(configStaticField as ConfigStaticFieldGenotype, sample, fieldMap);
       break;
     case "composed":
-      configFilter = createConfigFilterComposed(configStaticField.name, metadata, sample, fieldMap);
+      configFilter = createConfigFilterComposed(
+        configStaticField as ConfigStaticFieldComposed,
+        metadata,
+        sample,
+        fieldMap,
+      );
       break;
     case "chrom": // TODO discuss: support some of these such as 'filter'?
     case "pos":

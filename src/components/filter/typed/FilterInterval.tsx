@@ -1,11 +1,12 @@
 import { Component, createEffect, createSignal } from "solid-js";
-import { FilterTypedProps, FilterWrapper } from "../FilterWrapper";
-import { FilterValueInterval } from "../../../types/configFilter";
+import { FilterWrapper } from "../FilterWrapper";
+import { ConfigFilterField, FilterValueInterval } from "../../../types/configFilter";
 import { Input } from "../../form/Input";
 import { ButtonApply } from "../../form/ButtonApply";
 import { ButtonReset } from "../../form/ButtonReset";
+import { FilterProps } from "../Filter.tsx";
 
-export const FilterInterval: Component<FilterTypedProps<FilterValueInterval>> = (props) => {
+export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValueInterval>> = (props) => {
   const [leftInputValue, setLeftInputValue] = createSignal<string>("");
   const [rightInputValue, setRightInputValue] = createSignal<string>("");
 
@@ -40,7 +41,7 @@ export const FilterInterval: Component<FilterTypedProps<FilterValueInterval>> = 
   };
 
   return (
-    <FilterWrapper {...props}>
+    <FilterWrapper config={props.config}>
       <div class="field is-grouped">
         <div class="control is-expanded">
           <Input placeholder="From" value={leftInputValue()} onValueChange={(e) => setLeftInputValue(e.value)} />

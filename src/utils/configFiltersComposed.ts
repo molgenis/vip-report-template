@@ -1,24 +1,23 @@
-import { FilterId } from "../types/configFilter";
 import { ConfigFilterComposed, ConfigFilterHpo, ConfigFilterLocus } from "../types/configFilterComposed";
-import { CellId } from "../types/configCell";
 import { UnexpectedEnumValueException } from "./error";
 import { FieldMap, parseContigIds } from "./utils.ts";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
-import { CategoryRecord } from "../../../vip-report-vcf/src/types/Metadata";
+import { ConfigStaticFieldComposed } from "../types/config";
 
 export function createConfigFilterComposed(
-  id: CellId,
+  configStatic: ConfigStaticFieldComposed,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
   fieldMap: FieldMap,
 ): ConfigFilterComposed | null {
+  const id = configStatic.name;
   let filter: ConfigFilterComposed | null;
   switch (id) {
     case "hpo":
-      filter = createConfigFilterHpo(id, sample, fieldMap);
+      filter = createConfigFilterHpo(configStatic, sample, fieldMap);
       break;
     case "locus":
-      filter = createConfigFilterLocus(id, metadata);
+      filter = createConfigFilterLocus(configStatic, metadata);
       break;
     default:
       throw new UnexpectedEnumValueException(id);
@@ -27,7 +26,7 @@ export function createConfigFilterComposed(
 }
 
 function createConfigFilterHpo(
-  id: FilterId,
+  configStatic: ConfigStaticFieldComposed,
   sample: SampleContainer | null,
   fieldMap: FieldMap,
 ): ConfigFilterHpo | null {
@@ -36,19 +35,36 @@ function createConfigFilterHpo(
   const fieldCsqHpo = fieldMap["INFO/CSQ/HPO"];
   if (fieldCsqHpo === undefined) return null;
 
-  // overwrite categories based on the sample hpo terms
-  const categories: CategoryRecord = sample.phenotypes.reduce(
-    (acc, phenotype) => ({
-      ...acc,
-      [phenotype.type.id]: { label: phenotype.type.label },
-    }),
-    {},
-  );
+  const filterField = {
+    // create field with categories based on the sample hpo terms
+    ...fieldCsqHpo,
+    categories: sample.phenotypes.reduce(
+      (acc, phenotype) => ({
+        ...acc,
+        [phenotype.type.id]: { label: phenotype.type.label },
+      }),
+      {},
+    ),
+  };
 
-  return { type: "composed", id, field: { ...fieldCsqHpo, categories } };
+  return {
+    type: "composed",
+    id: configStatic.name,
+    label: () => configStatic.label || filterField.label || "HPO",
+    description: () => configStatic.description || filterField.description || null,
+    field: filterField,
+  };
 }
 
-function createConfigFilterLocus(id: FilterId, metadata: MetadataContainer): ConfigFilterLocus {
-  const chromosomes = parseContigIds(metadata.records);
-  return { type: "composed", id, chromosomes: chromosomes };
+function createConfigFilterLocus(
+  configStatic: ConfigStaticFieldComposed,
+  metadata: MetadataContainer,
+): ConfigFilterLocus {
+  return {
+    type: "composed",
+    id: configStatic.name,
+    label: () => configStatic.label || "Locus",
+    description: () => configStatic.description || null,
+    chromosomes: parseContigIds(metadata.records),
+  };
 }

@@ -18,12 +18,12 @@ export type CellType =
   | "format"
   | "genotype"
   | "composed";
-export type FieldIndex = number;
-
 export type RecordContext = { valueIndex?: number };
 
 interface ConfigCellBase<T extends CellValue> {
   type: CellType;
+  label: () => string;
+  description: () => string | null;
   value: (record: Item<Record>, recordContext: RecordContext) => T;
   valueCount: (record: Item<Record>) => number;
 }
@@ -93,8 +93,6 @@ export interface ConfigCellGenotype extends ConfigCellBase<CellValueGenotype> {
 interface ConfigCellCustom<T extends CellValueCustom> extends ConfigCellBase<T> {
   type: "composed";
   id: CellId;
-  label: string;
-  description?: string;
 }
 
 export type ConfigCellItem =

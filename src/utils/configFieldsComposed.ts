@@ -1,4 +1,4 @@
-import { CellId, ConfigCellCustom, RecordContext } from "../types/configCell";
+import { ConfigCellCustom, RecordContext } from "../types/configCell";
 import { Genotype, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { Item } from "@molgenis/vip-report-api/src/Api";
 import { getSampleLabel } from "./sample";
@@ -23,44 +23,46 @@ import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample, href } from "./utils.ts";
+import { ConfigStaticFieldComposed } from "../types/config";
 
 export function createConfigFieldComposed(
-  id: CellId,
+  configStatic: ConfigStaticFieldComposed,
   fieldMap: FieldMap,
   sample: SampleContainer | null,
   variantType: VariantType,
 ): ConfigCellCustom<CellValueCustom> | null {
+  const id = configStatic.name;
   let fieldConfig: ConfigCellCustom<CellValueCustom> | null;
   switch (id) {
     case "clinVar":
-      fieldConfig = createConfigFieldCustomClinVar(fieldMap);
+      fieldConfig = createConfigFieldCustomClinVar(configStatic, fieldMap);
       break;
     case "gene":
-      fieldConfig = createConfigFieldCustomGene(fieldMap);
+      fieldConfig = createConfigFieldCustomGene(configStatic, fieldMap);
       break;
     case "genotype":
-      fieldConfig = createConfigFieldCustomGenotype(sample);
+      fieldConfig = createConfigFieldCustomGenotype(configStatic, sample);
       break;
     case "gnomAdAf":
-      fieldConfig = createConfigFieldCustomGnomAd(fieldMap);
+      fieldConfig = createConfigFieldCustomGnomAd(configStatic, fieldMap);
       break;
     case "hpo":
-      fieldConfig = createConfigFieldCustomHpo(fieldMap);
+      fieldConfig = createConfigFieldCustomHpo(configStatic, fieldMap);
       break;
     case "inheritancePattern":
-      fieldConfig = createConfigFieldCustomInheritancePattern(fieldMap, sample);
+      fieldConfig = createConfigFieldCustomInheritancePattern(configStatic, fieldMap, sample);
       break;
     case "locus":
-      fieldConfig = createConfigFieldCustomLocus(sample, variantType);
+      fieldConfig = createConfigFieldCustomLocus(configStatic, sample, variantType);
       break;
     case "ref":
-      fieldConfig = createConfigFieldCustomRef();
+      fieldConfig = createConfigFieldCustomRef(configStatic);
       break;
     case "vipC":
-      fieldConfig = createConfigFieldCustomVipC(fieldMap, sample, variantType);
+      fieldConfig = createConfigFieldCustomVipC(configStatic, fieldMap, sample, variantType);
       break;
     case "vkgl":
-      fieldConfig = createConfigFieldCustomVkgl(fieldMap);
+      fieldConfig = createConfigFieldCustomVkgl(configStatic, fieldMap);
       break;
     default:
       throw new UnexpectedEnumValueException(id);
@@ -68,7 +70,10 @@ export function createConfigFieldComposed(
   return fieldConfig;
 }
 
-function createConfigFieldCustomClinVar(fieldMap: FieldMap): ConfigCellCustom<CellValueClinVar> | null {
+function createConfigFieldCustomClinVar(
+  configStatic: ConfigStaticFieldComposed,
+  fieldMap: FieldMap,
+): ConfigCellCustom<CellValueClinVar> | null {
   const fieldCsq = fieldMap["INFO/CSQ"];
   if (fieldCsq === undefined) return null;
 
@@ -85,7 +90,8 @@ function createConfigFieldCustomClinVar(fieldMap: FieldMap): ConfigCellCustom<Ce
   return {
     type: "composed",
     id: "clinVar",
-    label: "ClinVar",
+    label: () => configStatic.label || "ClinVar",
+    description: () => configStatic.description || null,
     valueCount: (record: Item<Record>) => getFieldValueCount(fieldCsq, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueClinVar => {
       const valueIndex = recordContext.valueIndex;
@@ -113,7 +119,10 @@ function createConfigFieldCustomClinVar(fieldMap: FieldMap): ConfigCellCustom<Ce
   };
 }
 
-function createConfigFieldCustomGene(fieldMap: FieldMap): ConfigCellCustom<CellValueGene> | null {
+function createConfigFieldCustomGene(
+  configStatic: ConfigStaticFieldComposed,
+  fieldMap: FieldMap,
+): ConfigCellCustom<CellValueGene> | null {
   const fieldCsq = fieldMap["INFO/CSQ"];
   if (fieldCsq === undefined) return null;
 
@@ -129,7 +138,8 @@ function createConfigFieldCustomGene(fieldMap: FieldMap): ConfigCellCustom<CellV
   return {
     type: "composed",
     id: "gene",
-    label: "Gene",
+    label: () => configStatic.label || "Gene",
+    description: () => configStatic.description || null,
     valueCount: (record: Item<Record>) => getFieldValueCount(fieldCsq, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueGene => {
       const valueIndex = recordContext.valueIndex;
@@ -151,13 +161,17 @@ function createConfigFieldCustomGene(fieldMap: FieldMap): ConfigCellCustom<CellV
   };
 }
 
-function createConfigFieldCustomGenotype(sample: SampleContainer | null): ConfigCellCustom<CellValueGenotype> | null {
+function createConfigFieldCustomGenotype(
+  configStatic: ConfigStaticFieldComposed,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueGenotype> | null {
   if (sample === null) return null;
 
   return {
     type: "composed",
     id: "genotype",
-    label: getSampleLabel(sample.item),
+    label: () => configStatic.label || getSampleLabel(sample.item),
+    description: () => configStatic.description || null,
     valueCount: () => 1,
     value: (record: Item<Record>): CellValueGenotype => {
       const recordSample = getRecordSample(record, sample);
@@ -176,7 +190,10 @@ function createConfigFieldCustomGenotype(sample: SampleContainer | null): Config
   };
 }
 
-function createConfigFieldCustomGnomAd(fieldMap: FieldMap): ConfigCellCustom<CellValueGnomAd> | null {
+function createConfigFieldCustomGnomAd(
+  configStatic: ConfigStaticFieldComposed,
+  fieldMap: FieldMap,
+): ConfigCellCustom<CellValueGnomAd> | null {
   const fieldCsq = fieldMap["INFO/CSQ"];
   if (fieldCsq === undefined) return null;
 
@@ -191,8 +208,8 @@ function createConfigFieldCustomGnomAd(fieldMap: FieldMap): ConfigCellCustom<Cel
   return {
     type: "composed",
     id: "gnomAdAf",
-    label: "gnomAD AF",
-    description: "gnomAD allele frequency",
+    label: () => configStatic.label || "gnomAD AF",
+    description: () => configStatic.description || "gnomAD allele frequency",
     valueCount: (record: Item<Record>) => getFieldValueCount(fieldCsq, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueGnomAd => {
       const valueIndex = recordContext.valueIndex;
@@ -218,7 +235,10 @@ function createConfigFieldCustomGnomAd(fieldMap: FieldMap): ConfigCellCustom<Cel
   };
 }
 
-function createConfigFieldCustomHpo(fieldMap: FieldMap): ConfigCellCustom<CellValueHpo> | null {
+function createConfigFieldCustomHpo(
+  configStatic: ConfigStaticFieldComposed,
+  fieldMap: FieldMap,
+): ConfigCellCustom<CellValueHpo> | null {
   const csqField = fieldMap["INFO/CSQ"];
   if (csqField === undefined) {
     return null;
@@ -232,8 +252,8 @@ function createConfigFieldCustomHpo(fieldMap: FieldMap): ConfigCellCustom<CellVa
   return {
     type: "composed",
     id: "hpo",
-    label: "HPO",
-    description: "Human phenotype ontology matches",
+    label: () => configStatic.label || "HPO",
+    description: () => configStatic.description || "Human phenotype ontology matches",
     valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueHpo => {
       const valueIndex = recordContext.valueIndex;
@@ -251,6 +271,7 @@ function createConfigFieldCustomHpo(fieldMap: FieldMap): ConfigCellCustom<CellVa
 }
 
 function createConfigFieldCustomInheritancePattern(
+  configStatic: ConfigStaticFieldComposed,
   fieldMap: FieldMap,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueInheritanceModes> | null {
@@ -274,8 +295,8 @@ function createConfigFieldCustomInheritancePattern(
   return {
     type: "composed",
     id: "inheritancePattern",
-    label: "Inh.Pat.",
-    description: "Inheritance pattern",
+    label: () => configStatic.label || "Inh.Pat.",
+    description: () => configStatic.description || "Inheritance pattern",
     valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueInheritanceModes => {
       const valueIndex = recordContext.valueIndex;
@@ -297,6 +318,7 @@ function createConfigFieldCustomInheritancePattern(
 }
 
 function createConfigFieldCustomLocus(
+  configStatic: ConfigStaticFieldComposed,
   sample: SampleContainer | null,
   variantType: VariantType,
 ): ConfigCellCustom<CellValueLocus> {
@@ -304,7 +326,8 @@ function createConfigFieldCustomLocus(
   return {
     type: "composed",
     id: "locus",
-    label: "Position",
+    label: () => configStatic.label || "Position",
+    description: () => configStatic.description || null,
     valueCount: () => 1,
     value: (record: Item<Record>): CellValueLocus => ({
       c: record.data.c,
@@ -314,11 +337,12 @@ function createConfigFieldCustomLocus(
   };
 }
 
-function createConfigFieldCustomRef(): ConfigCellCustom<CellValueRef> {
+function createConfigFieldCustomRef(configStatic: ConfigStaticFieldComposed): ConfigCellCustom<CellValueRef> {
   return {
     type: "composed",
     id: "ref",
-    label: "Reference",
+    label: () => configStatic.label || "Reference",
+    description: () => configStatic.description || null,
     valueCount: () => 1,
     value: (record: Item<Record>): CellValueRef => ({
       ref: record.data.r,
@@ -327,6 +351,7 @@ function createConfigFieldCustomRef(): ConfigCellCustom<CellValueRef> {
 }
 
 function createConfigFieldCustomVipC(
+  configStatic: ConfigStaticFieldComposed,
   fieldMap: FieldMap,
   sample: SampleContainer | null,
   variantType: VariantType,
@@ -346,8 +371,8 @@ function createConfigFieldCustomVipC(
   return {
     type: "composed",
     id: "vipC",
-    label: "VIP",
-    description: "VIP classification",
+    label: () => configStatic.label || "VIP",
+    description: () => configStatic.description || "VIP classification",
     valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueVipC => {
       const valueIndex = recordContext.valueIndex;
@@ -365,7 +390,10 @@ function createConfigFieldCustomVipC(
   };
 }
 
-function createConfigFieldCustomVkgl(fieldMap: FieldMap): ConfigCellCustom<CellValueVkgl> | null {
+function createConfigFieldCustomVkgl(
+  configStatic: ConfigStaticFieldComposed,
+  fieldMap: FieldMap,
+): ConfigCellCustom<CellValueVkgl> | null {
   const csqField = fieldMap["INFO/CSQ"];
   if (csqField === undefined) {
     return null;
@@ -399,8 +427,8 @@ function createConfigFieldCustomVkgl(fieldMap: FieldMap): ConfigCellCustom<CellV
   return {
     type: "composed",
     id: "vkgl",
-    label: "VKGL",
-    description: "VKGL consensus classification",
+    label: () => configStatic.label || "VKGL",
+    description: () => configStatic.description || "VKGL consensus classification",
     valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
     value: (record: Item<Record>, recordContext: RecordContext): CellValueVkgl => {
       const valueIndex = recordContext.valueIndex;
