@@ -38,7 +38,7 @@ export const VariantBreadcrumb: Component<{
       tokens.push(record.id);
       items.push({ href: href(tokens), text: getRecordLabel(record) });
 
-      if (consequenceId) {
+      if (consequenceId !== undefined) {
         tokens.push(consequenceId);
         items.push({ href: href(tokens), text: `Consequence #${consequenceId}` });
       }
