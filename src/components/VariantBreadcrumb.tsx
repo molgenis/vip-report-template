@@ -40,7 +40,7 @@ export const VariantBreadcrumb: Component<{
 
       if (consequenceId) {
         tokens.push(consequenceId);
-        items.push({ href: href(tokens), text: "Consequence #${consequenceId()}" });
+        items.push({ href: href(tokens), text: `Consequence #${consequenceId}` });
       }
     }
 
