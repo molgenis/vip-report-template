@@ -5,5 +5,5 @@ export const FieldGenotypeType: Component<{
   value: Genotype;
 }> = (props) => {
   const displayValue = () => props.value.a.join(props.value.p ? "|" : "/");
-  return <span>${displayValue()}</span>;
+  return <span>{displayValue()}</span>;
 };
