@@ -1,6 +1,7 @@
 import { Component } from "solid-js";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { useNavigate } from "@solidjs/router";
+import { href } from "../utils/utils.ts";
 
 export const Home: Component = () => {
   const navigate = useNavigate();
@@ -17,10 +18,10 @@ export const Home: Component = () => {
           <div class="columns">
             <div class="column">
               <div class="buttons are-large">
-                <button class="button is-large" onClick={() => navigate("/variants")}>
+                <button class="button is-large" onClick={() => navigate(href(["variants"]))}>
                   Explore Variants without samples
                 </button>
-                <button class="button is-large is-primary" onClick={() => navigate("/samples")}>
+                <button class="button is-large is-primary" onClick={() => navigate(href(["samples"]))}>
                   Explore Variants for samples
                 </button>
               </div>

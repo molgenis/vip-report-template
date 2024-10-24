@@ -1,7 +1,17 @@
 import { cache } from "@solidjs/router";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item } from "@molgenis/vip-report-api/src/Api";
 import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import api from "../../Api";
+import { fetchMetadata, fetchRecordById, fetchSampleById, MetadataContainer, SampleContainer } from "../../Api";
+import { parseId } from "../../utils/utils.ts";
 
-export const getSample = cache(async (id: number): Promise<Item<Sample>> => api.getSampleById(id), "sample");
-export const getVariant = cache(async (id: number): Promise<Item<Record>> => api.getRecordById(id), "variant");
+export const getMetadata = cache(async (): Promise<MetadataContainer> => fetchMetadata(), "metadata");
+
+export const getSampleById = cache(
+  async (id: string | undefined): Promise<SampleContainer> => fetchSampleById(parseId(id)),
+  "sample",
+);
+
+export const getRecordById = cache(
+  async (id: string | undefined): Promise<Item<Record>> => fetchRecordById(parseId(id)),
+  "variant",
+);

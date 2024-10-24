@@ -1,0 +1,23 @@
+.filter {
+  padding: 0 0 1rem;
+}
+
+.filter-header {
+  display: flex;
+  align-items: stretch;
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid var(--bulma-hr-background-color);
+}
+
+.filter-header-title {
+  flex-grow: 1;
+  font-weight: var(--bulma-weight-semibold);
+}
+
+.filter-header-icon {
+  cursor: pointer
+}
+
+.filter-container {
+  padding: 0.5rem 0 0;
+}

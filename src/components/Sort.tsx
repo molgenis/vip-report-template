@@ -9,12 +9,14 @@ export type SortOption = {
   selected?: boolean;
 };
 
-export type SortEvent = { order: SortOrder };
+export type SortChangeEvent = { order: SortOrder };
+export type SortChangeCallback = (event: SortChangeEvent) => void;
+export type SortClearCallback = () => void;
 
 export const Sort: Component<{
   options: SortOption[];
-  onChange: (event: SortEvent) => void;
-  onClear: () => void;
+  onChange: SortChangeCallback;
+  onClear: SortClearCallback;
 }> = (props) => {
   const sortableOptions = () =>
     props.options.filter((option) => isNumerical(option.order.field) && option.order.field.number.count === 1);
@@ -24,10 +26,11 @@ export const Sort: Component<{
     if (index === -1) {
       props.onClear();
     } else {
+      const sortOption = sortableOptions()[index]!;
       props.onChange({
         order: {
-          property: infoSortPath(sortableOptions()[index].order.field),
-          compare: sortableOptions()[index].order.direction,
+          property: infoSortPath(sortOption.order.field),
+          compare: sortOption.order.direction,
         },
       });
     }

@@ -1,17 +1,16 @@
 import { Component, createResource, Show } from "solid-js";
 import { SampleTable } from "../components/SampleTable";
-import { Pager } from "../components/record/Pager";
+import { PageChangeEvent, Pager } from "../components/Pager";
 import { SearchBox } from "../components/SearchBox";
-import { Checkbox, CheckboxEvent } from "../components/Checkbox";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { EMPTY_PARAMS, EMPTY_PHENOTYPES, fetchPhenotypes, fetchSamples } from "../utils/ApiUtils";
 import { useStore } from "../store";
 import { Params, Query, QueryClause } from "@molgenis/vip-report-api/src/Api";
 import { Loader } from "../components/Loader";
+import { fetchSamples } from "../Api.ts";
+import { Checkbox, CheckboxEvent } from "../components/form/Checkbox.tsx";
 
 export const Samples: Component = () => {
   const [state, actions] = useStore();
-  const [phenotypes] = createResource(EMPTY_PARAMS, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
 
   function getStateSamples() {
     return state.samples ? state.samples : undefined;
@@ -21,7 +20,7 @@ export const Samples: Component = () => {
     actions.setSamplePage(0);
   }
 
-  const onPageChange = (page: number) => actions.setSamplePage(page);
+  const onPageChange = (event: PageChangeEvent) => actions.setSamplePage(event.page);
   const onSearchChange = (search: string) => {
     actions.setSampleSearchQuery(search);
     actions.setSamplePage(0);
@@ -49,11 +48,10 @@ export const Samples: Component = () => {
         args.push(probandQuery);
       }
       if (args.length > 0) {
-        const query: Query = {
+        return {
           operator: "and",
           args: args,
         };
-        return query;
       }
     }
     return null;
@@ -97,7 +95,6 @@ export const Samples: Component = () => {
                       <div class="control">
                         <Checkbox
                           value={"proband"}
-                          label=""
                           onChange={onProbandFilterChange}
                           checked={state.samples?.probandFilterValue}
                         />
@@ -105,7 +102,7 @@ export const Samples: Component = () => {
                     </div>
                   </div>
                   <div class="column">
-                    {!phenotypes.loading && <SampleTable samples={samples.items} phenotypes={phenotypes().items} />}
+                    <SampleTable samples={samples.items} />
                   </div>
                 </div>
               </>
