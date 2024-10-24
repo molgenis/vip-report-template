@@ -84,11 +84,8 @@ export type ConfigStaticFieldItem =
 export type ConfigStaticFieldItemGroup = { type: "group"; fields: ConfigStaticFieldItem[] };
 export type ConfigStaticField = ConfigStaticFieldItem | ConfigStaticFieldItemGroup;
 
-export type ConfigStaticVariantType = "str" | "snv" | "sv";
-export type ConfigStaticVariantTypeFields = {
-  default: ConfigStaticField[];
-  variantType?: { [key in ConfigStaticVariantType]: ConfigStaticField[] };
-};
+export type ConfigStaticVariantType = "all" | "str" | "snv" | "sv";
+export type ConfigStaticVariantTypeFields = Partial<Record<ConfigStaticVariantType, ConfigStaticField[]>>;
 
 export type ConfigStatic = {
   cells: ConfigStaticVariantTypeFields;

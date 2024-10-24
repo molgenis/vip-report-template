@@ -5,6 +5,7 @@ import { createConfigFields } from "./configFields";
 import config from "../config/config.json";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { createFieldMap, FieldMap } from "./utils.ts";
+import { ConfigError } from "./error.ts";
 
 export function createConfig(
   metadata: MetadataContainer,
@@ -21,35 +22,31 @@ export function createConfig(
   }
 
   return {
-    cells: createConfigFieldsVariantType(configStatic.cells, variantType, sample, fieldMap),
+    cells: createConfigCellsVariantType(configStatic.cells, variantType, sample, fieldMap),
     filters: createConfigFiltersVariantType(configStatic.filters, variantType, metadata, sample, fieldMap),
   };
 }
 
-function createConfigFieldsVariantType(
-  configFields: ConfigStaticVariantTypeFields,
+function createConfigCellsVariantType(
+  config: ConfigStaticVariantTypeFields,
   variantType: VariantType,
   sample: SampleContainer | null,
   fieldMap: FieldMap,
 ) {
-  const configStaticFields =
-    configFields.variantType && configFields.variantType[variantType.id] !== undefined
-      ? configFields.variantType[variantType.id]
-      : configFields.default;
+  const configStaticFields = config[variantType.id] || config["all"];
+  if (configStaticFields === undefined) throw new ConfigError(`missing 'cells.${variantType.id}'`);
   return createConfigFields(configStaticFields, fieldMap, sample, variantType);
 }
 
 function createConfigFiltersVariantType(
-  configFilters: ConfigStaticVariantTypeFields,
+  config: ConfigStaticVariantTypeFields,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
   fieldMap: FieldMap,
 ) {
-  const configStaticFields =
-    configFilters.variantType && configFilters.variantType[variantType.id] !== undefined
-      ? configFilters.variantType[variantType.id]
-      : configFilters.default;
+  const configStaticFields = config[variantType.id] || config["all"];
+  if (configStaticFields === undefined) throw new ConfigError(`missing 'filters.${variantType.id}'`);
   return createConfigFilters(configStaticFields, metadata, sample, fieldMap);
 }
 
@@ -109,10 +106,10 @@ function createConfigStatic(metadata: MetadataContainer): ConfigStatic {
 
   return {
     cells: {
-      default: cells,
+      all: cells,
     },
     filters: {
-      default: filters,
+      all: filters,
     },
   };
 }

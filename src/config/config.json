@@ -1,6 +1,6 @@
 {
   "cells": {
-    "default": [
+    "all": [
       {
         "type": "composed",
         "name": "locus"
@@ -76,137 +76,135 @@
         ]
       }
     ],
-    "variantType": {
-      "snv": [
-        {
-          "type": "composed",
-          "name": "locus"
-        },
-        {
-          "type": "composed",
-          "name": "ref"
-        },
-        {
-          "type": "info",
-          "name": "SVTYPE"
-        },
-        {
-          "type": "composed",
-          "name": "genotype"
-        },
-        {
-          "type": "group",
-          "fields": [
-            {
-              "type": "info",
-              "name": "CSQ/Consequence"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/SYMBOL"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/IncompletePenetrance"
-            },
-            {
-              "type": "composed",
-              "name": "inheritancePattern"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/HGVSc"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/HGVSp"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/CAPICE_SC"
-            },
-            {
-              "type": "composed",
-              "name": "vipC"
-            },
-            {
-              "type": "composed",
-              "name": "vkgl"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/clinVar_CLNSIG"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/gnomAD_AF"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/gnomAD_HN"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/PUBMED"
-            }
-          ]
-        }
-      ],
-      "str": [
-        {
-          "type": "composed",
-          "name": "locus"
-        },
-        {
-          "type": "composed",
-          "name": "genotype"
-        },
-        {
-          "type": "genotype",
-          "name": "REPCI"
-        },
-        {
-          "type": "genotype",
-          "name": "LC"
-        },
-        {
-          "type": "genotype",
-          "name": "ADSP"
-        },
-        {
-          "type": "info",
-          "name": "STR_NORMAL_MAX"
-        },
-        {
-          "type": "info",
-          "name": "STR_PATHOLOGIC_MIN"
-        },
-        {
-          "type": "group",
-          "fields": [
-            {
-              "type": "info",
-              "name": "CSQ/SYMBOL"
-            },
-            {
-              "type": "info",
-              "name": "CSQ/Feature"
-            },
-            {
-              "type": "composed",
-              "name": "inheritancePattern"
-            },
-            {
-              "type": "composed",
-              "name": "vipC"
-            }
-          ]
-        }
-      ]
-    }
+    "snv": [
+      {
+        "type": "composed",
+        "name": "locus"
+      },
+      {
+        "type": "composed",
+        "name": "ref"
+      },
+      {
+        "type": "info",
+        "name": "SVTYPE"
+      },
+      {
+        "type": "composed",
+        "name": "genotype"
+      },
+      {
+        "type": "group",
+        "fields": [
+          {
+            "type": "info",
+            "name": "CSQ/Consequence"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/SYMBOL"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/IncompletePenetrance"
+          },
+          {
+            "type": "composed",
+            "name": "inheritancePattern"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/HGVSc"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/HGVSp"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/CAPICE_SC"
+          },
+          {
+            "type": "composed",
+            "name": "vipC"
+          },
+          {
+            "type": "composed",
+            "name": "vkgl"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/clinVar_CLNSIG"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/gnomAD_AF"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/gnomAD_HN"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/PUBMED"
+          }
+        ]
+      }
+    ],
+    "str": [
+      {
+        "type": "composed",
+        "name": "locus"
+      },
+      {
+        "type": "composed",
+        "name": "genotype"
+      },
+      {
+        "type": "genotype",
+        "name": "REPCI"
+      },
+      {
+        "type": "genotype",
+        "name": "LC"
+      },
+      {
+        "type": "genotype",
+        "name": "ADSP"
+      },
+      {
+        "type": "info",
+        "name": "STR_NORMAL_MAX"
+      },
+      {
+        "type": "info",
+        "name": "STR_PATHOLOGIC_MIN"
+      },
+      {
+        "type": "group",
+        "fields": [
+          {
+            "type": "info",
+            "name": "CSQ/SYMBOL"
+          },
+          {
+            "type": "info",
+            "name": "CSQ/Feature"
+          },
+          {
+            "type": "composed",
+            "name": "inheritancePattern"
+          },
+          {
+            "type": "composed",
+            "name": "vipC"
+          }
+        ]
+      }
+    ]
   },
   "filters": {
-    "default": [
+    "all": [
       {
         "type": "composed",
         "name": "locus"
@@ -246,31 +244,29 @@
         "name": "VI"
       }
     ],
-    "variantType": {
-      "str": [
-        {
-          "type": "composed",
-          "name": "locus"
-        },
-        {
-          "type": "info",
-          "name": "CSQ/HPO",
-          "label": "Gene-phenotype association (HPO)"
-        },
-        {
-          "type": "info",
-          "name": "CSQ/GADO_PD",
-          "label": "Gene-phenotype association (GADO)"
-        },
-        {
-          "type": "info",
-          "name": "CSQ/SYMBOL"
-        },
-        {
-          "type": "info",
-          "name": "CSQ/VIPC"
-        }
-      ]
-    }
+    "str": [
+      {
+        "type": "composed",
+        "name": "locus"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/HPO",
+        "label": "Gene-phenotype association (HPO)"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/GADO_PD",
+        "label": "Gene-phenotype association (GADO)"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/SYMBOL"
+      },
+      {
+        "type": "info",
+        "name": "CSQ/VIPC"
+      }
+    ]
   }
 }
