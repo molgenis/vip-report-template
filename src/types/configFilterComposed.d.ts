@@ -1,7 +1,7 @@
-import { ConfigFilterBase, ConfigFilterField, FilterValueField } from "./configFilter";
+import { ConfigFilterBase, ConfigFilterField, FilterValueCategorical } from "./configFilter";
 
 export type ChromosomeId = string;
-export type FilterValueHpo = FilterValueField;
+export type FilterValueHpo = FilterValueCategorical;
 export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?: number };
 
 export type ConfigFilterComposed = ConfigFilterHpo | ConfigFilterLocus;

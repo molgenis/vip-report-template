@@ -3,11 +3,20 @@ import { CategoryRecord, FieldMetadata } from "@molgenis/vip-report-vcf/src/type
 import {
   ConfigFilter,
   ConfigFilterField,
+  ConfigFilterFixed,
   ConfigFilterFormat,
   FilterValue,
+  FilterValueAlt,
   FilterValueCategorical,
+  FilterValueChrom,
+  FilterValueFilter,
+  FilterValueFixed,
+  FilterValueId,
   FilterValueInterval,
   FilterValueMap,
+  FilterValuePos,
+  FilterValueQual,
+  FilterValueRef,
   FilterValueString,
 } from "../types/configFilter";
 import { VariantType } from "./variantTypeUtils";
@@ -18,7 +27,7 @@ import { createQueryFilterComposed } from "./queryComposed";
 import { UnexpectedEnumValueException } from "./error";
 import { SampleContainer } from "../Api.ts";
 
-type ComposedQueryOperator = "and" | "or"; // TODO move to API.d.ts in vip-report-api
+type ComposedQueryOperator = "and" | "or"; //   TODO move to API.d.ts in vip-report-api
 
 export function createQuery(
   variantType: VariantType,
@@ -101,6 +110,9 @@ function createQueryFilter(filterConfig: ConfigFilter, filterValue: FilterValue)
       case "composed":
         query = createQueryFilterComposed(filterConfig as ConfigFilterComposed, filterValue);
         break;
+      case "fixed":
+        query = createQueryFilterFixed(filterConfig, filterValue as FilterValueFixed);
+        break;
       case "genotype":
       case "info":
         query = createQueryFilterField(filterConfig as ConfigFilterField, filterValue);
@@ -110,6 +122,36 @@ function createQueryFilter(filterConfig: ConfigFilter, filterValue: FilterValue)
     }
   } else {
     query = null;
+  }
+  return query;
+}
+
+function createQueryFilterFixed(filter: ConfigFilterFixed, filterValue: FilterValueFixed): Query {
+  let query: Query;
+  switch (filter.id) {
+    case "chrom":
+      query = createQueryFilterString(["c"], filterValue as FilterValueChrom, false, false);
+      break;
+    case "pos":
+      query = createQueryFilterInterval(["p"], filterValue as FilterValuePos);
+      break;
+    case "id":
+      query = createQueryFilterString(["i"], filterValue as FilterValueId, true, false);
+      break;
+    case "ref":
+      query = createQueryFilterString(["r"], filterValue as FilterValueRef, false, false);
+      break;
+    case "alt":
+      query = createQueryFilterString(["a"], filterValue as FilterValueAlt, true, false);
+      break;
+    case "qual":
+      query = createQueryFilterInterval(["q"], filterValue as FilterValueQual);
+      break;
+    case "filter":
+      query = createQueryFilterString(["f"], filterValue as FilterValueFilter, true, false);
+      break;
+    default:
+      throw new UnexpectedEnumValueException(filter.id);
   }
   return query;
 }
@@ -125,16 +167,14 @@ function createQueryFilterField(filter: ConfigFilterField, filterValue: FilterVa
       break;
     case "CHARACTER":
     case "STRING":
-      query = createQueryFilterString(selector, field, filterValue as FilterValueString);
+      query = createQueryFilterFieldString(selector, field, filterValue as FilterValueString);
       break;
+    case "FLOAT":
     case "INTEGER":
-      query = createQueryFilterInteger(selector, filterValue as FilterValueInterval);
+      query = createQueryFilterInterval(selector, filterValue as FilterValueInterval);
       break;
     case "FLAG":
       query = createQueryFilterFlag();
-      break;
-    case "FLOAT":
-      query = createQueryFilterFloat();
       break;
     default:
       throw new UnexpectedEnumValueException(field.type);
@@ -181,7 +221,7 @@ export function createQueryFilterCategorical(
   return createQueryComposed(queryParts, "or");
 }
 
-function createQueryFilterInteger(selector: Selector, filterValue: FilterValueInterval): Query {
+function createQueryFilterInterval(selector: Selector, filterValue: FilterValueInterval): Query {
   const queryParts: Query[] = [];
   if (filterValue.left !== undefined) {
     queryParts.push({
@@ -206,14 +246,19 @@ function createQueryFilterFlag(): Query {
   throw new Error("not implemented"); // FIXME support flag filter queries
 }
 
-function createQueryFilterFloat(): Query {
-  throw new Error("not implemented"); // FIXME support float filter queries
+function createQueryFilterFieldString(selector: Selector, field: FieldMetadata, filterValue: FilterValueString): Query {
+  return createQueryFilterString(selector, filterValue, field.number.count !== 1, field.parent !== undefined);
 }
 
-function createQueryFilterString(selector: Selector, field: FieldMetadata, filterValue: FilterValueString): Query {
+function createQueryFilterString(
+  selector: Selector,
+  filterValue: FilterValueString,
+  multiValue: boolean,
+  nestedValue: boolean,
+): Query {
   return {
     selector,
-    operator: field.number.count === 1 ? "has_any" : "any_has_any",
+    operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "in",
     args: filterValue,
   };
 }

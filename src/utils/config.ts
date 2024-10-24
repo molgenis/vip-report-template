@@ -85,8 +85,6 @@ function createConfigStatic(metadata: MetadataContainer): ConfigStatic {
       type: "composed",
       name: "locus",
     },
-    { type: "fixed", name: "chrom" }, // FIXME added for testing, remove
-    { type: "fixed", name: "pos" }, // FIXME added for testing, remove
     { type: "fixed", name: "id" },
     { type: "fixed", name: "ref" },
     { type: "fixed", name: "alt" },
