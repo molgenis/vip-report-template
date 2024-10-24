@@ -221,7 +221,7 @@ export function createQueryFilterCategorical(
   return createQueryComposed(queryParts, "or");
 }
 
-function createQueryFilterInterval(selector: Selector, filterValue: FilterValueInterval): Query {
+export function createQueryFilterInterval(selector: Selector, filterValue: FilterValueInterval): Query {
   const queryParts: Query[] = [];
   if (filterValue.left !== undefined) {
     queryParts.push({
@@ -238,6 +238,27 @@ function createQueryFilterInterval(selector: Selector, filterValue: FilterValueI
     });
   }
   const query = createQueryComposed(queryParts, "and");
+  if (query === null) throw Error("query cannot be null");
+  return query;
+}
+
+export function createQueryOusideFilterInterval(selector: Selector, filterValue: FilterValueInterval): Query {
+  const queryParts: Query[] = [];
+  if (filterValue.left !== undefined) {
+    queryParts.push({
+      selector,
+      operator: "<=",
+      args: filterValue.left,
+    });
+  }
+  if (filterValue.right !== undefined) {
+    queryParts.push({
+      selector,
+      operator: ">=",
+      args: filterValue.right,
+    });
+  }
+  const query = createQueryComposed(queryParts, "or");
   if (query === null) throw Error("query cannot be null");
   return query;
 }
@@ -347,7 +368,7 @@ function createSelectorFilter(filter: ConfigFilterField) {
   return selector;
 }
 
-function createSelectorFilterFormat(filter: ConfigFilterFormat): SelectorPart[] {
+export function createSelectorFilterFormat(filter: ConfigFilterFormat): SelectorPart[] {
   return ["s", filter.sample.item.data.index, ...selector(filter.field)];
 }
 

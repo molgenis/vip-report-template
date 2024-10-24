@@ -1,4 +1,9 @@
-import { ConfigFilterComposed, ConfigFilterHpo, ConfigFilterLocus } from "../types/configFilterComposed";
+import {
+  ConfigFilterAllelicImbalance,
+  ConfigFilterComposed,
+  ConfigFilterHpo,
+  ConfigFilterLocus,
+} from "../types/configFilterComposed";
 import { UnexpectedEnumValueException } from "./error";
 import { FieldMap, parseContigIds } from "./utils.ts";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
@@ -18,6 +23,9 @@ export function createConfigFilterComposed(
       break;
     case "locus":
       filter = createConfigFilterLocus(configStatic, metadata);
+      break;
+    case "allelicImbalance":
+      filter = createConfigFilterAllelicImbalance(configStatic, sample, fieldMap);
       break;
     default:
       throw new UnexpectedEnumValueException(id);
@@ -66,5 +74,25 @@ function createConfigFilterLocus(
     label: () => configStatic.label || "Locus",
     description: () => configStatic.description || null,
     chromosomes: parseContigIds(metadata.records),
+  };
+}
+
+function createConfigFilterAllelicImbalance(
+  configStatic: ConfigStaticFieldComposed,
+  sample: SampleContainer | null,
+  fieldMap: FieldMap,
+): ConfigFilterAllelicImbalance | null {
+  if (sample === null) return null;
+  const viabField = fieldMap["FORMAT/VIAB"];
+  const genotypeField = fieldMap["FORMAT/GT"];
+  if (viabField === undefined || genotypeField === undefined) return null;
+  return {
+    type: "composed",
+    id: configStatic.name,
+    label: () => configStatic.label || viabField.label || "VIAB",
+    description: () => configStatic.description || viabField.description || null,
+    genotypeField: genotypeField,
+    viabField: viabField,
+    sample: sample,
   };
 }

@@ -242,6 +242,12 @@
       {
         "type": "genotype",
         "name": "VI"
+      },
+      {
+        "type": "composed",
+        "name": "allelicImbalance",
+        "label": "Allelic Imbalance",
+        "description": "Proband genotype shows allelic imbalance, calculated by: the allelic depth (AD) value of the first allele divided by the sum of the AD values for the genotype. For hetrozygotic genotypes values below 0.02 or above 0.8 are considered imbalanced. For homozygotic genotypes values between 0.02 and 0.98 are considered imbalanced."
       }
     ],
     "str": [
