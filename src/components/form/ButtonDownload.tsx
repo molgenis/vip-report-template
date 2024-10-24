@@ -1,8 +1,6 @@
 import { Component } from "solid-js";
 
-export type ButtonDownloadProps = { title: string; onClick: () => void };
-
-export const ButtonDownload: Component<ButtonDownloadProps> = (props) => {
+export const ButtonDownload: Component<{ title: string; onClick: () => void }> = (props) => {
   return (
     <button class="button is-info" onClick={() => props.onClick()} title={props.title}>
       <span class="icon is-small">
