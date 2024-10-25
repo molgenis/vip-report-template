@@ -2,8 +2,10 @@ import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
   ConfigFilterHpo,
+  ConfigFilterInheritanceMatch,
   FilterValueAllelicImbalance,
   FilterValueHpo,
+  FilterValueInheritanceMatch,
   FilterValueLocus,
 } from "../types/configFilterComposed";
 import { FilterValue } from "../types/configFilter";
@@ -30,6 +32,12 @@ export function createQueryFilterComposed(filter: ConfigFilterComposed, filterVa
       query = createQueryFilterAllelicImbalance(
         filter as ConfigFilterAllelicImbalance,
         filterValue as FilterValueAllelicImbalance,
+      );
+      break;
+    case "inheritanceMatch":
+      query = createQueryFilterInheritanceMatch(
+        filter as ConfigFilterInheritanceMatch,
+        filterValue as FilterValueInheritanceMatch,
       );
       break;
     default:
@@ -151,4 +159,41 @@ function createQueryFilterAllelicImbalance(
     queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
   }
   return createQueryComposed(queryParts, "or");
+}
+
+function createQueryFilterInheritanceMatch(
+  filter: ConfigFilterInheritanceMatch,
+  filterValue: FilterValueInheritanceMatch,
+): Query {
+  const vimSelector = createSelectorFilterFormat({ ...filter, field: filter.vimField });
+  const queryParts: Query[] = [];
+  if (filterValue.includes("true")) {
+    queryParts.push({
+      operator: "==",
+      selector: vimSelector,
+      args: 1,
+    });
+  }
+  if (filterValue.includes("false")) {
+    queryParts.push({
+      operator: "==",
+      selector: vimSelector,
+      args: 0,
+    });
+  }
+  if (filterValue.includes("potential")) {
+    const queryPartsUndefined: Query[] = [];
+    queryPartsUndefined.push({
+      selector: vimSelector,
+      operator: "==",
+      args: null,
+    });
+    queryPartsUndefined.push({
+      selector: vimSelector,
+      operator: "==",
+      args: undefined,
+    });
+    queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
+  }
+  return createQueryComposed(queryParts, "and");
 }

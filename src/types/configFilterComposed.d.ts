@@ -8,7 +8,13 @@ export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?:
 
 export type FilterValueAllelicImbalance = FilterValueFlag;
 
-export type ConfigFilterComposed = ConfigFilterHpo | ConfigFilterLocus | ConfigFilterAllelicImbalance;
+export type FilterValueInheritanceMatch = FilterValueFlag;
+
+export type ConfigFilterComposed =
+  | ConfigFilterHpo
+  | ConfigFilterLocus
+  | ConfigFilterAllelicImbalance
+  | ConfigFilterInheritanceMatch;
 
 export type ConfigFilterHpo = ConfigFilterField;
 
@@ -18,8 +24,17 @@ export interface ConfigFilterAllelicImbalance extends ConfigFilterBase {
   genotypeField: FieldMetadata;
 }
 
+export interface ConfigFilterInheritanceMatch extends ConfigFilterBase {
+  sample: SampleContainer;
+  vimField: FieldMetadata;
+}
+
 export interface ConfigFilterLocus extends ConfigFilterBase {
   chromosomes: ChromosomeId[];
 }
 
-export type FilterValueComposed = FilterValueHpo | FilterValueLocus | FilterValueAllelicImbalance;
+export type FilterValueComposed =
+  | FilterValueHpo
+  | FilterValueLocus
+  | FilterValueAllelicImbalance
+  | FilterValueInheritanceMatch;

@@ -2,6 +2,7 @@ import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
   ConfigFilterHpo,
+  ConfigFilterInheritanceMatch,
   ConfigFilterLocus,
 } from "../types/configFilterComposed";
 import { UnexpectedEnumValueException } from "./error";
@@ -26,6 +27,9 @@ export function createConfigFilterComposed(
       break;
     case "allelicImbalance":
       filter = createConfigFilterAllelicImbalance(configStatic, sample, fieldMap);
+      break;
+    case "inheritanceMatch":
+      filter = createConfigFilterInheritanceMatch(configStatic, sample, fieldMap);
       break;
     default:
       throw new UnexpectedEnumValueException(id);
@@ -93,6 +97,24 @@ function createConfigFilterAllelicImbalance(
     description: () => configStatic.description || viabField.description || null,
     genotypeField: genotypeField,
     viabField: viabField,
+    sample: sample,
+  };
+}
+
+function createConfigFilterInheritanceMatch(
+  configStatic: ConfigStaticFieldComposed,
+  sample: SampleContainer | null,
+  fieldMap: FieldMap,
+): ConfigFilterInheritanceMatch | null {
+  if (sample === null) return null;
+  const vimField = fieldMap["FORMAT/VIM"];
+  if (vimField === undefined) return null;
+  return {
+    type: "composed",
+    id: configStatic.name,
+    label: () => configStatic.label || vimField.label || "VIM",
+    description: () => configStatic.description || vimField.description || null,
+    vimField: { ...vimField, required: true },
     sample: sample,
   };
 }
