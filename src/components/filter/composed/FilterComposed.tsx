@@ -3,10 +3,12 @@ import { FilterValue } from "../../../types/configFilter";
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
+  ConfigFilterDeNovo,
   ConfigFilterHpo,
   ConfigFilterInheritanceMatch,
   ConfigFilterLocus,
   FilterValueAllelicImbalance,
+  FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
   FilterValueLocus,
@@ -17,6 +19,7 @@ import { FilterHpo } from "./FilterHpo.tsx";
 import { FilterProps } from "../Filter.tsx";
 import { FilterAllelicImbalance } from "./FilterAllelicImbalance";
 import { FilterInheritance } from "./FilterInheritance.tsx";
+import { FilterDeNovo } from "./FilterDeNovo.tsx";
 
 export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterValue>> = (props) => {
   const id = () => props.config.id;
@@ -50,6 +53,14 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterInheritance
           config={props.config as ConfigFilterInheritanceMatch}
           value={props.value as FilterValueInheritanceMatch | undefined}
+          onValueChange={props.onValueChange}
+          onValueClear={props.onValueClear}
+        />
+      </Match>
+      <Match when={id() === "deNovo"}>
+        <FilterDeNovo
+          config={props.config as ConfigFilterDeNovo}
+          value={props.value as FilterValueDeNovo | undefined}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />

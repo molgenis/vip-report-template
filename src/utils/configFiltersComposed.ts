@@ -1,6 +1,7 @@
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
+  ConfigFilterDeNovo,
   ConfigFilterHpo,
   ConfigFilterInheritanceMatch,
   ConfigFilterLocus,
@@ -30,6 +31,9 @@ export function createConfigFilterComposed(
       break;
     case "inheritanceMatch":
       filter = createConfigFilterInheritanceMatch(configStatic, sample, fieldMap);
+      break;
+    case "deNovo":
+      filter = createConfigFilterDeNovo(configStatic, sample, fieldMap);
       break;
     default:
       throw new UnexpectedEnumValueException(id);
@@ -115,6 +119,24 @@ function createConfigFilterInheritanceMatch(
     label: () => configStatic.label || vimField.label || "VIM",
     description: () => configStatic.description || vimField.description || null,
     vimField: { ...vimField, required: true },
+    sample: sample,
+  };
+}
+
+function createConfigFilterDeNovo(
+  configStatic: ConfigStaticFieldComposed,
+  sample: SampleContainer | null,
+  fieldMap: FieldMap,
+): ConfigFilterDeNovo | null {
+  if (sample === null) return null;
+  const vidField = fieldMap["FORMAT/VID"];
+  if (vidField === undefined) return null;
+  return {
+    type: "composed",
+    id: configStatic.name,
+    label: () => configStatic.label || vidField.label || "VID",
+    description: () => configStatic.description || vidField.description || null,
+    vidField: { ...vidField, required: true },
     sample: sample,
   };
 }

@@ -1,9 +1,11 @@
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
+  ConfigFilterDeNovo,
   ConfigFilterHpo,
   ConfigFilterInheritanceMatch,
   FilterValueAllelicImbalance,
+  FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
   FilterValueLocus,
@@ -39,6 +41,9 @@ export function createQueryFilterComposed(filter: ConfigFilterComposed, filterVa
         filter as ConfigFilterInheritanceMatch,
         filterValue as FilterValueInheritanceMatch,
       );
+      break;
+    case "deNovo":
+      query = createQueryFilterDeNovo(filter as ConfigFilterDeNovo, filterValue as FilterValueDeNovo);
       break;
     default:
       throw new Error(`unexpected filter id '${filter.id}'`);
@@ -190,6 +195,40 @@ function createQueryFilterInheritanceMatch(
     });
     queryPartsUndefined.push({
       selector: vimSelector,
+      operator: "==",
+      args: undefined,
+    });
+    queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
+  }
+  return createQueryComposed(queryParts, "and");
+}
+
+function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: FilterValueDeNovo): Query {
+  const vidSelector = createSelectorFilterFormat({ ...filter, field: filter.vidField });
+  const queryParts: Query[] = [];
+  if (filterValue.includes("true")) {
+    queryParts.push({
+      operator: "==",
+      selector: vidSelector,
+      args: 1,
+    });
+  }
+  if (filterValue.includes("false")) {
+    queryParts.push({
+      operator: "==",
+      selector: vidSelector,
+      args: 0,
+    });
+  }
+  if (filterValue.includes("potential")) {
+    const queryPartsUndefined: Query[] = [];
+    queryPartsUndefined.push({
+      selector: vidSelector,
+      operator: "==",
+      args: null,
+    });
+    queryPartsUndefined.push({
+      selector: vidSelector,
       operator: "==",
       args: undefined,
     });
