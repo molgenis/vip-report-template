@@ -90,7 +90,10 @@ const consequenceOrder = [
 ].reduce((acc: { [key: string]: number }, curr, currIndex) => ((acc[curr] = currIndex), acc), {});
 
 function getMostSevereConsequenceIndex(value: string[]) {
-  return value.map((consequence) => consequenceOrder[consequence]).reduce((max, value) => Math.max(max, value));
+  const filteredMappedIndices = value
+    .map((consequence) => consequenceOrder[consequence])
+    .filter((value) => value !== undefined);
+  return filteredMappedIndices.length != 0 ? filteredMappedIndices.reduce((max, value) => Math.max(max, value)) : 0;
 }
 
 function compareCsqValue(aValue: number | null, bValue: number | null, direction: string): number {
