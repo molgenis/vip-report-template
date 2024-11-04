@@ -7,12 +7,14 @@ import {
   DecisionTree,
   HtsFileMetadata,
   Item,
+  Json,
   Metadata,
   PagedItems,
   Params,
   Phenotype,
   Sample,
 } from "@molgenis/vip-report-api/src/Api";
+import config from "./config.json";
 import { samples1, samples100 } from "./static";
 import {
   crai as craiGRCh37,
@@ -48,6 +50,7 @@ import {
   vcfStr as vcfStrGRCh38,
 } from "./GRCh38/static";
 import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { ArrayIndexOutOfBoundsException } from "../utils/error.ts";
 
 /**
  * API client that uses mocked data as data source.
@@ -58,7 +61,13 @@ export class MockApiClient implements Api {
 
   constructor() {
     this.datasets = MockApiClient.createDatasets();
-    this.apiClient = this.createApiClient(this.getDatasetIds()[0]);
+    const datasetIds = this.getDatasetIds();
+    if (datasetIds.length < 1) throw new ArrayIndexOutOfBoundsException();
+    this.apiClient = this.createApiClient(datasetIds[0]!);
+  }
+
+  getConfig(): Promise<Json | null> {
+    return this.apiClient.getConfig();
   }
 
   getFastaGz(contig: string, pos: number): Promise<Uint8Array | null> {
@@ -127,6 +136,7 @@ export class MockApiClient implements Api {
 
   private static createDatasets() {
     const mockReportData: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -157,6 +167,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportDataNoVep: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -186,6 +197,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportData1Sample: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -215,6 +227,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportData100Samples: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -238,6 +251,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportDataNoSample: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -261,6 +275,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportDataFamilyGRCh38: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -290,6 +305,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportDataNoVepGRCh38: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -319,6 +335,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportData1SampleGRCh38: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -348,6 +365,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportData100SamplesGRCh38: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -371,6 +389,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportDataStrGRCh38: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -392,6 +411,7 @@ export class MockApiClient implements Api {
     };
 
     const mockReportDataNoSampleGRCh38: ReportData = {
+      config: config as unknown as Json,
       metadata: {
         app: {
           name: "vcf-report",
@@ -431,6 +451,7 @@ export class MockApiClient implements Api {
 
   private createApiClient(id: string): Api {
     const reportData = this.datasets[id];
+    if (reportData === undefined) throw new Error();
     const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf), reportData.vcfMeta);
     reportData.metadata.records = vcf.metadata;
     reportData.data.records = vcf.data;

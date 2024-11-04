@@ -87,15 +87,20 @@ export type ConfigStaticField = ConfigStaticFieldItem | ConfigStaticFieldItemGro
 export type ConfigStaticVariantType = "all" | "str" | "snv" | "sv";
 export type ConfigStaticVariantTypeFields = Partial<Record<ConfigStaticVariantType, ConfigStaticField[]>>;
 
-export type ConfigStatic = {
+export type ConfigStaticVariants = {
   cells: ConfigStaticVariantTypeFields;
   filters: ConfigStaticVariantTypeFields;
 };
 
+export type ConfigStatic = Partial<{
+  sample_variants: ConfigStaticVariants;
+  variants: ConfigStaticVariants;
+}>;
+
 export type ConfigFilters = ConfigFilter[];
 export type ConfigCells = ConfigCell[];
 
-export type Config = {
+export type ConfigVariants = {
   cells: ConfigCells;
   filters: ConfigFilters;
 };

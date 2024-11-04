@@ -21,6 +21,7 @@ import { compareCsq, compareCsqDefault } from "./utils/csqUtils.ts";
 import { mapSvTypeToVariantTypeId, VariantTypeId } from "./utils/variantTypeUtils.ts";
 import { createQuerySample } from "./utils/query.ts";
 import { MockApiClient } from "./mocks/MockApiClient.ts";
+import { ConfigStatic } from "./types/config";
 
 /**
  * Expose aggregate metadata container for convenience
@@ -52,6 +53,11 @@ const api = import.meta.env.PROD
         return new module.MockApiClient();
       });
     })();
+
+export async function fetchConfig(): Promise<ConfigStatic | null> {
+  console.log("Api.fetchConfig");
+  return (await api.getConfig()) as ConfigStatic | null; // TODO validate that json matches schema for this template
+}
 
 export async function fetchDecisionTree(): Promise<DecisionTree | null> {
   console.log("Api.fetchDecisionTree");

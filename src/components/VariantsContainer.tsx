@@ -4,7 +4,7 @@ import { Component, createMemo, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantTypeUtils";
 import { createStore, produce } from "solid-js/store";
 import { useNavigate } from "@solidjs/router";
-import { createConfig } from "../utils/config";
+import { initConfigVariants } from "../utils/config";
 import { createQuery } from "../utils/query";
 import { PageChangeEvent } from "./Pager";
 import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
@@ -19,6 +19,7 @@ import { FilterChangeEvent, FilterClearEvent, FilterValueMap } from "../types/fi
 import { VariantsContainerHeader } from "./VariantsContainerHeader";
 import { href } from "../utils/utils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
+import { ConfigStaticVariants } from "../types/config";
 
 type VariantsStore = {
   filterValues: FilterValueMap;
@@ -27,6 +28,7 @@ type VariantsStore = {
 };
 
 export const VariantsContainer: Component<{
+  config: ConfigStaticVariants;
   metadata: MetadataContainer;
   variantType: VariantType;
   sample: SampleContainer | null;
@@ -34,7 +36,7 @@ export const VariantsContainer: Component<{
   const [store, setStore] = createStore<VariantsStore>({ filterValues: {}, page: { number: 0, size: 10 } }); // FIXME default sort order
   const navigate = useNavigate();
 
-  const config = () => createConfig(props.metadata, props.variantType, props.sample);
+  const config = () => initConfigVariants(props.config, props.metadata, props.variantType, props.sample);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
 
   const query = () => createQuery(props.variantType, props.sample, config().filters, store.filterValues);

@@ -30,6 +30,7 @@ import { createConfigFilterComposed } from "./configFiltersComposed";
 import { UnexpectedEnumValueException } from "./error";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { FieldMap } from "./utils.ts";
+import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
 
 export function createConfigFilters(
   configStaticFields: ConfigStaticField[],
@@ -37,16 +38,15 @@ export function createConfigFilters(
   sample: SampleContainer | null,
   filterMap: FieldMap,
 ): ConfigFilters {
-  const configFilters: (ConfigFilter | null)[] = configStaticFields.map((configStaticFilter) => {
-    let configFilter: ConfigFilter | null;
+  return configStaticFields.flatMap((configStaticFilter) => {
+    let configFilters: ConfigFilter[];
     if (configStaticFilter.type === "group") {
       throw new Error("filter groups are not supported");
     } else {
-      configFilter = createConfigFilterItem(configStaticFilter as ConfigStaticFieldItem, metadata, sample, filterMap);
+      configFilters = createConfigFilterItem(configStaticFilter as ConfigStaticFieldItem, metadata, sample, filterMap);
     }
-    return configFilter;
+    return configFilters;
   });
-  return configFilters.filter((configFilter) => configFilter !== null);
 }
 
 function createConfigFilterChrom(configStatic: ConfigStaticFieldChrom): ConfigFilterChrom {
@@ -115,22 +115,45 @@ function createConfigFilterFilter(configStatic: ConfigStaticFieldFilter): Config
 function createConfigFilterGenotype(
   configStatic: ConfigStaticFieldGenotype,
   sample: SampleContainer | null,
-  fieldMap: FieldMap,
+  field: FieldMetadata | undefined,
 ): ConfigFilterFormat | null {
   if (sample === null) return null;
-
-  const id = configStatic.name;
-  const field = fieldMap[`INFO/${id}`];
   if (field === undefined) return null;
 
   return {
     type: "genotype",
-    id,
+    id: configStatic.name,
     label: () => configStatic.label || field.label || field.id,
     description: () => configStatic.description || field.description || null,
     field,
     sample,
   };
+}
+
+function createConfigFiltersGenotype(
+  configStatic: ConfigStaticFieldGenotype,
+  sample: SampleContainer | null,
+  fieldMap: FieldMap,
+): ConfigFilterFormat[] {
+  const id = configStatic.name;
+
+  const configs: (ConfigFilterFormat | null)[] = [];
+  if (id.endsWith("*")) {
+    const baseId = id.length === 1 ? "FORMAT/" : `FORMAT/${id.substring(0, id.length - 1)}`;
+    Object.entries(fieldMap).forEach(([fieldId, field]) => {
+      if (fieldId.startsWith(baseId) && !field.nested) {
+        console.log(fieldId);
+        const fieldConfig = createConfigFilterGenotype(configStatic, sample, field);
+        configs.push(fieldConfig);
+      }
+    });
+  } else {
+    const field = fieldMap[`FORMAT/${id}`];
+    const config = createConfigFilterGenotype(configStatic, sample, field);
+    configs.push(config);
+  }
+
+  return configs.filter((config) => config !== null);
 }
 
 function createConfigFilterFixed(configStaticField: ConfigStaticFieldFixed): ConfigFilterFixed {
@@ -163,18 +186,41 @@ function createConfigFilterFixed(configStaticField: ConfigStaticFieldFixed): Con
   return configFilter;
 }
 
-function createConfigFilterInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigFilterField | null {
-  const id = configStatic.name;
-  const field = fieldMap[`INFO/${id}`];
+function createConfigFilterInfo(
+  configStatic: ConfigStaticFieldInfo,
+  field: FieldMetadata | undefined,
+): ConfigFilterField | null {
   if (field === undefined) return null;
 
   return {
     type: "info",
-    id,
+    id: field.id,
     label: () => configStatic.label || field.label || field.id,
     description: () => configStatic.description || field.description || null,
     field,
   };
+}
+
+function createConfigFiltersInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigFilterField[] {
+  const id = configStatic.name;
+
+  const filterConfigs: (ConfigFilterField | null)[] = [];
+  if (id.endsWith("*")) {
+    const baseId = id.length === 1 ? "INFO/" : `INFO/${id.substring(0, id.length - 1)}`;
+    Object.entries(fieldMap).forEach(([fieldId, field]) => {
+      if (fieldId.startsWith(baseId) && !field.nested) {
+        console.log(fieldId);
+        const fieldConfig = createConfigFilterInfo(configStatic, field);
+        filterConfigs.push(fieldConfig);
+      }
+    });
+  } else {
+    const field = fieldMap[`INFO/${id}`];
+    const fieldConfig = createConfigFilterInfo(configStatic, field);
+    filterConfigs.push(fieldConfig);
+  }
+
+  return filterConfigs.filter((filterConfig) => filterConfig !== null);
 }
 
 function createConfigFilterItem(
@@ -182,25 +228,25 @@ function createConfigFilterItem(
   metadata: MetadataContainer,
   sample: SampleContainer | null,
   fieldMap: FieldMap,
-) {
-  let configFilter: ConfigFilter | null;
+): ConfigFilter[] {
+  let configFilters: (ConfigFilter | null)[];
   switch (configStaticField.type) {
     case "fixed":
-      configFilter = createConfigFilterFixed(configStaticField);
+      configFilters = [createConfigFilterFixed(configStaticField)];
       break;
     case "info":
-      configFilter = createConfigFilterInfo(configStaticField, fieldMap);
+      configFilters = createConfigFiltersInfo(configStaticField, fieldMap);
       break;
     case "format":
       throw new Error(`unsupported config filter type '${configStaticField.type}'`); // not exposed by vip-report-api
     case "genotype":
-      configFilter = createConfigFilterGenotype(configStaticField, sample, fieldMap);
+      configFilters = createConfigFiltersGenotype(configStaticField, sample, fieldMap);
       break;
     case "composed":
-      configFilter = createConfigFilterComposed(configStaticField, metadata, sample, fieldMap);
+      configFilters = [createConfigFilterComposed(configStaticField, metadata, sample, fieldMap)];
       break;
     default:
       throw new UnexpectedEnumValueException(configStaticField["type"]);
   }
-  return configFilter;
+  return configFilters.filter((configFilter) => configFilter !== null);
 }

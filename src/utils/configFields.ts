@@ -47,6 +47,7 @@ import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
 import { UnexpectedEnumValueException } from "./error.ts";
+import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
 
 export function createConfigFields(
   configStaticFields: ConfigStaticField[],
@@ -54,19 +55,16 @@ export function createConfigFields(
   sample: SampleContainer | null,
   variantType: VariantType,
 ): ConfigCells {
-  const configFields: (ConfigCell | null)[] = configStaticFields.map((configStaticField) => {
-    let configField: ConfigCell | null;
+  const configFields: (ConfigCell | null)[] = configStaticFields.flatMap((configStaticField) => {
+    let configFields: (ConfigCell | null)[];
     if (configStaticField.type === "group") {
-      configField = createConfigFieldItemGroup(
-        configStaticField as ConfigStaticFieldItemGroup,
-        fieldMap,
-        sample,
-        variantType,
-      );
+      configFields = [
+        createConfigFieldItemGroup(configStaticField as ConfigStaticFieldItemGroup, fieldMap, sample, variantType),
+      ];
     } else {
-      configField = createConfigFieldItem(configStaticField as ConfigStaticFieldItem, fieldMap, sample, variantType);
+      configFields = createConfigFieldItem(configStaticField as ConfigStaticFieldItem, fieldMap, sample, variantType);
     }
-    return configField;
+    return configFields;
   });
   return configFields.filter((configField) => configField !== null);
 }
@@ -195,10 +193,10 @@ function createConfigFieldFixed(configStaticField: ConfigStaticFieldFixed): Conf
   return configField;
 }
 
-function createConfigFieldInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigCellInfo | null {
-  const id = configStatic.name;
-  const field = fieldMap[`INFO/${id}`];
-
+function createConfigFieldInfo(
+  configStatic: ConfigStaticFieldInfo,
+  field: FieldMetadata | undefined,
+): ConfigCellInfo | null {
   let fieldConfig: ConfigCellInfo | null;
   if (field === undefined) {
     fieldConfig = null;
@@ -240,14 +238,33 @@ function createConfigFieldInfo(configStatic: ConfigStaticFieldInfo, fieldMap: Fi
   return fieldConfig;
 }
 
+function createConfigFieldsInfo(configStatic: ConfigStaticFieldInfo, fieldMap: FieldMap): ConfigCellInfo[] {
+  const id = configStatic.name;
+
+  const fieldConfigs: (ConfigCellInfo | null)[] = [];
+  if (id.endsWith("*")) {
+    const baseId = id.length === 1 ? "INFO/" : `INFO/${id.substring(0, id.length - 1)}`;
+    Object.entries(fieldMap).forEach(([fieldId, field]) => {
+      if (fieldId.startsWith(baseId) && !field.nested) {
+        console.log(fieldId);
+        const fieldConfig = createConfigFieldInfo(configStatic, field);
+        fieldConfigs.push(fieldConfig);
+      }
+    });
+  } else {
+    const field = fieldMap[`INFO/${id}`];
+    const fieldConfig = createConfigFieldInfo(configStatic, field);
+    fieldConfigs.push(fieldConfig);
+  }
+
+  return fieldConfigs.filter((fieldConfig) => fieldConfig !== null);
+}
+
 function createConfigFieldGenotype(
   configStatic: ConfigStaticFieldGenotype,
-  fieldMap: FieldMap,
+  field: FieldMetadata | undefined,
   sample: SampleContainer,
 ): ConfigCellGenotype | null {
-  const id = configStatic.name;
-  const field = fieldMap[`FORMAT/${id}`];
-
   let fieldConfig: ConfigCellGenotype | null;
   if (field === undefined) {
     fieldConfig = null;
@@ -288,31 +305,57 @@ function createConfigFieldGenotype(
   return fieldConfig;
 }
 
+function createConfigFieldsGenotype(
+  configStatic: ConfigStaticFieldGenotype,
+  fieldMap: FieldMap,
+  sample: SampleContainer,
+): ConfigCellGenotype[] {
+  const id = configStatic.name;
+
+  const fieldConfigs: (ConfigCellGenotype | null)[] = [];
+  if (id.endsWith("*")) {
+    const baseId = id.length === 1 ? "FORMAT/" : `FORMAT/${id.substring(0, id.length - 1)}`;
+    Object.entries(fieldMap).forEach(([fieldId, field]) => {
+      if (fieldId.startsWith(baseId) && !field.nested) {
+        console.log(fieldId);
+        const fieldConfig = createConfigFieldGenotype(configStatic, field, sample);
+        fieldConfigs.push(fieldConfig);
+      }
+    });
+  } else {
+    const field = fieldMap[`FORMAT/${id}`];
+    const fieldConfig = createConfigFieldGenotype(configStatic, field, sample);
+    fieldConfigs.push(fieldConfig);
+  }
+
+  return fieldConfigs.filter((fieldConfig) => fieldConfig !== null);
+}
+
 function createConfigFieldItem(
   configStaticField: ConfigStaticFieldItem,
   fieldMap: FieldMap,
   sample: SampleContainer | null,
   variantType: VariantType,
-) {
+): ConfigCell[] {
   const type = configStaticField.type;
 
-  let configField: ConfigCell | null;
+  let configFields: (ConfigCell | null)[];
   switch (type) {
     case "fixed":
-      configField = createConfigFieldFixed(configStaticField);
+      configFields = [createConfigFieldFixed(configStaticField)];
       break;
     case "info":
-      configField = createConfigFieldInfo(configStaticField, fieldMap);
+      configFields = createConfigFieldsInfo(configStaticField, fieldMap);
       break;
     case "format":
       throw new Error(`unsupported field type '${type}', did you mean to use 'genotype'?`);
     case "genotype":
       if (sample === null) throw new Error(`cannot create field, field type ${type} requires sample`);
-      configField = createConfigFieldGenotype(configStaticField, fieldMap, sample);
+      configFields = createConfigFieldsGenotype(configStaticField, fieldMap, sample);
       break;
     case "composed":
-      configField = createConfigFieldComposed(configStaticField, fieldMap, sample, variantType);
+      configFields = [createConfigFieldComposed(configStaticField, fieldMap, sample, variantType)];
       break;
   }
-  return configField;
+  return configFields.filter((configField) => configField !== null);
 }
