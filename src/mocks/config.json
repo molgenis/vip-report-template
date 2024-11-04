@@ -248,19 +248,19 @@
           "type": "composed",
           "name": "inheritanceMatch",
           "label": "Inheritance match",
-          "description": "Indication if the inheritance pattern of any gene associated with the variant matches the inheritance pattern suitable for the samples in the family of the proband."
+          "description": "Indication if the inheritance pattern of any gene associated with the variant matches the inheritance pattern suitable for the samples in the family of the sample. For more information see https://github.com/molgenis/vip-inheritance-matcher ."
         },
         {
           "type": "composed",
           "name": "deNovo",
           "label": "De Novo",
-          "description": "Indication if the variant is De Novo or inherited from the probands parents."
+          "description": "Indication if the variant is De Novo or inherited from the parents of the sample."
         },
         {
           "type": "composed",
           "name": "allelicImbalance",
           "label": "Allelic Imbalance",
-          "description": "Proband genotype shows allelic imbalance, calculated by: the allelic depth (AD) value of the first allele divided by the sum of the AD values for the genotype. For hetrozygotic genotypes values below 0.02 or above 0.8 are considered imbalanced. For homozygotic genotypes values between 0.02 and 0.98 are considered imbalanced."
+          "description": "Sample genotype shows allelic imbalance, calculated by: the allelic depth (AD) value of the first allele divided by the sum of the AD values for the genotype. For hetrozygotic genotypes values below 0.02 or above 0.8 are considered imbalanced. For homozygotic genotypes values between 0.02 and 0.98 are considered imbalanced."
         }
       ],
       "str": [

@@ -9,7 +9,18 @@ export const FilterDeNovo: Component<FilterProps<ConfigFilterDeNovo, FilterValue
     ...props.config,
     field: {
       ...props.config.vidField,
-      categories: { true: { label: "True" }, potential: { label: "Potential" }, false: { label: "False" } },
+      categories: {
+        true: {
+          label: "True",
+          description: "At least one allele of the sample genotype is not inherited from a parent.",
+        },
+        potential: {
+          label: "Potential",
+          description:
+            "Denovo status cannot be determined, e.g. due to missing parent(s) or (partially) missing genotypes.",
+        },
+        false: { label: "False", description: "The entire sample genotype is inherited from their parents." },
+      },
     },
   });
 
