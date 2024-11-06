@@ -1,5 +1,7 @@
 import { FieldMetadata, VcfMetadata } from "@molgenis/vip-report-vcf";
 import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api";
+import { ConfigSortOption, ConfigSortOrder } from "../types/configSort";
+import { infoSortPath } from "./query.ts";
 
 export type Direction = "asc" | "desc";
 
@@ -20,6 +22,24 @@ class InvalidSortPathError extends Error {
     super(`invalid record sort path '[${path.join(",")}]'`);
     this.name = "InvalidSortPathError";
   }
+}
+export function createSort(
+  storeSort: SortOrder | SortOrder[] | undefined,
+  configSort: ConfigSortOption | undefined,
+): SortOrder | SortOrder[] {
+  if (storeSort) {
+    return storeSort;
+  } else {
+    const sortOrders = configSort != undefined ? configSort.orders.map((order) => mapOrder(order)) : undefined;
+    return sortOrders !== undefined ? sortOrders : [];
+  }
+}
+
+export function mapOrder(sort: ConfigSortOrder): SortOrder {
+  return {
+    property: infoSortPath(sort.field),
+    compare: createDirection(sort.direction),
+  };
 }
 
 export function createRecordSort(recordsMeta: VcfMetadata, sort?: SortOrder | SortOrder[]): Sort {
@@ -52,6 +72,7 @@ function createField(property: string | SortPath, recordsMeta: VcfMetadata): Fie
     if (field.nested === undefined) throw new InvalidSortPathError(path);
 
     field = field.nested.items[pathIndex];
+    if (field === undefined) throw new InvalidSortPathError(path);
   }
   return field;
 }

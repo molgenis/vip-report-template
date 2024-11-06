@@ -1,5 +1,107 @@
 {
   "sample_variants": {
+    "sort": {
+      "all": [
+        {
+          "selected": true,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/CAPICE_SC"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/CAPICE_SC"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/gnomAD_HN"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/gnomAD_HN"
+              }
+            }
+          ]
+        }
+      ],
+      "str": [
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "STR_NORMAL_MAX"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "STR_NORMAL_MAX"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "STR_PATHOLOGIC_MIN"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "STR_PATHOLOGIC_MIN"
+              }
+            }
+          ]
+        }
+      ]
+    },
     "cells": {
       "all": [
         {

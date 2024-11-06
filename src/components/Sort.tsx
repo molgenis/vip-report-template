@@ -1,26 +1,27 @@
 import { Component, For } from "solid-js";
 import { isNumerical } from "../utils/field";
-import { DIRECTION_ASCENDING, Order } from "../utils/sortUtils";
 import { SortOrder } from "@molgenis/vip-report-api";
-import { infoSortPath } from "../utils/query";
+import { DIRECTION_ASCENDING, mapOrder, Order } from "../utils/sortUtils";
+import { ConfigSortOption, ConfigSortOrder } from "../types/configSort";
 
 export type SortOption = {
   order: Order;
   selected?: boolean;
 };
 
-export type SortChangeEvent = { order: SortOrder };
+export type SortChangeEvent = { order: SortOrder | SortOrder[] };
 export type SortChangeCallback = (event: SortChangeEvent) => void;
 export type SortClearCallback = () => void;
 
 export const Sort: Component<{
-  options: SortOption[];
+  options: ConfigSortOption[];
   onChange: SortChangeCallback;
   onClear: SortClearCallback;
 }> = (props) => {
   const sortableOptions = () =>
-    props.options.filter((option) => isNumerical(option.order.field) && option.order.field.number.count === 1);
-
+    props.options.filter((option) =>
+      option.orders.every((order) => isNumerical(order.field) && order.field.number.count === 1),
+    );
   const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);
     if (index === -1) {
@@ -28,13 +29,17 @@ export const Sort: Component<{
     } else {
       const sortOption = sortableOptions()[index]!;
       props.onChange({
-        order: {
-          property: infoSortPath(sortOption.order.field),
-          compare: sortOption.order.direction,
-        },
+        order: sortOption.orders.map((order) => mapOrder(order)),
       });
     }
   };
+
+  //TODO: discuss: how to label secondary sort
+  function getLabel(orders: ConfigSortOrder[]) {
+    return orders.length > 0 && orders[0] !== undefined
+      ? `${orders[0].field.label || orders[0].field.id} ${orders[0].direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}`
+      : " ";
+  }
 
   return (
     <div class="control">
@@ -45,8 +50,7 @@ export const Sort: Component<{
           <For each={sortableOptions()}>
             {(option, i) => (
               <option value={i()} selected={option.selected === true}>
-                {option.order.field.label || option.order.field.id}{" "}
-                {option.order.direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}
+                {getLabel(option.orders)}
               </option>
             )}
           </For>

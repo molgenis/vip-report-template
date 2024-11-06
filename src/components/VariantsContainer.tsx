@@ -20,11 +20,12 @@ import { VariantsContainerHeader } from "./VariantsContainerHeader";
 import { href } from "../utils/utils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigStaticVariants } from "../types/config";
+import { createSort } from "../utils/sortUtils.ts";
 
 type VariantsStore = {
   filterValues: FilterValueMap;
   page: { number: number; size: number };
-  sort?: SortOrder;
+  sort?: SortOrder | SortOrder[];
 };
 
 export const VariantsContainer: Component<{
@@ -33,7 +34,7 @@ export const VariantsContainer: Component<{
   variantType: VariantType;
   sample: SampleContainer | null;
 }> = (props) => {
-  const [store, setStore] = createStore<VariantsStore>({ filterValues: {}, page: { number: 0, size: 10 } }); // FIXME default sort order
+  const [store, setStore] = createStore<VariantsStore>({ filterValues: {}, page: { number: 0, size: 10 } });
   const navigate = useNavigate();
 
   const config = () => initConfigVariants(props.config, props.metadata, props.variantType, props.sample);
@@ -41,8 +42,19 @@ export const VariantsContainer: Component<{
 
   const query = () => createQuery(props.variantType, props.sample, config().filters, store.filterValues);
 
+  const sort = () =>
+    createSort(
+      store.sort,
+      config().sort.find((configSort) => configSort.selected),
+    );
+
   const [records] = createResource(
-    (): Params => ({ query: query() || undefined, page: store.page.number, size: store.page.size, sort: store.sort }),
+    (): Params => ({
+      query: query() || undefined,
+      page: store.page.number,
+      size: store.page.size,
+      sort: sort() || undefined,
+    }),
     fetchRecords,
   );
 
@@ -99,7 +111,7 @@ export const VariantsContainer: Component<{
     );
   };
   const onSortClear = () => {
-    setStore("sort", undefined);
+    setStore("sort", []);
   };
   const onVariantTypeChange = (event: VariantTypeChangeEvent) => {
     const components = props.sample !== null ? ["samples", props.sample.item.id] : [];
@@ -145,6 +157,7 @@ export const VariantsContainer: Component<{
                 metadata={props.metadata}
                 fieldConfigs={config().cells}
                 records={records()}
+                sortOptions={config().sort}
                 onPageChange={onPageChange}
                 onRecordsPerPageChange={onRecordsPerPageChange}
                 onRecordsDownload={onRecordsDownload}

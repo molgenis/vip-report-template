@@ -1,7 +1,7 @@
 import { Component, Show } from "solid-js";
 import { PagedItems } from "@molgenis/vip-report-api";
 import { Loader } from "./Loader";
-import { Sort, SortChangeCallback, SortClearCallback, SortOption } from "./Sort";
+import { Sort, SortChangeCallback, SortClearCallback } from "./Sort";
 import { PageChangeCallback, Pager } from "./Pager";
 import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
@@ -12,6 +12,7 @@ import { ConfigCellGroup, ConfigCellInfo } from "../types/configCell";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 
 import { MetadataContainer } from "../Api.ts";
+import { ConfigSortOption } from "../types/configSort";
 
 export type RecordsDownloadCallback = () => void;
 
@@ -19,30 +20,35 @@ export const VariantResults: Component<{
   metadata: MetadataContainer;
   fieldConfigs: ConfigCells;
   records: PagedItems<VcfRecord>;
+  sortOptions: ConfigSortOption[] | undefined;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
   onPageChange: PageChangeCallback;
   onSortChange: SortChangeCallback;
   onSortClear: SortClearCallback;
 }> = (props) => {
-  // TODO discuss: configure sorting / sorting custom fields
-  const sortOptions = (): SortOption[] =>
-    props.fieldConfigs
-      .flatMap((fieldConfig) =>
-        fieldConfig.type === "group" ? (fieldConfig as ConfigCellGroup).fieldConfigs : [fieldConfig],
-      )
-      .filter((fieldConfig) => fieldConfig.type === "info")
-      .map((fieldConfig) => fieldConfig as ConfigCellInfo)
-      .flatMap((fieldConfig) => [
-        {
-          order: { field: fieldConfig.field, direction: DIRECTION_ASCENDING },
-          selected: undefined,
-        },
-        {
-          order: { field: fieldConfig.field, direction: DIRECTION_DESCENDING },
-          selected: undefined,
-        },
-      ]);
+  const sortOptions = (): ConfigSortOption[] => {
+    if (props.sortOptions !== undefined && props.sortOptions.length !== 0) {
+      return props.sortOptions;
+    } else {
+      return props.fieldConfigs
+        .flatMap((fieldConfig) =>
+          fieldConfig.type === "group" ? (fieldConfig as ConfigCellGroup).fieldConfigs : [fieldConfig],
+        )
+        .filter((fieldConfig) => fieldConfig.type === "info")
+        .map((fieldConfig) => fieldConfig as ConfigCellInfo)
+        .flatMap((fieldConfig) => [
+          {
+            orders: [{ field: fieldConfig.field, direction: DIRECTION_ASCENDING }],
+            selected: undefined,
+          },
+          {
+            orders: [{ field: fieldConfig.field, direction: DIRECTION_DESCENDING }],
+            selected: undefined,
+          },
+        ]);
+    }
+  };
 
   return (
     <>
