@@ -20,6 +20,7 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
+import { ErrorBoundary } from "solid-js";
 import { HashRouter, Route } from "@solidjs/router";
 import { Home } from "./views/Home";
 import { Samples } from "./views/Samples";
@@ -33,6 +34,7 @@ import { Help } from "./views/Help";
 import { SampleVariants } from "./views/SampleVariants.tsx";
 import { SampleVariantsRedirect } from "./views/SampleVariantsRedirect.tsx";
 import { Variants } from "./views/Variants.tsx";
+import { ErrorNotification } from "./components/ErrorNotification.tsx";
 
 library.add(
   faAngleDown,
@@ -63,44 +65,46 @@ if (document.readyState === "complete") {
 render(
   () => (
     <Provider>
-      <HashRouter root={App}>
-        <Route path="/" component={Home} />
-        <Route path="/samples">
-          <Route path="/" component={Samples} />
-          <Route path="/:sampleId">
-            <Route path="/" component={Sample} />
-            <Route path="/variants">
-              <Route path="/" component={SampleVariantsRedirect} />
-              <Route path="/:variantType">
-                <Route path="/" component={SampleVariants} />
-                <Route path="/variant">
-                  <Route path="/:variantId">
-                    <Route path="/" component={SampleVariant} />
-                    <Route path="/consequences">
-                      <Route path="/:consequenceId" component={SampleVariantConsequence} />
+      <ErrorBoundary fallback={(err) => <ErrorNotification error={err as unknown} />}>
+        <HashRouter root={App}>
+          <Route path="/" component={Home} />
+          <Route path="/samples">
+            <Route path="/" component={Samples} />
+            <Route path="/:sampleId">
+              <Route path="/" component={Sample} />
+              <Route path="/variants">
+                <Route path="/" component={SampleVariantsRedirect} />
+                <Route path="/:variantType">
+                  <Route path="/" component={SampleVariants} />
+                  <Route path="/variant">
+                    <Route path="/:variantId">
+                      <Route path="/" component={SampleVariant} />
+                      <Route path="/consequences">
+                        <Route path="/:consequenceId" component={SampleVariantConsequence} />
+                      </Route>
                     </Route>
                   </Route>
                 </Route>
               </Route>
             </Route>
           </Route>
-        </Route>
-        <Route path="/variants">
-          <Route path="/" component={VariantsRedirect} />
-          <Route path="/:variantType">
-            <Route path="/" component={Variants} />
-            <Route path="/variant">
-              <Route path="/:variantId">
-                <Route path="/" component={Variant} />
-                <Route path="/consequences">
-                  <Route path="/:consequenceId" component={VariantConsequence} />
+          <Route path="/variants">
+            <Route path="/" component={VariantsRedirect} />
+            <Route path="/:variantType">
+              <Route path="/" component={Variants} />
+              <Route path="/variant">
+                <Route path="/:variantId">
+                  <Route path="/" component={Variant} />
+                  <Route path="/consequences">
+                    <Route path="/:consequenceId" component={VariantConsequence} />
+                  </Route>
                 </Route>
               </Route>
             </Route>
           </Route>
-        </Route>
-        <Route path="/help" component={Help} />
-      </HashRouter>
+          <Route path="/help" component={Help} />
+        </HashRouter>
+      </ErrorBoundary>
     </Provider>
   ),
   document.body,

@@ -58,5 +58,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/molgenis/vip-report-template.git"
+  },
+  "engines": {
+    "node": "22",
+    "pnpm": "9"
   }
 }
