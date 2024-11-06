@@ -1,4 +1,4 @@
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueString } from "@molgenis/vip-report-vcf";
 
 export type VariantTypeId = "all" | "snv" | "str" | "sv";
 export type VariantType = {

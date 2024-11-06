@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { BoolNode } from "@molgenis/vip-report-api/src/Api";
+import { BoolNode } from "@molgenis/vip-report-api";
 import { DecisionTreeOutcomeNode } from "./DecisionTreeOutcomeNode";
 import { DecisionTreeBoolQuery } from "./DecisionTreeBoolQuery";
 

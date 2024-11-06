@@ -1,5 +1,3 @@
-import { WindowApiClient } from "@molgenis/vip-report-api/src/WindowApiClient";
-import { isSampleFather, isSampleMother } from "./utils/sample.ts";
 import {
   AppMetadata,
   Cram,
@@ -11,12 +9,12 @@ import {
   PhenotypicFeature,
   Query,
   Sample,
-} from "../../vip-report-api/src/Api";
-import { Metadata, Record } from "../../vip-report-vcf/src/Vcf.ts";
+  WindowApiClient,
+} from "@molgenis/vip-report-api";
+import { isSampleFather, isSampleMother } from "./utils/sample.ts";
+import { NestedFieldMetadata, Value, ValueString, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 import { createRecordSort } from "./utils/sortUtils.ts";
 import { isNumerical } from "./utils/field.ts";
-import { NestedFieldMetadata } from "../../vip-report-vcf/src/types/Metadata";
-import { Value, ValueString } from "../../vip-report-vcf/src/ValueParser.ts";
 import { compareCsq, compareCsqDefault } from "./utils/csqUtils.ts";
 import { mapSvTypeToVariantTypeId, VariantTypeId } from "./utils/variantTypeUtils.ts";
 import { createQuerySample } from "./utils/query.ts";
@@ -29,7 +27,7 @@ import { ConfigStatic } from "./types/config";
 export type MetadataContainer = {
   app: AppMetadata;
   htsFile: HtsFileMetadata;
-  records: Metadata;
+  records: VcfMetadata;
   variantTypeIds: Set<VariantTypeId>;
 };
 
@@ -110,12 +108,12 @@ export async function fetchSampleById(sampleId: number): Promise<SampleContainer
   return composeSample(sample, phenotypicFeatures, pedigreeSamples, variantTypeIds);
 }
 
-export async function fetchRecordById(id: number): Promise<Item<Record>> {
+export async function fetchRecordById(id: number): Promise<Item<VcfRecord>> {
   console.log("Api.fetchRecordById", id);
   return api.getRecordById(id);
 }
 
-export async function fetchRecords(params: Params): Promise<PagedItems<Record>> {
+export async function fetchRecords(params: Params): Promise<PagedItems<VcfRecord>> {
   console.log("Api.fetchRecords", JSON.stringify(params));
   const [recordsMeta, records] = await Promise.all([api.getRecordsMeta(), api.getRecords(params)]);
   if (recordsMeta.info.CSQ === undefined) {

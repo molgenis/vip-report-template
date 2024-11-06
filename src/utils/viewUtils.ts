@@ -1,4 +1,4 @@
-import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueArray } from "@molgenis/vip-report-vcf";
 
 export function getSpecificConsequence(csqs: ValueArray, rowIndex: number): ValueArray {
   if (rowIndex < 0) {

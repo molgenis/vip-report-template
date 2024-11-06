@@ -1,10 +1,9 @@
 import { Component, onCleanup, onMount } from "solid-js";
 import igv, { Browser } from "igv";
 import { fromByteArray } from "base64-js";
-import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Cram, Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { VcfRecord, writeVcf } from "@molgenis/vip-report-vcf";
+import { ComposedQuery, Cram, Item, Sample } from "@molgenis/vip-report-api";
 import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, MetadataContainer } from "../Api.ts";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
 
 async function fetchVcf(
   metadata: MetadataContainer,
@@ -37,7 +36,7 @@ const toBytes = (str: string): Uint8Array => Uint8Array.from(str.split("").map((
 
 const createBrowserConfig = async (
   metadata: MetadataContainer,
-  record: Item<Record>,
+  record: Item<VcfRecord>,
   samples: Item<Sample>[],
 ): Promise<unknown> => {
   const contig = record.data.c;
@@ -112,7 +111,7 @@ const updateBrowser = async (browser: Browser, samples: Item<Sample>[]): Promise
 
 export const GenomeBrowser: Component<{
   metadata: MetadataContainer;
-  record: Item<Record>;
+  record: Item<VcfRecord>;
   samples: Item<Sample>[];
 }> = (props) => {
   let divRef: HTMLDivElement;

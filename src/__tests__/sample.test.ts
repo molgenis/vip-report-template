@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getSampleAffectedStatusLabel, getSampleLabel, getSampleSexLabel } from "../utils/sample";
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api";
 
 describe("sample utilities", () => {
   test("getSampleLabel", () => {

@@ -1,9 +1,6 @@
-import { FieldMetadata, InfoMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
-import { Item } from "@molgenis/vip-report-api/src/Api";
-import { Value } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata, InfoMetadata, RecordSampleType, Value, VcfRecord } from "@molgenis/vip-report-vcf";
+import { Item } from "@molgenis/vip-report-api";
 import { CellValueCustom } from "./configCellComposed";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
 
 export type CellId = string;
 export type CellType =
@@ -24,8 +21,8 @@ interface ConfigCellBase<T extends CellValue> {
   type: CellType;
   label: () => string;
   description: () => string | null;
-  value: (record: Item<Record>, recordContext: RecordContext) => T;
-  valueCount: (record: Item<Record>) => number;
+  value: (record: Item<VcfRecord>, recordContext: RecordContext) => T;
+  valueCount: (record: Item<VcfRecord>) => number;
 }
 
 export type CellValueChrom = string;

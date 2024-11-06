@@ -2,7 +2,7 @@ import { Component } from "solid-js";
 import { FilterProps } from "../Filter.tsx";
 import { ConfigFilterAlt, ConfigFilterField, FilterValueAlt } from "../../../types/configFilter";
 import { FilterString } from "../typed/FilterString.tsx";
-import { FieldMetadata } from "../../../../../vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
 export const FilterAlt: Component<FilterProps<ConfigFilterAlt, FilterValueAlt>> = (props) => {
   const field: FieldMetadata = {

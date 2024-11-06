@@ -1,7 +1,7 @@
 import { Component, Show } from "solid-js";
 import { Abbr } from "../../Abbr";
 import { CellValueVkgl } from "../../../types/configCellComposed";
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueString } from "@molgenis/vip-report-vcf";
 
 export const FieldVkgl: Component<{ value: CellValueVkgl }> = (props) => {
   const value = () => props.value.vkglCl;

@@ -1,5 +1,5 @@
 import { Component, Show } from "solid-js";
-import { ValueInteger } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueInteger } from "@molgenis/vip-report-vcf";
 
 export const FieldInteger: Component<{
   value: ValueInteger | undefined;

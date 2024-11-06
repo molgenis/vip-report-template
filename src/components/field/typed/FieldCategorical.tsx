@@ -1,8 +1,7 @@
 import { Component, Show } from "solid-js";
 import { Abbr } from "../../Abbr";
 import { getCategoryLabelAndDescription } from "../../../utils/field";
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { FieldMetadata, ValueString } from "@molgenis/vip-report-vcf";
 
 export const FieldCategorical: Component<{
   value: ValueString | undefined;

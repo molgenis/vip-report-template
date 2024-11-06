@@ -1,10 +1,13 @@
-import { Metadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Item } from "@molgenis/vip-report-api/src/Api";
+import { ValueArray, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { Item } from "@molgenis/vip-report-api";
 import { DecisionTreePath } from "../components/tree/DecisionTreePath";
 import { getSpecificConsequence } from "./viewUtils";
-import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
 
-export function getDecisionTreePath(recordsMetadata: Metadata, variant: Item<Record>, csqId: number): DecisionTreePath {
+export function getDecisionTreePath(
+  recordsMetadata: VcfMetadata,
+  variant: Item<VcfRecord>,
+  csqId: number,
+): DecisionTreePath {
   if (recordsMetadata.info.CSQ.nested === undefined) {
     throw new Error("Required nested VEP metadata is undefined.");
   }
@@ -14,9 +17,9 @@ export function getDecisionTreePath(recordsMetadata: Metadata, variant: Item<Rec
 }
 
 export function getSampleTreePath(
-  recordsMetadata: Metadata,
+  recordsMetadata: VcfMetadata,
   sampleIndex: number,
-  variant: Item<Record>,
+  variant: Item<VcfRecord>,
   csqId: number,
 ): DecisionTreePath {
   const vipp_s = variant.data.s[sampleIndex].VIPP_S as ValueArray;

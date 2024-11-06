@@ -1,11 +1,11 @@
 import { Component, Show } from "solid-js";
-import { PagedItems } from "@molgenis/vip-report-api/src/Api";
+import { PagedItems } from "@molgenis/vip-report-api";
 import { Loader } from "./Loader";
 import { Sort, SortChangeCallback, SortClearCallback, SortOption } from "./Sort";
 import { PageChangeCallback, Pager } from "./Pager";
 import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { ButtonDownload } from "./form/ButtonDownload";
 import { ConfigCells } from "../types/config";
 import { ConfigCellGroup, ConfigCellInfo } from "../types/configCell";
@@ -18,7 +18,7 @@ export type RecordsDownloadCallback = () => void;
 export const VariantResults: Component<{
   metadata: MetadataContainer;
   fieldConfigs: ConfigCells;
-  records: PagedItems<Record>;
+  records: PagedItems<VcfRecord>;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
   onPageChange: PageChangeCallback;

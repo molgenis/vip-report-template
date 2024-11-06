@@ -1,8 +1,7 @@
 import { expect, test } from "vitest";
 import { getDecisionTreePath } from "../utils/decisionTreeUtils";
-import { Item } from "@molgenis/vip-report-api/src/Api";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { Item } from "@molgenis/vip-report-api";
+import { FieldMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 
 test("Get DecisionTree Path", () => {
   const fieldMetaVIPP: FieldMetadata = {
@@ -26,7 +25,7 @@ test("Get DecisionTree Path", () => {
     nested: { items: [fieldMetaOther, fieldMetaVIPP], separator: "|" },
   };
 
-  const variant: Item<Record> = {
+  const variant: Item<VcfRecord> = {
     data: {
       a: [],
       c: "",
@@ -36,7 +35,7 @@ test("Get DecisionTree Path", () => {
         CSQ: [["T", "gnomad&mvl&clinvar&exit", "MODERATE"]],
       },
     },
-  } as unknown as Item<Record>;
+  } as unknown as Item<VcfRecord>;
   expect(getDecisionTreePath({ info: { CSQ: fieldMetaCsq }, lines: [], format: {}, samples: [] }, variant, 0)).toBe(
     "gnomad&mvl&clinvar&exit",
   );
@@ -58,7 +57,7 @@ test("Get DecisionTree Path - no VIPP", () => {
     nested: { items: [fieldMetaOther], separator: "|" },
   };
 
-  const variant: Item<Record> = {
+  const variant: Item<VcfRecord> = {
     data: {
       a: [],
       c: "",
@@ -68,7 +67,7 @@ test("Get DecisionTree Path - no VIPP", () => {
         CSQ: [["T", "gnomad&mvl&clinvar&exit", "MODERATE"]],
       },
     },
-  } as unknown as Item<Record>;
+  } as unknown as Item<VcfRecord>;
   expect(getDecisionTreePath({ info: { CSQ: fieldMetaCsq }, lines: [], format: {}, samples: [] }, variant, 0)).toBe(
     undefined,
   );

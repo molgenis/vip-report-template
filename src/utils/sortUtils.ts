@@ -1,6 +1,5 @@
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
-import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
-import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api/src/Api";
+import { FieldMetadata, VcfMetadata } from "@molgenis/vip-report-vcf";
+import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api";
 
 export type Direction = "asc" | "desc";
 
@@ -23,19 +22,19 @@ class InvalidSortPathError extends Error {
   }
 }
 
-export function createRecordSort(recordsMeta: Metadata, sort?: SortOrder | SortOrder[]): Sort {
+export function createRecordSort(recordsMeta: VcfMetadata, sort?: SortOrder | SortOrder[]): Sort {
   const orders = sort ? (Array.isArray(sort) ? sort : [sort]) : [];
   return { orders: orders.map((order) => createOrder(order, recordsMeta)) };
 }
 
-function createOrder(sort: SortOrder, recordsMeta: Metadata): Order {
+function createOrder(sort: SortOrder, recordsMeta: VcfMetadata): Order {
   return {
     field: createField(sort.property, recordsMeta),
     direction: createDirection(sort.compare),
   };
 }
 
-function createField(property: string | SortPath, recordsMeta: Metadata): FieldMetadata {
+function createField(property: string | SortPath, recordsMeta: VcfMetadata): FieldMetadata {
   const path = Array.isArray(property) ? property : [property];
   if (path.length < 2 || path.length > 3 || path[0] !== "n" || typeof path[1] !== "string") {
     throw new Error(`invalid record sort path '[${path.join(",")}]'`);

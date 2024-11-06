@@ -1,7 +1,7 @@
 import { Component, For } from "solid-js";
 import { isNumerical } from "../utils/field";
 import { DIRECTION_ASCENDING, Order } from "../utils/sortUtils";
-import { SortOrder } from "@molgenis/vip-report-api/src/Api";
+import { SortOrder } from "@molgenis/vip-report-api";
 import { infoSortPath } from "../utils/query";
 
 export type SortOption = {

@@ -1,6 +1,6 @@
 import { Context, createContext, ParentComponent, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Item, Query, Sample, SortOrder } from "@molgenis/vip-report-api/src/Api";
+import { Item, Query, Sample, SortOrder } from "@molgenis/vip-report-api";
 
 export type FilterQueries = { [key: string]: Query | undefined };
 

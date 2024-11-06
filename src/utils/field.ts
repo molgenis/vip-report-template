@@ -1,5 +1,4 @@
-import { FieldMetadata, ValueDescription } from "@molgenis/vip-report-vcf/src/types/Metadata";
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { FieldMetadata, ValueDescription, ValueString } from "@molgenis/vip-report-vcf";
 
 export const isNumerical = (fieldMetadata: FieldMetadata): boolean => {
   return fieldMetadata.type === "FLOAT" || fieldMetadata.type === "INTEGER";

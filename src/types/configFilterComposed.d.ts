@@ -1,6 +1,6 @@
 import { ConfigFilterBase, ConfigFilterField, FilterValueCategorical, FilterValueFlag } from "./configFilter";
 import { SampleContainer } from "../Api";
-import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
 export type ChromosomeId = string;
 export type FilterValueHpo = FilterValueCategorical;

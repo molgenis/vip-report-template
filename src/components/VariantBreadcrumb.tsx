@@ -1,8 +1,8 @@
 import { Component } from "solid-js";
 import { SampleContainer } from "../Api.ts";
 import { VariantType } from "../utils/variantTypeUtils.ts";
-import { Item } from "@molgenis/vip-report-api/src/Api";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item } from "@molgenis/vip-report-api";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { getSampleLabel } from "../utils/sample.ts";
 import { getRecordLabel, href } from "../utils/utils.ts";
 import { Breadcrumb, BreadcrumbItem } from "./Breadcrumb.tsx";
@@ -10,13 +10,13 @@ import { Breadcrumb, BreadcrumbItem } from "./Breadcrumb.tsx";
 export const VariantBreadcrumb: Component<{
   variantType: VariantType;
   sample?: SampleContainer;
-  record?: Item<Record>;
+  record?: Item<VcfRecord>;
   consequenceId?: number;
 }> = (props) => {
   function createBreadcrumbItems(
     variantType: VariantType,
     sample?: SampleContainer,
-    record?: Item<Record>,
+    record?: Item<VcfRecord>,
     consequenceId?: number,
   ) {
     const items: BreadcrumbItem[] = [];

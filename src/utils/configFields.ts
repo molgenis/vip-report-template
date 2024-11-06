@@ -39,15 +39,12 @@ import {
   ConfigStaticFieldQual,
   ConfigStaticFieldRef,
 } from "../types/config";
-import { Item } from "@molgenis/vip-report-api/src/Api";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { RecordSampleType } from "@molgenis/vip-report-vcf/src/SampleDataParser";
+import { Item } from "@molgenis/vip-report-api";
+import { FieldMetadata, RecordSampleType, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
 import { UnexpectedEnumValueException } from "./error.ts";
-import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
 
 export function createConfigFields(
   configStaticFields: ConfigStaticField[],
@@ -96,7 +93,7 @@ function createConfigFieldChrom(configStatic: ConfigStaticFieldChrom): ConfigCel
     type: "chrom",
     label: () => configStatic.label || "Chromosome",
     description: () => configStatic.description || null,
-    value: (record: Item<Record>): CellValueChrom => record.data.c,
+    value: (record: Item<VcfRecord>): CellValueChrom => record.data.c,
     valueCount: () => 1,
   };
 }
@@ -106,7 +103,7 @@ function createConfigFieldPos(configStatic: ConfigStaticFieldPos): ConfigCellPos
     type: "pos",
     label: () => configStatic.label || "Position",
     description: () => configStatic.description || null,
-    value: (record: Item<Record>): CellValuePos => record.data.p,
+    value: (record: Item<VcfRecord>): CellValuePos => record.data.p,
     valueCount: () => 1,
   };
 }
@@ -116,7 +113,7 @@ function createConfigFieldId(configStatic: ConfigStaticFieldId): ConfigCellId {
     type: "id",
     label: () => configStatic.label || "Ids",
     description: () => configStatic.description || null,
-    value: (record: Item<Record>): CellValueId => record.data.i,
+    value: (record: Item<VcfRecord>): CellValueId => record.data.i,
     valueCount: () => 1,
   };
 }
@@ -126,7 +123,7 @@ function createConfigFieldRef(configStatic: ConfigStaticFieldRef): ConfigCellRef
     type: "ref",
     label: () => configStatic.label || "Ref",
     description: () => configStatic.description || "Reference base(s)",
-    value: (record: Item<Record>): CellValueRef => record.data.r,
+    value: (record: Item<VcfRecord>): CellValueRef => record.data.r,
     valueCount: () => 1,
   };
 }
@@ -136,7 +133,7 @@ function createConfigFieldAlt(configStatic: ConfigStaticFieldAlt): ConfigCellAlt
     type: "alt",
     label: () => configStatic.label || "Alt",
     description: () => configStatic.description || "Alternate base(s): list of alternate non-reference alleles",
-    value: (record: Item<Record>): CellValueAlt => record.data.a,
+    value: (record: Item<VcfRecord>): CellValueAlt => record.data.a,
     valueCount: () => 1,
   };
 }
@@ -146,7 +143,7 @@ function createConfigFieldQual(configStatic: ConfigStaticFieldQual): ConfigCellQ
     type: "qual",
     label: () => configStatic.label || "Qual",
     description: () => configStatic.description || "Quality: phred-scaled quality score for the 'Alt' assertions",
-    value: (record: Item<Record>): CellValueQual => record.data.q,
+    value: (record: Item<VcfRecord>): CellValueQual => record.data.q,
     valueCount: () => 1,
   };
 }
@@ -158,7 +155,7 @@ function createConfigFieldFilter(configStatic: ConfigStaticFieldFilter): ConfigC
     description: () =>
       configStatic.description ||
       "Filter status: PASS if this position has passed all filter, otherwise a list of codes for filters that fail",
-    value: (record: Item<Record>): CellValueFilter => record.data.f,
+    value: (record: Item<VcfRecord>): CellValueFilter => record.data.f,
     valueCount: () => 1,
   };
 }
@@ -209,7 +206,7 @@ function createConfigFieldInfo(
       type: "info",
       label: () => configStatic.label || field.label || field.id,
       description: () => configStatic.description || field.description || null,
-      valueCount: (record: Item<Record>) => {
+      valueCount: (record: Item<VcfRecord>) => {
         return fieldParent
           ? fieldParent.number.count !== 1
             ? (record.data.n[fieldParent.id] as ValueArray).length
@@ -217,7 +214,7 @@ function createConfigFieldInfo(
           : 1;
       },
       field,
-      value(record: Item<Record>, recordContext: RecordContext): Value | undefined {
+      value(record: Item<VcfRecord>, recordContext: RecordContext): Value | undefined {
         let value: Value | undefined;
         if (fieldParent) {
           const parentValue = record.data.n[fieldParent.id] as ValueArray;
@@ -277,7 +274,7 @@ function createConfigFieldGenotype(
       type: "genotype",
       label: () => configStatic.label || field.label || field.id,
       description: () => configStatic.description || field.description || null,
-      valueCount: (record: Item<Record>) => {
+      valueCount: (record: Item<VcfRecord>) => {
         const fieldParent = field.parent;
         return fieldParent
           ? fieldParent.number.count !== 1
@@ -286,7 +283,7 @@ function createConfigFieldGenotype(
           : 1;
       },
       field,
-      value(record: Item<Record>, recordContext: RecordContext): CellValueGenotype | undefined {
+      value(record: Item<VcfRecord>, recordContext: RecordContext): CellValueGenotype | undefined {
         let value: RecordSampleType | undefined;
         if (fieldParent) {
           const parentValue = getRecordSample(record, sample)[field.id];

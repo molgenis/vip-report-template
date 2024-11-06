@@ -30,7 +30,7 @@ import { createConfigFilterComposed } from "./configFiltersComposed";
 import { UnexpectedEnumValueException } from "./error";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { FieldMap } from "./utils.ts";
-import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
 export function createConfigFilters(
   configStaticFields: ConfigStaticField[],

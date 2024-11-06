@@ -11,7 +11,7 @@ import {
   FilterValueLocus,
 } from "../types/configFilterComposed";
 import { FilterValue } from "../types/configFilter";
-import { Query } from "@molgenis/vip-report-api/src/Api";
+import { Query } from "@molgenis/vip-report-api";
 import {
   createQueryComposed,
   createQueryFilterCategorical,

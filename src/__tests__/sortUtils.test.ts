@@ -1,7 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { createRecordSort, DIRECTION_ASCENDING } from "../utils/sortUtils";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
-import { Metadata } from "@molgenis/vip-report-vcf/src/Vcf";
+import { FieldMetadata, VcfMetadata } from "@molgenis/vip-report-vcf";
 
 describe("sort utilities", () => {
   const nString0Meta: FieldMetadata = {
@@ -47,7 +46,7 @@ describe("sort utilities", () => {
   nString2Meta.parent = nObject0Meta;
   nObject0Meta.nested?.items.push(nString1Meta, nString2Meta);
 
-  const metadata: Metadata = {
+  const metadata: VcfMetadata = {
     lines: [],
     info: { n_string0: nString0Meta, n_object0: nObject0Meta },
     format: {},

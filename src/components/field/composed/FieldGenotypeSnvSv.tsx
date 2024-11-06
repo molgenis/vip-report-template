@@ -1,5 +1,5 @@
 import { Component, For, Show } from "solid-js";
-import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
+import { Genotype } from "@molgenis/vip-report-vcf";
 import { Allele } from "../../Allele";
 import { CellValueGenotype } from "../../../types/configCellComposed";
 

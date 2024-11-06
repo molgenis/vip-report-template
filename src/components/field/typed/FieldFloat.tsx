@@ -1,6 +1,6 @@
 import { Component, Show } from "solid-js";
 import { Abbr } from "../../Abbr";
-import { ValueFloat } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueFloat } from "@molgenis/vip-report-vcf";
 
 export const FieldFloat: Component<{
   value: ValueFloat | undefined;

@@ -1,4 +1,4 @@
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
 import { ConfigFilterComposed, FilterValueComposed } from "./configFilterComposed";
 import { SampleContainer } from "../Api.ts";

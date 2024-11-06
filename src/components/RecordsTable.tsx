@@ -1,5 +1,5 @@
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Item } from "@molgenis/vip-report-api/src/Api";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
+import { Item } from "@molgenis/vip-report-api";
 import { Component, For, Match, Show, Switch } from "solid-js";
 import { CellValue, ConfigCellGroup, ConfigCellItem } from "../types/configCell";
 import { ConfigCells } from "../types/config";
@@ -8,7 +8,7 @@ import { Field } from "./field/Field";
 
 export const RecordsTable: Component<{
   fieldConfigs: ConfigCells;
-  records: Item<Record>[];
+  records: Item<VcfRecord>[];
   verticalHeaders?: boolean;
 }> = (props) => {
   return (
@@ -64,7 +64,7 @@ const RecordsTableHeaderCell: Component<{
 
 const RecordsTableBody: Component<{
   fieldConfigs: ConfigCells;
-  records: Item<Record>[];
+  records: Item<VcfRecord>[];
 }> = (props) => {
   return (
     <tbody>
@@ -91,7 +91,7 @@ const RecordsTableBody: Component<{
 
 const RecordsTableCell: Component<{
   fieldConfig: ConfigCellItem;
-  record: Item<Record>;
+  record: Item<VcfRecord>;
 }> = (props) => {
   const lineIndices = () => [...Array(props.fieldConfig.valueCount(props.record))].map((_, i) => i);
   return (
@@ -107,7 +107,7 @@ const RecordsTableCell: Component<{
 
 const RecordsTableCellLine: Component<{
   fieldConfig: ConfigCellItem;
-  record: Item<Record>;
+  record: Item<VcfRecord>;
   valueIndex: number;
 }> = (props) => {
   const value = (): CellValue => props.fieldConfig.value(props.record, { valueIndex: props.valueIndex });

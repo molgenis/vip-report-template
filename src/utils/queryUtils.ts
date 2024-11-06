@@ -1,4 +1,4 @@
-import { Query, SelectorPart } from "../../../vip-report-api/src/Api";
+import { Query, SelectorPart } from "@molgenis/vip-report-api";
 import { createQueryComposed } from "./query";
 
 export function createNotBetweenClauses(viabSelector: SelectorPart[], from: number, to: number) {

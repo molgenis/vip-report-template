@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { FieldTypedItem, FieldValueSingle } from "./FieldTypedItem";
 import { FieldTypedMultiple } from "./FieldTypedMultiple";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 import { CellValueFormat, CellValueInfo } from "../../../types/configCell";
 
 export const FieldTyped: Component<{

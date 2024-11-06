@@ -1,5 +1,5 @@
 import { VariantFilters } from "./VariantFilters";
-import { Params, SortOrder } from "@molgenis/vip-report-api/src/Api";
+import { Params, SortOrder } from "@molgenis/vip-report-api";
 import { Component, createMemo, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantTypeUtils";
 import { createStore, produce } from "solid-js/store";
@@ -7,7 +7,7 @@ import { useNavigate } from "@solidjs/router";
 import { initConfigVariants } from "../utils/config";
 import { createQuery } from "../utils/query";
 import { PageChangeEvent } from "./Pager";
-import { Filter, writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
+import { Filter, writeVcf } from "@molgenis/vip-report-vcf";
 import { fetchRecords, MetadataContainer, SampleContainer } from "../Api";
 import { createDownloadFilename } from "../utils/downloadUtils";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";

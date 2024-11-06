@@ -1,6 +1,6 @@
 import { A, useNavigate } from "@solidjs/router";
 import { Component, For, Show } from "solid-js";
-import { Item, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
+import { Item, PhenotypicFeature } from "@molgenis/vip-report-api";
 import { HpoTerm } from "./HpoTerm";
 import { Anchor } from "./Anchor";
 import { getSampleAffectedStatusLabel, getSampleLabel, getSampleSexLabel } from "../utils/sample";

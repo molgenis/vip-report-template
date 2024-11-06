@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
+import { Genotype } from "@molgenis/vip-report-vcf";
 
 export const FieldGenotypeType: Component<{
   value: Genotype;

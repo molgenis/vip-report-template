@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 import { FieldTypedItem, FieldValueSingle } from "./FieldTypedItem";
 
 export const FieldTypedMultiple: Component<{

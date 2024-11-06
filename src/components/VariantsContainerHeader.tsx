@@ -1,7 +1,7 @@
 import { Component, Show } from "solid-js";
 import { getSampleAffectedStatusLabel, getSampleLabel, getSampleSexLabel } from "../utils/sample";
 import { SampleContainer } from "../Api.ts";
-import { Item, Sample } from "../../../vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api";
 
 export const VariantsContainerHeader: Component<{
   sample: SampleContainer | null;

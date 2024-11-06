@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { abbreviateHeader, isNumerical } from "../utils/field";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
 describe("field utilities", () => {
   test("FLOAT is numerical", () => {

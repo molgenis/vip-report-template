@@ -1,4 +1,4 @@
-import { Item, Sample } from "@molgenis/vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api";
 import { SampleContainer } from "../Api.ts";
 
 export function getSampleLabel(sample: Item<Sample>) {

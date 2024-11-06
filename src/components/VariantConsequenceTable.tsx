@@ -1,15 +1,13 @@
 import { Component, For, Show } from "solid-js";
-import { ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { FieldMetadata, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
 import { FieldHeader } from "./FieldHeader";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Item } from "@molgenis/vip-report-api/src/Api";
+import { Item } from "@molgenis/vip-report-api";
 import { FieldTyped } from "./field/typed/FieldTyped.tsx";
 
 export const VariantConsequenceTable: Component<{
   csqMetadata: FieldMetadata[];
   csqValues: ValueArray;
-  record: Item<Record>;
+  record: Item<VcfRecord>;
 }> = (props) => {
   function getValues(index: number): ValueArray {
     return props.csqValues[index] !== null ? (props.csqValues[index] as ValueArray) : [];

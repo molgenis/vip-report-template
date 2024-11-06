@@ -4,9 +4,8 @@ import { FieldTyped } from "../typed/FieldTyped";
 import { FieldPubMed } from "./FieldPubMed";
 import { FieldHgvs } from "./FieldHgvs";
 import { isAnyCsqInfo, isCsqInfo } from "../../../utils/csqUtils";
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { InfoMetadata, ValueString } from "@molgenis/vip-report-vcf";
 import { CellValueInfo } from "../../../types/configCell";
-import { InfoMetadata } from "../../../../../vip-report-vcf/src/types/Metadata";
 
 export const FieldInfo: Component<{
   metadata: InfoMetadata;

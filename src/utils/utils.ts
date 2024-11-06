@@ -1,10 +1,9 @@
-import { Item } from "../../../vip-report-api/src/Api";
-import { Metadata, Record, RecordSample } from "../../../vip-report-vcf/src/Vcf.ts";
-import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
+import { Item } from "@molgenis/vip-report-api";
+import { FieldMetadata, RecordSample, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 import { ArrayIndexOutOfBoundsException, InvalidIdException, InvalidVcfError } from "./error.ts";
 import { SampleContainer } from "../Api.ts";
 
-export function getRecordLabel(item: Item<Record>) {
+export function getRecordLabel(item: Item<VcfRecord>) {
   const record = item.data;
   return `${record.c}:${record.p} ${record.a
     .map(
@@ -14,7 +13,7 @@ export function getRecordLabel(item: Item<Record>) {
     .join(" / ")}`;
 }
 
-export function parseContigIds(metadata: Metadata): string[] {
+export function parseContigIds(metadata: VcfMetadata): string[] {
   return metadata.lines
     .filter((line) => line.startsWith("##contig="))
     .map((line) => {
@@ -33,7 +32,7 @@ export function parseContigIds(metadata: Metadata): string[] {
 export type FieldPath = string;
 export type FieldMap = { [key: FieldPath]: FieldMetadata };
 
-export function createFieldMap(metadata: Metadata): FieldMap {
+export function createFieldMap(metadata: VcfMetadata): FieldMap {
   const infoFields = createFieldMapTypedRec("INFO", Object.values(metadata.info));
   const formatFields = createFieldMapTypedRec("FORMAT", Object.values(metadata.format));
   return { ...infoFields, ...formatFields };
@@ -74,7 +73,7 @@ export function parseId(id: string | undefined): number {
   return number;
 }
 
-export function getRecordSample(record: Item<Record>, sample: SampleContainer): RecordSample {
+export function getRecordSample(record: Item<VcfRecord>, sample: SampleContainer): RecordSample {
   const recordSample = record.data.s[sample.item.data.index];
   if (recordSample === undefined) throw new ArrayIndexOutOfBoundsException();
   return recordSample;

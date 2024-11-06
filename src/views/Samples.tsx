@@ -4,7 +4,7 @@ import { PageChangeEvent, Pager } from "../components/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { useStore } from "../store";
-import { Params, Query, QueryClause } from "@molgenis/vip-report-api/src/Api";
+import { Params, Query, QueryClause } from "@molgenis/vip-report-api";
 import { Loader } from "../components/Loader";
 import { fetchSamples } from "../Api.ts";
 import { Checkbox, CheckboxEvent } from "../components/form/Checkbox.tsx";

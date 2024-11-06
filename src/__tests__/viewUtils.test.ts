@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { getSpecificConsequence } from "../utils/viewUtils";
-import { Value, ValueArray } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { Value, ValueArray } from "@molgenis/vip-report-vcf";
 
 const value1a: Value = "testValue1a";
 const value2a: Value = "testValue2a";

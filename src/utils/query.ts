@@ -1,5 +1,5 @@
-import { Item, Query, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api/src/Api";
-import { CategoryRecord, FieldMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
+import { Item, Query, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api";
+import { CategoryRecord, FieldMetadata } from "@molgenis/vip-report-vcf";
 import {
   ConfigFilter,
   ConfigFilterField,

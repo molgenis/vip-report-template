@@ -1,4 +1,4 @@
-import { HtsFileMetadata } from "@molgenis/vip-report-api/src/Api";
+import { HtsFileMetadata } from "@molgenis/vip-report-api";
 
 export function createDownloadFilename(htsFileMetadata: HtsFileMetadata) {
   return (

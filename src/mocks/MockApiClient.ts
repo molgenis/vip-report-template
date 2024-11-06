@@ -1,7 +1,6 @@
-import { ApiClient, ReportData } from "@molgenis/vip-report-api/src/ApiClient";
-import { parseVcf } from "@molgenis/vip-report-vcf/src/VcfParser";
 import {
   Api,
+  ApiClient,
   AppMetadata,
   Cram,
   DecisionTree,
@@ -12,8 +11,10 @@ import {
   PagedItems,
   Params,
   Phenotype,
+  ReportData,
   Sample,
-} from "@molgenis/vip-report-api/src/Api";
+} from "@molgenis/vip-report-api";
+import { parseVcf, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 import config from "./config.json";
 import { samples1, samples100 } from "./static";
 import {
@@ -49,7 +50,6 @@ import {
   vcfSamples100 as vcfSamples100GRCh38,
   vcfStr as vcfStrGRCh38,
 } from "./GRCh38/static";
-import { Metadata as RecordMetadata, Record } from "@molgenis/vip-report-vcf/src/Vcf";
 import { ArrayIndexOutOfBoundsException } from "../utils/error.ts";
 
 /**
@@ -102,15 +102,15 @@ export class MockApiClient implements Api {
     return this.apiClient.getPhenotypes(params);
   }
 
-  getRecordById(id: number): Promise<Item<Record>> {
+  getRecordById(id: number): Promise<Item<VcfRecord>> {
     return this.apiClient.getRecordById(id);
   }
 
-  getRecords(params: Params): Promise<PagedItems<Record>> {
+  getRecords(params: Params): Promise<PagedItems<VcfRecord>> {
     return this.apiClient.getRecords(params);
   }
 
-  getRecordsMeta(): Promise<RecordMetadata> {
+  getRecordsMeta(): Promise<VcfMetadata> {
     return this.apiClient.getRecordsMeta();
   }
 

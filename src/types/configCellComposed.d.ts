@@ -1,6 +1,4 @@
-import { ValueFlag, ValueFloat, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
-import { InfoMetadata, ValueDescription } from "@molgenis/vip-report-vcf/src/types/Metadata";
-import { Genotype } from "@molgenis/vip-report-vcf/src/SampleDataParser";
+import { Genotype, InfoMetadata, ValueDescription, ValueFlag, ValueFloat, ValueString } from "@molgenis/vip-report-vcf";
 
 export type CellValueClinVar = {
   clnIds: number[] | undefined;

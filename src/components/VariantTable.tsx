@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { FieldChrom } from "./field/FieldChrom";
 import { FieldPos } from "./field/FieldPos";
 import { FieldId } from "./field/FieldId";
@@ -8,7 +8,7 @@ import { FieldAlt } from "./field/FieldAlt";
 import { FieldQual } from "./field/FieldQual";
 import { FieldFilter } from "./field/FieldFilter";
 
-export const VariantTable: Component<{ variant: Record }> = (props) => {
+export const VariantTable: Component<{ variant: VcfRecord }> = (props) => {
   return (
     <div style={{ display: "grid" }}>
       {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}

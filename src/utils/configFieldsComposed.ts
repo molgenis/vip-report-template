@@ -1,6 +1,6 @@
 import { ConfigCellCustom, RecordContext } from "../types/configCell";
-import { Genotype, Record } from "@molgenis/vip-report-vcf/src/Vcf";
-import { Item } from "@molgenis/vip-report-api/src/Api";
+import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueString, VcfRecord } from "@molgenis/vip-report-vcf";
+import { Item } from "@molgenis/vip-report-api";
 import { getSampleLabel } from "./sample";
 import {
   CellValueClinVar,
@@ -15,10 +15,8 @@ import {
   CellValueVipC,
   CellValueVkgl,
 } from "../types/configCellComposed";
-import { ValueFlag, ValueFloat, ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
 import { getFieldMultilineValue, getFieldValueCount, getNestedFieldIndices } from "./csqUtils";
 import { getCategoryLabelAndDescription } from "./field";
-import { InfoMetadata } from "@molgenis/vip-report-vcf/src/types/Metadata";
 import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
@@ -92,8 +90,8 @@ function createConfigFieldCustomClinVar(
     id: "clinVar",
     label: () => configStatic.label || "ClinVar",
     description: () => configStatic.description || null,
-    valueCount: (record: Item<Record>) => getFieldValueCount(fieldCsq, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueClinVar => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(fieldCsq, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueClinVar => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error("missing required value index");
 
@@ -140,8 +138,8 @@ function createConfigFieldCustomGene(
     id: "gene",
     label: () => configStatic.label || "Gene",
     description: () => configStatic.description || null,
-    valueCount: (record: Item<Record>) => getFieldValueCount(fieldCsq, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueGene => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(fieldCsq, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueGene => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
@@ -173,7 +171,7 @@ function createConfigFieldCustomGenotype(
     label: () => configStatic.label || getSampleLabel(sample.item),
     description: () => configStatic.description || null,
     valueCount: () => 1,
-    value: (record: Item<Record>): CellValueGenotype => {
+    value: (record: Item<VcfRecord>): CellValueGenotype => {
       const recordSample = getRecordSample(record, sample);
       return {
         refAllele: record.data.r,
@@ -210,8 +208,8 @@ function createConfigFieldCustomGnomAd(
     id: "gnomAdAf",
     label: () => configStatic.label || "gnomAD AF",
     description: () => configStatic.description || "gnomAD allele frequency",
-    valueCount: (record: Item<Record>) => getFieldValueCount(fieldCsq, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueGnomAd => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(fieldCsq, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueGnomAd => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
@@ -254,8 +252,8 @@ function createConfigFieldCustomHpo(
     id: "hpo",
     label: () => configStatic.label || "HPO",
     description: () => configStatic.description || "Human phenotype ontology matches",
-    valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueHpo => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueHpo => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
@@ -297,8 +295,8 @@ function createConfigFieldCustomInheritancePattern(
     id: "inheritancePattern",
     label: () => configStatic.label || "Inh.Pat.",
     description: () => configStatic.description || "Inheritance pattern",
-    valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueInheritanceModes => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueInheritanceModes => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
       const sampleVic = getRecordSample(record, sample)["VIC"];
@@ -329,7 +327,7 @@ function createConfigFieldCustomLocus(
     label: () => configStatic.label || "Position",
     description: () => configStatic.description || null,
     valueCount: () => 1,
-    value: (record: Item<Record>): CellValueLocus => ({
+    value: (record: Item<VcfRecord>): CellValueLocus => ({
       c: record.data.c,
       p: record.data.p,
       href: href([...components, "variants", variantType.id, "variant", record.id]),
@@ -344,7 +342,7 @@ function createConfigFieldCustomRef(configStatic: ConfigStaticFieldComposed): Co
     label: () => configStatic.label || "Reference",
     description: () => configStatic.description || null,
     valueCount: () => 1,
-    value: (record: Item<Record>): CellValueRef => ({
+    value: (record: Item<VcfRecord>): CellValueRef => ({
       ref: record.data.r,
     }),
   };
@@ -373,8 +371,8 @@ function createConfigFieldCustomVipC(
     id: "vipC",
     label: () => configStatic.label || "VIP",
     description: () => configStatic.description || "VIP classification",
-    valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueVipC => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueVipC => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
@@ -429,8 +427,8 @@ function createConfigFieldCustomVkgl(
     id: "vkgl",
     label: () => configStatic.label || "VKGL",
     description: () => configStatic.description || "VKGL consensus classification",
-    valueCount: (record: Item<Record>) => getFieldValueCount(csqField, record),
-    value: (record: Item<Record>, recordContext: RecordContext): CellValueVkgl => {
+    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueVkgl => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 

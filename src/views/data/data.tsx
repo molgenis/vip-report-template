@@ -1,6 +1,6 @@
 import { query } from "@solidjs/router";
-import { Item, Json } from "@molgenis/vip-report-api/src/Api";
-import { Record } from "@molgenis/vip-report-vcf/src/Vcf";
+import { Item, Json } from "@molgenis/vip-report-api";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
 import {
   fetchConfig,
   fetchMetadata,
@@ -26,6 +26,6 @@ export const getSampleById = query(
 );
 
 export const getRecordById = query(
-  (id: string | undefined): Promise<Item<Record>> => fetchRecordById(parseId(id)),
+  (id: string | undefined): Promise<Item<VcfRecord>> => fetchRecordById(parseId(id)),
   "variant",
 );

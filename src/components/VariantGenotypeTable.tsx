@@ -1,10 +1,9 @@
 import { Component, For } from "solid-js";
-import { FieldMetadataContainer } from "@molgenis/vip-report-vcf/src/VcfParser";
+import { FieldMetadataContainer, RecordSample } from "@molgenis/vip-report-vcf";
 import { FieldHeader } from "./FieldHeader";
-import { RecordSample } from "../../../vip-report-vcf/src/SampleDataParser.ts";
 import { FieldGenotype } from "./field/genotype/FieldGenotype.tsx";
 import { getSampleLabel } from "../utils/sample.ts";
-import { Item, Sample } from "../../../vip-report-api/src/Api";
+import { Item, Sample } from "@molgenis/vip-report-api";
 
 export const VariantGenotypeTable: Component<{
   samples: Item<Sample>[];

@@ -48,8 +48,8 @@ import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
 
 import { fetchAsBytes } from "../utils";
-import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
-import { Metadata } from "@molgenis/vip-report-vcf/src/FieldMetadata";
+import { DecisionTree } from "@molgenis/vip-report-api";
+import { SupplementaryMetadata } from "@molgenis/vip-report-vcf";
 
 export const cram = await fetchAsBytes(cramUrl as string);
 export const crai = await fetchAsBytes(craiUrl as string);
@@ -99,7 +99,7 @@ export const fastaGz = {
 
 export const genesGz = await fetchAsBytes(genesUrl as string);
 
-export const vcfMeta = vcfMetaJson as unknown as Metadata;
+export const vcfMeta = vcfMetaJson as unknown as SupplementaryMetadata;
 
 export const vcfFamily = await fetchAsBytes(vcfUrlFamily as string);
 

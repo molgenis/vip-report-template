@@ -1,11 +1,10 @@
 import { Component } from "solid-js";
 import { SampleContainer } from "../Api.ts";
-import { Metadata, Record } from "../../../vip-report-vcf/src/Vcf.ts";
-import { DecisionTree, Item, Sample } from "../../../vip-report-api/src/Api";
+import { ValueArray, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api";
 import { VariantInfoTable } from "./VariantInfoTable.tsx";
 import { VariantConsequenceTable } from "./VariantConsequenceTable.tsx";
 import { getSpecificConsequence } from "../utils/viewUtils.ts";
-import { ValueArray } from "../../../vip-report-vcf/src/ValueParser.ts";
 import { VariantTable } from "./VariantTable.tsx";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { DecisionTreePath } from "./tree/DecisionTreePath.tsx";
@@ -14,10 +13,10 @@ import { VariantType } from "../utils/variantTypeUtils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 
 export const VariantConsequenceContainer: Component<{
-  metadata: Metadata;
+  metadata: VcfMetadata;
   variantType: VariantType;
   consequenceId: number;
-  record: Item<Record>;
+  record: Item<VcfRecord>;
   sample: SampleContainer | null;
   decisionTree: DecisionTree | null;
   sampleTree: DecisionTree | null;

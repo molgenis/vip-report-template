@@ -1,7 +1,7 @@
 import { Component, For, Show } from "solid-js";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
-import { Item, Sample } from "../../../vip-report-api/src/Api";
-import { Record } from "../../../vip-report-vcf/src/Vcf.ts";
+import { Item, Sample } from "@molgenis/vip-report-api";
+import { FieldMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 import { GenomeBrowser } from "./GenomeBrowser.tsx";
 import { VariantTable } from "./VariantTable.tsx";
 import { VariantInfoTable } from "./VariantInfoTable.tsx";
@@ -11,13 +11,12 @@ import { ConfigCells } from "../types/config";
 import { VariantType } from "../utils/variantTypeUtils.ts";
 import { createConfigFields } from "../utils/configFields.ts";
 import { createFieldMap } from "../utils/utils.ts";
-import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
 import { getPedigreeSamples } from "../utils/sample.ts";
 
 export const VariantContainer: Component<{
   metadata: MetadataContainer;
   variantType: VariantType;
-  record: Item<Record>;
+  record: Item<VcfRecord>;
   sample: SampleContainer | null;
 }> = (props) => {
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);

@@ -1,5 +1,5 @@
 import { Component, Show } from "solid-js";
-import { ValueString } from "@molgenis/vip-report-vcf/src/ValueParser";
+import { ValueString } from "@molgenis/vip-report-vcf";
 import { FieldTypedMultiple } from "../typed/FieldTypedMultiple";
 import { CellValueInheritanceModes } from "../../../types/configCellComposed";
 
