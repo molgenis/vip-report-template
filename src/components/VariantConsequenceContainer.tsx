@@ -72,12 +72,7 @@ export const VariantConsequenceContainer: Component<{
                 <h1 class="title is-5">Sample classification tree path</h1>
                 <DecisionTreePath
                   decisionTree={props.sampleTree}
-                  path={getSampleTreePath(
-                    props.metadata,
-                    props.sample.item.data.index,
-                    props.record,
-                    props.consequenceId,
-                  )}
+                  path={getSampleTreePath(props.sample.item.data.index, props.record, props.consequenceId)}
                 />
               </div>
             )}
