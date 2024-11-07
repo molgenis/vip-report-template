@@ -1,7 +1,7 @@
+/* eslint-disable */
+// @ts-nocheck
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
-import decisionTreeJson from "./decisionTree.json";
-import sampleTreeJson from "./sampleTree.json";
 import fastaUrl1_10042288_10042788 from "./fasta/1-10042288-10042788.fasta.gz.blob";
 import fastaUrl1_16375333_16375833 from "./fasta/1-16375333-16375833.fasta.gz.blob";
 import fastaUrl1_16376162_16376662 from "./fasta/1-16376162-16376662.fasta.gz.blob";
@@ -40,13 +40,15 @@ import fastaUrlX_48932771_48933271 from "./fasta/X-48932771-48933271.fasta.gz.bl
 import fastaUrlY_2655391_2655891 from "./fasta/Y-2655391-2655891.fasta.gz.blob";
 import fastaUrlMT_15076_15576 from "./fasta/MT-15076-15576.fasta.gz.blob";
 import genesUrl from "./genes.gff.gz.blob";
-import vcfMetaJson from "./field_metadata.json";
 import vcfUrlFamily from "./vcf/family.vcf.blob";
 import vcfUrlNoVep from "./vcf/no_vep.vcf.blob";
 import vcfUrlSamples0 from "./vcf/samples_0.vcf.blob";
 import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
 import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
-
+/* eslint-enable */
+import decisionTreeJson from "./decisionTree.json";
+import sampleTreeJson from "./sampleTree.json";
+import vcfMetaJson from "./field_metadata.json";
 import { fetchAsBytes } from "../utils";
 import { DecisionTree } from "@molgenis/vip-report-api";
 import { SupplementaryMetadata } from "@molgenis/vip-report-vcf";
