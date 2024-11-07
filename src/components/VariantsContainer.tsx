@@ -1,6 +1,6 @@
 import { VariantFilters } from "./VariantFilters";
 import { Params, SortOrder } from "@molgenis/vip-report-api";
-import { Component, createMemo, createResource, Show } from "solid-js";
+import { Component, createEffect, createMemo, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantTypeUtils";
 import { createStore, produce } from "solid-js/store";
 import { useNavigate } from "@solidjs/router";
@@ -81,7 +81,6 @@ export const VariantsContainer: Component<{
     const samples = createMemo(() => (props.sample ? getPedigreeSamples(props.sample) : []));
     const filter = (): Filter | undefined =>
       samples() ? { samples: samples().map((sample) => sample.data.person.individualId) } : undefined;
-
     const handler = async () => {
       // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
       const records = await fetchRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
@@ -98,8 +97,15 @@ export const VariantsContainer: Component<{
       link.click();
       document.body.removeChild(link);
     };
-    handler().catch((error) => console.error(error)); // FIXME ESLint warning
+
+    createEffect(() => {
+      const promise = (async () => await handler())();
+      promise.catch((error) => {
+        console.log(error);
+      });
+    });
   };
+
   const onRecordsPerPageChange = (event: RecordsPerPageChangeEvent) => {
     setStore("page", { number: 0, size: event.number });
   };
