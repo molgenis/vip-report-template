@@ -5,10 +5,12 @@ import { Input } from "../../form/Input";
 import { ButtonApply } from "../../form/ButtonApply";
 import { ButtonReset } from "../../form/ButtonReset";
 import { FilterProps } from "../Filter.tsx";
+import { validateIntervalValues } from "../../../utils/filterUtils.ts";
 
 export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValueInterval>> = (props) => {
   const [leftInputValue, setLeftInputValue] = createSignal<string>("");
   const [rightInputValue, setRightInputValue] = createSignal<string>("");
+  const [error, setError] = createSignal<string>();
 
   createEffect(() => {
     if (props.value) {
@@ -22,15 +24,21 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
   });
 
   const onApply = () => {
-    if (leftInputValue().length === 0 && rightInputValue().length === 0) {
-      props.onValueClear();
+    const validationResult = validateIntervalValues(props.config.id, leftInputValue(), rightInputValue());
+    if (validationResult !== undefined) {
+      setError(validationResult);
     } else {
-      props.onValueChange({
-        value: {
-          left: leftInputValue().length > 0 ? parseInt(leftInputValue()) : undefined,
-          right: rightInputValue().length > 0 ? parseInt(rightInputValue()) : undefined,
-        },
-      });
+      setError(undefined);
+      if (leftInputValue().length === 0 && rightInputValue().length === 0) {
+        props.onValueClear();
+      } else {
+        props.onValueChange({
+          value: {
+            left: leftInputValue().length > 0 ? parseInt(leftInputValue()) : undefined,
+            right: rightInputValue().length > 0 ? parseInt(rightInputValue()) : undefined,
+          },
+        });
+      }
     }
   };
 
@@ -41,7 +49,7 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
   };
 
   return (
-    <FilterWrapper config={props.config}>
+    <FilterWrapper config={props.config} error={error()}>
       <div class="field is-grouped">
         <div class="control is-expanded">
           <Input placeholder="From" value={leftInputValue()} onValueChange={(e) => setLeftInputValue(e.value)} />

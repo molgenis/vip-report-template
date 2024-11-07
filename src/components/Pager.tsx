@@ -20,9 +20,8 @@ export const Pager: Component<{
   page: Page;
   onPageChange: PageChangeCallback;
 }> = (props) => {
-  const currentPage = () => props.page.number;
   const nrPages = createMemo(() => Math.ceil(props.page.totalElements / props.page.size));
-  const pages = createMemo(() => createPages(currentPage(), nrPages()));
+  const pages = createMemo(() => createPages(props.page.number, nrPages()));
 
   return (
     <>
@@ -31,8 +30,8 @@ export const Pager: Component<{
           <ul class="pagination-list">
             <li>
               <a
-                classList={{ "pagination-previous": true, "is-invisible": currentPage() === 0 }}
-                onClick={currentPage() > 0 ? () => props.onPageChange({ page: currentPage() - 1 }) : undefined}
+                classList={{ "pagination-previous": true, "is-invisible": props.page.number === 0 }}
+                onClick={props.page.number > 0 ? () => props.onPageChange({ page: props.page.number - 1 }) : undefined}
               >
                 Previous
               </a>
@@ -41,8 +40,8 @@ export const Pager: Component<{
               {(page) =>
                 page !== null ? (
                   <a
-                    classList={{ "pagination-link": true, "is-current": page === currentPage() }}
-                    onClick={page !== currentPage() ? () => props.onPageChange({ page }) : undefined}
+                    classList={{ "pagination-link": true, "is-current": page === props.page.number }}
+                    onClick={() => (page !== props.page.number ? props.onPageChange({ page }) : undefined)}
                   >
                     {page + 1}
                   </a>
@@ -53,9 +52,11 @@ export const Pager: Component<{
             </For>
             <li>
               <a
-                classList={{ "pagination-next": true, "is-invisible": currentPage() === nrPages() - 1 }}
+                classList={{ "pagination-next": true, "is-invisible": props.page.number === nrPages() - 1 }}
                 onClick={
-                  currentPage() < nrPages() - 1 ? () => props.onPageChange({ page: currentPage() + 1 }) : undefined
+                  props.page.number < nrPages() - 1
+                    ? () => props.onPageChange({ page: props.page.number + 1 })
+                    : undefined
                 }
               >
                 Next

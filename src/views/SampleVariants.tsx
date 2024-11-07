@@ -13,7 +13,7 @@ export const SampleVariants: Component<RouteSectionProps> = (props) => {
   const store = useStore();
 
   const variantType = () => parseVariantType(props.params.variantType);
-  const config = createAsync(() => getConfig("sample_variants") as Promise<ConfigStaticVariants>);
+  const config = createAsync(() => getConfig("sample_variants") as unknown as Promise<ConfigStaticVariants>);
   const metadata = createAsync(() => getMetadata());
   const sample = createAsync(() => getSampleById(props.params.sampleId));
 

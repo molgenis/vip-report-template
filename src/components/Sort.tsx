@@ -1,13 +1,8 @@
 import { Component, For } from "solid-js";
 import { isNumerical } from "../utils/field";
 import { SortOrder } from "@molgenis/vip-report-api";
-import { DIRECTION_ASCENDING, mapOrder, Order } from "../utils/sortUtils";
+import { DIRECTION_ASCENDING, mapOrder } from "../utils/sortUtils";
 import { ConfigSortOption, ConfigSortOrder } from "../types/configSort";
-
-export type SortOption = {
-  order: Order;
-  selected?: boolean;
-};
 
 export type SortChangeEvent = { order: SortOrder | SortOrder[] };
 export type SortChangeCallback = (event: SortChangeEvent) => void;
@@ -34,7 +29,6 @@ export const Sort: Component<{
     }
   };
 
-  //TODO: discuss: how to label secondary sort
   function getLabel(orders: ConfigSortOrder[]) {
     return orders.length > 0 && orders[0] !== undefined
       ? `${orders[0].field.label || orders[0].field.id} ${orders[0].direction === DIRECTION_ASCENDING ? "(ascending)" : "(descending)"}`

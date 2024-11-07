@@ -85,7 +85,10 @@ const consequenceOrder = [
   "regulatory_region_variant",
   "feature_truncation",
   "intergenic_variant",
-].reduce((acc: { [key: string]: number }, curr, currIndex) => ((acc[curr] = currIndex), acc), {});
+].reduce((acc: { [key: string]: number }, curr, currIndex) => {
+  acc[curr] = currIndex;
+  return acc;
+}, {});
 
 function getMostSevereConsequenceIndex(value: string[]) {
   const filteredMappedIndices = value

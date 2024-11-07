@@ -1,12 +1,12 @@
 import { VariantFilters } from "./VariantFilters";
 import { Params } from "@molgenis/vip-report-api";
-import { Component, createMemo, createResource, Show } from "solid-js";
+import { Component, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantTypeUtils";
 import { useNavigate } from "@solidjs/router";
 import { initConfigVariants } from "../utils/config";
 import { createQuery } from "../utils/query";
 import { PageChangeEvent } from "./Pager";
-import { Filter, writeVcf } from "@molgenis/vip-report-vcf";
+import { writeVcf } from "@molgenis/vip-report-vcf";
 import { fetchRecords, MetadataContainer, SampleContainer } from "../Api";
 import { createDownloadFilename } from "../utils/downloadUtils";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";
@@ -61,28 +61,22 @@ export const VariantsContainer: Component<{
   const onPageChange = (event: PageChangeEvent) => {
     props.store.setPageNumber(event.page);
   };
-  const onRecordsDownload = () => {
-    const samples = createMemo(() => (props.sample ? getPedigreeSamples(props.sample) : []));
-    const filter = (): Filter | undefined =>
-      samples() ? { samples: samples().map((sample) => sample.data.person.individualId) } : undefined;
 
-    const handler = async () => {
-      // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
-      const records = await fetchRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
-      const vcf = writeVcf(
-        { metadata: props.metadata.records, data: records.items.map((item) => item.data) },
-        filter(),
-      );
+  const onRecordsDownload = async () => {
+    const samples = props.sample ? getPedigreeSamples(props.sample) : [];
+    const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
 
-      const url = window.URL.createObjectURL(new Blob([vcf]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", createDownloadFilename(props.metadata.htsFile));
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    };
-    handler().catch((error) => console.error(error)); // FIXME ESLint warning
+    // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
+    const records = await fetchRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
+    const vcf = writeVcf({ metadata: props.metadata.records, data: records.items.map((item) => item.data) }, filter);
+
+    const url = window.URL.createObjectURL(new Blob([vcf]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", createDownloadFilename(props.metadata.htsFile));
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   const onRecordsPerPageChange = (event: RecordsPerPageChangeEvent) => {
     props.store.setPageSize(event.number);
