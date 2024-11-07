@@ -27,13 +27,13 @@ export type CellValueGnomAd = {
 export type CellValueGenotype = {
   refAllele: string;
   altAlleles: (string | null)[];
-  svType: ValueString;
-  repeatCount: ValueString;
-  repeatUnitValue: ValueString;
-  repeatUnitMatch: ValueFlag;
-  displayRepeatUnit: ValueString;
   genotype: Genotype;
-  viab: number | undefined | null;
+  svType: ValueString | undefined;
+  repeatCount: ValueString | undefined;
+  repeatUnitValue: ValueString | undefined;
+  repeatUnitMatch: ValueFlag | undefined;
+  displayRepeatUnit: ValueString | undefined;
+  viab: number | null | undefined;
 };
 
 export type CellValueHpo = {
