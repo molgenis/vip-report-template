@@ -8,7 +8,7 @@ export function getDecisionTreePath(
   variant: Item<VcfRecord>,
   csqId: number,
 ): DecisionTreePath {
-  if (recordsMetadata.info.CSQ.nested === undefined) {
+  if (recordsMetadata.info.CSQ === undefined || recordsMetadata.info.CSQ.nested === undefined) {
     throw new Error("Required nested VEP metadata is undefined.");
   }
   return getSpecificConsequence(variant.data.n.CSQ as ValueArray, csqId)[
@@ -16,13 +16,11 @@ export function getDecisionTreePath(
   ] as DecisionTreePath;
 }
 
-export function getSampleTreePath(
-  recordsMetadata: VcfMetadata,
-  sampleIndex: number,
-  variant: Item<VcfRecord>,
-  csqId: number,
-): DecisionTreePath {
-  const vipp_s = variant.data.s[sampleIndex].VIPP_S as ValueArray;
+export function getSampleTreePath(sampleIndex: number, variant: Item<VcfRecord>, csqId: number): DecisionTreePath {
+  const recordSample = variant.data.s[sampleIndex];
+  if (recordSample === undefined) throw new Error(`invalid sample index '${sampleIndex}'`);
+
+  const vipp_s = recordSample.VIPP_S as ValueArray;
   let sampleTreePath: DecisionTreePath = [];
   if (vipp_s !== undefined) {
     const sampleTreePathString = vipp_s[csqId] as string | null;
