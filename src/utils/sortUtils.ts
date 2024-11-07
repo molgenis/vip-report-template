@@ -23,8 +23,9 @@ class InvalidSortPathError extends Error {
     this.name = "InvalidSortPathError";
   }
 }
+
 export function createSort(
-  storeSort: SortOrder | SortOrder[] | undefined,
+  storeSort: SortOrder | SortOrder[] | null,
   configSort: ConfigSortOption | undefined,
 ): SortOrder | SortOrder[] {
   if (storeSort) {

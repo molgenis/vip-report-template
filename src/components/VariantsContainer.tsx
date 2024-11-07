@@ -1,8 +1,7 @@
 import { VariantFilters } from "./VariantFilters";
-import { Params, SortOrder } from "@molgenis/vip-report-api";
+import { Params } from "@molgenis/vip-report-api";
 import { Component, createMemo, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantTypeUtils";
-import { createStore, produce } from "solid-js/store";
 import { useNavigate } from "@solidjs/router";
 import { initConfigVariants } from "../utils/config";
 import { createQuery } from "../utils/query";
@@ -15,67 +14,52 @@ import { SortChangeEvent } from "./Sort";
 import { VariantTypeChangeEvent, VariantTypeSelect } from "./VariantTypeSelect";
 import { Loader } from "./Loader";
 import { VariantResults } from "./VariantResults";
-import { FilterChangeEvent, FilterClearEvent, FilterValueMap } from "../types/filter";
+import { FilterChangeEvent, FilterClearEvent } from "../types/filter";
 import { VariantsContainerHeader } from "./VariantsContainerHeader";
 import { href } from "../utils/utils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigStaticVariants } from "../types/config";
 import { createSort } from "../utils/sortUtils.ts";
-
-type VariantsStore = {
-  filterValues: FilterValueMap;
-  page: { number: number; size: number };
-  sort?: SortOrder | SortOrder[];
-};
+import { VariantStore } from "../store/variants.tsx";
 
 export const VariantsContainer: Component<{
+  store: VariantStore;
   config: ConfigStaticVariants;
   metadata: MetadataContainer;
   variantType: VariantType;
   sample: SampleContainer | null;
 }> = (props) => {
-  const [store, setStore] = createStore<VariantsStore>({ filterValues: {}, page: { number: 0, size: 10 } });
   const navigate = useNavigate();
 
   const config = () => initConfigVariants(props.config, props.metadata, props.variantType, props.sample);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
 
-  const query = () => createQuery(props.variantType, props.sample, config().filters, store.filterValues);
+  const query = () => createQuery(props.variantType, props.sample, config().filters, props.store.getFilterValues());
 
   const sort = () =>
     createSort(
-      store.sort,
+      props.store.getSort(),
       config().sort.find((configSort) => configSort.selected),
     );
 
   const [records] = createResource(
     (): Params => ({
       query: query() || undefined,
-      page: store.page.number,
-      size: store.page.size,
+      page: props.store.getPageNumber() || 0,
+      size: props.store.getPageSize() || 10,
       sort: sort() || undefined,
     }),
     fetchRecords,
   );
 
   const onFilterChange = (event: FilterChangeEvent) => {
-    setStore(
-      produce((store) => {
-        store.filterValues[event.id] = event.value;
-        store.page.number = 0;
-      }),
-    );
+    props.store.setFilterValue(event.id, event.value);
   };
   const onFilterClear = (event: FilterClearEvent) => {
-    setStore(
-      produce((store) => {
-        delete store.filterValues[event.id];
-        store.page.number = 0;
-      }),
-    );
+    props.store.clearFilter(event.id);
   };
   const onPageChange = (event: PageChangeEvent) => {
-    setStore("page", "number", event.page);
+    props.store.setPageNumber(event.page);
   };
   const onRecordsDownload = () => {
     const samples = createMemo(() => (props.sample ? getPedigreeSamples(props.sample) : []));
@@ -101,17 +85,13 @@ export const VariantsContainer: Component<{
     handler().catch((error) => console.error(error)); // FIXME ESLint warning
   };
   const onRecordsPerPageChange = (event: RecordsPerPageChangeEvent) => {
-    setStore("page", { number: 0, size: event.number });
+    props.store.setPageSize(event.number);
   };
   const onSortChange = (event: SortChangeEvent) => {
-    setStore(
-      produce((store) => {
-        store.sort = event.order;
-      }),
-    );
+    props.store.setSort(event.order);
   };
   const onSortClear = () => {
-    setStore("sort", []);
+    props.store.clearSort();
   };
   const onVariantTypeChange = (event: VariantTypeChangeEvent) => {
     const components = props.sample !== null ? ["samples", props.sample.item.id] : [];
@@ -143,7 +123,7 @@ export const VariantsContainer: Component<{
             <div class="column">
               <VariantFilters
                 filterConfigs={config().filters}
-                filterValues={store.filterValues}
+                filterValues={props.store.getFilterValues()}
                 onFilterChange={onFilterChange}
                 onFilterClear={onFilterClear}
               />

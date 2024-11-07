@@ -6,8 +6,12 @@ import { VariantsContainer } from "../components/VariantsContainer";
 import { getConfig, getMetadata } from "./data/data";
 import { VariantBreadcrumb } from "../components/VariantBreadcrumb.tsx";
 import { ConfigStaticVariants } from "../types/config";
+import { useStore } from "../store";
+import { wrapStore } from "../store/variants.tsx";
 
 export const Variants: Component<RouteSectionProps> = (props) => {
+  const store = useStore();
+
   const variantType = () => parseVariantType(props.params.variantType);
   const config = createAsync(() => getConfig("variants") as Promise<ConfigStaticVariants>);
   const metadata = createAsync(() => getMetadata());
@@ -19,7 +23,13 @@ export const Variants: Component<RouteSectionProps> = (props) => {
         {(config) => (
           <Show when={metadata()} fallback={<Loader />}>
             {(metadata) => (
-              <VariantsContainer config={config()} metadata={metadata()} variantType={variantType()} sample={null} />
+              <VariantsContainer
+                store={wrapStore(store, null, variantType())}
+                config={config()}
+                metadata={metadata()}
+                variantType={variantType()}
+                sample={null}
+              />
             )}
           </Show>
         )}
