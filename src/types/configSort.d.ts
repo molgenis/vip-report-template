@@ -1,4 +1,4 @@
-import { FieldMetadata } from "../../../vip-report-vcf/src/types/Metadata";
+import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
 export interface ConfigSortOption {
   selected: boolean | undefined;
