@@ -39,7 +39,7 @@ export function createConfigFieldComposed(
       fieldConfig = createConfigFieldCustomGene(configStatic, fieldMap);
       break;
     case "genotype":
-      fieldConfig = createConfigFieldCustomGenotype(configStatic, sample);
+      fieldConfig = createConfigFieldCustomGenotype(configStatic, fieldMap, sample);
       break;
     case "gnomAdAf":
       fieldConfig = createConfigFieldCustomGnomAd(configStatic, fieldMap);
@@ -161,9 +161,12 @@ function createConfigFieldCustomGene(
 
 function createConfigFieldCustomGenotype(
   configStatic: ConfigStaticFieldComposed,
+  fieldMap: FieldMap,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueGenotype> | null {
   if (sample === null) return null;
+  const fieldGt = fieldMap["FORMAT/GT"];
+  if (fieldGt === undefined) return null; // unlikely, but theoretically possible
 
   return {
     type: "composed",
@@ -176,13 +179,13 @@ function createConfigFieldCustomGenotype(
       return {
         refAllele: record.data.r,
         altAlleles: record.data.a,
-        repeatCount: recordSample["REPCN"] as ValueString, // FIXME some fields may be undefined
-        svType: record.data.n["SVTYPE"] as ValueString,
-        repeatUnitValue: record.data.n["RU"] as ValueString,
-        repeatUnitMatch: record.data.n["RUMATCH"] as ValueFlag,
-        displayRepeatUnit: record.data.n["DisplayRU"] as ValueString,
         genotype: recordSample["GT"] as Genotype,
-        viab: recordSample["VIAB"] as number | undefined | null,
+        repeatCount: recordSample["REPCN"] as ValueString | undefined,
+        svType: record.data.n["SVTYPE"] as ValueString | undefined,
+        repeatUnitValue: record.data.n["RU"] as ValueString | undefined,
+        repeatUnitMatch: record.data.n["RUMATCH"] as ValueFlag | undefined,
+        displayRepeatUnit: record.data.n["DisplayRU"] as ValueString | undefined,
+        viab: recordSample["VIAB"] as number | null | undefined,
       };
     },
   };
