@@ -2,12 +2,12 @@ import { defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
 import inlinePlugin from "@molgenis/vite-plugin-inline";
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ command }) => ({
   plugins: [solidPlugin(), inlinePlugin()],
   esbuild: {
     // @molgenis/vite-plugin-inline requires ascii input and cannot handle UTF-8 input
     charset: "ascii",
-    drop: mode === "production " ? ["console", "debugger"] : [],
+    pure: command === "build" ? ["console.log"] : [],
   },
   build: {
     // inline plugin build options
@@ -19,5 +19,5 @@ export default defineConfig(({ mode }) => ({
     },
   },
   assetsInclude: "**/*.blob",
-  logLevel: mode === "production " ? "warn" : "info",
+  logLevel: command === "build" ? "warn" : "info",
 }));
