@@ -5,6 +5,7 @@ import { Tooltip } from "../Tooltip.tsx";
 
 export const FilterWrapper: ParentComponent<{
   config: ConfigFilterBase;
+  error?: string | undefined;
   tooltipContentElement?: JSX.Element; // additional tooltip content
 }> = (props) => {
   const [collapsed, setCollapsed]: Signal<boolean> = createSignal(false);
@@ -22,6 +23,10 @@ export const FilterWrapper: ParentComponent<{
   function toggleCollapse() {
     setCollapsed(!collapsed());
   }
+
+  const ErrorMessage = (props: { error: string | undefined }) => (
+    <div class="notification is-danger is-light">{props.error}</div>
+  );
 
   return (
     <div class="filter">
@@ -47,6 +52,9 @@ export const FilterWrapper: ParentComponent<{
           </button>
         </Show>
       </header>
+      <Show when={props.error !== undefined}>
+        <ErrorMessage error={props.error} />
+      </Show>
       <Show when={!collapsed()}>
         <div class="filter-container">{props.children}</div>
       </Show>

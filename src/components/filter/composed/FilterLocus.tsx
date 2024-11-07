@@ -6,11 +6,13 @@ import { ConfigFilterLocus, FilterValueLocus } from "../../../types/configFilter
 import { Select } from "../../form/Select";
 import { Input } from "../../form/Input";
 import { FilterProps } from "../Filter.tsx";
+import { validateIntervalValues } from "../../../utils/filterUtils.ts";
 
 export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLocus>> = (props) => {
   const [chromosome, setChromosome] = createSignal<string>();
   const [startPosition, setStartPosition] = createSignal<string>();
   const [endPosition, setEndPosition] = createSignal<string>();
+  const [error, setError] = createSignal<string>();
 
   createEffect(() => {
     if (props.value) {
@@ -24,10 +26,16 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
     const chr = chromosome();
     if (chr === undefined) return;
     const startStr = startPosition();
-    const start = startStr !== undefined ? parseInt(startStr) : undefined;
     const endStr = endPosition();
-    const end = endStr !== undefined ? parseInt(endStr) : undefined;
-    props.onValueChange({ value: { chromosome: chr, start, end } });
+    const validationResult = validateIntervalValues(props.config.id, startStr, endStr);
+    if (validationResult !== undefined) {
+      setError(validationResult);
+    } else {
+      setError(undefined);
+      const start = startStr !== undefined ? parseInt(startStr) : undefined;
+      const end = endStr !== undefined ? parseInt(endStr) : undefined;
+      props.onValueChange({ value: { chromosome: chr, start, end } });
+    }
   };
 
   const onReset = () => {
@@ -40,7 +48,7 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
   };
 
   return (
-    <FilterWrapper config={props.config}>
+    <FilterWrapper config={props.config} error={error()}>
       <div class="field is-grouped">
         <div class="control">
           <Select
