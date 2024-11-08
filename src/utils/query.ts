@@ -1,4 +1,4 @@
-import { Item, Query, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api";
+import { ComposedQuery, Item, Query, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api";
 import { CategoryRecord, FieldMetadata } from "@molgenis/vip-report-vcf";
 import {
   ConfigFilter,
@@ -26,6 +26,7 @@ import { ConfigFilterComposed } from "../types/configFilterComposed";
 import { createQueryFilterComposed } from "./queryComposed";
 import { UnexpectedEnumValueException } from "./error";
 import { SampleContainer } from "../Api.ts";
+import { ConfigVip } from "../types/configVip";
 
 type ComposedQueryOperator = "and" | "or"; //   TODO move to API.d.ts in vip-report-api
 
@@ -34,6 +35,7 @@ export function createQuery(
   sample: SampleContainer | null,
   filterConfigs: ConfigFilters,
   filterValues: FilterValueMap,
+  vipQuery: ComposedQuery | null,
 ): Query | null {
   const queryParts: Query[] = [];
 
@@ -50,6 +52,10 @@ export function createQuery(
   const queryFilters = createQueryFilters(filterConfigs, filterValues);
   if (queryFilters !== null) {
     queryParts.push(queryFilters);
+  }
+
+  if (vipQuery !== null) {
+    queryParts.push(vipQuery);
   }
   return queryParts.length > 0 ? createQueryComposed(queryParts, "and") : null;
 }
@@ -380,7 +386,7 @@ function createSelectorVariantType(): SelectorPart[] {
   return ["n", "SVTYPE"];
 }
 
-function selector(field: FieldMetadata): SelectorPart[] {
+export function selector(field: FieldMetadata): SelectorPart[] {
   const selector: Selector = [];
   let currentField: FieldMetadata | undefined = field;
   do {
@@ -407,4 +413,34 @@ function selector(field: FieldMetadata): SelectorPart[] {
 
 export function infoSortPath(field: FieldMetadata): SortPath {
   return ["n", ...selector(field).filter((part) => part !== "*")];
+}
+
+export function createVipQueryClause(vipConfig: ConfigVip, sample: SampleContainer): ComposedQuery | null {
+  const vipFilter = vipConfig.filter;
+  if (vipFilter !== undefined) {
+    const field = vipFilter.field;
+    console.log(field);
+    return {
+      args: [
+        {
+          selector: ["s", sample.item.data.index, ...selector(field)],
+          operator: "has_any",
+          args: vipFilter.args,
+        },
+        {
+          selector: ["s", sample.item.data.index, ...selector(field)],
+          operator: field.parent
+            ? field.number.count === 1
+              ? "!has_any"
+              : "!any_has_any"
+            : field.number.count === 1
+              ? "!in"
+              : "!has_any",
+          args: Object.keys(field.categories as CategoryRecord),
+        },
+      ],
+      operator: "or",
+    };
+  }
+  return null;
 }

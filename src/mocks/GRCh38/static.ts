@@ -123,6 +123,7 @@ export const samplesFamily = {
       },
       index: 3,
       proband: true,
+      filter_classes: ["U1", "U2"],
     },
     {
       person: {

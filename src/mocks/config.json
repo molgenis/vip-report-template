@@ -1,4 +1,13 @@
 {
+  "vip": {
+    "filter": {
+      "field": {
+        "type": "genotype",
+        "name": "VIPC_S"
+      },
+      "args": ["U1","OK"]
+    }
+  },
   "sample_variants": {
     "sort": {
       "all": [

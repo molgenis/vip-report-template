@@ -3,8 +3,8 @@ import { Params } from "@molgenis/vip-report-api";
 import { Component, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantTypeUtils";
 import { useNavigate } from "@solidjs/router";
-import { initConfigVariants } from "../utils/config";
-import { createQuery } from "../utils/query";
+import { initConfigVariants, initVipConfig } from "../utils/config";
+import { createQuery, createVipQueryClause } from "../utils/query";
 import { PageChangeEvent } from "./Pager";
 import { writeVcf } from "@molgenis/vip-report-vcf";
 import { fetchRecords, MetadataContainer, SampleContainer } from "../Api";
@@ -18,7 +18,7 @@ import { FilterChangeEvent, FilterClearEvent } from "../types/filter";
 import { VariantsContainerHeader } from "./VariantsContainerHeader";
 import { href } from "../utils/utils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
-import { ConfigStaticVariants } from "../types/config";
+import { ConfigStaticVariants, ConfigStaticVip } from "../types/config";
 import { createSort } from "../utils/sortUtils.ts";
 import { VariantStore } from "../store/variants.tsx";
 
@@ -28,13 +28,18 @@ export const VariantsContainer: Component<{
   metadata: MetadataContainer;
   variantType: VariantType;
   sample: SampleContainer | null;
+  vipConfig: ConfigStaticVip;
 }> = (props) => {
   const navigate = useNavigate();
 
   const config = () => initConfigVariants(props.config, props.metadata, props.variantType, props.sample);
+  const vipConfig = () => initVipConfig(props.vipConfig, props.metadata);
+
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
 
-  const query = () => createQuery(props.variantType, props.sample, config().filters, props.store.getFilterValues());
+  const vipQuery = () => (props.sample != null ? createVipQueryClause(vipConfig(), props.sample) : null);
+  const query = () =>
+    createQuery(props.variantType, props.sample, config().filters, props.store.getFilterValues(), vipQuery());
 
   const sort = () =>
     createSort(

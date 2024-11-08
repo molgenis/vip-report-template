@@ -99,6 +99,15 @@ export type ConfigStaticVariantType = "all" | "str" | "snv" | "sv";
 export type ConfigStaticVariantTypeFields = Partial<Record<ConfigStaticVariantType, ConfigStaticField[]>>;
 export type ConfigStaticSorts = Record<ConfigStaticVariantType, ConfigStaticSort[]>;
 
+export type ConfigStaticVip = {
+  filter: ConfigStaticVipFilter;
+};
+
+export type ConfigStaticVipFilter = {
+  field: ConfigStaticFieldGenotype;
+  args: string[];
+};
+
 export type ConfigStaticVariants = {
   cells: ConfigStaticVariantTypeFields;
   filters: ConfigStaticVariantTypeFields;

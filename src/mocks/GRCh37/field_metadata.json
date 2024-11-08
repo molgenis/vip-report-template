@@ -82,6 +82,23 @@
           "description": "Mitochondrial"
         }
       }
+    },
+    "VIPC_S": {
+      "label": "VIP sample classification",
+      "description": "Classification from VIP based on combined variant and sample information.",
+      "numberType": "OTHER",
+      "separator": ",",
+      "type": "CATEGORICAL",
+      "categories": {
+        "OK": {
+          "label": "OK",
+          "description": "Keep this record for this sample."
+        },
+        "NOK": {
+          "label": "NOK",
+          "description": "Remove this record for this sample."
+        }
+      }
     }
   },
   "info": {
