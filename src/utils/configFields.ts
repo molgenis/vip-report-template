@@ -247,7 +247,6 @@ function createConfigFieldsInfo(configStatic: ConfigStaticFieldInfo, fieldMap: F
     const baseId = id.length === 1 ? "INFO/" : `INFO/${id.substring(0, id.length - 1)}`;
     Object.entries(fieldMap).forEach(([fieldId, field]) => {
       if (fieldId.startsWith(baseId) && !field.nested) {
-        console.log(fieldId);
         const fieldConfig = createConfigFieldInfo(configStatic, field);
         fieldConfigs.push(fieldConfig);
       }
@@ -321,7 +320,6 @@ function createConfigFieldsGenotype(
     const baseId = id.length === 1 ? "FORMAT/" : `FORMAT/${id.substring(0, id.length - 1)}`;
     Object.entries(fieldMap).forEach(([fieldId, field]) => {
       if (fieldId.startsWith(baseId) && !field.nested) {
-        console.log(fieldId);
         const fieldConfig = createConfigFieldGenotype(configStatic, field, sample);
         fieldConfigs.push(fieldConfig);
       }

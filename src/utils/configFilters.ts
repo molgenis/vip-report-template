@@ -142,7 +142,6 @@ function createConfigFiltersGenotype(
     const baseId = id.length === 1 ? "FORMAT/" : `FORMAT/${id.substring(0, id.length - 1)}`;
     Object.entries(fieldMap).forEach(([fieldId, field]) => {
       if (fieldId.startsWith(baseId) && !field.nested) {
-        console.log(fieldId);
         const fieldConfig = createConfigFilterGenotype(configStatic, sample, field);
         configs.push(fieldConfig);
       }
