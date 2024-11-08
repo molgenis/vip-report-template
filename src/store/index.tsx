@@ -45,7 +45,7 @@ export const Provider: ParentComponent = (props) => {
 
   const actions: AppActions = {
     reset() {
-      setState({ variants: undefined, sampleVariants: undefined, samples: undefined });
+      setState(defaultState);
     },
     setSamplePage(page: number) {
       setState({ samples: { ...(state.samples || {}), page } });

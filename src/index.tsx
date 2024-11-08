@@ -65,7 +65,7 @@ if (document.readyState === "complete") {
 render(
   () => (
     <Provider>
-      <ErrorBoundary fallback={(err) => <ErrorNotification error={err as unknown} />}>
+      <ErrorBoundary fallback={(err) => <ErrorNotification error={err} />}>
         <HashRouter root={App}>
           <Route path="/" component={Home} />
           <Route path="/samples">

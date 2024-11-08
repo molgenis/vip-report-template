@@ -15,8 +15,12 @@ import {
   CellValueVipC,
   CellValueVkgl,
 } from "../types/configCellComposed";
-import { getFieldMultilineValue, getFieldValueCount, getNestedFieldIndices } from "./csqUtils";
-import { getCategoryLabelAndDescription } from "./field";
+import {
+  getCategoryLabelAndDescription,
+  getInfoMultilineValue,
+  getInfoValueCount,
+  getOptionalNestedFieldIndices,
+} from "./field";
 import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
@@ -75,7 +79,7 @@ function createConfigFieldCustomClinVar(
   const fieldCsq = fieldMap["INFO/CSQ"];
   if (fieldCsq === undefined) return null;
 
-  const [fieldIndexClnId, fieldIndexClnRevStat, fieldIndexClnSig] = getNestedFieldIndices(fieldCsq, [
+  const [fieldIndexClnId, fieldIndexClnRevStat, fieldIndexClnSig] = getOptionalNestedFieldIndices(fieldCsq, [
     "clinVar_CLNID",
     "clinVar_CLNREVSTAT",
     "clinVar_CLNSIG",
@@ -90,26 +94,26 @@ function createConfigFieldCustomClinVar(
     id: "clinVar",
     label: () => configStatic.label || "ClinVar",
     description: () => configStatic.description || null,
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(fieldCsq, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(fieldCsq, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueClinVar => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error("missing required value index");
 
-      const csqFieldValue = getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexClnSig) as
+      const csqFieldValue = getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexClnSig) as
         | string[]
         | undefined;
       const clnSigs = csqFieldValue
-        ? csqFieldValue.map((value) => getCategoryLabelAndDescription(value, fieldCsqClnSig))
+        ? csqFieldValue.map((value) => getCategoryLabelAndDescription(fieldCsqClnSig, value))
         : [];
 
       return {
         clnIds:
           fieldIndexClnId !== -1
-            ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexClnId) as number[])
+            ? (getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexClnId) as number[])
             : undefined,
         clnRevStats:
           fieldIndexClnRevStat !== -1
-            ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexClnRevStat) as string[])
+            ? (getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexClnRevStat) as string[])
             : undefined,
         clnSigs,
       };
@@ -125,7 +129,7 @@ function createConfigFieldCustomGene(
   if (fieldCsq === undefined) return null;
 
   const [fieldIndexGene, fieldIndexIncompletePenetrance, fieldIndexSymbol, fieldIndexSymbolSource] =
-    getNestedFieldIndices(fieldCsq, ["Gene", "IncompletePenetrance", "SYMBOL", "SYMBOL_SOURCE"]) as [
+    getOptionalNestedFieldIndices(fieldCsq, ["Gene", "IncompletePenetrance", "SYMBOL", "SYMBOL_SOURCE"]) as [
       number,
       number,
       number,
@@ -138,21 +142,21 @@ function createConfigFieldCustomGene(
     id: "gene",
     label: () => configStatic.label || "Gene",
     description: () => configStatic.description || null,
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(fieldCsq, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(fieldCsq, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueGene => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
       return {
         geneIdentifier: fieldIndexGene
-          ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexGene) as ValueString)
+          ? (getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexGene) as ValueString)
           : undefined,
         incompletePenetrance: fieldIndexIncompletePenetrance
-          ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexIncompletePenetrance) as ValueFlag)
+          ? (getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexIncompletePenetrance) as ValueFlag)
           : undefined,
-        symbol: getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexSymbol) as ValueString,
+        symbol: getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexSymbol) as ValueString,
         symbolSource: fieldIndexSymbolSource
-          ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexSymbolSource) as ValueString)
+          ? (getInfoMultilineValue(fieldCsq, record, valueIndex, fieldIndexSymbolSource) as ValueString)
           : undefined,
       };
     },
@@ -195,13 +199,16 @@ function createConfigFieldCustomGnomAd(
   configStatic: ConfigStaticFieldComposed,
   fieldMap: FieldMap,
 ): ConfigCellCustom<CellValueGnomAd> | null {
-  const fieldCsq = fieldMap["INFO/CSQ"];
-  if (fieldCsq === undefined) return null;
+  const csqField = fieldMap["INFO/CSQ"];
+  if (csqField === undefined) return null;
 
-  const [fieldIndexAlleleNum, fieldIndexGnomAdAf, fieldIndexGnomAdCov, fieldIndexGnomAdQc] = getNestedFieldIndices(
-    fieldCsq,
-    ["ALLELE_NUM", "gnomAD_AF", "gnomAD_COV", "gnomAD_QC"],
-  ) as [number, number, number, number];
+  const [fieldIndexAlleleNum, fieldIndexGnomAdAf, fieldIndexGnomAdCov, fieldIndexGnomAdQc] =
+    getOptionalNestedFieldIndices(csqField, ["ALLELE_NUM", "gnomAD_AF", "gnomAD_COV", "gnomAD_QC"]) as [
+      number,
+      number,
+      number,
+      number,
+    ];
   if (fieldIndexAlleleNum === -1 || fieldIndexGnomAdAf == -1) {
     return null;
   }
@@ -211,7 +218,7 @@ function createConfigFieldCustomGnomAd(
     id: "gnomAdAf",
     label: () => configStatic.label || "gnomAD AF",
     description: () => configStatic.description || "gnomAD allele frequency",
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(fieldCsq, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(csqField, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueGnomAd => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
@@ -221,15 +228,15 @@ function createConfigFieldCustomGnomAd(
         p: record.data.p,
         r: record.data.r,
         a: record.data.a,
-        alleleNum: getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexAlleleNum) as number,
-        gnomAdAf: getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexGnomAdAf) as ValueFloat,
+        alleleNum: getInfoMultilineValue(csqField, record, valueIndex, fieldIndexAlleleNum) as number,
+        gnomAdAf: getInfoMultilineValue(csqField, record, valueIndex, fieldIndexGnomAdAf) as ValueFloat,
         gnomAdCov:
           fieldIndexGnomAdCov !== -1
-            ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexGnomAdCov) as ValueFloat)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexGnomAdCov) as ValueFloat)
             : undefined,
         gnomAdQcs:
           fieldIndexGnomAdQc !== -1
-            ? (getFieldMultilineValue(fieldCsq, record, valueIndex, fieldIndexGnomAdQc) as string[])
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexGnomAdQc) as string[])
             : undefined,
       };
     },
@@ -245,7 +252,10 @@ function createConfigFieldCustomHpo(
     return null;
   }
 
-  const [fieldIndexGadoPd, fieldIndexHpo] = getNestedFieldIndices(csqField, ["GADO_PD", "HPO"]) as [number, number];
+  const [fieldIndexGadoPd, fieldIndexHpo] = getOptionalNestedFieldIndices(csqField, ["GADO_PD", "HPO"]) as [
+    number,
+    number,
+  ];
   if (fieldIndexHpo === -1) {
     return null;
   }
@@ -255,7 +265,7 @@ function createConfigFieldCustomHpo(
     id: "hpo",
     label: () => configStatic.label || "HPO",
     description: () => configStatic.description || "Human phenotype ontology matches",
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(csqField, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueHpo => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
@@ -263,9 +273,9 @@ function createConfigFieldCustomHpo(
       return {
         gadoPd:
           fieldIndexGadoPd !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexGadoPd) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexGadoPd) as ValueString)
             : undefined,
-        hpos: getFieldMultilineValue(csqField, record, valueIndex, fieldIndexHpo) as string[],
+        hpos: getInfoMultilineValue(csqField, record, valueIndex, fieldIndexHpo) as string[],
       };
     },
   };
@@ -283,7 +293,9 @@ function createConfigFieldCustomInheritancePattern(
     return null;
   }
 
-  const [fieldIndexInheritanceModesGene] = getNestedFieldIndices(csqField, ["InheritanceModesGene"]) as [number];
+  const [fieldIndexInheritanceModesGene] = getOptionalNestedFieldIndices(csqField, ["InheritanceModesGene"]) as [
+    number,
+  ];
   if (fieldIndexInheritanceModesGene === -1) {
     return null;
   }
@@ -298,7 +310,7 @@ function createConfigFieldCustomInheritancePattern(
     id: "inheritancePattern",
     label: () => configStatic.label || "Inh.Pat.",
     description: () => configStatic.description || "Inheritance pattern",
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(csqField, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueInheritanceModes => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
@@ -306,7 +318,7 @@ function createConfigFieldCustomInheritancePattern(
 
       return {
         fieldInheritanceModesGene: fieldInheritanceModesGene as InfoMetadata,
-        inheritanceModesGene: getFieldMultilineValue(
+        inheritanceModesGene: getInfoMultilineValue(
           csqField,
           record,
           valueIndex,
@@ -362,7 +374,10 @@ function createConfigFieldCustomVipC(
     return null;
   }
 
-  const [fieldIndexVipC, fieldIndexVipP] = getNestedFieldIndices(csqField, ["VIPC", "VIPP"]) as [number, number];
+  const [fieldIndexVipC, fieldIndexVipP] = getOptionalNestedFieldIndices(csqField, ["VIPC", "VIPP"]) as [
+    number,
+    number,
+  ];
   if (fieldIndexVipC === -1) {
     return null;
   }
@@ -374,17 +389,17 @@ function createConfigFieldCustomVipC(
     id: "vipC",
     label: () => configStatic.label || "VIP",
     description: () => configStatic.description || "VIP classification",
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(csqField, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueVipC => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
       return {
         href: href([...components, "variants", variantType.id, "variant", record.id, "consequences", valueIndex]),
-        vipC: getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVipC) as string,
+        vipC: getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVipC) as string,
         vipP:
           fieldIndexVipP !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVipP) as string[])
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVipP) as string[])
             : undefined,
       };
     },
@@ -410,7 +425,7 @@ function createConfigFieldCustomVkgl(
     fieldIndexVkglUmcg,
     fieldIndexVkglUmcu,
     fieldIndexVkglVumc,
-  ] = getNestedFieldIndices(csqField, [
+  ] = getOptionalNestedFieldIndices(csqField, [
     "VKGL_CL",
     "VKGL_AMC",
     "VKGL_ERASMUS",
@@ -430,44 +445,44 @@ function createConfigFieldCustomVkgl(
     id: "vkgl",
     label: () => configStatic.label || "VKGL",
     description: () => configStatic.description || "VKGL consensus classification",
-    valueCount: (record: Item<VcfRecord>) => getFieldValueCount(csqField, record),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(csqField, record),
     value: (record: Item<VcfRecord>, recordContext: RecordContext): CellValueVkgl => {
       const valueIndex = recordContext.valueIndex;
       if (valueIndex === undefined) throw new Error();
 
       return {
-        vkglCl: getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglCl) as ValueString,
+        vkglCl: getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglCl) as ValueString,
         vkglAmc:
           fieldIndexVkglAmc !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglAmc) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglAmc) as ValueString)
             : undefined,
         vkglErasmus:
           fieldIndexVkglErasmus !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglErasmus) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglErasmus) as ValueString)
             : undefined,
         vkglLumc:
           fieldIndexVkglLumc !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglLumc) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglLumc) as ValueString)
             : undefined,
         vkglNki:
           fieldIndexVkglNki !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglNki) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglNki) as ValueString)
             : undefined,
         vkglRadboudMumc:
           fieldIndexVkglRadboudMumc !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglRadboudMumc) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglRadboudMumc) as ValueString)
             : undefined,
         vkglUmcg:
           fieldIndexVkglUmcg !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglUmcg) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglUmcg) as ValueString)
             : undefined,
         vkglUmcu:
           fieldIndexVkglUmcu !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglUmcu) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglUmcu) as ValueString)
             : undefined,
         vkglVumc:
           fieldIndexVkglVumc !== -1
-            ? (getFieldMultilineValue(csqField, record, valueIndex, fieldIndexVkglVumc) as ValueString)
+            ? (getInfoMultilineValue(csqField, record, valueIndex, fieldIndexVkglVumc) as ValueString)
             : undefined,
       };
     },

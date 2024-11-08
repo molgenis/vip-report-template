@@ -1,5 +1,4 @@
-import { FieldMetadata, NestedFieldMetadata, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
-import { Item } from "@molgenis/vip-report-api";
+import { FieldMetadata, NestedFieldMetadata, Value } from "@molgenis/vip-report-vcf";
 import { Direction } from "./sortUtils.ts";
 
 function is(infoMeta: FieldMetadata, id: string) {
@@ -16,33 +15,6 @@ export function isCsqInfo(infoMeta: FieldMetadata, id: string) {
 
 export function isAnyCsqInfo(infoMeta: FieldMetadata, ids: string[]) {
   return isCsq(infoMeta) && ids.some((id) => is(infoMeta, id));
-}
-
-export function getNestedFieldIndices(fieldMetadata: FieldMetadata, ids: string[]): number[] {
-  return ids.map((id) => getNestedFieldIndex(fieldMetadata, id));
-}
-
-export function getNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
-  if (fieldMetadata.nested === undefined) throw new Error(`field '${fieldMetadata.id}' is not nested`);
-  return fieldMetadata.nested.items.findIndex((childFieldMetadata) => childFieldMetadata.id === id) || -1;
-}
-
-export function getFieldMultilineValue(
-  fieldMetadata: FieldMetadata,
-  record: Item<VcfRecord>,
-  valueIndex: number,
-  fieldIndex: number,
-): Value | undefined {
-  const csqValue = getNestedFieldValues(fieldMetadata, record)[valueIndex] as Value[];
-  return csqValue[fieldIndex];
-}
-
-export function getFieldValueCount(fieldMetadata: FieldMetadata | undefined, record: Item<VcfRecord>) {
-  return fieldMetadata ? getNestedFieldValues(fieldMetadata, record).length : 0;
-}
-
-function getNestedFieldValues(csqFieldMetadata: FieldMetadata, record: Item<VcfRecord>): ValueArray {
-  return record.data.n[csqFieldMetadata.id] as ValueArray;
 }
 
 const consequenceOrder = [

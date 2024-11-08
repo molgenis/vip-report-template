@@ -89,7 +89,7 @@ export interface ConfigCellFormat extends ConfigCellBase<CellValueFormat> {
   type: "format";
 }
 
-export type CellValueGenotype = RecordSampleType;
+export type CellValueGenotype = RecordSampleType | undefined;
 
 export interface ConfigCellGenotype extends ConfigCellBase<CellValueGenotype> {
   type: "genotype";

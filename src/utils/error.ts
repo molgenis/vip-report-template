@@ -26,9 +26,26 @@ export class InvalidIdException extends Error {
   }
 }
 
+export class UnknownVcfFieldError extends Error {
+  constructor(fieldId: string, parentFieldId?: string) {
+    super(`unknown INFO or FORMAT field '${parentFieldId ? parentFieldId + "/" : ""}${fieldId}'`);
+    this.name = "UnknownVcfFieldError";
+  }
+}
+
 export class InvalidVcfError extends Error {
   constructor() {
     super();
     this.name = "InvalidVcfException";
+  }
+}
+
+/**
+ * programming error
+ */
+export class RuntimeError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = "RuntimeError";
   }
 }
