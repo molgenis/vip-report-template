@@ -7,7 +7,7 @@ export const FieldCategorical: Component<{
   value: ValueString | undefined;
   metadata: FieldMetadata;
 }> = (props) => {
-  const valueDescription = () => getCategoryLabelAndDescription(props.value, props.metadata);
+  const valueDescription = () => getCategoryLabelAndDescription(props.metadata, props.value);
 
   return (
     <Show when={valueDescription().description} fallback={<span>{valueDescription().label}</span>}>

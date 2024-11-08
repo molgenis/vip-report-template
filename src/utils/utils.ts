@@ -78,3 +78,7 @@ export function getRecordSample(record: Item<VcfRecord>, sample: SampleContainer
   if (recordSample === undefined) throw new ArrayIndexOutOfBoundsException();
   return recordSample;
 }
+
+export function abbreviateHeader(header: string) {
+  return header.length > 13 ? header.slice(0, 11) + "\u2026" : header;
+}

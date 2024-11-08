@@ -41,12 +41,12 @@ import {
   ConfigStaticFieldRef,
 } from "../types/config";
 import { Item } from "@molgenis/vip-report-api";
-import { FieldMetadata, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
+import { FieldMetadata, Value, VcfRecord } from "@molgenis/vip-report-vcf";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
 import { ArrayIndexOutOfBoundsException, RuntimeError, UnexpectedEnumValueException } from "./error.ts";
-import { getRequiredNestedFieldIndex } from "./csqUtils.ts";
+import { getInfoValueCount, getRecordSampleValueCount, getRequiredNestedFieldIndex } from "./field.ts";
 
 export function createConfigFields(
   configStaticFields: ConfigStaticField[],
@@ -208,13 +208,7 @@ function createConfigFieldInfo(
       type: "info",
       label: () => configStatic.label || field.label || field.id,
       description: () => configStatic.description || field.description || null,
-      valueCount: (record: Item<VcfRecord>) => {
-        return fieldParent
-          ? fieldParent.number.count !== 1
-            ? (record.data.n[fieldParent.id] as ValueArray).length
-            : 1
-          : 1;
-      },
+      valueCount: (record: Item<VcfRecord>) => getInfoValueCount(fieldParent, record),
       field,
       value(record: Item<VcfRecord>, recordContext: RecordContext): CellValueInfo {
         const valueContainer = record.data.n;
@@ -284,14 +278,7 @@ function createConfigFieldGenotype(
       type: "genotype",
       label: () => configStatic.label || field.label || field.id,
       description: () => configStatic.description || field.description || null,
-      valueCount: (record: Item<VcfRecord>) => {
-        const fieldParent = field.parent;
-        return fieldParent
-          ? fieldParent.number.count !== 1
-            ? (getRecordSample(record, sample)[fieldParent.id] as ValueArray).length
-            : 1
-          : 1;
-      },
+      valueCount: (record: Item<VcfRecord>) => getRecordSampleValueCount(fieldParent, record, sample),
       field,
       value(record: Item<VcfRecord>, recordContext: RecordContext): CellValueGenotype | undefined {
         const recordSample = getRecordSample(record, sample);

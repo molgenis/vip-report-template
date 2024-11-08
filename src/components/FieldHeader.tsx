@@ -1,6 +1,7 @@
 import { Component, createMemo, Show } from "solid-js";
 import { FieldMetadata } from "@molgenis/vip-report-vcf";
-import { abbreviateHeader } from "../utils/field";
+
+import { abbreviateHeader } from "../utils/utils.ts";
 
 export const FieldHeader: Component<{
   field: FieldMetadata;

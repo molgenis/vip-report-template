@@ -1,7 +1,5 @@
-import { FieldMetadata, NestedFieldMetadata, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
-import { Item } from "@molgenis/vip-report-api";
+import { FieldMetadata, NestedFieldMetadata, Value } from "@molgenis/vip-report-vcf";
 import { Direction } from "./sortUtils.ts";
-import { UnknownVcfFieldError } from "./error.ts";
 
 function is(infoMeta: FieldMetadata, id: string) {
   return infoMeta.id === id;
@@ -17,53 +15,6 @@ export function isCsqInfo(infoMeta: FieldMetadata, id: string) {
 
 export function isAnyCsqInfo(infoMeta: FieldMetadata, ids: string[]) {
   return isCsq(infoMeta) && ids.some((id) => is(infoMeta, id));
-}
-
-/**
- * @return {number[]} array of indices where each index >= 0 or index = -1
- */
-export function getOptionalNestedFieldIndices(fieldMetadata: FieldMetadata, ids: string[]): number[] {
-  return ids.map((id) => getOptionalNestedFieldIndex(fieldMetadata, id));
-}
-
-/**
- * @return {number} index >= 0 or index = -1
- */
-export function getOptionalNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
-  if (fieldMetadata.nested === undefined) throw new Error(`field '${fieldMetadata.id}' is not nested`);
-  return fieldMetadata.nested.items.findIndex((childFieldMetadata) => childFieldMetadata.id === id);
-}
-
-/**
- * @return {number} index >= 0
- * @throws {UnknownVcfFieldError}
- */
-export function getRequiredNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
-  const nestedFieldIndex = getOptionalNestedFieldIndex(fieldMetadata, id);
-  if (nestedFieldIndex === -1) {
-    console.log(id);
-    console.log(fieldMetadata);
-    throw new UnknownVcfFieldError(id, fieldMetadata.id);
-  }
-  return nestedFieldIndex;
-}
-
-export function getFieldMultilineValue(
-  fieldMetadata: FieldMetadata,
-  record: Item<VcfRecord>,
-  valueIndex: number,
-  fieldIndex: number,
-): Value | undefined {
-  const csqValue = getNestedFieldValues(fieldMetadata, record)[valueIndex] as Value[];
-  return csqValue[fieldIndex];
-}
-
-export function getFieldValueCount(fieldMetadata: FieldMetadata | undefined, record: Item<VcfRecord>) {
-  return fieldMetadata ? getNestedFieldValues(fieldMetadata, record).length : 0;
-}
-
-function getNestedFieldValues(csqFieldMetadata: FieldMetadata, record: Item<VcfRecord>): ValueArray {
-  return record.data.n[csqFieldMetadata.id] as ValueArray;
 }
 
 const consequenceOrder = [
