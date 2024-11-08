@@ -15,7 +15,7 @@ import {
   CellValueVipC,
   CellValueVkgl,
 } from "../types/configCellComposed";
-import { getFieldMultilineValue, getFieldValueCount, getNestedFieldIndices } from "./csqUtils";
+import { getFieldMultilineValue, getFieldValueCount, getOptionalNestedFieldIndices } from "./csqUtils";
 import { getCategoryLabelAndDescription } from "./field";
 import { UnexpectedEnumValueException } from "./error";
 import { VariantType } from "./variantTypeUtils";
@@ -75,7 +75,7 @@ function createConfigFieldCustomClinVar(
   const fieldCsq = fieldMap["INFO/CSQ"];
   if (fieldCsq === undefined) return null;
 
-  const [fieldIndexClnId, fieldIndexClnRevStat, fieldIndexClnSig] = getNestedFieldIndices(fieldCsq, [
+  const [fieldIndexClnId, fieldIndexClnRevStat, fieldIndexClnSig] = getOptionalNestedFieldIndices(fieldCsq, [
     "clinVar_CLNID",
     "clinVar_CLNREVSTAT",
     "clinVar_CLNSIG",
@@ -125,7 +125,7 @@ function createConfigFieldCustomGene(
   if (fieldCsq === undefined) return null;
 
   const [fieldIndexGene, fieldIndexIncompletePenetrance, fieldIndexSymbol, fieldIndexSymbolSource] =
-    getNestedFieldIndices(fieldCsq, ["Gene", "IncompletePenetrance", "SYMBOL", "SYMBOL_SOURCE"]) as [
+    getOptionalNestedFieldIndices(fieldCsq, ["Gene", "IncompletePenetrance", "SYMBOL", "SYMBOL_SOURCE"]) as [
       number,
       number,
       number,
@@ -198,10 +198,13 @@ function createConfigFieldCustomGnomAd(
   const fieldCsq = fieldMap["INFO/CSQ"];
   if (fieldCsq === undefined) return null;
 
-  const [fieldIndexAlleleNum, fieldIndexGnomAdAf, fieldIndexGnomAdCov, fieldIndexGnomAdQc] = getNestedFieldIndices(
-    fieldCsq,
-    ["ALLELE_NUM", "gnomAD_AF", "gnomAD_COV", "gnomAD_QC"],
-  ) as [number, number, number, number];
+  const [fieldIndexAlleleNum, fieldIndexGnomAdAf, fieldIndexGnomAdCov, fieldIndexGnomAdQc] =
+    getOptionalNestedFieldIndices(fieldCsq, ["ALLELE_NUM", "gnomAD_AF", "gnomAD_COV", "gnomAD_QC"]) as [
+      number,
+      number,
+      number,
+      number,
+    ];
   if (fieldIndexAlleleNum === -1 || fieldIndexGnomAdAf == -1) {
     return null;
   }
@@ -245,7 +248,10 @@ function createConfigFieldCustomHpo(
     return null;
   }
 
-  const [fieldIndexGadoPd, fieldIndexHpo] = getNestedFieldIndices(csqField, ["GADO_PD", "HPO"]) as [number, number];
+  const [fieldIndexGadoPd, fieldIndexHpo] = getOptionalNestedFieldIndices(csqField, ["GADO_PD", "HPO"]) as [
+    number,
+    number,
+  ];
   if (fieldIndexHpo === -1) {
     return null;
   }
@@ -283,7 +289,9 @@ function createConfigFieldCustomInheritancePattern(
     return null;
   }
 
-  const [fieldIndexInheritanceModesGene] = getNestedFieldIndices(csqField, ["InheritanceModesGene"]) as [number];
+  const [fieldIndexInheritanceModesGene] = getOptionalNestedFieldIndices(csqField, ["InheritanceModesGene"]) as [
+    number,
+  ];
   if (fieldIndexInheritanceModesGene === -1) {
     return null;
   }
@@ -362,7 +370,10 @@ function createConfigFieldCustomVipC(
     return null;
   }
 
-  const [fieldIndexVipC, fieldIndexVipP] = getNestedFieldIndices(csqField, ["VIPC", "VIPP"]) as [number, number];
+  const [fieldIndexVipC, fieldIndexVipP] = getOptionalNestedFieldIndices(csqField, ["VIPC", "VIPP"]) as [
+    number,
+    number,
+  ];
   if (fieldIndexVipC === -1) {
     return null;
   }
@@ -410,7 +421,7 @@ function createConfigFieldCustomVkgl(
     fieldIndexVkglUmcg,
     fieldIndexVkglUmcu,
     fieldIndexVkglVumc,
-  ] = getNestedFieldIndices(csqField, [
+  ] = getOptionalNestedFieldIndices(csqField, [
     "VKGL_CL",
     "VKGL_AMC",
     "VKGL_ERASMUS",

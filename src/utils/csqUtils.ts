@@ -1,6 +1,7 @@
 import { FieldMetadata, NestedFieldMetadata, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
 import { Item } from "@molgenis/vip-report-api";
 import { Direction } from "./sortUtils.ts";
+import { UnknownVcfFieldError } from "./error.ts";
 
 function is(infoMeta: FieldMetadata, id: string) {
   return infoMeta.id === id;
@@ -18,13 +19,33 @@ export function isAnyCsqInfo(infoMeta: FieldMetadata, ids: string[]) {
   return isCsq(infoMeta) && ids.some((id) => is(infoMeta, id));
 }
 
-export function getNestedFieldIndices(fieldMetadata: FieldMetadata, ids: string[]): number[] {
-  return ids.map((id) => getNestedFieldIndex(fieldMetadata, id));
+/**
+ * @return {number[]} array of indices where each index >= 0 or index = -1
+ */
+export function getOptionalNestedFieldIndices(fieldMetadata: FieldMetadata, ids: string[]): number[] {
+  return ids.map((id) => getOptionalNestedFieldIndex(fieldMetadata, id));
 }
 
-export function getNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
+/**
+ * @return {number} index >= 0 or index = -1
+ */
+export function getOptionalNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
   if (fieldMetadata.nested === undefined) throw new Error(`field '${fieldMetadata.id}' is not nested`);
-  return fieldMetadata.nested.items.findIndex((childFieldMetadata) => childFieldMetadata.id === id) || -1;
+  return fieldMetadata.nested.items.findIndex((childFieldMetadata) => childFieldMetadata.id === id);
+}
+
+/**
+ * @return {number} index >= 0
+ * @throws {UnknownVcfFieldError}
+ */
+export function getRequiredNestedFieldIndex(fieldMetadata: FieldMetadata, id: string): number {
+  const nestedFieldIndex = getOptionalNestedFieldIndex(fieldMetadata, id);
+  if (nestedFieldIndex === -1) {
+    console.log(id);
+    console.log(fieldMetadata);
+    throw new UnknownVcfFieldError(id, fieldMetadata.id);
+  }
+  return nestedFieldIndex;
 }
 
 export function getFieldMultilineValue(

@@ -4,6 +4,7 @@ import {
   CellValueFilter,
   CellValueGenotype,
   CellValueId,
+  CellValueInfo,
   CellValuePos,
   CellValueQual,
   CellValueRef,
@@ -40,11 +41,12 @@ import {
   ConfigStaticFieldRef,
 } from "../types/config";
 import { Item } from "@molgenis/vip-report-api";
-import { FieldMetadata, RecordSampleType, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
+import { FieldMetadata, Value, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
 import { VariantType } from "./variantTypeUtils";
 import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
-import { UnexpectedEnumValueException } from "./error.ts";
+import { ArrayIndexOutOfBoundsException, RuntimeError, UnexpectedEnumValueException } from "./error.ts";
+import { getRequiredNestedFieldIndex } from "./csqUtils.ts";
 
 export function createConfigFields(
   configStaticFields: ConfigStaticField[],
@@ -199,7 +201,7 @@ function createConfigFieldInfo(
     fieldConfig = null;
   } else {
     const fieldParent = field.parent;
-    const fieldParentIndex = fieldParent?.nested!.items.findIndex((nestedField) => nestedField.id === field.id);
+    const fieldParentIndex = fieldParent ? getRequiredNestedFieldIndex(fieldParent, field.id) : undefined;
     const fieldParentCount = fieldParent?.number.count;
 
     fieldConfig = {
@@ -214,24 +216,32 @@ function createConfigFieldInfo(
           : 1;
       },
       field,
-      value(record: Item<VcfRecord>, recordContext: RecordContext): Value | undefined {
+      value(record: Item<VcfRecord>, recordContext: RecordContext): CellValueInfo {
+        const valueContainer = record.data.n;
+
         let value: Value | undefined;
         if (fieldParent) {
-          const parentValue = record.data.n[fieldParent.id] as ValueArray;
-          if (fieldParentCount === 1) {
-            value = parentValue[fieldParentIndex!];
-          } else {
-            const valueIndex = recordContext.valueIndex!;
-            value = parentValue[valueIndex][fieldParentIndex!];
+          value = valueContainer[fieldParent.id];
+          if (value !== undefined) {
+            let valueArray = value as Value[];
+            if (fieldParentCount !== 1) {
+              if (recordContext.valueIndex === undefined) throw new RuntimeError();
+
+              const valueArrayElement = valueArray[recordContext.valueIndex];
+              if (valueArrayElement === undefined) throw new ArrayIndexOutOfBoundsException();
+              valueArray = valueArrayElement as Value[];
+            }
+
+            value = valueArray[fieldParentIndex!] as CellValueInfo;
+            if (value === undefined) throw new ArrayIndexOutOfBoundsException();
           }
         } else {
-          value = record.data.n[field.id];
+          value = valueContainer[field.id];
         }
         return value;
       },
     };
   }
-
   return fieldConfig;
 }
 
@@ -267,7 +277,7 @@ function createConfigFieldGenotype(
     fieldConfig = null;
   } else {
     const fieldParent = field.parent;
-    const fieldParentIndex = fieldParent?.nested!.items.findIndex((nestedField) => nestedField.id === field.id);
+    const fieldParentIndex = fieldParent ? getRequiredNestedFieldIndex(fieldParent, field.id) : undefined;
     const fieldParentCount = fieldParent?.number.count;
 
     fieldConfig = {
@@ -284,16 +294,26 @@ function createConfigFieldGenotype(
       },
       field,
       value(record: Item<VcfRecord>, recordContext: RecordContext): CellValueGenotype | undefined {
-        let value: RecordSampleType | undefined;
+        const recordSample = getRecordSample(record, sample);
+
+        let value: CellValueGenotype | undefined;
         if (fieldParent) {
-          const parentValue = getRecordSample(record, sample)[field.id];
-          if (fieldParentCount === 1) {
-            value = (parentValue as ValueArray)[fieldParentIndex!];
-          } else {
-            value = (parentValue as ValueArray)[recordContext.valueIndex][fieldParentIndex!];
+          value = recordSample[fieldParent.id];
+          if (value !== undefined) {
+            let valueArray = value as Value[];
+            if (fieldParentCount !== 1) {
+              if (recordContext.valueIndex === undefined) throw new RuntimeError();
+
+              const valueArrayElement = valueArray[recordContext.valueIndex];
+              if (valueArrayElement === undefined) throw new ArrayIndexOutOfBoundsException();
+              valueArray = valueArrayElement as Value[];
+            }
+
+            value = valueArray[fieldParentIndex!] as CellValueGenotype;
+            if (value === undefined) throw new ArrayIndexOutOfBoundsException();
           }
         } else {
-          value = getRecordSample(record, sample)[field.id];
+          value = recordSample[field.id];
         }
         return value;
       },
