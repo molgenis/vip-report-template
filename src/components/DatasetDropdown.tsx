@@ -1,5 +1,5 @@
 import { Component, createSignal, For } from "solid-js";
-import { useNavigate } from "@solidjs/router";
+import { query, useNavigate } from "@solidjs/router";
 import { useStore } from "../store";
 import { getDatasetIds, selectDataset } from "../Api.ts";
 import { init } from "../App.tsx";
@@ -14,6 +14,7 @@ export const DatasetDropdown: Component = () => {
     setSelectedDataset(datasetName);
     selectDataset(datasetName);
     actions.reset();
+    query.clear(); // flush cache
     init(navigate);
   }
 
