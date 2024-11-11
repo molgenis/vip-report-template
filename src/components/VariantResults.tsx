@@ -12,7 +12,7 @@ import { ConfigCellGroup, ConfigCellInfo } from "../types/configCell";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/sortUtils";
 
 import { MetadataContainer } from "../Api.ts";
-import { ConfigSortOption } from "../types/configSort";
+import { ConfigSort } from "../types/configSort";
 
 export type RecordsDownloadCallback = () => void;
 
@@ -20,14 +20,14 @@ export const VariantResults: Component<{
   metadata: MetadataContainer;
   fieldConfigs: ConfigCells;
   records: PagedItems<VcfRecord>;
-  sortOptions: ConfigSortOption[] | undefined;
+  sortOptions: ConfigSort[] | undefined;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
   onPageChange: PageChangeCallback;
   onSortChange: SortChangeCallback;
   onSortClear: SortClearCallback;
 }> = (props) => {
-  const sortOptions = (): ConfigSortOption[] => {
+  const sortOptions = (): ConfigSort[] => {
     if (props.sortOptions !== undefined && props.sortOptions.length !== 0) {
       return props.sortOptions;
     } else {

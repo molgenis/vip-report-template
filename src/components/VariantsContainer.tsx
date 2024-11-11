@@ -32,7 +32,7 @@ export const VariantsContainer: Component<{
 }> = (props) => {
   const navigate = useNavigate();
 
-  const config = () => initConfigVariants(props.config, props.metadata, props.variantType, props.sample);
+  const config = () => initConfigVariants(props.config, props.variantType, props.metadata, props.sample);
   const vipConfig = () => initVipConfig(props.vipConfig, props.metadata);
 
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
@@ -44,7 +44,7 @@ export const VariantsContainer: Component<{
   const sort = () =>
     createSort(
       props.store.getSort(),
-      config().sort.find((configSort) => configSort.selected),
+      config().sorts.find((configSort) => configSort.selected),
     );
 
   const [records] = createResource(
@@ -136,7 +136,7 @@ export const VariantsContainer: Component<{
                 metadata={props.metadata}
                 fieldConfigs={config().cells}
                 records={records()}
-                sortOptions={config().sort}
+                sortOptions={config().sorts}
                 onPageChange={onPageChange}
                 onRecordsPerPageChange={onRecordsPerPageChange}
                 onRecordsDownload={onRecordsDownload}

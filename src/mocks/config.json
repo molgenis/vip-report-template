@@ -5,11 +5,11 @@
         "type": "genotype",
         "name": "VIPC_S"
       },
-      "args": ["U1","OK"]
+      "args": ["U1", "OK"]
     }
   },
   "sample_variants": {
-    "sort": {
+    "sorts": {
       "all": [
         {
           "selected": true,

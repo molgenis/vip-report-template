@@ -7,8 +7,8 @@
     "build-dev": "vite build --mode dev",
     "coverage": "vitest run --coverage",
     "dev": "vite",
-    "format": "prettier --write src/**/*.{tsx,ts}",
-    "lint": "eslint src/**/*.{tsx,ts}",
+    "format": "prettier --write src/**/*.{json,tsx,ts}",
+    "lint": "eslint src/**/*.{json,tsx,ts}",
     "prepare": "husky",
     "test": "vitest run",
     "test:watch": "vitest"

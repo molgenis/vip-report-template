@@ -20,14 +20,18 @@ import { mapSvTypeToVariantTypeId, VariantTypeId } from "./utils/variantTypeUtil
 import { createQuerySample } from "./utils/query.ts";
 import { MockApiClient } from "./mocks/MockApiClient.ts";
 import { ConfigStatic } from "./types/config";
+import { createFieldMap, FieldMap } from "./utils/utils.ts";
 
+export type VcfMetadataContainer = VcfMetadata & {
+  fieldMap: FieldMap;
+};
 /**
  * Expose aggregate metadata container for convenience
  */
 export type MetadataContainer = {
   app: AppMetadata;
   htsFile: HtsFileMetadata;
-  records: VcfMetadata;
+  records: VcfMetadataContainer;
   variantTypeIds: Set<VariantTypeId>;
 };
 
@@ -89,7 +93,11 @@ export async function fetchMetadata(): Promise<MetadataContainer> {
     api.getRecordsMeta(),
     fetchVariantTypeIdsQuery(),
   ]);
-  return { app: appMetadata, htsFile: htsFileMetadata, records: recordsMetadata, variantTypeIds };
+
+  // precompute field map
+  const fieldMap = createFieldMap(recordsMetadata);
+
+  return { app: appMetadata, htsFile: htsFileMetadata, records: { ...recordsMetadata, fieldMap }, variantTypeIds };
 }
 
 /**

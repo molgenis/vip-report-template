@@ -43,25 +43,25 @@ import {
 import { Item } from "@molgenis/vip-report-api";
 import { FieldMetadata, Value, VcfRecord } from "@molgenis/vip-report-vcf";
 import { VariantType } from "./variantTypeUtils";
-import { SampleContainer } from "../Api.ts";
+import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample } from "./utils.ts";
 import { ArrayIndexOutOfBoundsException, RuntimeError, UnexpectedEnumValueException } from "./error.ts";
 import { getInfoValueCount, getRecordSampleValueCount, getRequiredNestedFieldIndex } from "./field.ts";
 
-export function createConfigFields(
+export function initConfigFields(
   configStaticFields: ConfigStaticField[],
-  fieldMap: FieldMap,
-  sample: SampleContainer | null,
   variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
 ): ConfigCells {
   const configFields: (ConfigCell | null)[] = configStaticFields.flatMap((configStaticField) => {
     let configFields: (ConfigCell | null)[];
     if (configStaticField.type === "group") {
       configFields = [
-        createConfigFieldItemGroup(configStaticField as ConfigStaticFieldItemGroup, fieldMap, sample, variantType),
+        createConfigFieldItemGroup(configStaticField as ConfigStaticFieldItemGroup, variantType, metadata, sample),
       ];
     } else {
-      configFields = createConfigFieldItem(configStaticField as ConfigStaticFieldItem, fieldMap, sample, variantType);
+      configFields = createConfigFieldItem(configStaticField as ConfigStaticFieldItem, variantType, metadata, sample);
     }
     return configFields;
   });
@@ -70,15 +70,15 @@ export function createConfigFields(
 
 function createConfigFieldItemGroup(
   configStaticFieldGroup: ConfigStaticFieldItemGroup,
-  fieldMap: FieldMap,
-  sample: SampleContainer | null,
   variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
 ) {
-  const configFields = createConfigFields(
+  const configFields = initConfigFields(
     configStaticFieldGroup.fields,
-    fieldMap,
-    sample,
     variantType,
+    metadata,
+    sample,
   ) as ConfigCellItem[];
 
   let fieldConfig: ConfigCellGroup | null;
@@ -335,9 +335,9 @@ function createConfigFieldsGenotype(
 
 function createConfigFieldItem(
   configStaticField: ConfigStaticFieldItem,
-  fieldMap: FieldMap,
-  sample: SampleContainer | null,
   variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
 ): ConfigCell[] {
   const type = configStaticField.type;
 
@@ -347,16 +347,16 @@ function createConfigFieldItem(
       configFields = [createConfigFieldFixed(configStaticField)];
       break;
     case "info":
-      configFields = createConfigFieldsInfo(configStaticField, fieldMap);
+      configFields = createConfigFieldsInfo(configStaticField, metadata.records.fieldMap);
       break;
     case "format":
       throw new Error(`unsupported field type '${type}', did you mean to use 'genotype'?`);
     case "genotype":
       if (sample === null) throw new Error(`cannot create field, field type ${type} requires sample`);
-      configFields = createConfigFieldsGenotype(configStaticField, fieldMap, sample);
+      configFields = createConfigFieldsGenotype(configStaticField, metadata.records.fieldMap, sample);
       break;
     case "composed":
-      configFields = [createConfigFieldComposed(configStaticField, fieldMap, sample, variantType)];
+      configFields = [createConfigFieldComposed(configStaticField, metadata.records.fieldMap, sample, variantType)];
       break;
   }
   return configFields.filter((configField) => configField !== null);

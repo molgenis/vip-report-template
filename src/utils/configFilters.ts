@@ -31,19 +31,25 @@ import { UnexpectedEnumValueException } from "./error";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { FieldMap } from "./utils.ts";
 import { FieldMetadata } from "@molgenis/vip-report-vcf";
+import { VariantType } from "./variantTypeUtils.ts";
 
-export function createConfigFilters(
+export function initConfigFilters(
   configStaticFields: ConfigStaticField[],
+  variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
-  filterMap: FieldMap,
 ): ConfigFilters {
   return configStaticFields.flatMap((configStaticFilter) => {
     let configFilters: ConfigFilter[];
     if (configStaticFilter.type === "group") {
       throw new Error("filter groups are not supported");
     } else {
-      configFilters = createConfigFilterItem(configStaticFilter as ConfigStaticFieldItem, metadata, sample, filterMap);
+      configFilters = createConfigFilterItem(
+        configStaticFilter as ConfigStaticFieldItem,
+        metadata,
+        sample,
+        metadata.records.fieldMap,
+      );
     }
     return configFilters;
   });
@@ -208,7 +214,6 @@ function createConfigFiltersInfo(configStatic: ConfigStaticFieldInfo, fieldMap: 
     const baseId = id.length === 1 ? "INFO/" : `INFO/${id.substring(0, id.length - 1)}`;
     Object.entries(fieldMap).forEach(([fieldId, field]) => {
       if (fieldId.startsWith(baseId) && !field.nested) {
-        console.log(fieldId);
         const fieldConfig = createConfigFilterInfo(configStatic, field);
         filterConfigs.push(fieldConfig);
       }

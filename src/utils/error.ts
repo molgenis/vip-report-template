@@ -5,13 +5,6 @@ export class ArrayIndexOutOfBoundsException extends Error {
   }
 }
 
-export class ConfigError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ConfigError";
-  }
-}
-
 export class UnexpectedEnumValueException extends Error {
   constructor(enumValue: string) {
     super(enumValue);

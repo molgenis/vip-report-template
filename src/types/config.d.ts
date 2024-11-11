@@ -1,6 +1,6 @@
 import { ConfigFilter } from "./configFilter";
 import { ConfigCell } from "./configCell";
-import { ConfigSortOption } from "./configSort";
+import { ConfigSort } from "./configSort";
 
 export type ConfigStaticFieldType = "fixed" | "info" | "format" | "genotype" | "composed";
 
@@ -97,7 +97,7 @@ export type ConfigStaticField = ConfigStaticFieldItem | ConfigStaticFieldItemGro
 
 export type ConfigStaticVariantType = "all" | "str" | "snv" | "sv";
 export type ConfigStaticVariantTypeFields = Partial<Record<ConfigStaticVariantType, ConfigStaticField[]>>;
-export type ConfigStaticSorts = Record<ConfigStaticVariantType, ConfigStaticSort[]>;
+export type ConfigStaticSorts = Partial<Record<ConfigStaticVariantType, ConfigStaticSort[]>>;
 
 export type ConfigStaticVip = {
   filter: ConfigStaticVipFilter;
@@ -110,8 +110,8 @@ export type ConfigStaticVipFilter = {
 
 export type ConfigStaticVariants = {
   cells: ConfigStaticVariantTypeFields;
-  filters: ConfigStaticVariantTypeFields;
-  sort: ConfigStaticSorts;
+  filters?: ConfigStaticVariantTypeFields;
+  sorts?: ConfigStaticSorts;
 };
 
 export type ConfigStatic = Partial<{
@@ -121,10 +121,10 @@ export type ConfigStatic = Partial<{
 
 export type ConfigFilters = ConfigFilter[];
 export type ConfigCells = ConfigCell[];
-export type ConfigSorts = ConfigSortOption[];
+export type ConfigSorts = ConfigSort[];
 
 export type ConfigVariants = {
   cells: ConfigCells;
   filters: ConfigFilters;
-  sort: ConfigSorts;
+  sorts: ConfigSorts;
 };

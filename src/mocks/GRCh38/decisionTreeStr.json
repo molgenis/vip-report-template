@@ -65,9 +65,7 @@
       "query": {
         "field": "FILTER",
         "operator": "==",
-        "value": [
-          "PASS"
-        ]
+        "value": ["PASS"]
       },
       "outcomeTrue": {
         "nextNode": "vkgl"
@@ -110,9 +108,7 @@
     "clinVar": {
       "description": "ClinVar classification",
       "type": "BOOL_MULTI",
-      "fields": [
-        "INFO/CSQ/clinVar_CLNSIG"
-      ],
+      "fields": ["INFO/CSQ/clinVar_CLNSIG"],
       "outcomes": [
         {
           "description": "Conflict",
@@ -120,7 +116,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": [ "Conflicting_interpretations_of_pathogenicity" ]
+              "value": ["Conflicting_interpretations_of_pathogenicity"]
             }
           ],
           "outcomeTrue": {
@@ -133,7 +129,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": [ "Likely_pathogenic", "Pathogenic" ]
+              "value": ["Likely_pathogenic", "Pathogenic"]
             }
           ],
           "outcomeTrue": {
@@ -146,7 +142,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": [ "Uncertain_significance" ]
+              "value": ["Uncertain_significance"]
             }
           ],
           "outcomeTrue": {
@@ -159,7 +155,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": [ "Likely_benign", "Benign" ]
+              "value": ["Likely_benign", "Benign"]
             }
           ],
           "outcomeTrue": {
@@ -294,10 +290,7 @@
     "gnomAD_AF": {
       "description": "gnomAD",
       "type": "BOOL_MULTI",
-      "fields": [
-        "INFO/CSQ/gnomAD_FAF99",
-        "INFO/CSQ/gnomAD_HN"
-      ],
+      "fields": ["INFO/CSQ/gnomAD_FAF99", "INFO/CSQ/gnomAD_HN"],
       "outcomes": [
         {
           "description": "Filtering allele Frequency (99% confidence) >= 0.02 or Number of Homozygotes > 5",

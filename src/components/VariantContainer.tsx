@@ -9,8 +9,7 @@ import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { RecordsTable } from "./RecordsTable.tsx";
 import { ConfigCells } from "../types/config";
 import { VariantType } from "../utils/variantTypeUtils.ts";
-import { createConfigFields } from "../utils/configFields.ts";
-import { createFieldMap } from "../utils/utils.ts";
+import { initConfigFields } from "../utils/configFields.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 
 export const VariantContainer: Component<{
@@ -22,10 +21,8 @@ export const VariantContainer: Component<{
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
 
   const nestedTableConfigs = (): ConfigCells[] => {
-    const fieldMap = createFieldMap(props.metadata.records);
-
     function createTableConfig(fieldMetadata: FieldMetadata) {
-      return createConfigFields(
+      return initConfigFields(
         [
           {
             type: "group",
@@ -40,9 +37,9 @@ export const VariantContainer: Component<{
             }),
           },
         ],
-        fieldMap,
-        props.sample,
         props.variantType,
+        props.metadata,
+        props.sample,
       );
     }
 

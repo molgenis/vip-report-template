@@ -6,31 +6,61 @@ import {
   ConfigStaticVip,
   ConfigVariants,
 } from "../types/config";
-import { createConfigFilters } from "./configFilters";
-import { createConfigFields } from "./configFields";
+import { initConfigFilters } from "./configFilters";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
-import { createFieldMap, FieldMap } from "./utils.ts";
-import { ConfigError } from "./error.ts";
-import { createConfigSorts } from "./ConfigSorts.ts";
+import { initConfigSorts } from "./configSorts.ts";
 import { ConfigVip } from "../types/configVip";
+import { initConfigFields } from "./configFields.ts";
 
 export function initConfigVariants(
   config: ConfigStaticVariants,
-  metadata: MetadataContainer,
   variantType: VariantType,
+  metadata: MetadataContainer,
   sample: SampleContainer | null,
 ): ConfigVariants {
-  const fieldMap = createFieldMap(metadata.records);
-
+  const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample);
+  const filters = initConfigVariantsFilters(config.filters, variantType, metadata, sample);
+  const sorts = initConfigVariantsSorts(config.sorts, variantType, metadata);
   return {
-    cells: createConfigCellsVariantType(config.cells, variantType, sample, fieldMap),
-    filters: createConfigFiltersVariantType(config.filters, variantType, metadata, sample, fieldMap),
-    sort: createConfigSortVariantType(config.sort, variantType, fieldMap),
+    cells,
+    filters,
+    sorts,
   };
 }
 
+function initConfigVariantsCells(
+  config: ConfigStaticVariantTypeFields,
+  variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
+) {
+  const configValue = config[variantType.id] || config["all"];
+  if (configValue === undefined) throw new ConfigError(`missing required property 'cells.${variantType.id}'`);
+  if (configValue.length === 0) throw new ConfigError(`property 'cells.${variantType.id}' requires at least one value`);
+  return initConfigFields(configValue, variantType, metadata, sample);
+}
+
+function initConfigVariantsFilters(
+  config: ConfigStaticVariantTypeFields | undefined,
+  variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
+) {
+  const configValue = config && (config[variantType.id] || config["all"]);
+  return configValue ? initConfigFilters(configValue, variantType, metadata, sample) : [];
+}
+
+function initConfigVariantsSorts(
+  config: ConfigStaticSorts | undefined,
+  variantType: VariantType,
+  metadata: MetadataContainer,
+) {
+  const configValue = config && (config[variantType.id] || config["all"]);
+  return configValue ? initConfigSorts(configValue, metadata) : [];
+}
+
 export function initVipConfig(config: ConfigStaticVip, metadata: MetadataContainer): ConfigVip {
-  const fieldMap = createFieldMap(metadata.records);
+  const fieldMap = metadata.records.fieldMap;
   const id = config.filter.field.name;
   const fieldMeta = fieldMap[`FORMAT/${id}`];
   if (fieldMeta === undefined) {
@@ -39,7 +69,6 @@ export function initVipConfig(config: ConfigStaticVip, metadata: MetadataContain
   if (fieldMeta.type !== "CATEGORICAL") {
     throw new Error("VIP filter field should be of type 'CATEGORICAL'");
   }
-  console.log(fieldMap);
   return {
     filter: {
       field: fieldMeta,
@@ -48,34 +77,9 @@ export function initVipConfig(config: ConfigStaticVip, metadata: MetadataContain
   };
 }
 
-function createConfigSortVariantType(config: ConfigStaticSorts, variantType: VariantType, fieldMap: FieldMap) {
-  if (config === undefined) {
-    return [];
+class ConfigError extends Error {
+  constructor(message: string) {
+    super(`config invalid: ${message}`);
+    this.name = "ConfigError";
   }
-  const configStaticFields = config[variantType.id] || config["all"];
-  if (configStaticFields === undefined) throw new ConfigError(`missing 'sorts.${variantType.id}'`);
-  return createConfigSorts(configStaticFields, fieldMap);
-}
-
-function createConfigCellsVariantType(
-  config: ConfigStaticVariantTypeFields,
-  variantType: VariantType,
-  sample: SampleContainer | null,
-  fieldMap: FieldMap,
-) {
-  const configStaticFields = config[variantType.id] || config["all"];
-  if (configStaticFields === undefined) throw new ConfigError(`missing 'cells.${variantType.id}'`);
-  return createConfigFields(configStaticFields, fieldMap, sample, variantType);
-}
-
-function createConfigFiltersVariantType(
-  config: ConfigStaticVariantTypeFields,
-  variantType: VariantType,
-  metadata: MetadataContainer,
-  sample: SampleContainer | null,
-  fieldMap: FieldMap,
-) {
-  const configStaticFields = config[variantType.id] || config["all"];
-  if (configStaticFields === undefined) throw new ConfigError(`missing 'filters.${variantType.id}'`);
-  return createConfigFilters(configStaticFields, metadata, sample, fieldMap);
 }

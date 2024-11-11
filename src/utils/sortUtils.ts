@@ -1,6 +1,6 @@
 import { FieldMetadata, VcfMetadata } from "@molgenis/vip-report-vcf";
 import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api";
-import { ConfigSortOption, ConfigSortOrder } from "../types/configSort";
+import { ConfigSort, ConfigSortOrder } from "../types/configSort";
 import { infoSortPath } from "./query.ts";
 
 export type Direction = "asc" | "desc";
@@ -26,7 +26,7 @@ class InvalidSortPathError extends Error {
 
 export function createSort(
   storeSort: SortOrder | SortOrder[] | null,
-  configSort: ConfigSortOption | undefined,
+  configSort: ConfigSort | undefined,
 ): SortOrder | SortOrder[] {
   if (storeSort) {
     return storeSort;

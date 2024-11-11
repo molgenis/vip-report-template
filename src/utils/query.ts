@@ -419,7 +419,6 @@ export function createVipQueryClause(vipConfig: ConfigVip, sample: SampleContain
   const vipFilter = vipConfig.filter;
   if (vipFilter !== undefined) {
     const field = vipFilter.field;
-    console.log(field);
     return {
       args: [
         {

@@ -1,6 +1,6 @@
 import { FieldMetadata } from "@molgenis/vip-report-vcf";
 
-export interface ConfigSortOption {
+export interface ConfigSort {
   selected: boolean | undefined;
   orders: ConfigSortOrder[];
 }
@@ -10,4 +10,4 @@ export interface ConfigSortOrder {
   field: FieldMetadata;
 }
 
-export type ConfigSorts = ConfigSortOption[];
+export type ConfigSorts = ConfigSort[];

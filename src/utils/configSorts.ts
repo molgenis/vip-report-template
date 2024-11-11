@@ -2,6 +2,13 @@ import { ConfigStaticFieldInfo, ConfigStaticSort, ConfigStaticSortOrder } from "
 import { UnexpectedEnumValueException } from "./error";
 import { FieldMap } from "./utils.ts";
 import { ConfigSortOrder, ConfigSorts } from "../types/configSort";
+import { MetadataContainer } from "../Api.ts";
+
+export function initConfigSorts(configStaticSorts: ConfigStaticSort[], metadata: MetadataContainer): ConfigSorts {
+  return configStaticSorts.flatMap((configStaticSort) => {
+    return createConfigSortOptions(configStaticSort, metadata.records.fieldMap);
+  });
+}
 
 function createConfigSortOrders(configStaticSort: ConfigStaticSort, fieldMap: FieldMap): ConfigSortOrder[] {
   const configSortOrders = configStaticSort.orders.map((order) => createConfigSortOrder(order, fieldMap));
@@ -10,12 +17,6 @@ function createConfigSortOrders(configStaticSort: ConfigStaticSort, fieldMap: Fi
 
 function createConfigSortOptions(configStaticSort: ConfigStaticSort, fieldMap: FieldMap) {
   return { selected: configStaticSort.selected, orders: createConfigSortOrders(configStaticSort, fieldMap) };
-}
-
-export function createConfigSorts(configStaticSorts: ConfigStaticSort[], filterMap: FieldMap): ConfigSorts {
-  return configStaticSorts.flatMap((configStaticSort) => {
-    return createConfigSortOptions(configStaticSort, filterMap);
-  });
 }
 
 function createConfigSortOrderInfo(configStatic: ConfigStaticSortOrder, fieldMap: FieldMap): ConfigSortOrder | null {

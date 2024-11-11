@@ -2,14 +2,14 @@ import { Component, For } from "solid-js";
 import { isNumerical } from "../utils/field";
 import { SortOrder } from "@molgenis/vip-report-api";
 import { DIRECTION_ASCENDING, mapOrder } from "../utils/sortUtils";
-import { ConfigSortOption, ConfigSortOrder } from "../types/configSort";
+import { ConfigSort, ConfigSortOrder } from "../types/configSort";
 
 export type SortChangeEvent = { order: SortOrder | SortOrder[] };
 export type SortChangeCallback = (event: SortChangeEvent) => void;
 export type SortClearCallback = () => void;
 
 export const Sort: Component<{
-  options: ConfigSortOption[];
+  options: ConfigSort[];
   onChange: SortChangeCallback;
   onClear: SortClearCallback;
 }> = (props) => {
