@@ -1,6 +1,7 @@
 import { ConfigFilter } from "./configFilter";
 import { ConfigCell } from "./configCell";
 import { ConfigSort } from "./configSort";
+import { Json } from "@molgenis/vip-report-api";
 
 export type ConfigStaticFieldType = "fixed" | "info" | "format" | "genotype" | "composed";
 
@@ -100,12 +101,8 @@ export type ConfigStaticVariantTypeFields = Partial<Record<ConfigStaticVariantTy
 export type ConfigStaticSorts = Partial<Record<ConfigStaticVariantType, ConfigStaticSort[]>>;
 
 export type ConfigStaticVip = {
-  filter: ConfigStaticVipFilter;
-};
-
-export type ConfigStaticVipFilter = {
-  field: ConfigStaticFieldGenotype;
-  args: string[];
+  filter_field: ConfigStaticFieldGenotype;
+  params: Json;
 };
 
 export type ConfigStaticVariants = {

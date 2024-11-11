@@ -1,10 +1,7 @@
 import { FieldMetadata } from "@molgenis/vip-report-vcf";
-
-export type ConfigVipFilter = {
-  field: FieldMetadata;
-  args: string[];
-};
+import { Json } from "@molgenis/vip-report-api";
 
 export type ConfigVip = {
-  filter?: ConfigVipFilter;
+  field?: FieldMetadata;
+  params: Json;
 };

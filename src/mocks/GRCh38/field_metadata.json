@@ -98,6 +98,10 @@
           "label": "NOK",
           "description": "Remove this record for this sample."
         },
+        "LQ": {
+          "label": "LQ",
+          "description": "Low quality"
+        },
         "U1": {
           "label": "U1",
           "description": "Usable: probably"

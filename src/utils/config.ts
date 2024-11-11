@@ -62,19 +62,19 @@ function initConfigVariantsSorts(
 
 export function initVipConfig(config: ConfigStaticVip, metadata: MetadataContainer): ConfigVip {
   const fieldMap = metadata.records.fieldMap;
-  const id = config.filter.field.name;
+  const id = config.filter_field.name;
   const fieldMeta = fieldMap[`FORMAT/${id}`];
   if (fieldMeta === undefined) {
-    return {};
+    return {
+      params: config.params,
+    };
   }
   if (fieldMeta.type !== "CATEGORICAL") {
     throw new Error("VIP filter field should be of type 'CATEGORICAL'");
   }
   return {
-    filter: {
-      field: fieldMeta,
-      args: config.filter.args,
-    },
+    field: fieldMeta,
+    params: config.params,
   };
 }
 

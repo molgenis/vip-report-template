@@ -1,4 +1,4 @@
-import { ComposedQuery, Item, Query, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api";
+import { ComposedQuery, Item, Json, Query, Sample, Selector, SelectorPart, SortPath } from "@molgenis/vip-report-api";
 import { CategoryRecord, FieldMetadata } from "@molgenis/vip-report-vcf";
 import {
   ConfigFilter,
@@ -415,16 +415,31 @@ export function infoSortPath(field: FieldMetadata): SortPath {
   return ["n", ...selector(field).filter((part) => part !== "*")];
 }
 
+function getFilterArgs(vipConfig: ConfigVip) {
+  const json = vipConfig.params;
+  const vcfParams = json["vcf"] as unknown as Json;
+  if (vcfParams !== undefined) {
+    const filterSamplesParams = vcfParams["filter_samples"] as unknown as Json;
+    if (filterSamplesParams !== undefined) {
+      const classes = filterSamplesParams["classes"] as unknown as string;
+      if (classes !== undefined) {
+        return classes.split(",");
+      }
+    }
+  }
+  return undefined;
+}
+
 export function createVipQueryClause(vipConfig: ConfigVip, sample: SampleContainer): ComposedQuery | null {
-  const vipFilter = vipConfig.filter;
-  if (vipFilter !== undefined) {
-    const field = vipFilter.field;
+  const args = getFilterArgs(vipConfig);
+  const field = vipConfig.field;
+  if (field !== undefined && args !== undefined) {
     return {
       args: [
         {
           selector: ["s", sample.item.data.index, ...selector(field)],
           operator: "has_any",
-          args: vipFilter.args,
+          args: args,
         },
         {
           selector: ["s", sample.item.data.index, ...selector(field)],
