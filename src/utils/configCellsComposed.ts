@@ -27,7 +27,7 @@ import { SampleContainer } from "../Api.ts";
 import { FieldMap, getRecordSample, href } from "./utils.ts";
 import { ConfigStaticFieldComposed } from "../types/config";
 
-export function createConfigFieldComposed(
+export function initConfigCellComposed(
   configStatic: ConfigStaticFieldComposed,
   fieldMap: FieldMap,
   sample: SampleContainer | null,

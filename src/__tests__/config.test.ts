@@ -3,7 +3,7 @@ import { initConfigVariants } from "../utils/config.ts";
 import { ConfigStaticVariants } from "../types/config";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { VariantType } from "../utils/variantTypeUtils.ts";
-import { initConfigFields } from "../utils/configFields";
+import { initConfigCells } from "../utils/configCells.ts";
 import { initConfigFilters } from "../utils/configFilters";
 import { initConfigSorts } from "../utils/configSorts";
 import { ConfigCell } from "../types/configCell";
@@ -34,7 +34,7 @@ describe("config", () => {
 
   describe("initConfigVariants", () => {
     test("regular config", () => {
-      vi.mocked(initConfigFields).mockReturnValue([0 as unknown as ConfigCell]);
+      vi.mocked(initConfigCells).mockReturnValue([0 as unknown as ConfigCell]);
       vi.mocked(initConfigFilters).mockReturnValue([1 as unknown as ConfigFilter]);
       vi.mocked(initConfigSorts).mockReturnValue([2 as unknown as ConfigSort]);
 
@@ -52,7 +52,7 @@ describe("config", () => {
     });
 
     test("minimal config", () => {
-      vi.mocked(initConfigFields).mockReturnValue([0 as unknown as ConfigCell]);
+      vi.mocked(initConfigCells).mockReturnValue([0 as unknown as ConfigCell]);
 
       const variantType: Partial<VariantType> = { id: "snv" };
 

@@ -10,7 +10,7 @@ import { initConfigFilters } from "./configFilters";
 import { MetadataContainer, SampleContainer } from "../Api.ts";
 import { initConfigSorts } from "./configSorts.ts";
 import { ConfigVip } from "../types/configVip";
-import { initConfigFields } from "./configFields.ts";
+import { initConfigCells } from "./configCells.ts";
 
 export function initConfigVariants(
   config: ConfigStaticVariants,
@@ -35,9 +35,10 @@ function initConfigVariantsCells(
   sample: SampleContainer | null,
 ) {
   const configValue = config[variantType.id] || config["all"];
-  if (configValue === undefined) throw new ConfigError(`missing required property 'cells.${variantType.id}'`);
-  if (configValue.length === 0) throw new ConfigError(`property 'cells.${variantType.id}' requires at least one value`);
-  return initConfigFields(configValue, variantType, metadata, sample);
+  if (configValue === undefined) throw new ConfigInvalidError(`missing required property 'cells.${variantType.id}'`);
+  if (configValue.length === 0)
+    throw new ConfigInvalidError(`property 'cells.${variantType.id}' requires at least one value`);
+  return initConfigCells(configValue, variantType, metadata, sample);
 }
 
 function initConfigVariantsFilters(
@@ -77,9 +78,9 @@ export function initVipConfig(config: ConfigStaticVip, metadata: MetadataContain
   };
 }
 
-class ConfigError extends Error {
+export class ConfigInvalidError extends Error {
   constructor(message: string) {
     super(`config invalid: ${message}`);
-    this.name = "ConfigError";
+    this.name = "ConfigInvalidError";
   }
 }
