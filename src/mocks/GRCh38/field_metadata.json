@@ -97,6 +97,18 @@
         "NOK": {
           "label": "NOK",
           "description": "Remove this record for this sample."
+        },
+        "U1": {
+          "label": "U1",
+          "description": "Usable: probably"
+        },
+        "U2": {
+          "label": "U2",
+          "description": "Usable: maybe"
+        },
+        "U3": {
+          "label": "U3",
+          "description": "Usable: probably not"
         }
       }
     }
