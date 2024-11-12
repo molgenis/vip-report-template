@@ -416,12 +416,12 @@ export function infoSortPath(field: FieldMetadata): SortPath {
 }
 
 function getFilterArgs(vipConfig: ConfigVip) {
-  const json = vipConfig.params;
-  const vcfParams = json["vcf"] as unknown as Json;
+  const json = vipConfig.params as { [property: string]: Json };
+  const vcfParams = json["vcf"] as { [property: string]: Json };
   if (vcfParams !== undefined) {
-    const filterSamplesParams = vcfParams["filter_samples"] as unknown as Json;
+    const filterSamplesParams = vcfParams["filter_samples"] as { [property: string]: Json };
     if (filterSamplesParams !== undefined) {
-      const classes = filterSamplesParams["classes"] as unknown as string;
+      const classes = filterSamplesParams["classes"] as string;
       if (classes !== undefined) {
         return classes.split(",");
       }
