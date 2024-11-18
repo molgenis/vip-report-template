@@ -97,8 +97,8 @@ export type ConfigStaticFieldItemGroup = { type: "group"; fields: ConfigStaticFi
 export type ConfigStaticField = ConfigStaticFieldItem | ConfigStaticFieldItemGroup;
 
 export type ConfigStaticVariantType = "all" | "str" | "snv" | "sv";
-export type ConfigStaticVariantTypeFields = Partial<Record<ConfigStaticVariantType, ConfigStaticField[]>>;
-export type ConfigStaticSorts = Partial<Record<ConfigStaticVariantType, ConfigStaticSort[]>>;
+export type ConfigStaticVariantTypeFields = { [key in ConfigStaticVariantType]?: ConfigStaticField[] };
+export type ConfigStaticSorts = { [key in ConfigStaticVariantType]?: ConfigStaticSort[] };
 
 export type ConfigStaticVipParamsCram = { call_snv: boolean; call_str: boolean; call_sv: boolean; call_cnv: boolean };
 
