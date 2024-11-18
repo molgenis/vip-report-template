@@ -7,7 +7,7 @@ import { Select } from "../../form/Select";
 import { Input } from "../../form/Input";
 import { FilterProps } from "../Filter.tsx";
 
-import { validateInterval } from "../../../utils/utils.ts";
+import { validateIntervalInput } from "../../../utils/utils.ts";
 
 export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLocus>> = (props) => {
   const [chromosome, setChromosome] = createSignal<string>();
@@ -28,7 +28,7 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
     if (chr === undefined) return;
     const startStr = startPosition();
     const endStr = endPosition();
-    const validationResult = validateInterval(props.config.id, startStr, endStr);
+    const validationResult = validateIntervalInput(props.config.id, startStr, endStr);
     if (validationResult !== undefined) {
       setError(validationResult);
     } else {

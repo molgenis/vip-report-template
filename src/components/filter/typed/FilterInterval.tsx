@@ -6,7 +6,7 @@ import { ButtonApply } from "../../form/ButtonApply";
 import { ButtonReset } from "../../form/ButtonReset";
 import { FilterProps } from "../Filter.tsx";
 
-import { validateInterval } from "../../../utils/utils.ts";
+import { validateIntervalInput } from "../../../utils/utils.ts";
 
 export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValueInterval>> = (props) => {
   const [leftInputValue, setLeftInputValue] = createSignal<string>("");
@@ -25,7 +25,7 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
   });
 
   const onApply = () => {
-    const validationResult = validateInterval(props.config.id, leftInputValue(), rightInputValue());
+    const validationResult = validateIntervalInput(props.config.id, leftInputValue(), rightInputValue());
     if (validationResult !== undefined) {
       setError(validationResult);
     } else {

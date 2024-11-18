@@ -15,7 +15,7 @@ export type FilterValueCategorical = FilterCategoryId[];
 export type FilterValueString = string[];
 export type ValueNumber = number | undefined;
 export type FilterValueFlag = FilterValueCategorical;
-export type FilterValueInterval = { left: ValueNumber; right: ValueNumber }; // FIXME make left and right optional
+export type FilterValueInterval = { left: ValueNumber; right: ValueNumber };
 
 export type FilterValueChrom = FilterValueString;
 export type FilterValuePos = FilterValueInterval;

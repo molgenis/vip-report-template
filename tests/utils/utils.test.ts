@@ -7,7 +7,7 @@ import {
   href,
   isPositiveInteger,
   parseId,
-  validateInterval,
+  validateIntervalInput,
 } from "../../src/utils/utils.ts";
 
 describe("utils", () => {
@@ -88,36 +88,32 @@ describe("utils", () => {
     });
   });
 
-  describe("validateInterval", () => {
-    test("validateInterval [1,]", () => {
-      expect(validateInterval("x", "1", undefined)).toStrictEqual(undefined);
+  describe("validateIntervalInput", () => {
+    test("interval [1,]", () => {
+      expect(validateIntervalInput("x", "1", undefined)).toStrictEqual(undefined);
     });
 
-    test("validateInterval [,1]", () => {
-      expect(validateInterval("x", "", "1")).toStrictEqual(undefined);
+    test("interval [,1]", () => {
+      expect(validateIntervalInput("x", "", "1")).toStrictEqual(undefined);
     });
 
-    test("validateInterval [1,1]", () => {
-      expect(validateInterval("x", "1", "1")).toStrictEqual(
-        "Input 'to' (1) for filter 'x' should have a higher value than the 'from' input (1).",
-      );
+    test("interval [1,1]", () => {
+      expect(validateIntervalInput("x", "1", "1")).toStrictEqual(undefined);
     });
 
-    test("validateInterval [2,1]", () => {
-      expect(validateInterval("x", "2", "1")).toStrictEqual(
+    test("interval [2,1]", () => {
+      expect(validateIntervalInput("x", "2", "1")).toStrictEqual(
         "Input 'to' (1) for filter 'x' should have a higher value than the 'from' input (2).",
       );
     });
 
-    test("validateInterval [1.23,]", () => {
-      expect(validateInterval("x", "1.23", "")).toStrictEqual(
-        "Input 'from' (1.23) for filter 'x' should be a positive number.",
-      );
+    test("interval [1.23,]", () => {
+      expect(validateIntervalInput("x", "1.23", "")).toStrictEqual(undefined);
     });
 
-    test("validateInterval [,abc]", () => {
-      expect(validateInterval("x", "", "abc")).toStrictEqual(
-        "Input 'to' (abc) for filter 'x' should be a positive number.",
+    test("interval [,abc]", () => {
+      expect(validateIntervalInput("x", "", "abc")).toStrictEqual(
+        "Input 'to' (abc) for filter 'x' should be a number.",
       );
     });
   });

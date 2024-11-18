@@ -42,25 +42,26 @@ export function isPositiveInteger(numberValue: number) {
   return !isNaN(numberValue) && Number.isInteger(numberValue) && numberValue >= 0;
 }
 
-export function validateInterval(id: string, left: string | undefined, right: string | undefined) {
-  if (!isValidIntegerValue(left)) {
-    return `Input 'from' (${left}) for filter '${id}' should be a positive number.`;
-  }
-  if (!isValidIntegerValue(right)) {
-    return `Input 'to' (${right}) for filter '${id}' should be a positive number.`;
-  }
+/**
+ * Validates that interval left and/or right values are integers or floats
+ *
+ * @return validation error message or undefined if interval is valid
+ */
+export function validateIntervalInput(
+  id: string,
+  left: string | undefined,
+  right: string | undefined,
+): string | undefined {
+  const leftNum = Number(left);
+  const rightNum = Number(right);
 
-  if (left != undefined && left.length !== 0 && right != undefined && right.length !== 0) {
-    if (Number(right) <= Number(left)) {
-      return `Input 'to' (${right}) for filter '${id}' should have a higher value than the 'from' input (${left}).`;
-    }
+  if (left && isNaN(leftNum)) {
+    return `Input 'from' (${left}) for filter '${id}' should be a number.`;
   }
-}
-
-function isValidIntegerValue(value: string | undefined) {
-  if (value !== undefined && value.length !== 0) {
-    const numberValue = Number(value);
-    if (!isPositiveInteger(numberValue)) return false;
+  if (right && isNaN(rightNum)) {
+    return `Input 'to' (${right}) for filter '${id}' should be a number.`;
   }
-  return true;
+  if (left && right && rightNum < leftNum) {
+    return `Input 'to' (${right}) for filter '${id}' should have a higher value than the 'from' input (${left}).`;
+  }
 }
