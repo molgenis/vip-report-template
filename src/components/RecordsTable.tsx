@@ -5,6 +5,7 @@ import { CellValue, ConfigCellGroup, ConfigCellItem } from "../types/configCells
 import { ConfigCells } from "../types/config";
 import { Abbr } from "./Abbr";
 import { Field } from "./field/Field";
+import { Table } from "./Table.tsx";
 
 export const RecordsTable: Component<{
   fieldConfigs: ConfigCells;
@@ -12,15 +13,10 @@ export const RecordsTable: Component<{
   verticalHeaders?: boolean;
 }> = (props) => {
   return (
-    <div style={{ display: "grid" }}>
-      {/* workaround for https://github.com/jgthms/bulma/issues/2572#issuecomment-523099776 */}
-      <div class="table-container">
-        <table class="table is-narrow">
-          <RecordsTableHeader fieldConfigs={props.fieldConfigs} verticalHeaders={props.verticalHeaders} />
-          <RecordsTableBody fieldConfigs={props.fieldConfigs} records={props.records} />
-        </table>
-      </div>
-    </div>
+    <Table>
+      <RecordsTableHeader fieldConfigs={props.fieldConfigs} verticalHeaders={props.verticalHeaders} />
+      <RecordsTableBody fieldConfigs={props.fieldConfigs} records={props.records} />
+    </Table>
   );
 };
 
