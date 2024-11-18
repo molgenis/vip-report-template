@@ -7,8 +7,12 @@ import {
   ConfigFilterHpo,
   ConfigFilterInheritanceMatch,
   ConfigFilterLocus,
+  ConfigFilterVipC,
+  ConfigFilterVipCS,
   FilterValueHpo,
   FilterValueLocus,
+  FilterValueVipC,
+  FilterValueVipCS,
 } from "../../../src/types/configFilterComposed";
 import { Query } from "@molgenis/vip-report-api";
 import {
@@ -17,9 +21,11 @@ import {
   createQueryFilterString,
 } from "../../../src/utils/query/queryFilter.ts";
 import { SampleContainer } from "../../../src/utils/api.ts";
+import { createQueryFilterFieldCategorical } from "../../../src/utils/query/queryFilterField.ts";
 
 describe("query composed filters", () => {
   vi.mock(import("../../../src/utils/query/queryFilter.ts"));
+  vi.mock(import("../../../src/utils/query/queryFilterField.ts"));
 
   afterEach(() => {
     vi.resetAllMocks();
@@ -29,11 +35,12 @@ describe("query composed filters", () => {
     const query: Query = { selector: "x", operator: "==", args: "y" };
 
     test("hpo", () => {
-      const config = { type: "composed", id: "hpo", field: { id: "f", number: {}, categories: {} } } as ConfigFilterHpo;
+      const field = { id: "f", number: {}, categories: {} };
+      const config = { type: "composed", id: "hpo", field: field } as ConfigFilterHpo;
       const value = ["chr1"] as FilterValueHpo;
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
       expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, true, false, {});
+      expect(createQueryFilterFieldCategorical).toHaveBeenCalledWith(["n", "f"], field, value);
     });
 
     describe("locus", () => {
@@ -262,6 +269,25 @@ describe("query composed filters", () => {
           operator: "or",
         });
       });
+    });
+
+    test("vipC", () => {
+      const field = { id: "f", number: {}, categories: {} };
+      const config = { type: "composed", id: "vipC", field: field } as ConfigFilterVipC;
+      const value = ["chr1"] as FilterValueVipC;
+      vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
+      expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
+      expect(createQueryFilterFieldCategorical).toHaveBeenCalledWith(["n", "f"], field, value);
+    });
+
+    test("vipCS", () => {
+      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const field = { id: "f", number: {}, categories: {} };
+      const config = { type: "composed", id: "vipCS", field, sample } as ConfigFilterVipCS;
+      const value = ["chr1"] as FilterValueVipCS;
+      vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
+      expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
+      expect(createQueryFilterFieldCategorical).toHaveBeenCalledWith(["s", 1, "f"], field, value);
     });
 
     test("invalid", () => {

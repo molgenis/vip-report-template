@@ -18,7 +18,7 @@ export function initConfigCellInfo(
   configStatic: ConfigStaticFieldInfo,
   metadata: VcfMetadataContainer,
 ): ConfigCellInfo[] {
-  return getInfoFieldsRegex(metadata, new RegExp(configStatic.name))
+  return getInfoFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
     .filter((field) => !field.nested)
     .map((field) => createConfigFieldInfo(configStatic, field));
 }
@@ -39,7 +39,7 @@ export function initConfigCellGenotype(
   metadata: VcfMetadataContainer,
   sample: SampleContainer,
 ): ConfigCellGenotype[] {
-  return getSampleFieldsRegex(metadata, new RegExp(configStatic.name))
+  return getSampleFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
     .filter((field) => !field.nested)
     .map((field) => createConfigFieldGenotype(configStatic, field, sample));
 }

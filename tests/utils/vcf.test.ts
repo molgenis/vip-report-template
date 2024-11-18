@@ -5,9 +5,11 @@ import {
   getHeaderValue,
   getInfoField,
   getInfoFields,
+  getInfoFieldsRegex,
   getInfoValue,
   getInfoValueCount,
   getInfoValues,
+  getSampleFieldsRegex,
   getSampleValue,
   getSampleValueCount,
   getSampleValues,
@@ -590,6 +592,32 @@ describe("vcf", () => {
       },
       "FORMAT/p/c0": { id: "c0", index: 0 },
       "FORMAT/p/c1": { id: "c1", index: 1 },
+    });
+  });
+
+  describe("getInfoFieldsRegex", () => {
+    const fieldMetadata0 = { id: "f", number: { type: "OTHER" } } as FieldMetadataWrapper;
+    const fieldMetadata1 = { id: "f_with_postfix", number: { type: "OTHER" } } as FieldMetadataWrapper;
+    const fieldMetadata2 = { id: "f", number: { type: "OTHER" } } as FieldMetadataWrapper;
+    const vcfMetadata = {
+      fieldMap: { "INFO/f": fieldMetadata0, "INFO/fx": fieldMetadata1, "FORMAT/f": fieldMetadata2 },
+    } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
+
+    test("get", () => {
+      expect(getInfoFieldsRegex(vcfMetadata, /^f$/)).toStrictEqual([fieldMetadata0]);
+    });
+  });
+
+  describe("getSampleFieldsRegex", () => {
+    const fieldMetadata0 = { id: "f", number: { type: "OTHER" } } as FieldMetadataWrapper;
+    const fieldMetadata1 = { id: "fx", number: { type: "OTHER" } } as FieldMetadataWrapper;
+    const fieldMetadata2 = { id: "fx", number: { type: "OTHER" } } as FieldMetadataWrapper;
+    const vcfMetadata = {
+      fieldMap: { "FORMAT/f": fieldMetadata0, "FORMAT/fx": fieldMetadata1, "INFO/f": fieldMetadata2 },
+    } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
+
+    test("get", () => {
+      expect(getSampleFieldsRegex(vcfMetadata, /^f$/)).toStrictEqual([fieldMetadata0]);
     });
   });
 });

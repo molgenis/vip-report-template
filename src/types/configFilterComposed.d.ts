@@ -1,4 +1,10 @@
-import { ConfigFilterBase, ConfigFilterField, FilterValueCategorical, FilterValueFlag } from "./configFilter";
+import {
+  ConfigFilterBase,
+  ConfigFilterField,
+  ConfigFilterFormat,
+  FilterValueCategorical,
+  FilterValueFlag,
+} from "./configFilter";
 import { SampleContainer } from "../utils/api.ts";
 import { FieldMetadataWrapper } from "../utils/vcf.ts";
 
@@ -39,7 +45,7 @@ export interface ConfigFilterDeNovo extends ConfigFilterBase {
 }
 
 export type ConfigFilterVipC = ConfigFilterField;
-export type ConfigFilterVipCS = ConfigFilterField;
+export type ConfigFilterVipCS = ConfigFilterFormat;
 
 export interface ConfigFilterLocus extends ConfigFilterBase {
   chromosomes: ChromosomeId[];

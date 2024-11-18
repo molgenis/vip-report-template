@@ -51,7 +51,7 @@ describe("config cells field", () => {
       expect(cell.valueCount(record)).toStrictEqual(1);
       expect(cell.value(record, 1)).toStrictEqual(0);
 
-      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field"));
+      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^field$/);
       expect(getInfoValueCount).toHaveBeenCalledWith(record, field);
       expect(getInfoValue).toHaveBeenCalledWith(record, 1, field);
     });
@@ -75,7 +75,7 @@ describe("config cells field", () => {
 
       const cells = initConfigCellInfo(config, metadata);
       expect(cells.length).toStrictEqual(2); // drop nested fields
-      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("VIP/.*"));
+      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^VIP\/.*$/);
     });
 
     test("config matches zero fields", () => {
@@ -87,7 +87,7 @@ describe("config cells field", () => {
 
       const cells = initConfigCellInfo(config, metadata);
       expect(cells.length).toStrictEqual(0);
-      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field_not_in_my_vcf"));
+      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^field_not_in_my_vcf$/);
     });
   });
 
@@ -122,7 +122,7 @@ describe("config cells field", () => {
       expect(cell.valueCount(record)).toStrictEqual(1);
       expect(cell.value(record, 1)).toStrictEqual(0);
 
-      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field"));
+      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, /^field$/);
       expect(getSampleValueCount).toHaveBeenCalledWith(sample, record, field);
       expect(getSampleValue).toHaveBeenCalledWith(sample, record, 1, field);
     });
@@ -146,7 +146,7 @@ describe("config cells field", () => {
 
       const cells = initConfigCellGenotype(config, metadata, sample);
       expect(cells.length).toStrictEqual(2); // drop nested fields
-      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("VIP/.*"));
+      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, /^VIP\/.*$/);
     });
 
     test("config matches zero fields", () => {
@@ -158,7 +158,7 @@ describe("config cells field", () => {
 
       const cells = initConfigCellGenotype(config, metadata, sample);
       expect(cells.length).toStrictEqual(0);
-      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field_not_in_my_vcf"));
+      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, /^field_not_in_my_vcf$/);
     });
   });
 });

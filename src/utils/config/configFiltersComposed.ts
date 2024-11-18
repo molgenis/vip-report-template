@@ -199,5 +199,6 @@ function createConfigFilterVipCS(
     label: () => getLabel(configStatic, vipCSField.label || "VIPC_S"),
     description: () => getDescription(configStatic, vipCSField.description),
     field: { ...vipCSField, categories: treeCategories },
+    sample,
   };
 }

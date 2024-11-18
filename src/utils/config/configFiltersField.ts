@@ -24,7 +24,7 @@ export function initConfigFiltersGenotype(
   metadata: VcfMetadataContainer,
   sample: SampleContainer,
 ): ConfigFilterFormat[] {
-  return getSampleFieldsRegex(metadata, new RegExp(configStatic.name))
+  return getSampleFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
     .filter((field) => !field.nested)
     .map((field) => createConfigFilterGenotype(configStatic, field, sample));
 }
@@ -43,7 +43,7 @@ export function initConfigFiltersInfo(
   configStatic: ConfigStaticFieldInfo,
   metadata: VcfMetadataContainer,
 ): ConfigFilterField[] {
-  return getInfoFieldsRegex(metadata, new RegExp(configStatic.name))
+  return getInfoFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
     .filter((field) => !field.nested)
     .map((field) => createConfigFilterInfo(configStatic, field));
 }

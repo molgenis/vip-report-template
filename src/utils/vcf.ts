@@ -321,7 +321,7 @@ function getField(metadata: VcfMetadataContainer, prefix: string, fieldId: Field
 
 function getFieldsRegex(metadata: VcfMetadataContainer, prefix: string, regex: RegExp): FieldMetadataWrapper[] {
   return Object.entries(metadata.fieldMap)
-    .filter(([key]) => key.startsWith(`${prefix}/`) && regex.test(key))
+    .filter(([key]) => key.startsWith(`${prefix}/`) && regex.test(key.substring(`${prefix}/`.length)))
     .map(([, value]) => value);
 }
 

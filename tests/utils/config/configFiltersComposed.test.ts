@@ -445,6 +445,7 @@ describe("config filters composed", () => {
           ...fieldVipCSBase,
           categories: { a: { label: "a_label" }, c: { label: "c_label" } },
         });
+        expect(filter.sample).toStrictEqual(sample);
         expect(getSampleField).toHaveBeenCalledWith(vcfMetadata, "VIPC_S");
       });
 

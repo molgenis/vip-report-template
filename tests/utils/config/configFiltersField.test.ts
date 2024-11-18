@@ -36,7 +36,7 @@ describe("config filters field", () => {
       expect(filter.label()).toStrictEqual("my_field_label");
       expect(filter.description()).toStrictEqual("my_field_description");
 
-      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field"));
+      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^field$/);
     });
 
     test("config matches multiple fields", () => {
@@ -58,7 +58,7 @@ describe("config filters field", () => {
 
       const filters = initConfigFiltersInfo(config, metadata);
       expect(filters.length).toStrictEqual(2); // drop nested fields
-      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("VIP/.*"));
+      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^VIP\/.*$/);
     });
 
     test("config matches zero fields", () => {
@@ -70,7 +70,7 @@ describe("config filters field", () => {
 
       const filters = initConfigFiltersInfo(config, metadata);
       expect(filters.length).toStrictEqual(0);
-      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field_not_in_my_vcf"));
+      expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^field_not_in_my_vcf$/);
     });
   });
 
@@ -100,7 +100,7 @@ describe("config filters field", () => {
       expect(filter.label()).toStrictEqual("my_field_label");
       expect(filter.description()).toStrictEqual("my_field_description");
 
-      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field"));
+      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, /^field$/);
     });
 
     test("config matches multiple fields", () => {
@@ -122,7 +122,7 @@ describe("config filters field", () => {
 
       const filters = initConfigFiltersGenotype(config, metadata, sample);
       expect(filters.length).toStrictEqual(2); // drop nested fields
-      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("VIP/.*"));
+      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, /^VIP\/.*$/);
     });
 
     test("config matches zero fields", () => {
@@ -134,7 +134,7 @@ describe("config filters field", () => {
 
       const filters = initConfigFiltersGenotype(config, metadata, sample);
       expect(filters.length).toStrictEqual(0);
-      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, new RegExp("field_not_in_my_vcf"));
+      expect(getSampleFieldsRegex).toHaveBeenCalledWith(metadata, /^field_not_in_my_vcf$/);
     });
   });
 });

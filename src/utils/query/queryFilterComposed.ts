@@ -4,11 +4,15 @@ import {
   ConfigFilterDeNovo,
   ConfigFilterHpo,
   ConfigFilterInheritanceMatch,
+  ConfigFilterVipC,
+  ConfigFilterVipCS,
   FilterValueAllelicImbalance,
   FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
   FilterValueLocus,
+  FilterValueVipC,
+  FilterValueVipCS,
 } from "../../types/configFilterComposed";
 import { FilterValue } from "../../types/configFilter";
 import { Query } from "@molgenis/vip-report-api";
@@ -19,6 +23,7 @@ import {
   createQueryFilterClosedIntervalOutside,
   createQueryFilterString,
 } from "./queryFilter.ts";
+import { createQueryFilterFieldCategorical } from "./queryFilterField.ts";
 
 export function createQueryFilterComposed(filter: ConfigFilterComposed, filterValue: FilterValue): Query {
   let query: Query;
@@ -44,6 +49,12 @@ export function createQueryFilterComposed(filter: ConfigFilterComposed, filterVa
     case "deNovo":
       query = createQueryFilterDeNovo(filter as ConfigFilterDeNovo, filterValue as FilterValueDeNovo);
       break;
+    case "vipC":
+      query = createQueryFilterVipC(filter as ConfigFilterVipC, filterValue as FilterValueVipC);
+      break;
+    case "vipCS":
+      query = createQueryFilterVipCS(filter as ConfigFilterVipCS, filterValue as FilterValueVipCS);
+      break;
     default:
       throw new Error(`unexpected filter id '${filter.id}'`);
   }
@@ -52,11 +63,8 @@ export function createQueryFilterComposed(filter: ConfigFilterComposed, filterVa
 
 function createQueryFilterHpo(filter: ConfigFilterHpo, filterValue: FilterValueHpo): Query {
   const field = filter.field;
-
   const selector = createSelectorInfo(field);
-  const multiValue = field.number.count !== 1;
-  const nestedValue = field.parent !== undefined;
-  return createQueryFilterString(selector, filterValue, multiValue, nestedValue, field.categories);
+  return createQueryFilterFieldCategorical(selector, field, filterValue);
 }
 
 function createQueryFilterLocus(filterValue: FilterValueLocus): Query {
@@ -224,4 +232,16 @@ function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: Filter
     queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
   }
   return createQueryComposed(queryParts, "and");
+}
+
+function createQueryFilterVipC(filter: ConfigFilterVipC, filterValue: FilterValueVipC): Query {
+  const field = filter.field;
+  const selector = createSelectorInfo(field);
+  return createQueryFilterFieldCategorical(selector, field, filterValue);
+}
+
+function createQueryFilterVipCS(filter: ConfigFilterVipCS, filterValue: FilterValueVipCS): Query {
+  const field = filter.field;
+  const selector = createSelectorSample(filter.sample, field);
+  return createQueryFilterFieldCategorical(selector, field, filterValue);
 }
