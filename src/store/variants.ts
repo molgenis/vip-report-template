@@ -96,7 +96,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     let filterValues = stateVariantType.filterValues;
     if (filterValues === undefined) {
       filterValues = {};
-      stateVariantType.filterValues = {};
+      stateVariantType.filterValues = filterValues;
     }
     return filterValues;
   }
@@ -129,7 +129,8 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
       );
     },
     getPageNumber(): number | null {
-      return getVariantsState(state).page?.number || null;
+      const page = getVariantsState(state).page;
+      return page ? page.number : null;
     },
     setPageNumber(pageNumber: number) {
       setState(
@@ -141,7 +142,8 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
       console.log("state change", JSON.stringify(state));
     },
     getPageSize(): number | null {
-      return getVariantsState(state).page?.size || null;
+      const page = getVariantsState(state).page;
+      return page ? page.size : null;
     },
     setPageSize(pageSize: number) {
       setState(
