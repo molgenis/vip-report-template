@@ -6,7 +6,7 @@ import { parseVariantType } from "../utils/variantType.ts";
 import { VariantsContainer } from "../components/VariantsContainer";
 import { VariantBreadcrumb } from "../components/VariantBreadcrumb.tsx";
 import { useStore } from "../store";
-import { wrapStore } from "../store/variants.tsx";
+import { wrapStore } from "../store/variants.ts";
 
 export const SampleVariants: Component<RouteSectionProps> = (props) => {
   const store = useStore();

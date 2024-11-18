@@ -20,7 +20,7 @@ import { href } from "../utils/utils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigStatic } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
-import { VariantStore } from "../store/variants.tsx";
+import { VariantStore } from "../store/variants.ts";
 
 export const VariantsContainer: Component<{
   store: VariantStore;

@@ -1,9 +1,9 @@
 import { VariantType } from "../utils/variantType.ts";
 import { SampleContainer } from "../utils/api.ts";
-import { AppState, AppStateVariantType, AppStateVariantTypes, AppStore, Page, Sort } from "./index.tsx";
 import { FilterValueMap } from "../types/filter";
 import { FilterId, FilterValue } from "../types/configFilter";
 import { produce } from "solid-js/store";
+import { AppState, AppStateVariantType, AppStateVariantTypes, AppStore, Page, Sort } from "../types/store";
 
 export type VariantStore = {
   getFilterValues(): FilterValueMap;

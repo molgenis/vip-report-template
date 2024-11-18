@@ -6,7 +6,7 @@ import { VariantsContainer } from "../components/VariantsContainer";
 import { getConfig, getMetadata } from "./data/data";
 import { VariantBreadcrumb } from "../components/VariantBreadcrumb.tsx";
 import { useStore } from "../store";
-import { wrapStore } from "../store/variants.tsx";
+import { wrapStore } from "../store/variants.ts";
 
 export const Variants: Component<RouteSectionProps> = (props) => {
   const store = useStore();
