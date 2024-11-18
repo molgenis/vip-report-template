@@ -13,7 +13,11 @@ export type VariantStore = {
   setPageNumber(pageNumber: number): void;
   getPageSize(): number | null;
   setPageSize(pageSize: number): void;
-  getSort(): Sort | null;
+  /**
+   * null:      do not sort,                the caller of this function should not fall back to a default sort
+   * undefined: sort behavior is undefined, the caller of this function could fall back to a default sort
+   */
+  getSort(): Sort | null | undefined;
   setSort(sort: Sort): void;
   clearSort(): void;
 };
@@ -154,8 +158,8 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
       );
       console.log("state change", JSON.stringify(state));
     },
-    getSort(): Sort | null {
-      return getVariantsState(state).sort || null;
+    getSort(): Sort | null | undefined {
+      return getVariantsState(state).sort;
     },
     setSort(sort: Sort) {
       setState(
@@ -170,7 +174,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
       setState(
         produce((state) => {
           const variantsState = getCreateVariantsState(state);
-          delete variantsState.sort;
+          variantsState.sort = null;
         }),
       );
     },

@@ -8,7 +8,11 @@ export type Sort = SortOrder | SortOrder[];
 export type AppStateVariantType = {
   filterValues?: FilterValueMap;
   page?: { number: number; size: number };
-  sort?: SortOrder | SortOrder[];
+  /**
+   * null:      do not sort,                the caller of this function should not fall back to a default sort
+   * undefined: sort behavior is undefined, the caller of this function could fall back to a default sort
+   */
+  sort?: Sort | null;
 };
 export type AppStateVariantTypes = Partial<Record<VariantTypeId, AppStateVariantType>>;
 type AppStateSamples = {

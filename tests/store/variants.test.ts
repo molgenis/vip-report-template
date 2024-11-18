@@ -99,5 +99,24 @@ describe("variants", () => {
         expect(store.getPageNumber()).toStrictEqual(0);
       });
     });
+
+    describe("setSort", () => {
+      test("initial sort is undefined", () => {
+        const store = wrapStore(createAppStore(), sample, variantType);
+        expect(store.getSort()).toStrictEqual(undefined); // must not be null
+      });
+
+      test("clear sort", () => {
+        const store = wrapStore(createAppStore(), sample, variantType);
+        store.clearSort();
+        expect(store.getSort()).toStrictEqual(null); // must not be undefined
+      });
+
+      test("clear sort", () => {
+        const store = wrapStore(createAppStore(), sample, variantType);
+        store.setSort({ property: "f" });
+        expect(store.getSort()).toStrictEqual({ property: "f" });
+      });
+    });
   });
 });

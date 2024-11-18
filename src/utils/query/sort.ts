@@ -25,12 +25,16 @@ class InvalidSortPathError extends Error {
   }
 }
 
+/**
+ * @param storeSort null=do not sort, undefined=sort behavior is undefined, fall back to default sort
+ * @param configSort default sort
+ */
 export function createSort(
-  storeSort: SortOrder | SortOrder[] | null,
+  storeSort: SortOrder | SortOrder[] | null | undefined,
   configSort: ConfigSort | undefined,
 ): SortOrder | SortOrder[] {
-  if (storeSort) {
-    return storeSort;
+  if (storeSort !== undefined) {
+    return storeSort || [];
   } else {
     const sortOrders = configSort != undefined ? configSort.orders.map((order) => mapOrder(order)) : undefined;
     return sortOrders !== undefined ? sortOrders : [];
