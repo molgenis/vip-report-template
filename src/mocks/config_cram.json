@@ -441,8 +441,12 @@
           "name": "CSQ/IncompletePenetrance"
         },
         {
-          "type": "info",
-          "name": "CSQ/VIPC"
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "composed",
+          "name": "vipCS"
         },
         {
           "type": "info",
@@ -495,8 +499,12 @@
           "name": "CSQ/SYMBOL"
         },
         {
-          "type": "info",
-          "name": "CSQ/VIPC"
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "composed",
+          "name": "vipCS"
         }
       ]
     }

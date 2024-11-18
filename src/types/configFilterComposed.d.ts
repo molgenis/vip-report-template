@@ -5,7 +5,8 @@ import { FieldMetadataWrapper } from "../utils/vcf.ts";
 export type ChromosomeId = string;
 export type FilterValueHpo = FilterValueCategorical;
 export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?: number };
-
+export type FilterValueVipC = FilterValueCategorical;
+export type FilterValueVipCS = FilterValueCategorical;
 export type FilterValueAllelicImbalance = FilterValueFlag;
 export type FilterValueInheritanceMatch = FilterValueFlag;
 export type FilterValueDeNovo = FilterValueFlag;
@@ -15,7 +16,9 @@ export type ConfigFilterComposed =
   | ConfigFilterLocus
   | ConfigFilterAllelicImbalance
   | ConfigFilterInheritanceMatch
-  | ConfigFilterDeNovo;
+  | ConfigFilterDeNovo
+  | ConfigFilterVipC
+  | ConfigFilterVipCS;
 
 export type ConfigFilterHpo = ConfigFilterField;
 
@@ -35,6 +38,9 @@ export interface ConfigFilterDeNovo extends ConfigFilterBase {
   vidField: FieldMetadataWrapper;
 }
 
+export type ConfigFilterVipC = ConfigFilterField;
+export type ConfigFilterVipCS = ConfigFilterField;
+
 export interface ConfigFilterLocus extends ConfigFilterBase {
   chromosomes: ChromosomeId[];
 }
@@ -43,4 +49,6 @@ export type FilterValueComposed =
   | FilterValueHpo
   | FilterValueLocus
   | FilterValueAllelicImbalance
-  | FilterValueInheritanceMatch;
+  | FilterValueInheritanceMatch
+  | FilterValueVipC
+  | FilterValueVipCS;

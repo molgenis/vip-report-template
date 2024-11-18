@@ -1,4 +1,4 @@
-import { ConfigFilters, ConfigStaticField, ConfigStaticFieldItem } from "../../types/config";
+import { ConfigFilters, ConfigStaticField, ConfigStaticFieldItem, ConfigVip } from "../../types/config";
 import { ConfigFilter } from "../../types/configFilter";
 import { initConfigFilterComposed } from "./configFiltersComposed.ts";
 import { UnexpectedEnumValueException } from "../error.ts";
@@ -8,6 +8,7 @@ import { initConfigFiltersGenotype, initConfigFiltersInfo } from "./configFilter
 
 export function initConfigFilters(
   configStaticFields: ConfigStaticField[],
+  configVip: ConfigVip,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilters {
@@ -16,7 +17,7 @@ export function initConfigFilters(
     if (configStaticFilter.type === "group") {
       throw new Error("filter groups are not supported");
     } else {
-      configFilters = createConfigFilterItem(configStaticFilter as ConfigStaticFieldItem, metadata, sample);
+      configFilters = createConfigFilterItem(configStaticFilter as ConfigStaticFieldItem, configVip, metadata, sample);
     }
     return configFilters;
   });
@@ -24,6 +25,7 @@ export function initConfigFilters(
 
 function createConfigFilterItem(
   configStaticField: ConfigStaticFieldItem,
+  configVip: ConfigVip,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilter[] {
@@ -41,7 +43,7 @@ function createConfigFilterItem(
       configFilters = sample ? initConfigFiltersGenotype(configStaticField, metadata.records, sample) : []; //TODO inconsistent with cells which throws error instead of ignoring
       break;
     case "composed":
-      configFilters = [initConfigFilterComposed(configStaticField, metadata, sample)];
+      configFilters = [initConfigFilterComposed(configStaticField, configVip, metadata, sample)];
       break;
     default:
       throw new UnexpectedEnumValueException(configStaticField["type"]);

@@ -17,6 +17,10 @@ const schema: JTDSchemaType<ConfigStatic> = {
           properties: {
             vcf: {
               properties: {
+                filter: {
+                  properties: { classes: { type: "string" } },
+                  additionalProperties: true,
+                },
                 filter_samples: {
                   properties: { classes: { type: "string" } },
                   additionalProperties: true,

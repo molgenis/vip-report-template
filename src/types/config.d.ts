@@ -102,7 +102,7 @@ export type ConfigStaticSorts = { [key in ConfigStaticVariantType]?: ConfigStati
 
 export type ConfigStaticVipParamsCram = { call_snv: boolean; call_str: boolean; call_sv: boolean; call_cnv: boolean };
 
-export type ConfigStaticVipParamsVcf = { filter_samples: { classes: string } };
+export type ConfigStaticVipParamsVcf = { filter: { classes: string }; filter_samples: { classes: string } };
 
 export type ConfigStaticVipParams = {
   cram?: ConfigStaticVipParamsCram;

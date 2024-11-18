@@ -7,6 +7,7 @@ import {
   ConfigStaticVariants,
   ConfigStaticVariantTypeFields,
   ConfigVariants,
+  ConfigVip,
 } from "../../types/config";
 import { initConfigFilters } from "./configFilters.ts";
 import { MetadataContainer, SampleContainer } from "../api.ts";
@@ -32,19 +33,20 @@ export function initConfig(
     if (configStaticVariants === undefined) throw new ConfigInvalidMissingPropertyError("variants"); // FIXME remove after resolving FIXME in configValidator.ts
   }
 
-  const configVariants = initConfigVariants(configStaticVariants, variantType, metadata, sample);
+  const configVariants = initConfigVariants(configStaticVariants, configVip, variantType, metadata, sample);
 
   return { vip: configVip, variants: configVariants };
 }
 
 function initConfigVariants(
   config: ConfigStaticVariants,
+  configVip: ConfigVip,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
 ): ConfigVariants {
   const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample);
-  const filters = initConfigVariantsFilters(config.filters, variantType, metadata, sample);
+  const filters = initConfigVariantsFilters(config.filters, configVip, variantType, metadata, sample);
   const sorts = initConfigVariantsSorts(config.sorts, variantType, metadata);
   return {
     cells,
@@ -68,12 +70,13 @@ function initConfigVariantsCells(
 
 function initConfigVariantsFilters(
   config: ConfigStaticVariantTypeFields | undefined,
+  configVip: ConfigVip,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
 ) {
   const configValue = config && (config[variantType.id] || config["all"]);
-  return configValue ? initConfigFilters(configValue, metadata, sample) : [];
+  return configValue ? initConfigFilters(configValue, configVip, metadata, sample) : [];
 }
 
 function initConfigVariantsSorts(

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfigFilters } from "../../../src/utils/config/configFilters.ts";
-import { ConfigStaticField } from "../../../src/types/config";
+import { ConfigStaticField, ConfigVip } from "../../../src/types/config";
 import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { initConfigFilterFixed } from "../../../src/utils/config/configFiltersFixed.ts";
 import { ConfigFilterField, ConfigFilterFixed, ConfigFilterFormat } from "../../../src/types/configFilter";
@@ -21,6 +21,8 @@ describe("config filters", () => {
   const sample: Partial<SampleContainer> | null = {};
 
   describe("initConfigFilters", () => {
+    const configVip = {} as ConfigVip;
+
     test("regular filters config", () => {
       vi.mocked(initConfigFilterFixed).mockReturnValue(0 as unknown as ConfigFilterFixed);
       vi.mocked(initConfigFiltersInfo).mockReturnValue([1 as unknown as ConfigFilterField]);
@@ -34,9 +36,9 @@ describe("config filters", () => {
         { type: "composed", name: "my_composed" },
       ];
 
-      expect(initConfigFilters(config, metadata as MetadataContainer, sample as SampleContainer | null)).toStrictEqual([
-        0, 1, 2, 3,
-      ]);
+      expect(
+        initConfigFilters(config, configVip, metadata as MetadataContainer, sample as SampleContainer | null),
+      ).toStrictEqual([0, 1, 2, 3]);
     });
 
     test("exclude filters that are not applicable", () => {
@@ -50,9 +52,9 @@ describe("config filters", () => {
         { type: "composed", name: "unknown_composed" },
       ];
 
-      expect(initConfigFilters(config, metadata as MetadataContainer, sample as SampleContainer | null)).toStrictEqual(
-        [],
-      );
+      expect(
+        initConfigFilters(config, configVip, metadata as MetadataContainer, sample as SampleContainer | null),
+      ).toStrictEqual([]);
     });
   });
 });
