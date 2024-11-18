@@ -10,6 +10,7 @@ export default defineConfig(({ command }) => ({
     pure: command === "build" ? ["console.log"] : [],
   },
   build: {
+    reportCompressedSize: false,
     // inline plugin build options
     rollupOptions: {
       input: ["./index.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader.mjs"],
@@ -19,7 +20,6 @@ export default defineConfig(({ command }) => ({
     },
   },
   assetsInclude: "**/*.blob",
-  logLevel: command === "build" ? "warn" : "info",
   test: {
     coverage: {
       include: ["src/**"],
