@@ -76,14 +76,6 @@ describe("config", () => {
       expect(initConfigSorts).toBeCalledTimes(0);
     });
 
-    test("throws error on missing config property 'vip'", () => {
-      const config = {} as ConfigStatic;
-      const variantType: Partial<VariantType> = { id: "all" };
-      expect(() =>
-        initConfig(config, variantType as VariantType, metadata as MetadataContainer, sample as SampleContainer | null),
-      ).toThrow(/^config invalid: missing required property 'vip'$/);
-    });
-
     test("throws error on missing config property 'variants'", () => {
       const config = { vip: { params: {} } as ConfigStaticVip } as ConfigStatic;
       const variantType: Partial<VariantType> = { id: "all" };

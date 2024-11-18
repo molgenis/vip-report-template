@@ -21,17 +21,15 @@ export function initConfig(
   metadata: MetadataContainer,
   sample: SampleContainer | null,
 ): Config {
-  const configStaticVip = config.vip;
-  if (configStaticVip === undefined) throw new ConfigInvalidMissingPropertyError("vip");
-  const configVip = initConfigVip(configStaticVip, metadata);
+  const configVip = initConfigVip(config.vip, metadata);
 
   let configStaticVariants;
   if (sample !== null) {
     configStaticVariants = config.sample_variants;
-    if (configStaticVariants === undefined) throw new ConfigInvalidMissingPropertyError("sample_variants");
+    if (configStaticVariants === undefined) throw new ConfigInvalidMissingPropertyError("sample_variants"); // FIXME remove after resolving FIXME in configValidator.ts
   } else {
     configStaticVariants = config.variants;
-    if (configStaticVariants === undefined) throw new ConfigInvalidMissingPropertyError("variants");
+    if (configStaticVariants === undefined) throw new ConfigInvalidMissingPropertyError("variants"); // FIXME remove after resolving FIXME in configValidator.ts
   }
 
   const configVariants = initConfigVariants(configStaticVariants, variantType, metadata, sample);
