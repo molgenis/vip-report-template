@@ -314,8 +314,8 @@
               "name": "CSQ/Consequence"
             },
             {
-              "type": "info",
-              "name": "CSQ/SYMBOL"
+              "type": "composed",
+              "name": "gene"
             },
             {
               "type": "info",
@@ -397,8 +397,8 @@
           "type": "group",
           "fields": [
             {
-              "type": "info",
-              "name": "CSQ/SYMBOL"
+              "type": "composed",
+              "name": "gene"
             },
             {
               "type": "info",
