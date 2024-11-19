@@ -82,6 +82,11 @@
           "description": "Mitochondrial"
         }
       }
+    },
+    "VIPC_S": {
+      "label": "VIP sample classification",
+      "numberType": "OTHER",
+      "type": "STRING"
     }
   },
   "info": {
@@ -667,7 +672,7 @@
           "type": "STRING"
         },
         "VIPC": {
-          "label": "VIP",
+          "label": "VIP classification",
           "description": "Variant consequence classification predicted by the Variant Interpretation Pipeline (VIP), see https://vip.molgeniscloud.org/ and https://doi.org/10.1101/2024.04.11.24305656",
           "numberType": "NUMBER",
           "numberCount": 1,
