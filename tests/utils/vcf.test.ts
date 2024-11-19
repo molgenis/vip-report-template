@@ -134,6 +134,32 @@ describe("vcf", () => {
       expect(getInfoValue(record, 0, fieldMetadata)).toStrictEqual([]); // treat null and undefined the same
     });
 
+    test("field categorical count=*", () => {
+      const record = { ...recordBase, data: { ...recordBase.data, n: { f: ["cat1", "cat2"] } } };
+      const fieldMetadata = {
+        id: "f",
+        type: "CATEGORICAL",
+        categories: {
+          cat1: { label: "cat1_label", description: "cat1_description" },
+          cat2: { label: "cat2_label", description: "cat2_description" },
+        },
+        number: { type: "OTHER" },
+        index: 0,
+      } as FieldMetadataWrapper;
+      expect(getInfoValue(record, 0, fieldMetadata)).toStrictEqual([
+        {
+          value: "cat1",
+          label: "cat1_label",
+          description: "cat1_description",
+        },
+        {
+          value: "cat2",
+          label: "cat2_label",
+          description: "cat2_description",
+        },
+      ]);
+    });
+
     test("field categorical count=* value=null", () => {
       const record = { ...recordBase, data: { ...recordBase.data, n: { f: [] } } };
       const fieldMetadata = {
