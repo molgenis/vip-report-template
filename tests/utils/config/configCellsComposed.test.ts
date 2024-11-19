@@ -790,6 +790,81 @@ describe("config cells composed", () => {
       });
     });
 
+    describe("vipCS", () => {
+      const configBase: ConfigStaticFieldComposed = {
+        type: "composed",
+        name: "vipCS",
+      };
+      const sample = { item: { id: 2 } } as SampleContainer;
+
+      test("vipCS with required fields", () => {
+        const fieldVipCS = { id: "FORMAT/VIPC_S" };
+        vi.mocked(getSampleFields).mockReturnValue([fieldVipCS, undefined] as FieldMetadataWrapper[]);
+        vi.mocked(getSampleValue).mockReturnValue(["1", "2"]);
+        vi.mocked(getSampleValues).mockReturnValue([
+          [
+            { value: "U1", label: "U1 label" },
+            { value: "U2", label: "U2 label" },
+          ],
+          undefined,
+        ]);
+
+        const cell = initConfigCellComposed(
+          configBase,
+          variantType,
+          metadata,
+          sample,
+        ) as ConfigCellCustom<CellValueCustom>;
+        expect(cell.type).toStrictEqual("composed");
+        expect(cell.id).toStrictEqual("vipCS");
+        expect(cell.label()).toStrictEqual("VIP sample");
+        expect(cell.description()).toStrictEqual("VIP sample classification");
+        expect(cell.valueCount(record)).toStrictEqual(2);
+        expect(cell.value(record, 1)).toStrictEqual({ vipCS: { value: "U2", label: "U2 label" }, vipPS: undefined });
+
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "VIPC_S", "VIPP_S");
+        expect(getSampleValue).toHaveBeenCalledWith(sample, record, 0, fieldVipCS);
+        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 0, fieldVipCS, undefined);
+      });
+
+      test("vipCS with required and optional fields", () => {
+        const fieldVipCS = { id: "FORMAT/VIPC_S" };
+        const fieldVipPS = { id: "FORMAT/VIPP_S" };
+        vi.mocked(getSampleFields).mockReturnValue([fieldVipCS, fieldVipPS] as FieldMetadataWrapper[]);
+        vi.mocked(getSampleValue).mockReturnValue(["x"]);
+        vi.mocked(getSampleValues).mockReturnValue([[{ value: "U1", label: "U1 label" }], ["a&b&c"]]);
+
+        const cell = initConfigCellComposed(
+          configBase,
+          variantType,
+          metadata,
+          sample,
+        ) as ConfigCellCustom<CellValueCustom>;
+        expect(cell.type).toStrictEqual("composed");
+        expect(cell.id).toStrictEqual("vipCS");
+        expect(cell.label()).toStrictEqual("VIP sample");
+        expect(cell.description()).toStrictEqual("VIP sample classification");
+        expect(cell.valueCount(record)).toStrictEqual(1);
+        expect(cell.value(record, 0)).toStrictEqual({
+          vipCS: { value: "U1", label: "U1 label" },
+          vipPS: ["a", "b", "c"],
+        });
+
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "VIPC_S", "VIPP_S");
+        expect(getSampleValue).toHaveBeenCalledWith(sample, record, 0, fieldVipCS);
+        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 0, fieldVipCS, fieldVipPS);
+      });
+
+      test("vipCS without sample", () => {
+        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+      });
+
+      test("vipCS without required metadata", () => {
+        vi.mocked(getSampleFields).mockReturnValue([undefined, undefined]);
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+      });
+    });
+
     describe("vkgl", () => {
       const configBase: ConfigStaticFieldComposed = {
         type: "composed",

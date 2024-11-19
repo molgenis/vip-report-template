@@ -20,10 +20,12 @@ import {
   CellValueLocus,
   CellValueRef,
   CellValueVipC,
+  CellValueVipCS,
   CellValueVkgl,
 } from "../../../types/configCellComposed";
 import { FieldVkgl } from "./FieldVkgl";
 import { FieldInheritanceModes } from "./FieldInheritanceModes";
+import { FieldVipCS } from "./FieldVipCS.tsx";
 
 export const FieldComposed: Component<{
   config: ConfigCellCustom<CellValueCustom>;
@@ -59,6 +61,9 @@ export const FieldComposed: Component<{
       </Match>
       <Match when={id() === "vipC"}>
         <FieldVipC value={props.value as CellValueVipC} />
+      </Match>
+      <Match when={id() === "vipCS"}>
+        <FieldVipCS value={props.value as CellValueVipCS} />
       </Match>
       <Match when={id() === "vkgl"}>
         <FieldVkgl value={props.value as CellValueVkgl} />

@@ -13,6 +13,7 @@ import {
   CellValueLocus,
   CellValueRef,
   CellValueVipC,
+  CellValueVipCS,
   CellValueVkgl,
 } from "../../types/configCellComposed";
 import {
@@ -70,6 +71,9 @@ export function initConfigCellComposed(
       break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
+      break;
+    case "vipCS":
+      fieldConfig = createConfigFieldCustomVipCS(configStatic, metadata.records, sample);
       break;
     case "vkgl":
       fieldConfig = createConfigFieldCustomVkgl(configStatic, metadata.records);
@@ -373,6 +377,36 @@ function createConfigFieldCustomVipC(
         href: href([...components, "variants", variantType.id, "variant", record.id, "consequences", valueIndex]),
         vipC,
         vipP,
+      };
+    },
+  };
+}
+
+function createConfigFieldCustomVipCS(
+  config: ConfigStaticFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueVipCS> | null {
+  if (sample === null) return null;
+
+  const [fieldVipCS, fieldVipPS] = getSampleFields(metadata, "VIPC_S", "VIPP_S");
+  if (fieldVipCS == null) return null;
+
+  return {
+    type: "composed",
+    id: "vipCS",
+    label: () => getLabel(config, "VIP sample"),
+    description: () => getDescription(config, "VIP sample classification"),
+    valueCount: (record: Item<VcfRecord>) => (getSampleValue(sample, record, 0, fieldVipCS) as string[]).length,
+    value: (record: Item<VcfRecord>, valueIndex: number): CellValueVipCS => {
+      const [vipCS, vipPS] = getSampleValues(sample, record, 0, fieldVipCS, fieldVipPS) as [
+        ValueCategorical[],
+        string[] | undefined,
+      ];
+
+      return {
+        vipCS: vipCS[valueIndex]!,
+        vipPS: vipPS && vipPS[valueIndex]!.split("&"),
       };
     },
   };

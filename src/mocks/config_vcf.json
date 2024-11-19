@@ -262,6 +262,10 @@
             },
             {
               "type": "composed",
+              "name": "vipCS"
+            },
+            {
+              "type": "composed",
               "name": "vkgl"
             },
             {
@@ -341,6 +345,10 @@
             },
             {
               "type": "composed",
+              "name": "vipCS"
+            },
+            {
+              "type": "composed",
               "name": "vkgl"
             },
             {
@@ -409,6 +417,10 @@
             {
               "type": "composed",
               "name": "vipC"
+            },
+            {
+              "type": "composed",
+              "name": "vipCS"
             }
           ]
         }

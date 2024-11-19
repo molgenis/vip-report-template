@@ -58,6 +58,11 @@ export type CellValueVipC = {
   vipP: string[] | undefined;
 };
 
+export type CellValueVipCS = {
+  vipCS: ValueCategorical;
+  vipPS: string[] | undefined;
+};
+
 export type CellValueVkgl = {
   vkglCl: ValueCategorical;
   vkglAmc: ValueCategorical | undefined;
@@ -80,4 +85,5 @@ export type CellValueCustom =
   | CellValueLocus
   | CellValueRef
   | CellValueVipC
+  | CellValueVipCS
   | CellValueVkgl;
