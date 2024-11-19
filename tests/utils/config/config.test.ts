@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfig } from "../../../src/utils/config/config.ts";
-import { ConfigStatic, ConfigStaticVariants, ConfigStaticVip, ConfigVip } from "../../../src/types/config";
+import { ConfigJson, ConfigJsonVariants, ConfigJsonVip, ConfigVip } from "../../../src/types/config";
 import { MetadataContainer, SampleContainer } from "../../../src/utils/api.ts";
 import { VariantType } from "../../../src/utils/variantType.ts";
 import { initConfigCells } from "../../../src/utils/config/configCells.ts";
@@ -21,7 +21,7 @@ describe("config", () => {
     vi.resetAllMocks();
   });
 
-  const configVariantsMinimal: ConfigStaticVariants = {
+  const configVariantsMinimal: ConfigJsonVariants = {
     cells: {
       all: [
         {
@@ -41,9 +41,9 @@ describe("config", () => {
       vi.mocked(initConfigFilters).mockReturnValue([2 as unknown as ConfigFilter]);
       vi.mocked(initConfigSorts).mockReturnValue([3 as unknown as ConfigSort]);
 
-      const config: ConfigStatic = {
-        vip: { params: {} } as ConfigStaticVip,
-        sample_variants: {} as ConfigStaticVariants,
+      const config: ConfigJson = {
+        vip: { params: {} } as ConfigJsonVip,
+        sample_variants: {} as ConfigJsonVariants,
         variants: {
           ...configVariantsMinimal,
           filters: { all: [] },
@@ -61,9 +61,9 @@ describe("config", () => {
       vi.mocked(initConfigVip).mockReturnValue(0 as unknown as ConfigVip);
       vi.mocked(initConfigCells).mockReturnValue([1 as unknown as ConfigCell]);
 
-      const config: ConfigStatic = {
-        vip: { params: {} } as ConfigStaticVip,
-        sample_variants: {} as ConfigStaticVariants,
+      const config: ConfigJson = {
+        vip: { params: {} } as ConfigJsonVip,
+        sample_variants: {} as ConfigJsonVariants,
         variants: configVariantsMinimal,
       };
 
@@ -77,7 +77,7 @@ describe("config", () => {
     });
 
     test("throws error on missing config property 'variants'", () => {
-      const config = { vip: { params: {} } as ConfigStaticVip } as ConfigStatic;
+      const config = { vip: { params: {} } as ConfigJsonVip } as ConfigJson;
       const variantType: Partial<VariantType> = { id: "all" };
       expect(() =>
         initConfig(config, variantType as VariantType, metadata as MetadataContainer, sample as SampleContainer | null),
@@ -85,7 +85,7 @@ describe("config", () => {
     });
 
     test("throws error on missing config property 'sample_variants'", () => {
-      const config = { vip: { params: {} } as ConfigStaticVip } as ConfigStatic;
+      const config = { vip: { params: {} } as ConfigJsonVip } as ConfigJson;
       const variantType = { id: "all" } as VariantType;
       const sample = {} as SampleContainer;
       expect(() => initConfig(config, variantType as VariantType, metadata as MetadataContainer, sample)).toThrow(
@@ -94,8 +94,8 @@ describe("config", () => {
     });
 
     test("throws error on empty config property 'cells.all'", () => {
-      const config: ConfigStatic = {
-        vip: { params: {} } as ConfigStaticVip,
+      const config: ConfigJson = {
+        vip: { params: {} } as ConfigJsonVip,
         sample_variants: { cells: { all: [] } },
         variants: { cells: { all: [] } },
       };
@@ -107,8 +107,8 @@ describe("config", () => {
     });
 
     test("throws error on missing config property 'cells.all'", () => {
-      const config: ConfigStatic = {
-        vip: { params: {} } as ConfigStaticVip,
+      const config: ConfigJson = {
+        vip: { params: {} } as ConfigJsonVip,
         sample_variants: { cells: { all: [] } },
         variants: { cells: {} },
       };

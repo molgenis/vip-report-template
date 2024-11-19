@@ -1,4 +1,4 @@
-import { ConfigStaticFieldGenotype, ConfigStaticFieldInfo } from "../../types/config";
+import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo } from "../../types/config";
 import { CellValueGenotype, CellValueInfo, ConfigCellGenotype, ConfigCellInfo } from "../../types/configCells";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import {
@@ -15,7 +15,7 @@ import { SampleContainer, VcfMetadataContainer } from "../api.ts";
 import { getDescription, getLabel } from "./config.ts";
 
 export function initConfigCellInfo(
-  configStatic: ConfigStaticFieldInfo,
+  configStatic: ConfigJsonFieldInfo,
   metadata: VcfMetadataContainer,
 ): ConfigCellInfo[] {
   return getInfoFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
@@ -23,7 +23,7 @@ export function initConfigCellInfo(
     .map((field) => createConfigFieldInfo(configStatic, field));
 }
 
-function createConfigFieldInfo(configStatic: ConfigStaticFieldInfo, field: FieldMetadataWrapper): ConfigCellInfo {
+function createConfigFieldInfo(configStatic: ConfigJsonFieldInfo, field: FieldMetadataWrapper): ConfigCellInfo {
   return {
     type: "info",
     field,
@@ -35,7 +35,7 @@ function createConfigFieldInfo(configStatic: ConfigStaticFieldInfo, field: Field
 }
 
 export function initConfigCellGenotype(
-  configStatic: ConfigStaticFieldGenotype,
+  configStatic: ConfigJsonFieldGenotype,
   metadata: VcfMetadataContainer,
   sample: SampleContainer,
 ): ConfigCellGenotype[] {
@@ -45,7 +45,7 @@ export function initConfigCellGenotype(
 }
 
 function createConfigFieldGenotype(
-  configStatic: ConfigStaticFieldGenotype,
+  configStatic: ConfigJsonFieldGenotype,
   field: FieldMetadataWrapper,
   sample: SampleContainer,
 ): ConfigCellGenotype {

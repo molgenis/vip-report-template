@@ -12,7 +12,7 @@ import {
   getSampleValue,
   getSampleValueCount,
 } from "../../../src/utils/vcf.ts";
-import { ConfigStaticFieldGenotype, ConfigStaticFieldInfo } from "../../../src/types/config";
+import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo } from "../../../src/types/config";
 
 describe("config cells field", () => {
   vi.mock(import("../../../src/utils/vcf.ts"));
@@ -26,7 +26,7 @@ describe("config cells field", () => {
     const record = { id: 0, data: { c: "chr1", p: 123, r: "A", a: ["C", "T"] } } as Item<VcfRecord>;
 
     test("config matches one field", () => {
-      const config: ConfigStaticFieldInfo = {
+      const config: ConfigJsonFieldInfo = {
         type: "info",
         name: "field",
         label: "my_field_label",
@@ -57,7 +57,7 @@ describe("config cells field", () => {
     });
 
     test("config matches multiple fields", () => {
-      const config: ConfigStaticFieldInfo = {
+      const config: ConfigJsonFieldInfo = {
         type: "info",
         name: "VIP/.*",
       };
@@ -79,7 +79,7 @@ describe("config cells field", () => {
     });
 
     test("config matches zero fields", () => {
-      const config: ConfigStaticFieldInfo = {
+      const config: ConfigJsonFieldInfo = {
         type: "info",
         name: "field_not_in_my_vcf",
       };
@@ -97,7 +97,7 @@ describe("config cells field", () => {
     const record = { id: 0, data: { c: "chr1", p: 123, r: "A", a: ["C", "T"] } } as Item<VcfRecord>;
 
     test("config matches one field", () => {
-      const config: ConfigStaticFieldGenotype = {
+      const config: ConfigJsonFieldGenotype = {
         type: "genotype",
         name: "field",
         label: "my_field_label",
@@ -128,7 +128,7 @@ describe("config cells field", () => {
     });
 
     test("config matches multiple fields", () => {
-      const config: ConfigStaticFieldGenotype = {
+      const config: ConfigJsonFieldGenotype = {
         type: "genotype",
         name: "VIP/.*",
       };
@@ -150,7 +150,7 @@ describe("config cells field", () => {
     });
 
     test("config matches zero fields", () => {
-      const config: ConfigStaticFieldGenotype = {
+      const config: ConfigJsonFieldGenotype = {
         type: "genotype",
         name: "field_not_in_my_vcf",
       };

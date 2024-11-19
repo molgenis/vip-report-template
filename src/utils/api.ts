@@ -19,7 +19,7 @@ import { createFieldMap, FieldMap, isNumerical } from "./vcf.ts";
 import { compareCsq, compareCsqDefault } from "./csq.ts";
 import { VariantTypeId } from "./variantType.ts";
 import { MockApiClient } from "../mocks/MockApiClient.ts";
-import { ConfigStatic } from "../types/config";
+import { ConfigJson } from "../types/config";
 import { RuntimeError } from "./error.ts";
 import { validateConfig } from "./config/configValidator.ts";
 
@@ -57,7 +57,7 @@ const api = import.meta.env.PROD
       });
     })();
 
-export async function fetchConfig(): Promise<ConfigStatic> {
+export async function fetchConfig(): Promise<ConfigJson> {
   console.log("Api.fetchConfig");
   const config: Json = await api.getConfig();
   if (config === null) throw new RuntimeError("no config provided");
@@ -250,7 +250,7 @@ async function fetchPhenotypicFeatures(sample: Item<Sample>): Promise<Phenotypic
 }
 
 async function fetchVariantTypeIdsQuery(): Promise<Set<VariantTypeId>> {
-  const config: ConfigStatic = await fetchConfig();
+  const config: ConfigJson = await fetchConfig();
 
   const variantTypeIds = new Set<VariantTypeId>();
   const params = config.vip.params.cram;

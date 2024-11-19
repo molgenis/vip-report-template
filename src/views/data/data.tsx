@@ -10,9 +10,9 @@ import {
   SampleContainer,
 } from "../../utils/api.ts";
 import { parseId } from "../../utils/utils.ts";
-import { ConfigStatic } from "../../types/config";
+import { ConfigJson } from "../../types/config";
 
-export const getConfig = query((): Promise<ConfigStatic> => fetchConfig(), "config");
+export const getConfig = query((): Promise<ConfigJson> => fetchConfig(), "config");
 
 export const getMetadata = query((): Promise<MetadataContainer> => fetchMetadata(), "metadata");
 

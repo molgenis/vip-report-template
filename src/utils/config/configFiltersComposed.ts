@@ -9,41 +9,41 @@ import {
   ConfigFilterVipCS,
 } from "../../types/configFilterComposed";
 import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../api.ts";
-import { ConfigStaticFieldComposed, ConfigVip } from "../../types/config";
+import { ConfigJsonFilterComposed, ConfigVip } from "../../types/config";
 import { getDescription, getLabel } from "./config.ts";
 import { getInfoNestedField, getSampleField, getSampleFields, parseContigIds } from "../vcf.ts";
 import { ConfigInvalidError } from "../error.ts";
 
 export function initConfigFilterComposed(
-  configStatic: ConfigStaticFieldComposed,
+  config: ConfigJsonFilterComposed,
   configVip: ConfigVip,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilterComposed | null {
-  const id = configStatic.name;
+  const id = config.name;
 
   let filter: ConfigFilterComposed | null;
   switch (id) {
     case "hpo":
-      filter = createConfigFilterHpo(configStatic, metadata.records, sample);
+      filter = createConfigFilterHpo(config, metadata.records, sample);
       break;
     case "locus":
-      filter = createConfigFilterLocus(configStatic, metadata);
+      filter = createConfigFilterLocus(config, metadata);
       break;
     case "allelicImbalance":
-      filter = createConfigFilterAllelicImbalance(configStatic, metadata.records, sample);
+      filter = createConfigFilterAllelicImbalance(config, metadata.records, sample);
       break;
     case "inheritanceMatch":
-      filter = createConfigFilterInheritanceMatch(configStatic, metadata.records, sample);
+      filter = createConfigFilterInheritanceMatch(config, metadata.records, sample);
       break;
     case "deNovo":
-      filter = createConfigFilterDeNovo(configStatic, metadata.records, sample);
+      filter = createConfigFilterDeNovo(config, metadata.records, sample);
       break;
     case "vipC":
-      filter = createConfigFilterVipC(configStatic, configVip, metadata.records);
+      filter = createConfigFilterVipC(config, configVip, metadata.records);
       break;
     case "vipCS":
-      filter = createConfigFilterVipCS(configStatic, configVip, metadata.records, sample);
+      filter = createConfigFilterVipCS(config, configVip, metadata.records, sample);
       break;
     default:
       throw new ConfigInvalidError(`unknown composed filter name '${id}'`);
@@ -52,7 +52,7 @@ export function initConfigFilterComposed(
 }
 
 function createConfigFilterHpo(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilterHpo | null {
@@ -82,7 +82,7 @@ function createConfigFilterHpo(
 }
 
 function createConfigFilterLocus(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   metadata: MetadataContainer,
 ): ConfigFilterLocus {
   return {
@@ -95,7 +95,7 @@ function createConfigFilterLocus(
 }
 
 function createConfigFilterAllelicImbalance(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilterAllelicImbalance | null {
@@ -115,7 +115,7 @@ function createConfigFilterAllelicImbalance(
 }
 
 function createConfigFilterInheritanceMatch(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilterInheritanceMatch | null {
@@ -134,7 +134,7 @@ function createConfigFilterInheritanceMatch(
 }
 
 function createConfigFilterDeNovo(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilterDeNovo | null {
@@ -153,7 +153,7 @@ function createConfigFilterDeNovo(
 }
 
 function createConfigFilterVipC(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   configVip: ConfigVip,
   metadata: VcfMetadataContainer,
 ): ConfigFilterVipC | null {
@@ -180,7 +180,7 @@ function createConfigFilterVipC(
 }
 
 function createConfigFilterVipCS(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFilterComposed,
   configVip: ConfigVip,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,

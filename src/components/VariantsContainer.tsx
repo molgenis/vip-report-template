@@ -18,13 +18,13 @@ import { FilterChangeEvent, FilterClearEvent } from "../types/filter";
 import { VariantsContainerHeader } from "./VariantsContainerHeader";
 import { href } from "../utils/utils.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
-import { ConfigStatic } from "../types/config";
+import { ConfigJson } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
 import { VariantStore } from "../store/variants.ts";
 
 export const VariantsContainer: Component<{
   store: VariantStore;
-  config: ConfigStatic;
+  config: ConfigJson;
   metadata: MetadataContainer;
   variantType: VariantType;
   sample: SampleContainer | null;

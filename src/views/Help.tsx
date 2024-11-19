@@ -7,14 +7,14 @@ import { createAsync } from "@solidjs/router";
 import { getConfig, getMetadata } from "./data/data";
 import { getHeaderValue } from "../utils/vcf.ts";
 import { Table } from "../components/Table.tsx";
-import { ConfigStatic } from "../types/config";
+import { ConfigJson } from "../types/config";
 import { Json } from "@molgenis/vip-report-api";
 
 export const Help: Component = () => {
   const metadata = createAsync(() => getMetadata());
   const config = createAsync(() => getConfig());
 
-  function createParamList(config: ConfigStatic) {
+  function createParamList(config: ConfigJson) {
     const stack: { path: string[]; values: { [property: string]: Json } }[] = [{ path: [], values: config.vip.params }];
 
     const paramList: [key: string, value: string][] = [];

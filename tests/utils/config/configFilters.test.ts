@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfigFilters } from "../../../src/utils/config/configFilters.ts";
-import { ConfigStaticField, ConfigVip } from "../../../src/types/config";
+import { ConfigJsonFilter, ConfigVip } from "../../../src/types/config";
 import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { initConfigFilterFixed } from "../../../src/utils/config/configFiltersFixed.ts";
 import { ConfigFilterField, ConfigFilterFixed, ConfigFilterFormat } from "../../../src/types/configFilter";
@@ -29,11 +29,11 @@ describe("config filters", () => {
       vi.mocked(initConfigFiltersGenotype).mockReturnValue([2 as unknown as ConfigFilterFormat]);
       vi.mocked(initConfigFilterComposed).mockReturnValue(3 as unknown as ConfigFilterComposed);
 
-      const config: ConfigStaticField[] = [
+      const config: ConfigJsonFilter[] = [
         { type: "fixed", name: "chrom" },
         { type: "info", name: "my_info" },
         { type: "genotype", name: "my_genotype" },
-        { type: "composed", name: "my_composed" },
+        { type: "composed", name: "locus" },
       ];
 
       expect(
@@ -46,10 +46,9 @@ describe("config filters", () => {
       vi.mocked(initConfigFiltersGenotype).mockReturnValue([]);
       vi.mocked(initConfigFilterComposed).mockReturnValue(null);
 
-      const config: ConfigStaticField[] = [
+      const config: ConfigJsonFilter[] = [
         { type: "info", name: "unknown_info" },
         { type: "genotype", name: "unknown_genotype" },
-        { type: "composed", name: "unknown_composed" },
       ];
 
       expect(

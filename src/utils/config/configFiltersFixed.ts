@@ -1,13 +1,4 @@
-import {
-  ConfigStaticFieldAlt,
-  ConfigStaticFieldChrom,
-  ConfigStaticFieldFilter,
-  ConfigStaticFieldFixed,
-  ConfigStaticFieldId,
-  ConfigStaticFieldPos,
-  ConfigStaticFieldQual,
-  ConfigStaticFieldRef,
-} from "../../types/config";
+import { ConfigJsonFilterFixed } from "../../types/config";
 import {
   ConfigFilterAlt,
   ConfigFilterChrom,
@@ -21,95 +12,95 @@ import {
 import { UnexpectedEnumValueException } from "../error.ts";
 import { getDescription, getLabel } from "./config.ts";
 
-export function initConfigFilterFixed(configStaticField: ConfigStaticFieldFixed): ConfigFilterFixed {
+export function initConfigFilterFixed(config: ConfigJsonFilterFixed): ConfigFilterFixed {
   let configFilter: ConfigFilterFixed;
-  switch (configStaticField.name) {
+  switch (config.name) {
     case "chrom":
-      configFilter = createConfigFilterChrom(configStaticField);
+      configFilter = createConfigFilterChrom(config);
       break;
     case "pos":
-      configFilter = createConfigFilterPos(configStaticField);
+      configFilter = createConfigFilterPos(config);
       break;
     case "id":
-      configFilter = createConfigFilterId(configStaticField);
+      configFilter = createConfigFilterId(config);
       break;
     case "ref":
-      configFilter = createConfigFilterRef(configStaticField);
+      configFilter = createConfigFilterRef(config);
       break;
     case "alt":
-      configFilter = createConfigFilterAlt(configStaticField);
+      configFilter = createConfigFilterAlt(config);
       break;
     case "qual":
-      configFilter = createConfigFilterQual(configStaticField);
+      configFilter = createConfigFilterQual(config);
       break;
     case "filter":
-      configFilter = createConfigFilterFilter(configStaticField);
+      configFilter = createConfigFilterFilter(config);
       break;
     default:
-      throw new UnexpectedEnumValueException(configStaticField["name"]);
+      throw new UnexpectedEnumValueException(config["name"]);
   }
   return configFilter;
 }
 
-function createConfigFilterChrom(configStatic: ConfigStaticFieldChrom): ConfigFilterChrom {
+function createConfigFilterChrom(config: ConfigJsonFilterFixed): ConfigFilterChrom {
   return {
     type: "fixed",
     id: "chrom",
-    label: () => getLabel(configStatic, "Chromosome"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Chromosome"),
+    description: () => getDescription(config),
   };
 }
 
-function createConfigFilterPos(configStatic: ConfigStaticFieldPos): ConfigFilterPos {
+function createConfigFilterPos(config: ConfigJsonFilterFixed): ConfigFilterPos {
   return {
     type: "fixed",
     id: "pos",
-    label: () => getLabel(configStatic, "Position"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Position"),
+    description: () => getDescription(config),
   };
 }
 
-function createConfigFilterId(configStatic: ConfigStaticFieldId): ConfigFilterId {
+function createConfigFilterId(config: ConfigJsonFilterFixed): ConfigFilterId {
   return {
     type: "fixed",
     id: "id",
-    label: () => getLabel(configStatic, "Identifiers"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Identifiers"),
+    description: () => getDescription(config),
   };
 }
 
-function createConfigFilterRef(configStatic: ConfigStaticFieldRef): ConfigFilterRef {
+function createConfigFilterRef(config: ConfigJsonFilterFixed): ConfigFilterRef {
   return {
     type: "fixed",
     id: "ref",
-    label: () => getLabel(configStatic, "Reference"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Reference"),
+    description: () => getDescription(config),
   };
 }
 
-function createConfigFilterAlt(configStatic: ConfigStaticFieldAlt): ConfigFilterAlt {
+function createConfigFilterAlt(config: ConfigJsonFilterFixed): ConfigFilterAlt {
   return {
     type: "fixed",
     id: "alt",
-    label: () => getLabel(configStatic, "Alt"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Alt"),
+    description: () => getDescription(config),
   };
 }
 
-function createConfigFilterQual(configStatic: ConfigStaticFieldQual): ConfigFilterQual {
+function createConfigFilterQual(config: ConfigJsonFilterFixed): ConfigFilterQual {
   return {
     type: "fixed",
     id: "qual",
-    label: () => getLabel(configStatic, "Quality"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Quality"),
+    description: () => getDescription(config),
   };
 }
 
-function createConfigFilterFilter(configStatic: ConfigStaticFieldFilter): ConfigFilterFilter {
+function createConfigFilterFilter(config: ConfigJsonFilterFixed): ConfigFilterFilter {
   return {
     type: "fixed",
     id: "filter",
-    label: () => getLabel(configStatic, "Filter"),
-    description: () => getDescription(configStatic),
+    label: () => getLabel(config, "Filter"),
+    description: () => getDescription(config),
   };
 }

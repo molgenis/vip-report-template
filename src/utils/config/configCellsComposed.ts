@@ -32,12 +32,12 @@ import {
 import { VariantType } from "../variantType.ts";
 import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../api.ts";
 import { href } from "../utils.ts";
-import { ConfigStaticFieldComposed } from "../../types/config";
+import { ConfigJsonFieldComposed } from "../../types/config";
 import { getDescription, getLabel } from "./config.ts";
 import { ConfigInvalidError } from "../error.ts";
 
 export function initConfigCellComposed(
-  configStatic: ConfigStaticFieldComposed,
+  configStatic: ConfigJsonFieldComposed,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
@@ -85,7 +85,7 @@ export function initConfigCellComposed(
 }
 
 function createConfigFieldCustomClinVar(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueClinVar> | null {
   const [fieldClnSig, fieldClnId, fieldClnRevStat] = getInfoNestedFields(
@@ -122,7 +122,7 @@ function createConfigFieldCustomClinVar(
 }
 
 function createConfigFieldCustomGene(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueGene> | null {
   const [fieldSymbol, fieldGene, fieldIncPen, fieldSymbolSource] = getInfoNestedFields(
@@ -162,7 +162,7 @@ function createConfigFieldCustomGene(
 }
 
 function createConfigFieldCustomGenotype(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueGenotype> | null {
@@ -219,7 +219,7 @@ function createConfigFieldCustomGenotype(
 }
 
 function createConfigFieldCustomGnomAd(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueGnomAd> | null {
   const [fieldGnomAdAf, fieldGnomAdCov, fieldGnomAdQc, fieldAlleleNum] = getInfoNestedFields(
@@ -263,7 +263,7 @@ function createConfigFieldCustomGnomAd(
 }
 
 function createConfigFieldCustomHpo(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueHpo> | null {
   const [fieldHpo, fieldGadoPd] = getInfoNestedFields(metadata, "CSQ", "HPO", "GADO_PD");
@@ -290,7 +290,7 @@ function createConfigFieldCustomHpo(
 }
 
 function createConfigFieldCustomInheritancePattern(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueInheritanceModes> | null {
@@ -318,7 +318,7 @@ function createConfigFieldCustomInheritancePattern(
 }
 
 function createConfigFieldCustomLocus(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   sample: SampleContainer | null,
   variantType: VariantType,
 ): ConfigCellCustom<CellValueLocus> {
@@ -337,7 +337,7 @@ function createConfigFieldCustomLocus(
   };
 }
 
-function createConfigFieldCustomRef(configStatic: ConfigStaticFieldComposed): ConfigCellCustom<CellValueRef> {
+function createConfigFieldCustomRef(configStatic: ConfigJsonFieldComposed): ConfigCellCustom<CellValueRef> {
   return {
     type: "composed",
     id: "ref",
@@ -351,7 +351,7 @@ function createConfigFieldCustomRef(configStatic: ConfigStaticFieldComposed): Co
 }
 
 function createConfigFieldCustomVipC(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
   variantType: VariantType,
@@ -383,7 +383,7 @@ function createConfigFieldCustomVipC(
 }
 
 function createConfigFieldCustomVipCS(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueVipCS> | null {
@@ -413,7 +413,7 @@ function createConfigFieldCustomVipCS(
 }
 
 function createConfigFieldCustomVkgl(
-  config: ConfigStaticFieldComposed,
+  config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueVkgl> | null {
   const [

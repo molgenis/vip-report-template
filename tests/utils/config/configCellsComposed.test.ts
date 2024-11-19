@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfigCellComposed } from "../../../src/utils/config/configCellsComposed.ts";
 import { MetadataContainer, SampleContainer } from "../../../src/utils/api.ts";
 import { VariantType } from "../../../src/utils/variantType.ts";
-import { ConfigStaticFieldComposed } from "../../../src/types/config";
+import { ConfigJsonFieldComposed } from "../../../src/types/config";
 import { ConfigCellCustom } from "../../../src/types/configCells";
 import { CellValueCustom } from "../../../src/types/configCellComposed";
 import {
@@ -34,22 +34,8 @@ describe("config cells composed", () => {
     const metadata = { records: vcfMetadata } as MetadataContainer;
     const record = { id: 0, data: { c: "chr1", p: 123, r: "A", a: ["C", "T"] } } as Item<VcfRecord>;
 
-    test("invalid config", () => {
-      expect(() =>
-        initConfigCellComposed(
-          {
-            type: "composed",
-            name: "invalid",
-          },
-          variantType,
-          metadata,
-          null,
-        ),
-      ).toThrow(/^config invalid: unknown composed cell name 'invalid'$/);
-    });
-
     describe("clinVar", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "clinVar",
       };
@@ -85,7 +71,7 @@ describe("config cells composed", () => {
       });
 
       test("clinVar with required and optional fields", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -135,7 +121,7 @@ describe("config cells composed", () => {
     });
 
     describe("gene", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "gene",
       };
@@ -182,7 +168,7 @@ describe("config cells composed", () => {
       });
 
       test("gene with required and optional fields", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -242,14 +228,14 @@ describe("config cells composed", () => {
     });
 
     describe("genotype", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "genotype",
       };
       const sample = { item: { id: 2, data: { person: { individualId: "sample2" } } } } as SampleContainer;
 
       test("genotype with required and optional fields", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -346,13 +332,13 @@ describe("config cells composed", () => {
     });
 
     describe("gnomAdAf", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "gnomAdAf",
       };
 
       test("gnomAdAf with required and optional fields", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -469,7 +455,7 @@ describe("config cells composed", () => {
     });
 
     describe("hpo", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "hpo",
       };
@@ -499,7 +485,7 @@ describe("config cells composed", () => {
       });
 
       test("hpo with required and optional fields", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -532,14 +518,14 @@ describe("config cells composed", () => {
     });
 
     describe("inheritancePattern", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "inheritancePattern",
       };
       const sample = { item: { id: 2 } } as SampleContainer;
 
       test("inheritancePattern with required and optional fields, with sample", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -635,7 +621,7 @@ describe("config cells composed", () => {
     });
 
     describe("locus", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "locus",
       };
@@ -681,7 +667,7 @@ describe("config cells composed", () => {
     });
 
     describe("ref", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "ref",
       };
@@ -720,7 +706,7 @@ describe("config cells composed", () => {
     });
 
     describe("vipC", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "vipC",
       };
@@ -754,7 +740,7 @@ describe("config cells composed", () => {
       });
 
       test("vipC with required and optional fields, with sample", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -791,7 +777,7 @@ describe("config cells composed", () => {
     });
 
     describe("vipCS", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "vipCS",
       };
@@ -866,7 +852,7 @@ describe("config cells composed", () => {
     });
 
     describe("vkgl", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFieldComposed = {
         type: "composed",
         name: "vkgl",
       };
@@ -950,7 +936,7 @@ describe("config cells composed", () => {
       });
 
       test("vkgl with required and optional fields", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFieldComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",

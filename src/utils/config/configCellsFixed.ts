@@ -1,13 +1,4 @@
-import {
-  ConfigStaticFieldAlt,
-  ConfigStaticFieldChrom,
-  ConfigStaticFieldFilter,
-  ConfigStaticFieldFixed,
-  ConfigStaticFieldId,
-  ConfigStaticFieldPos,
-  ConfigStaticFieldQual,
-  ConfigStaticFieldRef,
-} from "../../types/config";
+import { ConfigJsonFieldFixed } from "../../types/config";
 import {
   CellValueAlt,
   CellValueChrom,
@@ -30,7 +21,7 @@ import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { UnexpectedEnumValueException } from "../error.ts";
 import { getDescription, getLabel } from "./config.ts";
 
-export function initConfigCellFixed(config: ConfigStaticFieldFixed): ConfigCellFixed {
+export function initConfigCellFixed(config: ConfigJsonFieldFixed): ConfigCellFixed {
   let configField: ConfigCellFixed;
   switch (config.name) {
     case "chrom":
@@ -60,7 +51,7 @@ export function initConfigCellFixed(config: ConfigStaticFieldFixed): ConfigCellF
   return configField;
 }
 
-function createConfigFieldChrom(config: ConfigStaticFieldChrom): ConfigCellChrom {
+function createConfigFieldChrom(config: ConfigJsonFieldFixed): ConfigCellChrom {
   return {
     type: "chrom",
     label: () => getLabel(config, "Chromosome"),
@@ -70,7 +61,7 @@ function createConfigFieldChrom(config: ConfigStaticFieldChrom): ConfigCellChrom
   };
 }
 
-function createConfigFieldPos(config: ConfigStaticFieldPos): ConfigCellPos {
+function createConfigFieldPos(config: ConfigJsonFieldFixed): ConfigCellPos {
   return {
     type: "pos",
     label: () => getLabel(config, "Position"),
@@ -80,7 +71,7 @@ function createConfigFieldPos(config: ConfigStaticFieldPos): ConfigCellPos {
   };
 }
 
-function createConfigFieldId(config: ConfigStaticFieldId): ConfigCellId {
+function createConfigFieldId(config: ConfigJsonFieldFixed): ConfigCellId {
   return {
     type: "id",
     label: () => getLabel(config, "Ids"),
@@ -90,7 +81,7 @@ function createConfigFieldId(config: ConfigStaticFieldId): ConfigCellId {
   };
 }
 
-function createConfigFieldRef(config: ConfigStaticFieldRef): ConfigCellRef {
+function createConfigFieldRef(config: ConfigJsonFieldFixed): ConfigCellRef {
   return {
     type: "ref",
     label: () => getLabel(config, "Ref"),
@@ -100,7 +91,7 @@ function createConfigFieldRef(config: ConfigStaticFieldRef): ConfigCellRef {
   };
 }
 
-function createConfigFieldAlt(config: ConfigStaticFieldAlt): ConfigCellAlt {
+function createConfigFieldAlt(config: ConfigJsonFieldFixed): ConfigCellAlt {
   return {
     type: "alt",
     label: () => getLabel(config, "Alt"),
@@ -110,7 +101,7 @@ function createConfigFieldAlt(config: ConfigStaticFieldAlt): ConfigCellAlt {
   };
 }
 
-function createConfigFieldQual(config: ConfigStaticFieldQual): ConfigCellQual {
+function createConfigFieldQual(config: ConfigJsonFieldFixed): ConfigCellQual {
   return {
     type: "qual",
     label: () => getLabel(config, "Qual"),
@@ -120,7 +111,7 @@ function createConfigFieldQual(config: ConfigStaticFieldQual): ConfigCellQual {
   };
 }
 
-function createConfigFieldFilter(config: ConfigStaticFieldFilter): ConfigCellFilter {
+function createConfigFieldFilter(config: ConfigJsonFieldFixed): ConfigCellFilter {
   return {
     type: "filter",
     label: () => getLabel(config, "Filters"),

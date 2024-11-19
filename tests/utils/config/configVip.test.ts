@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfigVip } from "../../../src/utils/config/configVip.ts";
-import { ConfigStaticVip, ConfigStaticVipParams } from "../../../src/types/config";
+import { ConfigJsonVip, ConfigJsonVipParams } from "../../../src/types/config";
 import { MetadataContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { FieldMetadataWrapper, getSampleField } from "../../../src/utils/vcf.ts";
 
@@ -14,8 +14,8 @@ describe("config vip", () => {
   describe("initConfigVip", () => {
     const vcfMetadata = {};
     const metadata: Partial<MetadataContainer> = { records: vcfMetadata as VcfMetadataContainer };
-    const params = { vcf: {} } as ConfigStaticVipParams;
-    const config: ConfigStaticVip = {
+    const params = { vcf: {} } as ConfigJsonVipParams;
+    const config: ConfigJsonVip = {
       filter_field: { type: "genotype", name: "f" },
       params,
     };

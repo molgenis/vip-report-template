@@ -1,49 +1,49 @@
-import { ConfigStaticFieldGenotype, ConfigStaticFieldInfo } from "../../types/config";
+import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo } from "../../types/config";
 import { ConfigFilterField, ConfigFilterFormat } from "../../types/configFilter";
 import { SampleContainer, VcfMetadataContainer } from "../api.ts";
 import { FieldMetadataWrapper, getInfoFieldsRegex, getSampleFieldsRegex } from "../vcf.ts";
 import { getDescription, getLabel } from "./config.ts";
 
 function createConfigFilterGenotype(
-  configStatic: ConfigStaticFieldGenotype,
+  config: ConfigJsonFieldGenotype,
   field: FieldMetadataWrapper,
   sample: SampleContainer,
 ): ConfigFilterFormat {
   return {
     type: "genotype",
-    id: configStatic.name,
-    label: () => getLabel(configStatic, field.label || field.id),
-    description: () => getDescription(configStatic, field.description),
+    id: config.name,
+    label: () => getLabel(config, field.label || field.id),
+    description: () => getDescription(config, field.description),
     field,
     sample,
   };
 }
 
 export function initConfigFiltersGenotype(
-  configStatic: ConfigStaticFieldGenotype,
+  config: ConfigJsonFieldGenotype,
   metadata: VcfMetadataContainer,
   sample: SampleContainer,
 ): ConfigFilterFormat[] {
-  return getSampleFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
+  return getSampleFieldsRegex(metadata, new RegExp(`^${config.name}$`))
     .filter((field) => !field.nested)
-    .map((field) => createConfigFilterGenotype(configStatic, field, sample));
+    .map((field) => createConfigFilterGenotype(config, field, sample));
 }
 
-function createConfigFilterInfo(configStatic: ConfigStaticFieldInfo, field: FieldMetadataWrapper): ConfigFilterField {
+function createConfigFilterInfo(config: ConfigJsonFieldInfo, field: FieldMetadataWrapper): ConfigFilterField {
   return {
     type: "info",
     id: field.id,
-    label: () => getLabel(configStatic, field.label || field.id),
-    description: () => getDescription(configStatic, field.description),
+    label: () => getLabel(config, field.label || field.id),
+    description: () => getDescription(config, field.description),
     field,
   };
 }
 
 export function initConfigFiltersInfo(
-  configStatic: ConfigStaticFieldInfo,
+  config: ConfigJsonFieldInfo,
   metadata: VcfMetadataContainer,
 ): ConfigFilterField[] {
-  return getInfoFieldsRegex(metadata, new RegExp(`^${configStatic.name}$`))
+  return getInfoFieldsRegex(metadata, new RegExp(`^${config.name}$`))
     .filter((field) => !field.nested)
-    .map((field) => createConfigFilterInfo(configStatic, field));
+    .map((field) => createConfigFilterInfo(config, field));
 }

@@ -1,6 +1,6 @@
 import { MetadataContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { ConfigStaticSort } from "../../../src/types/config";
+import { ConfigJsonSort } from "../../../src/types/config";
 import { initConfigSorts } from "../../../src/utils/config/configSorts.ts";
 import { FieldMetadataWrapper, getInfoField } from "../../../src/utils/vcf.ts";
 
@@ -16,7 +16,7 @@ describe("initConfigSorts", () => {
 
   test("regular sorts config", () => {
     const fieldMetadata = { id: "f" } as FieldMetadataWrapper;
-    const config: ConfigStaticSort[] = [
+    const config: ConfigJsonSort[] = [
       {
         selected: true,
         orders: [{ direction: "desc", field: { type: "info", name: "f" } }],
@@ -41,7 +41,7 @@ describe("initConfigSorts", () => {
   });
 
   test("undefined sort field", () => {
-    const config: ConfigStaticSort[] = [
+    const config: ConfigJsonSort[] = [
       {
         selected: true,
         orders: [{ direction: "desc", field: { type: "info", name: "f_unknown" } }],

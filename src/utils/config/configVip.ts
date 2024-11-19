@@ -1,9 +1,9 @@
-import { ConfigStaticVip, ConfigVip } from "../../types/config";
+import { ConfigJsonVip, ConfigVip } from "../../types/config";
 import { MetadataContainer } from "../api.ts";
 import { getSampleField } from "../vcf.ts";
 import { ConfigInvalidPropertyValueError } from "../error.ts";
 
-export function initConfigVip(config: ConfigStaticVip, metadata: MetadataContainer): ConfigVip {
+export function initConfigVip(config: ConfigJsonVip, metadata: MetadataContainer): ConfigVip {
   const filterField = config.filter_field;
   const fieldMetadata = getSampleField(metadata.records, filterField.name);
 

@@ -3,130 +3,133 @@ import { ConfigCell } from "./configCells";
 import { ConfigSort } from "./configSort";
 import { FieldMetadataWrapper } from "../utils/vcf.ts";
 
-export type ConfigStaticFieldType = "fixed" | "info" | "format" | "genotype" | "composed";
-
-export interface ConfigStaticFieldTyped {
-  type: ConfigStaticFieldType;
-  name: ConfigStaticFieldName;
+export interface Describable {
   // overwrites existing label
   label?: string;
   // overwrites existing description
   description?: string;
 }
 
-export type ConfigStaticFieldName = string;
-
-export interface ConfigStaticFieldChrom extends ConfigStaticFieldTyped {
+export interface ConfigJsonFieldFixed extends Describable {
   type: "fixed";
-  name: "chrom";
+  name: "chrom" | "pos" | "id" | "ref" | "alt" | "qual" | "filter";
 }
 
-export interface ConfigStaticFieldPos extends ConfigStaticFieldTyped {
-  type: "fixed";
-  name: "pos";
-}
-
-export interface ConfigStaticFieldId extends ConfigStaticFieldTyped {
-  type: "fixed";
-  name: "id";
-}
-
-export interface ConfigStaticFieldRef extends ConfigStaticFieldTyped {
-  type: "fixed";
-  name: "ref";
-}
-
-export interface ConfigStaticFieldAlt extends ConfigStaticFieldTyped {
-  type: "fixed";
-  name: "alt";
-}
-
-export interface ConfigStaticFieldQual extends ConfigStaticFieldTyped {
-  type: "fixed";
-  name: "qual";
-}
-
-export interface ConfigStaticFieldFilter extends ConfigStaticFieldTyped {
-  type: "fixed";
-  name: "filter";
-}
-
-export interface ConfigStaticFieldInfo extends ConfigStaticFieldTyped {
+export interface ConfigJsonFieldInfo extends Describable {
   type: "info";
+  name: string;
 }
 
-export interface ConfigStaticFieldFormat extends ConfigStaticFieldTyped {
+export interface ConfigJsonFieldFormat extends Describable {
   type: "format";
+  name: string;
 }
 
-export interface ConfigStaticFieldGenotype extends ConfigStaticFieldTyped {
+export interface ConfigJsonFieldGenotype extends Describable {
   type: "genotype";
+  name: string;
 }
 
-export interface ConfigStaticFieldComposed extends ConfigStaticFieldTyped {
+export interface ConfigJsonFieldComposed extends Describable {
   type: "composed";
+  name:
+    | "clinVar"
+    | "gene"
+    | "genotype"
+    | "gnomAdAf"
+    | "hpo"
+    | "inheritancePattern"
+    | "locus"
+    | "ref"
+    | "vipC"
+    | "vipCS"
+    | "vkgl";
 }
 
-export interface ConfigStaticSort {
+export interface ConfigJsonSort {
   selected: boolean;
-  orders: ConfigStaticSortOrder[];
+  orders: ConfigJsonSortOrder[];
 }
 
-export interface ConfigStaticSortOrder {
+export interface ConfigJsonSortOrder {
   direction: "desc" | "asc";
-  field: ConfigStaticField;
+  field: ConfigJsonField;
 }
 
-export type ConfigStaticFieldFixed =
-  | ConfigStaticFieldChrom
-  | ConfigStaticFieldPos
-  | ConfigStaticFieldId
-  | ConfigStaticFieldRef
-  | ConfigStaticFieldAlt
-  | ConfigStaticFieldQual
-  | ConfigStaticFieldFilter;
+export type ConfigJsonFieldItem =
+  | ConfigJsonFieldFixed
+  | ConfigJsonFieldInfo
+  | ConfigJsonFieldFormat
+  | ConfigJsonFieldGenotype
+  | ConfigJsonFieldComposed;
 
-export type ConfigStaticFieldItem =
-  | ConfigStaticFieldFixed
-  | ConfigStaticFieldInfo
-  | ConfigStaticFieldFormat
-  | ConfigStaticFieldGenotype
-  | ConfigStaticFieldComposed;
+export type ConfigJsonFieldItemGroup = { type: "group"; fields: ConfigJsonFieldItem[] };
+export type ConfigJsonField = ConfigJsonFieldItem | ConfigJsonFieldItemGroup;
 
-export type ConfigStaticFieldItemGroup = { type: "group"; fields: ConfigStaticFieldItem[] };
-export type ConfigStaticField = ConfigStaticFieldItem | ConfigStaticFieldItemGroup;
+export interface ConfigJsonFilterFixed extends Describable {
+  type: "fixed";
+  name: "chrom" | "pos" | "id" | "ref" | "alt" | "qual" | "filter";
+}
 
-export type ConfigStaticVariantType = "all" | "str" | "snv" | "sv";
-export type ConfigStaticVariantTypeFields = { [key in ConfigStaticVariantType]?: ConfigStaticField[] };
-export type ConfigStaticSorts = { [key in ConfigStaticVariantType]?: ConfigStaticSort[] };
+export interface ConfigJsonFilterInfo extends Describable {
+  type: "info";
+  name: string;
+}
 
-export type ConfigStaticVipParamsCram = { call_snv: boolean; call_str: boolean; call_sv: boolean; call_cnv: boolean };
+export interface ConfigJsonFilterFormat extends Describable {
+  type: "format";
+  name: string;
+}
 
-export type ConfigStaticVipParamsVcf = {
+export interface ConfigJsonFilterGenotype extends Describable {
+  type: "genotype";
+  name: string;
+}
+
+export interface ConfigJsonFilterComposed extends Describable {
+  type: "composed";
+  name: "hpo" | "locus" | "allelicImbalance" | "inheritanceMatch" | "deNovo" | "vipC" | "vipCS";
+}
+
+export type ConfigJsonFilter =
+  | ConfigJsonFilterFixed
+  | ConfigJsonFilterInfo
+  | ConfigJsonFilterFormat
+  | ConfigJsonFilterGenotype
+  | ConfigJsonFilterComposed;
+
+export type ConfigJsonVariantType = "all" | "str" | "snv" | "sv";
+export type ConfigJsonVariantTypeFields = { [key in ConfigJsonVariantType]?: ConfigJsonField[] };
+export type ConfigJsonVariantTypeFilters = { [key in ConfigJsonVariantType]?: ConfigJsonFilter[] };
+export type ConfigJsonSorts = { [key in ConfigJsonVariantType]?: ConfigJsonSort[] };
+
+export type ConfigJsonVipParamsCram = { call_snv: boolean; call_str: boolean; call_sv: boolean; call_cnv: boolean };
+
+export type ConfigJsonVipParamsVcf = {
   filter: { classes: string; consequences: boolean };
   filter_samples: { classes: string };
 };
 
-export type ConfigStaticVipParams = {
-  cram?: ConfigStaticVipParamsCram;
-  vcf: ConfigStaticVipParamsVcf;
+export type ConfigJsonVipParams = {
+  cram?: ConfigJsonVipParamsCram;
+  vcf: ConfigJsonVipParamsVcf;
 };
 
-export type ConfigStaticVip = {
-  filter_field: ConfigStaticFieldGenotype;
-  params: ConfigStaticVipParams;
+export type ConfigJsonVip = {
+  filter_field: ConfigJsonFieldGenotype;
+  params: ConfigJsonVipParams;
 };
 
-export type ConfigStaticVariants = {
-  cells: ConfigStaticVariantTypeFields;
-  filters?: ConfigStaticVariantTypeFields;
-  sorts?: ConfigStaticSorts;
+export type ConfigJsonVariants = {
+  cells: ConfigJsonVariantTypeFields;
+  filters?: ConfigJsonVariantTypeFilters;
+  sorts?: ConfigJsonSorts;
 };
 
-export type ConfigStatic = {
-  vip: ConfigStaticVip;
-  sample_variants: ConfigStaticVariants;
-  variants: ConfigStaticVariants;
+export type ConfigJson = {
+  vip: ConfigJsonVip;
+  sample_variants: ConfigJsonVariants;
+  variants: ConfigJsonVariants;
 };
 
 export type Config = {
@@ -144,7 +147,7 @@ export type ConfigVariants = {
   sorts: ConfigSorts;
 };
 
-export type ConfigVipParams = ConfigStaticVipParams;
+export type ConfigVipParams = ConfigJsonVipParams;
 
 export type ConfigVip = {
   filter_field: FieldMetadataWrapper;

@@ -1,6 +1,6 @@
 import { ConfigCell, ConfigCellGroup, ConfigCellItem } from "../../types/configCells";
 import { initConfigCellComposed } from "./configCellsComposed.ts";
-import { ConfigCells, ConfigStaticField, ConfigStaticFieldItem, ConfigStaticFieldItemGroup } from "../../types/config";
+import { ConfigCells, ConfigJsonField, ConfigJsonFieldItem, ConfigJsonFieldItemGroup } from "../../types/config";
 import { VariantType } from "../variantType.ts";
 import { MetadataContainer, SampleContainer } from "../api.ts";
 import { initConfigCellFixed } from "./configCellsFixed.ts";
@@ -9,7 +9,7 @@ import { initConfigCellGenotype, initConfigCellInfo } from "./configCellsField.t
 import { ConfigInvalidError } from "../error.ts";
 
 export function initConfigCells(
-  configs: ConfigStaticField[],
+  configs: ConfigJsonField[],
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
@@ -18,10 +18,10 @@ export function initConfigCells(
     let configCells: (ConfigCell | null)[];
     if (configStaticField.type === "group") {
       configCells = [
-        initConfigCellItemGroup(configStaticField as ConfigStaticFieldItemGroup, variantType, metadata, sample),
+        initConfigCellItemGroup(configStaticField as ConfigJsonFieldItemGroup, variantType, metadata, sample),
       ];
     } else {
-      configCells = initConfigCellItem(configStaticField as ConfigStaticFieldItem, variantType, metadata, sample);
+      configCells = initConfigCellItem(configStaticField as ConfigJsonFieldItem, variantType, metadata, sample);
     }
     return configCells;
   });
@@ -29,7 +29,7 @@ export function initConfigCells(
 }
 
 function initConfigCellItemGroup(
-  config: ConfigStaticFieldItemGroup,
+  config: ConfigJsonFieldItemGroup,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
@@ -46,7 +46,7 @@ function initConfigCellItemGroup(
 }
 
 function initConfigCellItem(
-  config: ConfigStaticFieldItem,
+  config: ConfigJsonFieldItem,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,

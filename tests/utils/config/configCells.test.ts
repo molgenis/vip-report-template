@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfigCells } from "../../../src/utils/config/configCells.ts";
-import { ConfigStaticField } from "../../../src/types/config";
+import { ConfigJsonField } from "../../../src/types/config";
 import { VariantType } from "../../../src/utils/variantType.ts";
 import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { ConfigCellCustom, ConfigCellFixed, ConfigCellGenotype, ConfigCellInfo } from "../../../src/types/configCells";
@@ -28,14 +28,14 @@ describe("config cells", () => {
       vi.mocked(initConfigCellGenotype).mockReturnValue([2 as unknown as ConfigCellGenotype]);
       vi.mocked(initConfigCellComposed).mockReturnValue(3 as unknown as ConfigCellCustom<CellValueCustom>);
 
-      const config: ConfigStaticField[] = [
+      const config: ConfigJsonField[] = [
         { type: "fixed", name: "chrom" },
         { type: "info", name: "my_info" },
         {
           type: "group",
           fields: [
             { type: "genotype", name: "my_genotype" },
-            { type: "composed", name: "my_composed" },
+            { type: "composed", name: "locus" },
           ],
         },
       ];
@@ -55,7 +55,7 @@ describe("config cells", () => {
       vi.mocked(initConfigCellInfo).mockReturnValue([]);
       vi.mocked(initConfigCellGenotype).mockReturnValue([]);
 
-      const config: ConfigStaticField[] = [
+      const config: ConfigJsonField[] = [
         { type: "info", name: "my_info_not_in_metadata" },
         {
           type: "group",
@@ -75,7 +75,7 @@ describe("config cells", () => {
     });
 
     test("ignore genotype cell config when no sample available", () => {
-      const config: ConfigStaticField[] = [{ type: "genotype", name: "my_genotype_not_in_metadata" }];
+      const config: ConfigJsonField[] = [{ type: "genotype", name: "my_genotype_not_in_metadata" }];
       const sample: Partial<SampleContainer> | null = null;
 
       expect(initConfigCells(config, variantType as VariantType, metadata as MetadataContainer, sample)).toStrictEqual(

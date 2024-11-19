@@ -1,13 +1,14 @@
 import { VariantType } from "../variantType.ts";
 import {
   Config,
-  ConfigStatic,
-  ConfigStaticFieldTyped,
-  ConfigStaticSorts,
-  ConfigStaticVariants,
-  ConfigStaticVariantTypeFields,
+  ConfigJson,
+  ConfigJsonSorts,
+  ConfigJsonVariants,
+  ConfigJsonVariantTypeFields,
+  ConfigJsonVariantTypeFilters,
   ConfigVariants,
   ConfigVip,
+  Describable,
 } from "../../types/config";
 import { initConfigFilters } from "./configFilters.ts";
 import { MetadataContainer, SampleContainer } from "../api.ts";
@@ -17,7 +18,7 @@ import { ConfigInvalidError, ConfigInvalidMissingPropertyError } from "../error.
 import { initConfigVip } from "./configVip.ts";
 
 export function initConfig(
-  config: ConfigStatic,
+  config: ConfigJson,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
@@ -39,7 +40,7 @@ export function initConfig(
 }
 
 function initConfigVariants(
-  config: ConfigStaticVariants,
+  config: ConfigJsonVariants,
   configVip: ConfigVip,
   variantType: VariantType,
   metadata: MetadataContainer,
@@ -56,7 +57,7 @@ function initConfigVariants(
 }
 
 function initConfigVariantsCells(
-  config: ConfigStaticVariantTypeFields,
+  config: ConfigJsonVariantTypeFields,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
@@ -69,7 +70,7 @@ function initConfigVariantsCells(
 }
 
 function initConfigVariantsFilters(
-  config: ConfigStaticVariantTypeFields | undefined,
+  config: ConfigJsonVariantTypeFilters | undefined,
   configVip: ConfigVip,
   variantType: VariantType,
   metadata: MetadataContainer,
@@ -80,7 +81,7 @@ function initConfigVariantsFilters(
 }
 
 function initConfigVariantsSorts(
-  config: ConfigStaticSorts | undefined,
+  config: ConfigJsonSorts | undefined,
   variantType: VariantType,
   metadata: MetadataContainer,
 ) {
@@ -88,11 +89,11 @@ function initConfigVariantsSorts(
   return configValue ? initConfigSorts(configValue, metadata) : [];
 }
 
-export function getLabel(config: ConfigStaticFieldTyped, defaultLabel: string): string {
+export function getLabel(config: Describable, defaultLabel: string): string {
   return config.label !== undefined ? config.label : defaultLabel;
 }
 
-export function getDescription(config: ConfigStaticFieldTyped, defaultDescription?: string): string | null {
+export function getDescription(config: Describable, defaultDescription?: string): string | null {
   return config.description !== undefined
     ? config.description
     : defaultDescription !== undefined

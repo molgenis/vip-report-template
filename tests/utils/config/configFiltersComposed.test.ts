@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfigFilterComposed } from "../../../src/utils/config/configFiltersComposed.ts";
 import { MetadataContainer, SampleContainer } from "../../../src/utils/api.ts";
-import { ConfigStaticFieldComposed, ConfigVip } from "../../../src/types/config";
+import { ConfigJsonFilterComposed, ConfigVip } from "../../../src/types/config";
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterDeNovo,
@@ -32,22 +32,8 @@ describe("config filters composed", () => {
     const metadata = { records: vcfMetadata } as MetadataContainer;
     const configVip = {} as ConfigVip;
 
-    test("invalid config", () => {
-      expect(() =>
-        initConfigFilterComposed(
-          {
-            type: "composed",
-            name: "invalid",
-          },
-          configVip,
-          metadata,
-          null,
-        ),
-      ).toThrow(/^config invalid: unknown composed filter name 'invalid'$/);
-    });
-
     describe("hpo", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "hpo",
       };
@@ -98,7 +84,7 @@ describe("config filters composed", () => {
       });
 
       test("hpo with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -132,7 +118,7 @@ describe("config filters composed", () => {
     });
 
     describe("locus", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "locus",
       };
@@ -151,7 +137,7 @@ describe("config filters composed", () => {
       });
 
       test("locus with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -164,7 +150,7 @@ describe("config filters composed", () => {
     });
 
     describe("allelicImbalance", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "allelicImbalance",
       };
@@ -208,7 +194,7 @@ describe("config filters composed", () => {
       });
 
       test("allelicImbalance with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -236,7 +222,7 @@ describe("config filters composed", () => {
     });
 
     describe("inheritanceMatch", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "inheritanceMatch",
       };
@@ -277,7 +263,7 @@ describe("config filters composed", () => {
       });
 
       test("inheritanceMatch with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -303,7 +289,7 @@ describe("config filters composed", () => {
     });
 
     describe("deNovo", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "deNovo",
       };
@@ -334,7 +320,7 @@ describe("config filters composed", () => {
       });
 
       test("deNovo with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -360,7 +346,7 @@ describe("config filters composed", () => {
     });
 
     describe("vipC", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "vipC",
       };
@@ -400,7 +386,7 @@ describe("config filters composed", () => {
       });
 
       test("vipC with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",
@@ -435,7 +421,7 @@ describe("config filters composed", () => {
     });
 
     describe("vipCS", () => {
-      const configBase: ConfigStaticFieldComposed = {
+      const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "vipCS",
       };
@@ -479,7 +465,7 @@ describe("config filters composed", () => {
       });
 
       test("vipCS with custom label and description", () => {
-        const config: ConfigStaticFieldComposed = {
+        const config: ConfigJsonFilterComposed = {
           ...configBase,
           label: "my_label",
           description: "my_description",

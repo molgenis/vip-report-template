@@ -1,11 +1,11 @@
 import Ajv, { JTDSchemaType } from "ajv/dist/jtd";
 import { Json } from "@molgenis/vip-report-api";
 import { ConfigValidationError } from "../error.ts";
-import { ConfigStatic } from "../../types/config";
+import { ConfigJson } from "../../types/config";
 
 const ajv = new Ajv();
 
-const schema: JTDSchemaType<ConfigStatic> = {
+const schema: JTDSchemaType<ConfigJson> = {
   properties: {
     vip: {
       properties: {
@@ -51,7 +51,7 @@ const schema: JTDSchemaType<ConfigStatic> = {
 
 const validate = ajv.compile(schema);
 
-export function validateConfig(json: Json): ConfigStatic {
+export function validateConfig(json: Json): ConfigJson {
   const valid = validate(json);
   if (valid) {
     return json; // json is 'ConfigStatic' here

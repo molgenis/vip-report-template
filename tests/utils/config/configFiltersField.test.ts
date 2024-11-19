@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { SampleContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { initConfigFiltersGenotype, initConfigFiltersInfo } from "../../../src/utils/config/configFiltersField.ts";
 import { FieldMetadataWrapper, getInfoFieldsRegex, getSampleFieldsRegex } from "../../../src/utils/vcf.ts";
-import { ConfigStaticFieldGenotype, ConfigStaticFieldInfo } from "../../../src/types/config";
+import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo } from "../../../src/types/config";
 
 describe("config filters field", () => {
   vi.mock(import("../../../src/utils/vcf.ts"));
@@ -15,7 +15,7 @@ describe("config filters field", () => {
     const metadata = {} as VcfMetadataContainer;
 
     test("config matches one field", () => {
-      const config: ConfigStaticFieldInfo = {
+      const config: ConfigJsonFieldInfo = {
         type: "info",
         name: "field",
         label: "my_field_label",
@@ -40,7 +40,7 @@ describe("config filters field", () => {
     });
 
     test("config matches multiple fields", () => {
-      const config: ConfigStaticFieldInfo = {
+      const config: ConfigJsonFieldInfo = {
         type: "info",
         name: "VIP/.*",
       };
@@ -62,7 +62,7 @@ describe("config filters field", () => {
     });
 
     test("config matches zero fields", () => {
-      const config: ConfigStaticFieldInfo = {
+      const config: ConfigJsonFieldInfo = {
         type: "info",
         name: "field_not_in_my_vcf",
       };
@@ -79,7 +79,7 @@ describe("config filters field", () => {
     const sample = { item: { id: 2 } } as SampleContainer;
 
     test("config matches one field", () => {
-      const config: ConfigStaticFieldGenotype = {
+      const config: ConfigJsonFieldGenotype = {
         type: "genotype",
         name: "field",
         label: "my_field_label",
@@ -104,7 +104,7 @@ describe("config filters field", () => {
     });
 
     test("config matches multiple fields", () => {
-      const config: ConfigStaticFieldGenotype = {
+      const config: ConfigJsonFieldGenotype = {
         type: "genotype",
         name: "VIP/.*",
       };
@@ -126,7 +126,7 @@ describe("config filters field", () => {
     });
 
     test("config matches zero fields", () => {
-      const config: ConfigStaticFieldGenotype = {
+      const config: ConfigJsonFieldGenotype = {
         type: "genotype",
         name: "field_not_in_my_vcf",
       };

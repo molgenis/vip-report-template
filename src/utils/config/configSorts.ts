@@ -1,26 +1,26 @@
-import { ConfigStaticFieldInfo, ConfigStaticSort, ConfigStaticSortOrder } from "../../types/config";
+import { ConfigJsonFieldInfo, ConfigJsonSort, ConfigJsonSortOrder } from "../../types/config";
 import { UnexpectedEnumValueException } from "../error.ts";
 import { ConfigSort, ConfigSortOrder, ConfigSorts } from "../../types/configSort";
 import { MetadataContainer, VcfMetadataContainer } from "../api.ts";
 import { getInfoField } from "../vcf.ts";
 
-export function initConfigSorts(configs: ConfigStaticSort[], metadata: MetadataContainer): ConfigSorts {
+export function initConfigSorts(configs: ConfigJsonSort[], metadata: MetadataContainer): ConfigSorts {
   return configs
     .flatMap((configStaticSort) => createConfigSort(configStaticSort, metadata.records))
     .filter((configSort) => configSort !== null);
 }
 
-function createConfigSortOrders(config: ConfigStaticSort, metadata: VcfMetadataContainer): ConfigSortOrder[] {
+function createConfigSortOrders(config: ConfigJsonSort, metadata: VcfMetadataContainer): ConfigSortOrder[] {
   const configSortOrders = config.orders.map((order) => createConfigSortOrder(order, metadata));
   return configSortOrders.filter((configSortOrder) => configSortOrder !== null);
 }
 
-function createConfigSort(config: ConfigStaticSort, metadata: VcfMetadataContainer): ConfigSort | null {
+function createConfigSort(config: ConfigJsonSort, metadata: VcfMetadataContainer): ConfigSort | null {
   const orders = createConfigSortOrders(config, metadata);
   return orders.length !== 0 ? { selected: config.selected, orders } : null;
 }
 
-function createConfigSortOrder(order: ConfigStaticSortOrder, metadata: VcfMetadataContainer) {
+function createConfigSortOrder(order: ConfigJsonSortOrder, metadata: VcfMetadataContainer) {
   let configSortOrder: ConfigSortOrder | null;
   switch (order.field.type) {
     case "info":
@@ -38,10 +38,10 @@ function createConfigSortOrder(order: ConfigStaticSortOrder, metadata: VcfMetada
 }
 
 function createConfigSortOrderInfo(
-  configStatic: ConfigStaticSortOrder,
+  configStatic: ConfigJsonSortOrder,
   metadata: VcfMetadataContainer,
 ): ConfigSortOrder | null {
-  const configField: ConfigStaticFieldInfo = configStatic.field as ConfigStaticFieldInfo;
+  const configField: ConfigJsonFieldInfo = configStatic.field as ConfigJsonFieldInfo;
   const field = getInfoField(metadata, configField.name);
   return field !== undefined ? { direction: configStatic.direction, field: field } : null;
 }
