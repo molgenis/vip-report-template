@@ -15,8 +15,9 @@ export const FieldGenotypeStr: Component<{
     <Show when={showGenotype()}>
       <abbr title={`display repeat unit familiar to clinician: ${props.value.displayRepeatUnit!}`}>
         <Allele value={props.value.repeatUnitValue!} isAbbreviate={false} />
+        <sub>n</sub>
       </abbr>
-      <span class="ml-1">{`(${props.value.repeatCount!})`}</span>
+      <span class="ml-1">{`(n=${props.value.repeatCount!})`}</span>
       <Show when={!props.value.repeatUnitMatch!}>
         <abbr
           title={"the called repeat unit does not match the repeat unit in the loci bed file"}
