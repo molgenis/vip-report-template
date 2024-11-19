@@ -64,8 +64,7 @@ function initConfigCellItem(
     case "format":
       throw new ConfigInvalidError(`unsupported field type '${type}', did you mean to use 'genotype'?`);
     case "genotype":
-      if (sample === null) throw new ConfigInvalidError(`cannot create field, field type '${type}' requires sample`);
-      configFields = initConfigCellGenotype(config, metadata.records, sample);
+      configFields = sample ? initConfigCellGenotype(config, metadata.records, sample) : [];
       break;
     case "composed":
       configFields = [initConfigCellComposed(config, variantType, metadata, sample)];

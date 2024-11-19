@@ -74,13 +74,13 @@ describe("config cells", () => {
       ).toStrictEqual([]);
     });
 
-    test("error on genotype cell config when no sample available", () => {
+    test("ignore genotype cell config when no sample available", () => {
       const config: ConfigStaticField[] = [{ type: "genotype", name: "my_genotype_not_in_metadata" }];
       const sample: Partial<SampleContainer> | null = null;
 
-      expect(() =>
-        initConfigCells(config, variantType as VariantType, metadata as MetadataContainer, sample),
-      ).toThrowError(/^config invalid: cannot create field, field type 'genotype' requires sample$/);
+      expect(initConfigCells(config, variantType as VariantType, metadata as MetadataContainer, sample)).toStrictEqual(
+        [],
+      );
     });
   });
 });

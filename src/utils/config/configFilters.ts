@@ -40,7 +40,7 @@ function createConfigFilterItem(
     case "format":
       throw new Error(`unsupported config filter type '${configStaticField.type}'`); // not exposed by vip-report-api
     case "genotype":
-      configFilters = sample ? initConfigFiltersGenotype(configStaticField, metadata.records, sample) : []; //TODO inconsistent with cells which throws error instead of ignoring
+      configFilters = sample ? initConfigFiltersGenotype(configStaticField, metadata.records, sample) : [];
       break;
     case "composed":
       configFilters = [initConfigFilterComposed(configStaticField, configVip, metadata, sample)];
