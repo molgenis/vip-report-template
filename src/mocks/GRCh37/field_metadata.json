@@ -86,7 +86,8 @@
     "VIPC_S": {
       "label": "VIP sample classification",
       "numberType": "OTHER",
-      "type": "STRING"
+      "type": "STRING",
+      "separator": ","
     }
   },
   "info": {
