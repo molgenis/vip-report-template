@@ -1,4 +1,4 @@
-import { Query } from "@molgenis/vip-report-api";
+import { ComposedQueryOperator, Query } from "@molgenis/vip-report-api";
 import { FilterValueMap } from "../../types/configFilter";
 import { VariantType } from "../variantType.ts";
 
@@ -7,8 +7,6 @@ import { SampleContainer } from "../api.ts";
 import { createQueryFilters } from "./queryFilter.ts";
 import { createQueryVariantType } from "./queryVariantType.ts";
 import { createQuerySample } from "./querySample.ts";
-
-type ComposedQueryOperator = "and" | "or"; //   TODO move to API.d.ts in vip-report-api
 
 export function createQuery(
   config: Config,
