@@ -364,7 +364,7 @@ describe("config filters composed", () => {
         type: "composed",
         name: "vipC",
       };
-      const configVip = { params: { vcf: { filter: { classes: "a,c" } } } } as ConfigVip;
+      const configVip = { params: { vcf: { filter: { classes: "a,c", consequences: true } } } } as ConfigVip;
       const fieldVipCBase: FieldMetadataWrapper = {
         id: "CSQ/VIPC",
         type: "CATEGORICAL",
@@ -418,6 +418,20 @@ describe("config filters composed", () => {
         expect(initConfigFilterComposed(configBase, configVip, metadata, null)).toStrictEqual(null);
         expect(getInfoNestedField).toHaveBeenCalledWith(vcfMetadata, "CSQ", "VIPC");
       });
+
+      test("vipC is null config consequences=false", () => {
+        vi.mocked(getInfoNestedField).mockReturnValue(fieldVipCBase);
+        const configVip = { params: { vcf: { filter: { classes: "a,c", consequences: false } } } } as ConfigVip;
+        const filter = initConfigFilterComposed(configBase, configVip, metadata, null) as ConfigFilterVipC;
+        expect(filter).toStrictEqual(null);
+      });
+
+      test("vipC is null when less than two categories", () => {
+        vi.mocked(getInfoNestedField).mockReturnValue(fieldVipCBase);
+        const configVip = { params: { vcf: { filter: { classes: "one", consequences: false } } } } as ConfigVip;
+        const filter = initConfigFilterComposed(configBase, configVip, metadata, null) as ConfigFilterVipC;
+        expect(filter).toStrictEqual(null);
+      });
     });
 
     describe("vipCS", () => {
@@ -431,9 +445,10 @@ describe("config filters composed", () => {
         type: "CATEGORICAL",
         number: { type: "NUMBER", count: 1 },
         categories: { a: { label: "a_label" }, b: { label: "b_label" }, c: { label: "c_label" } },
+        required: true,
         index: 0,
       };
-      const sample = { item: { id: 2 } } as SampleContainer;
+      const sample = { item: { data: { proband: true } } } as SampleContainer;
 
       test("vipCS", () => {
         vi.mocked(getSampleField).mockReturnValue(fieldVipCSBase);
@@ -444,6 +459,7 @@ describe("config filters composed", () => {
         expect(filter.field).toStrictEqual({
           ...fieldVipCSBase,
           categories: { a: { label: "a_label" }, c: { label: "c_label" } },
+          required: true,
         });
         expect(filter.sample).toStrictEqual(sample);
         expect(getSampleField).toHaveBeenCalledWith(vcfMetadata, "VIPC_S");
@@ -480,10 +496,22 @@ describe("config filters composed", () => {
         expect(initConfigFilterComposed(configBase, configVip, metadata, null)).toStrictEqual(null);
       });
 
+      test("vipCS is null when sample is not a proband", () => {
+        const sample = { item: { data: { proband: true } } } as SampleContainer;
+        expect(initConfigFilterComposed(configBase, configVip, metadata, sample)).toStrictEqual(null);
+      });
+
       test("vipCS is null when metadata absent", () => {
         vi.mocked(getSampleField).mockReturnValue(undefined);
         expect(initConfigFilterComposed(configBase, configVip, metadata, sample)).toStrictEqual(null);
         expect(getSampleField).toHaveBeenCalledWith(vcfMetadata, "VIPC_S");
+      });
+
+      test("vipCS is null when less than two categories", () => {
+        vi.mocked(getInfoNestedField).mockReturnValue(fieldVipCSBase);
+        const configVip = { params: { vcf: { filter: { classes: "one", consequences: false } } } } as ConfigVip;
+        const filter = initConfigFilterComposed(configBase, configVip, metadata, null) as ConfigFilterVipCS;
+        expect(filter).toStrictEqual(null);
       });
     });
   });

@@ -7,7 +7,7 @@ describe("config parser", () => {
       const config = {
         vip: {
           filter_field: { type: "genotype", name: "f" },
-          params: { vcf: { filter: { classes: "c0,c1" }, filter_samples: { classes: "cs0,cs1" } } },
+          params: { vcf: { filter: { classes: "c0,c1", consequences: true }, filter_samples: { classes: "cs0,cs1" } } },
         },
         sample_variants: {},
         variants: {},

@@ -157,6 +157,8 @@ function createConfigFilterVipC(
   configVip: ConfigVip,
   metadata: VcfMetadataContainer,
 ): ConfigFilterVipC | null {
+  if (!configVip.params.vcf.filter.consequences) return null;
+
   const vipCField = getInfoNestedField(metadata, "CSQ", "VIPC");
   if (vipCField === undefined) return null;
 
@@ -166,6 +168,7 @@ function createConfigFilterVipC(
   // exclude categories that were removed after filtering
   const classSet = new Set(configVip.params.vcf.filter.classes.split(","));
   const treeCategories = Object.fromEntries(Object.entries(categories).filter(([key]) => classSet.has(key)));
+  if (Object.keys(treeCategories).length <= 1) return null;
 
   return {
     type: "composed",
@@ -182,7 +185,7 @@ function createConfigFilterVipCS(
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigFilterVipCS | null {
-  if (sample === null) return null;
+  if (sample === null || !sample.item.data.proband) return null;
   const vipCSField = getSampleField(metadata, "VIPC_S");
   if (vipCSField === undefined) return null;
 
@@ -192,13 +195,14 @@ function createConfigFilterVipCS(
   // exclude categories that were removed after filtering
   const classSet = new Set(configVip.params.vcf.filter_samples.classes.split(","));
   const treeCategories = Object.fromEntries(Object.entries(categories).filter(([key]) => classSet.has(key)));
+  if (Object.keys(treeCategories).length <= 1) return null;
 
   return {
     type: "composed",
     id: configStatic.name,
     label: () => getLabel(configStatic, vipCSField.label || "VIPC_S"),
     description: () => getDescription(configStatic, vipCSField.description),
-    field: { ...vipCSField, categories: treeCategories },
+    field: { ...vipCSField, categories: treeCategories, required: true },
     sample,
   };
 }
