@@ -15,7 +15,6 @@ import { RuntimeError, UnexpectedEnumValueException } from "../error.ts";
 import { ConfigFilters } from "../../types/config";
 import { createQueryComposed, createQueryComposedNullable } from "./query.ts";
 import { createQueryFilterField } from "./queryFilterField.ts";
-import { CategoryRecord } from "@molgenis/vip-report-vcf";
 
 /**
  * Create API query for state of list of filters
@@ -65,7 +64,6 @@ export function createQueryFilterString(
   filterValue: FilterValueString,
   multiValue: boolean,
   nestedValue: boolean,
-  categories?: CategoryRecord, // TODO remove after resolving todo below
 ): Query {
   const nonNullFilterValues = filterValue.filter((value) => value !== "__null");
 
@@ -79,16 +77,16 @@ export function createQueryFilterString(
   }
 
   if (nonNullFilterValues.length < filterValue.length) {
-    if (categories) {
-      // workaround: use '!has_any' and '!any_has_any' since '== null' and '== []' do not work
-      queryParts.push({
-        selector,
-        operator: nestedValue ? (multiValue ? "!any_has_any" : "!has_any") : multiValue ? "!has_any" : "!in",
-        args: Object.keys(categories as CategoryRecord),
-      });
-    } else {
-      throw new RuntimeError("query value 'null' not supported for non-categorical filters"); // TODO enable when vip-report-api issue fixed
-    }
+    queryParts.push({
+      selector,
+      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "==",
+      args: nestedValue ? (multiValue ? [] : null) : null,
+    });
+    queryParts.push({
+      selector,
+      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "in",
+      args: undefined,
+    });
   }
   return createQueryComposed(queryParts, "or");
 }
