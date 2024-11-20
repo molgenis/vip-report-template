@@ -517,6 +517,23 @@
           "name": "vipCS"
         }
       ]
+    },
+    "recordsPerPage": {
+      "str": [
+        {
+          "number": 10
+        },
+        {
+          "number": 20,
+          "selected": true
+        },
+        {
+          "number": 50
+        },
+        {
+          "number": 100
+        }
+      ]
     }
   },
   "variants": {

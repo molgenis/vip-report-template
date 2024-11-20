@@ -7,7 +7,7 @@ import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { ButtonDownload } from "./form/ButtonDownload";
-import { ConfigCells } from "../types/config";
+import { ConfigCells, ConfigRecordsPerPage } from "../types/config";
 import { ConfigCellGroup, ConfigCellInfo } from "../types/configCells";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/query/sort.ts";
 
@@ -21,6 +21,7 @@ export const VariantResults: Component<{
   fieldConfigs: ConfigCells;
   records: PagedItems<VcfRecord>;
   sortOptions: ConfigSort[] | undefined;
+  recordsPerPage: ConfigRecordsPerPage;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
   onPageChange: PageChangeCallback;
@@ -88,7 +89,7 @@ export const VariantResults: Component<{
                 <div class="columns is-gapless">
                   <div class="column">
                     <div class="field is-grouped is-grouped-right">
-                      <RecordsPerPage initialValue={records.page.size} onChange={props.onRecordsPerPageChange} />
+                      <RecordsPerPage config={props.recordsPerPage} onChange={props.onRecordsPerPageChange} />
                     </div>
                   </div>
                 </div>

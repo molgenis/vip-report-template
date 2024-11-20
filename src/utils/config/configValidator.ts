@@ -5,6 +5,7 @@ import {
   ConfigJson,
   ConfigJsonField,
   ConfigJsonFilter,
+  ConfigJsonRecordsPerPageOption,
   ConfigJsonSort,
   ConfigJsonSortOrder,
   ConfigJsonVariants,
@@ -267,6 +268,15 @@ const schemaConfigJsonSort: JTDSchemaType<ConfigJsonSort> = {
   },
 };
 
+const schemaConfigJsonRecordsPerPageOption: JTDSchemaType<ConfigJsonRecordsPerPageOption> = {
+  properties: {
+    number: { type: "uint16" },
+  },
+  optionalProperties: {
+    selected: { type: "boolean" },
+  },
+};
+
 const schemaConfigJsonVariants: JTDSchemaType<ConfigJsonVariants> = {
   properties: {
     cells: {
@@ -293,6 +303,14 @@ const schemaConfigJsonVariants: JTDSchemaType<ConfigJsonVariants> = {
         snv: { elements: schemaConfigJsonSort },
         str: { elements: schemaConfigJsonSort },
         sv: { elements: schemaConfigJsonSort },
+      },
+    },
+    recordsPerPage: {
+      optionalProperties: {
+        all: { elements: schemaConfigJsonRecordsPerPageOption },
+        snv: { elements: schemaConfigJsonRecordsPerPageOption },
+        str: { elements: schemaConfigJsonRecordsPerPageOption },
+        sv: { elements: schemaConfigJsonRecordsPerPageOption },
       },
     },
   },

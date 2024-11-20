@@ -236,6 +236,32 @@ Example:
 }
 ```
 
+#### Records per page
+
+Via this section available records per page options and the default can be configured.
+
+Example:
+
+```
+"recordsPerPage": {
+      "str": [
+        {
+          "number": 10
+        },
+        {
+          "number": 20,
+          "selected": true
+        },
+        {
+          "number": 50
+        },
+        {
+          "number": 100
+        }
+      ]
+    }
+```
+
 ### Wildcards
 
 Regular expressions like can be used to include multiple fields at once in you config.

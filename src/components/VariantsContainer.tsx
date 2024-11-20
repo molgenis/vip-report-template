@@ -35,18 +35,18 @@ export const VariantsContainer: Component<{
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
   const query = () => createQuery(config(), props.variantType, props.sample, props.store.getFilterValues());
 
-  const sort = () =>
-    createSort(
-      props.store.getSort(),
-      config().variants.sorts.find((configSort) => configSort.selected),
-    );
+  const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
+  const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
+  const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
+  const recordsPerPage = () =>
+    props.store.getPageSize() !== null ? props.store.getPageSize()! : defaultRecordsPerPage();
 
   const [records] = createResource(
     (): Params => ({
       query: query() || undefined,
       page: props.store.getPageNumber() || 0,
-      size: props.store.getPageSize() || 10,
-      sort: sort() || undefined,
+      size: recordsPerPage(),
+      sort: sort(),
     }),
     fetchRecords,
   );
@@ -131,6 +131,10 @@ export const VariantsContainer: Component<{
                 fieldConfigs={config().variants.cells}
                 records={records()}
                 sortOptions={config().variants.sorts}
+                recordsPerPage={config().variants.recordsPerPage.map((option) => ({
+                  ...option,
+                  selected: option.number === recordsPerPage(),
+                }))}
                 onPageChange={onPageChange}
                 onRecordsPerPageChange={onRecordsPerPageChange}
                 onRecordsDownload={onRecordsDownload}

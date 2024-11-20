@@ -56,6 +56,11 @@ export interface ConfigJsonSortOrder {
   field: ConfigJsonFieldItem;
 }
 
+export interface ConfigJsonRecordsPerPageOption {
+  selected?: boolean;
+  number: number;
+}
+
 export type ConfigJsonFieldItem =
   | ConfigJsonFieldFixed
   | ConfigJsonFieldInfo
@@ -102,6 +107,7 @@ export type ConfigJsonVariantType = "all" | "str" | "snv" | "sv";
 export type ConfigJsonVariantTypeFields = { [key in ConfigJsonVariantType]?: ConfigJsonField[] };
 export type ConfigJsonVariantTypeFilters = { [key in ConfigJsonVariantType]?: ConfigJsonFilter[] };
 export type ConfigJsonSorts = { [key in ConfigJsonVariantType]?: ConfigJsonSort[] };
+export type ConfigJsonRecordsPerPage = { [key in ConfigJsonVariantType]?: ConfigJsonRecordsPerPageOption[] };
 
 export type ConfigJsonVipParamsCram = { call_snv: boolean; call_str: boolean; call_sv: boolean; call_cnv: boolean };
 
@@ -124,6 +130,7 @@ export type ConfigJsonVariants = {
   cells: ConfigJsonVariantTypeFields;
   filters?: ConfigJsonVariantTypeFilters;
   sorts?: ConfigJsonSorts;
+  recordsPerPage?: ConfigJsonRecordsPerPage;
 };
 
 export type ConfigJson = {
@@ -140,11 +147,14 @@ export type Config = {
 export type ConfigFilters = ConfigFilter[];
 export type ConfigCells = ConfigCell[];
 export type ConfigSorts = ConfigSort[];
+export type ConfigRecordsPerPageOption = ConfigJsonRecordsPerPageOption;
+export type ConfigRecordsPerPage = ConfigRecordsPerPageOption[];
 
 export type ConfigVariants = {
   cells: ConfigCells;
   filters: ConfigFilters;
   sorts: ConfigSorts;
+  recordsPerPage: ConfigRecordsPerPage;
 };
 
 export type ConfigVipParams = ConfigJsonVipParams;
