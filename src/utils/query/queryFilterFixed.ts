@@ -16,25 +16,25 @@ import { createQueryFilterClosedInterval, createQueryFilterString } from "./quer
 export function createQueryFilterFixed(filter: ConfigFilterFixed, filterValue: FilterValueFixed): Query {
   let query: Query;
   switch (filter.id) {
-    case "chrom":
+    case "fixed/chrom":
       query = createQueryFilterString(["c"], filterValue as FilterValueChrom, false, false);
       break;
-    case "pos":
+    case "fixed/pos":
       query = createQueryFilterClosedInterval(["p"], filterValue as FilterValuePos);
       break;
-    case "id":
+    case "fixed/id":
       query = createQueryFilterString(["i"], filterValue as FilterValueId, true, false);
       break;
-    case "ref":
+    case "fixed/ref":
       query = createQueryFilterString(["r"], filterValue as FilterValueRef, false, false);
       break;
-    case "alt":
+    case "fixed/alt":
       query = createQueryFilterString(["a"], filterValue as FilterValueAlt, true, false);
       break;
-    case "qual":
+    case "fixed/qual":
       query = createQueryFilterClosedInterval(["q"], filterValue as FilterValueQual);
       break;
-    case "filter":
+    case "fixed/filter":
       query = createQueryFilterString(["f"], filterValue as FilterValueFilter, true, false);
       break;
     default:

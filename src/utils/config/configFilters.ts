@@ -37,5 +37,10 @@ function createConfigFilter(
       configFilters = [initConfigFilterComposed(config, configVip, metadata, sample)];
       break;
   }
-  return configFilters.filter((configFilter) => configFilter !== null);
+  return configFilters
+    .filter((configFilter) => configFilter !== null)
+    .map((config) => ({
+      ...config,
+      id: `${config.type}/${config.id}`, // prevent naming collisions for generic config filters
+    }));
 }

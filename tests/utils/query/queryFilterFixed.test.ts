@@ -23,7 +23,7 @@ describe("query filter fixed", () => {
     const query: Query = { selector: "x", operator: "==", args: "y" };
 
     test("chrom", () => {
-      const config = { type: "fixed", id: "chrom" } as ConfigFilterChrom;
+      const config = { type: "fixed", id: "fixed/chrom" } as ConfigFilterChrom;
       const value = ["chr1"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -31,7 +31,7 @@ describe("query filter fixed", () => {
     });
 
     test("pos", () => {
-      const config = { type: "fixed", id: "pos" } as ConfigFilterPos;
+      const config = { type: "fixed", id: "fixed/pos" } as ConfigFilterPos;
       const value = { left: 1, right: 2 };
       vi.mocked(createQueryFilterClosedInterval).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -39,7 +39,7 @@ describe("query filter fixed", () => {
     });
 
     test("id", () => {
-      const config = { type: "fixed", id: "id" } as ConfigFilterId;
+      const config = { type: "fixed", id: "fixed/id" } as ConfigFilterId;
       const value = ["id0"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -47,7 +47,7 @@ describe("query filter fixed", () => {
     });
 
     test("ref", () => {
-      const config = { type: "fixed", id: "ref" } as ConfigFilterRef;
+      const config = { type: "fixed", id: "fixed/ref" } as ConfigFilterRef;
       const value = ["C"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -55,7 +55,7 @@ describe("query filter fixed", () => {
     });
 
     test("alt", () => {
-      const config = { type: "fixed", id: "alt" } as ConfigFilterAlt;
+      const config = { type: "fixed", id: "fixed/alt" } as ConfigFilterAlt;
       const value = ["C"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -63,7 +63,7 @@ describe("query filter fixed", () => {
     });
 
     test("qual", () => {
-      const config = { type: "fixed", id: "qual" } as ConfigFilterQual;
+      const config = { type: "fixed", id: "fixed/qual" } as ConfigFilterQual;
       const value = { left: 1, right: 2 };
       vi.mocked(createQueryFilterClosedInterval).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -71,7 +71,7 @@ describe("query filter fixed", () => {
     });
 
     test("id", () => {
-      const config = { type: "fixed", id: "filter" } as ConfigFilterFilter;
+      const config = { type: "fixed", id: "fixed/filter" } as ConfigFilterFilter;
       const value = ["filter0"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
@@ -79,7 +79,7 @@ describe("query filter fixed", () => {
     });
 
     test("invalid", () => {
-      const config = { type: "fixed", id: "invalid" } as ConfigFilterFilter;
+      const config = { type: "fixed", id: "fixed/invalid" } as ConfigFilterFilter;
       expect(() => createQueryFilterFixed(config, ["value"])).toThrow();
     });
   });

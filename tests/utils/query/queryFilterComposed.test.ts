@@ -36,7 +36,7 @@ describe("query composed filters", () => {
 
     test("hpo", () => {
       const field = { id: "f", number: {}, categories: {} };
-      const config = { type: "composed", id: "hpo", field: field } as ConfigFilterHpo;
+      const config = { type: "composed", id: "composed/hpo", field: field } as ConfigFilterHpo;
       const value = ["chr1"] as FilterValueHpo;
       vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
       expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
@@ -49,7 +49,7 @@ describe("query composed filters", () => {
       test("locus chr+start+end", () => {
         const queryPos: Query = { selector: "z", operator: "==", args: "y" };
 
-        const config = { type: "composed", id: "locus" } as ConfigFilterLocus;
+        const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1", start: 1, end: 2 } as FilterValueLocus;
         vi.mocked(createQueryFilterString).mockReturnValue(query);
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryPos);
@@ -64,7 +64,7 @@ describe("query composed filters", () => {
       test("locus chr+start", () => {
         const queryPos: Query = { selector: "z", operator: "==", args: "y" };
 
-        const config = { type: "composed", id: "locus" } as ConfigFilterLocus;
+        const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1", start: 1 } as FilterValueLocus;
         vi.mocked(createQueryFilterString).mockReturnValue(query);
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryPos);
@@ -79,7 +79,7 @@ describe("query composed filters", () => {
       test("locus chr+end", () => {
         const queryPos: Query = { selector: "z", operator: "==", args: "y" };
 
-        const config = { type: "composed", id: "locus" } as ConfigFilterLocus;
+        const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1", end: 2 } as FilterValueLocus;
         vi.mocked(createQueryFilterString).mockReturnValue(query);
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryPos);
@@ -92,7 +92,7 @@ describe("query composed filters", () => {
       });
 
       test("locus chr", () => {
-        const config = { type: "composed", id: "locus" } as ConfigFilterLocus;
+        const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1" } as FilterValueLocus;
         vi.mocked(createQueryFilterString).mockReturnValue(query);
         expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
@@ -103,7 +103,7 @@ describe("query composed filters", () => {
     describe("allelicImbalance", () => {
       const config = {
         type: "composed",
-        id: "allelicImbalance",
+        id: "composed/allelicImbalance",
         sample: { item: { data: { index: 1 } } } as SampleContainer,
         viabField: { id: "VIAB" },
         genotypeField: { id: "GT" },
@@ -204,7 +204,7 @@ describe("query composed filters", () => {
     describe("inheritanceMatch", () => {
       const config = {
         type: "composed",
-        id: "inheritanceMatch",
+        id: "composed/inheritanceMatch",
         sample: { item: { data: { index: 1 } } } as SampleContainer,
         vimField: { id: "VIM" },
       } as ConfigFilterInheritanceMatch;
@@ -239,7 +239,7 @@ describe("query composed filters", () => {
     describe("deNovo", () => {
       const config = {
         type: "composed",
-        id: "deNovo",
+        id: "composed/deNovo",
         sample: { item: { data: { index: 1 } } } as SampleContainer,
         vidField: { id: "VID" },
       } as ConfigFilterDeNovo;
@@ -273,7 +273,7 @@ describe("query composed filters", () => {
 
     test("vipC", () => {
       const field = { id: "f", number: {}, categories: {} };
-      const config = { type: "composed", id: "vipC", field: field } as ConfigFilterVipC;
+      const config = { type: "composed", id: "composed/vipC", field: field } as ConfigFilterVipC;
       const value = ["chr1"] as FilterValueVipC;
       vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
       expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
@@ -283,7 +283,7 @@ describe("query composed filters", () => {
     test("vipCS", () => {
       const sample = { item: { data: { index: 1 } } } as SampleContainer;
       const field = { id: "f", number: {}, categories: {} };
-      const config = { type: "composed", id: "vipCS", field, sample } as ConfigFilterVipCS;
+      const config = { type: "composed", id: "composed/vipCS", field, sample } as ConfigFilterVipCS;
       const value = ["chr1"] as FilterValueVipCS;
       vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
       expect(createQueryFilterComposed(config, value)).toStrictEqual(query);

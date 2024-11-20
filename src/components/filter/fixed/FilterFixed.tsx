@@ -35,7 +35,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
 
   return (
     <Switch fallback={<ErrorNotification error={`unexpected field id ${id()}`} />}>
-      <Match when={id() === "chrom"}>
+      <Match when={id() === "fixed/chrom"}>
         <FilterChrom
           config={props.config as ConfigFilterChrom}
           value={props.value as FilterValueChrom}
@@ -43,7 +43,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "pos"}>
+      <Match when={id() === "fixed/pos"}>
         <FilterPos
           config={props.config as ConfigFilterPos}
           value={props.value as FilterValuePos}
@@ -51,7 +51,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "id"}>
+      <Match when={id() === "fixed/id"}>
         <FilterId
           config={props.config as ConfigFilterId}
           value={props.value as FilterValueId}
@@ -59,7 +59,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "ref"}>
+      <Match when={id() === "fixed/ref"}>
         <FilterRef
           config={props.config as ConfigFilterRef}
           value={props.value as FilterValueRef}
@@ -67,7 +67,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "alt"}>
+      <Match when={id() === "fixed/alt"}>
         <FilterAlt
           config={props.config as ConfigFilterAlt}
           value={props.value as FilterValueAlt}
@@ -75,7 +75,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "qual"}>
+      <Match when={id() === "fixed/qual"}>
         <FilterQual
           config={props.config as ConfigFilterQual}
           value={props.value as FilterValueQual}
@@ -83,7 +83,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "filter"}>
+      <Match when={id() === "fixed/filter"}>
         <FilterFilter
           config={props.config as ConfigFilterFilter}
           value={props.value as FilterValueFilter}

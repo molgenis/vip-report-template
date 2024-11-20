@@ -28,31 +28,31 @@ import { createQueryFilterFieldCategorical } from "./queryFilterField.ts";
 export function createQueryFilterComposed(filter: ConfigFilterComposed, filterValue: FilterValue): Query {
   let query: Query;
   switch (filter.id) {
-    case "hpo":
+    case "composed/hpo":
       query = createQueryFilterHpo(filter as ConfigFilterHpo, filterValue as FilterValueHpo);
       break;
-    case "locus":
+    case "composed/locus":
       query = createQueryFilterLocus(filterValue as FilterValueLocus);
       break;
-    case "allelicImbalance":
+    case "composed/allelicImbalance":
       query = createQueryFilterAllelicImbalance(
         filter as ConfigFilterAllelicImbalance,
         filterValue as FilterValueAllelicImbalance,
       );
       break;
-    case "inheritanceMatch":
+    case "composed/inheritanceMatch":
       query = createQueryFilterInheritanceMatch(
         filter as ConfigFilterInheritanceMatch,
         filterValue as FilterValueInheritanceMatch,
       );
       break;
-    case "deNovo":
+    case "composed/deNovo":
       query = createQueryFilterDeNovo(filter as ConfigFilterDeNovo, filterValue as FilterValueDeNovo);
       break;
-    case "vipC":
+    case "composed/vipC":
       query = createQueryFilterVipC(filter as ConfigFilterVipC, filterValue as FilterValueVipC);
       break;
-    case "vipCS":
+    case "composed/vipCS":
       query = createQueryFilterVipCS(filter as ConfigFilterVipCS, filterValue as FilterValueVipCS);
       break;
     default:

@@ -31,7 +31,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
   const id = () => props.config.id;
   return (
     <Switch fallback={<ErrorNotification error={`unexpected field id ${id()}`} />}>
-      <Match when={id() === "hpo"}>
+      <Match when={id() === "composed/hpo"}>
         <FilterHpo
           config={props.config as ConfigFilterHpo}
           value={props.value as FilterValueHpo | undefined}
@@ -39,7 +39,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "locus"}>
+      <Match when={id() === "composed/locus"}>
         <FilterLocus
           config={props.config as ConfigFilterLocus}
           value={props.value as FilterValueLocus | undefined}
@@ -47,7 +47,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "allelicImbalance"}>
+      <Match when={id() === "composed/allelicImbalance"}>
         <FilterAllelicImbalance
           config={props.config as ConfigFilterAllelicImbalance}
           value={props.value as FilterValueAllelicImbalance | undefined}
@@ -55,7 +55,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "inheritanceMatch"}>
+      <Match when={id() === "composed/inheritanceMatch"}>
         <FilterInheritance
           config={props.config as ConfigFilterInheritanceMatch}
           value={props.value as FilterValueInheritanceMatch | undefined}
@@ -63,7 +63,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "deNovo"}>
+      <Match when={id() === "composed/deNovo"}>
         <FilterDeNovo
           config={props.config as ConfigFilterDeNovo}
           value={props.value as FilterValueDeNovo | undefined}
@@ -71,7 +71,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "vipC"}>
+      <Match when={id() === "composed/vipC"}>
         <FilterVipC
           config={props.config as ConfigFilterVipC}
           value={props.value as FilterValueVipC | undefined}
@@ -79,7 +79,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueClear={props.onValueClear}
         />
       </Match>
-      <Match when={id() === "vipCS"}>
+      <Match when={id() === "composed/vipCS"}>
         <FilterVipCS
           config={props.config as ConfigFilterVipCS}
           value={props.value as FilterValueVipCS | undefined}

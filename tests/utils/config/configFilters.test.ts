@@ -24,10 +24,23 @@ describe("config filters", () => {
     const configVip = {} as ConfigVip;
 
     test("regular filters config", () => {
-      vi.mocked(initConfigFilterFixed).mockReturnValue(0 as unknown as ConfigFilterFixed);
-      vi.mocked(initConfigFiltersInfo).mockReturnValue([1 as unknown as ConfigFilterField]);
-      vi.mocked(initConfigFiltersGenotype).mockReturnValue([2 as unknown as ConfigFilterFormat]);
-      vi.mocked(initConfigFilterComposed).mockReturnValue(3 as unknown as ConfigFilterComposed);
+      vi.mocked(initConfigFilterFixed).mockReturnValue({ type: "fixed", id: "chrom" } as ConfigFilterFixed);
+      vi.mocked(initConfigFiltersInfo).mockReturnValue([
+        {
+          type: "info",
+          id: "my_info",
+        } as Partial<ConfigFilterField> as ConfigFilterField,
+      ]);
+      vi.mocked(initConfigFiltersGenotype).mockReturnValue([
+        {
+          type: "genotype",
+          id: "my_genotype",
+        } as Partial<ConfigFilterFormat> as ConfigFilterFormat,
+      ]);
+      vi.mocked(initConfigFilterComposed).mockReturnValue({
+        type: "composed",
+        id: "locus",
+      } as Partial<ConfigFilterComposed> as ConfigFilterComposed);
 
       const config: ConfigJsonFilter[] = [
         { type: "fixed", name: "chrom" },
@@ -38,7 +51,15 @@ describe("config filters", () => {
 
       expect(
         initConfigFilters(config, configVip, metadata as MetadataContainer, sample as SampleContainer | null),
-      ).toStrictEqual([0, 1, 2, 3]);
+      ).toStrictEqual([
+        { type: "fixed", id: "fixed/chrom" },
+        { type: "info", id: "info/my_info" },
+        {
+          type: "genotype",
+          id: "genotype/my_genotype",
+        },
+        { type: "composed", id: "composed/locus" },
+      ]);
     });
 
     test("exclude filters that are not applicable", () => {
