@@ -14,7 +14,7 @@ export const FilterWrapper: ParentComponent<{
   const isCollapsible = () => false; // TODO add to config filter base
   const label = () => props.config.label();
   const description = () => props.config.description();
-  const hasTooltipContent = () => description() || props.children;
+  const hasTooltipContent = () => description() || props.tooltipContentElement;
 
   function toggleShowTooltip() {
     setShowTooltip(!showTooltip());
