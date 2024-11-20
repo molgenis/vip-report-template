@@ -9,8 +9,26 @@ describe("config parser", () => {
           filter_field: { type: "genotype", name: "f" },
           params: { vcf: { filter: { classes: "c0,c1", consequences: true }, filter_samples: { classes: "cs0,cs1" } } },
         },
-        sample_variants: {},
-        variants: {},
+        sample_variants: { cells: {} },
+        variants: { cells: {} },
+      };
+      expect(validateConfig(config)).toStrictEqual(config);
+    });
+
+    test("valid with additional vip.params properties", () => {
+      const config = {
+        vip: {
+          filter_field: { type: "genotype", name: "f" },
+          params: {
+            vcf: {
+              filter: { classes: "c0,c1", consequences: true, new_prop: true },
+              filter_samples: { classes: "cs0,cs1", new_prop: true },
+            },
+            new_prop: true,
+          },
+        },
+        sample_variants: { cells: {} },
+        variants: { cells: {} },
       };
       expect(validateConfig(config)).toStrictEqual(config);
     });

@@ -1,5 +1,4 @@
 import { ConfigJsonFieldInfo, ConfigJsonSort, ConfigJsonSortOrder } from "../../types/config";
-import { UnexpectedEnumValueException } from "../error.ts";
 import { ConfigSort, ConfigSortOrder, ConfigSorts } from "../../types/configSort";
 import { MetadataContainer, VcfMetadataContainer } from "../api.ts";
 import { getInfoField } from "../vcf.ts";
@@ -31,8 +30,6 @@ function createConfigSortOrder(order: ConfigJsonSortOrder, metadata: VcfMetadata
     case "composed":
     case "format":
       throw new Error(`unsupported config filter type '${order.field.type}'`); // not exposed by vip-report-api
-    default:
-      throw new UnexpectedEnumValueException(order.field.type);
   }
   return configSortOrder;
 }

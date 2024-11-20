@@ -53,7 +53,7 @@ export interface ConfigJsonSort {
 
 export interface ConfigJsonSortOrder {
   direction: "desc" | "asc";
-  field: ConfigJsonField;
+  field: ConfigJsonFieldItem;
 }
 
 export type ConfigJsonFieldItem =
@@ -88,7 +88,7 @@ export interface ConfigJsonFilterGenotype extends Describable {
 
 export interface ConfigJsonFilterComposed extends Describable {
   type: "composed";
-  name: "hpo" | "locus" | "allelicImbalance" | "inheritanceMatch" | "deNovo" | "vipC" | "vipCS";
+  name: "allelicImbalance" | "deNovo" | "hpo" | "inheritanceMatch" | "locus" | "vipC" | "vipCS";
 }
 
 export type ConfigJsonFilter =
