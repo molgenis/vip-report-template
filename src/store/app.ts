@@ -1,4 +1,4 @@
-import { createStore } from "solid-js/store";
+import { createStore, produce } from "solid-js/store";
 import { AppActions, AppState, AppStore } from "../types/store";
 
 const defaultState: AppState = { variants: {}, sampleVariants: {}, samples: {} };
@@ -8,7 +8,13 @@ export function createAppStore(): AppStore {
 
   const actions: AppActions = {
     reset() {
-      setState(defaultState);
+      setState(
+        produce((state) => {
+          state.variants = {};
+          state.sampleVariants = {};
+          state.samples = {};
+        }),
+      );
     },
     setSamplePage(page: number) {
       setState({ samples: { ...(state.samples || {}), page } });
