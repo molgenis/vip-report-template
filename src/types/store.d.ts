@@ -3,11 +3,11 @@ import { VariantTypeId } from "../utils/variantType.ts";
 import { SortOrder } from "@molgenis/vip-report-api";
 import { FilterValueMap } from "./filter";
 
-export type Page = { number: number; size: number };
+export type Page = { number: number; size?: number };
 export type Sort = SortOrder | SortOrder[];
 export type AppStateVariantType = {
   filterValues?: FilterValueMap;
-  page?: { number: number; size: number };
+  page?: Page;
   /**
    * null:      do not sort,                the caller of this function should not fall back to a default sort
    * undefined: sort behavior is undefined, the caller of this function could fall back to a default sort

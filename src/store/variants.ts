@@ -89,7 +89,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     const stateVariantType: AppStateVariantType = getCreateVariantsState(state);
     let page = stateVariantType.page;
     if (page === undefined) {
-      page = { number: 0, size: 10 };
+      page = { number: 0 };
       stateVariantType.page = page;
     }
     return page;
@@ -147,7 +147,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     },
     getPageSize(): number | null {
       const page = getVariantsState(state).page;
-      return page ? page.size : null;
+      return page ? (page.size !== undefined ? page.size : null) : null;
     },
     setPageSize(pageSize: number) {
       setState(
