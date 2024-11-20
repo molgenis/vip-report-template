@@ -12,7 +12,6 @@ export const RecordsPerPage: Component<{
     props.onChange({ number: Number((event.target as HTMLInputElement).value) });
   };
 
-  console.log("beep");
   return (
     <div class="control">
       <span class="inline-control-text mr-2">Records per page</span>
