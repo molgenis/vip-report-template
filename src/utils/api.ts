@@ -51,10 +51,9 @@ export type SampleContainer = {
 // lazy import MockApiClient to ensure that it is excluded from the build artifact
 const api = import.meta.env.PROD
   ? new WindowApiClient()
-  : await (function () {
-      return import("../mocks/MockApiClient.ts").then((module) => {
-        return new module.MockApiClient();
-      });
+  : await (async () => {
+      const module = await import("../mocks/MockApiClient.ts");
+      return new module.MockApiClient();
     })();
 
 export async function fetchConfig(): Promise<ConfigJson> {
