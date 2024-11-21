@@ -23,7 +23,7 @@ describe("query filter fixed", () => {
       const value = ["x"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false, false, categories);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false, false);
     });
 
     test("CHARACTER count=1 info", () => {

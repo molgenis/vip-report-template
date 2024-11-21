@@ -16,7 +16,6 @@ import {
 } from "../../../src/types/configFilter";
 import { createQueryFilterFixed } from "../../../src/utils/query/queryFilterFixed.ts";
 import { createQueryFilterField } from "../../../src/utils/query/queryFilterField.ts";
-import { CategoryRecord } from "@molgenis/vip-report-vcf";
 
 describe("query filters", () => {
   vi.mock(import("../../../src/utils/query/queryFilterComposed.ts"));
@@ -219,26 +218,42 @@ describe("query filters", () => {
       });
     });
 
-    describe("categorical workaround", () => {
-      const categories: CategoryRecord = { c0: { label: "c0" }, c1: { label: "c1" } };
+    describe("categorical select null", () => {
 
       test("categorical __null", () => {
         const value: FilterValueString = ["__null"];
 
-        expect(createQueryFilterString(selector, value, false, false, categories)).toStrictEqual({
-          selector: ["x"],
-          operator: "!in",
-          args: ["c0", "c1"],
-        });
+        expect(createQueryFilterString(selector, value, false, false)).toStrictEqual(  { "args": [{
+          "args": null,
+            "operator": "==",
+            "selector": ["x",],
+        },
+        {
+          "args": undefined,
+            "operator": "in",
+            "selector": ["x",],
+        },
+      ],
+        "operator": "or"
       });
+    });
 
       test("categorical category and __null", () => {
         const value: FilterValueString = ["c0", "__null"];
 
-        expect(createQueryFilterString(selector, value, false, false, categories)).toStrictEqual({
+        expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
           args: [
             { selector: ["x"], operator: "in", args: ["c0"] },
-            { selector: ["x"], operator: "!in", args: ["c0", "c1"] },
+            {
+                "args": null,
+                "operator": "==",
+                "selector": ["x",],
+              },
+                {
+                  "args": undefined,
+                  "operator": "in",
+                  "selector": ["x",],
+                },
           ],
           operator: "or",
         });

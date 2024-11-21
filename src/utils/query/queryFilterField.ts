@@ -61,7 +61,7 @@ export function createQueryFilterFieldCategorical(
 ): Query {
   const multiValue = field.number.count !== 1;
   const nestedValue = field.parent !== undefined;
-  return createQueryFilterString(selector, filterValue, multiValue, nestedValue, field.categories);
+  return createQueryFilterString(selector, filterValue, multiValue, nestedValue);
 }
 
 function createQueryFilterFlag(): Query {
