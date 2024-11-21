@@ -2,6 +2,8 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { initConfig } from "../../../src/utils/config/config.ts";
 import {
   ConfigJson,
+  ConfigJsonVariant,
+  ConfigJsonVariantConsequence,
   ConfigJsonVariants,
   ConfigJsonVip,
   ConfigRecordsPerPage,
@@ -68,6 +70,10 @@ describe("config", () => {
           sorts: { all: [] },
           recordsPerPage: { all: recordsPerPage },
         },
+        sample_variant: {} as ConfigJsonVariant,
+        variant: {} as ConfigJsonVariant,
+        sample_variant_consequence: {} as ConfigJsonVariantConsequence,
+        variant_consequence: {} as ConfigJsonVariantConsequence,
       };
       const variantType: Partial<VariantType> = { id: "snv" };
 
@@ -87,6 +93,10 @@ describe("config", () => {
         vip: { params: {} } as ConfigJsonVip,
         sample_variants: {} as ConfigJsonVariants,
         variants: configVariantsMinimal,
+        sample_variant: {} as ConfigJsonVariant,
+        variant: {} as ConfigJsonVariant,
+        sample_variant_consequence: {} as ConfigJsonVariantConsequence,
+        variant_consequence: {} as ConfigJsonVariantConsequence,
       };
 
       const variantType: Partial<VariantType> = { id: "snv" };
@@ -103,6 +113,10 @@ describe("config", () => {
         vip: { params: {} } as ConfigJsonVip,
         sample_variants: { cells: { all: [] } },
         variants: { cells: { all: [] } },
+        sample_variant: {} as ConfigJsonVariant,
+        variant: {} as ConfigJsonVariant,
+        sample_variant_consequence: {} as ConfigJsonVariantConsequence,
+        variant_consequence: {} as ConfigJsonVariantConsequence,
       };
       const variantType: Partial<VariantType> = { id: "all" };
 
@@ -116,6 +130,10 @@ describe("config", () => {
         vip: { params: {} } as ConfigJsonVip,
         sample_variants: { cells: { all: [] } },
         variants: { cells: {} },
+        sample_variant: {} as ConfigJsonVariant,
+        variant: {} as ConfigJsonVariant,
+        sample_variant_consequence: {} as ConfigJsonVariantConsequence,
+        variant_consequence: {} as ConfigJsonVariantConsequence,
       };
       const variantType: Partial<VariantType> = { id: "all" };
 

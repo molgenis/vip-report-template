@@ -1,9 +1,9 @@
-import { Component, For, Show } from "solid-js";
+import { Component, createMemo, For, Show } from "solid-js";
 import { FieldMetadata, ValueArray, VcfRecord } from "@molgenis/vip-report-vcf";
-import { FieldHeader } from "./FieldHeader";
 import { Item } from "@molgenis/vip-report-api";
 import { FieldTyped } from "./field/typed/FieldTyped.tsx";
 import { Table } from "./Table.tsx";
+import { abbreviateHeader } from "../utils/utils.ts";
 
 export const VariantConsequenceTable: Component<{
   csqMetadata: FieldMetadata[];
@@ -31,5 +31,28 @@ export const VariantConsequenceTable: Component<{
         </For>
       </tbody>
     </Table>
+  );
+};
+
+const FieldHeader: Component<{
+  field: FieldMetadata;
+  vertical?: boolean;
+  rowspan?: number;
+  colspan?: number;
+}> = (props) => {
+  const label = createMemo(() => abbreviateHeader(props.field.label || props.field.id));
+  return (
+    <th
+      style={props.vertical ? { "writing-mode": "vertical-rl" } : undefined}
+      rowspan={props.rowspan}
+      colspan={props.colspan}
+    >
+      <Show
+        when={props.field.description && props.field.description !== label()}
+        fallback={<abbr title={props.field.label || props.field.id}>{label()}</abbr>}
+      >
+        <abbr title={props.field.description}>{label()}</abbr>
+      </Show>
+    </th>
   );
 };

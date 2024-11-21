@@ -2,21 +2,30 @@ import { describe, expect, test } from "vitest";
 import { validateConfig } from "../../../src/utils/config/configValidator.ts";
 
 describe("config parser", () => {
+  const configBase = {
+    sample_variants: { cells: {} },
+    variants: { cells: {} },
+    sample_variant: { cells: {} },
+    variant: { cells: {} },
+    sample_variant_consequence: { sample_cells: {} },
+    variant_consequence: {},
+  };
+
   describe("parseConfig", () => {
     test("valid", () => {
       const config = {
+        ...configBase,
         vip: {
           filter_field: { type: "genotype", name: "f" },
           params: { vcf: { filter: { classes: "c0,c1", consequences: true }, filter_samples: { classes: "cs0,cs1" } } },
         },
-        sample_variants: { cells: {} },
-        variants: { cells: {} },
       };
       expect(validateConfig(config)).toStrictEqual(config);
     });
 
     test("valid with additional vip.params properties", () => {
       const config = {
+        ...configBase,
         vip: {
           filter_field: { type: "genotype", name: "f" },
           params: {
@@ -27,8 +36,6 @@ describe("config parser", () => {
             new_prop: true,
           },
         },
-        sample_variants: { cells: {} },
-        variants: { cells: {} },
       };
       expect(validateConfig(config)).toStrictEqual(config);
     });

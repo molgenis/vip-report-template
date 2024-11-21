@@ -133,15 +133,30 @@ export type ConfigJsonVariants = {
   recordsPerPage?: ConfigJsonRecordsPerPage;
 };
 
+export type ConfigJsonVariant = {
+  cells: ConfigJsonVariantTypeFields;
+  sample_cells?: ConfigJsonVariantTypeFields;
+};
+
+export type ConfigJsonVariantConsequence = {
+  sample_cells?: ConfigJsonVariantTypeFields;
+};
+
 export type ConfigJson = {
   vip: ConfigJsonVip;
   sample_variants: ConfigJsonVariants;
   variants: ConfigJsonVariants;
+  sample_variant: ConfigJsonVariant;
+  variant: ConfigJsonVariant;
+  sample_variant_consequence: ConfigJsonVariantConsequence;
+  variant_consequence: ConfigJsonVariantConsequence;
 };
 
 export type Config = {
   vip: ConfigVip;
   variants: ConfigVariants;
+  variant: ConfigVariant;
+  variantConsequence: ConfigVariantConsequence;
 };
 
 export type ConfigFilters = ConfigFilter[];
@@ -157,6 +172,14 @@ export type ConfigVariants = {
   recordsPerPage: ConfigRecordsPerPage;
 };
 
+export type ConfigSamplesCells = { [key: string]: ConfigCells };
+export type ConfigVariant = {
+  cells: ConfigCells;
+  samplesCells?: ConfigSamplesCells;
+};
+export type ConfigVariantConsequence = {
+  samplesCells?: ConfigSamplesCells;
+};
 export type ConfigVipParams = ConfigJsonVipParams;
 
 export type ConfigVip = {

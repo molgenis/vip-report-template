@@ -4,16 +4,21 @@ import {
   ConfigJson,
   ConfigJsonRecordsPerPage,
   ConfigJsonSorts,
+  ConfigJsonVariant,
+  ConfigJsonVariantConsequence,
   ConfigJsonVariants,
   ConfigJsonVariantTypeFields,
   ConfigJsonVariantTypeFilters,
   ConfigRecordsPerPage,
+  ConfigSamplesCells,
+  ConfigVariant,
+  ConfigVariantConsequence,
   ConfigVariants,
   ConfigVip,
   Describable,
 } from "../../types/config";
 import { initConfigFilters } from "./configFilters.ts";
-import { MetadataContainer, SampleContainer } from "../api.ts";
+import { composeSample, MetadataContainer, SampleContainer } from "../api.ts";
 import { initConfigSorts } from "./configSorts.ts";
 import { initConfigCells } from "./configCells.ts";
 import { ConfigInvalidError } from "../error.ts";
@@ -27,16 +32,27 @@ export function initConfig(
 ): Config {
   const configVip = initConfigVip(config.vip, metadata);
 
-  let configStaticVariants;
-  if (sample !== null) {
-    configStaticVariants = config.sample_variants;
-  } else {
-    configStaticVariants = config.variants;
-  }
-
+  const configStaticVariants: ConfigJsonVariants = sample !== null ? config.sample_variants : config.variants;
   const configVariants = initConfigVariants(configStaticVariants, configVip, variantType, metadata, sample);
 
-  return { vip: configVip, variants: configVariants };
+  const configStaticVariant: ConfigJsonVariant = sample !== null ? config.sample_variant : config.variant;
+  const configVariant = initConfigVariant(configStaticVariant, variantType, metadata, sample);
+
+  const configStaticVariantConsequence: ConfigJsonVariantConsequence =
+    sample !== null ? config.sample_variant_consequence : config.variant_consequence;
+  const configVariantConsequence = initConfigVariantConsequence(
+    configStaticVariantConsequence,
+    variantType,
+    metadata,
+    sample,
+  );
+
+  return {
+    vip: configVip,
+    variants: configVariants,
+    variant: configVariant,
+    variantConsequence: configVariantConsequence,
+  };
 }
 
 function initConfigVariants(
@@ -55,6 +71,60 @@ function initConfigVariants(
     filters,
     sorts,
     recordsPerPage,
+  };
+}
+
+function initConfigVariantsCellsSamples(
+  config: ConfigJsonVariantTypeFields,
+  sample: SampleContainer,
+  variantType: VariantType,
+  metadata: MetadataContainer,
+): ConfigSamplesCells | undefined {
+  const samples: SampleContainer[] = [
+    sample,
+    ...[sample.paternalSample, sample.maternalSample, ...sample.otherPedigreeSamples]
+      .filter((sample) => sample !== null)
+      .map((sample) => composeSample(sample)),
+  ];
+
+  const cellsSamples: ConfigSamplesCells = {};
+  samples.forEach(
+    (sample) => (cellsSamples[sample.item.id] = initConfigVariantsCells(config, variantType, metadata, sample)),
+  );
+  return cellsSamples;
+}
+
+function initConfigVariant(
+  config: ConfigJsonVariant,
+  variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
+): ConfigVariant {
+  const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample);
+  const cellsSamples =
+    sample && config.sample_cells
+      ? initConfigVariantsCellsSamples(config.sample_cells, sample, variantType, metadata)
+      : undefined;
+
+  return {
+    cells,
+    samplesCells: cellsSamples,
+  };
+}
+
+function initConfigVariantConsequence(
+  config: ConfigJsonVariantConsequence,
+  variantType: VariantType,
+  metadata: MetadataContainer,
+  sample: SampleContainer | null,
+): ConfigVariantConsequence {
+  const cellsSamples =
+    sample && config.sample_cells
+      ? initConfigVariantsCellsSamples(config.sample_cells, sample, variantType, metadata)
+      : undefined;
+
+  return {
+    samplesCells: cellsSamples,
   };
 }
 

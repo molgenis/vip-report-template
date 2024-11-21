@@ -1,20 +1,23 @@
-import { Component } from "solid-js";
-import { SampleContainer, VcfMetadataContainer } from "../utils/api.ts";
+import { Component, Show } from "solid-js";
+import { MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { Value, VcfRecord } from "@molgenis/vip-report-vcf";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api";
 import { VariantInfoTable } from "./VariantInfoTable.tsx";
 import { VariantConsequenceTable } from "./VariantConsequenceTable.tsx";
 import { VariantTable } from "./VariantTable.tsx";
-import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { DecisionTreePath } from "./tree/DecisionTreePath.tsx";
 import { getDecisionTreePath, getSampleTreePath } from "../utils/decisionTree.ts";
 import { VariantType } from "../utils/variantType.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 import { getInfoField, getInfoValue } from "../utils/vcf.ts";
 import { RuntimeError } from "../utils/error.ts";
+import { ConfigJson } from "../types/config";
+import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
+import { initConfig } from "../utils/config/config.ts";
 
 export const VariantConsequenceContainer: Component<{
-  metadata: VcfMetadataContainer;
+  config: ConfigJson;
+  metadata: MetadataContainer;
   variantType: VariantType;
   consequenceId: number;
   record: Item<VcfRecord>;
@@ -22,15 +25,17 @@ export const VariantConsequenceContainer: Component<{
   decisionTree: DecisionTree | null;
   sampleTree: DecisionTree | null;
 }> = (props) => {
+  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
+
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
   const csqField = () => {
-    const csqField = getInfoField(props.metadata, "CSQ");
+    const csqField = getInfoField(props.metadata.records, "CSQ");
     if (csqField === undefined) throw new RuntimeError();
     return csqField;
   };
   const hasDecisionTreePathMeta = () =>
-    (props.metadata.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
-  const hasSampleTreePathMeta = () => props.metadata.format.VIPP_S != null;
+    (props.metadata.records.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
+  const hasSampleTreePathMeta = () => props.metadata.records.format.VIPP_S != null;
 
   return (
     <>
@@ -38,7 +43,7 @@ export const VariantConsequenceContainer: Component<{
         <div class="column is-4">
           <div>
             <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoMetadataContainer={props.metadata.info} infoContainer={props.record.data.n} />
+            <VariantInfoTable infoMetadataContainer={props.metadata.records.info} infoContainer={props.record.data.n} />
           </div>
           <div class="mt-3">
             <h1 class="title is-5">Consequence</h1>
@@ -54,21 +59,27 @@ export const VariantConsequenceContainer: Component<{
           </div>
         </div>
         <div class="column is-8">
-          <div>
-            <h1 class="title is-5">Samples</h1>
-            <VariantGenotypeTable
-              samples={samples()}
-              formatMetadataContainer={props.metadata.format}
-              recordSamples={props.record.data.s}
-            />
-          </div>
+          <Show when={config().variant.samplesCells}>
+            {(samplesCells) => (
+              <div class="column">
+                <h1 class="title is-5">Samples</h1>
+                <VariantGenotypeTable
+                  config={samplesCells()}
+                  samples={samples()}
+                  metadata={props.metadata}
+                  variantType={props.variantType}
+                  record={props.record}
+                />
+              </div>
+            )}
+          </Show>
           <div class="columns mt-3">
             {props.decisionTree !== null && hasDecisionTreePathMeta() && (
               <div class="column is-6">
                 <h1 class="title is-5">Variant classification tree path</h1>
                 <DecisionTreePath
                   decisionTree={props.decisionTree}
-                  path={getDecisionTreePath(props.metadata, props.record, props.consequenceId)}
+                  path={getDecisionTreePath(props.metadata.records, props.record, props.consequenceId)}
                 />
               </div>
             )}
@@ -77,7 +88,7 @@ export const VariantConsequenceContainer: Component<{
                 <h1 class="title is-5">Sample classification tree path</h1>
                 <DecisionTreePath
                   decisionTree={props.sampleTree}
-                  path={getSampleTreePath(props.metadata, props.sample, props.record, props.consequenceId)}
+                  path={getSampleTreePath(props.metadata.records, props.sample, props.record, props.consequenceId)}
                 />
               </div>
             )}

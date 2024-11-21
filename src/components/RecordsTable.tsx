@@ -27,19 +27,25 @@ const RecordsTableHeader: Component<{
   return (
     <thead>
       <tr style={props.verticalHeaders ? { "writing-mode": "vertical-rl" } : undefined}>
-        <For each={props.fieldConfigs}>
-          {(fieldConfig) => (
-            <Switch fallback={<RecordsTableHeaderCell fieldConfig={fieldConfig as ConfigCellItem} />}>
-              <Match when={fieldConfig.type === "group"}>
-                <For each={(fieldConfig as ConfigCellGroup).fieldConfigs}>
-                  {(childConfigField) => <RecordsTableHeaderCell fieldConfig={childConfigField} />}
-                </For>
-              </Match>
-            </Switch>
-          )}
-        </For>
+        <RecordsTableHeaderCells fieldConfigs={props.fieldConfigs} />
       </tr>
     </thead>
+  );
+};
+
+export const RecordsTableHeaderCells: Component<{ fieldConfigs: ConfigCells }> = (props) => {
+  return (
+    <For each={props.fieldConfigs}>
+      {(fieldConfig) => (
+        <Switch fallback={<RecordsTableHeaderCell fieldConfig={fieldConfig as ConfigCellItem} />}>
+          <Match when={fieldConfig.type === "group"}>
+            <For each={(fieldConfig as ConfigCellGroup).fieldConfigs}>
+              {(childConfigField) => <RecordsTableHeaderCell fieldConfig={childConfigField} />}
+            </For>
+          </Match>
+        </Switch>
+      )}
+    </For>
   );
 };
 
@@ -67,17 +73,7 @@ const RecordsTableBody: Component<{
       <For each={props.records}>
         {(record) => (
           <tr>
-            <For each={props.fieldConfigs}>
-              {(fieldConfig) => (
-                <Switch fallback={<RecordsTableCell fieldConfig={fieldConfig as ConfigCellItem} record={record} />}>
-                  <Match when={fieldConfig.type === "group"}>
-                    <For each={(fieldConfig as ConfigCellGroup).fieldConfigs}>
-                      {(childConfigField) => <RecordsTableCell fieldConfig={childConfigField} record={record} />}
-                    </For>
-                  </Match>
-                </Switch>
-              )}
-            </For>
+            <RecordsTableCells fieldConfigs={props.fieldConfigs} record={record} />
           </tr>
         )}
       </For>
@@ -85,7 +81,23 @@ const RecordsTableBody: Component<{
   );
 };
 
-const RecordsTableCell: Component<{
+export const RecordsTableCells: Component<{ fieldConfigs: ConfigCells; record: Item<VcfRecord> }> = (props) => {
+  return (
+    <For each={props.fieldConfigs}>
+      {(fieldConfig) => (
+        <Switch fallback={<RecordsTableCell fieldConfig={fieldConfig as ConfigCellItem} record={props.record} />}>
+          <Match when={fieldConfig.type === "group"}>
+            <For each={(fieldConfig as ConfigCellGroup).fieldConfigs}>
+              {(childConfigField) => <RecordsTableCell fieldConfig={childConfigField} record={props.record} />}
+            </For>
+          </Match>
+        </Switch>
+      )}
+    </For>
+  );
+};
+
+export const RecordsTableCell: Component<{
   fieldConfig: ConfigCellItem;
   record: Item<VcfRecord>;
 }> = (props) => {

@@ -197,7 +197,7 @@ async function fetchSampleContainer(sample: Item<Sample>): Promise<SampleContain
  * @param pedigreeSamples API samples from same pedigree
  * @param variantTypeIds variant types available for this sample
  */
-function composeSample(
+export function composeSample(
   sample: Item<Sample>,
   samplePhenotypes?: PhenotypicFeature[],
   pedigreeSamples?: PagedItems<Sample>,

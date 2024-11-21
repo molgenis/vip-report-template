@@ -603,5 +603,66 @@
         }
       ]
     }
-  }
+  },
+  "sample_variant": {
+    "cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "composed",
+          "name": "vipCS"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/((?!VIPC|VIPP).)*"
+        }
+      ]
+    },
+    "sample_cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Genotype"
+        },
+        {
+          "type": "genotype",
+          "name": "((?!GT|VIPC_S|VIPP_S).)*"
+        }
+      ]
+    }
+  },
+  "variant": {
+    "cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/((?!VIPC|VIPP).)*"
+        }
+      ]
+    }
+  },
+  "sample_variant_consequence": {
+    "sample_cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Genotype"
+        },
+        {
+          "type": "genotype",
+          "name": "((?!GT|VIPC_S|VIPP_S).)*"
+        }
+      ]
+    }
+  },
+  "variant_consequence": {}
 }

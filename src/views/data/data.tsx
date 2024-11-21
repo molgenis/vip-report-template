@@ -1,11 +1,13 @@
 import { query } from "@solidjs/router";
-import { Item } from "@molgenis/vip-report-api";
+import { DecisionTree, Item } from "@molgenis/vip-report-api";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import {
   fetchConfig,
+  fetchDecisionTree,
   fetchMetadata,
   fetchRecordById,
   fetchSampleById,
+  fetchSampleTree,
   MetadataContainer,
   SampleContainer,
 } from "../../utils/api.ts";
@@ -25,3 +27,7 @@ export const getRecordById = query(
   (id: string | undefined): Promise<Item<VcfRecord>> => fetchRecordById(parseId(id)),
   "variant",
 );
+
+export const getDecisionTree = query((): Promise<DecisionTree | null> => fetchDecisionTree(), "decisionTree");
+
+export const getSampleTree = query((): Promise<DecisionTree | null> => fetchSampleTree(), "sampleTree");

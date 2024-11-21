@@ -1,8 +1,7 @@
-import { Component, createResource, Show } from "solid-js";
+import { Component, Show } from "solid-js";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
-import { getMetadata, getRecordById } from "./data/data";
-import { fetchDecisionTree } from "../utils/api.ts";
+import { getConfig, getDecisionTree, getMetadata, getRecordById } from "./data/data";
 import { parseId } from "../utils/utils.ts";
 import { VariantConsequenceContainer } from "../components/VariantConsequenceContainer.tsx";
 import { parseVariantType } from "../utils/variantType.ts";
@@ -13,8 +12,8 @@ export const VariantConsequence: Component<RouteSectionProps> = (props) => {
   const consequenceId = () => parseId(props.params.consequenceId);
   const metadata = createAsync(() => getMetadata());
   const record = createAsync(() => getRecordById(props.params.variantId));
-
-  const [decisionTree] = createResource(fetchDecisionTree);
+  const config = createAsync(() => getConfig());
+  const decisionTree = createAsync(() => getDecisionTree());
 
   return (
     <Show when={record()} fallback={<Loader />}>
@@ -24,16 +23,23 @@ export const VariantConsequence: Component<RouteSectionProps> = (props) => {
             <VariantBreadcrumb variantType={variantType()} record={record()} consequenceId={consequenceId()} />
             <Show when={metadata()} fallback={<Loader />}>
               {(metadata) => (
-                <Show when={!decisionTree.loading} fallback={<Loader />}>
-                  <VariantConsequenceContainer
-                    metadata={metadata().records}
-                    variantType={variantType()}
-                    consequenceId={consequenceId()}
-                    record={record()}
-                    sample={null}
-                    decisionTree={decisionTree()!}
-                    sampleTree={null}
-                  />
+                <Show when={config()} fallback={<Loader />}>
+                  {(config) => (
+                    <Show when={decisionTree()} fallback={<Loader />}>
+                      {(decisionTree) => (
+                        <VariantConsequenceContainer
+                          config={config()}
+                          metadata={metadata()}
+                          variantType={variantType()}
+                          consequenceId={consequenceId()}
+                          record={record()}
+                          sample={null}
+                          decisionTree={decisionTree()}
+                          sampleTree={null}
+                        />
+                      )}
+                    </Show>
+                  )}
                 </Show>
               )}
             </Show>

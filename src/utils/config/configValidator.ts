@@ -8,6 +8,8 @@ import {
   ConfigJsonRecordsPerPageOption,
   ConfigJsonSort,
   ConfigJsonSortOrder,
+  ConfigJsonVariant,
+  ConfigJsonVariantConsequence,
   ConfigJsonVariants,
   ConfigJsonVip,
   ConfigJsonVipParams,
@@ -116,6 +118,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
             "locus",
             "ref",
             "vipC",
+            "vipCS",
             "vkgl",
           ],
         },
@@ -316,11 +319,51 @@ const schemaConfigJsonVariants: JTDSchemaType<ConfigJsonVariants> = {
   },
 };
 
+const schemaConfigJsonVariant: JTDSchemaType<ConfigJsonVariant> = {
+  properties: {
+    cells: {
+      optionalProperties: {
+        all: { elements: schemaConfigJsonField },
+        snv: { elements: schemaConfigJsonField },
+        str: { elements: schemaConfigJsonField },
+        sv: { elements: schemaConfigJsonField },
+      },
+    },
+  },
+  optionalProperties: {
+    sample_cells: {
+      optionalProperties: {
+        all: { elements: schemaConfigJsonField },
+        snv: { elements: schemaConfigJsonField },
+        str: { elements: schemaConfigJsonField },
+        sv: { elements: schemaConfigJsonField },
+      },
+    },
+  },
+};
+
+const schemaConfigJsonVariantConsequence: JTDSchemaType<ConfigJsonVariantConsequence> = {
+  optionalProperties: {
+    sample_cells: {
+      optionalProperties: {
+        all: { elements: schemaConfigJsonField },
+        snv: { elements: schemaConfigJsonField },
+        str: { elements: schemaConfigJsonField },
+        sv: { elements: schemaConfigJsonField },
+      },
+    },
+  },
+};
+
 const schema: JTDSchemaType<ConfigJson> = {
   properties: {
     vip: schemaConfigJsonVip,
     sample_variants: schemaConfigJsonVariants,
     variants: schemaConfigJsonVariants,
+    sample_variant: schemaConfigJsonVariant,
+    variant: schemaConfigJsonVariant,
+    sample_variant_consequence: schemaConfigJsonVariantConsequence,
+    variant_consequence: schemaConfigJsonVariantConsequence,
   },
 };
 
