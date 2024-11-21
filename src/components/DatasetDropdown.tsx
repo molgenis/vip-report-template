@@ -11,10 +11,10 @@ export const DatasetDropdown: Component = () => {
   const [selectedDataset, setSelectedDataset] = createSignal("GRCh37 Family");
 
   function switchIt(datasetName: string) {
-    setSelectedDataset(datasetName);
-    selectDataset(datasetName);
     actions.reset();
     query.clear(); // flush cache
+    setSelectedDataset(datasetName);
+    selectDataset(datasetName);
     init(navigate);
   }
 
