@@ -465,7 +465,7 @@ describe("vcf", () => {
     test("getInfoValueCount count=*", () => {
       const record = { ...recordBase, data: { ...recordBase.data, n: { f: [0, 1, 2, 3] } } };
       const fieldMetadata = { id: "f", number: { type: "OTHER" } } as FieldMetadataWrapper;
-      expect(getInfoValueCount(record, fieldMetadata)).toStrictEqual(4);
+      expect(getInfoValueCount(record, fieldMetadata)).toStrictEqual(1); // not 4
     });
 
     test("getInfoValueCount parent=1 count=*", () => {
@@ -516,7 +516,7 @@ describe("vcf", () => {
       };
 
       const fieldMetadata = { id: "f", number: { type: "OTHER" } } as FieldMetadataWrapper;
-      expect(getSampleValueCount(sample, record, fieldMetadata)).toStrictEqual(3);
+      expect(getSampleValueCount(sample, record, fieldMetadata)).toStrictEqual(1); // 1, not 3
     });
   });
 

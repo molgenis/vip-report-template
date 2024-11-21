@@ -228,19 +228,19 @@ export function getSampleValueCount(
 }
 
 function getFieldValueCount(fieldMetadata: FieldMetadata, valueContainer: ValueContainer): number {
-  fieldMetadata = fieldMetadata.parent || fieldMetadata;
-
   let count: number;
-  if (fieldMetadata.number.count === 1) {
-    count = 1;
-  } else {
-    if (fieldMetadata.id in valueContainer) {
-      const value = valueContainer[fieldMetadata.id]!;
+
+  const parentFieldMetadata = fieldMetadata.parent;
+  if (parentFieldMetadata && parentFieldMetadata.number.count !== 1) {
+    if (parentFieldMetadata.id in valueContainer) {
+      const value = valueContainer[parentFieldMetadata.id]!;
       if (!Array.isArray(value)) throw new RuntimeError();
       count = (value as Value[]).length;
     } else {
       count = 0;
     }
+  } else {
+    count = 1;
   }
   return count;
 }
