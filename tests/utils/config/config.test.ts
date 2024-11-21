@@ -55,7 +55,10 @@ describe("config", () => {
 
     test("regular config", () => {
       vi.mocked(initConfigVip).mockReturnValue(0 as unknown as ConfigVip);
-      vi.mocked(initConfigCells).mockReturnValue([1 as unknown as ConfigCell]);
+      vi.mocked(initConfigCells)
+        .mockReturnValueOnce([4 as unknown as ConfigCell])
+        .mockReturnValueOnce([5 as unknown as ConfigCell])
+        .mockReturnValue([-1 as unknown as ConfigCell]);
       vi.mocked(initConfigFilters).mockReturnValue([2 as unknown as ConfigFilter]);
       vi.mocked(initConfigSorts).mockReturnValue([3 as unknown as ConfigSort]);
 
@@ -70,10 +73,10 @@ describe("config", () => {
           sorts: { all: [] },
           recordsPerPage: { all: recordsPerPage },
         },
-        sample_variant: {} as ConfigJsonVariant,
-        variant: {} as ConfigJsonVariant,
-        sample_variant_consequence: {} as ConfigJsonVariantConsequence,
-        variant_consequence: {} as ConfigJsonVariantConsequence,
+        sample_variant: { cells: { all: [{}] } } as ConfigJsonVariant,
+        variant: { cells: { all: [{}] } } as ConfigJsonVariant,
+        sample_variant_consequence: { samples_cells: { all: [{}] } } as ConfigJsonVariantConsequence,
+        variant_consequence: { sample_cells: { all: [{}] } } as ConfigJsonVariantConsequence,
       };
       const variantType: Partial<VariantType> = { id: "snv" };
 
@@ -81,20 +84,29 @@ describe("config", () => {
         initConfig(config, variantType as VariantType, metadata as MetadataContainer, sample as SampleContainer | null),
       ).toStrictEqual({
         vip: 0,
-        variants: { cells: [1], filters: [2], sorts: [3], recordsPerPage },
+        variants: { cells: [4], filters: [2], sorts: [3], recordsPerPage },
+        variant: {
+          cells: [5],
+          samplesCells: undefined,
+        },
+        variantConsequence: {
+          samplesCells: undefined,
+        },
       });
     });
 
     test("minimal config", () => {
       vi.mocked(initConfigVip).mockReturnValue(0 as unknown as ConfigVip);
-      vi.mocked(initConfigCells).mockReturnValue([1 as unknown as ConfigCell]);
+      vi.mocked(initConfigCells)
+        .mockReturnValueOnce([1 as unknown as ConfigCell])
+        .mockReturnValueOnce([2 as unknown as ConfigCell]);
 
       const config: ConfigJson = {
         vip: { params: {} } as ConfigJsonVip,
         sample_variants: {} as ConfigJsonVariants,
         variants: configVariantsMinimal,
         sample_variant: {} as ConfigJsonVariant,
-        variant: {} as ConfigJsonVariant,
+        variant: configVariantsMinimal,
         sample_variant_consequence: {} as ConfigJsonVariantConsequence,
         variant_consequence: {} as ConfigJsonVariantConsequence,
       };
@@ -103,7 +115,17 @@ describe("config", () => {
 
       expect(
         initConfig(config, variantType as VariantType, metadata as MetadataContainer, sample as SampleContainer | null),
-      ).toStrictEqual({ vip: 0, variants: { cells: [1], filters: [], sorts: [], recordsPerPage: recordsPerPageBase } });
+      ).toStrictEqual({
+        vip: 0,
+        variants: { cells: [1], filters: [], sorts: [], recordsPerPage: recordsPerPageBase },
+        variant: {
+          cells: [2],
+          samplesCells: undefined,
+        },
+        variantConsequence: {
+          samplesCells: undefined,
+        },
+      });
       expect(initConfigFilters).toBeCalledTimes(0);
       expect(initConfigSorts).toBeCalledTimes(0);
     });

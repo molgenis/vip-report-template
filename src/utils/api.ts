@@ -267,7 +267,7 @@ async function fetchVariantTypeIdsQuery(): Promise<Set<VariantTypeId>> {
 
 // development
 export function isDatasetSupport(): boolean {
-  return import.meta.env.PROD ? false : (api as MockApiClient).isDatasetSupport();
+  return !import.meta.env.PROD;
 }
 
 export function getDatasetIds(): string[] {
@@ -275,7 +275,7 @@ export function getDatasetIds(): string[] {
   return (api as MockApiClient).getDatasetIds();
 }
 
-export function selectDataset(id: string): void {
+export async function selectDataset(id: string): Promise<void> {
   if (import.meta.env.PROD) throw new Error(`unknown id ${id}`);
   return (api as MockApiClient).selectDataset(id);
 }

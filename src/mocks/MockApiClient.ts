@@ -19,33 +19,33 @@ import configCram from "./config_cram.json";
 import configVcf from "./config_vcf.json";
 import { samples1, samples100 } from "./static";
 import {
-  crai as craiGRCh37,
-  cram as cramGRCh37,
   decisionTree as decisionTreeGRCh37,
-  fastaGz as fastaGzGRCh37,
-  genesGz as genesGzGRCh37,
+  fetchCrai as fetchCraiGRCh37,
+  fetchCram as fetchCramGRCh37,
+  fetchFastaGz as fetchFastaGzGRCh37,
+  fetchGenesGz as fetchGenesGzGRCh37,
+  fetchVcfFamily as fetchVcfFamilyGRCh37,
   samplesFamily as samplesFamilyGRCh37,
   sampleTree as sampleTreeGRCh37,
-  vcfFamily as vcfFamilyGRCh37,
   vcfMeta as vcfMetaGRCh37,
 } from "./GRCh37/static";
 import {
-  crai as craiGRCh38,
-  cram as cramGRCh38,
   decisionTree as decisionTreeGRCh38,
   decisionTreeStr as decisionTreeStrGRCh38,
-  fastaGz as fastaGzGRCh38,
-  genesGz as genesGzGRCh38,
+  fetchCrai as fetchCraiGRCh38,
+  fetchCram as fetchCramGRCh38,
+  fetchFastaGz as fetchFastaGzGRCh38,
+  fetchGenesGz as fetchGenesGzGRCh38,
+  fetchVcfFamily as fetchVcfFamilyGRCh38,
+  fetchVcfNoVep as fetchVcfNoVepGRCh38,
+  fetchVcfSamples0 as fetchVcfSamples0GRCh38,
+  fetchVcfSamples1 as fetchVcfSamples1GRCh38,
+  fetchVcfSamples100 as fetchVcfSamples100GRCh38,
+  fetchVcfStr as fetchVcfStrGRCh38,
   samplesFamily as samplesFamilyGRCh38,
   samplesStr,
   sampleTree as sampleTreeGRCh38,
-  vcfFamily as vcfFamilyGRCh38,
   vcfMeta as vcfMetaGRCh38,
-  vcfNoVep as vcfNoVepGRCh38,
-  vcfSamples0 as vcfSamples0GRCh38,
-  vcfSamples1 as vcfSamples1GRCh38,
-  vcfSamples100 as vcfSamples100GRCh38,
-  vcfStr as vcfStrGRCh38,
 } from "./GRCh38/static";
 import { ArrayIndexOutOfBoundsException } from "../utils/error.ts";
 
@@ -53,86 +53,107 @@ import { ArrayIndexOutOfBoundsException } from "../utils/error.ts";
  * API client that uses mocked data as data source.
  */
 export class MockApiClient implements Api {
-  private apiClient: Api;
-  private readonly datasets: { [key: string]: ReportData };
+  private apiClient: Api | undefined;
 
-  constructor() {
-    this.datasets = MockApiClient.createDatasets();
-    const datasetIds = this.getDatasetIds();
-    if (datasetIds.length < 1) throw new ArrayIndexOutOfBoundsException();
-    this.apiClient = this.createApiClient(datasetIds[0]!);
+  async getConfig(): Promise<Json | null> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getConfig();
   }
 
-  getConfig(): Promise<Json | null> {
-    return this.apiClient.getConfig();
+  async getFastaGz(contig: string, pos: number): Promise<Uint8Array | null> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getFastaGz(contig, pos);
   }
 
-  getFastaGz(contig: string, pos: number): Promise<Uint8Array | null> {
-    return this.apiClient.getFastaGz(contig, pos);
+  async getGenesGz(): Promise<Uint8Array | null> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getGenesGz();
   }
 
-  getGenesGz(): Promise<Uint8Array | null> {
-    return this.apiClient.getGenesGz();
+  async getCram(sampleId: string): Promise<Cram | null> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getCram(sampleId);
   }
 
-  getCram(sampleId: string): Promise<Cram | null> {
-    return this.apiClient.getCram(sampleId);
+  async getDecisionTree(): Promise<DecisionTree | null> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getDecisionTree();
   }
 
-  getDecisionTree(): Promise<DecisionTree | null> {
-    return this.apiClient.getDecisionTree();
+  async getSampleTree(): Promise<DecisionTree | null> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getSampleTree();
   }
 
-  getSampleTree(): Promise<DecisionTree | null> {
-    return this.apiClient.getSampleTree();
+  async getHtsFileMetadata(): Promise<HtsFileMetadata> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getHtsFileMetadata();
   }
 
-  getHtsFileMetadata(): Promise<HtsFileMetadata> {
-    return this.apiClient.getHtsFileMetadata();
+  async getAppMetadata(): Promise<AppMetadata> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getAppMetadata();
   }
 
-  getAppMetadata(): Promise<AppMetadata> {
-    return this.apiClient.getAppMetadata();
+  async getPhenotypes(params: Params): Promise<PagedItems<Phenotype>> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getPhenotypes(params);
   }
 
-  getPhenotypes(params: Params): Promise<PagedItems<Phenotype>> {
-    return this.apiClient.getPhenotypes(params);
+  async getRecordById(id: number): Promise<Item<VcfRecord>> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getRecordById(id);
   }
 
-  getRecordById(id: number): Promise<Item<VcfRecord>> {
-    return this.apiClient.getRecordById(id);
+  async getRecords(params: Params): Promise<PagedItems<VcfRecord>> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getRecords(params);
   }
 
-  getRecords(params: Params): Promise<PagedItems<VcfRecord>> {
-    return this.apiClient.getRecords(params);
+  async getRecordsMeta(): Promise<VcfMetadata> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getRecordsMeta();
   }
 
-  getRecordsMeta(): Promise<VcfMetadata> {
-    return this.apiClient.getRecordsMeta();
+  async getSampleById(id: number): Promise<Item<Sample>> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getSampleById(id);
   }
 
-  getSampleById(id: number): Promise<Item<Sample>> {
-    return this.apiClient.getSampleById(id);
-  }
-
-  getSamples(params: Params): Promise<PagedItems<Sample>> {
-    return this.apiClient.getSamples(params);
-  }
-
-  isDatasetSupport(): boolean {
-    return true;
+  async getSamples(params: Params): Promise<PagedItems<Sample>> {
+    const apiClient = await this.getApiClient();
+    return apiClient.getSamples(params);
   }
 
   getDatasetIds(): string[] {
-    return Object.keys(this.datasets);
+    return [
+      "GRCh37 Family",
+      "GRCh38 Family",
+      "GRCh38 Family no VEP",
+      "GRCh38 Samples 0",
+      "GRCh38 Samples 1",
+      "GRCh38 Samples 100",
+      "GRCh38 Samples 1 STR",
+    ];
   }
 
-  selectDataset(id: string): void {
-    this.apiClient = this.createApiClient(id);
+  async selectDataset(id: string): Promise<void> {
+    this.apiClient = await this.createApiClient(id);
   }
 
-  private static createDatasets() {
-    const mockReportData: ReportData = {
+  private async getApiClient(): Promise<Api> {
+    if (this.apiClient !== undefined) {
+      return this.apiClient;
+    } else {
+      const datasetIds = this.getDatasetIds();
+      if (datasetIds.length < 1) throw new ArrayIndexOutOfBoundsException();
+      this.apiClient = await this.createApiClient(datasetIds[0]!);
+      return this.apiClient;
+    }
+  }
+
+  private async fetchReportDataGRCh37Family(): Promise<ReportData> {
+    return {
       config: configVcf as unknown as Json,
       metadata: {
         app: {
@@ -148,13 +169,13 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: samplesFamilyGRCh37,
       binary: {
-        vcf: vcfFamilyGRCh37,
-        fastaGz: fastaGzGRCh37,
-        genesGz: genesGzGRCh37,
+        vcf: await fetchVcfFamilyGRCh37(),
+        fastaGz: await fetchFastaGzGRCh37(),
+        genesGz: await fetchGenesGzGRCh37(),
         cram: {
           Patient: {
-            cram: cramGRCh37,
-            crai: craiGRCh37,
+            cram: await fetchCramGRCh37(),
+            crai: await fetchCraiGRCh37(),
           },
         },
       },
@@ -162,8 +183,10 @@ export class MockApiClient implements Api {
       sampleTree: sampleTreeGRCh37,
       vcfMeta: vcfMetaGRCh37,
     };
+  }
 
-    const mockReportDataFamilyGRCh38: ReportData = {
+  private async fetchReportDataGRCh38Family(): Promise<ReportData> {
+    return {
       config: configVcf as unknown as Json,
       metadata: {
         app: {
@@ -179,13 +202,13 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: samplesFamilyGRCh38,
       binary: {
-        vcf: vcfFamilyGRCh38,
-        fastaGz: fastaGzGRCh38,
-        genesGz: genesGzGRCh38,
+        vcf: await fetchVcfFamilyGRCh38(),
+        fastaGz: await fetchFastaGzGRCh38(),
+        genesGz: await fetchGenesGzGRCh38(),
         cram: {
           Patient: {
-            cram: cramGRCh38,
-            crai: craiGRCh38,
+            cram: await fetchCramGRCh38(),
+            crai: await fetchCraiGRCh38(),
           },
         },
       },
@@ -193,8 +216,10 @@ export class MockApiClient implements Api {
       sampleTree: sampleTreeGRCh38,
       vcfMeta: vcfMetaGRCh38,
     };
+  }
 
-    const mockReportDataNoVepGRCh38: ReportData = {
+  private async fetchReportDataGRCh38FamilyNoVep() {
+    return {
       config: configVcf as unknown as Json,
       metadata: {
         app: {
@@ -210,13 +235,13 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: samplesFamilyGRCh38,
       binary: {
-        vcf: vcfNoVepGRCh38,
-        fastaGz: fastaGzGRCh38,
-        genesGz: genesGzGRCh38,
+        vcf: await fetchVcfNoVepGRCh38(),
+        fastaGz: await fetchFastaGzGRCh38(),
+        genesGz: await fetchGenesGzGRCh38(),
         cram: {
           Patient: {
-            cram: cramGRCh38,
-            crai: craiGRCh38,
+            cram: await fetchCramGRCh38(),
+            crai: await fetchCraiGRCh38(),
           },
         },
       },
@@ -224,8 +249,10 @@ export class MockApiClient implements Api {
       sampleTree: sampleTreeGRCh38,
       vcfMeta: vcfMetaGRCh38,
     };
+  }
 
-    const mockReportData1SampleGRCh38: ReportData = {
+  private async fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
+    return {
       config: configVcf as unknown as Json,
       metadata: {
         app: {
@@ -241,13 +268,13 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: samples1,
       binary: {
-        vcf: vcfSamples1GRCh38,
-        fastaGz: fastaGzGRCh38,
-        genesGz: genesGzGRCh38,
+        vcf: await fetchVcfSamples1GRCh38(),
+        fastaGz: await fetchFastaGzGRCh38(),
+        genesGz: await fetchGenesGzGRCh38(),
         cram: {
           SAMPLE1: {
-            cram: cramGRCh38,
-            crai: craiGRCh38,
+            cram: await fetchCramGRCh38(),
+            crai: await fetchCraiGRCh38(),
           },
         },
       },
@@ -255,8 +282,10 @@ export class MockApiClient implements Api {
       sampleTree: sampleTreeGRCh38,
       vcfMeta: vcfMetaGRCh38,
     };
+  }
 
-    const mockReportData100SamplesGRCh38: ReportData = {
+  private async fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
+    return {
       config: configVcf as unknown as Json,
       metadata: {
         app: {
@@ -272,16 +301,18 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: samples100,
       binary: {
-        vcf: vcfSamples100GRCh38,
-        fastaGz: fastaGzGRCh38,
-        genesGz: genesGzGRCh38,
+        vcf: await fetchVcfSamples100GRCh38(),
+        fastaGz: await fetchFastaGzGRCh38(),
+        genesGz: await fetchGenesGzGRCh38(),
       },
       decisionTree: decisionTreeGRCh38,
       sampleTree: sampleTreeGRCh38,
       vcfMeta: vcfMetaGRCh38,
     };
+  }
 
-    const mockReportDataStrGRCh38: ReportData = {
+  private async fetchReportDataGRCh38Str(): Promise<ReportData> {
+    return {
       config: configCram as unknown as Json,
       metadata: {
         app: {
@@ -297,14 +328,16 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: samplesStr,
       binary: {
-        vcf: vcfStrGRCh38,
+        vcf: await fetchVcfStrGRCh38(),
       },
       decisionTree: decisionTreeStrGRCh38,
       sampleTree: sampleTreeGRCh38,
       vcfMeta: vcfMetaGRCh38,
     };
+  }
 
-    const mockReportDataNoSampleGRCh38: ReportData = {
+  private async fetchReportDataGRCh38NoSample(): Promise<ReportData> {
+    return {
       config: configVcf as unknown as Json,
       metadata: {
         app: {
@@ -320,29 +353,44 @@ export class MockApiClient implements Api {
       } as Metadata,
       data: { samples: [], phenotypes: [] },
       binary: {
-        vcf: vcfSamples0GRCh38,
-        fastaGz: fastaGzGRCh38,
-        genesGz: genesGzGRCh38,
+        vcf: await fetchVcfSamples0GRCh38(),
+        fastaGz: await fetchFastaGzGRCh38(),
+        genesGz: await fetchGenesGzGRCh38(),
       },
       decisionTree: decisionTreeGRCh38,
       sampleTree: sampleTreeGRCh38,
       vcfMeta: vcfMetaGRCh38,
     };
-
-    const datasets: { [key: string]: ReportData } = {};
-    datasets["GRCh37 Family"] = mockReportData;
-    datasets["GRCh38 Family"] = mockReportDataFamilyGRCh38;
-    datasets["GRCh38 Family no VEP"] = mockReportDataNoVepGRCh38;
-    datasets["GRCh38 Samples 0"] = mockReportDataNoSampleGRCh38;
-    datasets["GRCh38 Samples 1"] = mockReportData1SampleGRCh38;
-    datasets["GRCh38 Samples 100"] = mockReportData100SamplesGRCh38;
-    datasets["GRCh38 Samples 1 STR"] = mockReportDataStrGRCh38;
-    return datasets;
   }
 
-  private createApiClient(id: string): Api {
-    const reportData = this.datasets[id];
-    if (reportData === undefined) throw new Error();
+  private async createApiClient(id: string): Promise<Api> {
+    let reportData: ReportData;
+    switch (id) {
+      case "GRCh37 Family":
+        reportData = await this.fetchReportDataGRCh37Family();
+        break;
+      case "GRCh38 Family":
+        reportData = await this.fetchReportDataGRCh38Family();
+        break;
+      case "GRCh38 Family no VEP":
+        reportData = await this.fetchReportDataGRCh38FamilyNoVep();
+        break;
+      case "GRCh38 Samples 0":
+        reportData = await this.fetchReportDataGRCh38NoSample();
+        break;
+      case "GRCh38 Samples 1":
+        reportData = await this.fetchReportDataGRCh38Data1Sample();
+        break;
+      case "GRCh38 Samples 100":
+        reportData = await this.fetchReportDataGRCh38Data100Samples();
+        break;
+      case "GRCh38 Samples 1 STR":
+        reportData = await this.fetchReportDataGRCh38Str();
+        break;
+      default:
+        throw new Error(`unknown dataset id '${id}'`);
+    }
+
     const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf), reportData.vcfMeta);
     reportData.metadata.records = vcf.metadata;
     reportData.data.records = vcf.data;
