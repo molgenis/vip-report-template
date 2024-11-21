@@ -56,7 +56,8 @@ function processIcons() {
   dom.watch();
 }
 
-if (document.readyState === "complete") {
+// process icons if document state is "complete" or "interactive", list for event if "loading"
+if (document.readyState !== "loading") {
   processIcons();
 } else {
   window.addEventListener("DOMContentLoaded", processIcons);
