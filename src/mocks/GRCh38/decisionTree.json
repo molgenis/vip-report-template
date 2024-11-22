@@ -7,6 +7,7 @@
   "rootNode": "MT",
   "nodes": {
     "MT": {
+      "label": "MT",
       "type": "BOOL",
       "description": "VariantonMTchrom",
       "query": {
@@ -25,6 +26,7 @@
       }
     },
     "blaat": {
+      "label": "blaat",
       "type": "EXISTS",
       "description": "blaatannotationexists",
       "field": "INFO/CSQ/blaat",
@@ -36,6 +38,7 @@
       }
     },
     "csq_exists": {
+      "label": "csq_exists",
       "type": "EXISTS",
       "description": "CSQannotationexists",
       "field": "INFO/CSQ/Gene",
@@ -47,6 +50,7 @@
       }
     },
     "genepanel": {
+      "label": "genepanel",
       "type": "BOOL",
       "description": "genepanel",
       "query": {
@@ -62,6 +66,7 @@
       }
     },
     "phenotype_match": {
+      "label": "phenotype_match",
       "type": "EXISTS",
       "description": "Phenotypematch",
       "field": "INFO/CSQ/HPO",
@@ -73,6 +78,7 @@
       }
     },
     "mvl": {
+      "label": "mvl",
       "type": "CATEGORICAL",
       "description": "ManagedVariantListclassification",
       "field": "INFO/VKGL_UMCG",
@@ -98,6 +104,7 @@
       }
     },
     "vkgl": {
+      "label": "vkgl",
       "type": "CATEGORICAL",
       "description": "VKGLclassification",
       "field": "INFO/VKGL",
@@ -123,6 +130,7 @@
       }
     },
     "filter": {
+      "label": "filter",
       "type": "BOOL",
       "description": "Allfilterspassed",
       "query": {
@@ -141,6 +149,7 @@
       }
     },
     "artefact": {
+      "label": "artefact",
       "type": "BOOL",
       "description": "Variantonartefactlist",
       "query": {
@@ -159,6 +168,7 @@
       }
     },
     "capice": {
+      "label": "capice",
       "type": "BOOL",
       "description": "CAPICEscore>=0.2",
       "query": {
@@ -177,6 +187,7 @@
       }
     },
     "gnomad": {
+      "label": "gnomad",
       "type": "BOOL",
       "description": "gnomAD_AF<0.02",
       "query": {
@@ -195,6 +206,7 @@
       }
     },
     "HLA": {
+      "label": "HLA",
       "type": "BOOL",
       "description": "HLA",
       "query": {
@@ -213,6 +225,7 @@
       }
     },
     "five_prime": {
+      "label": "five_prime",
       "type": "BOOL",
       "description": "5primeUTR",
       "query": {
@@ -231,6 +244,7 @@
       }
     },
     "inframe": {
+      "label": "inframe",
       "type": "BOOL",
       "description": "inframeinsertionordeletion",
       "query": {
@@ -249,6 +263,7 @@
       }
     },
     "splice_acceptor": {
+      "label": "splice_acceptor",
       "type": "BOOL",
       "description": "Spliceacceptor",
       "query": {
@@ -267,6 +282,7 @@
       }
     },
     "intron": {
+      "label": "intron",
       "type": "BOOL",
       "description": "Intron",
       "query": {
@@ -285,6 +301,7 @@
       }
     },
     "my_multi": {
+      "label": "my_multi",
       "type": "BOOL_MULTI",
       "fields": ["my_multi_1", "my_multi_2"],
       "outcomeDefault": {
@@ -333,30 +350,37 @@
       ]
     },
     "exit_t": {
+      "label": "True",
       "type": "LEAF",
       "class": "T"
     },
     "exit_f": {
+      "label": "False",
       "type": "LEAF",
       "class": "F"
     },
     "exit_b": {
+      "label": "Benign",
       "type": "LEAF",
       "class": "B"
     },
     "exit_lb": {
+      "label": "Likely Benign",
       "type": "LEAF",
       "class": "LB"
     },
     "exit_vus": {
+      "label": "Unknown Significance",
       "type": "LEAF",
       "class": "VUS"
     },
     "exit_lp": {
+      "label": "Likely pathogenic",
       "type": "LEAF",
       "class": "LP"
     },
     "exit_p": {
+      "label": "Pathogenic",
       "type": "LEAF",
       "class": "P"
     }
