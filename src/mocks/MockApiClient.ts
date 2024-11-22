@@ -36,6 +36,8 @@ import {
   fetchCram as fetchCramGRCh38,
   fetchFastaGz as fetchFastaGzGRCh38,
   fetchGenesGz as fetchGenesGzGRCh38,
+  fetchStrCrai as fetchStrCraiGRCh38,
+  fetchStrCram as fetchStrCramGRCh38,
   fetchVcfFamily as fetchVcfFamilyGRCh38,
   fetchVcfNoVep as fetchVcfNoVepGRCh38,
   fetchVcfSamples0 as fetchVcfSamples0GRCh38,
@@ -377,6 +379,14 @@ async function fetchReportDataGRCh38Str(): Promise<ReportData> {
     data: samplesStr,
     binary: {
       vcf: await fetchVcfStrGRCh38(),
+      fastaGz: await fetchFastaGzGRCh38(),
+      genesGz: await fetchGenesGzGRCh38(),
+      cram: {
+        Patient: {
+          cram: await fetchStrCramGRCh38(),
+          crai: await fetchStrCraiGRCh38(),
+        },
+      },
     },
     decisionTree: decisionTreeStrGRCh38,
     sampleTree: sampleTreeGRCh38,

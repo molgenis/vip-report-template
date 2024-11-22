@@ -2,9 +2,12 @@
 // @ts-nocheck
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
+import strCramUrl from "./str.cram.blob";
+import strCraiUrl from "./str.cram.crai.blob";
 import fastaUrl_chr1_9982230_9982730 from "./fasta/chr1-9982230-9982730.fasta.gz.blob";
 import fastaUrl_chr1_16049667_16050167 from "./fasta/chr1-16049667-16050167.fasta.gz.blob";
 import fastaUrl_chr1_17022474_17022974 from "./fasta/chr1-17022474-17022974.fasta.gz.blob";
+import fastaUrl_chr1_149380406_149403321 from "./fasta/chr1_149380406-149403321.fasta.gz.blob";
 import fastaUrl_chr1_152548062_152548562 from "./fasta/chr1-152548062-152548562.fasta.gz.blob";
 import fastaUrl_chr2_47408278_47408778 from "./fasta/chr2-47408278-47408778.fasta.gz.blob";
 import fastaUrl_chr4_105398887_105399387 from "./fasta/chr4-105398887-105399387.fasta.gz.blob";
@@ -52,6 +55,14 @@ export async function fetchCrai() {
   return await fetchAsBytes(craiUrl as string);
 }
 
+export async function fetchStrCram() {
+  return await fetchAsBytes(strCramUrl as string);
+}
+
+export async function fetchStrCrai() {
+  return await fetchAsBytes(strCraiUrl as string);
+}
+
 export const decisionTree: DecisionTree = decisionTreeJson as unknown as DecisionTree;
 export const decisionTreeStr: DecisionTree = decisionTreeStrJson as unknown as DecisionTree;
 export const sampleTree: DecisionTree = sampleTreeJson as unknown as DecisionTree;
@@ -61,6 +72,7 @@ export async function fetchFastaGz() {
     "chr1:9982230-9982730": await fetchAsBytes(fastaUrl_chr1_9982230_9982730 as string),
     "chr1:16049667-16050167": await fetchAsBytes(fastaUrl_chr1_16049667_16050167 as string),
     "chr1:17022474-17022974": await fetchAsBytes(fastaUrl_chr1_17022474_17022974 as string),
+    "chr1:149380406-149403321": await fetchAsBytes(fastaUrl_chr1_149380406_149403321 as string),
     "chr1:152548062-152548562": await fetchAsBytes(fastaUrl_chr1_152548062_152548562 as string),
     "chr2:47408278-47408778": await fetchAsBytes(fastaUrl_chr2_47408278_47408778 as string),
     "chr4:105398887-105399387": await fetchAsBytes(fastaUrl_chr4_105398887_105399387 as string),
