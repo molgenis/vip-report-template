@@ -30,8 +30,8 @@ importers:
         specifier: ^1.5.1
         version: 1.5.1
       igv:
-        specifier: ^3.0.9
-        version: 3.0.9
+        specifier: ^3.1.0
+        version: 3.1.0
       solid-js:
         specifier: ^1.9.3
         version: 1.9.3
@@ -1121,8 +1121,8 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
-  igv@3.0.9:
-    resolution: {integrity: sha512-2CQxVRMqvq0G342gvQhcMQX4l1vsJmwmutFQNZ5cXj8BpkEHrb1WZZbBKMvWS+keUaH4F0WVwNpsDySjVubtTg==}
+  igv@3.1.0:
+    resolution: {integrity: sha512-4ZlbcQmB1lEWE0IL4zK1+pvJwXnNAHETYHJjgwgSBjZh6ItefoOcGntWfRuFq02A/5C++88i4CCRer3U6bRIcA==}
 
   immutable@5.0.2:
     resolution: {integrity: sha512-1NU7hWZDkV7hJ4PJ9dur9gTNQ4ePNPN4k9/0YhwjzykTi/+3Q5pF93YU5QoVj8BuOnhLgaY8gs0U2pj4kSYVcw==}
@@ -2727,7 +2727,7 @@ snapshots:
 
   ignore@5.3.2: {}
 
-  igv@3.0.9: {}
+  igv@3.1.0: {}
 
   immutable@5.0.2: {}
 
