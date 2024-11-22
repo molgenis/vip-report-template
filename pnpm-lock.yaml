@@ -15,8 +15,8 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0
       '@molgenis/vip-report-api':
-        specifier: ^6.1.3
-        version: 6.1.3
+        specifier: ^6.2.0
+        version: 6.2.0
       '@molgenis/vip-report-vcf':
         specifier: ^3.0.7
         version: 3.0.7
@@ -407,8 +407,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@molgenis/vip-report-api@6.1.3':
-    resolution: {integrity: sha512-rW2mPVCKRBWve4A1nSc0aPj0H0yEZ90JX+0NUzXQ3simn71XCNMSuYKRLYeSaXC0XhuQNZzZPCLVZdPsVKQCdg==}
+  '@molgenis/vip-report-api@6.2.0':
+    resolution: {integrity: sha512-ESqhc5joK8qqPDDacKNIHSJfSFJ3fFHZnWwq/Rgz8U08G5yaziV/RwTQtdRWZ/k6eWGvTzUFIJG80BLUmhoePA==}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vip-report-vcf@3.0.7':
@@ -2009,7 +2009,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@6.1.3':
+  '@molgenis/vip-report-api@6.2.0':
     dependencies:
       '@molgenis/vip-report-vcf': 3.0.7
 
