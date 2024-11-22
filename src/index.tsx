@@ -64,8 +64,12 @@ if (document.readyState !== "loading") {
 }
 
 const [error, setError] = createSignal<unknown>();
-window.addEventListener("error", (event) => {
-  setError(event.error);
+window.addEventListener("error", function () {
+  setError({ message: "An unexpected error occurred" });
+});
+
+window.addEventListener("unhandledrejection", function () {
+  setError({ message: "An unexpected error occurred" });
 });
 
 render(
