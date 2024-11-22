@@ -20,7 +20,7 @@ import {
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
-import { ErrorBoundary } from "solid-js";
+import { createSignal, ErrorBoundary, Show } from "solid-js";
 import { HashRouter, Route } from "@solidjs/router";
 import { Home } from "./views/Home";
 import { Samples } from "./views/Samples";
@@ -62,9 +62,17 @@ if (document.readyState === "complete") {
   window.addEventListener("DOMContentLoaded", processIcons);
 }
 
+const [error, setError] = createSignal<unknown>();
+window.addEventListener("error", (event) => {
+  setError(event.error);
+});
+
 render(
   () => (
     <Provider>
+      <Show when={error() !== undefined}>
+        <ErrorNotification error={error()} />
+      </Show>
       <ErrorBoundary fallback={(err) => <ErrorNotification error={err} />}>
         <HashRouter root={App}>
           <Route path="/" component={Home} />
