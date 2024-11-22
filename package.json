@@ -16,8 +16,10 @@
   "license": "LGPL-3.0",
   "devDependencies": {
     "@molgenis/vite-plugin-inline": "^1.0.27",
+    "@types/async-lock": "^1.4.2",
     "@types/node": "^22.9.0",
     "@vitest/coverage-v8": "^2.1.5",
+    "async-lock": "^1.4.1",
     "bulma": "^1.0.2",
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",

@@ -39,12 +39,18 @@ importers:
       '@molgenis/vite-plugin-inline':
         specifier: ^1.0.27
         version: 1.0.27(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))
+      '@types/async-lock':
+        specifier: ^1.4.2
+        version: 1.4.2
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0
       '@vitest/coverage-v8':
         specifier: ^2.1.5
         version: 2.1.5(vitest@2.1.5(@types/node@22.9.0)(jsdom@25.0.1)(sass@1.81.0))
+      async-lock:
+        specifier: ^1.4.1
+        version: 1.4.1
       bulma:
         specifier: ^1.0.2
         version: 1.0.2
@@ -608,6 +614,9 @@ packages:
     peerDependencies:
       solid-js: ^1.8.6
 
+  '@types/async-lock@1.4.2':
+    resolution: {integrity: sha512-HlZ6Dcr205BmNhwkdXqrg2vkFMN2PluI7Lgr8In3B3wE5PiQHhjRqtW/lGdVU9gw+sM0JcIDx2AN+cW8oSWIcw==}
+
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
 
@@ -771,6 +780,9 @@ packages:
   assertion-error@2.0.1:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
+
+  async-lock@1.4.1:
+    resolution: {integrity: sha512-Az2ZTpuytrtqENulXwO3GGv1Bztugx6TT37NIo7imr/Qo0gsYiGtSdBa2B6fsXhTpVZDNfu1Qn3pk531e3q+nQ==}
 
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
@@ -2142,6 +2154,8 @@ snapshots:
     dependencies:
       solid-js: 1.9.3
 
+  '@types/async-lock@1.4.2': {}
+
   '@types/babel__core@7.20.5':
     dependencies:
       '@babel/parser': 7.26.2
@@ -2350,6 +2364,8 @@ snapshots:
   argparse@2.0.1: {}
 
   assertion-error@2.0.1: {}
+
+  async-lock@1.4.1: {}
 
   asynckit@0.4.0: {}
 

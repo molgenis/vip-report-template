@@ -275,7 +275,7 @@ export function getDatasetIds(): string[] {
   return (api as MockApiClient).getDatasetIds();
 }
 
-export async function selectDataset(id: string): Promise<void> {
+export function selectDataset(id: string): void {
   if (import.meta.env.PROD) throw new Error(`unknown id ${id}`);
-  return (api as MockApiClient).selectDataset(id);
+  (api as MockApiClient).selectDataset(id);
 }
