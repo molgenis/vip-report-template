@@ -126,9 +126,9 @@ export const GenomeBrowser: Component<{
     })().catch((err) => console.error(err));
   });
   onCleanup(() => {
-    if (browser) {
-      igv.removeBrowser(browser);
-    }
+    //cannot use "removeBrowser" here https://github.com/igvteam/igv.js/issues/1918
+    browser.root.remove();
+    browser.removeAllTracks();
   });
   // noinspection JSUnusedAssignment
   return <div ref={divRef!} />;
