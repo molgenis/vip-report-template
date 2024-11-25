@@ -18,7 +18,7 @@ import {
   getSampleValue,
   getSampleValues,
 } from "../../../src/utils/vcf.ts";
-import { Item } from "@molgenis/vip-report-api";
+import { Item, Sample } from "@molgenis/vip-report-api";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 
 describe("config cells composed", () => {
@@ -328,6 +328,164 @@ describe("config cells composed", () => {
 
       test("genotype without sample", () => {
         expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+      });
+    });
+
+    describe("genotype_maternal", () => {
+      const configBase: ConfigJsonFieldComposed = {
+        type: "composed",
+        name: "genotype_maternal",
+      };
+
+      test("genotype_maternal with required fields", () => {
+        const sampleMaternal = { id: 2, data: { person: { individualId: "sample2_maternal" } } } as Item<Sample>;
+        const sample = {
+          item: { id: 2, data: { person: { individualId: "sample2" } } },
+          maternalSample: sampleMaternal,
+        } as SampleContainer;
+
+        const fieldGt = { id: "FORMAT/GT" };
+        vi.mocked(getSampleFields).mockReturnValue([fieldGt, undefined, undefined] as FieldMetadataWrapper[]);
+        vi.mocked(getInfoFields).mockReturnValue([undefined, undefined, undefined, undefined]);
+        vi.mocked(getInfoValueCount).mockReturnValue(1);
+        vi.mocked(getSampleValues).mockReturnValue([0, undefined, undefined]);
+        vi.mocked(getInfoValues).mockReturnValue([undefined, undefined, undefined, undefined]);
+
+        const cell = initConfigCellComposed(
+          configBase,
+          variantType,
+          metadata,
+          sample,
+        ) as ConfigCellCustom<CellValueCustom>;
+        expect(cell.type).toStrictEqual("composed");
+        expect(cell.id).toStrictEqual("genotype");
+        expect(cell.label()).toStrictEqual("sample2_maternal");
+        expect(cell.description()).toStrictEqual(null);
+        expect(cell.valueCount(record)).toStrictEqual(1);
+        expect(cell.value(record, 1)).toStrictEqual({
+          altAlleles: ["C", "T"],
+          displayRepeatUnit: undefined,
+          genotype: 0,
+          refAllele: "A",
+          repeatCount: undefined,
+          repeatUnitMatch: undefined,
+          repeatUnitValue: undefined,
+          svType: undefined,
+          viab: undefined,
+        });
+
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
+        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "SVTYPE", "RU", "RUMATCH", "DisplayRU");
+        expect(getSampleValues).toHaveBeenCalledWith(
+          {
+            item: {
+              data: { person: { individualId: "sample2_maternal" } },
+              id: 2,
+            },
+            maternalSample: null,
+            otherPedigreeSamples: [],
+            paternalSample: null,
+            phenotypes: [],
+            variantTypeIds: new Set(),
+          },
+          record,
+          1,
+          fieldGt,
+          undefined,
+          undefined,
+        );
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined);
+      });
+
+      test("genotype_maternal no sample", () => {
+        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+      });
+
+      test("genotype_maternal no mother", () => {
+        const sample = {
+          item: { id: 2, data: { person: { individualId: "sample2" } } },
+          maternalSample: null,
+        } as SampleContainer;
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+      });
+    });
+
+    describe("genotype_paternal", () => {
+      const configBase: ConfigJsonFieldComposed = {
+        type: "composed",
+        name: "genotype_paternal",
+      };
+
+      test("genotype_paternal with required fields", () => {
+        const samplePaternal = { id: 2, data: { person: { individualId: "sample2_paternal" } } } as Item<Sample>;
+        const sample = {
+          item: { id: 2, data: { person: { individualId: "sample2" } } },
+          paternalSample: samplePaternal,
+        } as SampleContainer;
+
+        const fieldGt = { id: "FORMAT/GT" };
+        vi.mocked(getSampleFields).mockReturnValue([fieldGt, undefined, undefined] as FieldMetadataWrapper[]);
+        vi.mocked(getInfoFields).mockReturnValue([undefined, undefined, undefined, undefined]);
+        vi.mocked(getInfoValueCount).mockReturnValue(1);
+        vi.mocked(getSampleValues).mockReturnValue([0, undefined, undefined]);
+        vi.mocked(getInfoValues).mockReturnValue([undefined, undefined, undefined, undefined]);
+
+        const cell = initConfigCellComposed(
+          configBase,
+          variantType,
+          metadata,
+          sample,
+        ) as ConfigCellCustom<CellValueCustom>;
+        expect(cell.type).toStrictEqual("composed");
+        expect(cell.id).toStrictEqual("genotype");
+        expect(cell.label()).toStrictEqual("sample2_paternal");
+        expect(cell.description()).toStrictEqual(null);
+        expect(cell.valueCount(record)).toStrictEqual(1);
+        expect(cell.value(record, 1)).toStrictEqual({
+          altAlleles: ["C", "T"],
+          displayRepeatUnit: undefined,
+          genotype: 0,
+          refAllele: "A",
+          repeatCount: undefined,
+          repeatUnitMatch: undefined,
+          repeatUnitValue: undefined,
+          svType: undefined,
+          viab: undefined,
+        });
+
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
+        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "SVTYPE", "RU", "RUMATCH", "DisplayRU");
+        expect(getSampleValues).toHaveBeenCalledWith(
+          {
+            item: {
+              data: { person: { individualId: "sample2_paternal" } },
+              id: 2,
+            },
+            maternalSample: null,
+            otherPedigreeSamples: [],
+            paternalSample: null,
+            phenotypes: [],
+            variantTypeIds: new Set(),
+          },
+          record,
+          1,
+          fieldGt,
+          undefined,
+          undefined,
+        );
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined);
+      });
+
+      test("genotype_paternal no sample", () => {
+        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+      });
+
+      test("genotype_paternal no father", () => {
+        const sample = {
+          item: { id: 2, data: { person: { individualId: "sample2" } } },
+          paternalSample: null,
+        } as SampleContainer;
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
       });
     });
 

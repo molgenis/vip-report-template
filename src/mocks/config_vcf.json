@@ -223,7 +223,18 @@
         },
         {
           "type": "composed",
-          "name": "genotype"
+          "name": "genotype",
+          "label": "Proband"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_maternal",
+          "label": "Mother"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_paternal",
+          "label": "Father"
         },
         {
           "type": "group",
@@ -302,7 +313,18 @@
         },
         {
           "type": "composed",
-          "name": "genotype"
+          "name": "genotype",
+          "label": "Proband"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_maternal",
+          "label": "Mother"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_paternal",
+          "label": "Father"
         },
         {
           "type": "group",
@@ -377,7 +399,18 @@
         },
         {
           "type": "composed",
-          "name": "genotype"
+          "name": "genotype",
+          "label": "Proband"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_maternal",
+          "label": "Mother"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_paternal",
+          "label": "Father"
         },
         {
           "type": "genotype",

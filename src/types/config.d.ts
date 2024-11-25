@@ -36,6 +36,8 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "clinVar"
     | "gene"
     | "genotype"
+    | "genotype_maternal"
+    | "genotype_paternal"
     | "gnomAdAf"
     | "hpo"
     | "inheritancePattern"

@@ -121,25 +121,22 @@ Example:
 
 The following custom field are available:
 
-- clinVar: This field shows the ClinVar values with a tooltip containing the ClinVar star rating.
-- gene: The gene name with a link to https://genenames.org and an indication if the gene is associated with incomplete
-  penetrance.
-- genotype: Shows the genotype as genotypeSnvSv or genotypeStr (see below) based on the variant type.
-- genotypeSnvSv: Shows the genotype rendering the REF and ALT nucleotides (rendered with colors per nucleotide) for the
-  alleles rather than the allele numbers.
-- genotypeStr: Shows the genotype as the called repeat unit in combination with the number of repeat units seen per
-  allele.
-- gnomAd: Shows the GnomAD allele frequency with a link to https://gnomad.broadinstitute.org, and an indicator to warn
-  for low quality.
-- hpo: Shows the associated HPO terms with a link to https://hpo.jax.org, the column also shows an indicator if the gene
-  received a high or low confidence GADO score.
-- inheritanceModes: Shows the inheritance patterns of the gene, an indicator is show if the gene is associated with the
-  AR pattern and there is a possible compound AR pattern for the sample.
-- locus: show chromosome:position with a link to the report variant detail view.
-- ref: shows the reference nucleotide(s) (rendered with colors per nucleotide).
-- vipC: shows the VIP classification with a link to the consequence details view, and the VIP classification path as
-  tooltip.
-- vkgl: shows the VKGL classification(s), if data for specific labs is available this is shown in the tooltip.
+| id                | description                                                                                                                                                                |
+|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| clinVar           | This field shows the ClinVar values with a tooltip containing the ClinVar star rating.                                                                                     |
+| gene              | The gene name with a link to https://genenames.org and an indication if the gene is associated with incomplete penetrance.                                                 |
+| genotype          | Shows the genotype as genotypeSnvSv or genotypeStr (see below) based on the variant type.                                                                                  |
+| genotypeSnvSv     | Shows the genotype rendering the REF and ALT nucleotides (rendered with colors per nucleotide) for the alleles rather than the allele numbers.                             |
+| genotypeStr       | Shows the genotype as the called repeat unit in combination with the number of repeat units seen per allele.                                                               |
+| genotype_maternal | Same as `genotype`, but for the maternal sample                                                                                                                            |
+| genotype_paternal | Same as `genotype`, but for the paternal sample                                                                                                                            |
+| gnomAd            | Shows the GnomAD allele frequency with a link to https://gnomad.broadinstitute.org, and an indicator to warn for low quality.                                              |
+| hpo               | Shows the associated HPO terms with a link to https://hpo.jax.org, the column also shows an indicator if the gene received a high or low confidence GADO score.            |
+| inheritanceModes  | Shows the inheritance patterns of the gene, an indicator is show if the gene is associated with the AR pattern and there is a possible compound AR pattern for the sample. |
+| locus             | show chromosome:position with a link to the report variant detail view.                                                                                                    |
+| ref               | shows the reference nucleotide(s) (rendered with colors per nucleotide).                                                                                                   |
+| vipC              | shows the VIP classification with a link to the consequence details view, and the VIP classification path as tooltip.                                                      |
+| vkgl              | shows the VKGL classification(s), if data for specific labs is available this is shown in the tooltip.                                                                     |
 
 #### Filters
 

@@ -112,6 +112,8 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
             "clinVar",
             "gene",
             "genotype",
+            "genotype_maternal",
+            "genotype_paternal",
             "gnomAdAf",
             "hpo",
             "inheritancePattern",

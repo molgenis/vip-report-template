@@ -30,7 +30,7 @@ import {
   ValueCategorical,
 } from "../vcf.ts";
 import { VariantType } from "../variantType.ts";
-import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../api.ts";
+import { composeSample, MetadataContainer, SampleContainer, VcfMetadataContainer } from "../api.ts";
 import { href } from "../utils.ts";
 import { ConfigJsonFieldComposed } from "../../types/config";
 import { getDescription, getLabel } from "./config.ts";
@@ -53,6 +53,12 @@ export function initConfigCellComposed(
       break;
     case "genotype":
       fieldConfig = createConfigFieldCustomGenotype(configStatic, metadata.records, sample);
+      break;
+    case "genotype_maternal":
+      fieldConfig = createConfigFieldCustomGenotypeMaternal(configStatic, metadata.records, sample);
+      break;
+    case "genotype_paternal":
+      fieldConfig = createConfigFieldCustomGenotypePaternal(configStatic, metadata.records, sample);
       break;
     case "gnomAdAf":
       fieldConfig = createConfigFieldCustomGnomAd(configStatic, metadata.records);
@@ -165,6 +171,37 @@ function createConfigFieldCustomGenotype(
   config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
+): ConfigCellCustom<CellValueGenotype> | null {
+  if (sample === null) return null;
+  return createConfigFieldCustomGenotypeForSample(config, metadata, sample);
+}
+
+function createConfigFieldCustomGenotypeMaternal(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueGenotype> | null {
+  if (sample === null) return null;
+  const maternalSample = sample.maternalSample;
+  if (maternalSample === null) return null;
+  return createConfigFieldCustomGenotypeForSample(config, metadata, composeSample(maternalSample));
+}
+
+function createConfigFieldCustomGenotypePaternal(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueGenotype> | null {
+  if (sample === null) return null;
+  const paternalSample = sample.paternalSample;
+  if (paternalSample === null) return null;
+  return createConfigFieldCustomGenotypeForSample(config, metadata, composeSample(paternalSample));
+}
+
+function createConfigFieldCustomGenotypeForSample(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer,
 ): ConfigCellCustom<CellValueGenotype> | null {
   if (sample === null) return null;
 

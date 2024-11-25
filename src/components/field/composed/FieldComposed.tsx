@@ -41,7 +41,7 @@ export const FieldComposed: Component<{
       <Match when={id() === "gene"}>
         <FieldGene value={props.value as CellValueGene} />
       </Match>
-      <Match when={id() === "genotype"}>
+      <Match when={id() === "genotype" || id() === "genotype_maternal" || id() === "genotype_paternal"}>
         <FieldGenotype value={props.value as CellValueGenotype} />
       </Match>
       <Match when={id() === "gnomAdAf"}>
