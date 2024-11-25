@@ -3,6 +3,7 @@ import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api";
 import { ConfigSort, ConfigSortOrder } from "../../types/configSort";
 
 import { createInfoSortPath } from "./selector.ts";
+import { InvalidSortPathError } from "../error.ts";
 
 export type Direction = "asc" | "desc";
 
@@ -17,13 +18,6 @@ export type Sort = {
 
 export const DIRECTION_ASCENDING = "asc" as Direction;
 export const DIRECTION_DESCENDING = "desc" as Direction;
-
-class InvalidSortPathError extends Error {
-  constructor(path: SortPath) {
-    super(`invalid record sort path '[${path.join(",")}]'`);
-    this.name = "InvalidSortPathError";
-  }
-}
 
 /**
  * @param storeSort null=do not sort, undefined=sort behavior is undefined, fall back to default sort

@@ -1,4 +1,5 @@
 import { ValidateFunction } from "ajv";
+import { SortPath } from "@molgenis/vip-report-api";
 
 export class ArrayIndexOutOfBoundsException extends Error {
   constructor() {
@@ -53,16 +54,16 @@ export class ConfigInvalidError extends Error {
   }
 }
 
-export class ConfigInvalidMissingPropertyError extends ConfigInvalidError {
-  constructor(property: string) {
-    super(`missing required property '${property}'`);
-    this.name = "ConfigInvalidError";
-  }
-}
-
 export class ConfigInvalidPropertyValueError extends ConfigInvalidError {
   constructor(property: string, value: string, message: string) {
     super(`property '${property}' value '${value}' ${message}`);
     this.name = "ConfigInvalidError";
+  }
+}
+
+export class InvalidSortPathError extends Error {
+  constructor(path: SortPath) {
+    super(`invalid record sort path '[${path.join(",")}]'`);
+    this.name = "InvalidSortPathError";
   }
 }
