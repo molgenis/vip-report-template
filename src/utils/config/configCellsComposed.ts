@@ -423,7 +423,6 @@ function createConfigFieldCustomVipCS(
         ValueCategorical[],
         string[] | undefined,
       ];
-
       return {
         vipCS: vipCS[valueIndex]!,
         vipPS: vipPS && vipPS[valueIndex]!.split("&"),
