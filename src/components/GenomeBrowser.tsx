@@ -123,7 +123,7 @@ export const GenomeBrowser: Component<{
         browser = await igv.createBrowser(divRef, config);
         await updateBrowser(browser, props.samples);
       }
-    })().catch((err) => console.error(err));
+    })();
   });
   onCleanup(() => {
     //cannot use "removeBrowser" here https://github.com/igvteam/igv.js/issues/1918

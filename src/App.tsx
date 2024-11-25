@@ -21,7 +21,7 @@ export function init(navigate: Navigator, location?: Location) {
       }
       navigate(href(components));
     }
-  })().catch((err) => console.error(err));
+  })();
 }
 
 const App: ParentComponent = (props) => {
