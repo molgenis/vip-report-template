@@ -219,24 +219,15 @@ describe("query filters", () => {
     });
 
     describe("categorical select null", () => {
-
       test("categorical __null", () => {
         const value: FilterValueString = ["__null"];
 
-        expect(createQueryFilterString(selector, value, false, false)).toStrictEqual(  { "args": [{
-          "args": null,
-            "operator": "==",
-            "selector": ["x",],
-        },
-        {
-          "args": undefined,
-            "operator": "in",
-            "selector": ["x",],
-        },
-      ],
-        "operator": "or"
+        expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
+          selector: ["x"],
+          operator: "==",
+          args: null,
+        });
       });
-    });
 
       test("categorical category and __null", () => {
         const value: FilterValueString = ["c0", "__null"];
@@ -245,15 +236,10 @@ describe("query filters", () => {
           args: [
             { selector: ["x"], operator: "in", args: ["c0"] },
             {
-                "args": null,
-                "operator": "==",
-                "selector": ["x",],
-              },
-                {
-                  "args": undefined,
-                  "operator": "in",
-                  "selector": ["x",],
-                },
+              selector: ["x"],
+              operator: "==",
+              args: null,
+            },
           ],
           operator: "or",
         });

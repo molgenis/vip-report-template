@@ -79,13 +79,8 @@ export function createQueryFilterString(
   if (nonNullFilterValues.length < filterValue.length) {
     queryParts.push({
       selector,
-      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "==",
-      args: nestedValue ? (multiValue ? [] : null) : null,
-    });
-    queryParts.push({
-      selector,
-      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "in",
-      args: undefined,
+      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : "==",
+      args: multiValue ? [] : null,
     });
   }
   return createQueryComposed(queryParts, "or");
