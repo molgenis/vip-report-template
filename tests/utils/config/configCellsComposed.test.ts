@@ -824,45 +824,6 @@ describe("config cells composed", () => {
       });
     });
 
-    describe("ref", () => {
-      const configBase: ConfigJsonFieldComposed = {
-        type: "composed",
-        name: "ref",
-      };
-
-      test("ref with default label and description", () => {
-        const cell = initConfigCellComposed(
-          configBase,
-          variantType,
-          metadata,
-          null,
-        ) as ConfigCellCustom<CellValueCustom>;
-        expect(cell.type).toStrictEqual("composed");
-        expect(cell.id).toStrictEqual("ref");
-        expect(cell.valueCount(record)).toStrictEqual(1);
-        expect(cell.value(record, 1)).toStrictEqual({
-          ref: "A",
-        });
-      });
-
-      test("ref with custom label and description", () => {
-        const config = {
-          ...configBase,
-          label: "my_label",
-          description: "my_description",
-        };
-        const cell = initConfigCellComposed(config, variantType, metadata, null) as ConfigCellCustom<CellValueCustom>;
-        expect(cell.type).toStrictEqual("composed");
-        expect(cell.id).toStrictEqual("ref");
-        expect(cell.label()).toStrictEqual("my_label");
-        expect(cell.description()).toStrictEqual("my_description");
-        expect(cell.valueCount(record)).toStrictEqual(1);
-        expect(cell.value(record, 1)).toStrictEqual({
-          ref: "A",
-        });
-      });
-    });
-
     describe("vipC", () => {
       const configBase: ConfigJsonFieldComposed = {
         type: "composed",

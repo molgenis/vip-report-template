@@ -84,7 +84,7 @@ function createConfigFieldId(config: ConfigJsonFieldFixed): ConfigCellId {
 function createConfigFieldRef(config: ConfigJsonFieldFixed): ConfigCellRef {
   return {
     type: "ref",
-    label: () => getLabel(config, "Ref"),
+    label: () => getLabel(config, "Reference"),
     description: () => getDescription(config, "Reference base(s)"),
     value: (record: Item<VcfRecord>): CellValueRef => record.data.r,
     valueCount: () => 1,
@@ -94,7 +94,7 @@ function createConfigFieldRef(config: ConfigJsonFieldFixed): ConfigCellRef {
 function createConfigFieldAlt(config: ConfigJsonFieldFixed): ConfigCellAlt {
   return {
     type: "alt",
-    label: () => getLabel(config, "Alt"),
+    label: () => getLabel(config, "Alternate(s)"),
     description: () => getDescription(config, "Alternate base(s): list of alternate non-reference alleles"),
     value: (record: Item<VcfRecord>): CellValueAlt => record.data.a,
     valueCount: () => 1, // one list value

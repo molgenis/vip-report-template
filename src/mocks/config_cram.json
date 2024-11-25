@@ -219,7 +219,7 @@
           "name": "locus"
         },
         {
-          "type": "composed",
+          "type": "fixed",
           "name": "ref"
         },
         {
@@ -310,7 +310,7 @@
           "name": "locus"
         },
         {
-          "type": "composed",
+          "type": "fixed",
           "name": "ref"
         },
         {

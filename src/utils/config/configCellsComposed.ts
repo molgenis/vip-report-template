@@ -11,7 +11,6 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
-  CellValueRef,
   CellValueVipC,
   CellValueVipCS,
   CellValueVkgl,
@@ -71,9 +70,6 @@ export function initConfigCellComposed(
       break;
     case "locus":
       fieldConfig = createConfigFieldCustomLocus(configStatic, sample, variantType);
-      break;
-    case "ref":
-      fieldConfig = createConfigFieldCustomRef(configStatic);
       break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
@@ -370,19 +366,6 @@ function createConfigFieldCustomLocus(
       c: record.data.c,
       p: record.data.p,
       href: href([...components, "variants", variantType.id, "variant", record.id]),
-    }),
-  };
-}
-
-function createConfigFieldCustomRef(configStatic: ConfigJsonFieldComposed): ConfigCellCustom<CellValueRef> {
-  return {
-    type: "composed",
-    id: "ref",
-    label: () => getLabel(configStatic, "Reference"),
-    description: () => getDescription(configStatic),
-    valueCount: () => 1,
-    value: (record: Item<VcfRecord>): CellValueRef => ({
-      ref: record.data.r,
     }),
   };
 }

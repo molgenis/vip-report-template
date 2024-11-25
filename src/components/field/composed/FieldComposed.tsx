@@ -1,6 +1,5 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldLocus } from "./FieldLocus";
-import { FieldRef } from "./FieldRef";
 import { FieldVipC } from "./FieldVipC";
 import { FieldGenotype } from "./FieldGenotype";
 import { FieldGene } from "./FieldGene";
@@ -18,7 +17,6 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
-  CellValueRef,
   CellValueVipC,
   CellValueVipCS,
   CellValueVkgl,
@@ -55,9 +53,6 @@ export const FieldComposed: Component<{
       </Match>
       <Match when={id() === "locus"}>
         <FieldLocus value={props.value as CellValueLocus} />
-      </Match>
-      <Match when={id() === "ref"}>
-        <FieldRef value={props.value as CellValueRef} />
       </Match>
       <Match when={id() === "vipC"}>
         <FieldVipC value={props.value as CellValueVipC} />

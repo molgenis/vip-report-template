@@ -43,7 +43,7 @@ describe("config cells fixed", () => {
       const record: Partial<Item<Partial<VcfRecord>>> = { data: { r: "A" } };
 
       expect(cell.type).toStrictEqual("ref");
-      expect(cell.label()).toStrictEqual("Ref");
+      expect(cell.label()).toStrictEqual("Reference");
       expect(cell.description()).toStrictEqual("Reference base(s)");
       expect(cell.value(record as Item<VcfRecord>, 0)).toStrictEqual("A");
       expect(cell.valueCount(record as Item<VcfRecord>)).toStrictEqual(1);
@@ -54,7 +54,7 @@ describe("config cells fixed", () => {
       const record: Partial<Item<Partial<VcfRecord>>> = { data: { a: ["C", "T"] } };
 
       expect(cell.type).toStrictEqual("alt");
-      expect(cell.label()).toStrictEqual("Alt");
+      expect(cell.label()).toStrictEqual("Alternate(s)");
       expect(cell.description()).toStrictEqual("Alternate base(s): list of alternate non-reference alleles");
       expect(cell.value(record as Item<VcfRecord>, 0)).toStrictEqual(["C", "T"]);
       expect(cell.valueCount(record as Item<VcfRecord>)).toStrictEqual(1);
