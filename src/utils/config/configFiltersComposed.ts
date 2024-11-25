@@ -24,20 +24,20 @@ export function initConfigFilterComposed(
 
   let filter: ConfigFilterComposed | null;
   switch (id) {
-    case "hpo":
-      filter = createConfigFilterHpo(config, metadata.records, sample);
-      break;
-    case "locus":
-      filter = createConfigFilterLocus(config, metadata);
-      break;
     case "allelicImbalance":
       filter = createConfigFilterAllelicImbalance(config, metadata.records, sample);
+      break;
+    case "deNovo":
+      filter = createConfigFilterDeNovo(config, metadata.records, sample);
+      break;
+    case "hpo":
+      filter = createConfigFilterHpo(config, metadata.records, sample);
       break;
     case "inheritanceMatch":
       filter = createConfigFilterInheritanceMatch(config, metadata.records, sample);
       break;
-    case "deNovo":
-      filter = createConfigFilterDeNovo(config, metadata.records, sample);
+    case "locus":
+      filter = createConfigFilterLocus(config, metadata);
       break;
     case "vipC":
       filter = createConfigFilterVipC(config, configVip, metadata.records);
