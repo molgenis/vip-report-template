@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@fortawesome/fontawesome-svg-core':
-        specifier: ^6.7.0
-        version: 6.7.0
+        specifier: ^6.7.1
+        version: 6.7.1
       '@fortawesome/free-solid-svg-icons':
-        specifier: ^6.7.0
-        version: 6.7.0
+        specifier: ^6.7.1
+        version: 6.7.1
       '@molgenis/vip-report-api':
-        specifier: ^6.2.0
-        version: 6.2.0
+        specifier: ^6.2.1
+        version: 6.2.1
       '@molgenis/vip-report-vcf':
-        specifier: ^3.0.7
-        version: 3.0.7
+        specifier: ^3.0.8
+        version: 3.0.8
       '@solidjs/router':
         specifier: ^0.15.1
         version: 0.15.1(solid-js@1.9.3)
@@ -38,16 +38,16 @@ importers:
     devDependencies:
       '@molgenis/vite-plugin-inline':
         specifier: ^1.0.27
-        version: 1.0.27(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))
+        version: 1.0.27(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))
       '@types/async-lock':
         specifier: ^1.4.2
         version: 1.4.2
       '@types/node':
-        specifier: ^22.9.0
-        version: 22.9.0
+        specifier: ^22.9.3
+        version: 22.9.3
       '@vitest/coverage-v8':
         specifier: ^2.1.5
-        version: 2.1.5(vitest@2.1.5(@types/node@22.9.0)(jsdom@25.0.1)(sass@1.81.0))
+        version: 2.1.5(vitest@2.1.5(@types/node@22.9.3)(jsdom@25.0.1)(sass@1.81.0))
       async-lock:
         specifier: ^1.4.1
         version: 1.4.1
@@ -83,13 +83,13 @@ importers:
         version: 8.15.0(eslint@9.15.0)(typescript@5.6.3)
       vite:
         specifier: ^5.4.11
-        version: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
+        version: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
       vite-plugin-solid:
         specifier: ^2.10.2
-        version: 2.10.2(solid-js@1.9.3)(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))
+        version: 2.10.2(solid-js@1.9.3)(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))
       vitest:
         specifier: ^2.1.5
-        version: 2.1.5(@types/node@22.9.0)(jsdom@25.0.1)(sass@1.81.0)
+        version: 2.1.5(@types/node@22.9.3)(jsdom@25.0.1)(sass@1.81.0)
 
 packages:
 
@@ -349,16 +349,16 @@ packages:
     resolution: {integrity: sha512-2b/g5hRmpbb1o4GnTZax9N9m0FXzz9OV42ZzI4rDDMDuHUqigAiQCEWChBWCY4ztAGVRjoWT19v0yMmc5/L5kA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@fortawesome/fontawesome-common-types@6.7.0':
-    resolution: {integrity: sha512-AUetZXU6cQdAe21p8j3mg2aD40MMDKfFNUNgq/G7gR3HMDp0BsQskAudLDSgq6d0SbCY0QKP0g4s5Y02S1kkhw==}
+  '@fortawesome/fontawesome-common-types@6.7.1':
+    resolution: {integrity: sha512-gbDz3TwRrIPT3i0cDfujhshnXO9z03IT1UKRIVi/VEjpNHtSBIP2o5XSm+e816FzzCFEzAxPw09Z13n20PaQJQ==}
     engines: {node: '>=6'}
 
-  '@fortawesome/fontawesome-svg-core@6.7.0':
-    resolution: {integrity: sha512-v6YZjSPuxriC7lYxCzKFbgZ1iaf60AVX2CsfZXSc0U9+mqVd8VGVtMEqDqz5GxDpNUQ8bMDfW+gspVMYGlRpUA==}
+  '@fortawesome/fontawesome-svg-core@6.7.1':
+    resolution: {integrity: sha512-8dBIHbfsKlCk2jHQ9PoRBg2Z+4TwyE3vZICSnoDlnsHA6SiMlTwfmW6yX0lHsRmWJugkeb92sA0hZdkXJhuz+g==}
     engines: {node: '>=6'}
 
-  '@fortawesome/free-solid-svg-icons@6.7.0':
-    resolution: {integrity: sha512-9ww5hQ3OzEehUrSXAlPTJ73xDub73fnxr+se5PU0MFQor2nZBO0m7HNm5Q4KD9XMYjwRqh2BnBNR2/9EFbGqmg==}
+  '@fortawesome/free-solid-svg-icons@6.7.1':
+    resolution: {integrity: sha512-BTKc0b0mgjWZ2UDKVgmwaE0qt0cZs6ITcDgjrti5f/ki7aF5zs+N91V6hitGo3TItCFtnKg6cUVGdTmBFICFRg==}
     engines: {node: '>=6'}
 
   '@humanfs/core@0.19.1':
@@ -407,12 +407,12 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@molgenis/vip-report-api@6.2.0':
-    resolution: {integrity: sha512-ESqhc5joK8qqPDDacKNIHSJfSFJ3fFHZnWwq/Rgz8U08G5yaziV/RwTQtdRWZ/k6eWGvTzUFIJG80BLUmhoePA==}
+  '@molgenis/vip-report-api@6.2.1':
+    resolution: {integrity: sha512-F46UYnBWe/p15tlhnXHbsIUb9f2J63dSpGnEAIWOAVvAmSqKM48pY9y/CSOusOhr2PYMvdGMj3G/0qgmGEtRzQ==}
     engines: {node: '22', pnpm: '9'}
 
-  '@molgenis/vip-report-vcf@3.0.7':
-    resolution: {integrity: sha512-fGY4Eiy/C2Y7x5ulORsW9/p2uyaOmK+zA709lWiNt5R8fgeTIfNocBSZlY7v5tO+xqlqfGeaxUePj97wAuXqMw==}
+  '@molgenis/vip-report-vcf@3.0.8':
+    resolution: {integrity: sha512-Y8RyYccPbUG34cm+CjrCJb22Hies+8fX+0WDkuudm0iWXzMRpw0YMri6hPnmX4PGKtHppm3wFYqYvdRBPUyIGA==}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vite-plugin-inline@1.0.27':
@@ -635,8 +635,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@22.9.0':
-    resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
+  '@types/node@22.9.3':
+    resolution: {integrity: sha512-F3u1fs/fce3FFk+DAxbxc78DF8x0cY09RRL8GnXLmkJ1jvx3TtPdWoTT5/NiYfI5ASqXBmfqJi9dZ3gxMx4lzw==}
 
   '@typescript-eslint/eslint-plugin@8.15.0':
     resolution: {integrity: sha512-+zkm9AR1Ds9uLWN3fkoeXgFppaQ+uEVtfOV62dDmsy9QCNqlRHWNEck4yarvRNrvRcHQLGfqBNui3cimoz8XAg==}
@@ -1958,15 +1958,15 @@ snapshots:
     dependencies:
       levn: 0.4.1
 
-  '@fortawesome/fontawesome-common-types@6.7.0': {}
+  '@fortawesome/fontawesome-common-types@6.7.1': {}
 
-  '@fortawesome/fontawesome-svg-core@6.7.0':
+  '@fortawesome/fontawesome-svg-core@6.7.1':
     dependencies:
-      '@fortawesome/fontawesome-common-types': 6.7.0
+      '@fortawesome/fontawesome-common-types': 6.7.1
 
-  '@fortawesome/free-solid-svg-icons@6.7.0':
+  '@fortawesome/free-solid-svg-icons@6.7.1':
     dependencies:
-      '@fortawesome/fontawesome-common-types': 6.7.0
+      '@fortawesome/fontawesome-common-types': 6.7.1
 
   '@humanfs/core@0.19.1': {}
 
@@ -2009,16 +2009,16 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@6.2.0':
+  '@molgenis/vip-report-api@6.2.1':
     dependencies:
-      '@molgenis/vip-report-vcf': 3.0.7
+      '@molgenis/vip-report-vcf': 3.0.8
 
-  '@molgenis/vip-report-vcf@3.0.7': {}
+  '@molgenis/vip-report-vcf@3.0.8': {}
 
-  '@molgenis/vite-plugin-inline@1.0.27(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))':
+  '@molgenis/vite-plugin-inline@1.0.27(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))':
     dependencies:
       fflate: 0.8.2
-      vite: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
+      vite: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -2181,7 +2181,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@22.9.0':
+  '@types/node@22.9.3':
     dependencies:
       undici-types: 6.19.8
 
@@ -2267,7 +2267,7 @@ snapshots:
       '@typescript-eslint/types': 8.15.0
       eslint-visitor-keys: 4.2.0
 
-  '@vitest/coverage-v8@2.1.5(vitest@2.1.5(@types/node@22.9.0)(jsdom@25.0.1)(sass@1.81.0))':
+  '@vitest/coverage-v8@2.1.5(vitest@2.1.5(@types/node@22.9.3)(jsdom@25.0.1)(sass@1.81.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -2281,7 +2281,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.5(@types/node@22.9.0)(jsdom@25.0.1)(sass@1.81.0)
+      vitest: 2.1.5(@types/node@22.9.3)(jsdom@25.0.1)(sass@1.81.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2292,13 +2292,13 @@ snapshots:
       chai: 5.1.2
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.5(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))':
+  '@vitest/mocker@2.1.5(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))':
     dependencies:
       '@vitest/spy': 2.1.5
       estree-walker: 3.0.3
       magic-string: 0.30.13
     optionalDependencies:
-      vite: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
+      vite: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
 
   '@vitest/pretty-format@2.1.5':
     dependencies:
@@ -3166,13 +3166,13 @@ snapshots:
 
   validate-html-nesting@1.2.2: {}
 
-  vite-node@2.1.5(@types/node@22.9.0)(sass@1.81.0):
+  vite-node@2.1.5(@types/node@22.9.3)(sass@1.81.0):
     dependencies:
       cac: 6.7.14
       debug: 4.3.7
       es-module-lexer: 1.5.4
       pathe: 1.1.2
-      vite: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
+      vite: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -3184,7 +3184,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-solid@2.10.2(solid-js@1.9.3)(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0)):
+  vite-plugin-solid@2.10.2(solid-js@1.9.3)(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0)):
     dependencies:
       '@babel/core': 7.26.0
       '@types/babel__core': 7.20.5
@@ -3192,29 +3192,29 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.9.3
       solid-refresh: 0.6.3(solid-js@1.9.3)
-      vite: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
-      vitefu: 0.2.5(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))
+      vite: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
+      vitefu: 0.2.5(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))
     transitivePeerDependencies:
       - supports-color
 
-  vite@5.4.11(@types/node@22.9.0)(sass@1.81.0):
+  vite@5.4.11(@types/node@22.9.3)(sass@1.81.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.49
       rollup: 4.27.3
     optionalDependencies:
-      '@types/node': 22.9.0
+      '@types/node': 22.9.3
       fsevents: 2.3.3
       sass: 1.81.0
 
-  vitefu@0.2.5(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0)):
+  vitefu@0.2.5(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0)):
     optionalDependencies:
-      vite: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
+      vite: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
 
-  vitest@2.1.5(@types/node@22.9.0)(jsdom@25.0.1)(sass@1.81.0):
+  vitest@2.1.5(@types/node@22.9.3)(jsdom@25.0.1)(sass@1.81.0):
     dependencies:
       '@vitest/expect': 2.1.5
-      '@vitest/mocker': 2.1.5(vite@5.4.11(@types/node@22.9.0)(sass@1.81.0))
+      '@vitest/mocker': 2.1.5(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))
       '@vitest/pretty-format': 2.1.5
       '@vitest/runner': 2.1.5
       '@vitest/snapshot': 2.1.5
@@ -3230,11 +3230,11 @@ snapshots:
       tinyexec: 0.3.1
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.11(@types/node@22.9.0)(sass@1.81.0)
-      vite-node: 2.1.5(@types/node@22.9.0)(sass@1.81.0)
+      vite: 5.4.11(@types/node@22.9.3)(sass@1.81.0)
+      vite-node: 2.1.5(@types/node@22.9.3)(sass@1.81.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.9.0
+      '@types/node': 22.9.3
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less

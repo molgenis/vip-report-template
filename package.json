@@ -17,7 +17,7 @@
   "devDependencies": {
     "@molgenis/vite-plugin-inline": "^1.0.27",
     "@types/async-lock": "^1.4.2",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.9.3",
     "@vitest/coverage-v8": "^2.1.5",
     "async-lock": "^1.4.1",
     "bulma": "^1.0.2",
@@ -35,10 +35,10 @@
     "vitest": "^2.1.5"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.7.0",
-    "@fortawesome/free-solid-svg-icons": "^6.7.0",
-    "@molgenis/vip-report-api": "^6.2.0",
-    "@molgenis/vip-report-vcf": "^3.0.7",
+    "@fortawesome/fontawesome-svg-core": "^6.7.1",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@molgenis/vip-report-api": "^6.2.1",
+    "@molgenis/vip-report-vcf": "^3.0.8",
     "@solidjs/router": "^0.15.1",
     "ajv": "^8.17.1",
     "base64-js": "^1.5.1",
