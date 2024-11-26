@@ -65,18 +65,21 @@ export function createQueryFilterString(
   multiValue: boolean,
   nestedValue: boolean,
 ): Query {
-  const nonNullFilterValues = filterValue.filter((value) => value !== "__null");
+  // null values
+  // multi=false --> value=null
+  // multi=true  --> value=[] or value=[..., null, ...]
+  const filterValues = filterValue.map((value) => (value !== "__null" ? value : null));
 
   const queryParts: Query[] = [];
-  if (nonNullFilterValues.length > 0) {
+  if (filterValues.length > 0) {
     queryParts.push({
       selector,
       operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "in",
-      args: nonNullFilterValues,
+      args: filterValues,
     });
   }
 
-  if (nonNullFilterValues.length < filterValue.length) {
+  if (multiValue && filterValues.findIndex((value) => value === null) !== -1) {
     queryParts.push({
       selector,
       operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : "==",

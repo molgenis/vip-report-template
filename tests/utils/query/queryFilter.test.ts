@@ -224,8 +224,8 @@ describe("query filters", () => {
 
         expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
           selector: ["x"],
-          operator: "==",
-          args: null,
+          operator: "in",
+          args: [null],
         });
       });
 
@@ -233,15 +233,9 @@ describe("query filters", () => {
         const value: FilterValueString = ["c0", "__null"];
 
         expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
-          args: [
-            { selector: ["x"], operator: "in", args: ["c0"] },
-            {
-              selector: ["x"],
-              operator: "==",
-              args: null,
-            },
-          ],
-          operator: "or",
+          selector: ["x"],
+          operator: "in",
+          args: ["c0", null],
         });
       });
     });
