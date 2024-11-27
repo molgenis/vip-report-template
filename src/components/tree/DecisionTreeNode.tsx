@@ -27,7 +27,7 @@ export const DecisionTreeNode: Component<{ nodeId: string; node: Node | undefine
         <div classList={{ card: true, "has-background-success": node().type === "LEAF" }}>
           <header class="card-header">
             <p class="card-header-title">
-              <span>{props.nodeId}</span>
+              <span>{node().label}</span>
               {node().description && <span class="ml-1">({node().description})</span>}
             </p>
             <button class="card-header-icon" aria-label="more options" onClick={toggleCollapse}>
