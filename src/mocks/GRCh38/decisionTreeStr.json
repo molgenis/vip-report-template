@@ -2,6 +2,7 @@
   "rootNode": "type",
   "nodes": {
     "type": {
+      "label": "STR?",
       "description": "Is STR?",
       "type": "BOOL",
       "query": {
@@ -10,7 +11,7 @@
         "value": "STR"
       },
       "outcomeTrue": {
-        "nextNode": "unit"
+        "nextNode": "pick"
       },
       "outcomeFalse": {
         "nextNode": "filter"
@@ -19,7 +20,58 @@
         "nextNode": "filter"
       }
     },
+    "pick": {
+      "label": "Picked Transcript?",
+      "description": "is picked transcript",
+      "type": "BOOL",
+      "query": {
+        "field": "INFO/CSQ/PICK",
+        "operator": "==",
+        "value": 1
+      },
+      "outcomeTrue": {
+        "nextNode": "gene_str"
+      },
+      "outcomeFalse": {
+        "nextNode": "exit_rm"
+      },
+      "outcomeMissing": {
+        "nextNode": "exit_rm"
+      }
+    },
+    "gene_str": {
+      "label": "Gene",
+      "description": "Gene exists",
+      "type": "EXISTS",
+      "field": "INFO/CSQ/Gene",
+      "outcomeTrue": {
+        "nextNode": "up_downstream"
+      },
+      "outcomeFalse": {
+        "nextNode": "exit_rm"
+      }
+    },
+    "up_downstream": {
+      "label": "Up or downstream",
+      "description": "Up or downstream gene variant",
+      "type": "BOOL",
+      "query": {
+        "field": "INFO/CSQ/Consequence",
+        "operator": "contains_any",
+        "value": ["upstream_gene_variant","downstream_gene_variant"]
+      },
+      "outcomeTrue": {
+        "nextNode": "exit_rm"
+      },
+      "outcomeFalse": {
+        "nextNode": "unit"
+      },
+      "outcomeMissing": {
+        "nextNode": "unit"
+      }
+    },
     "unit": {
+      "label": "STR Unit",
       "description": "Called unit equals configured unit",
       "type": "BOOL",
       "query": {
@@ -38,6 +90,7 @@
       }
     },
     "status": {
+      "label": "Status",
       "description": "STR mutation status",
       "type": "CATEGORICAL",
       "field": "INFO/STR_STATUS",
@@ -60,24 +113,28 @@
       }
     },
     "filter": {
+      "label": "Filter",
       "description": "Filter pass",
       "type": "BOOL",
       "query": {
         "field": "FILTER",
         "operator": "==",
-        "value": ["PASS"]
+        "value": [
+          "PASS"
+        ]
       },
       "outcomeTrue": {
         "nextNode": "vkgl"
       },
       "outcomeFalse": {
-        "nextNode": "exit_rm"
+        "nextNode": "exit_lq"
       },
       "outcomeMissing": {
         "nextNode": "vkgl"
       }
     },
     "vkgl": {
+      "label": "VKGL",
       "description": "VKGL classification",
       "type": "CATEGORICAL",
       "field": "INFO/CSQ/VKGL_CL",
@@ -106,9 +163,12 @@
       }
     },
     "clinVar": {
+      "label": "ClinVar",
       "description": "ClinVar classification",
       "type": "BOOL_MULTI",
-      "fields": ["INFO/CSQ/clinVar_CLNSIG"],
+      "fields": [
+        "INFO/CSQ/clinVar_CLNSIG"
+      ],
       "outcomes": [
         {
           "description": "Conflict",
@@ -116,7 +176,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": ["Conflicting_interpretations_of_pathogenicity"]
+              "value": [ "Conflicting_interpretations_of_pathogenicity" ]
             }
           ],
           "outcomeTrue": {
@@ -129,7 +189,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": ["Likely_pathogenic", "Pathogenic"]
+              "value": [ "Likely_pathogenic", "Pathogenic" ]
             }
           ],
           "outcomeTrue": {
@@ -142,7 +202,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": ["Uncertain_significance"]
+              "value": [ "Uncertain_significance" ]
             }
           ],
           "outcomeTrue": {
@@ -155,7 +215,7 @@
             {
               "field": "INFO/CSQ/clinVar_CLNSIG",
               "operator": "contains_any",
-              "value": ["Likely_benign", "Benign"]
+              "value": [ "Likely_benign", "Benign" ]
             }
           ],
           "outcomeTrue": {
@@ -171,6 +231,7 @@
       }
     },
     "chrom": {
+      "label": "Chromosome",
       "description": "Chromosome 1-22-X-Y-MT",
       "type": "BOOL",
       "query": {
@@ -215,6 +276,7 @@
       }
     },
     "gene": {
+      "label": "Gene",
       "description": "Gene exists",
       "type": "EXISTS",
       "field": "INFO/CSQ/Gene",
@@ -226,6 +288,7 @@
       }
     },
     "sv": {
+      "label": "SV?",
       "description": "Structural Variant?",
       "type": "EXISTS",
       "field": "INFO/SVTYPE",
@@ -237,6 +300,7 @@
       }
     },
     "str": {
+      "label": "STR?",
       "description": "Short tandem repeat?",
       "type": "BOOL",
       "query": {
@@ -255,6 +319,7 @@
       }
     },
     "str_status": {
+      "label": "STR status",
       "description": "Stranger str status (normal, pre_mutation, mutation)",
       "type": "CATEGORICAL",
       "field": "INFO/STR_STATUS",
@@ -277,6 +342,7 @@
       }
     },
     "gnomAD": {
+      "label": "GnomAD",
       "description": "gnomAD QC filter failure",
       "type": "EXISTS",
       "field": "INFO/CSQ/gnomAD_QC",
@@ -288,9 +354,13 @@
       }
     },
     "gnomAD_AF": {
+      "label": "",
       "description": "gnomAD",
       "type": "BOOL_MULTI",
-      "fields": ["INFO/CSQ/gnomAD_FAF99", "INFO/CSQ/gnomAD_HN"],
+      "fields": [
+        "INFO/CSQ/gnomAD_FAF99",
+        "INFO/CSQ/gnomAD_HN"
+      ],
       "outcomes": [
         {
           "description": "Filtering allele Frequency (99% confidence) >= 0.02 or Number of Homozygotes > 5",
@@ -320,6 +390,7 @@
       }
     },
     "annotSV": {
+      "label": "AnnotSV",
       "description": "AnnotSV classification",
       "type": "CATEGORICAL",
       "field": "INFO/CSQ/ASV_ACMG_class",
@@ -348,6 +419,7 @@
       }
     },
     "spliceAI": {
+      "label": "SpliceAI",
       "description": "SpliceAI prediction",
       "type": "BOOL_MULTI",
       "fields": [
@@ -424,6 +496,7 @@
       }
     },
     "utr5": {
+      "label": "5' UTR",
       "description": "5' UTR",
       "type": "EXISTS",
       "field": "INFO/CSQ/five_prime_UTR_variant_consequence",
@@ -435,6 +508,7 @@
       }
     },
     "capice": {
+      "label": "Capice",
       "description": "CAPICE prediction > 0.5",
       "type": "BOOL",
       "query": {
@@ -452,32 +526,44 @@
         "nextNode": "exit_vus"
       }
     },
-    "exit_rm": {
-      "description": "Remove",
+    "exit_lq": {
+      "label": "Low Quality",
+      "description": "Low Quality",
       "type": "LEAF",
       "class": "LQ"
     },
+    "exit_rm": {
+      "label": "",
+      "description": "Remove",
+      "type": "LEAF",
+      "class": "RM"
+    },
     "exit_b": {
+      "label": "Benign",
       "description": "Benign",
       "type": "LEAF",
       "class": "B"
     },
     "exit_lb": {
+      "label": "Likely Benign",
       "description": "Likely Benign",
       "type": "LEAF",
       "class": "LB"
     },
     "exit_vus": {
+      "label": "Uncertain Significance",
       "description": "Uncertain Significance",
       "type": "LEAF",
       "class": "VUS"
     },
     "exit_lp": {
+      "label": "Likely Pathogenic",
       "description": "Likely Pathogenic",
       "type": "LEAF",
       "class": "LP"
     },
     "exit_p": {
+      "label": "Pathogenic",
       "description": "Pathogenic",
       "type": "LEAF",
       "class": "P"
