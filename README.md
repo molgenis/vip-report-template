@@ -29,7 +29,11 @@ Example:
 {
   "vip": {VIP_CONFIG_HERE},
   "sample_variants": {SAMPLE_VARIANTS_SCREEN_CONFIG_HERE},
-  "variants": {VARIANTS_SCREEN_CONFIG_HERE}
+  "variants": {VARIANTS_SCREEN_CONFIG_HERE},
+  "sample_variant": {SAMPLE_VARIANT_SCREEN_CONFIG_HERE},
+  "variant": {VARIANT_SCREEN_CONFIG_HERE},
+  "sample_variant_consequence": {SAMPLE_VARIANT_CONSEQUENCE_SCREEN_CONFIG_HERE},
+  "variant_consequence": {VARIANT_CONSEQUENCE_SCREEN_CONFIG_HERE}
 }
 ```
 
