@@ -1,0 +1,701 @@
+{
+  "vip": {
+    "filter_field": {
+      "type": "genotype",
+      "name": "VIPC_S"
+    },
+    "params": {
+      "assembly": "GRCh38",
+      "GRCh37": {
+        "reference": {
+          "fasta": "/path/to/vip/resources/GRCh37/human_g1k_v37.fasta.gz",
+          "fastaFai": "/path/to/vip/resources/GRCh37/human_g1k_v37.fasta.gz.fai",
+          "fastaGzi": "/path/to/vip/resources/GRCh37/human_g1k_v37.fasta.gz.gzi"
+        },
+        "chain": {
+          "GRCh38": "/path/to/vip/resources/b37ToHg38.over.chain"
+        }
+      },
+      "GRCh38": {
+        "reference": {
+          "fasta": "/path/to/vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz",
+          "fastaFai": "/path/to/vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz.fai",
+          "fastaGzi": "/path/to/vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz.gzi"
+        }
+      },
+      "T2T": {
+        "reference": {
+          "fasta": "",
+          "fastaFai": "",
+          "fastaGzi": ""
+        },
+        "chain": {
+          "GRCh38": "/path/to/vip/resources/chm13v2-hg38.over.chain.gz"
+        }
+      },
+      "cram": {
+        "call_snv": false,
+        "call_str": true,
+        "call_sv": false,
+        "call_cnv": false
+      },
+      "vcf": {
+        "start": "",
+        "annotate": {
+          "annotsv_cache_dir": "/path/to/vip/resources/annotsv/v3.3.6",
+          "ensembl_gene_mapping": "/path/to/vip/resources/biomart_ensembl_entrez_mapping.txt",
+          "gado_genes": "/path/to/vip/resources/gado/v1.0.4_HPO_v2024-04-04/genesProteinCoding.txt",
+          "gado_hpo": "/path/to/vip/resources/gado/v1.0.4_HPO_v2024-04-04/hp.obo",
+          "gado_predict_info": "/path/to/vip/resources/gado/v1.0.4_HPO_v2024-04-04/HPO_2024_04_04_prediction_info.txt.gz",
+          "gado_predict_matrix": "/path/to/vip/resources/gado/v1.0.4_HPO_v2024-04-04/HPO_2024_04_04_prediction_matrix",
+          "vep_buffer_size": 1000,
+          "vep_cache_dir": "/path/to/vip/resources/vep/cache",
+          "vep_plugin_dir": "/path/to/vip/resources/vep/plugins",
+          "vep_plugin_hpo": "/path/to/vip/resources/hpo_20240404.tsv",
+          "vep_plugin_inheritance": "/path/to/vip/resources/inheritance_20240115.tsv",
+          "vep_plugin_vkgl_mode": 1,
+          "vep_plugin_green_db_enabled": false,
+          "GRCh38": {
+            "capice_model": "/path/to/vip/resources/GRCh38/capice_model_v5.1.2-v3.ubj",
+            "expansionhunter_variant_catalog": "/path/to/vip/resources/GRCh38/expansionhunter_variant_catalog.json",
+            "stranger_catalog": "/path/to/vip/resources/GRCh38/variant_catalog_grch38_fixed.json",
+            "vep_custom_phylop": "/path/to/vip/resources/GRCh38/hg38.phyloP100way.bw",
+            "vep_plugin_clinvar": "/path/to/vip/resources/GRCh38/clinvar_20241001-stripped.tsv.gz",
+            "vep_plugin_gnomad": "/path/to/vip/resources/GRCh38/gnomad.total.v4.1.sites.stripped.tsv.gz",
+            "vep_plugin_spliceai_indel": "/path/to/vip/resources/GRCh38/spliceai_scores.masked.indel.hg38.vcf.gz",
+            "vep_plugin_spliceai_snv": "/path/to/vip/resources/GRCh38/spliceai_scores.masked.snv.hg38.vcf.gz",
+            "vep_plugin_utrannotator": "/path/to/vip/resources/GRCh38/uORF_5UTR_PUBLIC.txt",
+            "vep_plugin_vkgl": "/path/to/vip/resources/GRCh38/vkgl_consensus_20240701.tsv",
+            "vep_plugin_alphscore": "/path/to/vip/resources/GRCh38/AlphScore_final_20230825_stripped_GRCh38.tsv.gz",
+            "vep_plugin_ncer": "/path/to/vip/resources/GRCh38/GRCh38_ncER_perc.bed.gz",
+            "vep_plugin_green_db": "/path/to/vip/resources/GRCh38/GRCh38_GREEN-DB.bed.gz",
+            "vep_plugin_fathmm_MKL_scores": "/path/to/vip/resources/GRCh38/GRCh38_FATHMM-MKL_NC.tsv.gz",
+            "vep_plugin_ReMM_scores": "/path/to/vip/resources/GRCh38/GRCh38_ReMM.tsv.gz"
+          }
+        },
+        "classify": {
+          "annotate_path": 1,
+          "metadata": "/path/to/vip/resources/field_metadata.json",
+          "GRCh38": {
+            "decision_tree": "/path/to/vip/resources/decision_tree_GRCh38.json"
+          }
+        },
+        "classify_samples": {
+          "annotate_path": 1,
+          "metadata": "/path/to/vip/resources/field_metadata.json",
+          "GRCh38": {
+            "decision_tree": "/path/to/vip/resources/decision_tree_samples.json"
+          }
+        },
+        "filter": {
+          "classes": "VUS,LP,P",
+          "consequences": true
+        },
+        "filter_samples": {
+          "classes": "OK,U1,U2"
+        },
+        "report": {
+          "include_crams": true,
+          "max_records": "",
+          "max_samples": "",
+          "template": "/path/to/vip/resources/vip-report-template-v6.2.0.html",
+          "metadata": "/path/to/vip/resources/field_metadata.json",
+          "GRCh38": {
+            "genes": "/path/to/vip/resources/GRCh38/GCF_000001405.39_GRCh38.p13_genomic_mapped.gff.gz"
+          }
+        }
+      },
+      "input": "/path/to/vip/test/suites/vcf/resources/empty_input.tsv",
+      "output": "/path/to/vip/test/output/vcf/empty_input"
+    }
+  },
+  "sample_variants": {
+    "sorts": {
+      "all": [
+        {
+          "selected": true,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/CAPICE_SC"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/CAPICE_SC"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/gnomAD_HN"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "CSQ/gnomAD_HN"
+              }
+            }
+          ]
+        }
+      ],
+      "str": [
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "STR_NORMAL_MAX"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "STR_NORMAL_MAX"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "desc",
+              "field": {
+                "type": "info",
+                "name": "STR_PATHOLOGIC_MIN"
+              }
+            }
+          ]
+        },
+        {
+          "selected": false,
+          "orders": [
+            {
+              "direction": "asc",
+              "field": {
+                "type": "info",
+                "name": "STR_PATHOLOGIC_MIN"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "fixed",
+          "name": "ref"
+        },
+        {
+          "type": "info",
+          "name": "SVTYPE",
+          "label": "Type"
+        },
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Proband"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_maternal",
+          "label": "Mother"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_paternal",
+          "label": "Father"
+        },
+        {
+          "type": "group",
+          "fields": [
+            {
+              "type": "info",
+              "name": "CSQ/Consequence"
+            },
+            {
+              "type": "composed",
+              "name": "gene"
+            },
+            {
+              "type": "composed",
+              "name": "inheritancePattern"
+            },
+            {
+              "type": "composed",
+              "name": "hpo"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/HGVSc"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/HGVSp"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/CAPICE_SC"
+            },
+            {
+              "type": "composed",
+              "name": "vipC"
+            },
+            {
+              "type": "composed",
+              "name": "vipCS"
+            },
+            {
+              "type": "composed",
+              "name": "vkgl"
+            },
+            {
+              "type": "composed",
+              "name": "clinVar"
+            },
+            {
+              "type": "composed",
+              "name": "gnomAdAf"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/gnomAD_HN"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/PUBMED"
+            }
+          ]
+        }
+      ],
+      "snv": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "fixed",
+          "name": "ref"
+        },
+        {
+          "type": "info",
+          "name": "SVTYPE"
+        },
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Proband"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_maternal",
+          "label": "Mother"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_paternal",
+          "label": "Father"
+        },
+        {
+          "type": "group",
+          "fields": [
+            {
+              "type": "info",
+              "name": "CSQ/Consequence"
+            },
+            {
+              "type": "composed",
+              "name": "gene"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/IncompletePenetrance"
+            },
+            {
+              "type": "composed",
+              "name": "inheritancePattern"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/HGVSc"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/HGVSp"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/CAPICE_SC"
+            },
+            {
+              "type": "composed",
+              "name": "vipC"
+            },
+            {
+              "type": "composed",
+              "name": "vipCS"
+            },
+            {
+              "type": "composed",
+              "name": "vkgl"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/clinVar_CLNSIG"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/gnomAD_AF"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/gnomAD_HN"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/PUBMED"
+            }
+          ]
+        }
+      ],
+      "str": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Proband"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_maternal",
+          "label": "Mother"
+        },
+        {
+          "type": "composed",
+          "name": "genotype_paternal",
+          "label": "Father"
+        },
+        {
+          "type": "genotype",
+          "name": "REPCI"
+        },
+        {
+          "type": "genotype",
+          "name": "LC"
+        },
+        {
+          "type": "genotype",
+          "name": "ADSP"
+        },
+        {
+          "type": "info",
+          "name": "STR_NORMAL_MAX"
+        },
+        {
+          "type": "info",
+          "name": "STR_PATHOLOGIC_MIN"
+        },
+        {
+          "type": "group",
+          "fields": [
+            {
+              "type": "composed",
+              "name": "gene"
+            },
+            {
+              "type": "info",
+              "name": "CSQ/Feature"
+            },
+            {
+              "type": "composed",
+              "name": "inheritancePattern"
+            },
+            {
+              "type": "composed",
+              "name": "vipC"
+            },
+            {
+              "type": "composed",
+              "name": "vipCS"
+            }
+          ]
+        }
+      ]
+    },
+    "filters": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/SYMBOL"
+        },
+        {
+          "type": "composed",
+          "name": "hpo",
+          "label": "Gene-phenotype association (HPO)"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/GADO_PD",
+          "label": "Gene-phenotype association (GADO)"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/IncompletePenetrance"
+        },
+        {
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "composed",
+          "name": "vipCS"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/VKGL_CL"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/clinVar_CLNSIG"
+        },
+        {
+          "type": "genotype",
+          "name": "VI"
+        },
+        {
+          "type": "composed",
+          "name": "inheritanceMatch",
+          "label": "Inheritance match",
+          "description": "Indication if the inheritance pattern of any gene associated with the variant matches the inheritance pattern suitable for the samples in the family of the sample. For more information see https://github.com/molgenis/vip-inheritance-matcher ."
+        },
+        {
+          "type": "composed",
+          "name": "deNovo",
+          "label": "De Novo",
+          "description": "Indication if the variant is De Novo or inherited from the parents of the sample."
+        },
+        {
+          "type": "composed",
+          "name": "allelicImbalance",
+          "label": "Allelic Imbalance",
+          "description": "Sample genotype shows allelic imbalance, calculated by: the allelic depth (AD) value of the first allele divided by the sum of the AD values for the genotype. For hetrozygotic genotypes values below 0.02 or above 0.8 are considered imbalanced. For homozygotic genotypes values between 0.02 and 0.98 are considered imbalanced."
+        }
+      ],
+      "str": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/HPO",
+          "label": "Gene-phenotype association (HPO)"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/GADO_PD",
+          "label": "Gene-phenotype association (GADO)"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/SYMBOL"
+        },
+        {
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "composed",
+          "name": "vipCS"
+        }
+      ]
+    },
+    "recordsPerPage": {
+      "str": [
+        {
+          "number": 10
+        },
+        {
+          "number": 20,
+          "selected": true
+        },
+        {
+          "number": 50
+        },
+        {
+          "number": 100
+        }
+      ]
+    }
+  },
+  "variants": {
+    "cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "fixed",
+          "name": "id"
+        },
+        {
+          "type": "fixed",
+          "name": "ref"
+        },
+        {
+          "type": "fixed",
+          "name": "alt"
+        },
+        {
+          "type": "fixed",
+          "name": "qual"
+        },
+        {
+          "type": "fixed",
+          "name": "filter"
+        },
+        {
+          "type": "info",
+          "name": ".*"
+        }
+      ]
+    },
+    "filters": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "locus"
+        },
+        {
+          "type": "fixed",
+          "name": "id"
+        },
+        {
+          "type": "fixed",
+          "name": "ref"
+        },
+        {
+          "type": "fixed",
+          "name": "alt"
+        },
+        {
+          "type": "fixed",
+          "name": "qual"
+        },
+        {
+          "type": "fixed",
+          "name": "filter"
+        },
+        {
+          "type": "info",
+          "name": ".*"
+        }
+      ]
+    }
+  },
+  "sample_variant": {
+    "cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "composed",
+          "name": "vipCS"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/((?!VIPC|VIPP).)*"
+        }
+      ]
+    },
+    "sample_cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Genotype"
+        },
+        {
+          "type": "genotype",
+          "name": "((?!GT|VIPC_S|VIPP_S).)*"
+        }
+      ]
+    }
+  },
+  "variant": {
+    "cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "vipC"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/((?!VIPC|VIPP).)*"
+        }
+      ]
+    }
+  },
+  "sample_variant_consequence": {
+    "sample_cells": {
+      "all": [
+        {
+          "type": "composed",
+          "name": "genotype",
+          "label": "Genotype"
+        },
+        {
+          "type": "genotype",
+          "name": "((?!GT|VIPC_S|VIPP_S).)*"
+        }
+      ]
+    }
+  },
+  "variant_consequence": {}
+}

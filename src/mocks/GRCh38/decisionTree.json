@@ -7,6 +7,7 @@
   "rootNode": "MT",
   "nodes": {
     "MT": {
+      "label": "MT",
       "type": "BOOL",
       "description": "VariantonMTchrom",
       "query": {
@@ -25,6 +26,7 @@
       }
     },
     "blaat": {
+      "label": "blaat",
       "type": "EXISTS",
       "description": "blaatannotationexists",
       "field": "INFO/CSQ/blaat",
@@ -36,6 +38,7 @@
       }
     },
     "csq_exists": {
+      "label": "csq_exists",
       "type": "EXISTS",
       "description": "CSQannotationexists",
       "field": "INFO/CSQ/Gene",
@@ -47,6 +50,7 @@
       }
     },
     "genepanel": {
+      "label": "genepanel",
       "type": "BOOL",
       "description": "genepanel",
       "query": {
@@ -62,6 +66,7 @@
       }
     },
     "phenotype_match": {
+      "label": "phenotype_match",
       "type": "EXISTS",
       "description": "Phenotypematch",
       "field": "INFO/CSQ/HPO",
@@ -73,6 +78,7 @@
       }
     },
     "mvl": {
+      "label": "mvl",
       "type": "CATEGORICAL",
       "description": "ManagedVariantListclassification",
       "field": "INFO/VKGL_UMCG",
@@ -98,6 +104,7 @@
       }
     },
     "vkgl": {
+      "label": "vkgl",
       "type": "CATEGORICAL",
       "description": "VKGLclassification",
       "field": "INFO/VKGL",
@@ -123,14 +130,13 @@
       }
     },
     "filter": {
+      "label": "filter",
       "type": "BOOL",
       "description": "Allfilterspassed",
       "query": {
         "field": "FILTER",
         "operator": "==",
-        "value": [
-          "PASS"
-        ]
+        "value": ["PASS"]
       },
       "outcomeTrue": {
         "nextNode": "artefact"
@@ -143,6 +149,7 @@
       }
     },
     "artefact": {
+      "label": "artefact",
       "type": "BOOL",
       "description": "Variantonartefactlist",
       "query": {
@@ -161,6 +168,7 @@
       }
     },
     "capice": {
+      "label": "capice",
       "type": "BOOL",
       "description": "CAPICEscore>=0.2",
       "query": {
@@ -179,6 +187,7 @@
       }
     },
     "gnomad": {
+      "label": "gnomad",
       "type": "BOOL",
       "description": "gnomAD_AF<0.02",
       "query": {
@@ -197,20 +206,13 @@
       }
     },
     "HLA": {
+      "label": "HLA",
       "type": "BOOL",
       "description": "HLA",
       "query": {
         "field": "INFO/CSQ/SYMBOL",
         "operator": "in",
-        "value": [
-          "HLA-A",
-          "HLA-B",
-          "HLA-C",
-          "HLA-DRB1",
-          "HLA-DRB5",
-          "HLA-DQA1",
-          "HLA-DQB1"
-        ]
+        "value": ["HLA-A", "HLA-B", "HLA-C", "HLA-DRB1", "HLA-DRB5", "HLA-DQA1", "HLA-DQB1"]
       },
       "outcomeTrue": {
         "nextNode": "exit_f"
@@ -223,14 +225,13 @@
       }
     },
     "five_prime": {
+      "label": "five_prime",
       "type": "BOOL",
       "description": "5primeUTR",
       "query": {
         "field": "INFO/CSQ/Consequence",
         "operator": "contains",
-        "value": [
-          "5_prime_UTR_variant"
-        ]
+        "value": ["5_prime_UTR_variant"]
       },
       "outcomeTrue": {
         "nextNode": "exit_f"
@@ -243,15 +244,13 @@
       }
     },
     "inframe": {
+      "label": "inframe",
       "type": "BOOL",
       "description": "inframeinsertionordeletion",
       "query": {
         "field": "INFO/CSQ/Consequence",
         "operator": "contains_any",
-        "value": [
-          "inframe_deletion",
-          "inframe_insertion"
-        ]
+        "value": ["inframe_deletion", "inframe_insertion"]
       },
       "outcomeTrue": {
         "nextNode": "exit_f"
@@ -264,16 +263,13 @@
       }
     },
     "splice_acceptor": {
+      "label": "splice_acceptor",
       "type": "BOOL",
       "description": "Spliceacceptor",
       "query": {
         "field": "INFO/CSQ/Consequence",
         "operator": "contains_any",
-        "value": [
-          "splice_acceptor_variant",
-          "splice_donor_variant",
-          "splice_region_variant"
-        ]
+        "value": ["splice_acceptor_variant", "splice_donor_variant", "splice_region_variant"]
       },
       "outcomeTrue": {
         "nextNode": "exit_t"
@@ -286,15 +282,13 @@
       }
     },
     "intron": {
+      "label": "intron",
       "type": "BOOL",
       "description": "Intron",
       "query": {
         "field": "INFO/CSQ/Consequence",
         "operator": "contains_any",
-        "value": [
-          "intron_variant",
-          "synonymous_variant"
-        ]
+        "value": ["intron_variant", "synonymous_variant"]
       },
       "outcomeTrue": {
         "nextNode": "exit_f"
@@ -307,11 +301,9 @@
       }
     },
     "my_multi": {
+      "label": "my_multi",
       "type": "BOOL_MULTI",
-      "fields": [
-        "my_multi_1",
-        "my_multi_2"
-      ],
+      "fields": ["my_multi_1", "my_multi_2"],
       "outcomeDefault": {
         "nextNode": "exit_t"
       },
@@ -358,12 +350,39 @@
       ]
     },
     "exit_t": {
+      "label": "True",
       "type": "LEAF",
       "class": "T"
     },
     "exit_f": {
+      "label": "False",
       "type": "LEAF",
       "class": "F"
+    },
+    "exit_b": {
+      "label": "Benign",
+      "type": "LEAF",
+      "class": "B"
+    },
+    "exit_lb": {
+      "label": "Likely Benign",
+      "type": "LEAF",
+      "class": "LB"
+    },
+    "exit_vus": {
+      "label": "Unknown Significance",
+      "type": "LEAF",
+      "class": "VUS"
+    },
+    "exit_lp": {
+      "label": "Likely pathogenic",
+      "type": "LEAF",
+      "class": "LP"
+    },
+    "exit_p": {
+      "label": "Pathogenic",
+      "type": "LEAF",
+      "class": "P"
     }
   }
 }

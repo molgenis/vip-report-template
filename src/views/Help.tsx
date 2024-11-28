@@ -1,34 +1,41 @@
-import { Component, createResource, createSignal, For, Show } from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { Anchor } from "../components/Anchor";
-import {
-  EMPTY_APP_METADATA,
-  EMPTY_HTS_FILE_METADATA,
-  EMPTY_PARAMS,
-  EMPTY_PHENOTYPES,
-  EMPTY_RECORDS_METADATA,
-  EMPTY_RECORDS_PAGE,
-  EMPTY_SAMPLES_PAGE,
-  fetchAppMetadata,
-  fetchHtsFileMetadata,
-  fetchPhenotypes,
-  fetchRecords,
-  fetchRecordsMeta,
-  fetchSamples,
-} from "../utils/ApiUtils";
 import { Loader } from "../components/Loader";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { VcfHeaderRow } from "../components/VcfHeaderRow";
-import { getHeaderValue } from "../utils/viewUtils";
-import { Item, Phenotype, PhenotypicFeature } from "@molgenis/vip-report-api/src/Api";
-import { HpoTerm } from "../components/HpoTerm";
+import { createAsync } from "@solidjs/router";
+import { getConfig, getMetadata } from "./data/data";
+import { getHeaderValue } from "../utils/vcf.ts";
+import { Table } from "../components/Table.tsx";
+import { ConfigJson } from "../types/config";
+import { Json } from "@molgenis/vip-report-api";
+
 export const Help: Component = () => {
-  const [params] = createSignal(EMPTY_PARAMS);
-  const [samples] = createResource(params, fetchSamples, { initialValue: EMPTY_SAMPLES_PAGE });
-  const [records] = createResource(params, fetchRecords, { initialValue: EMPTY_RECORDS_PAGE });
-  const [recordsMetadata] = createResource(params, fetchRecordsMeta, { initialValue: EMPTY_RECORDS_METADATA });
-  const [phenotypes] = createResource(params, fetchPhenotypes, { initialValue: EMPTY_PHENOTYPES });
-  const [htsFileMetadata] = createResource(params, fetchHtsFileMetadata, { initialValue: EMPTY_HTS_FILE_METADATA });
-  const [appMetadata] = createResource(params, fetchAppMetadata, { initialValue: EMPTY_APP_METADATA });
+  const metadata = createAsync(() => getMetadata());
+  const config = createAsync(() => getConfig());
+
+  function createParamList(config: ConfigJson) {
+    const stack: { path: string[]; values: { [property: string]: Json } }[] = [{ path: [], values: config.vip.params }];
+
+    const paramList: [key: string, value: string][] = [];
+    while (stack.length !== 0) {
+      const params = stack.pop()!;
+      const values = params.values;
+      for (const key in values) {
+        const path = [...params.path, key];
+        const value = values[key]!;
+        // derived from https://stackoverflow.com/a/8511350
+        if (typeof value === "object" && !Array.isArray(value) && value !== null) {
+          stack.push({ path, values: value as { [property: string]: Json } });
+        } else {
+          paramList.push([path.join("."), String(value)]);
+        }
+      }
+    }
+
+    return paramList.sort((keyA, keyB) => keyA[0].localeCompare(keyB[0]));
+  }
+
   return (
     <>
       <Breadcrumb items={[{ text: "Help" }]} />
@@ -42,96 +49,84 @@ export const Help: Component = () => {
           <span>.</span>
         </div>
       </div>
-
-      <Show
-        when={
-          !samples.loading &&
-          !records.loading &&
-          !recordsMetadata.loading &&
-          !phenotypes.loading &&
-          !htsFileMetadata.loading &&
-          !appMetadata.loading
-        }
-        fallback={<Loader />}
-      >
-        <p class="title is-3">About</p>
-        <div class="columns">
-          <div class="column">
-            <div class="table-container">
-              <table class="table is-narrow">
-                <thead>
-                  <tr>
-                    <th colSpan={2}>Software metadata</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>Name:</th>
-                    <td>{appMetadata().name}</td>
-                  </tr>
-                  <tr>
-                    <th>Version:</th>
-                    <td>{appMetadata().version}</td>
-                  </tr>
-                  <tr>
-                    <th>Arguments:</th>
-                    <td>{appMetadata().args}</td>
-                  </tr>
-                  <VcfHeaderRow value={getHeaderValue("VIP_Version", recordsMetadata().lines)} title={"VIP Version"} />
-                  <VcfHeaderRow value={getHeaderValue("VIP_Command", recordsMetadata().lines)} title={"VIP Command"} />
-                </tbody>
-              </table>
+      <Show when={metadata()} fallback={<Loader />}>
+        {(metadata) => (
+          <>
+            <p class="title is-3">About</p>
+            <div class="columns">
+              <div class="column">
+                <Table>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>Software metadata</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Name:</th>
+                      <td>{metadata().app.name}</td>
+                    </tr>
+                    <tr>
+                      <th>Version:</th>
+                      <td>{metadata().app.version}</td>
+                    </tr>
+                    <tr>
+                      <th>Arguments:</th>
+                      <td>{metadata().app.args}</td>
+                    </tr>
+                    <VcfHeaderRow value={getHeaderValue(metadata().records, "VIP_Version")} title={"VIP Version"} />
+                    <VcfHeaderRow value={getHeaderValue(metadata().records, "VIP_Command")} title={"VIP Command"} />
+                  </tbody>
+                </Table>
+              </div>
             </div>
-            <div class="table-container">
-              <table class="table is-narrow">
-                <thead>
-                  <tr>
-                    <th colSpan={2}>Input metadata</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>Filename:</th>
-                    <td>{htsFileMetadata().uri}</td>
-                  </tr>
-                  <tr>
-                    <th>Assembly:</th>
-                    <td>{htsFileMetadata().genomeAssembly}</td>
-                  </tr>
-                  <tr>
-                    <th>Number of records:</th>
-                    <td>{records().total}</td>
-                  </tr>
-                  <tr>
-                    <th>Number of samples:</th>
-                    <td>{samples().total}</td>
-                  </tr>
-                  <tr>
-                    <th>Phenotypes:</th>
-                    <td>
-                      <For each={phenotypes().items}>
-                        {(item: Item<Phenotype>) => (
-                          <>
-                            <b>{item.data.subject.id}: </b>
-                            <For each={item.data.phenotypicFeaturesList}>
-                              {(phenotypicFeature: PhenotypicFeature, i) => (
-                                <>
-                                  {i() > 0 ? ", " : ""}
-                                  <HpoTerm ontologyClass={phenotypicFeature.type} />
-                                </>
-                              )}
-                            </For>
-                            <br />
-                          </>
-                        )}
-                      </For>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="columns">
+              <div class="column">
+                <Table>
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>Input metadata</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Filename:</th>
+                      <td>{metadata()?.htsFile.uri}</td>
+                    </tr>
+                    <tr>
+                      <th>Assembly:</th>
+                      <td>{metadata()?.htsFile.genomeAssembly}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
+      </Show>
+      <Show when={config()} fallback={<Loader />}>
+        {(config) => (
+          <>
+            <p class="title is-3">Configuration</p>
+            <p class="subtitle is-5">Listing of all VIP parameters used in the process to create this report</p>
+            <div class="columns">
+              <div class="column">
+                <Table>
+                  <tbody>
+                    <For each={createParamList(config())}>
+                      {([key, value]) => (
+                        <tr>
+                          <th>{key}</th>
+                          <td>{value}</td>
+                        </tr>
+                      )}
+                    </For>
+                  </tbody>
+                </Table>
+              </div>
+            </div>
+          </>
+        )}
       </Show>
     </>
   );

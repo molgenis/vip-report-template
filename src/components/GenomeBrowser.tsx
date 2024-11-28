@@ -1,11 +1,16 @@
 import { Component, onCleanup, onMount } from "solid-js";
 import igv, { Browser } from "igv";
-import api from "../Api";
 import { fromByteArray } from "base64-js";
-import { writeVcf } from "@molgenis/vip-report-vcf/src/VcfWriter";
-import { ComposedQuery, Sample } from "@molgenis/vip-report-api/src/Api";
+import { VcfRecord, writeVcf } from "@molgenis/vip-report-vcf";
+import { ComposedQuery, Cram, Item, Sample } from "@molgenis/vip-report-api";
+import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, MetadataContainer } from "../utils/api.ts";
 
-async function createVcf(contig: string, position: number, samples: Sample[]): Promise<Uint8Array> {
+async function fetchVcf(
+  metadata: MetadataContainer,
+  contig: string,
+  position: number,
+  samples: Item<Sample>[],
+): Promise<Uint8Array> {
   const query: ComposedQuery = {
     operator: "and",
     args: [
@@ -19,21 +24,28 @@ async function createVcf(contig: string, position: number, samples: Sample[]): P
       },
     ],
   };
-  const data = await Promise.all([api.getRecordsMeta(), api.getRecords({ query, size: Number.MAX_SAFE_INTEGER })]);
+  const records = await fetchRecords({ query, size: Number.MAX_SAFE_INTEGER });
   const vcf = writeVcf(
-    { metadata: data[0], data: data[1].items.map((item) => item.data) },
-    { samples: samples.map((sample) => sample.person.individualId) },
+    { metadata: metadata.records, data: records.items.map((item) => item.data) },
+    { samples: samples.map((sample) => sample.data.person.individualId) },
   );
   return toBytes(vcf);
 }
 
 const toBytes = (str: string): Uint8Array => Uint8Array.from(str.split("").map((letter) => letter.charCodeAt(0)));
 
-const createBrowserConfig = async (contig: string, position: number, samples: Sample[]): Promise<unknown> => {
+const createBrowserConfig = async (
+  metadata: MetadataContainer,
+  record: Item<VcfRecord>,
+  samples: Item<Sample>[],
+): Promise<unknown> => {
+  const contig = record.data.c;
+  const position = record.data.p;
+
   const data = await Promise.all([
-    api.getFastaGz(contig, position),
-    createVcf(contig, position, samples),
-    api.getGenesGz(),
+    fetchFastaGz(contig, position),
+    fetchVcf(metadata, contig, position, samples),
+    fetchGenesGz(),
   ]);
   const fastaGz = data[0];
   const vcf = data[1];
@@ -61,11 +73,9 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
     url: "data:application/octet-stream;base64," + fromByteArray(vcf),
   });
 
-  const htsFileMetadata = await api.getHtsFileMetadata();
-
   return {
     reference: {
-      id: htsFileMetadata.genomeAssembly,
+      id: metadata.htsFile.genomeAssembly,
       name: "Reference",
       fastaURL: "data:application/gzip;base64," + fromByteArray(fastaGz),
       tracks: tracks,
@@ -77,15 +87,15 @@ const createBrowserConfig = async (contig: string, position: number, samples: Sa
   };
 };
 
-const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void> => {
-  const data = await Promise.all([...samples.map((sample) => api.getCram(sample.person.individualId))]);
+const updateBrowser = async (browser: Browser, samples: Item<Sample>[]): Promise<void> => {
+  const data = await Promise.all([...samples.map((sample) => fetchCram(sample.data.person.individualId))]);
   const crams = data.slice(0);
 
   for (let i = 0; i < samples.length; ++i) {
-    const cram = crams[i];
+    const cram = crams[i] as Cram | null;
 
     if (cram !== null) {
-      const sampleId = samples[i].person.individualId;
+      const sampleId = samples[i]!.data.person.individualId;
       await browser.loadTrack({
         type: "alignment",
         format: "cram",
@@ -99,22 +109,29 @@ const updateBrowser = async (browser: Browser, samples: Sample[]): Promise<void>
   }
 };
 
-export const GenomeBrowser: Component<{ contig: string; position: number; samples: Sample[] }> = (props) => {
+export const GenomeBrowser: Component<{
+  metadata: MetadataContainer;
+  record: Item<VcfRecord>;
+  samples: Item<Sample>[];
+}> = (props) => {
   let divRef: HTMLDivElement;
   let browser: Browser;
   onMount(() => {
     (async () => {
-      const config = await createBrowserConfig(props.contig, props.position, props.samples);
+      const config = await createBrowserConfig(props.metadata, props.record, props.samples);
       if (config !== null) {
         browser = await igv.createBrowser(divRef, config);
         await updateBrowser(browser, props.samples);
       }
-    })().catch((err) => console.error(err));
+    })();
   });
   onCleanup(() => {
-    if (browser) {
-      igv.removeBrowser(browser);
+    //cannot use "removeBrowser" here https://github.com/igvteam/igv.js/issues/1918
+    if (browser !== undefined) {
+      browser.root.remove();
+      browser.removeAllTracks();
     }
   });
+  // noinspection JSUnusedAssignment
   return <div ref={divRef!} />;
 };

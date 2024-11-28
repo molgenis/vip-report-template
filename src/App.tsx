@@ -1,59 +1,65 @@
 import { onMount, ParentComponent } from "solid-js";
-import { useLocation, useNavigate, A } from "@solidjs/router";
-import api from "./Api";
+import { A, Location, Navigator, useLocation, useNavigate } from "@solidjs/router";
 import { DatasetDropdown } from "./components/DatasetDropdown";
+import { fetchSampleProbandIds, isDatasetSupport } from "./utils/api.ts";
+import { href } from "./utils/utils.ts";
+import { getMetadata } from "./views/data/data.tsx";
+
+// export for development purposes
+export function init(navigate: Navigator, location?: Location) {
+  (async () => {
+    document.title = `VCF Report (${(await getMetadata()).htsFile.uri})`;
+    const sampleIds = await fetchSampleProbandIds();
+    if (location === undefined || location.pathname === "/") {
+      let components: (string | number)[];
+      if (sampleIds.length === 1) {
+        components = ["samples", sampleIds[0]!, "variants"];
+      } else if (sampleIds.length === 0) {
+        components = ["variants"];
+      } else {
+        components = ["samples"];
+      }
+      navigate(href(components));
+    }
+  })();
+}
 
 const App: ParentComponent = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  onMount(() => {
-    (async () => {
-      const htsFile = await api.getHtsFileMetadata();
-      document.title = `VCF Report (${htsFile.uri})`;
-      const samples = await api.getSamples({ query: { selector: ["proband"], operator: "==", args: true } });
-      if (location.pathname === "/") {
-        if (samples.page.totalElements === 1) {
-          navigate(`/samples/${samples.items[0].id}/variants`);
-        } else if (samples.total === 0) {
-          navigate(`/variants`);
-        } else {
-          navigate(`/samples`);
-        }
-      }
-    })().catch((err) => console.error(err));
-  });
+  onMount(() => init(navigate, location));
 
   return (
     <>
       <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <A class="navbar-item has-text-weight-semibold" href="/">
+          <A class="navbar-item has-text-weight-semibold" href="/" end={true}>
             Variant Interpretation Pipeline
           </A>
         </div>
         <div class="navbar-menu">
           <div class="navbar-item has-dropdown is-hoverable">
-            <A class="navbar-link" href="/">
+            <A class="navbar-link" href={"/"} end={true}>
               Report
             </A>
             <div class="navbar-dropdown">
-              <A class="navbar-item" href="/samples">
+              <A class="navbar-item" href={"/samples"} end={true}>
                 Samples
               </A>
               <hr class="navbar-divider" />
-              <A class="navbar-item" href="/variants">
+              <A class="navbar-item" href={"/variants"} end={true}>
                 Variants
               </A>
             </div>
           </div>
-          {api.isDatasetSupport() && (
+          {isDatasetSupport() && (
             <div class="navbar-start">
               <DatasetDropdown />
             </div>
           )}
           <div class="navbar-end">
-            <A class="navbar-item" href="/help">
+            <A class="navbar-item" href={"/help"} end={true}>
               Help
             </A>
           </div>

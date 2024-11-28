@@ -2,14 +2,13 @@
   "rootNode": "filter",
   "nodes": {
     "filter": {
+      "label": "filter",
       "type": "BOOL",
       "description": "All filters passed",
       "query": {
         "field": "FILTER",
         "operator": "==",
-        "value": [
-          "PASS"
-        ]
+        "value": ["PASS"]
       },
       "outcomeTrue": {
         "nextNode": "vkgl"
@@ -22,6 +21,7 @@
       }
     },
     "spliceAI": {
+      "label": "spliceAI",
       "type": "BOOL_MULTI",
       "fields": [
         "INFO/CSQ/SpliceAI_pred_DS_AG",
@@ -67,6 +67,7 @@
       }
     },
     "vkgl": {
+      "label": "VKGL",
       "type": "CATEGORICAL",
       "description": "VKGL classification",
       "field": "INFO/CSQ/VKGL_CL",
@@ -92,6 +93,7 @@
       }
     },
     "annotSV": {
+      "label": "AnnotSV",
       "type": "CATEGORICAL",
       "description": "VKGL classification",
       "field": "INFO/CSQ/ASV_ACMG_class",
@@ -117,12 +119,10 @@
       }
     },
     "gnomad": {
+      "label": "GnomAD",
       "type": "BOOL_MULTI",
       "description": "gnomAD_AF < 0.02 && gnomAD_HN < 5",
-      "fields": [
-        "INFO/CSQ/gnomAD_AF",
-        "INFO/CSQ/gnomAD_HN"
-      ],
+      "fields": ["INFO/CSQ/gnomAD_AF", "INFO/CSQ/gnomAD_HN"],
       "outcomes": [
         {
           "operator": "OR",
@@ -151,6 +151,7 @@
       }
     },
     "effect": {
+      "label": "Effect",
       "type": "BOOL",
       "description": "Consequence contains 'missense'",
       "query": {
@@ -169,10 +170,9 @@
       }
     },
     "clinVar": {
+      "label": "ClinVar",
       "type": "BOOL_MULTI",
-      "fields": [
-        "INFO/CSQ/CLIN_SIG"
-      ],
+      "fields": ["INFO/CSQ/CLIN_SIG"],
       "outcomes": [
         {
           "queries": [
@@ -195,10 +195,7 @@
             {
               "field": "INFO/CSQ/CLIN_SIG",
               "operator": "contains_any",
-              "value": [
-                "likely_benign",
-                "benign"
-              ]
+              "value": ["likely_benign", "benign"]
             }
           ],
           "outcomeTrue": {
@@ -210,10 +207,7 @@
             {
               "field": "INFO/CSQ/CLIN_SIG",
               "operator": "contains_any",
-              "value": [
-                "likely_pathogenic",
-                "pathogenic"
-              ]
+              "value": ["likely_pathogenic", "pathogenic"]
             }
           ],
           "outcomeTrue": {
@@ -229,6 +223,7 @@
       }
     },
     "sift": {
+      "label": "SIFT",
       "description": "SIFT qualitative prediction",
       "type": "BOOL",
       "query": {
@@ -247,11 +242,10 @@
       }
     },
     "polyphen": {
+      "label": "PolyPhen",
       "description": "PolyPhen qualitative prediction",
       "type": "BOOL_MULTI",
-      "fields": [
-        "INFO/CSQ/PolyPhen"
-      ],
+      "fields": ["INFO/CSQ/PolyPhen"],
       "outcomes": [
         {
           "queries": [
@@ -304,6 +298,7 @@
       }
     },
     "impact": {
+      "label": "IMPACT",
       "type": "CATEGORICAL",
       "description": "IMPACT rating",
       "field": "INFO/CSQ/IMPACT",
@@ -325,28 +320,34 @@
         "nextNode": "exit_vus"
       }
     },
-    "exit_lq": {
+    "exit_rm": {
+      "label": "Remove",
       "description": "Low quality variants.",
       "type": "LEAF",
       "class": "LQ"
     },
     "exit_b": {
+      "label": "Benign",
       "type": "LEAF",
       "class": "B"
     },
     "exit_lb": {
+      "label": "Likely Benign",
       "type": "LEAF",
       "class": "LB"
     },
     "exit_vus": {
+      "label": "Unknown Significance",
       "type": "LEAF",
       "class": "VUS"
     },
     "exit_lp": {
+      "label": "Likely Pathogenic",
       "type": "LEAF",
       "class": "LP"
     },
     "exit_p": {
+      "label": "Pathogenic",
       "type": "LEAF",
       "class": "P"
     }

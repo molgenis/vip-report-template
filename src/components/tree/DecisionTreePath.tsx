@@ -1,5 +1,5 @@
 import { Component, For } from "solid-js";
-import { DecisionTree } from "@molgenis/vip-report-api/src/Api";
+import { DecisionTree } from "@molgenis/vip-report-api";
 import { DecisionTreeNode } from "./DecisionTreeNode";
 
 export type DecisionTreePath = string[];

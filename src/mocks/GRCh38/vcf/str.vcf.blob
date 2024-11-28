@@ -1,0 +1,321 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##ALPHSCORE=AlphScore_final scores as described in https://doi.org/10.1093/bioinformatics/btad280
+##ASV_ACMG_class=AnnotSv 'ACMG_class' output.
+##ASV_AnnotSV_ranking_criteria=AnnotSv 'AnnotSV_ranking_criteria' output.
+##ASV_AnnotSV_ranking_score=AnnotSv 'AnnotSV_ranking_score' output.
+##CAPICE_CL=CAPICE classification
+##CAPICE_SC=CAPICE score
+##FATHMM_MKL_NC=FATHMM_MKL_NC: Predict the Functional Consequences of Non-Coding Single Nucleotide VariantsRedirect (SNVs)
+##FILTER=<ID=LowDepth,Description="The overall locus depth is below 10x or number of reads spanning one or both breakends is below 5">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
+##FORMAT=<ID=ADFL,Number=1,Type=String,Description="Number of flanking reads consistent with the allele">
+##FORMAT=<ID=ADIR,Number=1,Type=String,Description="Number of in-repeat reads consistent with the allele">
+##FORMAT=<ID=ADSP,Number=1,Type=String,Description="Number of spanning reads consistent with the allele">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=LC,Number=1,Type=Float,Description="Locus coverage">
+##FORMAT=<ID=REPCI,Number=1,Type=String,Description="Confidence interval for REPCN">
+##FORMAT=<ID=REPCN,Number=1,Type=String,Description="Number of repeat units spanned by the allele">
+##FORMAT=<ID=SO,Number=1,Type=String,Description="Type of reads that support the allele; can be SPANNING, FLANKING, or INREPEAT meaning that the reads span, flank, or are fully contained in the repeat">
+##FORMAT=<ID=VI,Number=.,Type=String,Description="An enumeration of possible inheritance modes based on the pedigree of the sample. Potential values: AD, AD_IP, AR, AR_C, XLR, XLD">
+##FORMAT=<ID=VIC,Number=1,Type=String,Description="Possible Compound hetrozygote variants.">
+##FORMAT=<ID=VID,Number=1,Type=Integer,Description="De novo variant.">
+##FORMAT=<ID=VIG,Number=.,Type=String,Description="Genes with a (potential) inheritance match.">
+##FORMAT=<ID=VIM,Number=1,Type=Integer,Description="Inheritance Match: Genotypes, affected statuses and known gene inheritance patterns match.">
+##FORMAT=<ID=VIPC_S,Number=.,Type=String,Description="VIP decision tree classification.">
+##FORMAT=<ID=VIPP_S,Number=.,Type=String,Description="VIP decision tree path.">
+##Grantham=Grantham Matrix score - Grantham, R. Amino Acid Difference Formula to Help Explain Protein Evolution, Science 1974 Sep 6;185(4154):862-4.
+##INFO=<ID=CSQ,Number=.,Type=String,Description="Consequence annotations from Ensembl VEP. Format: Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|ALLELE_NUM|DISTANCE|STRAND|FLAGS|PICK|SYMBOL_SOURCE|HGNC_ID|REFSEQ_MATCH|REFSEQ_OFFSET|SOURCE|SIFT|PolyPhen|HGVS_OFFSET|CLIN_SIG|SOMATIC|PHENO|PUBMED|CHECK_REF|MOTIF_NAME|MOTIF_POS|HIGH_INF_POS|MOTIF_SCORE_CHANGE|TRANSCRIPTION_FACTORS|Grantham|SpliceAI_pred_DP_AG|SpliceAI_pred_DP_AL|SpliceAI_pred_DP_DG|SpliceAI_pred_DP_DL|SpliceAI_pred_DS_AG|SpliceAI_pred_DS_AL|SpliceAI_pred_DS_DG|SpliceAI_pred_DS_DL|SpliceAI_pred_SYMBOL|CAPICE_CL|CAPICE_SC|existing_InFrame_oORFs|existing_OutOfFrame_oORFs|existing_uORFs|five_prime_UTR_variant_annotation|five_prime_UTR_variant_consequence|IncompletePenetrance|InheritanceModesGene|VKGL|VKGL_CL|gnomAD_AF|gnomAD_COV|gnomAD_FAF95|gnomAD_FAF99|gnomAD_HN|gnomAD_QC|gnomAD_SRC|clinVar_CLNID|clinVar_CLNREVSTAT|clinVar_CLNSIG|clinVar_CLNSIGINCL|ASV_ACMG_class|ASV_AnnotSV_ranking_criteria|ASV_AnnotSV_ranking_score|ALPHSCORE|ncER|FATHMM_MKL_NC|ReMM|phyloP|VIPC|VIPP">
+##INFO=<ID=Disease,Number=1,Type=String,Description="Associated disorder">
+##INFO=<ID=DisplayRU,Number=1,Type=String,Description="Display repeat unit familiar to clinician">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant described in this record">
+##INFO=<ID=HGNCId,Number=1,Type=Integer,Description="HGNC gene id for associated disease gene">
+##INFO=<ID=InheritanceMode,Number=1,Type=String,Description="Main mode of inheritance for disorder">
+##INFO=<ID=OLD_REC,Number=1,Type=String,Description="Original variant. Format: CHR|POS|REF|ALT|USED_ALT_IDX">
+##INFO=<ID=REF,Number=1,Type=Integer,Description="Reference copy number">
+##INFO=<ID=REPID,Number=1,Type=String,Description="Repeat identifier as specified in the variant catalog">
+##INFO=<ID=RL,Number=1,Type=Integer,Description="Reference length in bp">
+##INFO=<ID=RU,Number=1,Type=String,Description="Repeat unit in the reference orientation">
+##INFO=<ID=RUMATCH,Number=0,Type=Flag,Description="Flag indicating if the called repeat unit matched the repeat unit in the loci bed file.">
+##INFO=<ID=RankScore,Number=1,Type=String,Description="RankScore for variant in this family as family(str):score(int)">
+##INFO=<ID=STR_NORMAL_MAX,Number=1,Type=Integer,Description="Max number of repeats allowed to call as normal">
+##INFO=<ID=STR_PATHOLOGIC_MIN,Number=1,Type=Integer,Description="Min number of repeats required to call as pathologic">
+##INFO=<ID=STR_STATUS,Number=A,Type=String,Description="Repeat expansion status. Alternatives in [normal, pre_mutation, full_mutation]">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=Source,Number=1,Type=String,Description="Source collection for variant definition">
+##INFO=<ID=SourceDisplay,Number=1,Type=String,Description="Source for variant definition, display">
+##INFO=<ID=SourceId,Number=1,Type=String,Description="Source id for variant definition">
+##INFO=<ID=SweGenMean,Number=1,Type=Float,Description="Average number of repeat unit copies in population">
+##INFO=<ID=SweGenStd,Number=1,Type=Float,Description="Standard deviation of number of repeat unit copies in population">
+##INFO=<ID=VARID,Number=1,Type=String,Description="Variant identifier as specified in the variant catalog">
+##INFO=<ID=VIPC_S,Number=.,Type=String,Description="VIP decision tree classification (samples).">
+##INFO=<ID=phyloP,Number=.,Type=String,Description="[PATH]/hg38.phyloP100way.bw">
+##IncompletePenetrance=Boolean indicating if the gene is known for incomplete penetrance, based on  '<PATH>/vip/v7.9.0/resources/inheritance_20240115.tsv' .
+##InheritanceModesGene=List of inheritance modes for the gene, based on  '<PATH>/vip/v7.9.0/resources/inheritance_20240115.tsv' 
+##ReMM=ReMM scores. The Regulatory Mendelian Mutation (ReMM) score was created for relevance prediction of non-coding variations (SNVs and small InDels) in the human genome (hg19) in terms of Mendelian diseases.
+##SpliceAI_pred_DP_AG=SpliceAI predicted effect on splicing. Delta position for acceptor gain
+##SpliceAI_pred_DP_AL=SpliceAI predicted effect on splicing. Delta position for acceptor loss
+##SpliceAI_pred_DP_DG=SpliceAI predicted effect on splicing. Delta position for donor gain
+##SpliceAI_pred_DP_DL=SpliceAI predicted effect on splicing. Delta position for donor loss
+##SpliceAI_pred_DS_AG=SpliceAI predicted effect on splicing. Delta score for acceptor gain
+##SpliceAI_pred_DS_AL=SpliceAI predicted effect on splicing. Delta score for acceptor loss
+##SpliceAI_pred_DS_DG=SpliceAI predicted effect on splicing. Delta score for donor gain
+##SpliceAI_pred_DS_DL=SpliceAI predicted effect on splicing. Delta score for donor loss
+##SpliceAI_pred_SYMBOL=SpliceAI gene symbol
+##VEP-command-line='vep --allele_number --allow_non_variant --assembly GRCh38 --buffer_size 1000 --cache --compress_output bgzip --custom [PATH]/hg38.phyloP100way.bw,phyloP,bigwig,exact,0 --database 0 --dir_cache [PATH]/cache --dir_plugins [PATH]/plugins --dont_skip --exclude_predicted --fasta [PATH]/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz --flag_pick_allele --fork 4 --format vcf --hgvs --input_file preprocessed_stranger_<removed>_normalized.vcf.gz --no_stats --numbers --offline --output_file <removed>_annotated.vcf.gz --plugin [PATH]/GRCh38_ReMM.tsv.gz --polyphen s --pubmed --refseq --safe --shift_3prime --sift s --symbol --total_length --use_given_ref --vcf'
+##VEP="v111" time="2024-09-02 10:29:58" cache="<PATH>/vip/v7.9.0/resources/vep/cache/homo_sapiens_refseq/111_GRCh38" ensembl-variation=111.d616b1e ensembl-io=111.dbba8d6 ensembl-funcgen=111.5327cdd ensembl=111.a6cc543 1000genomes="phase3" COSMIC="98" ClinVar="202306" HGMD-PUBLIC="20204" assembly="GRCh38.p14" dbSNP="156" gencode="GENCODE 45" genebuild="2014-07" gnomADe="r2.1.1" gnomADg="v3.1.2" polyphen="2.2.3" refseq="GCF_000001405.40-RS_2023_03 - GCF_000001405.40_GRCh38.p14_genomic.gff" regbuild="1.0" sift="6.2.1"
+##VIPC=VIP decision tree classification
+##VIPP=VIP decision tree path (ampersand separated)
+##VIP_treeCommand=--input <removed>_annotated.vcf.gz --metadata <PATH>/vip/v7.9.0/resources/field_metadata.json --config <PATH>/resources/VIP_tree_STR_v1.0.0.json --path --output <removed>_classified.vcf.gz
+##VIP_treeVersion=4.1.1
+##VKGL=file:<PATH>/vip/v7.9.0/resources/GRCh38/vkgl_consensus_20240401.tsv'
+##VKGL_CL=VKGL consensus variant classification.
+##bcftools_viewCommand=view --regions-file LX002_v1.0.0.bed --output-type z --output <removed>_bed_filtered.vcf.gz <removed>_fam0_<removed>_str.vcf.gz; Date=Mon Sep  2 10:29:26 2024
+##bcftools_viewVersion=1.17+htslib-1.17
+##clinVar_CLNID=ClinVar variation identifier
+##clinVar_CLNREVSTAT=ClinVar review status for the Variation ID
+##clinVar_CLNSIG=Clinical significance for this single variant; multiple values are separated by a vertical bar
+##clinVar_CLNSIGINCL=Clinical significance for a haplotype or genotype that includes this variant. Reported as pairs of VariationID:clinical significance; multiple values are separated by a vertical bar
+##contig=<ID=chr1,length=248956422>
+##contig=<ID=chr10,length=133797422>
+##contig=<ID=chr11,length=135086622>
+##contig=<ID=chr11_KI270721v1_random,length=100316>
+##contig=<ID=chr12,length=133275309>
+##contig=<ID=chr13,length=114364328>
+##contig=<ID=chr14,length=107043718>
+##contig=<ID=chr14_GL000009v2_random,length=201709>
+##contig=<ID=chr14_GL000194v1_random,length=191469>
+##contig=<ID=chr14_GL000225v1_random,length=211173>
+##contig=<ID=chr14_KI270722v1_random,length=194050>
+##contig=<ID=chr14_KI270723v1_random,length=38115>
+##contig=<ID=chr14_KI270724v1_random,length=39555>
+##contig=<ID=chr14_KI270725v1_random,length=172810>
+##contig=<ID=chr14_KI270726v1_random,length=43739>
+##contig=<ID=chr15,length=101991189>
+##contig=<ID=chr15_KI270727v1_random,length=448248>
+##contig=<ID=chr16,length=90338345>
+##contig=<ID=chr16_KI270728v1_random,length=1872759>
+##contig=<ID=chr17,length=83257441>
+##contig=<ID=chr17_GL000205v2_random,length=185591>
+##contig=<ID=chr17_KI270729v1_random,length=280839>
+##contig=<ID=chr17_KI270730v1_random,length=112551>
+##contig=<ID=chr18,length=80373285>
+##contig=<ID=chr19,length=58617616>
+##contig=<ID=chr1_KI270706v1_random,length=175055>
+##contig=<ID=chr1_KI270707v1_random,length=32032>
+##contig=<ID=chr1_KI270708v1_random,length=127682>
+##contig=<ID=chr1_KI270709v1_random,length=66860>
+##contig=<ID=chr1_KI270710v1_random,length=40176>
+##contig=<ID=chr1_KI270711v1_random,length=42210>
+##contig=<ID=chr1_KI270712v1_random,length=176043>
+##contig=<ID=chr1_KI270713v1_random,length=40745>
+##contig=<ID=chr1_KI270714v1_random,length=41717>
+##contig=<ID=chr2,length=242193529>
+##contig=<ID=chr20,length=64444167>
+##contig=<ID=chr21,length=46709983>
+##contig=<ID=chr22,length=50818468>
+##contig=<ID=chr22_KI270731v1_random,length=150754>
+##contig=<ID=chr22_KI270732v1_random,length=41543>
+##contig=<ID=chr22_KI270733v1_random,length=179772>
+##contig=<ID=chr22_KI270734v1_random,length=165050>
+##contig=<ID=chr22_KI270735v1_random,length=42811>
+##contig=<ID=chr22_KI270736v1_random,length=181920>
+##contig=<ID=chr22_KI270737v1_random,length=103838>
+##contig=<ID=chr22_KI270738v1_random,length=99375>
+##contig=<ID=chr22_KI270739v1_random,length=73985>
+##contig=<ID=chr2_KI270715v1_random,length=161471>
+##contig=<ID=chr2_KI270716v1_random,length=153799>
+##contig=<ID=chr3,length=198295559>
+##contig=<ID=chr3_GL000221v1_random,length=155397>
+##contig=<ID=chr4,length=190214555>
+##contig=<ID=chr4_GL000008v2_random,length=209709>
+##contig=<ID=chr5,length=181538259>
+##contig=<ID=chr5_GL000208v1_random,length=92689>
+##contig=<ID=chr6,length=170805979>
+##contig=<ID=chr7,length=159345973>
+##contig=<ID=chr8,length=145138636>
+##contig=<ID=chr9,length=138394717>
+##contig=<ID=chr9_KI270717v1_random,length=40062>
+##contig=<ID=chr9_KI270718v1_random,length=38054>
+##contig=<ID=chr9_KI270719v1_random,length=176845>
+##contig=<ID=chr9_KI270720v1_random,length=39050>
+##contig=<ID=chrEBV,length=171823>
+##contig=<ID=chrM,length=16569>
+##contig=<ID=chrUn_GL000195v1,length=182896>
+##contig=<ID=chrUn_GL000213v1,length=164239>
+##contig=<ID=chrUn_GL000214v1,length=137718>
+##contig=<ID=chrUn_GL000216v2,length=176608>
+##contig=<ID=chrUn_GL000218v1,length=161147>
+##contig=<ID=chrUn_GL000219v1,length=179198>
+##contig=<ID=chrUn_GL000220v1,length=161802>
+##contig=<ID=chrUn_GL000224v1,length=179693>
+##contig=<ID=chrUn_GL000226v1,length=15008>
+##contig=<ID=chrUn_KI270302v1,length=2274>
+##contig=<ID=chrUn_KI270303v1,length=1942>
+##contig=<ID=chrUn_KI270304v1,length=2165>
+##contig=<ID=chrUn_KI270305v1,length=1472>
+##contig=<ID=chrUn_KI270310v1,length=1201>
+##contig=<ID=chrUn_KI270311v1,length=12399>
+##contig=<ID=chrUn_KI270312v1,length=998>
+##contig=<ID=chrUn_KI270315v1,length=2276>
+##contig=<ID=chrUn_KI270316v1,length=1444>
+##contig=<ID=chrUn_KI270317v1,length=37690>
+##contig=<ID=chrUn_KI270320v1,length=4416>
+##contig=<ID=chrUn_KI270322v1,length=21476>
+##contig=<ID=chrUn_KI270329v1,length=1040>
+##contig=<ID=chrUn_KI270330v1,length=1652>
+##contig=<ID=chrUn_KI270333v1,length=2699>
+##contig=<ID=chrUn_KI270334v1,length=1368>
+##contig=<ID=chrUn_KI270335v1,length=1048>
+##contig=<ID=chrUn_KI270336v1,length=1026>
+##contig=<ID=chrUn_KI270337v1,length=1121>
+##contig=<ID=chrUn_KI270338v1,length=1428>
+##contig=<ID=chrUn_KI270340v1,length=1428>
+##contig=<ID=chrUn_KI270362v1,length=3530>
+##contig=<ID=chrUn_KI270363v1,length=1803>
+##contig=<ID=chrUn_KI270364v1,length=2855>
+##contig=<ID=chrUn_KI270366v1,length=8320>
+##contig=<ID=chrUn_KI270371v1,length=2805>
+##contig=<ID=chrUn_KI270372v1,length=1650>
+##contig=<ID=chrUn_KI270373v1,length=1451>
+##contig=<ID=chrUn_KI270374v1,length=2656>
+##contig=<ID=chrUn_KI270375v1,length=2378>
+##contig=<ID=chrUn_KI270376v1,length=1136>
+##contig=<ID=chrUn_KI270378v1,length=1048>
+##contig=<ID=chrUn_KI270379v1,length=1045>
+##contig=<ID=chrUn_KI270381v1,length=1930>
+##contig=<ID=chrUn_KI270382v1,length=4215>
+##contig=<ID=chrUn_KI270383v1,length=1750>
+##contig=<ID=chrUn_KI270384v1,length=1658>
+##contig=<ID=chrUn_KI270385v1,length=990>
+##contig=<ID=chrUn_KI270386v1,length=1788>
+##contig=<ID=chrUn_KI270387v1,length=1537>
+##contig=<ID=chrUn_KI270388v1,length=1216>
+##contig=<ID=chrUn_KI270389v1,length=1298>
+##contig=<ID=chrUn_KI270390v1,length=2387>
+##contig=<ID=chrUn_KI270391v1,length=1484>
+##contig=<ID=chrUn_KI270392v1,length=971>
+##contig=<ID=chrUn_KI270393v1,length=1308>
+##contig=<ID=chrUn_KI270394v1,length=970>
+##contig=<ID=chrUn_KI270395v1,length=1143>
+##contig=<ID=chrUn_KI270396v1,length=1880>
+##contig=<ID=chrUn_KI270411v1,length=2646>
+##contig=<ID=chrUn_KI270412v1,length=1179>
+##contig=<ID=chrUn_KI270414v1,length=2489>
+##contig=<ID=chrUn_KI270417v1,length=2043>
+##contig=<ID=chrUn_KI270418v1,length=2145>
+##contig=<ID=chrUn_KI270419v1,length=1029>
+##contig=<ID=chrUn_KI270420v1,length=2321>
+##contig=<ID=chrUn_KI270422v1,length=1445>
+##contig=<ID=chrUn_KI270423v1,length=981>
+##contig=<ID=chrUn_KI270424v1,length=2140>
+##contig=<ID=chrUn_KI270425v1,length=1884>
+##contig=<ID=chrUn_KI270429v1,length=1361>
+##contig=<ID=chrUn_KI270435v1,length=92983>
+##contig=<ID=chrUn_KI270438v1,length=112505>
+##contig=<ID=chrUn_KI270442v1,length=392061>
+##contig=<ID=chrUn_KI270448v1,length=7992>
+##contig=<ID=chrUn_KI270465v1,length=1774>
+##contig=<ID=chrUn_KI270466v1,length=1233>
+##contig=<ID=chrUn_KI270467v1,length=3920>
+##contig=<ID=chrUn_KI270468v1,length=4055>
+##contig=<ID=chrUn_KI270507v1,length=5353>
+##contig=<ID=chrUn_KI270508v1,length=1951>
+##contig=<ID=chrUn_KI270509v1,length=2318>
+##contig=<ID=chrUn_KI270510v1,length=2415>
+##contig=<ID=chrUn_KI270511v1,length=8127>
+##contig=<ID=chrUn_KI270512v1,length=22689>
+##contig=<ID=chrUn_KI270515v1,length=6361>
+##contig=<ID=chrUn_KI270516v1,length=1300>
+##contig=<ID=chrUn_KI270517v1,length=3253>
+##contig=<ID=chrUn_KI270518v1,length=2186>
+##contig=<ID=chrUn_KI270519v1,length=138126>
+##contig=<ID=chrUn_KI270521v1,length=7642>
+##contig=<ID=chrUn_KI270522v1,length=5674>
+##contig=<ID=chrUn_KI270528v1,length=2983>
+##contig=<ID=chrUn_KI270529v1,length=1899>
+##contig=<ID=chrUn_KI270530v1,length=2168>
+##contig=<ID=chrUn_KI270538v1,length=91309>
+##contig=<ID=chrUn_KI270539v1,length=993>
+##contig=<ID=chrUn_KI270544v1,length=1202>
+##contig=<ID=chrUn_KI270548v1,length=1599>
+##contig=<ID=chrUn_KI270579v1,length=31033>
+##contig=<ID=chrUn_KI270580v1,length=1553>
+##contig=<ID=chrUn_KI270581v1,length=7046>
+##contig=<ID=chrUn_KI270582v1,length=6504>
+##contig=<ID=chrUn_KI270583v1,length=1400>
+##contig=<ID=chrUn_KI270584v1,length=4513>
+##contig=<ID=chrUn_KI270587v1,length=2969>
+##contig=<ID=chrUn_KI270588v1,length=6158>
+##contig=<ID=chrUn_KI270589v1,length=44474>
+##contig=<ID=chrUn_KI270590v1,length=4685>
+##contig=<ID=chrUn_KI270591v1,length=5796>
+##contig=<ID=chrUn_KI270593v1,length=3041>
+##contig=<ID=chrUn_KI270741v1,length=157432>
+##contig=<ID=chrUn_KI270742v1,length=186739>
+##contig=<ID=chrUn_KI270743v1,length=210658>
+##contig=<ID=chrUn_KI270744v1,length=168472>
+##contig=<ID=chrUn_KI270745v1,length=41891>
+##contig=<ID=chrUn_KI270746v1,length=66486>
+##contig=<ID=chrUn_KI270747v1,length=198735>
+##contig=<ID=chrUn_KI270748v1,length=93321>
+##contig=<ID=chrUn_KI270749v1,length=158759>
+##contig=<ID=chrUn_KI270750v1,length=148850>
+##contig=<ID=chrUn_KI270751v1,length=150742>
+##contig=<ID=chrUn_KI270752v1,length=27745>
+##contig=<ID=chrUn_KI270753v1,length=62944>
+##contig=<ID=chrUn_KI270754v1,length=40191>
+##contig=<ID=chrUn_KI270755v1,length=36723>
+##contig=<ID=chrUn_KI270756v1,length=79590>
+##contig=<ID=chrUn_KI270757v1,length=71251>
+##contig=<ID=chrX,length=156040895>
+##contig=<ID=chrY,length=57227415>
+##contig=<ID=chrY_KI270740v1_random,length=37240>
+##existing_InFrame_oORFs=The number of existing inFrame overlapping ORFs (inFrame oORF) at the 5 prime UTR
+##existing_OutOfFrame_oORFs=The number of existing out-of-frame overlapping ORFs (OutOfFrame oORF) at the 5 prime UTR
+##existing_uORFs=The number of existing uORFs with a stop codon within the 5 prime UTR
+##five_prime_UTR_variant_annotation=Output the annotation of a given 5 prime UTR variant
+##five_prime_UTR_variant_consequence=Output the variant consequences of a given 5 prime UTR variant: uAUG_gained, uAUG_lost, uSTOP_lost or uFrameshift
+##gnomAD_AF=gnomAD allele frequency
+##gnomAD_COV=gnomAD coverage (percent of individuals in gnomAD source)
+##gnomAD_FAF95=gnomAD filtering allele frequency (95% confidence)
+##gnomAD_FAF99=gnomAD filtering allele frequency (99% confidence)
+##gnomAD_HN=gnomAD number of homozygotes
+##gnomAD_QC=gnomAD quality control filters that failed
+##gnomAD_SRC=gnomAD source: E=exomes, G=genomes, T=total
+##ncER=ncER (https://www.nature.com/articles/s41467-019-13212-3) scores. This indicates the likelyhood of a location being essential in terms of regulation.
+##reference=file://<PATH>/vip/v7.9.0/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant">
+##source=strglr_1.4.4
+##ALT=<ID=CNV:TR,Description="Tandem repeat determined based on DNA abundance">
+##VIP_Version=7.9.0
+##VIP_Command=nextflow -C <PATH>/vip/v7.9.0/config/nxf_fastq.config,<PATH>/resources/run_v1.0.0.cfg -log <PATH>/<removed>/run01/results/.nxf.log run <PATH>/vip/v7.9.0/vip_fastq.nf -offline -profile slurm -with-report <PATH>/<removed>/run01/results/nxf_report.html -with-timeline <PATH>/<removed>/run01/results/nxf_timeline.html --input <PATH>/<removed>/run01/vip/sample_sheet.tsv --output <PATH>/<removed>/run01/results
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Patient
+chr1	149390803	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|NOTCH2NLC|100996717|Transcript|NM_001364013.2|protein_coding|1/5||||184-221/8729|17-54/882|6-18/293||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=NIID/OPDM3;DisplayRU=CGG;END=149390841;HGNCId=53924;REF=13;REPID=NOTCH2NLC;RL=39;RU=GGC;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=60;STR_PATHOLOGIC_MIN=61;STR_STATUS=normal,normal;SVTYPE=STR;VARID=NOTCH2NLC;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:14/28:34:18-18/7-17:18/13:SPANNING/SPANNING:AR,AD::.:100996717:1:U1:gt&gq&only_IP&vim&exit_u1
+chr12	6936717	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|ATN1|1822|Transcript|NM_001940.4|protein_coding|5/10||||2039-2094/4702|1451-1506/3573|484-502/1190||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=DRPLA;DisplayRU=CAG;END=6936773;HGNCId=3033;REF=19;REPID=ATN1;RL=57;RU=CAG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=35;STR_PATHOLOGIC_MIN=48;STR_STATUS=normal,normal;SVTYPE=STR;VARID=ATN1;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:27/8:38:19-20/15-18:19/17:SPANNING/SPANNING:AR,AD::.:1822:1:U1:gt&gq&only_IP&vim&exit_u1
+chr12	111598950	.	G	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|ATXN2|6311|Transcript|NM_001372574.1|protein_coding|1/25||||298-365/4347|17-84/3468|6-28/1155||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA2;DisplayRU=CTG;END=111599018;HGNCId=10555;REF=23;REPID=ATXN2;RL=69;RU=GCT;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=31;STR_PATHOLOGIC_MIN=32;STR_STATUS=normal;SVTYPE=STR;VARID=ATXN2;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:16.0/16.0:32:21-23/21-23:22/22:SPANNING/SPANNING:AR,AD::.:6311:1:U1:gt&gq&only_IP&vim&exit_u1
+chr13	70139384	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&non_coding_transcript_exon_variant|HIGH|ATXN8OS|6315|Transcript|NR_002717.2|antisense_RNA|5/5||||1104-1147/1472||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&status&exit_vus;END=70139428;REF=15;REPID=ATXN8;RL=45;RU=CTG;RUMATCH;SVTYPE=STR;VARID=ATXN8;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:21.5/21.5:45:15-16/15-16:16/16:SPANNING/SPANNING:AR,AD::.:6315:1:U1:gt&gq&only_IP&vim&exit_u1
+chr13	102161577	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|FGF14|2259|Transcript|NM_175929.3|protein_coding||1/4|||||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA27B;DisplayRU=GAA;END=102161726;HGNCId=3671;REF=50;REPID=FGF14;RL=150;RU=AAG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=249;STR_PATHOLOGIC_MIN=250;STR_STATUS=normal,normal;SVTYPE=STR;VARID=FGF14;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:13/19:34:15-17/9-11:16/10:SPANNING/SPANNING:AR,AD::.:2259:1:U1:gt&gq&only_IP&vim&exit_u1
+chr14	92071010	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|ATXN3|4287|Transcript|NM_004993.6|protein_coding|10/11||||914-945/6884|884-915/1086|295-305/361||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA3;DisplayRU=CTG;END=92071042;HGNCId=7106;REF=11;REPID=ATXN3;RL=33;RU=CTG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=44;STR_PATHOLOGIC_MIN=55;STR_STATUS=normal;SVTYPE=STR;VARID=ATXN3;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:18.0/18.0:39:19-21/19-21:20/20:SPANNING/SPANNING:AR,AD::.:4287:1:U1:gt&gq&only_IP&vim&exit_u1
+chr16	17470909	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&5_prime_UTR_variant|HIGH|XYLT1|64131|Transcript|NM_022166.4|protein_coding|1/12||||40-51/9970||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AR||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&exit_vus;Disease=BSS;DisplayRU=GCC;END=17470921;HGNCId=15516;REF=1;REPID=XYLT1;RL=13;RU=GCCGCCGCC;RankScore=1:20;STR_NORMAL_MAX=20;STR_PATHOLOGIC_MIN=120;STR_STATUS=pre_mutation,normal;SVTYPE=STR;VARID=XYLT1;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:12/13:33:22-23/16-20:22/18:SPANNING/SPANNING:AR,AD::.:64131:1:U1:gt&gq&only_IP&vim&exit_u1
+chr16	87604288	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|JPH3|57338|Transcript|NM_020655.4|protein_coding||1/4|||||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=HDL2;DisplayRU=CTG;END=87604329;HGNCId=14203;REF=14;REPID=JPH3;RL=42;RU=GCT;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=28;STR_PATHOLOGIC_MIN=41;STR_STATUS=normal;SVTYPE=STR;VARID=JPH3;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:20.5/20.5:44:15-16/15-16:16/16:SPANNING/SPANNING:AR,AD::.:57338:1:U1:gt&gq&only_IP&vim&exit_u1
+chr18	55586156	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|TCF4|6925|Transcript|NM_001083962.2|protein_coding||2/19|||||||||1||-1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=FECD;DisplayRU=GCA;END=55586227;HGNCId=11634;REF=24;REPID=TCF4;RL=72;RU=AGC;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=31;STR_PATHOLOGIC_MIN=50;STR_STATUS=normal,normal;SVTYPE=STR;VARID=TCF4;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:25/22:51:26-28/16-18:27/17:SPANNING/SPANNING:AR,AD::.:6925:1:U1:gt&gq&only_IP&vim&exit_u1
+chr19	13207859	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|CACNA1A|773|Transcript|NM_001127222.2|protein_coding|47/47||||7192-7229/8647|6937-6974/7521|2313-2325/2506||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA6;DisplayRU=CTG;END=13207897;HGNCId=1388;REF=13;REPID=CACNA1A;RL=39;RU=CTG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=18;STR_PATHOLOGIC_MIN=20;STR_STATUS=normal,normal;SVTYPE=STR;VARID=CACNA1A;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:33/2:39:11-12/6-8:11/7:SPANNING/SPANNING:AR,AD::.:773:1:U1:gt&gq&only_IP&vim&exit_u1
+chr19	14496043	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&5_prime_UTR_variant|HIGH|GIPC1|10755|Transcript|NM_005716.4|protein_coding|1/9||||54-84/1921||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&exit_vus;Disease=OPDM2;DisplayRU=CCG;END=14496074;HGNCId=1226;REF=5;REPID=GIPC1;RL=32;RU=CTCCGC;RankScore=1:10;STR_NORMAL_MAX=32;STR_PATHOLOGIC_MIN=97;STR_STATUS=normal,normal;SVTYPE=STR;VARID=GIPC1;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:8/27:40:7-8/5-6:7/6:SPANNING/SPANNING:AR,AD::.:10755:1:U1:gt&gq&only_IP&vim&exit_u1
+chr19	45770205	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&3_prime_UTR_variant|HIGH|DMPK|1760|Transcript|NM_004409.5|protein_coding|15/15||||2252-2310/2799||||||1||-1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD&AR||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=DM1;DisplayRU=CAG;END=45770264;HGNCId=2933;REF=20;REPID=DMPK;RL=60;RU=CAG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=37;STR_PATHOLOGIC_MIN=50;STR_STATUS=normal,normal;SVTYPE=STR;VARID=DMPK;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:30/16:48:13-14/6-6:14/6:SPANNING/SPANNING:AR,AD::.:1760:1:U1:gt&gq&only_IP&vim&exit_u1
+chr2	176093060	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|HOXD13|3239|Transcript|NM_000523.4|protein_coding|1/2||||341-383/2416|171-213/1032|57-71/343||||1||1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD&AR||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&status&exit_vus;Disease=SPD1;DisplayRU=GCG;END=176093103;HGNCId=5136;REF=14;REPID=HOXD13;RL=44;RU=CGG;RUMATCH;RankScore=1:20;STR_NORMAL_MAX=15;STR_PATHOLOGIC_MIN=24;STR_STATUS=pre_mutation;SVTYPE=STR;VARID=HOXD13;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:21.5/21.5:45:15-16/15-16:16/16:SPANNING/SPANNING:AR,AD::.:3239:1:U1:gt&gq&only_IP&vim&exit_u1
+chr2	190880873	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&5_prime_UTR_variant|HIGH|GLS|2744|Transcript|NM_014905.5|protein_coding|1/18||||54-100/4840||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD&AR||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=GDPAG;DisplayRU=GCA;END=190880920;HGNCId=4331;REF=16;REPID=GLS;RL=48;RU=GCA;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=16;STR_PATHOLOGIC_MIN=680;STR_STATUS=normal,normal;SVTYPE=STR;VARID=GLS;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:36/2:42:12-14/7-8:13/7:SPANNING/SPANNING:AR,AD::.:2744:1:U1:gt&gq&only_IP&vim&exit_u1
+chr20	2652734	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|NOP56|10528|Transcript|NM_006392.4|protein_coding||1/11|||||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA36;DisplayRU=GGCCTG;END=2652757;HGNCId=15911;REF=4;REPID=NOP56;RL=24;RU=GGGCCT;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=14;STR_PATHOLOGIC_MIN=650;STR_STATUS=normal,normal;SVTYPE=STR;VARID=NOP56;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:23/2:27:7-8/5-5:7/5:SPANNING/SPANNING:AR,AD::.:10528:1:U1:gt&gq&only_IP&vim&exit_u1
+chr22	45795355	.	A	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|ATXN10|25814|Transcript|NM_013236.4|protein_coding||9/11|||||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA10;DisplayRU=ATTCT;END=45795424;HGNCId=10549;REF=14;REPID=ATXN10;RL=70;RU=ATTCT;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=32;STR_PATHOLOGIC_MIN=280;STR_STATUS=normal,normal;SVTYPE=STR;VARID=ATXN10;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:16/20:42:16-16/13-13:16/13:SPANNING/SPANNING:AR,AD::.:25814:1:U1:gt&gq&only_IP&vim&exit_u1
+chr3	63912686	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|ATXN7|6314|Transcript|NM_001377405.1|protein_coding|3/13||||491-519/7076|89-117/2679|30-39/892||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA7;DisplayRU=CAG;END=63912715;HGNCId=10560;REF=10;REPID=ATXN7;RL=30;RU=GCA;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=19;STR_PATHOLOGIC_MIN=36;STR_STATUS=normal;SVTYPE=STR;VARID=ATXN7;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:14.5/14.5:31:9-12/9-12:11/11:SPANNING/SPANNING:AR,AD::.:6314:1:U1:gt&gq&only_IP&vim&exit_u1
+chr3	129172577	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|CNBP|7555|Transcript|NM_003418.5|protein_coding||1/4|||||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&exit_vus;Disease=DM2;DisplayRU=CAGG;END=129172656;HGNCId=13164;REF=10;REPID=CNBP;RL=80;RU=CAGACAGG;RankScore=1:10;STR_NORMAL_MAX=30;STR_PATHOLOGIC_MIN=50;STR_STATUS=normal;SVTYPE=STR;VARID=CNBP;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:9.0/9.0:39:6-8/6-8:7/7:SPANNING/SPANNING:AR,AD::.:7555:1:U1:gt&gq&only_IP&vim&exit_u1
+chr4	39348425	.	A	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|RFC1|5981|Transcript|NM_002913.5|protein_coding||2/24|||||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AR||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=CANVAS;DisplayRU=ANNNN;END=39348485;HGNCId=9969;REF=12;REPID=RFC1;RL=61;RU=AAAAG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=15;STR_PATHOLOGIC_MIN=300;STR_STATUS=normal,normal;SVTYPE=STR;VARID=RFC1;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:29/19:51:12-13/9-9:13/9:SPANNING/SPANNING:AR,AD::.:5981:1:U1:gt&gq&only_IP&vim&exit_u1
+chr4	41745972	.	A	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|PHOX2B|8929|Transcript|NM_003924.4|protein_coding|3/3||||835-894/2785|720-779/945|240-260/314||||1||-1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=CCHS;DisplayRU=NGC;END=41746032;HGNCId=9143;REF=20;REPID=PHOX2B;RL=61;RU=GCC;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=20;STR_PATHOLOGIC_MIN=25;STR_STATUS=normal;SVTYPE=STR;VARID=PHOX2B;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:20.0/20.0:43:17-20/17-20:19/19:SPANNING/SPANNING:AR,AD::.:8929:1:U1:gt&gq&only_IP&vim&exit_u1
+chr5	146878728	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&5_prime_UTR_variant|HIGH|PPP2R2B|5521|Transcript|NM_181675.4|protein_coding|1/10||||1-29/10828||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=SCA12;DisplayRU=CTG;END=146878757;HGNCId=9305;REF=10;REPID=PPP2R2B;RL=30;RU=GCT;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=32;STR_PATHOLOGIC_MIN=43;STR_STATUS=normal,normal;SVTYPE=STR;VARID=PPP2R2B;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:18/17:35:14-16/10-11:15/11:SPANNING/SPANNING:AR,AD::.:5521:1:U1:gt&gq&only_IP&vim&exit_u1
+chr6	45422752	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|RUNX2|860|Transcript|NM_001024630.4|protein_coding|3/9||||416-464/5540|219-267/1566|73-89/521||||1||1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=CCD;DisplayRU=GCN;END=45422801;HGNCId=10472;REF=16;REPID=RUNX2;RL=50;RU=GCA;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=17;STR_PATHOLOGIC_MIN=27;STR_STATUS=normal;SVTYPE=STR;VARID=RUNX2;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:18.0/18.0:39:14-15/14-15:15/15:SPANNING/SPANNING:AR,AD::.:860:1:U1:gt&gq&only_IP&vim&exit_u1
+chr7	27199679	.	C	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|HOXA13|3209|Transcript|NM_000522.5|protein_coding|1/2||||360-412/5015|346-398/1167|116-133/388||||1||-1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&status&exit_vus;END=27199732;REF=18;REPID=HOXA13_III;RL=54;RU=GCG;RUMATCH;SVTYPE=STR;VARID=HOXA13_III;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:48/2:51:16-17/13-13:17/13:SPANNING/SPANNING:AR,AD,AR_C:chr7_27199925_G_/:.:3209:1:U1:gt&gq&only_IP&vim&exit_u1
+chr7	27199925	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|HOXA13|3209|Transcript|NM_000522.5|protein_coding|1/2||||126-166/5015|112-152/1167|38-51/388||||1||-1||1|EntrezGene|||||||||||||||||||||||||||||||||||1|AD||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&status&exit_vus;END=27199966;REF=14;REPID=HOXA13_I;RL=42;RU=GCC;RUMATCH;SVTYPE=STR;VARID=HOXA13_I;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:43/7:52:13-15/7-12:14/11:SPANNING/SPANNING:AR,AD,AR_C:chr7_27199679_C_/:.:3209:1:U1:gt&gq&only_IP&vim&exit_u1
+chr8	104588961	.	A	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&5_prime_UTR_variant|HIGH|LRP12|29967|Transcript|NM_013437.5|protein_coding|1/7||||260-297/4378||||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||AD||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=OPDM1;DisplayRU=CCG;END=104588999;HGNCId=31708;REF=13;REPID=LRP12;RL=39;RU=CGC;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=45;STR_PATHOLOGIC_MIN=90;STR_STATUS=normal,normal;SVTYPE=STR;VARID=LRP12;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:13/19:35:15-16/12-12:16/12:SPANNING/SPANNING:AR,AD::.:29967:1:U1:gt&gq&only_IP&vim&exit_u1
+chr9	69037287	.	G	<CNV:TR>,<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&intron_variant|HIGH|FXN|2395|Transcript|NM_000144.5|protein_coding||1/4|||||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||AR||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=FRDA;DisplayRU=GAA;END=69037304;HGNCId=3951;REF=6;REPID=FXN;RL=18;RU=AAG;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=34;STR_PATHOLOGIC_MIN=66;STR_STATUS=normal,normal;SVTYPE=STR;VARID=FXN;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/2:0/0:0/0:2/23:31:17-17/9-10:17/10:SPANNING/SPANNING:AR,AD::.:2395:1:U1:gt&gq&only_IP&vim&exit_u1
+chrX	25013650	.	G	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|ARX|170302|Transcript|NM_139058.3|protein_coding|2/5||||526-572/2893|298-344/1689|100-115/562||||1||-1||1|EntrezGene||||||||||||||||||||||||||||||||||||XL||||||||||||||||||||||VUS|type&pick&gene_str&up_downstream&unit&status&exit_vus;END=25013697;REF=16;REPID=ARX_I;RL=48;RU=GCC;RUMATCH;SVTYPE=STR;VARID=ARX_I;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:19.0/19.0:39:14-15/14-15:15/15:SPANNING/SPANNING:XLD,XLR::.:170302:1:U1:gt&gq&only_IP&vim&exit_u1
+chrX	137566828	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&coding_sequence_variant|HIGH|ZIC3|7547|Transcript|NM_003413.4|protein_coding|1/3||||703-730/4001|138-165/1404|46-55/467||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||XL||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=VACTERLX;DisplayRU=GCN;END=137566856;HGNCId=12874;REF=9;REPID=ZIC3;RL=29;RU=CGC;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=10;STR_PATHOLOGIC_MIN=11;STR_STATUS=normal;SVTYPE=STR;VARID=ZIC3;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:21.5/21.5:45:10-11/10-11:10/10:SPANNING/SPANNING:XLD,XLR::.:7547:1:U1:gt&gq&only_IP&vim&exit_u1
+chrX	147912051	.	C	<CNV:TR>	.	PASS	CSQ=tandem_duplication|feature_elongation&5_prime_UTR_variant|HIGH|FMR1|2332|Transcript|NM_002024.6|protein_coding|1/17||||134-192/4441||||||1||1||1|EntrezGene||||||||||||||||||||||||||||||||||||XL||||||||||||||||||||||LB|type&pick&gene_str&up_downstream&unit&status&exit_lb;Disease=FX;DisplayRU=CGG;END=147912110;HGNCId=3775;REF=20;REPID=FMR1;RL=60;RU=GGC;RUMATCH;RankScore=1:10;STR_NORMAL_MAX=44;STR_PATHOLOGIC_MIN=200;STR_STATUS=normal;SVTYPE=STR;VARID=FMR1;VIPC_S=U1	GT:ADFL:ADIR:ADSP:LC:REPCI:REPCN:SO:VI:VIC:VID:VIG:VIM:VIPC_S:VIPP_S	1/1:0/0:0/0:20.0/20.0:44:29-31/29-31:30/30:SPANNING/SPANNING:XLD,XLR::.:2332:1:U1:gt&gq&only_IP&vim&exit_u1
