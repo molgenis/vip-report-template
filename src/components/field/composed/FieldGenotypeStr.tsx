@@ -1,6 +1,7 @@
 import { Component, Show } from "solid-js";
 import { Allele } from "../../Allele";
 import { CellValueGenotype } from "../../../types/configCellComposed";
+import { FieldGenotypeSnvSv } from "./FieldGenotypeSnvSv.tsx";
 
 export const FieldGenotypeStr: Component<{
   value: CellValueGenotype;
@@ -12,7 +13,7 @@ export const FieldGenotypeStr: Component<{
     props.value.repeatUnitMatch !== undefined;
 
   return (
-    <Show when={showGenotype()}>
+    <Show when={showGenotype()} fallback={<FieldGenotypeSnvSv value={props.value} />}>
       <abbr title={`display repeat unit familiar to clinician: ${props.value.displayRepeatUnit!}`}>
         <Allele value={props.value.repeatUnitValue!} isAbbreviate={false} />
         <sub>n</sub>
