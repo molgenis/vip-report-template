@@ -41,5 +41,12 @@ describe("query sample", () => {
         "__null",
       ]);
     });
+
+    test("create without filter field", () => {
+      const classes = "VUS,LP,P";
+      const config = { filter_field: null, params: { vcf: { filter_samples: { classes } } } } as ConfigVip;
+      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      expect(createQuerySample(config, sample)).toStrictEqual(null);
+    });
   });
 });
