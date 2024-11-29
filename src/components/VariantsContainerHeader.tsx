@@ -34,7 +34,7 @@ export const VariantsContainerHeader: Component<{
       const sampleMother = props.sample.maternalSample;
       const sampleOtherFamilyMembers = props.sample.otherPedigreeSamples;
 
-      if (!(sampleFather === undefined && sampleMother === undefined && sampleOtherFamilyMembers.length === 0)) {
+      if (!(sampleFather === null && sampleMother === null && sampleOtherFamilyMembers.length === 0)) {
         const tokens: string[] = [];
         if (sampleMother !== null) {
           tokens.push(`mother (${getTitleAffectedStatusLabel(sampleMother)})`);
