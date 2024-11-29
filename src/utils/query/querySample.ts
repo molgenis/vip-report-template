@@ -5,10 +5,13 @@ import { ConfigVip } from "../../types/config";
 import { FilterValueCategorical } from "../../types/configFilter";
 import { createQueryFilterFieldCategorical } from "./queryFilterField.ts";
 
-export function createQuerySample(config: ConfigVip, sample: SampleContainer): Query {
+export function createQuerySample(config: ConfigVip, sample: SampleContainer): Query | null {
+  const filterField = config.filter_field;
+  if (filterField === null) return null;
+
   const filterValues = getFilterValues(config);
-  const selector = createSelectorSample(sample, config.filter_field);
-  return createQueryFilterFieldCategorical(selector, config.filter_field, filterValues);
+  const selector = createSelectorSample(sample, filterField);
+  return createQueryFilterFieldCategorical(selector, filterField, filterValues);
 }
 
 function getFilterValues(config: ConfigVip): FilterValueCategorical {

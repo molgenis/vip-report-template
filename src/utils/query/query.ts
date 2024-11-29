@@ -23,7 +23,9 @@ export function createQuery(
 
   if (sample !== null) {
     const querySample = createQuerySample(config.vip, sample);
-    queryParts.push(querySample);
+    if (querySample !== null) {
+      queryParts.push(querySample);
+    }
   }
 
   const queryFilters = createQueryFilters(config.variants.filters, filterValues);
