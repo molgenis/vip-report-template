@@ -113,7 +113,7 @@ export const RecordsTableCell: Component<{
   );
 };
 
-const RecordsTableCellLine: Component<{
+export const RecordsTableCellLine: Component<{
   fieldConfig: ConfigCellItem;
   record: Item<VcfRecord>;
   valueIndex: number;

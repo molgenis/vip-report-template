@@ -1,6 +1,6 @@
 import { Component, Show } from "solid-js";
 import { MetadataContainer, SampleContainer } from "../utils/api.ts";
-import { Value, VcfRecord } from "@molgenis/vip-report-vcf";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api";
 import { VariantInfoTable } from "./VariantInfoTable.tsx";
 import { VariantConsequenceTable } from "./VariantConsequenceTable.tsx";
@@ -9,8 +9,6 @@ import { DecisionTreePath } from "./tree/DecisionTreePath.tsx";
 import { getDecisionTreePath, getSampleTreePath } from "../utils/decisionTree.ts";
 import { VariantType } from "../utils/variantType.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
-import { getInfoField, getInfoValue } from "../utils/vcf.ts";
-import { RuntimeError } from "../utils/error.ts";
 import { ConfigJson } from "../types/config";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { initConfig } from "../utils/config/config.ts";
@@ -28,11 +26,6 @@ export const VariantConsequenceContainer: Component<{
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
 
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
-  const csqField = () => {
-    const csqField = getInfoField(props.metadata.records, "CSQ");
-    if (csqField === undefined) throw new RuntimeError();
-    return csqField;
-  };
   const hasDecisionTreePathMeta = () =>
     (props.metadata.records.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
   const hasSampleTreePathMeta = () => props.metadata.records.format.VIPP_S != null;
@@ -48,9 +41,10 @@ export const VariantConsequenceContainer: Component<{
           <div class="mt-3">
             <h1 class="title is-5">Consequence</h1>
             <VariantConsequenceTable
-              csqMetadata={csqField().nested?.items || []}
-              csqValues={(getInfoValue(props.record, 0, csqField()) as Value[])[props.consequenceId] as Value[]}
+              variantType={props.variantType}
+              metadata={props.metadata}
               record={props.record}
+              consequenceId={props.consequenceId}
             />
           </div>
           <div class="mt-3">
