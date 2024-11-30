@@ -49,7 +49,7 @@ export const RecordsTableHeaderCells: Component<{ fieldConfigs: ConfigCells }> =
   );
 };
 
-const RecordsTableHeaderCell: Component<{
+export const RecordsTableHeaderCell: Component<{
   fieldConfig: ConfigCellItem;
 }> = (props) => {
   const label = () => props.fieldConfig.label();

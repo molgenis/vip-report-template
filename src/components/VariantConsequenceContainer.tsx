@@ -43,7 +43,7 @@ export const VariantConsequenceContainer: Component<{
         <div class="column is-4">
           <div>
             <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoMetadataContainer={props.metadata.records.info} infoContainer={props.record.data.n} />
+            <VariantInfoTable variantType={props.variantType} metadata={props.metadata} record={props.record} />
           </div>
           <div class="mt-3">
             <h1 class="title is-5">Consequence</h1>

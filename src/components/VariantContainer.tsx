@@ -34,18 +34,10 @@ export const VariantContainer: Component<{
           <h1 class="title is-5">Record</h1>
           <VariantTable variant={props.record.data} />
         </div>
-        <Show
-          when={
-            Object.values(props.metadata.records.info).filter(
-              (info) => !info.nested && props.record.data.n[info.id] !== undefined,
-            ).length > 0
-          }
-        >
-          <div class="column is-3">
-            <h1 class="title is-5">Info</h1>
-            <VariantInfoTable infoMetadataContainer={props.metadata.records.info} infoContainer={props.record.data.n} />
-          </div>
-        </Show>
+        <div class="column is-3">
+          <h1 class="title is-5">Info</h1>
+          <VariantInfoTable variantType={props.variantType} metadata={props.metadata} record={props.record} />
+        </div>
         <Show when={config().variant.samplesCells}>
           {(samplesCells) => (
             <div class="column">
