@@ -185,6 +185,6 @@ export type ConfigVariantConsequence = {
 export type ConfigVipParams = ConfigJsonVipParams;
 
 export type ConfigVip = {
-  filter_field: FieldMetadataWrapper;
+  filter_field: FieldMetadataWrapper | null;
   params: ConfigVipParams;
 };

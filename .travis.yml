@@ -22,7 +22,7 @@ script:
   - pnpm run coverage
   - pnpm run build
 before_deploy:
-  - mv dist/index.html dist/vip-report-template.html
+  - cp dist/index.html dist/vip-report-template.html
 deploy:
   - provider: script
     script: bash scripts/deploy_npm_registry.sh

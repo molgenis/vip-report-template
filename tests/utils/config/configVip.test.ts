@@ -44,10 +44,10 @@ describe("config vip", () => {
     test("init metadata unavailable", () => {
       vi.mocked(getSampleField).mockReturnValue(undefined);
 
-      expect(() => initConfigVip(config, metadata as MetadataContainer)).toThrowError(
-        /^config invalid: property 'vip.filter_field.name' value 'f' does not exist in vcf metadata$/,
-      );
-      expect(getSampleField).toHaveBeenCalledWith(vcfMetadata, "f");
+      expect(initConfigVip(config, metadata as MetadataContainer)).toStrictEqual({
+        filter_field: null,
+        params,
+      });
     });
   });
 });
