@@ -1,27 +1,38 @@
 import { Component, For } from "solid-js";
-import { FieldMetadataContainer, InfoContainer } from "@molgenis/vip-report-vcf";
-import { FieldInfo } from "./field/info/FieldInfo.tsx";
+import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { Table } from "./Table.tsx";
+import { Item } from "@molgenis/vip-report-api";
+import { RecordsTableCell, RecordsTableHeaderCell } from "./RecordsTable.tsx";
+import { initConfigCells } from "../utils/config/configCells.ts";
+import { MetadataContainer } from "../utils/api.ts";
+import { VariantType } from "../utils/variantType.ts";
 
 export const VariantInfoTable: Component<{
-  infoMetadataContainer: FieldMetadataContainer;
-  infoContainer: InfoContainer;
+  variantType: VariantType;
+  metadata: MetadataContainer;
+  record: Item<VcfRecord>;
 }> = (props) => {
-  const fieldMetadatas = () =>
-    Object.values(props.infoMetadataContainer).filter(
-      (info) => !info.nested && props.infoContainer[info.id] !== undefined,
-    );
+  const configCells = () =>
+    initConfigCells(
+      [
+        {
+          type: "info",
+          name: "((?!CSQ).)*",
+        },
+      ],
+      props.variantType,
+      props.metadata,
+      null,
+    ).filter((configCell) => configCell.type !== "group");
 
   return (
-    <Table>
+    <Table borderless={true}>
       <tbody>
-        <For each={fieldMetadatas()}>
-          {(fieldMetadata) => (
+        <For each={configCells()}>
+          {(fieldConfig) => (
             <tr>
-              <td>{fieldMetadata.id}</td>
-              <td>
-                <FieldInfo metadata={fieldMetadata} value={props.infoContainer[fieldMetadata.id]} />
-              </td>
+              <RecordsTableHeaderCell fieldConfig={fieldConfig} />
+              <RecordsTableCell fieldConfig={fieldConfig} record={props.record} />
             </tr>
           )}
         </For>
