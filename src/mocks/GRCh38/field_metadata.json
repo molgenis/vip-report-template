@@ -203,9 +203,13 @@
               "label": "P",
               "description": "Pathogenic"
             },
-            "Conflicting_interpretations_of_pathogenicity": {
+            "Conflicting_classifications_of_pathogenicity": {
               "label": "Conflict",
-              "description": "Conflicting interpretations of pathogenicity"
+              "description": "Conflicting classifications of pathogenicity"
+            },
+            "Other": {
+              "label": "Other",
+              "description": "Classifications that do not match the common categorical values."
             }
           }
         },
@@ -236,9 +240,9 @@
               "label": "P",
               "description": "Pathogenic"
             },
-            "Conflicting_interpretations_of_pathogenicity": {
+            "Conflicting_classifications_of_pathogenicity": {
               "label": "Conflict",
-              "description": "Conflicting interpretations of pathogenicity"
+              "description": "Conflicting classifications of pathogenicity"
             }
           }
         },
@@ -273,8 +277,8 @@
               "label": "Single submitter",
               "description": "There is a single submitted record with a classification"
             },
-            "_conflicting_interpretations": {
-              "label": "Conflicting_interpretations",
+            "_conflicting_classifications": {
+              "label": "Conflicting_classifications",
               "description": "There are conflicting classifications"
             },
             "no_assertion_criteria_provided": {
@@ -283,6 +287,15 @@
             },
             "no_assertion_provided": {
               "label": "No assertion provided"
+            },
+            "no_classification_for_the_single_variant": {
+              "label": "No classification for the single variant"
+            },
+            "no_classification_provided": {
+              "label": "No classification provided"
+            },
+            "no_classifications_from_unflagged_records": {
+              "label": "No classifications from unflagged records"
             }
           }
         },
