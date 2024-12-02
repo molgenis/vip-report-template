@@ -38,6 +38,18 @@ describe("vcf", () => {
   } as Item<VcfRecord>;
 
   describe("getInfoValue", () => {
+    test("field count=0 value=true", () => {
+      const record = { ...recordBase, data: { ...recordBase.data, n: { f: true } } };
+      const fieldMetadata = { id: "f", type: "FLAG", number: { count: 0 } } as FieldMetadataWrapper;
+      expect(getInfoValue(record, 0, fieldMetadata)).toStrictEqual(true);
+    });
+
+    test("field count=0 value=undefined", () => {
+      const record = { ...recordBase, data: { ...recordBase.data, n: {} } };
+      const fieldMetadata = { id: "f", type: "FLAG", number: { count: 0 } } as FieldMetadataWrapper;
+      expect(getInfoValue(record, 0, fieldMetadata)).toStrictEqual(false);
+    });
+
     test("field count=1", () => {
       const record = { ...recordBase, data: { ...recordBase.data, n: { f: 1 } } };
       const fieldMetadata = { id: "f", number: { count: 1 } } as FieldMetadataWrapper;
