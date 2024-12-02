@@ -7,8 +7,8 @@ export const FieldVipCS: Component<{
 }> = (props) => {
   return (
     <Show when={props.value.vipCS !== null}>
-      <Show when={props.value.vipPS} fallback={<span>{props.value.vipCS!.value}</span>} keyed>
-        {(vipPSItem) => <Abbr title={vipPSItem.join(", ")} value={props.value.vipCS!.value!} />}
+      <Show when={props.value.vipPS} fallback={<span>{props.value.vipCS!.label}</span>} keyed>
+        {(vipPSItem) => <Abbr title={vipPSItem.join(", ")} value={props.value.vipCS!.label!} />}
       </Show>
     </Show>
   );
