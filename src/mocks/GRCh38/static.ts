@@ -2,8 +2,8 @@
 // @ts-nocheck
 import cramUrl from "./alignment.cram.blob";
 import craiUrl from "./alignment.cram.crai.blob";
-import strCramUrl from "./strs.cram.blob";
-import strCraiUrl from "./strs.cram.crai.blob";
+import strCramUrl from "./str.cram.blob";
+import strCraiUrl from "./str.cram.crai.blob";
 import fastaUrl_chr1_9982230_9982730 from "./fasta/chr1-9982230-9982730.fasta.gz.blob";
 import fastaUrl_chr1_16049667_16050167 from "./fasta/chr1-16049667-16050167.fasta.gz.blob";
 import fastaUrl_chr1_17022474_17022974 from "./fasta/chr1-17022474-17022974.fasta.gz.blob";
