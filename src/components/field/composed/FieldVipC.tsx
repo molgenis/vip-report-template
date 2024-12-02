@@ -17,8 +17,8 @@ export const FieldVipC: Component<{
 
   return (
     <a onClick={onClick}>
-      <Show when={props.value.vipP} fallback={<span>{props.value.vipC!.value}</span>} keyed>
-        {(vipPItem) => <Abbr title={vipPItem.join(", ")} value={props.value.vipC!.value!} />}
+      <Show when={props.value.vipP} fallback={<span>{props.value.vipC!.label}</span>} keyed>
+        {(vipPItem) => <Abbr title={vipPItem.join(", ")} value={props.value.vipC!.label!} />}
       </Show>
     </a>
   );
