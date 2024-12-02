@@ -1,1 +1,4 @@
 *.* text eol=lf
+*.cram.blob binary
+*.cram.crai.blob binary
+*.gz.blob binary
