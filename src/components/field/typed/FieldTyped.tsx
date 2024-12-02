@@ -10,7 +10,7 @@ export const FieldTyped: Component<{
 }> = (props) => {
   return (
     <>
-      {props.metadata.number.count === 1 ? (
+      {props.metadata.number.count === 0 || props.metadata.number.count === 1 ? (
         <FieldTypedItem value={props.value as FieldValueSingle | undefined} metadata={props.metadata} />
       ) : (
         <FieldTypedMultiple info={props.value as FieldValueSingle[]} infoMetadata={props.metadata} />

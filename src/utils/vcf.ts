@@ -84,7 +84,9 @@ function mapFieldValueDefined(value: Value | Genotype, fieldMetadata: FieldMetad
 
 function mapFieldValue(value: Value | Genotype | undefined, fieldMetadata: FieldMetadataWrapper): FieldValue {
   let definedValue: Value | Genotype;
-  if (fieldMetadata.number.count === 1) {
+  if (fieldMetadata.number.count === 0) {
+    definedValue = value !== undefined ? value : false;
+  } else if (fieldMetadata.number.count === 1) {
     definedValue = value !== undefined ? value : null;
   } else {
     definedValue = value !== undefined && value !== null ? value : [];
