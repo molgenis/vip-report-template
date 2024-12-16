@@ -15,11 +15,11 @@ importers:
         specifier: ^6.7.1
         version: 6.7.1
       '@molgenis/vip-report-api':
-        specifier: ^6.2.1
-        version: 6.2.1
+        specifier: ^6.2.2
+        version: 6.2.2
       '@molgenis/vip-report-vcf':
-        specifier: ^3.0.8
-        version: 3.0.8
+        specifier: ^3.1.0
+        version: 3.1.0
       '@solidjs/router':
         specifier: ^0.15.1
         version: 0.15.1(solid-js@1.9.3)
@@ -407,12 +407,12 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@molgenis/vip-report-api@6.2.1':
-    resolution: {integrity: sha512-F46UYnBWe/p15tlhnXHbsIUb9f2J63dSpGnEAIWOAVvAmSqKM48pY9y/CSOusOhr2PYMvdGMj3G/0qgmGEtRzQ==}
+  '@molgenis/vip-report-api@6.2.2':
+    resolution: {integrity: sha512-xgBFDRlNIopdsadeJROAv5jvl1vlI8NkyyAJL4YDP/jF9v/RONrX2tOooA1/I4miVK2+MJxI5tGjBcMhg9rsIw==}
     engines: {node: '22', pnpm: '9'}
 
-  '@molgenis/vip-report-vcf@3.0.8':
-    resolution: {integrity: sha512-Y8RyYccPbUG34cm+CjrCJb22Hies+8fX+0WDkuudm0iWXzMRpw0YMri6hPnmX4PGKtHppm3wFYqYvdRBPUyIGA==}
+  '@molgenis/vip-report-vcf@3.1.0':
+    resolution: {integrity: sha512-z/UC8eJBYo/fUwlzYDTBiOpACBmoC9UqWeW5YW/9+V1gw6Dni2ysMdh8T0ANJPkqmik57iar2PK0BO6X3O1SWA==}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vite-plugin-inline@1.0.27':
@@ -2009,11 +2009,11 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@6.2.1':
+  '@molgenis/vip-report-api@6.2.2':
     dependencies:
-      '@molgenis/vip-report-vcf': 3.0.8
+      '@molgenis/vip-report-vcf': 3.1.0
 
-  '@molgenis/vip-report-vcf@3.0.8': {}
+  '@molgenis/vip-report-vcf@3.1.0': {}
 
   '@molgenis/vite-plugin-inline@1.0.27(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))':
     dependencies:
