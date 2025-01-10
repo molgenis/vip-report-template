@@ -234,6 +234,25 @@ describe("query composed filters", () => {
           operator: "or",
         });
       });
+
+      test("match and potential", () => {
+        expect(createQueryFilterComposed(config, ["true","potential"])).toStrictEqual(
+          {
+            args: [{
+              selector: ["s", 1, "VIM"],
+              operator: "==",
+              args: 1,
+            },
+            {
+              args: [
+                { selector: ["s", 1, "VIM"], operator: "==", args: null },
+                { selector: ["s", 1, "VIM"], operator: "==", args: undefined },
+              ],
+              operator: "or",
+            }],
+            operator: "or",
+          });
+      });
     });
 
     describe("deNovo", () => {

@@ -197,7 +197,7 @@ function createQueryFilterInheritanceMatch(
     });
     queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
   }
-  return createQueryComposed(queryParts, "and");
+  return createQueryComposed(queryParts, "or");
 }
 
 function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: FilterValueDeNovo): Query {
