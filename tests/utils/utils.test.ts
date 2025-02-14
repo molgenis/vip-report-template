@@ -7,6 +7,7 @@ import {
   href,
   isPositiveInteger,
   parseId,
+  removeZeroWidthAndTrim,
   validateIntervalInput,
 } from "../../src/utils/utils.ts";
 
@@ -115,6 +116,16 @@ describe("utils", () => {
       expect(validateIntervalInput("x", "", "abc")).toStrictEqual(
         "Input 'to' (abc) for filter 'x' should be a number.",
       );
+    });
+  });
+
+  describe("zeroWidthTrim", () => {
+    test("undefined", () => {
+      expect(removeZeroWidthAndTrim(undefined)).toStrictEqual(undefined);
+    });
+
+    test("string with zero-width unicode characters", () => {
+      expect(removeZeroWidthAndTrim("\u200Bb\u200Cc\u200Dd\uFEFF ")).toStrictEqual("bcd");
     });
   });
 });

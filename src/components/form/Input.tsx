@@ -1,4 +1,5 @@
 import { Component } from "solid-js";
+import { removeZeroWidthAndTrim } from "../../utils/utils.ts";
 
 export type InputValue = string;
 export type InputChangeEvent = { value: InputValue };
@@ -13,7 +14,9 @@ export const Input: Component<InputProps> = (props) => {
       type="text"
       {...(props.value ? { value: props.value } : {})}
       placeholder={props.placeholder}
-      onInput={(event) => props.onValueChange({ value: (event.target as HTMLInputElement).value })}
+      onInput={(event) =>
+        props.onValueChange({ value: removeZeroWidthAndTrim((event.target as HTMLInputElement).value) })
+      }
     />
   );
 };

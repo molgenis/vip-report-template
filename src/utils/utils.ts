@@ -65,3 +65,15 @@ export function validateIntervalInput(
     return `Input 'to' (${right}) for filter '${id}' should have a higher value than the 'from' input (${left}).`;
   }
 }
+
+/**
+ * Remove zero-width space Unicode characters from a string and trim
+ *
+ * U+200B zero-width space.
+ * U+200C zero-width non-joiner.
+ * U+200D zero-width joiner.
+ * U+FEFF zero-width non-breaking space.
+ */
+export function removeZeroWidthAndTrim(stringToTrim: string): string {
+  return stringToTrim.replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
+}
