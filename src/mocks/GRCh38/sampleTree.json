@@ -59,7 +59,7 @@
       "query": {
         "field": "FORMAT/VI",
         "operator": "contains_none",
-        "value": ["AR","AD","XLR","XLD","YL","MT","AR_C"]
+        "value": ["AR", "AD", "XLR", "XLD", "YL", "MT", "AR_C"]
       },
       "outcomeTrue": {
         "nextNode": "vid_IP"
