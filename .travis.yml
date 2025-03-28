@@ -25,6 +25,7 @@ script:
   - pnpm run build
 before_deploy:
   - cp dist/index.html dist/vip-report-template.html
+  - gem update --system # workaround for https://travis-ci.community/t/builds-suddenly-failing/14580/14
 deploy:
   - provider: script
     script: bash scripts/deploy_npm_registry.sh
