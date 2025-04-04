@@ -6,7 +6,7 @@ export const FieldFloat: Component<{
   value: ValueFloat | undefined;
 }> = (props) => {
   return (
-    <Show when={props.value !== null && props.value !== undefined}>
+    <Show when={props.value != null}>
       <Show
         when={(props.value as number).toString().length > 6}
         fallback={<span>{(props.value as number).toString()}</span>}
