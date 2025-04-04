@@ -20,7 +20,7 @@ export const FieldVkgl: Component<{ value: CellValueVkgl }> = (props) => {
     };
 
     const descriptions = Object.entries(labValues)
-      .filter(([, value]) => value !== null && value !== undefined)
+      .filter(([, value]) => value != null)
       .map(([key, value]) => `${key}:${value?.label}`);
 
     return descriptions.length > 0 ? descriptions.join(", ") : null;

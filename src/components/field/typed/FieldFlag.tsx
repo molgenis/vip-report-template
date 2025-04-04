@@ -5,7 +5,7 @@ export const FieldFlag: Component<{
   value: ValueFlag | undefined;
 }> = (props) => {
   return (
-    <Show when={props.value !== null && props.value !== undefined}>
+    <Show when={props.value != null}>
       <span>{(props.value as boolean).toString()}</span>
     </Show>
   );

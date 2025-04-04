@@ -8,7 +8,7 @@ export const FieldCategorical: Component<{
   metadata: FieldMetadata;
 }> = (props) => {
   return (
-    <Show when={props.value !== null && props.value !== undefined}>
+    <Show when={props.value != null}>
       <Show when={props.value!.description} fallback={<span>{props.value!.label}</span>}>
         {(description) => <Abbr title={description()} value={props.value!.label} />}
       </Show>

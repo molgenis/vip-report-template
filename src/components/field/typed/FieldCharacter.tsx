@@ -5,7 +5,7 @@ export const FieldCharacter: Component<{
   value: ValueString | undefined;
 }> = (props) => {
   return (
-    <Show when={props.value !== null && props.value !== undefined}>
+    <Show when={props.value != null}>
       <span>{props.value as string}</span>
     </Show>
   );

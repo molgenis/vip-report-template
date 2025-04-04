@@ -6,20 +6,17 @@ import { FieldGenotypeSnvSv } from "./FieldGenotypeSnvSv.tsx";
 export const FieldGenotypeStr: Component<{
   value: CellValueGenotype;
 }> = (props) => {
-  const showGenotype = () =>
-    props.value.displayRepeatUnit !== undefined &&
-    props.value.repeatUnitValue !== undefined &&
-    props.value.repeatCount !== undefined &&
-    props.value.repeatUnitMatch !== undefined;
+  const showGenotype = () => props.value.repeatUnitValue != null && props.value.repeatCount != null;
 
   return (
     <Show when={showGenotype()} fallback={<FieldGenotypeSnvSv value={props.value} />}>
-      <abbr title={`display repeat unit familiar to clinician: ${props.value.displayRepeatUnit!}`}>
-        <Allele value={props.value.repeatUnitValue!} isAbbreviate={false} />
-        <sub>n</sub>
-      </abbr>
+      <Show when={props.value.displayRepeatUnit != null} fallback={<AlleleStr value={props.value.repeatUnitValue!} />}>
+        <abbr title={`display repeat unit familiar to clinician: ${props.value.displayRepeatUnit!}`}>
+          <AlleleStr value={props.value.repeatUnitValue!} />
+        </abbr>
+      </Show>
       <span class="ml-1">{`(n=${props.value.repeatCount!})`}</span>
-      <Show when={!props.value.repeatUnitMatch!}>
+      <Show when={props.value.repeatUnitMatch === false}>
         <abbr
           title={"the called repeat unit does not match the repeat unit in the loci bed file"}
           class="ml-1 is-clickable"
@@ -28,5 +25,16 @@ export const FieldGenotypeStr: Component<{
         </abbr>
       </Show>
     </Show>
+  );
+};
+
+const AlleleStr: Component<{
+  value: string;
+}> = (props) => {
+  return (
+    <>
+      <Allele value={props.value} isAbbreviate={false} />
+      <sub>n</sub>
+    </>
   );
 };
