@@ -32,7 +32,7 @@ export const samples100 = {
   samples: [
     {
       person: {
-        familyId: "MISSING_0",
+        familyId: "FAM001",
         individualId: "SAMPLE0",
         paternalId: "0",
         maternalId: "0",
@@ -44,7 +44,7 @@ export const samples100 = {
     },
     {
       person: {
-        familyId: "MISSING_1",
+        familyId: "FAM001",
         individualId: "SAMPLE1",
         paternalId: "0",
         maternalId: "0",
@@ -56,7 +56,7 @@ export const samples100 = {
     },
     {
       person: {
-        familyId: "MISSING_2",
+        familyId: "FAM001",
         individualId: "SAMPLE2",
         paternalId: "0",
         maternalId: "0",

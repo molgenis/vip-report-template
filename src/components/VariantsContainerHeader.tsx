@@ -32,21 +32,14 @@ export const VariantsContainerHeader: Component<{
     if (props.sample) {
       const sampleFather = props.sample.paternalSample;
       const sampleMother = props.sample.maternalSample;
-      const sampleOtherFamilyMembers = props.sample.otherPedigreeSamples;
 
-      if (!(sampleFather === null && sampleMother === null && sampleOtherFamilyMembers.length === 0)) {
+      if (sampleFather !== null || sampleMother !== null) {
         const tokens: string[] = [];
         if (sampleMother !== null) {
           tokens.push(`mother (${getTitleAffectedStatusLabel(sampleMother)})`);
         }
         if (sampleFather !== null) {
           tokens.push(`father (${getTitleAffectedStatusLabel(sampleFather)})`);
-        }
-
-        for (const familyMember of sampleOtherFamilyMembers) {
-          tokens.push(
-            `${getSampleLabel(familyMember)} (${getTitleSampleSexLabel(familyMember)} ${getTitleAffectedStatusLabel(familyMember)})`,
-          );
         }
 
         let str = tokens.pop() as string;
