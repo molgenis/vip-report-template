@@ -26,7 +26,7 @@ export const FieldGnomAd: Component<{
 
   const lowCoverage = () => {
     const cov = gnomAdCov();
-    return cov !== undefined && cov !== null && cov < 0.5;
+    return cov != null && cov < 0.5;
   };
 
   return (

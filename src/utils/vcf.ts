@@ -89,7 +89,7 @@ function mapFieldValue(value: Value | Genotype | undefined, fieldMetadata: Field
   } else if (fieldMetadata.number.count === 1) {
     definedValue = value !== undefined ? value : null;
   } else {
-    definedValue = value !== undefined && value !== null ? value : [];
+    definedValue = value != null ? value : [];
   }
   return mapFieldValueDefined(definedValue, fieldMetadata);
 }
