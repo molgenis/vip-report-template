@@ -127,14 +127,17 @@ function createConfigFieldCustomGene(
   config: ConfigJsonFieldComposed,
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueGene> | null {
-  const [fieldSymbol, fieldGene, fieldIncPen, fieldSymbolSource] = getInfoNestedFields(
-    metadata,
-    "CSQ",
-    "SYMBOL",
-    "Gene",
-    "IncompletePenetrance",
-    "SYMBOL_SOURCE",
-  );
+  const [fieldSymbol, fieldGene, fieldIncPen, fieldRNA_zScore, fieldRNA_FR_pValue, fieldSymbolSource] =
+    getInfoNestedFields(
+      metadata,
+      "CSQ",
+      "SYMBOL",
+      "Gene",
+      "IncompletePenetrance",
+      "RNA_zScore",
+      "RNA_FR_pValue",
+      "SYMBOL_SOURCE",
+    );
   if (fieldSymbol === undefined) return null;
 
   return {
@@ -144,19 +147,30 @@ function createConfigFieldCustomGene(
     description: () => getDescription(config),
     valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldSymbol),
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueGene => {
-      const [symbol, geneIdentifier, incompletePenetrance, symbolSource] = getInfoValues(
+      const [symbol, geneIdentifier, incompletePenetrance, RNA_zScore, RNA_FR_pValue, symbolSource] = getInfoValues(
         record,
         valueIndex,
         fieldSymbol,
         fieldGene,
         fieldIncPen,
+        fieldRNA_zScore,
+        fieldRNA_FR_pValue,
         fieldSymbolSource,
-      ) as [ValueString, ValueString | undefined, ValueCategorical | undefined, ValueString | undefined];
+      ) as [
+        ValueString,
+        ValueString | undefined,
+        ValueCategorical | undefined,
+        ValueString | undefined,
+        ValueString | undefined,
+        ValueString | undefined,
+      ];
 
       return {
         symbol,
         geneIdentifier,
         incompletePenetrance,
+        RNA_zScore,
+        RNA_FR_pValue,
         symbolSource,
       };
     },

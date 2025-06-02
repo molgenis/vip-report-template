@@ -15,8 +15,8 @@ importers:
         specifier: ^6.7.1
         version: 6.7.1
       '@molgenis/vip-report-api':
-        specifier: ^6.2.2
-        version: 6.2.2
+        specifier: file:C:\Users\bartc\WebstormProjects\vip-report-api
+        version: file:../vip-report-api
       '@molgenis/vip-report-vcf':
         specifier: ^3.1.0
         version: 3.1.0
@@ -407,12 +407,16 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@molgenis/vip-report-api@6.2.2':
-    resolution: {integrity: sha512-xgBFDRlNIopdsadeJROAv5jvl1vlI8NkyyAJL4YDP/jF9v/RONrX2tOooA1/I4miVK2+MJxI5tGjBcMhg9rsIw==}
+  '@molgenis/vip-report-api@file:../vip-report-api':
+    resolution: {directory: ../vip-report-api, type: directory}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vip-report-vcf@3.1.0':
     resolution: {integrity: sha512-z/UC8eJBYo/fUwlzYDTBiOpACBmoC9UqWeW5YW/9+V1gw6Dni2ysMdh8T0ANJPkqmik57iar2PK0BO6X3O1SWA==}
+    engines: {node: '22', pnpm: '9'}
+
+  '@molgenis/vip-report-vcf@3.1.1':
+    resolution: {integrity: sha512-s0nLN9IuqLrwP64cCCdWEySHPZMPCsqX3cAkuaTCdspU7WOeF5P6WmwtSH1cnOh4PCXt66aVBv2Ck2kz5c1Sxg==}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vite-plugin-inline@1.0.27':
@@ -2009,11 +2013,13 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@6.2.2':
+  '@molgenis/vip-report-api@file:../vip-report-api':
     dependencies:
-      '@molgenis/vip-report-vcf': 3.1.0
+      '@molgenis/vip-report-vcf': 3.1.1
 
   '@molgenis/vip-report-vcf@3.1.0': {}
+
+  '@molgenis/vip-report-vcf@3.1.1': {}
 
   '@molgenis/vite-plugin-inline@1.0.27(vite@5.4.11(@types/node@22.9.3)(sass@1.81.0))':
     dependencies:

@@ -2,8 +2,8 @@ import { Component, onCleanup, onMount } from "solid-js";
 import igv, { Browser } from "igv";
 import { fromByteArray } from "base64-js";
 import { VcfRecord, writeVcf } from "@molgenis/vip-report-vcf";
-import { ComposedQuery, Cram, Item, Sample } from "@molgenis/vip-report-api";
-import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, MetadataContainer } from "../utils/api.ts";
+import { ComposedQuery, Cram, Item, Rna, Sample } from "@molgenis/vip-report-api";
+import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, fetchRna, MetadataContainer } from "../utils/api.ts";
 
 async function fetchVcf(
   metadata: MetadataContainer,
@@ -88,6 +88,7 @@ const createBrowserConfig = async (
 };
 
 const updateBrowser = async (browser: Browser, samples: Item<Sample>[]): Promise<void> => {
+  console.log("HIER 0");
   const data = await Promise.all([...samples.map((sample) => fetchCram(sample.data.person.individualId))]);
   const crams = data.slice(0);
 
@@ -106,6 +107,53 @@ const updateBrowser = async (browser: Browser, samples: Item<Sample>[]): Promise
         colorBy: "strand",
       });
     }
+
+    const rna_datas = await Promise.all([...samples.map((sample) => fetchRna(sample.data.person.individualId))]);
+    const rna_data = rna_datas.slice(0);
+    for (let i = 0; i < samples.length; ++i) {
+      const rna = rna_data[i] as Rna | null;
+      console.log("HIER 1");
+      if (rna !== null) {
+        const sampleId = samples[i]!.data.person.individualId;
+        await browser.loadTrack({
+          type: "merged",
+          name: `Junctions + Coverage (${sampleId})`,
+          height: 150,
+          tracks: [
+            {
+              type: "junction",
+              name: "Junctions",
+              format: "bed",
+              url: "data:application/octet-stream;base64," + +fromByteArray(rna.bed),
+              displayMode: "COLLAPSED",
+              minUniquelyMappedReads: 1,
+              minTotalReads: 1,
+              maxFractionMultiMappedReads: 1,
+              minSplicedAlignmentOverhang: 0,
+              thicknessBasedOn: "numUniqueReads", //options: numUniqueReads (default), numReads, isAnnotatedJunction
+              bounceHeightBasedOn: "random", //options: random (default), distance, thickness
+              colorBy: "isAnnotatedJunction", //options: numUniqueReads (default), numReads, isAnnotatedJunction, strand, motif
+              labelUniqueReadCount: true,
+              labelMultiMappedReadCount: true,
+              labelTotalReadCount: false,
+              labelMotif: false,
+              labelIsAnnotatedJunction: " [A]",
+              hideAnnotatedJunctions: false,
+              hideUnannotatedJunctions: false,
+              hideMotifs: ["GT/AT", "non-canonical"], //options: 'GT/AG', 'CT/AC', 'GC/AG', 'CT/GC', 'AT/AC', 'GT/AT', 'non-canonical'
+              height: 150,
+            },
+            {
+              type: "wig",
+              name: "Coverage",
+              format: "bigwig",
+              url: "data:application/octet-stream;base64," + fromByteArray(rna.bw),
+              height: 150,
+            },
+          ],
+        });
+      }
+    }
   }
 };
 
@@ -119,7 +167,9 @@ export const GenomeBrowser: Component<{
   onMount(() => {
     (async () => {
       const config = await createBrowserConfig(props.metadata, props.record, props.samples);
+      console.log("????");
       if (config !== null) {
+        console.log("????!!!!");
         browser = await igv.createBrowser(divRef, config);
         await updateBrowser(browser, props.samples);
       }

@@ -32,6 +32,16 @@ export const FieldGene: Component<{
               </Show>
             </span>
           )}
+          {props.value.RNA_zScore !== null && (
+            <span class="ml-1">
+              <Abbr title={"RNA expression outlier"} value=" EXP" />
+            </span>
+          )}
+          {props.value.RNA_FR_pValue !== null && (
+            <span class="ml-1">
+              <Abbr title={"RNA Splice outlier"} value=" SPL" />
+            </span>
+          )}
         </>
       )}
     </Show>

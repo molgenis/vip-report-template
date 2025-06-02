@@ -10,6 +10,8 @@ export type CellValueClinVar = {
 export type CellValueGene = {
   geneIdentifier: ValueString | undefined;
   incompletePenetrance: ValueCategorical | undefined;
+  RNA_zScore: ValueString | undefined;
+  RNA_FR_pValue: ValueString | undefined;
   symbol: ValueString;
   symbolSource: ValueString | undefined;
 };

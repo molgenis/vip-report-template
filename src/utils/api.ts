@@ -1,6 +1,7 @@
 import {
   AppMetadata,
   Cram,
+  Rna,
   DecisionTree,
   HtsFileMetadata,
   Item,
@@ -177,6 +178,11 @@ export async function fetchGenesGz(): Promise<Uint8Array | null> {
 export async function fetchCram(sampleId: string): Promise<Cram | null> {
   console.log("Api.fetchCram", sampleId);
   return api.getCram(sampleId);
+}
+
+export async function fetchRna(sampleId: string): Promise<Rna | null> {
+  console.log("Api.fetchRna", sampleId);
+  return api.getRna(sampleId);
 }
 
 async function fetchSampleContainer(sample: Item<Sample>): Promise<SampleContainer> {
