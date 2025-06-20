@@ -128,16 +128,7 @@ function createConfigFieldCustomGene(
   metadata: VcfMetadataContainer,
 ): ConfigCellCustom<CellValueGene> | null {
   const [fieldSymbol, fieldGene, fieldIncPen, fieldRNA_zScore, fieldRNA_FR_pValue, fieldSymbolSource] =
-    getInfoNestedFields(
-      metadata,
-      "CSQ",
-      "SYMBOL",
-      "Gene",
-      "IncompletePenetrance",
-      "RNA_zScore",
-      "RNA_FR_pValue",
-      "SYMBOL_SOURCE",
-    );
+    getInfoNestedFields(metadata, "CSQ", "SYMBOL", "Gene", "IncompletePenetrance", "SYMBOL_SOURCE");
   if (fieldSymbol === undefined) return null;
 
   return {
