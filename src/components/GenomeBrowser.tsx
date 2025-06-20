@@ -124,7 +124,7 @@ const updateBrowser = async (browser: Browser, samples: Item<Sample>[]): Promise
               type: "junction",
               name: "Junctions",
               format: "bed",
-              url: "data:application/octet-stream;base64," + +fromByteArray(rna.bed),
+              url: "data:application/octet-stream;base64," + fromByteArray(rna.bed),
               displayMode: "COLLAPSED",
               minUniquelyMappedReads: 1,
               minTotalReads: 1,
