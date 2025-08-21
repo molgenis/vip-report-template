@@ -8,6 +8,8 @@ export const FieldGenotype: Component<{
   metadata: FieldMetadata;
   value: CellValueGenotype;
 }> = (props) => {
+  console.log("testje");
+  console.log(props.value);
   // add genotype fields with composed rendering here
   return (
     <Switch fallback={<FieldTyped metadata={props.metadata} value={props.value as Value} />}>

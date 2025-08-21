@@ -36,6 +36,8 @@ export const Field: Component<{
 }> = (props) => {
   const type = () => props.config.type;
 
+  console.log("HHHHHH");
+
   return (
     <Switch fallback={<ErrorNotification error={`unexpected field type ${type()}`} />}>
       <Match when={type() === "chrom"}>

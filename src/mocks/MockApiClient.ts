@@ -34,6 +34,7 @@ import {
   decisionTreeStr as decisionTreeStrGRCh38,
   fetchCrai as fetchCraiGRCh38,
   fetchCram as fetchCramGRCh38,
+  fetchDatabase,
   fetchFastaGz as fetchFastaGzGRCh38,
   fetchGenesGz as fetchGenesGzGRCh38,
   fetchStrCrai as fetchStrCraiGRCh38,
@@ -126,7 +127,10 @@ export class MockApiClient implements Api {
 
   async getRecords(params: Params): Promise<PagedItems<VcfRecord>> {
     const apiClient = await this.getApiClient();
-    return apiClient.getRecords(params);
+
+    const records = apiClient.getRecords(params);
+    console.log(records);
+    return records;
   }
 
   async getRecordsMeta(): Promise<VcfMetadata> {
@@ -229,6 +233,7 @@ async function fetchReportDataGRCh37Family(): Promise<ReportData> {
         },
       },
     },
+    database: await fetchDatabase(),
     decisionTree: decisionTreeGRCh37,
     sampleTree: sampleTreeGRCh37,
     vcfMeta: vcfMetaGRCh37,

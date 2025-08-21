@@ -7,7 +7,7 @@ export default defineConfig(({ command }) => ({
   esbuild: {
     // @molgenis/vite-plugin-inline requires ascii input and cannot handle UTF-8 input
     charset: "ascii",
-    pure: command === "build" ? ["console.log"] : [],
+    pure: command === "build" ? [] : [],
   },
   build: {
     modulePreload: false,

@@ -6,6 +6,7 @@ import {
   RecordSample,
   Value,
   ValueDescription,
+  ValueObject,
   ValueString,
   VcfMetadata,
   VcfRecord,
@@ -89,7 +90,7 @@ function mapFieldValue(value: Value | Genotype | undefined, fieldMetadata: Field
   } else if (fieldMetadata.number.count === 1) {
     definedValue = value !== undefined ? value : null;
   } else {
-    definedValue = value !== undefined && value !== null ? value : [];
+    definedValue = value !== undefined && value !== null && value !== "" ? value : [];
   }
   return mapFieldValueDefined(definedValue, fieldMetadata);
 }
@@ -100,6 +101,7 @@ function getFieldValue(
   fieldMetadata: FieldMetadataWrapper,
 ): FieldValue {
   let value: Value | Genotype | undefined;
+  let multiValueArray; //FIXME
   if (fieldMetadata.parent) {
     if (fieldMetadata.parent.id in valueContainer) {
       const parentValue = valueContainer[fieldMetadata.parent.id]!;
@@ -112,11 +114,15 @@ function getFieldValue(
       } else {
         if (parentValueArray.length < valueIndex) throw new RuntimeError();
         const multiValue = parentValueArray[valueIndex]!;
-        if (!Array.isArray(multiValue)) throw new InvalidVcfError();
-        const multiValueArray = multiValue as Value[];
-
-        if (multiValueArray.length < fieldMetadata.index) throw new InvalidVcfError();
-        value = multiValueArray[fieldMetadata.index]!;
+        if (!Array.isArray(multiValue)) {
+          multiValueArray = multiValue as ValueObject;
+          if (multiValueArray === null) throw new InvalidVcfError();
+          value = multiValueArray[fieldMetadata.id]!;
+        } else {
+          multiValueArray = multiValue as Value[];
+          if (multiValueArray.length < fieldMetadata.index) throw new InvalidVcfError();
+          value = multiValueArray[fieldMetadata.index]!;
+        }
       }
     } else {
       value = undefined;
@@ -188,7 +194,7 @@ function createCategoricalValue(infoMetadata: FieldMetadata, value: ValueString)
   if (infoMetadata.categories === undefined) throw new RuntimeError();
 
   let valueDescription: ValueDescription | null;
-  if (value !== null) {
+  if (value !== null && value !== "") {
     if (!(value in infoMetadata.categories)) {
       throw new RuntimeError(
         `invalid categorical field '${infoMetadata.id}' value '${value}' is not one of [${Object.keys(infoMetadata.categories).join(", ")}]`,

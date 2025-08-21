@@ -369,6 +369,11 @@
       "type": "LEAF",
       "class": "LB"
     },
+    "exit_lt": {
+      "label": "Likely T",
+      "type": "LEAF",
+      "class": "LT"
+    },
     "exit_vus": {
       "label": "Unknown Significance",
       "type": "LEAF",
