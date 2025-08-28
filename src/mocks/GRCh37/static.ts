@@ -118,38 +118,14 @@ export const samplesFamily = {
     {
       person: {
         familyId: "FAM001",
-        individualId: "Patient",
-        paternalId: "Father",
-        maternalId: "MotherHasQuiteALongName",
+        individualId: "sample0",
+        paternalId: "0",
+        maternalId: "0",
         sex: "MALE",
         affectedStatus: "AFFECTED",
       },
       index: 0,
       proband: true,
-    },
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "MotherHasQuiteALongName",
-        paternalId: "0",
-        maternalId: "0",
-        sex: "FEMALE",
-        affectedStatus: "UNAFFECTED",
-      },
-      index: 2,
-      proband: false,
-    },
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Father",
-        paternalId: "0",
-        maternalId: "0",
-        sex: "MALE",
-        affectedStatus: "UNAFFECTED",
-      },
-      index: 1,
-      proband: false,
     },
   ],
   phenotypes: [
@@ -157,8 +133,8 @@ export const samplesFamily = {
       phenotypicFeaturesList: [
         {
           type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
+            id: "HP:0001627",
+            label: "HP:0001627",
           },
         },
         {
@@ -169,20 +145,7 @@ export const samplesFamily = {
         },
       ],
       subject: {
-        id: "Patient",
-      },
-    },
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-      ],
-      subject: {
-        id: "MotherHasQuiteALongName",
+        id: "sample0",
       },
     },
   ],

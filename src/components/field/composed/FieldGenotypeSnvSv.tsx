@@ -23,8 +23,6 @@ function getTitle(allelicImbalance: boolean) {
 export const FieldGenotypeSnvSv: Component<{
   value: CellValueGenotype;
 }> = (props) => {
-  console.log("?????");
-
   const refAllele = () => props.value.refAllele;
   const altAlleles = () => props.value.altAlleles;
   const genotype = () => props.value.genotype;
