@@ -17,25 +17,10 @@ export function createInfoSortPath(field: FieldMetadata): SortPath {
 
 function selector(field: FieldMetadata): SelectorPart[] {
   const selector: Selector = [];
-  let currentField: FieldMetadata | undefined = field;
-  do {
-    if (currentField.parent && currentField.parent.nested) {
-      const items = currentField.parent.nested.items;
-      let i;
-      for (i = 0; i < items.length; ++i) {
-        if (items[i]!.id === currentField.id) {
-          break;
-        }
-      }
-      selector.push(i);
-      if (currentField.parent.number.count !== 1) {
-        selector.push("*");
-      }
-    } else {
-      selector.push(currentField.id);
-    }
-    currentField = currentField.parent;
-  } while (currentField);
-  selector.reverse();
+  const currentField: FieldMetadata | undefined = field;
+  if (currentField.parent) {
+    selector.push(currentField.parent.id);
+  }
+  selector.push(currentField.id);
   return selector;
 }

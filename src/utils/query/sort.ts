@@ -68,10 +68,10 @@ function createField(property: string | SortPath, recordsMeta: VcfMetadata): Fie
 
   if (path.length === 3) {
     const pathIndex = path[2];
-    if (typeof pathIndex !== "number") throw new InvalidSortPathError(path);
+    if (typeof pathIndex !== "string") throw new InvalidSortPathError(path);
     if (field.nested === undefined) throw new InvalidSortPathError(path);
 
-    field = field.nested.items[pathIndex];
+    field = field.nested.items.find((item) => item.id === path[2]);
     if (field === undefined) throw new InvalidSortPathError(path);
   }
   return field;
