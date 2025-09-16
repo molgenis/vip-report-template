@@ -2,7 +2,6 @@ import {
   AppMetadata,
   Cram,
   DecisionTree,
-  HtsFileMetadata,
   Item,
   Json,
   PagedItems,
@@ -10,7 +9,7 @@ import {
   PhenotypicFeature,
   Query,
   Sample,
-  WindowApiClient,
+  WindowApiClient
 } from "@molgenis/vip-report-api";
 import { isSampleFather, isSampleMother } from "./sample.ts";
 import { NestedFieldMetadata, Value, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
@@ -31,7 +30,6 @@ export type VcfMetadataContainer = VcfMetadata & {
  */
 export type MetadataContainer = {
   app: AppMetadata;
-  htsFile: HtsFileMetadata;
   records: VcfMetadataContainer;
   variantTypeIds: Set<VariantTypeId>;
 };
@@ -89,9 +87,8 @@ export async function fetchSamples(params: Params): Promise<PagedItems<SampleCon
  */
 export async function fetchMetadata(): Promise<MetadataContainer> {
   console.log("Api.fetchMetadata");
-  const [appMetadata, htsFileMetadata, recordsMetadata, variantTypeIds] = await Promise.all([
+  const [appMetadata, recordsMetadata, variantTypeIds] = await Promise.all([
     api.getAppMetadata(),
-    api.getHtsFileMetadata(),
     api.getRecordsMeta(),
     fetchVariantTypeIdsQuery(),
   ]);
@@ -99,7 +96,7 @@ export async function fetchMetadata(): Promise<MetadataContainer> {
   // precompute field map
   const fieldMap = createFieldMap(recordsMetadata);
 
-  return { app: appMetadata, htsFile: htsFileMetadata, records: { ...recordsMetadata, fieldMap }, variantTypeIds };
+  return { app: appMetadata, records: { ...recordsMetadata, fieldMap }, variantTypeIds };
 }
 
 /**
@@ -180,6 +177,7 @@ export async function fetchCram(sampleId: string): Promise<Cram | null> {
 }
 
 async function fetchSampleContainer(sample: Item<Sample>): Promise<SampleContainer> {
+  //FIXME
   const [pedigreeSamples, phenotypicFeatures, variantTypeIds] = await Promise.all([
     fetchPedigreeSamples(sample),
     fetchPhenotypicFeatures(sample),
@@ -232,8 +230,8 @@ async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedItems<Sa
     query: {
       operator: "and",
       args: [
-        { selector: ["person", "individualId"], operator: "!=", args: sample.data.person.individualId },
-        { selector: ["person", "familyId"], operator: "==", args: sample.data.person.familyId },
+        { selector: ["individualId"], operator: "!=", args: sample.data.person.individualId },
+        { selector: ["familyId"], operator: "==", args: sample.data.person.familyId },
       ],
     },
     size: Number.MAX_SAFE_INTEGER,
@@ -242,7 +240,7 @@ async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedItems<Sa
 
 async function fetchPhenotypicFeatures(sample: Item<Sample>): Promise<PhenotypicFeature[]> {
   const phenotypes = await api.getPhenotypes({
-    query: { selector: ["subject", "id"], operator: "==", args: sample.data.person.individualId },
+    query: { selector: ["sample", "individualId"], operator: "==", args: sample.data.person.individualId },
     size: Number.MAX_SAFE_INTEGER,
   });
   return phenotypes.items.map((item) => item.data).flatMap((phenotype) => phenotype.phenotypicFeaturesList);

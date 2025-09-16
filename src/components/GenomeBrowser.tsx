@@ -75,7 +75,7 @@ const createBrowserConfig = async (
 
   return {
     reference: {
-      id: metadata.htsFile.genomeAssembly,
+      id: "GRCh38",//FIXME: hardcoded
       name: "Reference",
       fastaURL: "data:application/gzip;base64," + fromByteArray(fastaGz),
       tracks: tracks,

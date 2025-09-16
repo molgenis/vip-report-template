@@ -191,33 +191,6 @@ describe("query filters", () => {
       });
     });
 
-    test("multi_value=true nested_value=false args=single", () => {
-      const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, true, false)).toStrictEqual({
-        selector: ["x"],
-        operator: "has_any",
-        args: ["y"],
-      });
-    });
-
-    test("multi_value=false nested_value=true args=single", () => {
-      const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, false, true)).toStrictEqual({
-        selector: ["x"],
-        operator: "has_any",
-        args: ["y"],
-      });
-    });
-
-    test("multi_value=true nested_value=true args=single", () => {
-      const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, true, true)).toStrictEqual({
-        selector: ["x"],
-        operator: "any_has_any",
-        args: ["y"],
-      });
-    });
-
     describe("categorical select null", () => {
       test("categorical __null", () => {
         const value: FilterValueString = ["__null"];

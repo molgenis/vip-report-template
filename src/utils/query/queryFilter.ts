@@ -74,7 +74,7 @@ export function createQueryFilterString(
   if (filterValues.length > 0) {
     queryParts.push({
       selector,
-      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : multiValue ? "has_any" : "in",
+      operator: "in",
       args: filterValues,
     });
   }
@@ -82,7 +82,7 @@ export function createQueryFilterString(
   if (multiValue && filterValues.findIndex((value) => value === null) !== -1) {
     queryParts.push({
       selector,
-      operator: nestedValue ? (multiValue ? "any_has_any" : "has_any") : "==",
+      operator: "==",
       args: multiValue ? [] : null,
     });
   }

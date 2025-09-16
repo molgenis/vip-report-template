@@ -467,6 +467,10 @@
         },
         {
           "type": "info",
+          "name": "CSQ/PICK"
+        },
+        {
+          "type": "info",
           "name": "CSQ/SYMBOL"
         },
         {
@@ -531,6 +535,10 @@
           "type": "info",
           "name": "CSQ/HPO",
           "label": "Gene-phenotype association (HPO)"
+        },
+        {
+          "type": "info",
+          "name": "CSQ/PICK"
         },
         {
           "type": "info",

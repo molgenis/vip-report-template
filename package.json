@@ -38,7 +38,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@molgenis/vip-report-api": "file:C:\\Users\\bartc\\WebstormProjects\\vip-report-api",
-    "@molgenis/vip-report-vcf": "^3.1.0",
+    "@molgenis/vip-report-vcf": "file:C:\\Users\\bartc\\WebstormProjects\\vip-report-vcf",
     "@solidjs/router": "^0.15.1",
     "ajv": "^8.17.1",
     "base64-js": "^1.5.1",

@@ -327,7 +327,6 @@ function createConfigFieldCustomInheritancePattern(
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueInheritanceModes> | null {
-  console.log("QWERTY");
   const fieldInhModesGene = getInfoNestedField(metadata, "CSQ", "InheritanceModesGene");
   if (fieldInhModesGene == null) return null;
   const fieldVic = sample ? getSampleField(metadata, "VIC") : undefined;
@@ -339,7 +338,6 @@ function createConfigFieldCustomInheritancePattern(
     description: () => getDescription(config, "Inheritance pattern"),
     valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldInhModesGene),
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueInheritanceModes => {
-      console.log(":::::::");
       const inhModesGene = getInfoValue(record, valueIndex, fieldInhModesGene) as ValueCategorical[];
       const vic = sample ? (getSampleValue(sample, record, valueIndex, fieldVic) as ValueFlag | undefined) : undefined;
 

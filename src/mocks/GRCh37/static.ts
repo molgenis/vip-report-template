@@ -42,7 +42,6 @@ import fastaUrlX_48932771_48933271 from "./fasta/X-48932771-48933271.fasta.gz.bl
 import fastaUrlY_2655391_2655891 from "./fasta/Y-2655391-2655891.fasta.gz.blob";
 import fastaUrlMT_15076_15576 from "./fasta/MT-15076-15576.fasta.gz.blob";
 import genesUrl from "./genes.gff.gz.blob";
-import vcfUrlFamily from "./vcf/family.vcf.blob";
 /* eslint-enable */
 import vcfMetaJson from "./field_metadata.json";
 import { fetchAsBytes } from "../utils";
@@ -109,10 +108,6 @@ export async function fetchGenesGz() {
 
 export const vcfMeta = vcfMetaJson as unknown as SupplementaryMetadata;
 
-export async function fetchVcfFamily() {
-  return await fetchAsBytes(vcfUrlFamily as string);
-}
-
 export const samplesFamily = {
   samples: [
     {
@@ -139,8 +134,8 @@ export const samplesFamily = {
         },
         {
           type: {
-            id: "HP:0003124",
-            label: "HP:0003124",
+            id: "HP:0000951",
+            label: "HP:0000951",
           },
         },
       ],

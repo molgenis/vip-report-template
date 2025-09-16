@@ -8,7 +8,7 @@ import { getMetadata } from "./views/data/data.tsx";
 // export for development purposes
 export function init(navigate: Navigator, location?: Location) {
   (async () => {
-    document.title = `VCF Report (${(await getMetadata()).htsFile.uri})`;
+    document.title = `VCF Report (FIXME)`;
     const sampleIds = await fetchSampleProbandIds();
     if (location === undefined || location.pathname === "/") {
       let components: (string | number)[];

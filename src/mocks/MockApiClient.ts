@@ -4,7 +4,6 @@ import {
   AppMetadata,
   Cram,
   DecisionTree,
-  HtsFileMetadata,
   Item,
   Json,
   Metadata,
@@ -14,7 +13,7 @@ import {
   ReportData,
   Sample,
 } from "@molgenis/vip-report-api";
-import { parseVcf, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 import configCram from "./config_cram.json";
 import configVcf from "./config_vcf.json";
 import { samples1, samples100 } from "./static";
@@ -24,7 +23,6 @@ import {
   fetchCram as fetchCramGRCh37,
   fetchFastaGz as fetchFastaGzGRCh37,
   fetchGenesGz as fetchGenesGzGRCh37,
-  fetchVcfFamily as fetchVcfFamilyGRCh37,
   samplesFamily as samplesFamilyGRCh37,
   sampleTree as sampleTreeGRCh37,
   vcfMeta as vcfMetaGRCh37,
@@ -103,11 +101,6 @@ export class MockApiClient implements Api {
   async getSampleTree(): Promise<DecisionTree | null> {
     const apiClient = await this.getApiClient();
     return apiClient.getSampleTree();
-  }
-
-  async getHtsFileMetadata(): Promise<HtsFileMetadata> {
-    const apiClient = await this.getApiClient();
-    return apiClient.getHtsFileMetadata();
   }
 
   async getAppMetadata(): Promise<AppMetadata> {
@@ -199,65 +192,29 @@ async function createApiClient(id: string): Promise<Api> {
       throw new Error(`unknown dataset id '${id}'`);
   }
 
-  const vcf = parseVcf(new TextDecoder().decode(reportData.binary.vcf), reportData.vcfMeta);
-  reportData.metadata.records = vcf.metadata;
-  reportData.data.records = vcf.data;
-
   return new ApiClient(reportData);
 }
 
 async function fetchReportDataGRCh37Family(): Promise<ReportData> {
   return {
-    config: configVcf as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b37_vip.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "/path/to/testdata_b37_vip.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh37",
-      },
-    } as Metadata,
-    data: samplesFamilyGRCh37,
     binary: {
-      vcf: await fetchVcfFamilyGRCh37(),
-      fastaGz: await fetchFastaGzGRCh37(),
-      genesGz: await fetchGenesGzGRCh37(),
+      fastaGz: await fetchFastaGzGRCh38(),
+      genesGz: await fetchGenesGzGRCh38(),
       cram: {
         Patient: {
-          cram: await fetchCramGRCh37(),
-          crai: await fetchCraiGRCh37(),
+          cram: await fetchCramGRCh38(),
+          crai: await fetchCraiGRCh38(),
         },
       },
     },
     database: await fetchDatabase(),
-    decisionTree: decisionTreeGRCh37,
-    sampleTree: sampleTreeGRCh37,
-    vcfMeta: vcfMetaGRCh37,
   };
 }
 
 async function fetchReportDataGRCh38Family(): Promise<ReportData> {
   return {
-    config: configVcf as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b38_vip.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "testdata_b38_vip.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh38",
-      },
-    } as Metadata,
-    data: samplesFamilyGRCh38,
+    database: undefined,
     binary: {
-      vcf: await fetchVcfFamilyGRCh38(),
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
       cram: {
@@ -267,30 +224,13 @@ async function fetchReportDataGRCh38Family(): Promise<ReportData> {
         },
       },
     },
-    decisionTree: decisionTreeGRCh38,
-    sampleTree: sampleTreeGRCh38,
-    vcfMeta: vcfMetaGRCh38,
   };
 }
 
 async function fetchReportDataGRCh38FamilyNoVep() {
   return {
-    config: configVcf as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b38.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "testdata_b38.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh38",
-      },
-    } as Metadata,
-    data: samplesFamilyGRCh38,
+    database: undefined,
     binary: {
-      vcf: await fetchVcfNoVepGRCh38(),
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
       cram: {
@@ -300,30 +240,13 @@ async function fetchReportDataGRCh38FamilyNoVep() {
         },
       },
     },
-    decisionTree: decisionTreeGRCh38,
-    sampleTree: sampleTreeGRCh38,
-    vcfMeta: vcfMetaGRCh38,
   };
 }
 
 async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
   return {
-    config: configVcf as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b38_1Sample.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "testdata_b38_1Sample.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh38",
-      },
-    } as Metadata,
-    data: samples1,
+    database: undefined,
     binary: {
-      vcf: await fetchVcfSamples1GRCh38(),
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
       cram: {
@@ -333,57 +256,23 @@ async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
         },
       },
     },
-    decisionTree: decisionTreeGRCh38,
-    sampleTree: sampleTreeGRCh38,
-    vcfMeta: vcfMetaGRCh38,
   };
 }
 
 async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
   return {
-    config: configVcf as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b38_100Samples.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "testdata_b38_100Samples.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh38",
-      },
-    } as Metadata,
-    data: samples100,
+    database: undefined,
     binary: {
-      vcf: await fetchVcfSamples100GRCh38(),
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
     },
-    decisionTree: decisionTreeGRCh38,
-    sampleTree: sampleTreeGRCh38,
-    vcfMeta: vcfMetaGRCh38,
   };
 }
 
 async function fetchReportDataGRCh38Str(): Promise<ReportData> {
   return {
-    config: configCram as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b38_100Samples.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "testdata_b38_100Samples.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh38",
-      },
-    } as Metadata,
-    data: samplesStr,
+    database: undefined,
     binary: {
-      vcf: await fetchVcfStrGRCh38(),
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
       cram: {
@@ -393,35 +282,15 @@ async function fetchReportDataGRCh38Str(): Promise<ReportData> {
         },
       },
     },
-    decisionTree: decisionTreeStrGRCh38,
-    sampleTree: sampleTreeGRCh38,
-    vcfMeta: vcfMetaGRCh38,
   };
 }
 
 async function fetchReportDataGRCh38NoSample(): Promise<ReportData> {
   return {
-    config: configVcf as unknown as Json,
-    metadata: {
-      app: {
-        name: "vcf-report",
-        version: "0.0.8",
-        args: "-i testdata_b38_1NoSamples.vcf -t /Users/user/vip-report-template/dist/vip-report-template.html -f",
-      },
-      htsFile: {
-        uri: "testdata_b38_NoSamples.vcf",
-        htsFormat: "VCF",
-        genomeAssembly: "GRCh38",
-      },
-    } as Metadata,
-    data: { samples: [], phenotypes: [] },
+    database: undefined,
     binary: {
-      vcf: await fetchVcfSamples0GRCh38(),
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
-    },
-    decisionTree: decisionTreeGRCh38,
-    sampleTree: sampleTreeGRCh38,
-    vcfMeta: vcfMetaGRCh38,
+    }
   };
 }

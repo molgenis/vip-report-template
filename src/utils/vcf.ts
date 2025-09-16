@@ -134,7 +134,6 @@ function getFieldValue(
       value = undefined;
     }
   }
-
   return mapFieldValue(value, fieldMetadata);
 }
 
@@ -208,7 +207,7 @@ function createCategoricalValue(infoMetadata: FieldMetadata, value: ValueString)
 }
 
 function getRecordSample(sample: SampleContainer, record: Item<VcfRecord>): RecordSample {
-  const recordSample = record.data.s[sample.item.data.index];
+  const recordSample = record.data.s[sample.item.data.id];
   if (recordSample === undefined) throw new ArrayIndexOutOfBoundsException();
   return recordSample;
 }

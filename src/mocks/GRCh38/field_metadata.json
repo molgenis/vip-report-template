@@ -495,7 +495,7 @@
           "description": "Human Phenotype Ontology (HPO) terms describing phenotypic abnormalities, see https://hpo.jax.org/ and https://doi.org/10.1093/nar/gkad1005",
           "numberType": "OTHER",
           "separator": "&",
-          "type": "STRING"
+          "type": "CATEGORICAL"
         },
         "IMPACT": {
           "label": "Impact",
@@ -599,7 +599,7 @@
           "description": "Boolean indicating if this is the VEP picked transcript.",
           "numberType": "NUMBER",
           "numberCount": 1,
-          "type": "INTEGER"
+          "type": "FLAG"
         },
         "PolyPhen": {
           "label": "PolyPhen",
@@ -690,7 +690,7 @@
           "description": "Variant consequence classification predicted by the Variant Interpretation Pipeline (VIP), see https://vip.molgeniscloud.org/ and https://doi.org/10.1101/2024.04.11.24305656",
           "numberType": "NUMBER",
           "numberCount": 1,
-          "type": "STRING",
+          "type": "CATEGORICAL",
           "required": true
         },
         "VIPP": {
@@ -759,7 +759,8 @@
             }
           }
         }
-      }
+      },
+      "separator": "|"
     },
     "STR_NORMAL_MAX": {
       "label": "STR normal max",
