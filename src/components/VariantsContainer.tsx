@@ -72,7 +72,7 @@ export const VariantsContainer: Component<{
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", createVcfDownloadFilename(props.metadata.htsFile));
+    link.setAttribute("download", createVcfDownloadFilename(props.metadata.app.htsFile));
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

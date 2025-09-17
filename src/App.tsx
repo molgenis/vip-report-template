@@ -4,11 +4,12 @@ import { DatasetDropdown } from "./components/DatasetDropdown";
 import { fetchSampleProbandIds, isDatasetSupport } from "./utils/api.ts";
 import { href } from "./utils/utils.ts";
 import { getMetadata } from "./views/data/data.tsx";
+import { HtsFileMetadata } from "@molgenis/vip-report-api";
 
 // export for development purposes
 export function init(navigate: Navigator, location?: Location) {
   (async () => {
-    document.title = `VCF Report (FIXME)`;
+    document.title = `VCF Report (${((await getMetadata()).app.htsFile as HtsFileMetadata).uri})`;
     const sampleIds = await fetchSampleProbandIds();
     if (location === undefined || location.pathname === "/") {
       let components: (string | number)[];
