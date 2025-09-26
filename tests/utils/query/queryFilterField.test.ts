@@ -46,7 +46,7 @@ describe("query filter fixed", () => {
 
     test("STRING count=* genotype", () => {
       const field = { id: "f", type: "STRING", number: { type: "OTHER" } } as FieldMetadata;
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { data: { id: 1 } } } as SampleContainer;
       const config = { type: "genotype", id: "filter", field, sample } as ConfigFilterFormat;
       const value = ["x"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);

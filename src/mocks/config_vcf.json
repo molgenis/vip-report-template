@@ -471,6 +471,10 @@
         },
         {
           "type": "info",
+          "name": "n_object0/n_string1"
+        },
+        {
+          "type": "info",
           "name": "CSQ/SYMBOL"
         },
         {

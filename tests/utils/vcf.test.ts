@@ -25,6 +25,7 @@ describe("vcf", () => {
   const recordBase = {
     id: 0,
     data: {
+      id: 1,
       c: "chr1",
       p: 0,
       i: [],
@@ -388,7 +389,7 @@ describe("vcf", () => {
   });
 
   describe("getSampleValue", () => {
-    const sample = { item: { data: { index: 1 } } } as SampleContainer;
+    const sample = { item: { data: { id: 1 } } } as SampleContainer;
 
     test("field", () => {
       const record = {
@@ -415,7 +416,7 @@ describe("vcf", () => {
   });
 
   describe("getSampleValues", () => {
-    const sample = { item: { data: { index: 1 } } } as SampleContainer;
+    const sample = { item: { data: { id: 1 } } } as SampleContainer;
 
     test("multiple fields", () => {
       const record = {
@@ -517,7 +518,7 @@ describe("vcf", () => {
     });
 
     test("getSampleValueCount count=*", () => {
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { data: { id: 1 } } } as SampleContainer;
 
       const record = {
         ...recordBase,

@@ -65,7 +65,7 @@ describe("sort utilities", () => {
   test("create record sort order from params sort order with nested path", () => {
     expect(
       createRecordSort(metadata, {
-        property: ["n", "n_object0", 1],
+        property: ["n", "n_object0", "n_string2"],
         compare: "asc",
       }),
     ).toStrictEqual({ orders: [{ field: nString2Meta, direction: DIRECTION_ASCENDING }] });

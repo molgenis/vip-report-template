@@ -104,7 +104,7 @@ describe("query composed filters", () => {
       const config = {
         type: "composed",
         id: "composed/allelicImbalance",
-        sample: { item: { data: { index: 1 } } } as SampleContainer,
+        sample: { item: { data: { id: 1 } } } as SampleContainer,
         viabField: { id: "VIAB" },
         genotypeField: { id: "GT" },
       } as ConfigFilterAllelicImbalance;
@@ -205,7 +205,7 @@ describe("query composed filters", () => {
       const config = {
         type: "composed",
         id: "composed/inheritanceMatch",
-        sample: { item: { data: { index: 1 } } } as SampleContainer,
+        sample: { item: { data: { id: 1 } } } as SampleContainer,
         vimField: { id: "VIM" },
       } as ConfigFilterInheritanceMatch;
 
@@ -259,7 +259,7 @@ describe("query composed filters", () => {
       const config = {
         type: "composed",
         id: "composed/deNovo",
-        sample: { item: { data: { index: 1 } } } as SampleContainer,
+        sample: { item: { data: { id: 1 } } } as SampleContainer,
         vidField: { id: "VID" },
       } as ConfigFilterDeNovo;
 
@@ -300,7 +300,7 @@ describe("query composed filters", () => {
     });
 
     test("vipCS", () => {
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { data: { id: 1 } } } as SampleContainer;
       const field = { id: "f", number: {}, categories: {} };
       const config = { type: "composed", id: "composed/vipCS", field, sample } as ConfigFilterVipCS;
       const value = ["chr1"] as FilterValueVipCS;

@@ -91,7 +91,31 @@
     }
   },
   "info": {
+    "n_object0": {
+      "nestedFields": {
+        "n_array1": {
+          "label": "Array",
+          "description": "Test array",
+          "numberType": "OTHER",
+          "separator": "&",
+          "type": "INTEGER",
+          "index": 2
+        },
+        "n_string1": {
+          "label": "String",
+          "description": "Test string",
+          "numberType": "NUMBER",
+          "numberCount": 1,
+          "type": "STRING",
+          "index": 0
+        }
+      }
+    },
     "CSQ": {
+      "nestedAttributes" : {
+        "prefix": "Consequence annotations from Ensembl VEP. Format: ",
+        "separator": "|"
+      },
       "nestedFields": {
         "ALLELE_NUM": {
           "label": "Allele Nr.",

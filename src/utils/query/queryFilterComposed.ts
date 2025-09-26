@@ -231,7 +231,7 @@ function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: Filter
     });
     queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
   }
-  return createQueryComposed(queryParts, "and");
+  return createQueryComposed(queryParts, "or");
 }
 
 function createQueryFilterVipC(filter: ConfigFilterVipC, filterValue: FilterValueVipC): Query {

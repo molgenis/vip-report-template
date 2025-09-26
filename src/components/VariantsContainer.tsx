@@ -1,5 +1,5 @@
 import { VariantFilters } from "./VariantFilters";
-import { Params } from "@molgenis/vip-report-api";
+import { HtsFileMetadata, Params } from "@molgenis/vip-report-api";
 import { Component, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantType.ts";
 import { useNavigate } from "@solidjs/router";
@@ -72,7 +72,7 @@ export const VariantsContainer: Component<{
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", createVcfDownloadFilename(props.metadata.app.htsFile));
+    link.setAttribute("download", createVcfDownloadFilename(props.metadata.app.htsFile as HtsFileMetadata));
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
