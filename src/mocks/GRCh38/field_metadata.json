@@ -827,6 +827,12 @@
       "numberType": "NUMBER",
       "numberCount": 1,
       "type": "STRING"
+    },
+    "VIPC_S": {
+      "label": "VIP sample classification",
+      "numberType": "OTHER",
+      "type": "CATEGORICAL",
+      "separator": ","
     }
   }
 }

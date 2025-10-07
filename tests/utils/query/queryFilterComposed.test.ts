@@ -106,7 +106,7 @@ describe("query composed filters", () => {
         id: "composed/allelicImbalance",
         sample: { item: { data: { id: 1 } } } as SampleContainer,
         viabField: { id: "VIAB" },
-        genotypeField: { id: "GT" },
+        genotypeField: { id: "GT_type" },
       } as ConfigFilterAllelicImbalance;
       const queryInterval: Query = { selector: "viab", operator: "==", args: "inside" };
       const queryIntervalClosed: Query = { selector: "viab", operator: "==", args: "outside" };
@@ -115,14 +115,14 @@ describe("query composed filters", () => {
         args: [
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "in", args: ["hom_a", "hom_r"] },
+              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_ALT", "HOM_REF"] },
               { selector: "viab", operator: "==", args: "inside" },
             ],
             operator: "and",
           },
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "==", args: "het" },
+              { selector: ["s", 1, "GT_type"], operator: "==", args: "HET" },
               { selector: "viab", operator: "==", args: "outside" },
             ],
             operator: "and",
@@ -146,14 +146,14 @@ describe("query composed filters", () => {
         args: [
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "in", args: ["hom_a", "hom_r"] },
+              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_ALT", "HOM_REF"] },
               { selector: "viab", operator: "==", args: "outside" },
             ],
             operator: "and",
           },
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "==", args: "het" },
+              { selector: ["s", 1, "GT_type"], operator: "==", args: "HET" },
               { selector: "viab", operator: "==", args: "inside" },
             ],
             operator: "and",

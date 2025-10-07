@@ -208,7 +208,7 @@
 ##contig=<ID=chrEBV,length=171823>
 ##fileDate=20200320
 ##reference=file:/groups/umcg-gcc/tmp01/umcg-testdata/../vip/resources/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
-#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Father	Mother	Nephew	Patient	Sister	Unrelated
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Father	MotherHasQuiteALongName	Nephew	Patient	Sister	Unrelated
 chr1	9982480	.	C	T	.	PASS	.	GT:DP:VIPC_S	0|0:10	0|0:50	0|0:50	1|0:50:U1	0|0:50	0|0:50
 chr1	16049917	n_alt	G	N	.	PASS	.	GT:DP:VIPC_S	1|0:11	0|0:50	0|0:50:U1	0|1:10	0|0:50	0|0:50
 chr1	17022720	star_alt	C	*	.	PASS	.	GT:DP:VIPC_S	0|0:50	0|0:50	0|0:50	1|0:50:U1	0|0:50	0|0:50

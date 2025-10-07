@@ -9,13 +9,11 @@ import {
   PhenotypicFeature,
   Query,
   Sample,
-  WindowApiClient
+  WindowApiClient,
 } from "@molgenis/vip-report-api";
 import { isSampleFather, isSampleMother } from "./sample.ts";
-import { NestedFieldMetadata, Value, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
-import { createRecordSort } from "./query/sort.ts";
-import { createFieldMap, FieldMap, isNumerical } from "./vcf.ts";
-import { compareCsq, compareCsqDefault } from "./csq.ts";
+import { VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { createFieldMap, FieldMap } from "./vcf.ts";
 import { VariantTypeId } from "./variantType.ts";
 import { MockApiClient } from "../mocks/MockApiClient.ts";
 import { ConfigJson } from "../types/config";
@@ -122,36 +120,12 @@ export async function fetchRecordById(id: number): Promise<Item<VcfRecord>> {
 
 export async function fetchRecords(params: Params): Promise<PagedItems<VcfRecord>> {
   console.log("Api.fetchRecords", JSON.stringify(params));
-  const [recordsMeta, records] = await Promise.all([api.getRecordsMeta(), api.getRecords(params)]);
-  if (recordsMeta.info.CSQ === undefined) {
-    return records;
-  }
+  return api.getRecords(params);
+}
 
-  const orders = createRecordSort(recordsMeta, params.sort).orders.filter(
-    (order) =>
-      order.field.parent?.id === "CSQ" &&
-      isNumerical(order.field) &&
-      order.field.number.type === "NUMBER" &&
-      order.field.number.count === 1,
-  );
-
-  const fieldMetas = (recordsMeta.info.CSQ.nested as NestedFieldMetadata).items;
-  const consequenceIndex = fieldMetas.findIndex((item) => item.id === "Consequence");
-  const pickIndex = fieldMetas.findIndex((item) => item.id === "PICK");
-
-  for (const record of records.items) {
-    const csqArray = record.data.n.CSQ as Value[][] | undefined;
-    if (csqArray) {
-      csqArray.sort((aValue, bValue) => {
-        for (const order of orders) {
-          const compareValue = compareCsq(aValue, bValue, order.field, order.direction);
-          if (compareValue !== 0) return compareValue;
-        }
-        return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
-      });
-    }
-  }
-  return records;
+export async function fetchRecordsWithoutSamples(params: Params): Promise<PagedItems<VcfRecord>> {
+  console.log("Api.fetchRecordsWithoutSamples", JSON.stringify(params));
+  return api.getRecordsWithoutSamples(params);
 }
 
 export async function fetchSampleProbandIds(): Promise<number[]> {
@@ -177,7 +151,6 @@ export async function fetchCram(sampleId: string): Promise<Cram | null> {
 }
 
 async function fetchSampleContainer(sample: Item<Sample>): Promise<SampleContainer> {
-  //FIXME
   const [pedigreeSamples, phenotypicFeatures, variantTypeIds] = await Promise.all([
     fetchPedigreeSamples(sample),
     fetchPhenotypicFeatures(sample),

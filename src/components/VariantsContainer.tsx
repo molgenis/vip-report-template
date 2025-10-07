@@ -7,7 +7,7 @@ import { initConfig } from "../utils/config/config.ts";
 import { createQuery } from "../utils/query/query.ts";
 import { PageChangeEvent } from "./Pager";
 import { writeVcf } from "@molgenis/vip-report-vcf";
-import { fetchRecords, MetadataContainer, SampleContainer } from "../utils/api.ts";
+import { fetchRecords, fetchRecordsWithoutSamples, MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { createVcfDownloadFilename } from "../utils/download.ts";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";
 import { SortChangeEvent } from "./Sort";
@@ -48,7 +48,7 @@ export const VariantsContainer: Component<{
       size: recordsPerPage(),
       sort: sort(),
     }),
-    fetchRecords,
+    props.sample !== null ? fetchRecords : fetchRecordsWithoutSamples,
   );
 
   const onFilterChange = (event: FilterChangeEvent) => {

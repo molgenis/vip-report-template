@@ -8,7 +8,7 @@ export const DatasetDropdown: Component = () => {
   const navigate = useNavigate();
   const [, actions] = useStore();
 
-  const [selectedDataset, setSelectedDataset] = createSignal("GRCh37 Family");
+  const [selectedDataset, setSelectedDataset] = createSignal("GRCh38 Family");
 
   function switchIt(datasetName: string) {
     actions.reset();

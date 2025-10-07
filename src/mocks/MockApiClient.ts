@@ -6,7 +6,6 @@ import {
   DecisionTree,
   Item,
   Json,
-  Metadata,
   PagedItems,
   Params,
   Phenotype,
@@ -14,39 +13,19 @@ import {
   Sample,
 } from "@molgenis/vip-report-api";
 import { VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
-import configCram from "./config_cram.json";
-import configVcf from "./config_vcf.json";
-import { samples1, samples100 } from "./static";
 import {
-  decisionTree as decisionTreeGRCh37,
-  fetchCrai as fetchCraiGRCh37,
-  fetchCram as fetchCramGRCh37,
-  fetchFastaGz as fetchFastaGzGRCh37,
-  fetchGenesGz as fetchGenesGzGRCh37,
-  samplesFamily as samplesFamilyGRCh37,
-  sampleTree as sampleTreeGRCh37,
-  vcfMeta as vcfMetaGRCh37,
-} from "./GRCh37/static";
-import {
-  decisionTree as decisionTreeGRCh38,
-  decisionTreeStr as decisionTreeStrGRCh38,
   fetchCrai as fetchCraiGRCh38,
   fetchCram as fetchCramGRCh38,
-  fetchDatabase,
+  fetchDatabaseFamily,
+  fetchDatabaseNoVep,
+  fetchDatabaseSamples0,
+  fetchDatabaseSamples1,
+  fetchDatabaseSamples100,
+  fetchDatabaseStr,
   fetchFastaGz as fetchFastaGzGRCh38,
   fetchGenesGz as fetchGenesGzGRCh38,
   fetchStrCrai as fetchStrCraiGRCh38,
   fetchStrCram as fetchStrCramGRCh38,
-  fetchVcfFamily as fetchVcfFamilyGRCh38,
-  fetchVcfNoVep as fetchVcfNoVepGRCh38,
-  fetchVcfSamples0 as fetchVcfSamples0GRCh38,
-  fetchVcfSamples1 as fetchVcfSamples1GRCh38,
-  fetchVcfSamples100 as fetchVcfSamples100GRCh38,
-  fetchVcfStr as fetchVcfStrGRCh38,
-  samplesFamily as samplesFamilyGRCh38,
-  samplesStr,
-  sampleTree as sampleTreeGRCh38,
-  vcfMeta as vcfMetaGRCh38,
 } from "./GRCh38/static";
 import AsyncLock from "async-lock";
 
@@ -57,7 +36,6 @@ const lock = new AsyncLock();
  */
 export class MockApiClient implements Api {
   private static dataSetIds = [
-    "GRCh37 Family",
     "GRCh38 Family",
     "GRCh38 Family no VEP",
     "GRCh38 Samples 0",
@@ -126,6 +104,14 @@ export class MockApiClient implements Api {
     return records;
   }
 
+  async getRecordsWithoutSamples(params: Params): Promise<PagedItems<VcfRecord>> {
+    const apiClient = await this.getApiClient();
+
+    const records = apiClient.getRecordsWithoutSamples(params);
+    console.log(records);
+    return records;
+  }
+
   async getRecordsMeta(): Promise<VcfMetadata> {
     const apiClient = await this.getApiClient();
     return apiClient.getRecordsMeta();
@@ -167,9 +153,6 @@ export class MockApiClient implements Api {
 async function createApiClient(id: string): Promise<Api> {
   let reportData: ReportData;
   switch (id) {
-    case "GRCh37 Family":
-      reportData = await fetchReportDataGRCh37Family();
-      break;
     case "GRCh38 Family":
       reportData = await fetchReportDataGRCh38Family();
       break;
@@ -195,25 +178,9 @@ async function createApiClient(id: string): Promise<Api> {
   return new ApiClient(reportData);
 }
 
-async function fetchReportDataGRCh37Family(): Promise<ReportData> {
-  return {
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      cram: {
-        Patient: {
-          cram: await fetchCramGRCh38(),
-          crai: await fetchCraiGRCh38(),
-        },
-      },
-    },
-    database: await fetchDatabase(),
-  };
-}
-
 async function fetchReportDataGRCh38Family(): Promise<ReportData> {
   return {
-    database: undefined,
+    database: await fetchDatabaseFamily(),
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
@@ -229,7 +196,7 @@ async function fetchReportDataGRCh38Family(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38FamilyNoVep() {
   return {
-    database: undefined,
+    database: await fetchDatabaseNoVep(),
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
@@ -245,7 +212,7 @@ async function fetchReportDataGRCh38FamilyNoVep() {
 
 async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
   return {
-    database: undefined,
+    database: await fetchDatabaseSamples1(),
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
@@ -261,7 +228,7 @@ async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
   return {
-    database: undefined,
+    database: await fetchDatabaseSamples100(),
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
@@ -271,7 +238,7 @@ async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38Str(): Promise<ReportData> {
   return {
-    database: undefined,
+    database: await fetchDatabaseStr(),
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
@@ -287,10 +254,10 @@ async function fetchReportDataGRCh38Str(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38NoSample(): Promise<ReportData> {
   return {
-    database: undefined,
+    database: await fetchDatabaseSamples0(),
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
-    }
+    },
   };
 }

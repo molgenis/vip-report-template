@@ -23,21 +23,44 @@ describe("query sample", () => {
         number: { type: "NUMBER", count: 1 },
         categories: {},
       } as FieldMetadata;
-      const classes = "VUS,LP,P";
+      const classes = "U1,U2";
       const config = { filter_field, params: { vcf: { filter_samples: { classes } } } } as ConfigVip;
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { id: 7, data: {} } } as SampleContainer;
 
       const selector = ["x"];
-      const query: Query = { selector, operator: "==", args: "y" };
+      const completeQuery: Query = {
+        args: [
+          {
+            args: ["7",],
+            operator: "in",
+            selector: ["s", "sample_id",],
+          },
+          {
+            args: "y",
+            operator: "==",
+            selector: ["x",],
+          },
+          {
+            args: "HOM_REF",
+            operator: "!=",
+            selector: ["s", "GT_type",],
+          },
+        ],
+        operator: "and",
+      };
+      const query: Query = {
+            args: "y",
+            operator: "==",
+            selector: ["x",],
+      };
       vi.mocked(createSelectorSample).mockReturnValue(selector);
       vi.mocked(createQueryFilterFieldCategorical).mockReturnValue(query);
 
-      expect(createQuerySample(config, sample)).toStrictEqual(query);
+      expect(createQuerySample(config, sample)).toStrictEqual(completeQuery);
       expect(createSelectorSample).toHaveBeenCalledWith(sample, filter_field);
       expect(createQueryFilterFieldCategorical).toHaveBeenCalledWith(selector, filter_field, [
-        "VUS",
-        "LP",
-        "P",
+        "U1",
+        "U2",
         "__null",
       ]);
     });
@@ -45,7 +68,7 @@ describe("query sample", () => {
     test("create without filter field", () => {
       const classes = "VUS,LP,P";
       const config = { filter_field: null, params: { vcf: { filter_samples: { classes } } } } as ConfigVip;
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { data: { id: 1 } } } as SampleContainer;
       expect(createQuerySample(config, sample)).toStrictEqual(null);
     });
   });
