@@ -83,8 +83,8 @@ function createQueryFilterAllelicImbalance(
   filterValue: FilterValueAllelicImbalance,
 ): Query {
   const viabSelector = createSelectorSample(filter.sample, filter.viabField);
-  const gtSelector = [...createSelectorSample(filter.sample, filter.genotypeField)];
-  console.log(gtSelector);
+  //GT_type is a technical field specific for the database, so no metadata present
+  const gtTypeSelector = ["s", filter.sample.item.data.id, "GT_type"];
   const queryParts: Query[] = [];
   if (filterValue.includes("true")) {
     const queryPartsTrue: Query[] = [];
@@ -93,7 +93,7 @@ function createQueryFilterAllelicImbalance(
         [
           {
             operator: "in",
-            selector: gtSelector,
+            selector: gtTypeSelector,
             args: ["HOM_ALT", "HOM_REF"],
           },
           createQueryFilterClosedInterval(viabSelector, { left: 0.02, right: 0.98 }),
@@ -106,7 +106,7 @@ function createQueryFilterAllelicImbalance(
         [
           {
             operator: "==",
-            selector: gtSelector,
+            selector: gtTypeSelector,
             args: "HET",
           },
           createQueryFilterClosedIntervalOutside(viabSelector, { left: 0.2, right: 0.8 }),
@@ -123,7 +123,7 @@ function createQueryFilterAllelicImbalance(
         [
           {
             operator: "in",
-            selector: gtSelector,
+            selector: gtTypeSelector,
             args: ["HOM_ALT", "HOM_REF"],
           },
           createQueryFilterClosedIntervalOutside(viabSelector, { left: 0.02, right: 0.98 }),
@@ -136,7 +136,7 @@ function createQueryFilterAllelicImbalance(
         [
           {
             operator: "==",
-            selector: gtSelector,
+            selector: gtTypeSelector,
             args: "HET",
           },
           createQueryFilterClosedInterval(viabSelector, { left: 0.2, right: 0.8 }),
