@@ -31,11 +31,6 @@ describe("query sample", () => {
       const completeQuery: Query = {
         args: [
           {
-            args: ["7",],
-            operator: "in",
-            selector: ["s", "sample_id",],
-          },
-          {
             args: "y",
             operator: "==",
             selector: ["x",],
@@ -43,7 +38,7 @@ describe("query sample", () => {
           {
             args: "HOM_REF",
             operator: "!=",
-            selector: ["s", "GT_type",],
+            selector: ["s",7,"GT_type",],
           },
         ],
         operator: "and",
