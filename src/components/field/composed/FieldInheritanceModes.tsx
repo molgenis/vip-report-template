@@ -11,10 +11,7 @@ export const FieldInheritanceModes: Component<{ value: CellValueInheritanceModes
       (inheritanceModesGene() !== undefined && inheritanceModesGene().length === 0) ||
       inheritanceModesGene().findIndex((category) => category?.value === "AR") !== -1
     ) {
-      isArInheritance =
-        props.value.isPossibleCompound !== undefined &&
-        props.value.isPossibleCompound !== null &&
-        props.value.isPossibleCompound;
+      isArInheritance = props.value.isPossibleCompound != null && props.value.isPossibleCompound;
     }
     return isArInheritance;
   };

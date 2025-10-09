@@ -1,4 +1,5 @@
 import { Component, createEffect, createSignal } from "solid-js";
+import { removeZeroWidthAndTrim } from "../utils/utils.ts";
 
 export const SearchBox: Component<{ value?: string | null; onInput: (value: string) => void }> = (props) => {
   const [value, setValue] = createSignal("");
@@ -16,7 +17,7 @@ export const SearchBox: Component<{ value?: string | null; onInput: (value: stri
           class="input"
           type="text"
           value={value()}
-          onInput={(e) => setValue((e.target as HTMLInputElement).value)}
+          onInput={(e) => setValue(removeZeroWidthAndTrim((e.target as HTMLInputElement).value))}
           onKeyUp={(e) => {
             if (e.code === "Enter") {
               props.onInput(value());

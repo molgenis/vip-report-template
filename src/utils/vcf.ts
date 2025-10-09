@@ -6,7 +6,6 @@ import {
   RecordSample,
   Value,
   ValueDescription,
-  ValueObject,
   ValueString,
   VcfMetadata,
   VcfRecord,
@@ -193,7 +192,7 @@ function createCategoricalValue(infoMetadata: FieldMetadata, value: ValueString)
   if (infoMetadata.categories === undefined) throw new RuntimeError();
 
   let valueDescription: ValueDescription | null;
-  if (value !== null && value !== "") {
+  if (value !== null) {
     if (!(value in infoMetadata.categories)) {
       throw new RuntimeError(
         `invalid categorical field '${infoMetadata.id}' value '${value}' is not one of [${Object.keys(infoMetadata.categories).join(", ")}]`,
