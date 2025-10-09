@@ -1,0 +1,6 @@
+FAM001	Patient	Father	MotherHasQuiteALongName	1	2
+FAM001	MotherHasQuiteALongName	0	0	2	1
+FAM001	Father	0	0	1	2
+FAM001	Nephew	0	0	1	1
+FAM001	Sister	Father	MotherHasQuiteALongName	2	1
+FAM002	Unrelated	0	0	1	2

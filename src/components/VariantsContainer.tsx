@@ -1,5 +1,5 @@
 import { VariantFilters } from "./VariantFilters";
-import { HtsFileMetadata, Params } from "@molgenis/vip-report-api";
+import { HtsFileMetadata, RecordParams } from "@molgenis/vip-report-api";
 import { Component, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantType.ts";
 import { useNavigate } from "@solidjs/router";
@@ -41,12 +41,27 @@ export const VariantsContainer: Component<{
   const recordsPerPage = () =>
     props.store.getPageSize() !== null ? props.store.getPageSize()! : defaultRecordsPerPage();
 
+  const sampleIds = () => {
+    let sampleIds: number[] | undefined;
+    if (props.sample !== null) {
+      sampleIds = [props.sample.item.id];
+      if (props.sample.maternalSample !== null && props.sample.maternalSample !== undefined) {
+        sampleIds.push(props.sample.maternalSample.id);
+      }
+      if (props.sample.paternalSample !== null && props.sample.paternalSample !== undefined) {
+        sampleIds.push(props.sample.paternalSample.id);
+      }
+    }
+    return sampleIds as number[] | undefined;
+  };
+
   const [records] = createResource(
-    (): Params => ({
+    (): RecordParams => ({
       query: query() || undefined,
       page: props.store.getPageNumber() || 0,
       size: recordsPerPage(),
       sort: sort(),
+      sampleIds: sampleIds(),
     }),
     props.sample !== null ? fetchRecords : fetchRecordsWithoutSamples,
   );

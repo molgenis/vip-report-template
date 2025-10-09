@@ -8,6 +8,7 @@ import {
   Params,
   PhenotypicFeature,
   Query,
+  RecordParams,
   Sample,
   WindowApiClient,
 } from "@molgenis/vip-report-api";
@@ -118,7 +119,7 @@ export async function fetchRecordById(id: number): Promise<Item<VcfRecord>> {
   return api.getRecordById(id);
 }
 
-export async function fetchRecords(params: Params): Promise<PagedItems<VcfRecord>> {
+export async function fetchRecords(params: RecordParams): Promise<PagedItems<VcfRecord>> {
   console.log("Api.fetchRecords", JSON.stringify(params));
   return api.getRecords(params);
 }
