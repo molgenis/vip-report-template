@@ -29,6 +29,13 @@ export const VariantConsequenceContainer: Component<{
   const hasDecisionTreePathMeta = () =>
     (props.metadata.records.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
   const hasSampleTreePathMeta = () => props.metadata.records.format.VIPP_S != null;
+  const showSampleTree = () => {
+    if (props.sample) {
+      const treePath = getSampleTreePath(props.metadata.records, props.sample, props.record, props.consequenceId);
+      return treePath !== undefined && treePath.length > 0;
+    }
+    return false;
+  };
 
   return (
     <>
@@ -77,7 +84,7 @@ export const VariantConsequenceContainer: Component<{
                 />
               </div>
             )}
-            {props.sampleTree !== null && hasSampleTreePathMeta() && props.sample && (
+            {showSampleTree() && props.sampleTree !== null && hasSampleTreePathMeta() && props.sample && (
               <div class="column is-6">
                 <h1 class="title is-5">Sample classification tree path</h1>
                 <DecisionTreePath

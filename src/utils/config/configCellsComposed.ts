@@ -425,7 +425,7 @@ function createConfigFieldCustomVipCS(
       ];
       return {
         vipCS: vipCS[valueIndex]!,
-        vipPS: vipPS && vipPS[valueIndex]!.split("&"),
+        vipPS: vipPS && vipPS.length > 0 && vipPS[valueIndex] !== undefined ? vipPS[valueIndex].split("&") : undefined,
       };
     },
   };
