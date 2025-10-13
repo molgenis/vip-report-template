@@ -1,5 +1,5 @@
 UPDATE appMetadata
-SET value = '{"uri":"placeholder.vccf","htsFormat":"VCF","genomeAssembly":"Unknown"}'
+SET value = '{"uri":"placeholder.vcf","htsFormat":"VCF","genomeAssembly":"Unknown"}'
 WHERE id = 'htsFile';
 
 UPDATE appMetadata
