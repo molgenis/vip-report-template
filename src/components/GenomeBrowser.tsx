@@ -24,7 +24,11 @@ async function fetchVcf(
       },
     ],
   };
-  const records = await fetchRecords({ query, size: Number.MAX_SAFE_INTEGER });
+  const records = await fetchRecords({
+    query,
+    size: Number.MAX_SAFE_INTEGER,
+    sampleIds: samples.map((sample) => sample.id),
+  });
   const vcf = writeVcf(
     { metadata: metadata.records, data: records.items.map((item) => item.data) },
     { samples: samples.map((sample) => sample.data.person.individualId) },

@@ -32,12 +32,13 @@ import fastaUrl_chrM_15075_15575 from "./fasta/chrM-15075-15575.fasta.gz.blob";
 import fastaUrl_chrX_49075112_49075612 from "./fasta/chrX-49075112-49075612.fasta.gz.blob";
 import fastaUrl_chrY_2787350_2787850 from "./fasta/chrY-2787350-2787850.fasta.gz.blob";
 import genesUrl from "./genes.gff.gz.blob";
-import databaseFamily from "C:/Users/bartc/WebstormProjects/vip-report-template/src/mocks/GRCh38/vcf/family.db.blob";
-import databaseSamples0 from "C:/Users/bartc/WebstormProjects/vip-report-template/src/mocks/GRCh38/vcf/samples_0.db.blob";
-import databaseNoVep from "C:/Users/bartc/WebstormProjects/vip-report-template/src/mocks/GRCh38/vcf/no_vep.db.blob";
-import databaseSamples1 from "C:/Users/bartc/WebstormProjects/vip-report-template/src/mocks/GRCh38/vcf/samples_1.db.blob";
-import databaseSamples100 from "C:/Users/bartc/WebstormProjects/vip-report-template/src/mocks/GRCh38/vcf/samples_100.db.blob";
-import databaseStr from "C:/Users/bartc/WebstormProjects/vip-report-template/src/mocks/GRCh38/vcf/str.db.blob";
+import databaseFamily from "./vcf/family.db.blob";
+import databaseSamples0 from "./vcf/samples_0.db.blob";
+import databaseNoVep from "./vcf/no_vep.db.blob";
+import databaseSamples1 from "./vcf/samples_1.db.blob";
+import databaseSamples100 from "./vcf/samples_100.db.blob";
+import databaseStr from "./vcf/str.db.blob";
+import sqlWasm from "../sql-wasm.wasm.blob";
 
 import { fetchAsBytes } from "../utils";
 
@@ -47,6 +48,10 @@ export async function fetchCram() {
 
 export async function fetchDatabaseFamily() {
   return await fetchAsBytes(databaseFamily as string);
+}
+
+export async function fetchSqlWasm() {
+  return await fetchAsBytes(sqlWasm as string);
 }
 
 export async function fetchDatabaseSamples0() {

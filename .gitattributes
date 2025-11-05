@@ -2,3 +2,4 @@
 *.cram.blob binary
 *.cram.crai.blob binary
 *.gz.blob binary
+*.wasm.blob binary

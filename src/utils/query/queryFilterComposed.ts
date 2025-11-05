@@ -84,7 +84,7 @@ function createQueryFilterAllelicImbalance(
 ): Query {
   const viabSelector = createSelectorSample(filter.sample, filter.viabField);
   //GT_type is a technical field specific for the database, so no metadata present
-  const gtTypeSelector = ["s", filter.sample.item.data.id, "GT_type"];
+  const gtTypeSelector = ["s", filter.sample.item.id, "GT_type"];
   const queryParts: Query[] = [];
   if (filterValue.includes("true")) {
     const queryPartsTrue: Query[] = [];

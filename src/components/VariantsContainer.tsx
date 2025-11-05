@@ -7,7 +7,7 @@ import { initConfig } from "../utils/config/config.ts";
 import { createQuery } from "../utils/query/query.ts";
 import { PageChangeEvent } from "./Pager";
 import { writeVcf } from "@molgenis/vip-report-vcf";
-import { fetchRecords, fetchRecordsWithoutSamples, MetadataContainer, SampleContainer } from "../utils/api.ts";
+import { fetchRecords, MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { createVcfDownloadFilename } from "../utils/download.ts";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";
 import { SortChangeEvent } from "./Sort";
@@ -52,7 +52,7 @@ export const VariantsContainer: Component<{
         sampleIds.push(props.sample.paternalSample.id);
       }
     }
-    return sampleIds as number[] | undefined;
+    return sampleIds;
   };
 
   const [records] = createResource(
@@ -63,7 +63,7 @@ export const VariantsContainer: Component<{
       sort: sort(),
       sampleIds: sampleIds(),
     }),
-    props.sample !== null ? fetchRecords : fetchRecordsWithoutSamples,
+    fetchRecords,
   );
 
   const onFilterChange = (event: FilterChangeEvent) => {
@@ -81,7 +81,12 @@ export const VariantsContainer: Component<{
     const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
 
     // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
-    const records = await fetchRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
+    const records = await fetchRecords({
+      query: query() || undefined,
+      page: 0,
+      size: Number.MAX_SAFE_INTEGER,
+      sampleIds: [],
+    });
     const vcf = writeVcf({ metadata: props.metadata.records, data: records.items.map((item) => item.data) }, filter);
 
     const url = window.URL.createObjectURL(new Blob([vcf]));

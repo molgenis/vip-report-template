@@ -3,14 +3,12 @@ import {
   Cram,
   DecisionTree,
   Item,
-  Json,
   PagedItems,
   Params,
   PhenotypicFeature,
   Query,
   RecordParams,
   Sample,
-  WindowApiClient,
 } from "@molgenis/vip-report-api";
 import { isSampleFather, isSampleMother } from "./sample.ts";
 import { VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
@@ -20,6 +18,7 @@ import { MockApiClient } from "../mocks/MockApiClient.ts";
 import { ConfigJson } from "../types/config";
 import { RuntimeError } from "./error.ts";
 import { validateConfig } from "./config/configValidator.ts";
+import { WindowApiClientFactory } from "@molgenis/vip-report-api";
 
 export type VcfMetadataContainer = VcfMetadata & {
   fieldMap: FieldMap;
@@ -47,7 +46,7 @@ export type SampleContainer = {
 
 // lazy import MockApiClient to ensure that it is excluded from the build artifact
 const api = import.meta.env.PROD
-  ? new WindowApiClient()
+  ? await (async () => await WindowApiClientFactory.create())()
   : await (async () => {
       const module = await import("../mocks/MockApiClient.ts");
       return new module.MockApiClient();
@@ -55,7 +54,7 @@ const api = import.meta.env.PROD
 
 export async function fetchConfig(): Promise<ConfigJson> {
   console.log("Api.fetchConfig");
-  const config: Json = await api.getConfig();
+  const config = await api.getConfig();
   if (config === null) throw new RuntimeError("no config provided");
   return validateConfig(config);
 }
@@ -114,19 +113,15 @@ export async function fetchSampleById(sampleId: number): Promise<SampleContainer
   return composeSample(sample, phenotypicFeatures, pedigreeSamples, variantTypeIds);
 }
 
-export async function fetchRecordById(id: number): Promise<Item<VcfRecord>> {
+export async function fetchRecordById(id: number, samples?: Item<Sample>[]): Promise<Item<VcfRecord>> {
   console.log("Api.fetchRecordById", id);
-  return api.getRecordById(id);
+  const sampleIds = samples?.map((sample) => sample.id) ?? [];
+  return api.getRecordById(id, sampleIds);
 }
 
 export async function fetchRecords(params: RecordParams): Promise<PagedItems<VcfRecord>> {
   console.log("Api.fetchRecords", JSON.stringify(params));
   return api.getRecords(params);
-}
-
-export async function fetchRecordsWithoutSamples(params: Params): Promise<PagedItems<VcfRecord>> {
-  console.log("Api.fetchRecordsWithoutSamples", JSON.stringify(params));
-  return api.getRecordsWithoutSamples(params);
 }
 
 export async function fetchSampleProbandIds(): Promise<number[]> {

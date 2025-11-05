@@ -712,14 +712,6 @@
           "numberCount": 1,
           "type": "STRING"
         },
-        "VIPC": {
-          "label": "VIP classification",
-          "description": "Variant consequence classification predicted by the Variant Interpretation Pipeline (VIP), see https://vip.molgeniscloud.org/ and https://doi.org/10.1101/2024.04.11.24305656",
-          "numberType": "NUMBER",
-          "numberCount": 1,
-          "type": "CATEGORICAL",
-          "required": true
-        },
         "VIPP": {
           "label": "VIP path",
           "description": "VIP decision tree path",
@@ -786,8 +778,7 @@
             }
           }
         }
-      },
-      "separator": "|"
+      }
     },
     "STR_NORMAL_MAX": {
       "label": "STR normal max",

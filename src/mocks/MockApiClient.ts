@@ -26,8 +26,11 @@ import {
   fetchGenesGz as fetchGenesGzGRCh38,
   fetchStrCrai as fetchStrCraiGRCh38,
   fetchStrCram as fetchStrCramGRCh38,
+  fetchSqlWasm,
 } from "./GRCh38/static";
 import AsyncLock from "async-lock";
+import initSqlJs from "sql.js";
+import { ReportDatabase } from "@molgenis/vip-report-api";
 
 const lock = new AsyncLock();
 
@@ -93,23 +96,12 @@ export class MockApiClient implements Api {
 
   async getRecordById(id: number): Promise<Item<VcfRecord>> {
     const apiClient = await this.getApiClient();
-    return apiClient.getRecordById(id);
+    return apiClient.getRecordById(id, []);
   }
 
   async getRecords(params: Params): Promise<PagedItems<VcfRecord>> {
     const apiClient = await this.getApiClient();
-
-    const records = apiClient.getRecords(params);
-    console.log(records);
-    return records;
-  }
-
-  async getRecordsWithoutSamples(params: Params): Promise<PagedItems<VcfRecord>> {
-    const apiClient = await this.getApiClient();
-
-    const records = apiClient.getRecordsWithoutSamples(params);
-    console.log(records);
-    return records;
+    return apiClient.getRecords(params);
   }
 
   async getRecordsMeta(): Promise<VcfMetadata> {
@@ -175,7 +167,9 @@ async function createApiClient(id: string): Promise<Api> {
       throw new Error(`unknown dataset id '${id}'`);
   }
 
-  return new ApiClient(reportData);
+  const SQL = await initSqlJs({ wasmBinary: reportData.binary.wasmBinary!.buffer as ArrayBuffer });
+  const reportDatabase = new ReportDatabase(new SQL.Database(reportData.database));
+  return new ApiClient(reportDatabase, reportData.binary);
 }
 
 async function fetchReportDataGRCh38Family(): Promise<ReportData> {
@@ -190,6 +184,7 @@ async function fetchReportDataGRCh38Family(): Promise<ReportData> {
           crai: await fetchCraiGRCh38(),
         },
       },
+      wasmBinary: await fetchSqlWasm(),
     },
   };
 }
@@ -206,6 +201,7 @@ async function fetchReportDataGRCh38FamilyNoVep() {
           crai: await fetchCraiGRCh38(),
         },
       },
+      wasmBinary: await fetchSqlWasm(),
     },
   };
 }
@@ -222,6 +218,7 @@ async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
           crai: await fetchCraiGRCh38(),
         },
       },
+      wasmBinary: await fetchSqlWasm(),
     },
   };
 }
@@ -232,6 +229,7 @@ async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
+      wasmBinary: await fetchSqlWasm(),
     },
   };
 }
@@ -248,6 +246,7 @@ async function fetchReportDataGRCh38Str(): Promise<ReportData> {
           crai: await fetchStrCraiGRCh38(),
         },
       },
+      wasmBinary: await fetchSqlWasm(),
     },
   };
 }
@@ -258,6 +257,7 @@ async function fetchReportDataGRCh38NoSample(): Promise<ReportData> {
     binary: {
       fastaGz: await fetchFastaGzGRCh38(),
       genesGz: await fetchGenesGzGRCh38(),
+      wasmBinary: await fetchSqlWasm(),
     },
   };
 }

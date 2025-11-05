@@ -207,7 +207,7 @@ function createCategoricalValue(infoMetadata: FieldMetadata, value: ValueString)
 }
 
 function getRecordSample(sample: SampleContainer, record: Item<VcfRecord>): RecordSample {
-  const recordSample = record.data.s[sample.item.data.id];
+  const recordSample = record.data.s[sample.item.data.index as number];
   if (recordSample === undefined) throw new ArrayIndexOutOfBoundsException();
   return recordSample;
 }
