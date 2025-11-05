@@ -167,97 +167,85 @@ async function createApiClient(id: string): Promise<Api> {
       throw new Error(`unknown dataset id '${id}'`);
   }
 
-  const SQL = await initSqlJs({ wasmBinary: reportData.binary.wasmBinary!.buffer as ArrayBuffer });
+  const SQL = await initSqlJs({ wasmBinary: reportData.wasmBinary!.buffer as ArrayBuffer });
   const reportDatabase = new ReportDatabase(new SQL.Database(reportData.database));
-  return new ApiClient(reportDatabase, reportData.binary);
+  return new ApiClient(reportDatabase, reportData);
 }
 
 async function fetchReportDataGRCh38Family(): Promise<ReportData> {
   return {
     database: await fetchDatabaseFamily(),
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      cram: {
-        Patient: {
-          cram: await fetchCramGRCh38(),
-          crai: await fetchCraiGRCh38(),
-        },
+    fastaGz: await fetchFastaGzGRCh38(),
+    genesGz: await fetchGenesGzGRCh38(),
+    cram: {
+      Patient: {
+        cram: await fetchCramGRCh38(),
+        crai: await fetchCraiGRCh38(),
       },
-      wasmBinary: await fetchSqlWasm(),
     },
+    wasmBinary: await fetchSqlWasm(),
   };
 }
 
 async function fetchReportDataGRCh38FamilyNoVep() {
   return {
     database: await fetchDatabaseNoVep(),
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      cram: {
-        Patient: {
-          cram: await fetchCramGRCh38(),
-          crai: await fetchCraiGRCh38(),
-        },
+    fastaGz: await fetchFastaGzGRCh38(),
+    genesGz: await fetchGenesGzGRCh38(),
+    cram: {
+      Patient: {
+        cram: await fetchCramGRCh38(),
+        crai: await fetchCraiGRCh38(),
       },
-      wasmBinary: await fetchSqlWasm(),
     },
+    wasmBinary: await fetchSqlWasm(),
   };
 }
 
 async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
   return {
     database: await fetchDatabaseSamples1(),
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      cram: {
-        SAMPLE1: {
-          cram: await fetchCramGRCh38(),
-          crai: await fetchCraiGRCh38(),
-        },
+    fastaGz: await fetchFastaGzGRCh38(),
+    genesGz: await fetchGenesGzGRCh38(),
+    cram: {
+      SAMPLE1: {
+        cram: await fetchCramGRCh38(),
+        crai: await fetchCraiGRCh38(),
       },
-      wasmBinary: await fetchSqlWasm(),
     },
+    wasmBinary: await fetchSqlWasm(),
   };
 }
 
 async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
   return {
     database: await fetchDatabaseSamples100(),
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      wasmBinary: await fetchSqlWasm(),
-    },
+    fastaGz: await fetchFastaGzGRCh38(),
+    genesGz: await fetchGenesGzGRCh38(),
+    wasmBinary: await fetchSqlWasm(),
   };
 }
 
 async function fetchReportDataGRCh38Str(): Promise<ReportData> {
   return {
     database: await fetchDatabaseStr(),
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      cram: {
-        Patient: {
-          cram: await fetchStrCramGRCh38(),
-          crai: await fetchStrCraiGRCh38(),
-        },
+    fastaGz: await fetchFastaGzGRCh38(),
+    genesGz: await fetchGenesGzGRCh38(),
+    cram: {
+      Patient: {
+        cram: await fetchStrCramGRCh38(),
+        crai: await fetchStrCraiGRCh38(),
       },
-      wasmBinary: await fetchSqlWasm(),
     },
+    wasmBinary: await fetchSqlWasm(),
   };
 }
 
 async function fetchReportDataGRCh38NoSample(): Promise<ReportData> {
   return {
     database: await fetchDatabaseSamples0(),
-    binary: {
-      fastaGz: await fetchFastaGzGRCh38(),
-      genesGz: await fetchGenesGzGRCh38(),
-      wasmBinary: await fetchSqlWasm(),
-    },
+    fastaGz: await fetchFastaGzGRCh38(),
+    genesGz: await fetchGenesGzGRCh38(),
+    wasmBinary: await fetchSqlWasm(),
   };
 }
