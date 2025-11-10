@@ -27,6 +27,7 @@ function createConfigFieldInfo(configStatic: ConfigJsonFieldInfo, field: FieldMe
   return {
     type: "info",
     field,
+    parentLabel: () => field.parent !== undefined ? getLabel(configStatic, field.parent.label || field.parent.id) : "",
     label: () => getLabel(configStatic, field.label || field.id),
     description: () => getDescription(configStatic, field.description),
     valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, field),

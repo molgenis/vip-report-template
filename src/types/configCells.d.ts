@@ -20,6 +20,7 @@ export type CellType =
 interface ConfigCellBase<T extends CellValue> {
   type: CellType;
   label: () => string;
+  parentLabel?: () => string;
   description: () => string | null;
   value: (record: Item<VcfRecord>, valueIndex: number) => T;
   valueCount: (record: Item<VcfRecord>) => number;
