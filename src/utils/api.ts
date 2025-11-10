@@ -126,7 +126,7 @@ export async function fetchRecords(params: RecordParams): Promise<PagedItems<Vcf
 
 export async function fetchSampleProbandIds(): Promise<number[]> {
   console.log("Api.fetchSampleProbandIds");
-  const query: Query = { selector: ["proband"], operator: "==", args: true };
+  const query: Query = { selector: ["sample", "proband"], operator: "==", args: true };
   const samplePagedItems = await api.getSamples({ query, page: 0, size: Number.MAX_SAFE_INTEGER });
   return samplePagedItems.items.map((sampleItem) => sampleItem.id);
 }
@@ -199,8 +199,8 @@ async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedItems<Sa
     query: {
       operator: "and",
       args: [
-        { selector: ["individualId"], operator: "!=", args: sample.data.person.individualId },
-        { selector: ["familyId"], operator: "==", args: sample.data.person.familyId },
+        { selector: ["sample", "individualId"], operator: "!=", args: sample.data.person.individualId },
+        { selector: ["sample", "familyId"], operator: "==", args: sample.data.person.familyId },
       ],
     },
     size: Number.MAX_SAFE_INTEGER,
