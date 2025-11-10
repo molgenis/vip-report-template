@@ -55,6 +55,10 @@ export const VariantsContainer: Component<{
     return sampleIds;
   };
 
+  const hasSvTypeField = () => {
+    return Object.hasOwn(props.metadata.records.info, "SVTYPE");
+  };
+
   const [records] = createResource(
     (): RecordParams => ({
       query: query() || undefined,
@@ -121,7 +125,7 @@ export const VariantsContainer: Component<{
       </div>
       <div class="columns is-1">
         <div class="column is-2-fullhd is-3">
-          <Show when={variantTypeIds().size > 1}>
+          <Show when={variantTypeIds().size > 1 && hasSvTypeField()}>
             <div class="columns">
               <div class="column">
                 <VariantTypeSelect
