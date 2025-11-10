@@ -27,7 +27,7 @@ export const VariantConsequenceContainer: Component<{
 
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
   const hasDecisionTreePathMeta = () =>
-    (props.metadata.records.info.CSQ?.nested?.items || []).findIndex((csq) => csq.id === "VIPP") !== -1;
+    Object.values(props.metadata.records.info.CSQ?.nested?.items || {}).some((csq) => csq.id === "VIPP");
   const hasSampleTreePathMeta = () => props.metadata.records.format.VIPP_S != null;
   const showSampleTree = () => {
     if (props.sample) {

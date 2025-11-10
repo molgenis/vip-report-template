@@ -39,7 +39,11 @@ function createFieldMapTypedRec(keyPrefix: string, fieldMetadataList: FieldMetad
   fieldMetadataList.forEach((fieldMetadata, index) => {
     const key = `${keyPrefix}/${fieldMetadata.id}`;
     if (fieldMetadata.nested) {
-      const nestedFields = createFieldMapTypedRec(key, fieldMetadata.nested.items);
+      const nestedItemsArray = Object.keys(fieldMetadata.nested?.items)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .map((index) => fieldMetadata.nested?.items[index]) as FieldMetadata[];
+      const nestedFields = createFieldMapTypedRec(key, nestedItemsArray);
       Object.assign(fields, nestedFields);
 
       // add parent field, but update items with items in nestedFields
@@ -48,7 +52,7 @@ function createFieldMapTypedRec(keyPrefix: string, fieldMetadataList: FieldMetad
         index,
         nested: {
           ...fieldMetadata.nested,
-          items: fieldMetadata.nested.items.map((field) => nestedFields[`${key}/${field.id}`]!),
+          items: nestedItemsArray.map((field) => nestedFields[`${key}/${field.id}`]!),
         },
       };
     } else {
