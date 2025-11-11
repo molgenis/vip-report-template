@@ -25,7 +25,6 @@ describe("vcf", () => {
   const recordBase = {
     id: 0,
     data: {
-      id: 1,
       c: "chr1",
       p: 0,
       i: [],
@@ -33,6 +32,7 @@ describe("vcf", () => {
       a: ["C", "T"],
       q: null,
       f: [],
+      g: "TEST",
       n: {},
       s: [],
     },

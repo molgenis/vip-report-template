@@ -3,3 +3,4 @@
 *.cram.crai.blob binary
 *.gz.blob binary
 *.wasm.blob binary
+*.db.blob binary
