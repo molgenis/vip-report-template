@@ -15,11 +15,11 @@ importers:
         specifier: ^6.7.2
         version: 6.7.2
       '@molgenis/vip-report-api':
-        specifier: file:C:\Users\bartc\WebstormProjects\vip-report-api
-        version: file:../vip-report-api
+        specifier: ^7.0.0
+        version: 7.0.0
       '@molgenis/vip-report-vcf':
-        specifier: file:C:\Users\bartc\WebstormProjects\vip-report-vcf
-        version: file:../vip-report-vcf
+        specifier: ^4.0.2
+        version: 4.0.2
       '@solidjs/router':
         specifier: ^0.15.3
         version: 0.15.3(solid-js@1.9.4)
@@ -458,16 +458,12 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@molgenis/vip-report-api@file:../vip-report-api':
-    resolution: {directory: ../vip-report-api, type: directory}
+  '@molgenis/vip-report-api@7.0.0':
+    resolution: {integrity: sha512-Kc3VcTYWmiX/KYqFx28FjgykF9t7AS7BEvUO9kpn/0MkMF5/sfVS/RSfUsZgXk4UUZ9FrNeI73LaoXBukU8JiA==}
     engines: {node: '22', pnpm: '9'}
 
-  '@molgenis/vip-report-vcf@4.0.1':
-    resolution: {integrity: sha512-0cqbMXaMimIg4zX7wLmSHoqdabOCJAcuP49T/68z5OQkIigrZ4m2dktRlG1cPrHJp6K8+LjN5cKUCX1RsfDSaQ==}
-    engines: {node: '22', pnpm: '9'}
-
-  '@molgenis/vip-report-vcf@file:../vip-report-vcf':
-    resolution: {directory: ../vip-report-vcf, type: directory}
+  '@molgenis/vip-report-vcf@4.0.2':
+    resolution: {integrity: sha512-TqvYGNUm+GC/EJNF0TtmmK+u++CVWT2XvDEb811vOj9986dgieG7bgye438GXY1guAH7r+BYMT7XjiUfvXJMBg==}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vite-plugin-inline@1.0.29':
@@ -2112,14 +2108,12 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@file:../vip-report-api':
+  '@molgenis/vip-report-api@7.0.0':
     dependencies:
-      '@molgenis/vip-report-vcf': 4.0.1
+      '@molgenis/vip-report-vcf': 4.0.2
       sql.js: 1.13.0
 
-  '@molgenis/vip-report-vcf@4.0.1': {}
-
-  '@molgenis/vip-report-vcf@file:../vip-report-vcf': {}
+  '@molgenis/vip-report-vcf@4.0.2': {}
 
   '@molgenis/vite-plugin-inline@1.0.29(vite@6.1.0(@types/node@22.13.4)(sass@1.85.0))':
     dependencies:
