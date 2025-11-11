@@ -63,7 +63,6 @@ export function createQueryFilterString(
   selector: Selector,
   filterValue: FilterValueString,
   multiValue: boolean,
-  nestedValue: boolean,
 ): Query {
   // null values
   // multi=false --> value=null

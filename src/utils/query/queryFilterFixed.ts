@@ -17,25 +17,25 @@ export function createQueryFilterFixed(filter: ConfigFilterFixed, filterValue: F
   let query: Query;
   switch (filter.id) {
     case "fixed/chrom":
-      query = createQueryFilterString(["c"], filterValue as FilterValueChrom, false, false);
+      query = createQueryFilterString(["c"], filterValue as FilterValueChrom, false);
       break;
     case "fixed/pos":
       query = createQueryFilterClosedInterval(["p"], filterValue as FilterValuePos);
       break;
     case "fixed/id":
-      query = createQueryFilterString(["i"], filterValue as FilterValueId, true, false);
+      query = createQueryFilterString(["i"], filterValue as FilterValueId, true);
       break;
     case "fixed/ref":
-      query = createQueryFilterString(["r"], filterValue as FilterValueRef, false, false);
+      query = createQueryFilterString(["r"], filterValue as FilterValueRef, false);
       break;
     case "fixed/alt":
-      query = createQueryFilterString(["a"], filterValue as FilterValueAlt, true, false);
+      query = createQueryFilterString(["a"], filterValue as FilterValueAlt, true);
       break;
     case "fixed/qual":
       query = createQueryFilterClosedInterval(["q"], filterValue as FilterValueQual);
       break;
     case "fixed/filter":
-      query = createQueryFilterString(["f"], filterValue as FilterValueFilter, true, false);
+      query = createQueryFilterString(["f"], filterValue as FilterValueFilter, true);
       break;
     default:
       throw new UnexpectedEnumValueException(filter.id);

@@ -68,7 +68,7 @@ function createQueryFilterHpo(filter: ConfigFilterHpo, filterValue: FilterValueH
 }
 
 function createQueryFilterLocus(filterValue: FilterValueLocus): Query {
-  const queryParts: Query[] = [createQueryFilterString(["c"], [filterValue.chromosome], false, false)];
+  const queryParts: Query[] = [createQueryFilterString(["c"], [filterValue.chromosome], false)];
 
   if (filterValue.start !== undefined || filterValue.end !== undefined) {
     const posQuery = createQueryFilterClosedInterval(["p"], { left: filterValue.start, right: filterValue.end });

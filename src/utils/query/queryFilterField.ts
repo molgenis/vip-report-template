@@ -4,9 +4,10 @@ import {
   ConfigFilterField,
   ConfigFilterFormat,
   FilterValue,
-  FilterValueCategorical, FilterValueFlag,
+  FilterValueCategorical,
+  FilterValueFlag,
   FilterValueInterval,
-  FilterValueString
+  FilterValueString,
 } from "../../types/configFilter";
 import { UnexpectedEnumValueException } from "../error.ts";
 import { createSelectorInfo, createSelectorSample } from "./selector.ts";
@@ -60,20 +61,15 @@ export function createQueryFilterFieldCategorical(
   filterValue: FilterValueCategorical,
 ): Query {
   const multiValue = field.number.count !== 1;
-  const nestedValue = field.parent !== undefined;
-  return createQueryFilterString(selector, filterValue, multiValue, nestedValue);
+  return createQueryFilterString(selector, filterValue, multiValue);
 }
 
-function createQueryFilterFlag(
-  selector: Selector,
-  field: FieldMetadata,
-  filterValue: FilterValueFlag,
-): Query {
-  const values :string[] = []
-  for(const value of filterValue) {
-    if(value === "true") {
+function createQueryFilterFlag(selector: Selector, field: FieldMetadata, filterValue: FilterValueFlag): Query {
+  const values: string[] = [];
+  for (const value of filterValue) {
+    if (value === "true") {
       values.push("1");
-    } else if(value === "false") {
+    } else if (value === "false") {
       values.push("__null");
     }
   }
@@ -82,6 +78,5 @@ function createQueryFilterFlag(
 
 function createQueryFilterFieldString(selector: Selector, field: FieldMetadata, filterValue: FilterValueString): Query {
   const multiValue = field.number.count !== 1;
-  const nestedValue = field.parent !== undefined;
-  return createQueryFilterString(selector, filterValue, multiValue, nestedValue);
+  return createQueryFilterString(selector, filterValue, multiValue);
 }

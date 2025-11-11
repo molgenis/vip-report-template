@@ -57,7 +57,7 @@ describe("query composed filters", () => {
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: 1, right: 2 });
       });
 
@@ -72,7 +72,7 @@ describe("query composed filters", () => {
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: 1, right: undefined });
       });
 
@@ -87,7 +87,7 @@ describe("query composed filters", () => {
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: undefined, right: 2 });
       });
 
@@ -96,7 +96,7 @@ describe("query composed filters", () => {
         const value = { chromosome: "chr1" } as FilterValueLocus;
         vi.mocked(createQueryFilterString).mockReturnValue(query);
         expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
       });
     });
 
