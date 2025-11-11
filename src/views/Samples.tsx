@@ -33,7 +33,7 @@ export const Samples: Component = () => {
   function createQuery(search: string | undefined, probandFilterValue: boolean | undefined): Query | null {
     const searchQuery: QueryClause | undefined =
       search !== undefined && search !== ""
-        ? { selector: ["person", "individualId"], operator: "~=", args: search }
+        ? { selector: ["sample", "individualId"], operator: "~=", args: search }
         : undefined;
     const probandQuery: QueryClause | undefined =
       probandFilterValue !== undefined && probandFilterValue
