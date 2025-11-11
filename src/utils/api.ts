@@ -11,7 +11,7 @@ import {
   Sample,
 } from "@molgenis/vip-report-api";
 import { isSampleFather, isSampleMother } from "./sample.ts";
-import { VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { InfoOrder, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
 import { createFieldMap, FieldMap } from "./vcf.ts";
 import { VariantTypeId } from "./variantType.ts";
 import { MockApiClient } from "../mocks/MockApiClient.ts";
@@ -122,6 +122,11 @@ export async function fetchRecordById(id: number, samples?: Item<Sample>[]): Pro
 export async function fetchRecords(params: RecordParams): Promise<PagedItems<VcfRecord>> {
   console.log("Api.fetchRecords", JSON.stringify(params));
   return api.getRecords(params);
+}
+
+export async function fetchInfoOrder(): Promise<InfoOrder> {
+  console.log("Api.fetchInfoOrder");
+  return api.getInfoOrder();
 }
 
 export async function fetchSampleProbandIds(): Promise<number[]> {

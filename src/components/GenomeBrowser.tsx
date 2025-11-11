@@ -1,7 +1,7 @@
 import { Component, onCleanup, onMount } from "solid-js";
 import igv, { Browser } from "igv";
 import { fromByteArray } from "base64-js";
-import { VcfRecord, writeVcf } from "@molgenis/vip-report-vcf";
+import { VariantRecords, VcfRecord, writeVcf } from "@molgenis/vip-report-vcf";
 import { ComposedQuery, Cram, Item, Sample } from "@molgenis/vip-report-api";
 import { fetchCram, fetchFastaGz, fetchGenesGz, fetchRecords, MetadataContainer } from "../utils/api.ts";
 
@@ -30,7 +30,13 @@ async function fetchVcf(
     sampleIds: samples.map((sample) => sample.id),
   });
   const vcf = writeVcf(
-    { metadata: metadata.records, data: records.items.map((item) => item.data) },
+    {
+      metadata: metadata.records,
+      data: records.items.reduce((acc, item) => {
+        acc[item.id] = item.data;
+        return acc;
+      }, {} as VariantRecords),
+    },
     { samples: samples.map((sample) => sample.data.person.individualId) },
   );
   return toBytes(vcf);

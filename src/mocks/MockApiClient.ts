@@ -54,6 +54,11 @@ export class MockApiClient implements Api {
     this.dataSetId = MockApiClient.dataSetIds[0]!;
   }
 
+  async getInfoOrder() {
+    const apiClient = await this.getApiClient();
+    return apiClient.getInfoOrder();
+  }
+
   async getConfig(): Promise<Json | null> {
     const apiClient = await this.getApiClient();
     return apiClient.getConfig();

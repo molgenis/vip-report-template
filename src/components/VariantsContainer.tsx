@@ -6,8 +6,8 @@ import { useNavigate } from "@solidjs/router";
 import { initConfig } from "../utils/config/config.ts";
 import { createQuery } from "../utils/query/query.ts";
 import { PageChangeEvent } from "./Pager";
-import { writeVcf } from "@molgenis/vip-report-vcf";
-import { fetchRecords, MetadataContainer, SampleContainer } from "../utils/api.ts";
+import { InfoOrder, VariantRecords, writeVcf } from "@molgenis/vip-report-vcf";
+import { fetchInfoOrder, fetchRecords, MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { createVcfDownloadFilename } from "../utils/download.ts";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";
 import { SortChangeEvent } from "./Sort";
@@ -91,7 +91,19 @@ export const VariantsContainer: Component<{
       size: Number.MAX_SAFE_INTEGER,
       sampleIds: [],
     });
-    const vcf = writeVcf({ metadata: props.metadata.records, data: records.items.map((item) => item.data) }, filter);
+
+    const infoOrder: InfoOrder = await fetchInfoOrder();
+    const vcf = writeVcf(
+      {
+        metadata: props.metadata.records,
+        data: records.items.reduce((acc, item) => {
+          acc[item.id] = item.data;
+          return acc;
+        }, {} as VariantRecords),
+        infoOrder: infoOrder,
+      },
+      filter,
+    );
 
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");
