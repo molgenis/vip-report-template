@@ -5,11 +5,14 @@ import { getConfig, getMetadata, getRecordById, getSampleById } from "./data/dat
 import { parseVariantType } from "../utils/variantType.ts";
 import { VariantContainer } from "../components/VariantContainer.tsx";
 import { VariantBreadcrumb } from "../components/VariantBreadcrumb.tsx";
+import { Item, Sample } from "@molgenis/vip-report-api";
+import { getPedigreeSamples } from "../utils/sample.ts";
 
 export const SampleVariant: Component<RouteSectionProps> = (props) => {
   const variantType = () => parseVariantType(props.params.variantType);
   const sample = createAsync(() => getSampleById(props.params.sampleId));
-  const record = createAsync(() => getRecordById(props.params.variantId));
+  const samples = (): Item<Sample>[] => (sample() ? getPedigreeSamples(sample()!) : []);
+  const record = createAsync(() => getRecordById(props.params.variantId, samples()));
   const metadata = createAsync(() => getMetadata());
   const config = createAsync(() => getConfig());
 

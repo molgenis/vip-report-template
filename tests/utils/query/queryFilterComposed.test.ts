@@ -57,7 +57,7 @@ describe("query composed filters", () => {
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: 1, right: 2 });
       });
 
@@ -72,7 +72,7 @@ describe("query composed filters", () => {
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: 1, right: undefined });
       });
 
@@ -87,7 +87,7 @@ describe("query composed filters", () => {
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: undefined, right: 2 });
       });
 
@@ -96,7 +96,7 @@ describe("query composed filters", () => {
         const value = { chromosome: "chr1" } as FilterValueLocus;
         vi.mocked(createQueryFilterString).mockReturnValue(query);
         expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false, false);
+        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
       });
     });
 
@@ -104,9 +104,9 @@ describe("query composed filters", () => {
       const config = {
         type: "composed",
         id: "composed/allelicImbalance",
-        sample: { item: { data: { index: 1 } } } as SampleContainer,
+        sample: { item: { id: 1, data: { index: 1 } } } as SampleContainer,
         viabField: { id: "VIAB" },
-        genotypeField: { id: "GT" },
+        genotypeField: { id: "GT_type" },
       } as ConfigFilterAllelicImbalance;
       const queryInterval: Query = { selector: "viab", operator: "==", args: "inside" };
       const queryIntervalClosed: Query = { selector: "viab", operator: "==", args: "outside" };
@@ -115,14 +115,14 @@ describe("query composed filters", () => {
         args: [
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "in", args: ["hom_a", "hom_r"] },
+              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_ALT", "HOM_REF"] },
               { selector: "viab", operator: "==", args: "inside" },
             ],
             operator: "and",
           },
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "==", args: "het" },
+              { selector: ["s", 1, "GT_type"], operator: "==", args: "HET" },
               { selector: "viab", operator: "==", args: "outside" },
             ],
             operator: "and",
@@ -146,14 +146,14 @@ describe("query composed filters", () => {
         args: [
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "in", args: ["hom_a", "hom_r"] },
+              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_ALT", "HOM_REF"] },
               { selector: "viab", operator: "==", args: "outside" },
             ],
             operator: "and",
           },
           {
             args: [
-              { selector: ["s", 1, "GT", "t"], operator: "==", args: "het" },
+              { selector: ["s", 1, "GT_type"], operator: "==", args: "HET" },
               { selector: "viab", operator: "==", args: "inside" },
             ],
             operator: "and",
@@ -205,7 +205,7 @@ describe("query composed filters", () => {
       const config = {
         type: "composed",
         id: "composed/inheritanceMatch",
-        sample: { item: { data: { index: 1 } } } as SampleContainer,
+        sample: { item: { id: 1, data: { index: 1 } } } as SampleContainer,
         vimField: { id: "VIM" },
       } as ConfigFilterInheritanceMatch;
 
@@ -259,7 +259,7 @@ describe("query composed filters", () => {
       const config = {
         type: "composed",
         id: "composed/deNovo",
-        sample: { item: { data: { index: 1 } } } as SampleContainer,
+        sample: { item: { id: 1, data: { index: 1 } } } as SampleContainer,
         vidField: { id: "VID" },
       } as ConfigFilterDeNovo;
 
@@ -300,7 +300,7 @@ describe("query composed filters", () => {
     });
 
     test("vipCS", () => {
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { id: 1, data: { index: 1 } } } as SampleContainer;
       const field = { id: "f", number: {}, categories: {} };
       const config = { type: "composed", id: "composed/vipCS", field, sample } as ConfigFilterVipCS;
       const value = ["chr1"] as FilterValueVipCS;

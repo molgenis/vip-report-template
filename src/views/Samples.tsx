@@ -4,7 +4,7 @@ import { PageChangeEvent, Pager } from "../components/Pager";
 import { SearchBox } from "../components/SearchBox";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { useStore } from "../store";
-import { Params, Query, QueryClause } from "@molgenis/vip-report-api";
+import { Params, Query, QueryClause, SortOrder } from "@molgenis/vip-report-api";
 import { Loader } from "../components/Loader";
 import { fetchSamples } from "../utils/api.ts";
 import { Checkbox, CheckboxEvent } from "../components/form/Checkbox.tsx";
@@ -33,11 +33,11 @@ export const Samples: Component = () => {
   function createQuery(search: string | undefined, probandFilterValue: boolean | undefined): Query | null {
     const searchQuery: QueryClause | undefined =
       search !== undefined && search !== ""
-        ? { selector: ["person", "individualId"], operator: "~=", args: search }
+        ? { selector: ["sample", "individualId"], operator: "~=", args: search }
         : undefined;
     const probandQuery: QueryClause | undefined =
       probandFilterValue !== undefined && probandFilterValue
-        ? { selector: ["proband"], operator: "==", args: probandFilterValue }
+        ? { selector: ["sample", "proband"], operator: "==", args: probandFilterValue }
         : undefined;
     if (searchQuery !== undefined || probandQuery != undefined) {
       const args: QueryClause[] = [];
@@ -57,9 +57,16 @@ export const Samples: Component = () => {
     return null;
   }
 
+  const sortOrder: SortOrder[] = [
+    { property: ["sample", "familyId"], compare: "asc" },
+    { property: ["sample", "proband"], compare: "desc" },
+    { property: ["sample", "individualId"], compare: "asc" },
+  ];
+
   const params = (): Params => {
     return {
       query: createQuery(searchQuery(), probandFilterValue()) || undefined,
+      sort: sortOrder,
       page: page() || undefined,
     };
   };

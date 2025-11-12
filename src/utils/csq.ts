@@ -94,20 +94,15 @@ export function compareCsq(
   return compareCsqValue(aValue, bValue, direction);
 }
 
-export function compareCsqDefault(
-  aValue: Value[],
-  bValue: Value[],
-  pickIndex: number,
-  consequenceIndex: number,
-): number {
+export function compareCsqDefault(aValue: object, bValue: object, pickIndex: number, consequenceIndex: number): number {
   if (pickIndex !== -1) {
-    if (aValue[pickIndex] === "1") return bValue[pickIndex] === null ? -1 : 0;
-    if (bValue[pickIndex] === "1") return 1;
+    if (aValue["PICK"] === 1) return bValue["PICK"] === null ? -1 : 0;
+    if (bValue["PICK"] === 1) return 1;
   }
 
   if (consequenceIndex !== -1) {
-    const aIndex = getMostSevereConsequenceIndex(aValue[consequenceIndex] as string[]);
-    const bIndex = getMostSevereConsequenceIndex(bValue[consequenceIndex] as string[]);
+    const aIndex = getMostSevereConsequenceIndex(aValue["Consequence"] as string[]);
+    const bIndex = getMostSevereConsequenceIndex(bValue["Consequence"] as string[]);
     return aIndex - bIndex;
   } else {
     return 0;

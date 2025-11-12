@@ -27,7 +27,7 @@ describe("query filter fixed", () => {
       const value = ["chr1"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["c"], value, false, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["c"], value, false);
     });
 
     test("pos", () => {
@@ -43,7 +43,7 @@ describe("query filter fixed", () => {
       const value = ["id0"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["i"], value, true, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["i"], value, true);
     });
 
     test("ref", () => {
@@ -51,7 +51,7 @@ describe("query filter fixed", () => {
       const value = ["C"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["r"], value, false, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["r"], value, false);
     });
 
     test("alt", () => {
@@ -59,7 +59,7 @@ describe("query filter fixed", () => {
       const value = ["C"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["a"], value, true, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["a"], value, true);
     });
 
     test("qual", () => {
@@ -75,7 +75,7 @@ describe("query filter fixed", () => {
       const value = ["filter0"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["f"], value, true, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["f"], value, true);
     });
 
     test("invalid", () => {

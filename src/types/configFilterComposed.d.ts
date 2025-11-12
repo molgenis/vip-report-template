@@ -10,6 +10,7 @@ import { FieldMetadataWrapper } from "../utils/vcf.ts";
 
 export type ChromosomeId = string;
 export type FilterValueHpo = FilterValueCategorical;
+export type FilterValuePick = FilterValueCategorical;
 export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?: number };
 export type FilterValueVipC = FilterValueCategorical;
 export type FilterValueVipCS = FilterValueCategorical;
@@ -23,10 +24,12 @@ export type ConfigFilterComposed =
   | ConfigFilterAllelicImbalance
   | ConfigFilterInheritanceMatch
   | ConfigFilterDeNovo
+  | ConfigFilterPick
   | ConfigFilterVipC
   | ConfigFilterVipCS;
 
 export type ConfigFilterHpo = ConfigFilterField;
+export type ConfigFilterPick = ConfigFilterField;
 
 export interface ConfigFilterAllelicImbalance extends ConfigFilterBase {
   sample: SampleContainer;

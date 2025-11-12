@@ -32,6 +32,7 @@ describe("vcf", () => {
       a: ["C", "T"],
       q: null,
       f: [],
+      g: "TEST",
       n: {},
       s: [],
     },

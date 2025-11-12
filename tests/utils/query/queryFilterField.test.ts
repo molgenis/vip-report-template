@@ -23,7 +23,7 @@ describe("query filter fixed", () => {
       const value = ["x"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false);
     });
 
     test("CHARACTER count=1 info", () => {
@@ -32,7 +32,7 @@ describe("query filter fixed", () => {
       const value = ["x"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false);
     });
 
     test("STRING count=* info nested", () => {
@@ -41,17 +41,17 @@ describe("query filter fixed", () => {
       const value = ["x"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "p", "c"], value, true, true);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "p", "c"], value, true);
     });
 
     test("STRING count=* genotype", () => {
       const field = { id: "f", type: "STRING", number: { type: "OTHER" } } as FieldMetadata;
-      const sample = { item: { data: { index: 1 } } } as SampleContainer;
+      const sample = { item: { id: 1, data: { index: 1 } } } as SampleContainer;
       const config = { type: "genotype", id: "filter", field, sample } as ConfigFilterFormat;
       const value = ["x"];
       vi.mocked(createQueryFilterString).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["s", 1, "f"], value, true, false);
+      expect(createQueryFilterString).toHaveBeenCalledWith(["s", 1, "f"], value, true);
     });
 
     test("FLOAT count=1 info", () => {

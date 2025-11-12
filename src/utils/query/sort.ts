@@ -1,5 +1,5 @@
 import { FieldMetadata, VcfMetadata } from "@molgenis/vip-report-vcf";
-import { CompareFn, SortOrder, SortPath } from "@molgenis/vip-report-api";
+import { SortOrder, SortPath } from "@molgenis/vip-report-api";
 import { ConfigSort, ConfigSortOrder } from "../../types/configSort";
 
 import { createInfoSortPath } from "./selector.ts";
@@ -68,16 +68,16 @@ function createField(property: string | SortPath, recordsMeta: VcfMetadata): Fie
 
   if (path.length === 3) {
     const pathIndex = path[2];
-    if (typeof pathIndex !== "number") throw new InvalidSortPathError(path);
+    if (typeof pathIndex !== "string") throw new InvalidSortPathError(path);
     if (field.nested === undefined) throw new InvalidSortPathError(path);
 
-    field = field.nested.items[pathIndex];
+    field = field.nested.items.find((item) => item.id === path[2]);
     if (field === undefined) throw new InvalidSortPathError(path);
   }
   return field;
 }
 
-function createDirection(compare?: "asc" | "desc" | CompareFn): Direction {
+function createDirection(compare?: "asc" | "desc"): Direction {
   if (compare === undefined) return DIRECTION_ASCENDING;
   else if (compare === DIRECTION_ASCENDING) return DIRECTION_ASCENDING;
   else if (compare === DIRECTION_DESCENDING) return DIRECTION_DESCENDING;

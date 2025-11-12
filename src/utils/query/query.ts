@@ -3,13 +3,14 @@ import { FilterValueMap } from "../../types/configFilter";
 import { VariantType } from "../variantType.ts";
 
 import { Config } from "../../types/config";
-import { SampleContainer } from "../api.ts";
+import { MetadataContainer, SampleContainer } from "../api.ts";
 import { createQueryFilters } from "./queryFilter.ts";
 import { createQueryVariantType } from "./queryVariantType.ts";
 import { createQuerySample } from "./querySample.ts";
 
 export function createQuery(
   config: Config,
+  meta: MetadataContainer,
   variantType: VariantType,
   sample: SampleContainer | null,
   filterValues: FilterValueMap,
@@ -22,7 +23,7 @@ export function createQuery(
   }
 
   if (sample !== null) {
-    const querySample = createQuerySample(config.vip, sample);
+    const querySample = createQuerySample(config.vip, sample, meta);
     if (querySample !== null) {
       queryParts.push(querySample);
     }

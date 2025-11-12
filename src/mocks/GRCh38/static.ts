@@ -32,23 +32,46 @@ import fastaUrl_chrM_15075_15575 from "./fasta/chrM-15075-15575.fasta.gz.blob";
 import fastaUrl_chrX_49075112_49075612 from "./fasta/chrX-49075112-49075612.fasta.gz.blob";
 import fastaUrl_chrY_2787350_2787850 from "./fasta/chrY-2787350-2787850.fasta.gz.blob";
 import genesUrl from "./genes.gff.gz.blob";
-import vcfUrlFamily from "./vcf/family.vcf.blob";
-import vcfUrlNoVep from "./vcf/no_vep.vcf.blob";
-import vcfUrlSamples0 from "./vcf/samples_0.vcf.blob";
-import vcfUrlSamples1 from "./vcf/samples_1.vcf.blob";
-import vcfUrlSamples100 from "./vcf/samples_100.vcf.blob";
-import vcfUrlStr from "./vcf/str.vcf.blob";
-/* eslint-enable */
-import decisionTreeJson from "./decisionTree.json";
-import decisionTreeStrJson from "./decisionTreeStr.json";
-import sampleTreeJson from "./sampleTree.json";
-import vcfMetaJson from "./field_metadata.json";
+import databaseFamily from "./vcf/family.db.blob";
+import databaseSamples0 from "./vcf/samples_0.db.blob";
+import databaseNoVep from "./vcf/no_vep.db.blob";
+import databaseSamples1 from "./vcf/samples_1.db.blob";
+import databaseSamples100 from "./vcf/samples_100.db.blob";
+import databaseStr from "./vcf/str.db.blob";
+import sqlWasm from "../sql-wasm.wasm.blob";
+
 import { fetchAsBytes } from "../utils";
-import { DecisionTree } from "@molgenis/vip-report-api";
-import { SupplementaryMetadata } from "@molgenis/vip-report-vcf";
 
 export async function fetchCram() {
   return await fetchAsBytes(cramUrl as string);
+}
+
+export async function fetchDatabaseFamily() {
+  return await fetchAsBytes(databaseFamily as string);
+}
+
+export async function fetchSqlWasm() {
+  return await fetchAsBytes(sqlWasm as string);
+}
+
+export async function fetchDatabaseSamples0() {
+  return await fetchAsBytes(databaseSamples0 as string);
+}
+
+export async function fetchDatabaseNoVep() {
+  return await fetchAsBytes(databaseNoVep as string);
+}
+
+export async function fetchDatabaseSamples1() {
+  return await fetchAsBytes(databaseSamples1 as string);
+}
+
+export async function fetchDatabaseSamples100() {
+  return await fetchAsBytes(databaseSamples100 as string);
+}
+
+export async function fetchDatabaseStr() {
+  return await fetchAsBytes(databaseStr as string);
 }
 
 export async function fetchCrai() {
@@ -62,10 +85,6 @@ export async function fetchStrCram() {
 export async function fetchStrCrai() {
   return await fetchAsBytes(strCraiUrl as string);
 }
-
-export const decisionTree: DecisionTree = decisionTreeJson as unknown as DecisionTree;
-export const decisionTreeStr: DecisionTree = decisionTreeStrJson as unknown as DecisionTree;
-export const sampleTree: DecisionTree = sampleTreeJson as unknown as DecisionTree;
 
 export async function fetchFastaGz() {
   return {
@@ -102,134 +121,3 @@ export async function fetchFastaGz() {
 export async function fetchGenesGz() {
   return await fetchAsBytes(genesUrl as string);
 }
-
-export const vcfMeta = vcfMetaJson as unknown as SupplementaryMetadata;
-
-export async function fetchVcfFamily() {
-  return await fetchAsBytes(vcfUrlFamily as string);
-}
-
-export async function fetchVcfNoVep() {
-  return await fetchAsBytes(vcfUrlNoVep as string);
-}
-
-export async function fetchVcfSamples0() {
-  return await fetchAsBytes(vcfUrlSamples0 as string);
-}
-
-export async function fetchVcfSamples1() {
-  return await fetchAsBytes(vcfUrlSamples1 as string);
-}
-
-export async function fetchVcfSamples100() {
-  return await fetchAsBytes(vcfUrlSamples100 as string);
-}
-
-export async function fetchVcfStr() {
-  return await fetchAsBytes(vcfUrlStr as string);
-}
-
-export const samplesStr = {
-  samples: [
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Patient",
-        sex: "FEMALE",
-        affectedStatus: "AFFECTED",
-      },
-      index: 0,
-      proband: true,
-    },
-  ],
-  phenotypes: [],
-};
-
-export const samplesFamily = {
-  samples: [
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Patient",
-        paternalId: "Father",
-        maternalId: "MotherHasQuiteALongName",
-        sex: "MALE",
-        affectedStatus: "AFFECTED",
-      },
-      index: 3,
-      proband: true,
-      filter_classes: ["U1", "U2"],
-    },
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "MotherHasQuiteALongName",
-        paternalId: "0",
-        maternalId: "0",
-        sex: "FEMALE",
-        affectedStatus: "UNAFFECTED",
-      },
-      index: 1,
-      proband: false,
-    },
-    {
-      person: {
-        familyId: "FAM001",
-        individualId: "Father",
-        paternalId: "0",
-        maternalId: "0",
-        sex: "MALE",
-        affectedStatus: "AFFECTED",
-      },
-      index: 0,
-      proband: false,
-    },
-  ],
-  phenotypes: [
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-        {
-          type: {
-            id: "HP:0003124",
-            label: "HP:0003124",
-          },
-        },
-      ],
-      subject: {
-        id: "Patient",
-      },
-    },
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-      ],
-      subject: {
-        id: "MotherHasQuiteALongName",
-      },
-    },
-    {
-      phenotypicFeaturesList: [
-        {
-          type: {
-            id: "HP:0000951",
-            label: "HP:0000951",
-          },
-        },
-      ],
-      subject: {
-        id: "Father",
-      },
-    },
-  ],
-};

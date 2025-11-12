@@ -1,13 +1,13 @@
 import { VariantFilters } from "./VariantFilters";
-import { Params } from "@molgenis/vip-report-api";
+import { HtsFileMetadata, RecordParams } from "@molgenis/vip-report-api";
 import { Component, createResource, Show } from "solid-js";
 import { VariantType } from "../utils/variantType.ts";
 import { useNavigate } from "@solidjs/router";
 import { initConfig } from "../utils/config/config.ts";
 import { createQuery } from "../utils/query/query.ts";
 import { PageChangeEvent } from "./Pager";
-import { writeVcf } from "@molgenis/vip-report-vcf";
-import { fetchRecords, MetadataContainer, SampleContainer } from "../utils/api.ts";
+import { InfoOrder, VariantRecords, writeVcf } from "@molgenis/vip-report-vcf";
+import { fetchInfoOrder, fetchRecords, MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { createVcfDownloadFilename } from "../utils/download.ts";
 import { RecordsPerPageChangeEvent } from "./RecordsPerPage";
 import { SortChangeEvent } from "./Sort";
@@ -33,7 +33,8 @@ export const VariantsContainer: Component<{
 
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
-  const query = () => createQuery(config(), props.variantType, props.sample, props.store.getFilterValues());
+  const query = () =>
+    createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());
 
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
@@ -41,12 +42,31 @@ export const VariantsContainer: Component<{
   const recordsPerPage = () =>
     props.store.getPageSize() !== null ? props.store.getPageSize()! : defaultRecordsPerPage();
 
+  const sampleIds = () => {
+    let sampleIds: number[] | undefined;
+    if (props.sample !== null) {
+      sampleIds = [props.sample.item.id];
+      if (props.sample.maternalSample !== null && props.sample.maternalSample !== undefined) {
+        sampleIds.push(props.sample.maternalSample.id);
+      }
+      if (props.sample.paternalSample !== null && props.sample.paternalSample !== undefined) {
+        sampleIds.push(props.sample.paternalSample.id);
+      }
+    }
+    return sampleIds;
+  };
+
+  const hasSvTypeField = () => {
+    return Object.hasOwn(props.metadata.records.info, "SVTYPE");
+  };
+
   const [records] = createResource(
-    (): Params => ({
+    (): RecordParams => ({
       query: query() || undefined,
       page: props.store.getPageNumber() || 0,
       size: recordsPerPage(),
       sort: sort(),
+      sampleIds: sampleIds(),
     }),
     fetchRecords,
   );
@@ -64,15 +84,33 @@ export const VariantsContainer: Component<{
   const onRecordsDownload = async () => {
     const samples = props.sample ? getPedigreeSamples(props.sample) : [];
     const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
+    const sampleIds = samples ? samples.map((sample) => sample.id) : ([] as number[]);
 
     // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
-    const records = await fetchRecords({ query: query() || undefined, page: 0, size: Number.MAX_SAFE_INTEGER });
-    const vcf = writeVcf({ metadata: props.metadata.records, data: records.items.map((item) => item.data) }, filter);
+    const records = await fetchRecords({
+      query: query() || undefined,
+      page: 0,
+      size: Number.MAX_SAFE_INTEGER,
+      sampleIds: sampleIds,
+    });
+
+    const infoOrder: InfoOrder = await fetchInfoOrder();
+    const vcf = writeVcf(
+      {
+        metadata: props.metadata.records,
+        data: records.items.reduce((acc, item) => {
+          acc[item.id] = item.data;
+          return acc;
+        }, {} as VariantRecords),
+        infoOrder: infoOrder,
+      },
+      filter,
+    );
 
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", createVcfDownloadFilename(props.metadata.htsFile));
+    link.setAttribute("download", createVcfDownloadFilename(props.metadata.app.htsFile as HtsFileMetadata));
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -101,7 +139,7 @@ export const VariantsContainer: Component<{
       </div>
       <div class="columns is-1">
         <div class="column is-2-fullhd is-3">
-          <Show when={variantTypeIds().size > 1}>
+          <Show when={variantTypeIds().size > 1 && hasSvTypeField()}>
             <div class="columns">
               <div class="column">
                 <VariantTypeSelect

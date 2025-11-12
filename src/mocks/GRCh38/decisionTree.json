@@ -103,6 +103,84 @@
         "nextNode": "vkgl"
       }
     },
+    "clinVar": {
+      "label": "ClinVar",
+      "description": "ClinVar classification",
+      "type": "BOOL_MULTI",
+      "fields": [
+        "INFO/CSQ/clinVar_CLNSIG"
+      ],
+      "outcomes": [
+        {
+          "description": "Conflict",
+          "queries": [
+            {
+              "field": "INFO/CSQ/clinVar_CLNSIG",
+              "operator": "contains_any",
+              "value": [
+                "Conflicting_classifications_of_pathogenicity"
+              ]
+            }
+          ],
+          "outcomeTrue": {
+            "nextNode": "chrom"
+          }
+        },
+        {
+          "description": "LP/P",
+          "queries": [
+            {
+              "field": "INFO/CSQ/clinVar_CLNSIG",
+              "operator": "contains_any",
+              "value": [
+                "Likely_pathogenic",
+                "Pathogenic"
+              ]
+            }
+          ],
+          "outcomeTrue": {
+            "nextNode": "exit_lp"
+          }
+        },
+        {
+          "description": "VUS",
+          "queries": [
+            {
+              "field": "INFO/CSQ/clinVar_CLNSIG",
+              "operator": "contains_any",
+              "value": [
+                "Uncertain_significance"
+              ]
+            }
+          ],
+          "outcomeTrue": {
+            "nextNode": "chrom"
+          }
+        },
+        {
+          "description": "B/LB",
+          "queries": [
+            {
+              "field": "INFO/CSQ/clinVar_CLNSIG",
+              "operator": "contains_any",
+              "value": [
+                "Likely_benign",
+                "Benign"
+              ]
+            }
+          ],
+          "outcomeTrue": {
+            "nextNode": "exit_lb"
+          }
+        }
+      ],
+      "outcomeDefault": {
+        "nextNode": "chrom"
+      },
+      "outcomeMissing": {
+        "nextNode": "chrom"
+      }
+    },
     "vkgl": {
       "label": "vkgl",
       "type": "CATEGORICAL",
@@ -127,6 +205,124 @@
       },
       "outcomeDefault": {
         "nextNode": "filter"
+      }
+    },
+    "annotSV": {
+      "label": "AnnotSV",
+      "description": "AnnotSV classification",
+      "type": "CATEGORICAL",
+      "field": "INFO/CSQ/ASV_ACMG_class",
+      "outcomeMap": {
+        "5": {
+          "nextNode": "exit_p"
+        },
+        "4": {
+          "nextNode": "exit_lp"
+        },
+        "3": {
+          "nextNode": "exit_vus"
+        },
+        "2": {
+          "nextNode": "exit_lb"
+        },
+        "1": {
+          "nextNode": "exit_b"
+        }
+      },
+      "outcomeMissing": {
+        "nextNode": "spliceAI"
+      },
+      "outcomeDefault": {
+        "nextNode": "spliceAI"
+      }
+    },
+    "spliceAI": {
+      "label": "SpliceAI",
+      "description": "SpliceAI prediction",
+      "type": "BOOL_MULTI",
+      "fields": [
+        "INFO/CSQ/SpliceAI_pred_DS_AG",
+        "INFO/CSQ/SpliceAI_pred_DS_AL",
+        "INFO/CSQ/SpliceAI_pred_DS_DG",
+        "INFO/CSQ/SpliceAI_pred_DS_DL"
+      ],
+      "outcomes": [
+        {
+          "description": "Delta score (acceptor/donor gain/loss) > 0.42",
+          "operator": "OR",
+          "queries": [
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_AG",
+              "operator": ">",
+              "value": 0.42
+            },
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_AL",
+              "operator": ">",
+              "value": 0.42
+            },
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_DG",
+              "operator": ">",
+              "value": 0.42
+            },
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_DL",
+              "operator": ">",
+              "value": 0.42
+            }
+          ],
+          "outcomeTrue": {
+            "nextNode": "exit_lp"
+          }
+        },
+        {
+          "description": "Delta score (acceptor/donor gain/loss) > 0.13",
+          "operator": "OR",
+          "queries": [
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_AG",
+              "operator": ">",
+              "value": 0.13
+            },
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_AL",
+              "operator": ">",
+              "value": 0.13
+            },
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_DG",
+              "operator": ">",
+              "value": 0.13
+            },
+            {
+              "field": "INFO/CSQ/SpliceAI_pred_DS_DL",
+              "operator": ">",
+              "value": 0.13
+            }
+          ],
+          "outcomeTrue": {
+            "nextNode": "exit_vus"
+          }
+        }
+      ],
+      "outcomeDefault": {
+        "nextNode": "utr5"
+      },
+      "outcomeMissing": {
+        "nextNode": "utr5"
+      }
+    },
+    "utr5": {
+      "label": "5' UTR",
+      "description": "5' UTR",
+      "type": "EXISTS",
+      "field": "INFO/CSQ/five_prime_UTR_variant_consequence",
+      "outcomeTrue": {
+        "nextNode": "exit_vus"
+      },
+      "outcomeFalse": {
+        "nextNode": "capice"
       }
     },
     "filter": {
@@ -368,6 +564,11 @@
       "label": "Likely Benign",
       "type": "LEAF",
       "class": "LB"
+    },
+    "exit_lt": {
+      "label": "Likely T",
+      "type": "LEAF",
+      "class": "LT"
     },
     "exit_vus": {
       "label": "Unknown Significance",

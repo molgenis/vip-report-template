@@ -12,7 +12,7 @@ export const FieldGenotype: Component<{
     const value = props.value.svType;
 
     let variantType: VariantTypeId;
-    if (value === null) {
+    if (value === null || value === undefined) {
       variantType = "snv";
     } else if (value === "STR") {
       variantType = "str";

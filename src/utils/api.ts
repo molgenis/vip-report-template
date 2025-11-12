@@ -2,26 +2,23 @@ import {
   AppMetadata,
   Cram,
   DecisionTree,
-  HtsFileMetadata,
   Item,
-  Json,
   PagedItems,
   Params,
   PhenotypicFeature,
   Query,
+  RecordParams,
   Sample,
-  WindowApiClient,
 } from "@molgenis/vip-report-api";
 import { isSampleFather, isSampleMother } from "./sample.ts";
-import { NestedFieldMetadata, Value, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
-import { createRecordSort } from "./query/sort.ts";
-import { createFieldMap, FieldMap, isNumerical } from "./vcf.ts";
-import { compareCsq, compareCsqDefault } from "./csq.ts";
+import { InfoOrder, VcfMetadata, VcfRecord } from "@molgenis/vip-report-vcf";
+import { createFieldMap, FieldMap } from "./vcf.ts";
 import { VariantTypeId } from "./variantType.ts";
 import { MockApiClient } from "../mocks/MockApiClient.ts";
 import { ConfigJson } from "../types/config";
 import { RuntimeError } from "./error.ts";
 import { validateConfig } from "./config/configValidator.ts";
+import { WindowApiClientFactory } from "@molgenis/vip-report-api";
 
 export type VcfMetadataContainer = VcfMetadata & {
   fieldMap: FieldMap;
@@ -31,7 +28,6 @@ export type VcfMetadataContainer = VcfMetadata & {
  */
 export type MetadataContainer = {
   app: AppMetadata;
-  htsFile: HtsFileMetadata;
   records: VcfMetadataContainer;
   variantTypeIds: Set<VariantTypeId>;
 };
@@ -50,7 +46,7 @@ export type SampleContainer = {
 
 // lazy import MockApiClient to ensure that it is excluded from the build artifact
 const api = import.meta.env.PROD
-  ? new WindowApiClient()
+  ? await (async () => await WindowApiClientFactory.create())()
   : await (async () => {
       const module = await import("../mocks/MockApiClient.ts");
       return new module.MockApiClient();
@@ -58,7 +54,7 @@ const api = import.meta.env.PROD
 
 export async function fetchConfig(): Promise<ConfigJson> {
   console.log("Api.fetchConfig");
-  const config: Json = await api.getConfig();
+  const config = await api.getConfig();
   if (config === null) throw new RuntimeError("no config provided");
   return validateConfig(config);
 }
@@ -89,9 +85,8 @@ export async function fetchSamples(params: Params): Promise<PagedItems<SampleCon
  */
 export async function fetchMetadata(): Promise<MetadataContainer> {
   console.log("Api.fetchMetadata");
-  const [appMetadata, htsFileMetadata, recordsMetadata, variantTypeIds] = await Promise.all([
+  const [appMetadata, recordsMetadata, variantTypeIds] = await Promise.all([
     api.getAppMetadata(),
-    api.getHtsFileMetadata(),
     api.getRecordsMeta(),
     fetchVariantTypeIdsQuery(),
   ]);
@@ -99,7 +94,7 @@ export async function fetchMetadata(): Promise<MetadataContainer> {
   // precompute field map
   const fieldMap = createFieldMap(recordsMetadata);
 
-  return { app: appMetadata, htsFile: htsFileMetadata, records: { ...recordsMetadata, fieldMap }, variantTypeIds };
+  return { app: appMetadata, records: { ...recordsMetadata, fieldMap }, variantTypeIds };
 }
 
 /**
@@ -118,48 +113,25 @@ export async function fetchSampleById(sampleId: number): Promise<SampleContainer
   return composeSample(sample, phenotypicFeatures, pedigreeSamples, variantTypeIds);
 }
 
-export async function fetchRecordById(id: number): Promise<Item<VcfRecord>> {
+export async function fetchRecordById(id: number, samples?: Item<Sample>[]): Promise<Item<VcfRecord>> {
   console.log("Api.fetchRecordById", id);
-  return api.getRecordById(id);
+  const sampleIds = samples?.map((sample) => sample.id) ?? [];
+  return api.getRecordById(id, sampleIds);
 }
 
-export async function fetchRecords(params: Params): Promise<PagedItems<VcfRecord>> {
+export async function fetchRecords(params: RecordParams): Promise<PagedItems<VcfRecord>> {
   console.log("Api.fetchRecords", JSON.stringify(params));
-  const [recordsMeta, records] = await Promise.all([api.getRecordsMeta(), api.getRecords(params)]);
-  if (recordsMeta.info.CSQ === undefined) {
-    return records;
-  }
+  return api.getRecords(params);
+}
 
-  const orders = createRecordSort(recordsMeta, params.sort).orders.filter(
-    (order) =>
-      order.field.parent?.id === "CSQ" &&
-      isNumerical(order.field) &&
-      order.field.number.type === "NUMBER" &&
-      order.field.number.count === 1,
-  );
-
-  const fieldMetas = (recordsMeta.info.CSQ.nested as NestedFieldMetadata).items;
-  const consequenceIndex = fieldMetas.findIndex((item) => item.id === "Consequence");
-  const pickIndex = fieldMetas.findIndex((item) => item.id === "PICK");
-
-  for (const record of records.items) {
-    const csqArray = record.data.n.CSQ as Value[][] | undefined;
-    if (csqArray) {
-      csqArray.sort((aValue, bValue) => {
-        for (const order of orders) {
-          const compareValue = compareCsq(aValue, bValue, order.field, order.direction);
-          if (compareValue !== 0) return compareValue;
-        }
-        return compareCsqDefault(aValue, bValue, pickIndex, consequenceIndex);
-      });
-    }
-  }
-  return records;
+export async function fetchInfoOrder(): Promise<InfoOrder> {
+  console.log("Api.fetchInfoOrder");
+  return api.getInfoOrder();
 }
 
 export async function fetchSampleProbandIds(): Promise<number[]> {
   console.log("Api.fetchSampleProbandIds");
-  const query: Query = { selector: ["proband"], operator: "==", args: true };
+  const query: Query = { selector: ["sample", "proband"], operator: "==", args: true };
   const samplePagedItems = await api.getSamples({ query, page: 0, size: Number.MAX_SAFE_INTEGER });
   return samplePagedItems.items.map((sampleItem) => sampleItem.id);
 }
@@ -232,8 +204,8 @@ async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedItems<Sa
     query: {
       operator: "and",
       args: [
-        { selector: ["person", "individualId"], operator: "!=", args: sample.data.person.individualId },
-        { selector: ["person", "familyId"], operator: "==", args: sample.data.person.familyId },
+        { selector: ["sample", "individualId"], operator: "!=", args: sample.data.person.individualId },
+        { selector: ["sample", "familyId"], operator: "==", args: sample.data.person.familyId },
       ],
     },
     size: Number.MAX_SAFE_INTEGER,
@@ -242,7 +214,7 @@ async function fetchPedigreeSamples(sample: Item<Sample>): Promise<PagedItems<Sa
 
 async function fetchPhenotypicFeatures(sample: Item<Sample>): Promise<PhenotypicFeature[]> {
   const phenotypes = await api.getPhenotypes({
-    query: { selector: ["subject", "id"], operator: "==", args: sample.data.person.individualId },
+    query: { selector: ["sample", "individualId"], operator: "==", args: sample.data.person.individualId },
     size: Number.MAX_SAFE_INTEGER,
   });
   return phenotypes.items.map((item) => item.data).flatMap((phenotype) => phenotype.phenotypicFeaturesList);

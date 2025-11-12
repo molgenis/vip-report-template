@@ -5,6 +5,7 @@ import {
   ConfigFilterFormat,
   FilterValue,
   FilterValueCategorical,
+  FilterValueFlag,
   FilterValueInterval,
   FilterValueString,
 } from "../../types/configFilter";
@@ -30,7 +31,7 @@ export function createQueryFilterField(filter: ConfigFilterField, filterValue: F
       query = createQueryFilterClosedInterval(selector, filterValue as FilterValueInterval);
       break;
     case "FLAG":
-      query = createQueryFilterFlag();
+      query = createQueryFilterFlag(selector, field, filterValue as FilterValueCategorical);
       break;
     default:
       throw new UnexpectedEnumValueException(field.type);
@@ -60,16 +61,22 @@ export function createQueryFilterFieldCategorical(
   filterValue: FilterValueCategorical,
 ): Query {
   const multiValue = field.number.count !== 1;
-  const nestedValue = field.parent !== undefined;
-  return createQueryFilterString(selector, filterValue, multiValue, nestedValue);
+  return createQueryFilterString(selector, filterValue, multiValue);
 }
 
-function createQueryFilterFlag(): Query {
-  throw new Error("not implemented"); // FIXME support flag filter queries
+function createQueryFilterFlag(selector: Selector, field: FieldMetadata, filterValue: FilterValueFlag): Query {
+  const values: string[] = [];
+  for (const value of filterValue) {
+    if (value === "true") {
+      values.push("1");
+    } else if (value === "false") {
+      values.push("__null");
+    }
+  }
+  return createQueryFilterFieldCategorical(selector, field, values);
 }
 
 function createQueryFilterFieldString(selector: Selector, field: FieldMetadata, filterValue: FilterValueString): Query {
   const multiValue = field.number.count !== 1;
-  const nestedValue = field.parent !== undefined;
-  return createQueryFilterString(selector, filterValue, multiValue, nestedValue);
+  return createQueryFilterString(selector, filterValue, multiValue);
 }

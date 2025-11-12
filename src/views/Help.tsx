@@ -91,11 +91,11 @@ export const Help: Component = () => {
                   <tbody>
                     <tr>
                       <th>Filename:</th>
-                      <td>{metadata()?.htsFile.uri}</td>
+                      <td>{metadata().app.htsFile?.uri}</td>
                     </tr>
                     <tr>
                       <th>Assembly:</th>
-                      <td>{metadata()?.htsFile.genomeAssembly}</td>
+                      <td>{metadata().app.htsFile?.genomeAssembly}</td>
                     </tr>
                   </tbody>
                 </Table>

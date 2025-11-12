@@ -10,6 +10,7 @@ export default defineConfig(({ command }) => ({
     pure: command === "build" ? ["console.log"] : [],
   },
   build: {
+    target: 'es2022',
     modulePreload: false,
     reportCompressedSize: false,
     // inline plugin build options

@@ -175,7 +175,7 @@ describe("query filters", () => {
 
     test("multi_value=false nested_value=false args=single", () => {
       const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
+      expect(createQueryFilterString(selector, value, false)).toStrictEqual({
         selector: ["x"],
         operator: "in",
         args: ["y"],
@@ -184,37 +184,10 @@ describe("query filters", () => {
 
     test("multi_value=false nested_value=false args=multi", () => {
       const value: FilterValueString = ["y", "z"];
-      expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
+      expect(createQueryFilterString(selector, value, false)).toStrictEqual({
         selector: ["x"],
         operator: "in",
         args: ["y", "z"],
-      });
-    });
-
-    test("multi_value=true nested_value=false args=single", () => {
-      const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, true, false)).toStrictEqual({
-        selector: ["x"],
-        operator: "has_any",
-        args: ["y"],
-      });
-    });
-
-    test("multi_value=false nested_value=true args=single", () => {
-      const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, false, true)).toStrictEqual({
-        selector: ["x"],
-        operator: "has_any",
-        args: ["y"],
-      });
-    });
-
-    test("multi_value=true nested_value=true args=single", () => {
-      const value: FilterValueString = ["y"];
-      expect(createQueryFilterString(selector, value, true, true)).toStrictEqual({
-        selector: ["x"],
-        operator: "any_has_any",
-        args: ["y"],
       });
     });
 
@@ -222,7 +195,7 @@ describe("query filters", () => {
       test("categorical __null", () => {
         const value: FilterValueString = ["__null"];
 
-        expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
+        expect(createQueryFilterString(selector, value, false)).toStrictEqual({
           selector: ["x"],
           operator: "in",
           args: [null],
@@ -232,7 +205,7 @@ describe("query filters", () => {
       test("categorical category and __null", () => {
         const value: FilterValueString = ["c0", "__null"];
 
-        expect(createQueryFilterString(selector, value, false, false)).toStrictEqual({
+        expect(createQueryFilterString(selector, value, false)).toStrictEqual({
           selector: ["x"],
           operator: "in",
           args: ["c0", null],

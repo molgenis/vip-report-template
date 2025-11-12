@@ -29,17 +29,16 @@ export function getSampleTreePath(
   variant: Item<VcfRecord>,
   csqId: number,
 ): DecisionTreePath {
-  let decisionTreePath: DecisionTreePath;
   const fieldMetadata = getSampleField(metadata, "VIPP_S");
   if (fieldMetadata) {
     const value = getSampleValue(sample, variant, -1, fieldMetadata); // TODO replace with getSampleNestedValue once VIPP_S metadata is nested
-    if (value === undefined) throw new RuntimeError("required value must not be undefined");
-    if (!Array.isArray(value)) throw new RuntimeError();
-    const valueArray = value as string[];
-    if (valueArray.length <= csqId) throw new RuntimeError();
-    decisionTreePath = valueArray[csqId]!.split("&") as DecisionTreePath;
-  } else {
-    decisionTreePath = [];
+    if (value !== undefined) {
+      if (!Array.isArray(value)) throw new RuntimeError();
+      const valueArray = value as string[];
+      if (valueArray.length > csqId) {
+        return valueArray[csqId]!.split("&") as DecisionTreePath;
+      }
+    }
   }
-  return decisionTreePath;
+  return [];
 }
