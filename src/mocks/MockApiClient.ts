@@ -99,9 +99,9 @@ export class MockApiClient implements Api {
     return apiClient.getPhenotypes(params);
   }
 
-  async getRecordById(id: number): Promise<Item<VcfRecord>> {
+  async getRecordById(id: number, sampleIds: number[] | undefined): Promise<Item<VcfRecord>> {
     const apiClient = await this.getApiClient();
-    return apiClient.getRecordById(id, []);
+    return apiClient.getRecordById(id, sampleIds);
   }
 
   async getRecords(params: Params): Promise<PagedItems<VcfRecord>> {

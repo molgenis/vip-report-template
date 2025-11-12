@@ -8,7 +8,7 @@ export const FilterPick: Component<FilterProps<ConfigFilterPick, FilterValuePick
   const config = (): ConfigFilterField => ({
     ...props.config,
     field: {
-      ...props.config.hpo,
+      ...props.config.field,
       categories: {
         true: {
           label: "True",

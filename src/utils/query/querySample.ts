@@ -13,7 +13,11 @@ export function createQuerySample(config: ConfigVip, sample: SampleContainer): Q
   const filterValues = getFilterValues(config);
   const filterSelector = createSelectorSample(sample, filterField);
   const classFilter = createQueryFilterFieldCategorical(filterSelector, filterField, filterValues);
-  const gtFilter = { selector: ["s", sample.item.id, "GT_type"], operator: "!=", args: "HOM_REF" } as Query;
+  const gtFilter = {
+    selector: ["s", sample.item.id, "GT_type"],
+    operator: "!in",
+    args: ["HOM_REF", "NO_CALL", "UNAVAILABLE"],
+  } as Query;
   return createQueryComposed([classFilter, gtFilter], "and");
 }
 

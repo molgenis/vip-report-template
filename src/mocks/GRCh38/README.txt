@@ -1,4 +1,4 @@
-To create of adapt test data:
+To create or adapt test data:
 - update the resources in this folder
 - use vip-report to generate a new db
 - Update the htsFile path in the database to remove your local paths. (use e.g. intelliJ or webstorm)

@@ -31,7 +31,7 @@ export const VariantInfoTable: Component<{
         <For each={configCells()}>
           {(fieldConfig) => (
             <tr>
-              <RecordsTableHeaderCell fieldConfig={fieldConfig} showParent={true}/>
+              <RecordsTableHeaderCell fieldConfig={fieldConfig} showParentHeader={true} />
               <RecordsTableCell fieldConfig={fieldConfig} record={props.record} />
             </tr>
           )}

@@ -8,7 +8,7 @@ export function createSelectorInfo(field: FieldMetadataWrapper): SelectorPart[] 
 }
 
 export function createSelectorSample(sample: SampleContainer, field: FieldMetadataWrapper): SelectorPart[] {
-  return ["s", sample.item.id, ...selector(field)];
+  return ["s", sample.item.data.index, ...selector(field)];
 }
 
 export function createInfoSortPath(field: FieldMetadata): SortPath {

@@ -11,11 +11,15 @@ export const RecordsTable: Component<{
   fieldConfigs: ConfigCells;
   records: Item<VcfRecord>[];
   verticalHeaders?: boolean;
-  showParent?: boolean;
+  showParentHeader?: boolean;
 }> = (props) => {
   return (
     <Table>
-      <RecordsTableHeader fieldConfigs={props.fieldConfigs} verticalHeaders={props.verticalHeaders} showParent={props.showParent !== undefined ? props.showParent : false}/>
+      <RecordsTableHeader
+        fieldConfigs={props.fieldConfigs}
+        verticalHeaders={props.verticalHeaders}
+        showParentHeader={props.showParentHeader !== undefined ? props.showParentHeader : false}
+      />
       <RecordsTableBody fieldConfigs={props.fieldConfigs} records={props.records} />
     </Table>
   );
@@ -24,26 +28,32 @@ export const RecordsTable: Component<{
 const RecordsTableHeader: Component<{
   fieldConfigs: ConfigCells;
   verticalHeaders?: boolean;
-  showParent: boolean;
+  showParentHeader: boolean;
 }> = (props) => {
   return (
     <thead>
       <tr style={props.verticalHeaders ? { "writing-mode": "vertical-rl" } : undefined}>
-        <RecordsTableHeaderCells fieldConfigs={props.fieldConfigs} showParent={props.showParent}/>
+        <RecordsTableHeaderCells fieldConfigs={props.fieldConfigs} showParentHeader={props.showParentHeader} />
       </tr>
     </thead>
   );
 };
 
-export const RecordsTableHeaderCells: Component<{ fieldConfigs: ConfigCells, showParent: boolean }> = (props) => {
-  const showParent = () => props.showParent;
+export const RecordsTableHeaderCells: Component<{ fieldConfigs: ConfigCells; showParentHeader: boolean }> = (props) => {
+  const showParentHeader = () => props.showParentHeader;
   return (
     <For each={props.fieldConfigs}>
       {(fieldConfig) => (
-        <Switch fallback={<RecordsTableHeaderCell fieldConfig={fieldConfig as ConfigCellItem } showParent={showParent()}/>}>
+        <Switch
+          fallback={
+            <RecordsTableHeaderCell fieldConfig={fieldConfig as ConfigCellItem} showParentHeader={showParentHeader()} />
+          }
+        >
           <Match when={fieldConfig.type === "group"}>
             <For each={(fieldConfig as ConfigCellGroup).fieldConfigs}>
-              {(childConfigField) => <RecordsTableHeaderCell fieldConfig={childConfigField} showParent={showParent()} />}
+              {(childConfigField) => (
+                <RecordsTableHeaderCell fieldConfig={childConfigField} showParentHeader={showParentHeader()} />
+              )}
             </For>
           </Match>
         </Switch>
@@ -54,10 +64,12 @@ export const RecordsTableHeaderCells: Component<{ fieldConfigs: ConfigCells, sho
 
 export const RecordsTableHeaderCell: Component<{
   fieldConfig: ConfigCellItem;
-  showParent: boolean
+  showParentHeader: boolean;
 }> = (props) => {
-  const label = () => props.fieldConfig.parentLabel !== undefined && props.fieldConfig.parentLabel() !== "" && props.showParent ?
-    `${props.fieldConfig.parentLabel()}/${props.fieldConfig.label()}`:props.fieldConfig.label();
+  const label = () =>
+    props.fieldConfig.parentLabel !== undefined && props.fieldConfig.parentLabel() !== "" && props.showParentHeader
+      ? `${props.fieldConfig.parentLabel()}/${props.fieldConfig.label()}`
+      : props.fieldConfig.label();
   const description = () => props.fieldConfig.description();
 
   return (

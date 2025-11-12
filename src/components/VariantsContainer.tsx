@@ -82,28 +82,25 @@ export const VariantsContainer: Component<{
 
   const onRecordsDownload = async () => {
     const samples = props.sample ? getPedigreeSamples(props.sample) : [];
-    const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
+    const sampleIds = samples ? samples.map((sample) => sample.id) : ([] as number[]);
 
     // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
     const records = await fetchRecords({
       query: query() || undefined,
       page: 0,
       size: Number.MAX_SAFE_INTEGER,
-      sampleIds: [],
+      sampleIds: sampleIds,
     });
 
     const infoOrder: InfoOrder = await fetchInfoOrder();
-    const vcf = writeVcf(
-      {
-        metadata: props.metadata.records,
-        data: records.items.reduce((acc, item) => {
-          acc[item.id] = item.data;
-          return acc;
-        }, {} as VariantRecords),
-        infoOrder: infoOrder,
-      },
-      filter,
-    );
+    const vcf = writeVcf({
+      metadata: props.metadata.records,
+      data: records.items.reduce((acc, item) => {
+        acc[item.id] = item.data;
+        return acc;
+      }, {} as VariantRecords),
+      infoOrder: infoOrder,
+    });
 
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");

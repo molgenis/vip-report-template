@@ -371,7 +371,6 @@ const schema: JTDSchemaType<ConfigJson> = {
 const validate = ajv.compile(schema);
 
 export function validateConfig(json: Json): ConfigJson {
-  console.log(json);
   const valid = validate(json);
   if (valid) {
     return json; // json is 'ConfigStatic' here
