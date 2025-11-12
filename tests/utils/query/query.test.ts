@@ -8,9 +8,10 @@ import { createQuerySample } from "../../../src/utils/query/querySample.ts";
 import { createQueryFilters } from "../../../src/utils/query/queryFilter.ts";
 import { Query } from "@molgenis/vip-report-api";
 import { Config, ConfigFilters, ConfigVariants, ConfigVip, ConfigVipParams } from "../../../src/types/config";
-import { SampleContainer } from "../../../src/utils/api.ts";
+import { MetadataContainer, SampleContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { VariantType } from "../../../src/utils/variantType.ts";
 import { ConfigFilterFixed } from "../../../src/types/configFilter";
+import { FieldMetadataWrapper } from "../../../src/utils/vcf.ts";
 
 describe("query", () => {
   vi.mock(import("../../../src/utils/query/queryFilter.ts"));
@@ -33,11 +34,20 @@ describe("query", () => {
       const queryVariantType: Query = { selector: "a", operator: "==", args: "b" };
       const querySample: Query = { selector: "c", operator: "==", args: "d" };
       const queryFilters: Query = { selector: "e", operator: "==", args: "f" };
+      const fieldMetadata = { id: "GT", number: { type: "NUMBER", count: 1 } } as FieldMetadataWrapper;
+      const vcfMetadata = {
+        format: { GT: fieldMetadata },
+      } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
+      const meta = {
+        app: {},
+        records: vcfMetadata,
+        variantTypeIds: { }
+      } as MetadataContainer
       vi.mocked(createQueryVariantType).mockReturnValue(queryVariantType);
       vi.mocked(createQuerySample).mockReturnValue(querySample);
       vi.mocked(createQueryFilters).mockReturnValue(queryFilters);
 
-      expect(createQuery(config, variantType, sample, filterValues)).toStrictEqual({
+      expect(createQuery(config, meta, variantType, sample, filterValues)).toStrictEqual({
         args: [
           { selector: "a", operator: "==", args: "b" },
           { selector: "c", operator: "==", args: "d" },
@@ -46,28 +56,46 @@ describe("query", () => {
         operator: "and",
       });
       expect(createQueryVariantType).toHaveBeenCalledWith(variantType);
-      expect(createQuerySample).toHaveBeenCalledWith(configVip, sample);
+      expect(createQuerySample).toHaveBeenCalledWith(configVip, sample, meta);
       expect(createQueryFilters).toHaveBeenCalledWith(configFilters, filterValues);
     });
 
     test("sample", () => {
       const querySample: Query = { selector: "c", operator: "==", args: "d" };
+      const fieldMetadata = { id: "GT", number: { type: "NUMBER", count: 1 } } as FieldMetadataWrapper;
+      const vcfMetadata = {
+        format: { GT: fieldMetadata },
+      } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
+      const meta = {
+        app: {},
+        records: vcfMetadata,
+        variantTypeIds: { }
+      } as MetadataContainer
       vi.mocked(createQueryVariantType).mockReturnValue(null);
       vi.mocked(createQuerySample).mockReturnValue(querySample);
       vi.mocked(createQueryFilters).mockReturnValue(null);
 
-      expect(createQuery(config, variantType, sample, filterValues)).toStrictEqual(querySample);
+      expect(createQuery(config, meta, variantType, sample, filterValues)).toStrictEqual(querySample);
       expect(createQueryVariantType).toHaveBeenCalledWith(variantType);
-      expect(createQuerySample).toHaveBeenCalledWith(configVip, sample);
+      expect(createQuerySample).toHaveBeenCalledWith(configVip, sample, meta);
       expect(createQueryFilters).toHaveBeenCalledWith(configFilters, filterValues);
     });
 
     test("variant type=null, sample=null and filters=null", () => {
       const variantType = { id: "all" } as VariantType;
+      const fieldMetadata = { id: "GT", number: { type: "NUMBER", count: 1 } } as FieldMetadataWrapper;
+      const vcfMetadata = {
+        format: { GT: fieldMetadata },
+      } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
+      const meta = {
+        app: {},
+        records: vcfMetadata,
+        variantTypeIds: { }
+      } as MetadataContainer
       vi.mocked(createQueryVariantType).mockReturnValue(null);
       vi.mocked(createQueryFilters).mockReturnValue(null);
 
-      expect(createQuery(config, variantType, null, filterValues)).toStrictEqual(null);
+      expect(createQuery(config, meta, variantType, null, filterValues)).toStrictEqual(null);
       expect(createQueryVariantType).toHaveBeenCalledWith(variantType);
       expect(createQueryFilters).toHaveBeenCalledWith(configFilters, filterValues);
     });

@@ -33,7 +33,8 @@ export const VariantsContainer: Component<{
 
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
-  const query = () => createQuery(config(), props.variantType, props.sample, props.store.getFilterValues());
+  const query = () =>
+    createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());
 
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
