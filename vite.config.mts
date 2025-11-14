@@ -25,7 +25,7 @@ export default defineConfig(({ command }) => ({
   test: {
     coverage: {
       include: ["src/**"],
-      exclude: [...coverageConfigDefaults.exclude, "src/mocks/**"],
+      exclude: [...coverageConfigDefaults.exclude, "src/mocks/**", "**/*.precompiled.ts"],
       // TODO add .tsx once component tests are added
       extension: [".ts"],
       thresholds: {
