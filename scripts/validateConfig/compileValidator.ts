@@ -14,4 +14,4 @@ const validate: ValidateFunction<ConfigJson> = ${validateCode};
 export default validate;`
 );
 
-console.log("✅ Wrote validateConfig.precompiled.js");
+console.log("Wrote validateConfig.precompiled.js");
