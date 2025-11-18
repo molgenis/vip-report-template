@@ -47,7 +47,6 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
 
     props.onValueClear();
   };
-
   return (
     <FilterWrapper config={props.config} error={error()}>
       <div class="field is-grouped">
@@ -66,7 +65,7 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
           <Input placeholder="End" value={endPosition()} onValueChange={(e) => setEndPosition(e.value)} />
         </div>
         <div class="control">
-          <ButtonApply onClick={onApply} />
+          <ButtonApply onClick={onApply} isEnabled={() => chromosome() !== undefined && chromosome() !== ""} />
         </div>
       </div>
       <ButtonReset onClick={() => onReset()} />
