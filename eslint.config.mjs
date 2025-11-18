@@ -4,6 +4,11 @@ import solid from "eslint-plugin-solid/configs/typescript";
 import tseslint from "typescript-eslint";
 
 export default [
+  {
+    ignores: [
+      "**/*.precompiled.ts"
+    ]
+  },
   { files: ["**/*.{js,mjs,cjs,ts,tsx}"] },
   pluginJs.configs.recommended,
   solid,
