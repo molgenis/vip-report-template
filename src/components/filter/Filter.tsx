@@ -24,7 +24,7 @@ export type FilterValueClearCallback = () => void;
 export interface FilterProps<C extends ConfigFilterBase, FilterValueType> {
   config: C;
   value?: FilterValueType;
-  defaultValue?: string | string[] | number | number[] | boolean;
+  defaultValue?: string;
   onValueChange: FilterValueChangeCallback<FilterValueType>;
   onValueClear: FilterValueClearCallback;
 }
