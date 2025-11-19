@@ -158,6 +158,9 @@ The following composed filters are available:
 | vipC             | `INFO/CSQ/VIPC`, parameter `vcf.filter.consequences=true`, `vcf.filter.classes` > 0                |          | Filter on the VIP classification value stored in INFO/CSQ/VIPC, but only includes categories defined in the VIP configuration parameter `vcf.filter.classes`                |
 | vipCS            | `FORMAT/VIPC_S`, `sample` exists, `sample.proband=true`, parameter `vcf.filter.sample_classes` > 0 |          | Filter on the VIP sample classification value stored in FORMAT/VIPC_S, but only includes categories defined in the VIP configuration parameter `vcf.filter_samples.classes` |
 
+##### default values
+TODO
+
 #### Sorts
 
 Via this section available sort options and the default sort of the different views can be configured.
