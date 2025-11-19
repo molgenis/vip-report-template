@@ -463,11 +463,13 @@
       "all": [
         {
           "type": "composed",
-          "name": "locus"
+          "name": "locus",
+          "defaultValue": "chr1:1-123456"
         },
         {
           "type": "info",
-          "name": "CSQ/PICK"
+          "name": "CSQ/PICK",
+          "defaultValue": "true"
         },
         {
           "type": "info",
@@ -475,7 +477,8 @@
         },
         {
           "type": "info",
-          "name": "CSQ/SYMBOL"
+          "name": "CSQ/SYMBOL",
+          "defaultValue": "TEST"
         },
         {
           "type": "composed",
@@ -493,7 +496,8 @@
         },
         {
           "type": "composed",
-          "name": "vipC"
+          "name": "vipC",
+          "defaultValue": "LP"
         },
         {
           "type": "composed",
@@ -501,7 +505,8 @@
         },
         {
           "type": "info",
-          "name": "CSQ/VKGL_CL"
+          "name": "CSQ/VKGL_CL",
+          "defaultValue": "LP"
         },
         {
           "type": "info",
@@ -521,7 +526,8 @@
           "type": "composed",
           "name": "deNovo",
           "label": "De Novo",
-          "description": "Indication if the variant is De Novo or inherited from the parents of the sample."
+          "description": "Indication if the variant is De Novo or inherited from the parents of the sample.",
+          "defaultValue": "false"
         },
         {
           "type": "composed",

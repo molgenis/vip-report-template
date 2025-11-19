@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal } from "solid-js";
+import { Component, createEffect, createSignal, onMount } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import { ConfigFilterField, FilterValueString } from "../../../types/configFilter";
 import { Input } from "../../form/Input";
@@ -22,6 +22,18 @@ export const FilterString: Component<FilterProps<ConfigFilterField, FilterValueS
       props.onValueClear();
     }
   };
+
+  onMount(() => {
+    console.log("FIXME: implement");
+    console.log(props.config.defaultValue);
+    if (props.config.defaultValue !== undefined) {
+      if (typeof props.config.defaultValue !== "string") {
+        throw new Error(`Invalid default value. Locus default value should be a string.`);
+      }
+      setInputValue(props.config.defaultValue);
+      onApply();
+    }
+  });
 
   return (
     <FilterWrapper config={props.config}>

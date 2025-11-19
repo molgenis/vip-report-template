@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal, For, JSX, Show } from "solid-js";
+import { Component, createEffect, createSignal, For, JSX, onMount, Show } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import {
   ConfigFilterField,
@@ -87,6 +87,20 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
       props.onValueClear();
     }
   };
+
+  onMount(() => {
+    console.log("FIXME: Categorical!!!");
+    console.log(props.config.defaultValue);
+    if (props.config.defaultValue !== undefined) {
+      if (Array.isArray(props.config.defaultValue) && props.config.defaultValue.length > 0) {
+        props.onValueChange({ value: props.config.defaultValue as FilterValueCategorical });
+      } else if (typeof props.config.defaultValue === "string") {
+        props.onValueChange({ value: [props.config.defaultValue] as FilterValueCategorical });
+      } else {
+        throw new Error(`Invalid default value. Categorical default value should be an array.`);
+      }
+    }
+  });
 
   return (
     <FilterWrapper config={props.config} tooltipContentElement={tooltipContentElement()}>

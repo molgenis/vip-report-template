@@ -31,6 +31,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
         <FilterString
           config={props.config}
           value={props.value as FilterValueString}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />

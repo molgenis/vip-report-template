@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal } from "solid-js";
+import { Component, createEffect, createSignal, onMount } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import { ButtonApply } from "../../form/ButtonApply";
 import { ButtonReset } from "../../form/ButtonReset";
@@ -20,6 +20,26 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
       setChromosome(props.value.chromosome);
       setStartPosition(props.value.start?.toString());
       setEndPosition(props.value.end?.toString());
+    }
+  });
+
+  onMount(() => {
+    console.log("FIXME: Locus");
+    console.log(props.config.defaultValue);
+    const pattern = /^(\w+):(\w+)-(\w+)$/;
+    if (props.config.defaultValue !== undefined) {
+      if (typeof props.config.defaultValue !== "string") {
+        throw new Error(`Invalid default value. Locus default value should be a string.`);
+      }
+      const match = (props.config.defaultValue as string).match(pattern);
+      if (!match) {
+        throw new Error(`Invalid region format: ${props.config.defaultValue}`);
+      }
+      const [, chrom, start, end] = match;
+      setChromosome(chrom);
+      setStartPosition(start);
+      setEndPosition(end);
+      onApply();
     }
   });
 

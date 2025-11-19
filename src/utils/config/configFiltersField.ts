@@ -1,4 +1,4 @@
-import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo } from "../../types/config";
+import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo, ConfigJsonFilterInfo } from "../../types/config";
 import { ConfigFilterField, ConfigFilterFormat } from "../../types/configFilter";
 import { SampleContainer, VcfMetadataContainer } from "../api.ts";
 import { FieldMetadataWrapper, getInfoFieldsRegex, getSampleFieldsRegex } from "../vcf.ts";
@@ -29,8 +29,11 @@ export function initConfigFiltersGenotype(
     .map((field) => createConfigFilterGenotype(config, field, sample));
 }
 
-function createConfigFilterInfo(config: ConfigJsonFieldInfo, field: FieldMetadataWrapper): ConfigFilterField {
+function createConfigFilterInfo(config: ConfigJsonFilterInfo, field: FieldMetadataWrapper): ConfigFilterField {
+  console.log("createConfigFilterInfo");
+  console.log(config);
   return {
+    defaultValue: config.defaultValue,
     type: "info",
     id: field.id,
     label: () => getLabel(config, field.label || field.id),

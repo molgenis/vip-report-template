@@ -9,6 +9,7 @@ export const FilterVipCS: Component<FilterProps<ConfigFilterVipCS, FilterValueVi
     <FilterTyped
       config={props.config as ConfigFilterField}
       value={props.value as FilterValueCategorical}
+      defaultValue={props.defaultValue}
       onValueChange={props.onValueChange as FilterValueChangeCallback<FilterValueField>}
       onValueClear={props.onValueClear}
     />

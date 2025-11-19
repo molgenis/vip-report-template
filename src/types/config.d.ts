@@ -73,27 +73,31 @@ export type ConfigJsonFieldItem =
 export type ConfigJsonFieldItemGroup = { type: "group"; fields: ConfigJsonFieldItem[] };
 export type ConfigJsonField = ConfigJsonFieldItem | ConfigJsonFieldItemGroup;
 
-export interface ConfigJsonFilterFixed extends Describable {
+export interface DescribableFilter extends Describable {
+  defaultValue?: string;
+}
+
+export interface ConfigJsonFilterFixed extends DescribableFilter {
   type: "fixed";
   name: "chrom" | "pos" | "id" | "ref" | "alt" | "qual" | "filter";
 }
 
-export interface ConfigJsonFilterInfo extends Describable {
+export interface ConfigJsonFilterInfo extends DescribableFilter {
   type: "info";
   name: string;
 }
 
-export interface ConfigJsonFilterFormat extends Describable {
+export interface ConfigJsonFilterFormat extends DescribableFilter {
   type: "format";
   name: string;
 }
 
-export interface ConfigJsonFilterGenotype extends Describable {
+export interface ConfigJsonFilterGenotype extends DescribableFilter {
   type: "genotype";
   name: string;
 }
 
-export interface ConfigJsonFilterComposed extends Describable {
+export interface ConfigJsonFilterComposed extends DescribableFilter {
   type: "composed";
   name: "allelicImbalance" | "deNovo" | "hpo" | "inheritanceMatch" | "locus" | "vipC" | "vipCS";
 }

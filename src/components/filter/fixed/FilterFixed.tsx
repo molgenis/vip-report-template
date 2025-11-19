@@ -39,6 +39,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterChrom
           config={props.config as ConfigFilterChrom}
           value={props.value as FilterValueChrom}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -47,6 +48,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterPos
           config={props.config as ConfigFilterPos}
           value={props.value as FilterValuePos}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -55,6 +57,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterId
           config={props.config as ConfigFilterId}
           value={props.value as FilterValueId}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -63,6 +66,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterRef
           config={props.config as ConfigFilterRef}
           value={props.value as FilterValueRef}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -71,6 +75,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterAlt
           config={props.config as ConfigFilterAlt}
           value={props.value as FilterValueAlt}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -79,6 +84,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterQual
           config={props.config as ConfigFilterQual}
           value={props.value as FilterValueQual}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -87,6 +93,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
         <FilterFilter
           config={props.config as ConfigFilterFilter}
           value={props.value as FilterValueFilter}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />

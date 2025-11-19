@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal } from "solid-js";
+import { Component, createEffect, createSignal, onMount } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import { ConfigFilterField, FilterValueInterval } from "../../../types/configFilter";
 import { Input } from "../../form/Input";
@@ -22,6 +22,11 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
         setRightInputValue(props.value.right.toString());
       }
     }
+  });
+
+  onMount(() => {
+    console.log("FIXME: implement");
+    console.log(props.config.defaultValue);
   });
 
   const onApply = () => {
