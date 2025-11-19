@@ -30,8 +30,6 @@ export function initConfigFiltersGenotype(
 }
 
 function createConfigFilterInfo(config: ConfigJsonFilterInfo, field: FieldMetadataWrapper): ConfigFilterField {
-  console.log("createConfigFilterInfo");
-  console.log(config);
   return {
     defaultValue: config.defaultValue,
     type: "info",

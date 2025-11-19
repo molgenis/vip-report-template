@@ -24,12 +24,7 @@ export const FilterString: Component<FilterProps<ConfigFilterField, FilterValueS
   };
 
   onMount(() => {
-    console.log("FIXME: implement");
-    console.log(props.config.defaultValue);
     if (props.config.defaultValue !== undefined) {
-      if (typeof props.config.defaultValue !== "string") {
-        throw new Error(`Invalid default value. Locus default value should be a string.`);
-      }
       setInputValue(props.config.defaultValue);
       onApply();
     }

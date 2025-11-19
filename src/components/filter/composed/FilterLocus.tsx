@@ -24,13 +24,8 @@ export const FilterLocus: Component<FilterProps<ConfigFilterLocus, FilterValueLo
   });
 
   onMount(() => {
-    console.log("FIXME: Locus");
-    console.log(props.config.defaultValue);
     const pattern = /^(\w+):(\w+)-(\w+)$/;
     if (props.config.defaultValue !== undefined) {
-      if (typeof props.config.defaultValue !== "string") {
-        throw new Error(`Invalid default value. Locus default value should be a string.`);
-      }
       const match = (props.config.defaultValue as string).match(pattern);
       if (!match) {
         throw new Error(`Invalid region format: ${props.config.defaultValue}`);

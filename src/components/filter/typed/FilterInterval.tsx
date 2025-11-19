@@ -25,8 +25,21 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
   });
 
   onMount(() => {
-    console.log("FIXME: implement");
-    console.log(props.config.defaultValue);
+    if (props.config.defaultValue !== undefined) {
+      const split = props.config.defaultValue.split(",");
+      if (split.length === 1 && split[0] !== undefined) {
+        setLeftInputValue(split[0]);
+        onApply();
+      } else if (split.length === 2) {
+        if (split[0] !== undefined && split[0] !== "") {
+          setLeftInputValue(split[0]);
+        }
+        if (split[1] !== undefined && split[1] !== "") {
+          setRightInputValue(split[1]);
+        }
+        onApply();
+      }
+    }
   });
 
   const onApply = () => {

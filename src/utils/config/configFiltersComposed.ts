@@ -72,8 +72,6 @@ function createConfigFilterHpo(
     ),
   };
 
-  console.log("composed");
-  console.log(configStatic.defaultValue);
   return {
     type: "composed",
     id: configStatic.name,

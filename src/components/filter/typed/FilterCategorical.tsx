@@ -89,16 +89,11 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
   };
 
   onMount(() => {
-    console.log("FIXME: Categorical!!!");
-    console.log(props.config.defaultValue);
     if (props.config.defaultValue !== undefined) {
       if (Array.isArray(props.config.defaultValue) && props.config.defaultValue.length > 0) {
         props.onValueChange({ value: props.config.defaultValue as FilterValueCategorical });
-      } else if (typeof props.config.defaultValue === "string") {
-        props.onValueChange({ value: [props.config.defaultValue] as FilterValueCategorical });
-      } else {
-        throw new Error(`Invalid default value. Categorical default value should be an array.`);
       }
+      props.onValueChange({ value: [props.config.defaultValue] as FilterValueCategorical });
     }
   });
 
