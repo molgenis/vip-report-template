@@ -27,14 +27,24 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
   onMount(() => {
     if (props.config.defaultValue !== undefined) {
       const split = props.config.defaultValue.split(",");
-      if (split.length === 1 && split[0] !== undefined) {
-        setLeftInputValue(split[0]);
-        onApply();
-      } else if (split.length === 2) {
+      if (split.length >= 1) {
         if (split[0] !== undefined && split[0] !== "") {
+          if (Number.isNaN(Number(split[0]))) {
+            throw new TypeError(
+              `'${props.config.defaultValue}' is not a valid default value for field '${props.config.field.id}'.`,
+            );
+          }
           setLeftInputValue(split[0]);
         }
+      }
+      if (split.length === 2) {
         if (split[1] !== undefined && split[1] !== "") {
+          if (Number.isNaN(Number(split[1]))) {
+            throw new TypeError(
+              `'${props.config.defaultValue}' is not a valid default value for field '${props.config.field.id}'.`,
+            );
+          }
+          console.log("7");
           setRightInputValue(split[1]);
         }
         onApply();

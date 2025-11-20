@@ -88,12 +88,20 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
     }
   };
 
+  function validateValues(values: string[], filterCategories: FilterCategory[]) {
+    const invalidValues = values.filter((v) => !filterCategories.map((fc) => fc.id).includes(v));
+    if (invalidValues.length > 0) {
+      throw new Error(
+        `Invalid default values ('${invalidValues.join(", ")}') found for filter '${props.config.field.id}'.`,
+      );
+    }
+  }
+
   onMount(() => {
     if (props.config.defaultValue !== undefined) {
-      if (Array.isArray(props.config.defaultValue) && props.config.defaultValue.length > 0) {
-        props.onValueChange({ value: props.config.defaultValue as FilterValueCategorical });
-      }
-      props.onValueChange({ value: [props.config.defaultValue] as FilterValueCategorical });
+      const values = props.config.defaultValue.split(",");
+      validateValues(values, categories());
+      props.onValueChange({ value: values as FilterValueCategorical });
     }
   });
 

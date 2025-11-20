@@ -158,8 +158,17 @@ The following composed filters are available:
 | vipC             | `INFO/CSQ/VIPC`, parameter `vcf.filter.consequences=true`, `vcf.filter.classes` > 0                |          | Filter on the VIP classification value stored in INFO/CSQ/VIPC, but only includes categories defined in the VIP configuration parameter `vcf.filter.classes`                |
 | vipCS            | `FORMAT/VIPC_S`, `sample` exists, `sample.proband=true`, parameter `vcf.filter.sample_classes` > 0 |          | Filter on the VIP sample classification value stored in FORMAT/VIPC_S, but only includes categories defined in the VIP configuration parameter `vcf.filter_samples.classes` |
 
-##### default values
-TODO
+##### Default values
+Filters can be given a default value using the "defaultValue" property.
+
+The defaultValue is a string that should be properly formatted for the type of filters / values:
+
+| filter / value type | format                                                                                                                                                                                          | examples                   |
+|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------|
+| string              | any string.                                                                                                                                                                                     | "test"                     |
+| interval (numbers)  | comma separated string with a from and to value, if no comma is provided the value is used as the 'from' value. If only the 'to' value should be provided the string should start with a comma. | "1,100", ",100", "1"       |
+| locus               | the format for this filter is: 'contig:form-to' or a string providing only the contig                   .                                                                                       | "chr1:1-10000000", "chrX"  |
+| categorical         | comma separated string with the id's of the categories, '__null' is used for the 'unspecified' checkbox.                                                                                        | "LP,P", "cat1,cat2,__null" |
 
 #### Sorts
 
