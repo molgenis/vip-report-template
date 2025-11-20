@@ -36,6 +36,7 @@ describe("config filters composed", () => {
       const configBase: ConfigJsonFilterComposed = {
         type: "composed",
         name: "hpo",
+        defaultValue: "TEST"
       };
       const sample = {
         phenotypes: [
@@ -56,6 +57,7 @@ describe("config filters composed", () => {
         const filter = initConfigFilterComposed(configBase, configVip, metadata, sample) as ConfigFilterHpo;
         expect(filter.type).toStrictEqual("composed");
         expect(filter.id).toStrictEqual("hpo");
+        expect(filter.defaultValue).toStrictEqual("TEST");
         expect(filter.field).toStrictEqual({
           ...fieldHpo,
           categories: {

@@ -78,6 +78,7 @@ function createConfigFilterHpo(
     label: () => getLabel(configStatic, fieldCsqHpo.label || "HPO"),
     description: () => getDescription(configStatic, filterField.description),
     field: filterField,
+    defaultValue: configStatic.defaultValue,
   };
 }
 
@@ -91,6 +92,7 @@ function createConfigFilterLocus(
     label: () => getLabel(configStatic, "Locus"),
     description: () => getDescription(configStatic),
     chromosomes: parseContigIds(metadata.records),
+    defaultValue: configStatic.defaultValue,
   };
 }
 
@@ -110,6 +112,7 @@ function createConfigFilterAllelicImbalance(
     description: () => getDescription(configStatic, fieldViab.description),
     genotypeField: fieldGenotype,
     viabField: fieldViab,
+    defaultValue: configStatic.defaultValue,
     sample: sample,
   };
 }
@@ -129,6 +132,7 @@ function createConfigFilterInheritanceMatch(
     label: () => getLabel(configStatic, vimField.label || "VIM"),
     description: () => getDescription(configStatic, vimField.description),
     vimField: { ...vimField, required: true },
+    defaultValue: configStatic.defaultValue,
     sample: sample,
   };
 }
@@ -148,6 +152,7 @@ function createConfigFilterDeNovo(
     label: () => configStatic.label || vidField.label || "VID",
     description: () => configStatic.description || vidField.description || null,
     vidField: { ...vidField, required: true },
+    defaultValue: configStatic.defaultValue,
     sample: sample,
   };
 }
@@ -176,6 +181,7 @@ function createConfigFilterVipC(
     label: () => getLabel(configStatic, vipCField.label || "VIPC"),
     description: () => getDescription(configStatic, vipCField.description),
     field: { ...vipCField, categories: treeCategories },
+    defaultValue: configStatic.defaultValue,
   };
 }
 
@@ -203,6 +209,7 @@ function createConfigFilterVipCS(
     label: () => getLabel(configStatic, vipCSField.label || "VIPC_S"),
     description: () => getDescription(configStatic, vipCSField.description),
     field: { ...vipCSField, categories: treeCategories, required: true },
+    defaultValue: configStatic.defaultValue,
     sample,
   };
 }

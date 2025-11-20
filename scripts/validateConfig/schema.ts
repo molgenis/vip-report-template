@@ -209,6 +209,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        defaultValue: { type: "string" }
       },
     },
     info: {
@@ -218,6 +219,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        defaultValue: { type: "string" }
       },
     },
     format: {
@@ -227,6 +229,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        defaultValue: { type: "string" }
       },
     },
     genotype: {
@@ -236,6 +239,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        defaultValue: { type: "string" }
       },
     },
     composed: {
@@ -247,6 +251,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        defaultValue: { type: "string" }
       },
     },
   },

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { SampleContainer, VcfMetadataContainer } from "../../../src/utils/api.ts";
 import { initConfigFiltersGenotype, initConfigFiltersInfo } from "../../../src/utils/config/configFiltersField.ts";
 import { FieldMetadataWrapper, getInfoFieldsRegex, getSampleFieldsRegex } from "../../../src/utils/vcf.ts";
-import { ConfigJsonFieldGenotype, ConfigJsonFieldInfo } from "../../../src/types/config";
+import {ConfigJsonFieldGenotype, ConfigJsonFieldInfo, ConfigJsonFilterInfo} from "../../../src/types/config";
 
 describe("config filters field", () => {
   vi.mock(import("../../../src/utils/vcf.ts"));
@@ -15,11 +15,12 @@ describe("config filters field", () => {
     const metadata = {} as VcfMetadataContainer;
 
     test("config matches one field", () => {
-      const config: ConfigJsonFieldInfo = {
+      const config: ConfigJsonFilterInfo = {
         type: "info",
         name: "field",
         label: "my_field_label",
         description: "my_field_description",
+        defaultValue: "TEST"
       };
       const field = {
         id: "INFO/field",
@@ -35,6 +36,7 @@ describe("config filters field", () => {
       expect(filter.field).toStrictEqual(field);
       expect(filter.label()).toStrictEqual("my_field_label");
       expect(filter.description()).toStrictEqual("my_field_description");
+      expect(filter.defaultValue).toStrictEqual("TEST");
 
       expect(getInfoFieldsRegex).toHaveBeenCalledWith(metadata, /^field$/);
     });

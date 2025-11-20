@@ -19,6 +19,7 @@ export const FilterAllelicImbalance: Component<
     <FilterCategorical
       config={config()}
       value={props.value as FilterValueCategorical}
+      defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
     />

@@ -467,7 +467,8 @@
         },
         {
           "type": "info",
-          "name": "CSQ/PICK"
+          "name": "CSQ/PICK",
+          "defaultValue": "true"
         },
         {
           "type": "info",
@@ -501,7 +502,8 @@
         },
         {
           "type": "info",
-          "name": "CSQ/VKGL_CL"
+          "name": "CSQ/VKGL_CL",
+          "defaultValue": "LP,VUS"
         },
         {
           "type": "info",

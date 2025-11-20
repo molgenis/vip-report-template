@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal, For, JSX, Show } from "solid-js";
+import { Component, createEffect, createSignal, For, JSX, onMount, Show } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import {
   ConfigFilterField,
@@ -87,6 +87,23 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
       props.onValueClear();
     }
   };
+
+  function validateValues(values: string[], filterCategories: FilterCategory[]) {
+    const invalidValues = values.filter((v) => !filterCategories.map((fc) => fc.id).includes(v));
+    if (invalidValues.length > 0) {
+      throw new Error(
+        `Invalid default values ('${invalidValues.join(", ")}') found for filter '${props.config.field.id}'.`,
+      );
+    }
+  }
+
+  onMount(() => {
+    if (props.config.defaultValue !== undefined) {
+      const values = props.config.defaultValue.split(",");
+      validateValues(values, categories());
+      props.onValueChange({ value: values as FilterValueCategorical });
+    }
+  });
 
   return (
     <FilterWrapper config={props.config} tooltipContentElement={tooltipContentElement()}>

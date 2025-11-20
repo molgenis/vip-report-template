@@ -35,6 +35,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterHpo
           config={props.config as ConfigFilterHpo}
           value={props.value as FilterValueHpo | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -43,6 +44,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterLocus
           config={props.config as ConfigFilterLocus}
           value={props.value as FilterValueLocus | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -51,6 +53,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterAllelicImbalance
           config={props.config as ConfigFilterAllelicImbalance}
           value={props.value as FilterValueAllelicImbalance | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -59,6 +62,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterInheritance
           config={props.config as ConfigFilterInheritanceMatch}
           value={props.value as FilterValueInheritanceMatch | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -67,6 +71,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterDeNovo
           config={props.config as ConfigFilterDeNovo}
           value={props.value as FilterValueDeNovo | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -75,6 +80,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterVipC
           config={props.config as ConfigFilterVipC}
           value={props.value as FilterValueVipC | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />
@@ -83,6 +89,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterVipCS
           config={props.config as ConfigFilterVipCS}
           value={props.value as FilterValueVipCS | undefined}
+          defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
         />

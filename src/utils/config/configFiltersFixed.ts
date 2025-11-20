@@ -48,6 +48,7 @@ function createConfigFilterChrom(config: ConfigJsonFilterFixed): ConfigFilterChr
     id: "chrom",
     label: () => getLabel(config, "Chromosome"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }
 
@@ -57,6 +58,7 @@ function createConfigFilterPos(config: ConfigJsonFilterFixed): ConfigFilterPos {
     id: "pos",
     label: () => getLabel(config, "Position"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }
 
@@ -66,6 +68,7 @@ function createConfigFilterId(config: ConfigJsonFilterFixed): ConfigFilterId {
     id: "id",
     label: () => getLabel(config, "Identifiers"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }
 
@@ -75,6 +78,7 @@ function createConfigFilterRef(config: ConfigJsonFilterFixed): ConfigFilterRef {
     id: "ref",
     label: () => getLabel(config, "Reference"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }
 
@@ -84,6 +88,7 @@ function createConfigFilterAlt(config: ConfigJsonFilterFixed): ConfigFilterAlt {
     id: "alt",
     label: () => getLabel(config, "Alt"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }
 
@@ -93,6 +98,7 @@ function createConfigFilterQual(config: ConfigJsonFilterFixed): ConfigFilterQual
     id: "qual",
     label: () => getLabel(config, "Quality"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }
 
@@ -102,5 +108,6 @@ function createConfigFilterFilter(config: ConfigJsonFilterFixed): ConfigFilterFi
     id: "filter",
     label: () => getLabel(config, "Filter"),
     description: () => getDescription(config),
+    defaultValue: config.defaultValue,
   };
 }

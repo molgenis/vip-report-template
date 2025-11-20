@@ -9,7 +9,7 @@ export const FilterFlag: Component<FilterProps<ConfigFilterField, FilterValueFla
     field: {
       ...props.config.field,
       categories: { true: { label: "True" }, false: { label: "False" } },
-      required: true //Missing == false for flags
+      required: true, //Missing == false for flags
     },
   });
 
@@ -17,6 +17,7 @@ export const FilterFlag: Component<FilterProps<ConfigFilterField, FilterValueFla
     <FilterCategorical
       config={config()}
       value={props.value as FilterValueCategorical}
+      defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
     />

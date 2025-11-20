@@ -28,6 +28,7 @@ export const FilterDeNovo: Component<FilterProps<ConfigFilterDeNovo, FilterValue
     <FilterCategorical
       config={config()}
       value={props.value as FilterValueCategorical}
+      defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
     />

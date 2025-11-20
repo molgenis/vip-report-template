@@ -22,6 +22,7 @@ export const FilterPick: Component<FilterProps<ConfigFilterPick, FilterValuePick
     <FilterCategorical
       config={config()}
       value={props.value as FilterValueCategorical}
+      defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
     />

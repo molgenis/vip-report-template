@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal } from "solid-js";
+import { Component, createEffect, createSignal, onMount } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import { ConfigFilterField, FilterValueString } from "../../../types/configFilter";
 import { Input } from "../../form/Input";
@@ -22,6 +22,13 @@ export const FilterString: Component<FilterProps<ConfigFilterField, FilterValueS
       props.onValueClear();
     }
   };
+
+  onMount(() => {
+    if (props.config.defaultValue !== undefined) {
+      setInputValue(props.config.defaultValue);
+      onApply();
+    }
+  });
 
   return (
     <FilterWrapper config={props.config}>

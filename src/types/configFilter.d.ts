@@ -57,6 +57,7 @@ export type ConfigFilter =
 export interface ConfigFilterBase {
   type: FilterType;
   id: FilterId;
+  defaultValue?: string;
   label: () => string;
   description: () => string | null;
 }
