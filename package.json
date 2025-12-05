@@ -37,12 +37,12 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@molgenis/vip-report-api": "^7.0.3",
+    "@molgenis/vip-report-api": "7.0.4",
     "@molgenis/vip-report-vcf": "^4.0.4",
     "@solidjs/router": "^0.15.4",
     "ajv": "^8.17.1",
     "base64-js": "^1.5.1",
-    "igv": "^3.6.0",
+    "igv": "~3.2.6",
     "solid-js": "^1.9.10",
     "sql.js": "^1.13.0"
   },

@@ -15,8 +15,8 @@ importers:
         specifier: ^6.7.2
         version: 6.7.2
       '@molgenis/vip-report-api':
-        specifier: ^7.0.3
-        version: 7.0.3
+        specifier: ^7.0.4
+        version: 7.0.4
       '@molgenis/vip-report-vcf':
         specifier: ^4.0.4
         version: 4.0.4
@@ -30,8 +30,8 @@ importers:
         specifier: ^1.5.1
         version: 1.5.1
       igv:
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ~3.2.6
+        version: 3.2.6
       solid-js:
         specifier: ^1.9.10
         version: 1.9.10
@@ -467,8 +467,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@molgenis/vip-report-api@7.0.3':
-    resolution: {integrity: sha512-u6U/Jr0vVAahSvonL2qsXodFrEzcWHmQB1RgzRv0wzdNDJFS+LZfRzp3x0kiWPFzcFlhHKLOepcwsTAvzehQaA==}
+  '@molgenis/vip-report-api@file:../vip-report-api':
+    resolution: {directory: ../vip-report-api, type: directory}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vip-report-vcf@4.0.4':
@@ -1195,8 +1195,8 @@ packages:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
 
-  igv@3.6.0:
-    resolution: {integrity: sha512-YRUQ5ULU2GKXusfNzD+tOsyGu2dahl8ClhirA3eTK8MG5/2s53hrVKCN1QXaifWVXytW+5JfHrAl1PnS4SVxUA==}
+  igv@3.2.6:
+    resolution: {integrity: sha512-zKog+CK8L3xEk38z8GNLoQ9TRh3mlrOlNDswn7lxvVcjQNZiSNhZ5PtfIWr5Vyu5yf1dChYRsE+HJreDfHVY0Q==}
 
   immutable@5.0.3:
     resolution: {integrity: sha512-P8IdPQHq3lA1xVeBRi5VPqUm5HDgKnx0Ru51wZz5mjxHr5n3RWhjIpOFU7ybkUxfB+5IToy+OLaHYDBIWsv+uw==}
@@ -2140,7 +2140,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@7.0.3':
+  '@molgenis/vip-report-api@file:../vip-report-api':
     dependencies:
       '@molgenis/vip-report-vcf': 4.0.4
       sql.js: 1.13.0
@@ -2869,7 +2869,7 @@ snapshots:
 
   ignore@7.0.5: {}
 
-  igv@3.6.0: {}
+  igv@3.2.6: {}
 
   immutable@5.0.3: {}
 
