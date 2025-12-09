@@ -15,7 +15,7 @@ importers:
         specifier: ^6.7.2
         version: 6.7.2
       '@molgenis/vip-report-api':
-        specifier: ^7.0.4
+        specifier: 7.0.4
         version: 7.0.4
       '@molgenis/vip-report-vcf':
         specifier: ^4.0.4
@@ -467,8 +467,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@molgenis/vip-report-api@7.0.3':
-    resolution: {integrity: sha512-u6U/Jr0vVAahSvonL2qsXodFrEzcWHmQB1RgzRv0wzdNDJFS+LZfRzp3x0kiWPFzcFlhHKLOepcwsTAvzehQaA==}
+  '@molgenis/vip-report-api@7.0.4':
+    resolution: {integrity: sha512-690TlJ6vxksNS4HAE6FWQ9fK9mbdWJteyOzyUVElx4tsJOVnSPXRTTvGx7QHq79XVxY4lbnIKnG32nc26RwQlg==}
     engines: {node: '22', pnpm: '9'}
 
   '@molgenis/vip-report-vcf@4.0.4':
@@ -2140,7 +2140,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@molgenis/vip-report-api@7.0.3':
+  '@molgenis/vip-report-api@7.0.4':
     dependencies:
       '@molgenis/vip-report-vcf': 4.0.4
       sql.js: 1.13.0
