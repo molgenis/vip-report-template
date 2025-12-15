@@ -12,6 +12,7 @@ export const FilterHpo: Component<FilterProps<ConfigFilterHpo, FilterValueHpo>> 
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange as FilterValueChangeCallback<FilterValueField>}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };

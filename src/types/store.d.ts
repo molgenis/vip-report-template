@@ -13,6 +13,7 @@ export type AppStateVariantType = {
    * undefined: sort behavior is undefined, the caller of this function could fall back to a default sort
    */
   sort?: Sort | null;
+  filtersInited: boolean;
 };
 export type AppStateVariantTypes = Partial<Record<VariantTypeId, AppStateVariantType>>;
 type AppStateSamples = {

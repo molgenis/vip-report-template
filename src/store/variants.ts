@@ -20,6 +20,7 @@ export type VariantStore = {
   getSort(): Sort | null | undefined;
   setSort(sort: Sort): void;
   clearSort(): void;
+  filtersInited(): boolean;
 };
 
 export function wrapStore(store: AppStore, sample: SampleContainer | null, variantType: VariantType) {
@@ -48,7 +49,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     if (variantTypeKey in stateVariantTypes) {
       stateVariantType = stateVariantTypes[variantTypeKey]!;
     } else {
-      stateVariantType = {};
+      stateVariantType = { filtersInited: false };
     }
 
     return stateVariantType;
@@ -78,7 +79,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     if (variantTypeKey in stateVariantTypes) {
       stateVariantType = stateVariantTypes[variantTypeKey]!;
     } else {
-      stateVariantType = {};
+      stateVariantType = { filtersInited: false };
       stateVariantTypes[variantTypeKey] = stateVariantType;
     }
 
@@ -93,6 +94,16 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
       stateVariantType.page = page;
     }
     return page;
+  }
+
+  function setVariantsStateFiltersInited(state: AppState): void {
+    const stateVariantType: AppStateVariantType = getCreateVariantsState(state);
+    stateVariantType.filtersInited = true;
+  }
+
+  function getVariantsStateFiltersInited(state: AppState): boolean {
+    const stateVariantType: AppStateVariantType = getCreateVariantsState(state);
+    return stateVariantType.filtersInited;
   }
 
   function getCreateVariantsStateFilterValues(state: AppState): FilterValueMap {
@@ -112,6 +123,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     setFilterValue(id: FilterId, value: FilterValue) {
       setState(
         produce((state) => {
+          setVariantsStateFiltersInited(state);
           const filterValueMap = getCreateVariantsStateFilterValues(state);
           filterValueMap[id] = value;
 
@@ -124,9 +136,9 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     clearFilter(id: FilterId) {
       setState(
         produce((state) => {
+          setVariantsStateFiltersInited(state);
           const filterValueMap = getCreateVariantsStateFilterValues(state);
           delete filterValueMap[id];
-
           const page = getCreateVariantsStatePage(state);
           page.number = 0;
         }),
@@ -177,6 +189,9 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
           variantsState.sort = null;
         }),
       );
+    },
+    filtersInited(): boolean {
+      return getVariantsStateFiltersInited(state);
     },
   };
 }

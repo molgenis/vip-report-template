@@ -157,6 +157,7 @@ export const VariantsContainer: Component<{
                 filterValues={props.store.getFilterValues()}
                 onFilterChange={onFilterChange}
                 onFilterClear={onFilterClear}
+                filtersInited={props.store.filtersInited()}
               />
             </div>
           </div>

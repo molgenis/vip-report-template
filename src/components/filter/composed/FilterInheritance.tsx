@@ -38,6 +38,7 @@ export const FilterInheritance: Component<FilterProps<ConfigFilterInheritanceMat
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };

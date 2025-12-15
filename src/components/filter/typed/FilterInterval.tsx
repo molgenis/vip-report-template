@@ -25,7 +25,7 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
   });
 
   onMount(() => {
-    if (props.config.defaultValue !== undefined) {
+    if (props.config.defaultValue !== undefined && !props.isInited) {
       const split = props.config.defaultValue.split(",");
       if (split.length >= 1) {
         if (split[0] !== undefined && split[0] !== "") {

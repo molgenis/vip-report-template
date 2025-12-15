@@ -12,6 +12,7 @@ export const FilterVipC: Component<FilterProps<ConfigFilterVipC, FilterValueVipC
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange as FilterValueChangeCallback<FilterValueField>}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };

@@ -24,7 +24,7 @@ export const FilterString: Component<FilterProps<ConfigFilterField, FilterValueS
   };
 
   onMount(() => {
-    if (props.config.defaultValue !== undefined) {
+    if (props.config.defaultValue !== undefined && !props.isInited) {
       setInputValue(props.config.defaultValue);
       onApply();
     }

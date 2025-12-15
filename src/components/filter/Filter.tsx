@@ -27,6 +27,7 @@ export interface FilterProps<C extends ConfigFilterBase, FilterValueType> {
   defaultValue?: string;
   onValueChange: FilterValueChangeCallback<FilterValueType>;
   onValueClear: FilterValueClearCallback;
+  isInited: boolean;
 }
 
 export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props) => {
@@ -40,6 +41,7 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
           value={props.value as FilterValueFixed}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={type() === "info" || type() === "genotype"}>
@@ -48,6 +50,7 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
           value={props.value as FilterValueField}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={type() === "composed"}>
@@ -56,6 +59,7 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
           value={props.value as FilterValueComposed}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
     </Switch>

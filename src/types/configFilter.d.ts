@@ -37,7 +37,7 @@ export type FilterValueFixed =
 export type FilterValueField = FilterValueCategorical | FilterValueString | FilterValueInterval;
 
 export type FilterValue = FilterValueFixed | FilterValueField | FilterValueComposed;
-export type FilterValueMap = { [key: FilterId]: FilterValue };
+export type FilterValueMap = { [key: FilterId]: FilterValue | undefined };
 
 export type ConfigFilterFixed =
   | ConfigFilterChrom

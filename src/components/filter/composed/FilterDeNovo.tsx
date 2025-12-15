@@ -31,6 +31,7 @@ export const FilterDeNovo: Component<FilterProps<ConfigFilterDeNovo, FilterValue
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };

@@ -25,6 +25,7 @@ export const FilterPick: Component<FilterProps<ConfigFilterPick, FilterValuePick
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };

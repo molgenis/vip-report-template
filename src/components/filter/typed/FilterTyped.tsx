@@ -25,6 +25,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
           value={props.value as FilterValueCategorical}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={type() === "CHARACTER" || type() === "STRING"}>
@@ -34,6 +35,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={type() === "INTEGER" || type() === "FLOAT"}>
@@ -42,6 +44,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
           value={props.value as FilterValueInterval}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={type() === "FLAG"}>
@@ -50,6 +53,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
           value={props.value as FilterValueFlag}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
     </Switch>

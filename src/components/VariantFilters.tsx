@@ -9,19 +9,19 @@ export const VariantFilters: Component<{
   filterValues: FilterValueMap;
   onFilterChange: FilterChangeCallback;
   onFilterClear: FilterClearCallback;
+  filtersInited: boolean;
 }> = (props) => {
   return (
-    <>
-      <For each={props.filterConfigs}>
-        {(filter) => (
-          <Filter
-            config={filter}
-            value={props.filterValues[filter.id] as FilterValueField | undefined}
-            onValueChange={(event) => props.onFilterChange({ id: filter.id, ...event })}
-            onValueClear={() => props.onFilterClear({ id: filter.id })}
-          />
-        )}
-      </For>
-    </>
+    <For each={props.filterConfigs}>
+      {(filter) => (
+        <Filter
+          config={filter}
+          value={props.filterValues[filter.id] as FilterValueField | undefined}
+          onValueChange={(event) => props.onFilterChange({ id: filter.id, ...event })}
+          onValueClear={() => props.onFilterClear({ id: filter.id })}
+          isInited={props.filtersInited}
+        />
+      )}
+    </For>
   );
 };
