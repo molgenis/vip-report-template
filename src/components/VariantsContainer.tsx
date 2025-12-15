@@ -38,7 +38,7 @@ export const VariantsContainer: Component<{
 
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
-  const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
+  const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 20;
   const recordsPerPage = () =>
     props.store.getPageSize() !== null ? props.store.getPageSize()! : defaultRecordsPerPage();
 
