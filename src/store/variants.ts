@@ -1,6 +1,6 @@
 import { VariantType } from "../utils/variantType.ts";
 import { SampleContainer } from "../utils/api.ts";
-import { FilterValueMap } from "../types/filter";
+import { FilterInitedList, FilterValueMap } from "../types/filter";
 import { FilterId, FilterValue } from "../types/configFilter";
 import { produce } from "solid-js/store";
 import { AppState, AppStateVariantType, AppStateVariantTypes, AppStore, Page, Sort } from "../types/store";
@@ -20,7 +20,7 @@ export type VariantStore = {
   getSort(): Sort | null | undefined;
   setSort(sort: Sort): void;
   clearSort(): void;
-  filtersInited(): boolean;
+  getFiltersInited(): FilterInitedList;
 };
 
 export function wrapStore(store: AppStore, sample: SampleContainer | null, variantType: VariantType) {
@@ -49,7 +49,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     if (variantTypeKey in stateVariantTypes) {
       stateVariantType = stateVariantTypes[variantTypeKey]!;
     } else {
-      stateVariantType = { filtersInited: false };
+      stateVariantType = { initedFilters: [] };
     }
 
     return stateVariantType;
@@ -79,7 +79,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     if (variantTypeKey in stateVariantTypes) {
       stateVariantType = stateVariantTypes[variantTypeKey]!;
     } else {
-      stateVariantType = { filtersInited: false };
+      stateVariantType = { initedFilters: [] };
       stateVariantTypes[variantTypeKey] = stateVariantType;
     }
 
@@ -96,14 +96,16 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     return page;
   }
 
-  function setVariantsStateFiltersInited(state: AppState): void {
+  function setVariantsStateFiltersInited(state: AppState, filterId: string): void {
     const stateVariantType: AppStateVariantType = getCreateVariantsState(state);
-    stateVariantType.filtersInited = true;
+    if (!stateVariantType.initedFilters.includes(filterId)) {
+      stateVariantType.initedFilters.push(filterId);
+    }
   }
 
-  function getVariantsStateFiltersInited(state: AppState): boolean {
+  function getVariantsStateFiltersInited(state: AppState): FilterInitedList {
     const stateVariantType: AppStateVariantType = getCreateVariantsState(state);
-    return stateVariantType.filtersInited;
+    return stateVariantType.initedFilters;
   }
 
   function getCreateVariantsStateFilterValues(state: AppState): FilterValueMap {
@@ -123,7 +125,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     setFilterValue(id: FilterId, value: FilterValue) {
       setState(
         produce((state) => {
-          setVariantsStateFiltersInited(state);
+          setVariantsStateFiltersInited(state, id);
           const filterValueMap = getCreateVariantsStateFilterValues(state);
           filterValueMap[id] = value;
 
@@ -136,7 +138,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
     clearFilter(id: FilterId) {
       setState(
         produce((state) => {
-          setVariantsStateFiltersInited(state);
+          setVariantsStateFiltersInited(state, id);
           const filterValueMap = getCreateVariantsStateFilterValues(state);
           delete filterValueMap[id];
           const page = getCreateVariantsStatePage(state);
@@ -190,7 +192,7 @@ export function wrapStore(store: AppStore, sample: SampleContainer | null, varia
         }),
       );
     },
-    filtersInited(): boolean {
+    getFiltersInited(): FilterInitedList {
       return getVariantsStateFiltersInited(state);
     },
   };
