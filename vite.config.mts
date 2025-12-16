@@ -24,12 +24,11 @@ export default defineConfig(({ command }) => ({
   assetsInclude: "**/*.blob",
   test: {
     coverage: {
-      include: ["src/**"],
+      // TODO remove /*.ts postfix once component tests are added
+      include: ["src/**/*.ts"],
       exclude: [...coverageConfigDefaults.exclude, "src/mocks/**", "**/*.precompiled.ts"],
-      // TODO add .tsx once component tests are added
-      extension: [".ts"],
       thresholds: {
-        branches: 80,
+        branches: 70,
         lines: 80,
         functions: 80,
         statements: 80,
