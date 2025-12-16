@@ -40,8 +40,8 @@ importers:
         version: 1.13.0
     devDependencies:
       '@molgenis/vite-plugin-inline':
-        specifier: ^1.0.30
-        version: link:../vite-plugin-inline
+        specifier: ^2.0.0
+        version: 2.0.0(vite@6.4.1(@types/node@22.19.1)(sass@1.94.2))
       '@types/async-lock':
         specifier: ^1.4.2
         version: 1.4.2
@@ -474,6 +474,12 @@ packages:
   '@molgenis/vip-report-vcf@4.0.4':
     resolution: {integrity: sha512-RM30qYCWUtN7AIrM0zq2NhQo6JMtSyfn7v0Bo9RrX0rP0+VXcEUYwPPj1qqe46/Ot5qRb8bFRdlj2t0dqXZGkw==}
     engines: {node: '22', pnpm: '9'}
+
+  '@molgenis/vite-plugin-inline@2.0.0':
+    resolution: {integrity: sha512-Qmm3YsKPplCFjnp4o4b22fkG6Kn++/BkOQhzgcbpSBT8y/ZTsL0dx1BNFFDosKGKYXrA3GZOrkjZP/VuyR5/AA==}
+    engines: {node: '22', pnpm: '9'}
+    peerDependencies:
+      vite: ^6.4.1
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -2137,6 +2143,10 @@ snapshots:
       sql.js: 1.13.0
 
   '@molgenis/vip-report-vcf@4.0.4': {}
+
+  '@molgenis/vite-plugin-inline@2.0.0(vite@6.4.1(@types/node@22.19.1)(sass@1.94.2))':
+    dependencies:
+      vite: 6.4.1(@types/node@22.19.1)(sass@1.94.2)
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
