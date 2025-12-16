@@ -22,6 +22,7 @@ export const FilterAllelicImbalance: Component<
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };

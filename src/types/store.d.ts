@@ -1,7 +1,7 @@
 import { SetStoreFunction } from "solid-js/store";
 import { VariantTypeId } from "../utils/variantType.ts";
 import { SortOrder } from "@molgenis/vip-report-api";
-import { FilterValueMap } from "./filter";
+import { FilterInitedList, FilterValueMap } from "./filter";
 
 export type Page = { number: number; size?: number };
 export type Sort = SortOrder | SortOrder[];
@@ -13,6 +13,7 @@ export type AppStateVariantType = {
    * undefined: sort behavior is undefined, the caller of this function could fall back to a default sort
    */
   sort?: Sort | null;
+  initedFilters: FilterInitedList;
 };
 export type AppStateVariantTypes = Partial<Record<VariantTypeId, AppStateVariantType>>;
 type AppStateSamples = {

@@ -166,7 +166,7 @@ function initConfigVariantsRecordsPerPage(
   variantType: VariantType,
 ): ConfigRecordsPerPage {
   const configValue = config && (config[variantType.id] || config["all"]);
-  return configValue || [{ number: 10, selected: true }, { number: 20 }, { number: 50 }, { number: 100 }];
+  return configValue || [{ number: 10 }, { number: 20, selected: true }, { number: 50 }, { number: 100 }];
 }
 
 export function getLabel(config: Describable, defaultLabel: string): string {

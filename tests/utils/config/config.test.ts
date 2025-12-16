@@ -44,11 +44,10 @@ describe("config", () => {
 
   describe("initConfig", () => {
     const recordsPerPageBase = [
-      {
-        number: 10,
+      { number: 10 },
+      { number: 20,
         selected: true,
       },
-      { number: 20 },
       { number: 50 },
       { number: 100 },
     ];

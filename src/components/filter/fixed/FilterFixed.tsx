@@ -42,6 +42,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={id() === "fixed/pos"}>
@@ -51,6 +52,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={id() === "fixed/id"}>
@@ -60,6 +62,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={id() === "fixed/ref"}>
@@ -69,6 +72,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={id() === "fixed/alt"}>
@@ -78,6 +82,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={id() === "fixed/qual"}>
@@ -87,6 +92,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
       <Match when={id() === "fixed/filter"}>
@@ -96,6 +102,7 @@ export const FilterFixed: Component<FilterProps<ConfigFilterFixed, FilterValue>>
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
+          isInited={props.isInited}
         />
       </Match>
     </Switch>

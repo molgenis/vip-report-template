@@ -2,6 +2,8 @@ import { FilterId, FilterValue } from "./configFilter";
 
 export type FilterValueMap = { [key: FilterId]: FilterValue };
 
+export type FilterInitedList = string[];
+
 export interface FilterValueChangeEvent<FilterValueType> {
   value: FilterValueType;
 }

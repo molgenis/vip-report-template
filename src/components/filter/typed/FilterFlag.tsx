@@ -20,6 +20,7 @@ export const FilterFlag: Component<FilterProps<ConfigFilterField, FilterValueFla
       defaultValue={props.defaultValue}
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
+      isInited={props.isInited}
     />
   );
 };
