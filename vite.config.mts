@@ -10,12 +10,12 @@ export default defineConfig(({ command }) => ({
     pure: command === "build" ? ["console.log"] : [],
   },
   build: {
-    target: 'es2022',
+    target: "es2022",
     modulePreload: false,
     reportCompressedSize: false,
     // inline plugin build options
     rollupOptions: {
-      input: ["./index.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader.mjs"],
+      input: ["./index.html", "./node_modules/@molgenis/vite-plugin-inline/dist/loader/loader.js"],
       output: {
         manualChunks: undefined,
       },
