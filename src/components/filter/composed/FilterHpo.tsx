@@ -5,11 +5,18 @@ import { ConfigFilterHpo, FilterValueHpo } from "../../../types/configFilterComp
 import { ConfigFilterField, FilterValueCategorical, FilterValueField } from "../../../types/configFilter";
 
 export const FilterHpo: Component<FilterProps<ConfigFilterHpo, FilterValueHpo>> = (props) => {
+  const config = (): ConfigFilterField => {
+    const config = props.config;
+    if (config.defaultValue === "select all") {
+      config.defaultValue = Object.keys(config.field.categories!).join(",");
+    }
+    return config;
+  };
+
   return (
     <FilterTyped
-      config={props.config as ConfigFilterField}
+      config={config()}
       value={props.value as FilterValueCategorical}
-      defaultValue={props.defaultValue}
       onValueChange={props.onValueChange as FilterValueChangeCallback<FilterValueField>}
       onValueClear={props.onValueClear}
       isInited={props.isInited}
