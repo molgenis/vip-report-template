@@ -163,15 +163,14 @@ Filters can be given a default value using the "defaultValue" property.
 
 The defaultValue is a string that should be properly formatted for the type of filters / values:
 
-| filter / value type | format                                                                                                                                                                                          | examples                    |
-|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|
-| string              | any string.                                                                                                                                                                                     | "test"                      |
-| interval (numbers)  | comma separated string with a from and to value, if no comma is provided the value is used as the 'from' value. If only the 'to' value should be provided the string should start with a comma. | "1,100", ",100", "1"        |
-| locus               | the format for this filter is: 'contig:form-to' or a string providing only the contig                   .                                                                                       | "chr1:1-10000000", "chrX"   |
-| categorical*        | comma separated string with the id's of the categories, '__null' is used for the 'unspecified' checkbox.                                                                                        | "LP,P", "cat1,cat2,__null"  |
-| flag / boolean      | this is a special case of 'categorical' with categories 'true', 'false' and optionally '__null'                                                                                                 | "true", "true,false,__null" |
+| filter / value type | format                                                                                                                                                                                                                       | examples                    |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| string              | any string.                                                                                                                                                                                                                  | "test"                      |
+| interval (numbers)  | comma separated string with a from and to value, if no comma is provided the value is used as the 'from' value. If only the 'to' value should be provided the string should start with a comma.                              | "1,100", ",100", "1"        |
+| locus               | the format for this filter is: 'contig:form-to' or a string providing only the contig                   .                                                                                                                    | "chr1:1-10000000", "chrX"   |
+| categorical*        | comma separated string with the id's of the categories, '__null' is used for the 'unspecified' checkbox. Alternatively "non_null" can be provided as default value to indicate that all none null values should be selected. | "LP,P", "cat1,cat2,__null"  |
+| flag / boolean      | this is a special case of 'categorical' with categories 'true', 'false' and optionally '__null'                                                                                                                              | "true", "true,false,__null" |
 
-* special case is the "HPO" filter, since it is dynamic per sample. Default value "select all" means all provided HPO terms are selected.
 
 #### Sorts
 

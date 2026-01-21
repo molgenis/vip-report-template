@@ -482,7 +482,7 @@
           "type": "composed",
           "name": "hpo",
           "label": "Gene-phenotype association (HPO)",
-          "defaultValue": "select all"
+          "defaultValue": "non_null"
         },
         {
           "type": "info",
