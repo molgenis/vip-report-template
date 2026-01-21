@@ -13,7 +13,6 @@ import { ConfigJsonFilterComposed, ConfigVip } from "../../types/config";
 import { getDescription, getLabel } from "./config.ts";
 import { getInfoNestedField, getSampleField, getSampleFields, parseContigIds } from "../vcf.ts";
 import { ConfigInvalidError } from "../error.ts";
-import { CategoryRecord } from "@molgenis/vip-report-vcf";
 
 export function initConfigFilterComposed(
   config: ConfigJsonFilterComposed,
@@ -61,24 +60,13 @@ function createConfigFilterHpo(
   const fieldCsqHpo = getInfoNestedField(metadata, "CSQ", "HPO");
   if (fieldCsqHpo === undefined) return null;
 
-  const csqCategories: CategoryRecord = fieldCsqHpo.categories;
-
   const filterField = {
     // create field with categories based on the sample hpo terms
     ...fieldCsqHpo,
     categories: sample.phenotypes.reduce(
       (acc, phenotype) => ({
         ...acc,
-        [phenotype.type.id]: {
-          label:
-            csqCategories[phenotype.type.id] !== undefined
-              ? csqCategories[phenotype.type.id]!.label
-              : phenotype.type.label,
-          description:
-            csqCategories[phenotype.type.id] !== undefined
-              ? csqCategories[phenotype.type.id]!.description
-              : phenotype.type.label,
-        },
+        [phenotype.type.id]: { label: phenotype.type.label },
       }),
       {},
     ),
