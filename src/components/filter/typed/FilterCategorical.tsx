@@ -99,8 +99,15 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
 
   onMount(() => {
     if (props.config.defaultValue !== undefined && !props.isInited) {
-      const values = props.config.defaultValue.split(",");
-      validateValues(values, categories());
+      let values;
+      if (props.config.defaultValue === "non_null") {
+        values = categories()
+          .map((cat) => cat.id)
+          .filter((id) => id !== "__null");
+      } else {
+        values = props.config.defaultValue.split(",");
+        validateValues(values, categories());
+      }
       props.onValueChange({ value: values as FilterValueCategorical });
     }
   });
