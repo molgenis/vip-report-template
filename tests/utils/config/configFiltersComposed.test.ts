@@ -62,9 +62,11 @@ describe("config filters composed", () => {
           ...fieldHpo,
           categories: {
             "HP:0000951": {
+              description: "HP:0000951 label",
               label: "HP:0000951 label",
             },
             "HP:0000952": {
+              description: "HP:0000952 label",
               label: "HP:0000952 label",
             },
           },
