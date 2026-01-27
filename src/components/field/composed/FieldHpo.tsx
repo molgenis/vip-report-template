@@ -4,7 +4,7 @@ import { FieldString } from "../typed/FieldString";
 import { CellValueHpo } from "../../../types/configCellComposed";
 
 type HpoTerm = {
-  id: string;
+  label: string;
   href: string;
 };
 
@@ -13,7 +13,7 @@ export const FieldHpo: Component<{
 }> = (props) => {
   const hpoTerms = (): HpoTerm[] =>
     props.value.hpos.map((category) => ({
-      id: category!.value!,
+      label: category!.label,
       href: `https://hpo.jax.org/app/browse/term/${encodeURI(category!.value!)}`,
     }));
 
@@ -26,7 +26,7 @@ export const FieldHpo: Component<{
           <>
             {i() !== 0 && <span>, </span>}
             <Anchor href={hpoTerm.href}>
-              <FieldString value={hpoTerm.id} />
+              <FieldString value={hpoTerm.label} />
             </Anchor>
           </>
         )}
