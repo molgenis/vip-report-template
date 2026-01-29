@@ -34,6 +34,7 @@ export interface ConfigJsonFieldComposed extends Describable {
   type: "composed";
   name:
     | "clinVar"
+    | "confidenceInterval"
     | "gene"
     | "genotype"
     | "genotype_maternal"
@@ -43,6 +44,7 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "inheritancePattern"
     | "locus"
     | "ref"
+    | "spanningReads"
     | "vipC"
     | "vipCS"
     | "vkgl";

@@ -14,12 +14,11 @@
       "numberCount": 1,
       "type": "STRING"
     },
-    "ADSP": {
+    "RU_SPAN": {
       "label": "Spanning reads",
       "description": "Number of spanning reads consistent with the allele",
-      "numberType": "NUMBER",
-      "numberCount": 1,
-      "type": "STRING"
+      "numberType": "PER_ALT",
+      "type": "INTEGER"
     },
     "LC": {
       "label": "Coverage",
@@ -27,13 +26,6 @@
       "numberType": "NUMBER",
       "numberCount": 1,
       "type": "FLOAT"
-    },
-    "REPCI": {
-      "label": "Repeat CI",
-      "description": "Confidence interval for the number of repeat units spanned by the allele",
-      "numberType": "NUMBER",
-      "numberCount": 1,
-      "type": "STRING"
     },
     "REPCN": {
       "label": "Repeats",
@@ -92,7 +84,7 @@
   },
   "info": {
     "n_object0": {
-      "nestedAttributes" : {
+      "nestedAttributes": {
         "separator": "|"
       },
       "nestedFields": {
@@ -115,7 +107,7 @@
       }
     },
     "CSQ": {
-      "nestedAttributes" : {
+      "nestedAttributes": {
         "prefix": "Consequence annotations from Ensembl VEP. Format: ",
         "separator": "|"
       },
@@ -820,6 +812,12 @@
       "description": "Type of structural variant",
       "numberType": "NUMBER",
       "numberCount": 1,
+      "type": "STRING"
+    },
+    "RU_CI": {
+      "label": "Repeat CI",
+      "description": "Confidence interval for the number of repeat units spanned by the allele",
+      "numberType": "PER_ALT",
       "type": "STRING"
     },
     "VIPC_S": {
