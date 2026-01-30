@@ -7,7 +7,7 @@ export const FieldSpanningReads: Component<{
   return (
     <span>
       {props.value.genotype.a
-        .map((allele) => (allele !== null ? props.value.spanningReads![allele - 1] : "?"))
+        .map((allele) => (allele !== null ? props.value.spanningReads[allele - 1] : "?"))
         .join("/")}
     </span>
   );
