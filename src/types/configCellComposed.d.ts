@@ -32,7 +32,7 @@ export type CellValueGenotype = {
   svType: ValueString | undefined;
   repeatCount: ValueString[] | undefined;
   repeatUnitValue: ValueString | undefined;
-  repeatUnitMatch: ValueFlag | undefined;
+  repeatUnitMatch: ValueInteger | undefined;
   displayRepeatUnit: ValueString | undefined;
   viab: number | null | undefined;
 };
