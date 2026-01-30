@@ -1,9 +1,18 @@
 import { ConfigCellCustom } from "../../types/configCells";
-import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueString, VcfRecord } from "@molgenis/vip-report-vcf";
+import {
+  Genotype,
+  InfoMetadata,
+  ValueFlag,
+  ValueFloat,
+  ValueInteger,
+  ValueString,
+  VcfRecord,
+} from "@molgenis/vip-report-vcf";
 import { Item } from "@molgenis/vip-report-api";
 import { getSampleLabel } from "../sample.ts";
 import {
   CellValueClinVar,
+  CellValueConfidenceInterval,
   CellValueCustom,
   CellValueGene,
   CellValueGenotype,
@@ -11,11 +20,13 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
+  CellValueSpanningReads,
   CellValueVipC,
   CellValueVipCS,
   CellValueVkgl,
 } from "../../types/configCellComposed";
 import {
+  getInfoField,
   getInfoFields,
   getInfoNestedField,
   getInfoNestedFields,
@@ -79,6 +90,12 @@ export function initConfigCellComposed(
       break;
     case "vkgl":
       fieldConfig = createConfigFieldCustomVkgl(configStatic, metadata.records);
+      break;
+    case "confidenceInterval":
+      fieldConfig = createConfigFieldCustomConfidenceInterval(configStatic, metadata.records, sample);
+      break;
+    case "spanningReads":
+      fieldConfig = createConfigFieldCustomSpanningReads(configStatic, metadata.records, sample);
       break;
     default:
       throw new ConfigInvalidError(`unknown composed cell name '${id}'`);
@@ -201,15 +218,16 @@ function createConfigFieldCustomGenotypeForSample(
 ): ConfigCellCustom<CellValueGenotype> | null {
   if (sample === null) return null;
 
-  const [fieldGt, fieldRepCn, fieldViab] = getSampleFields(metadata, "GT", "REPCN", "VIAB");
+  const [fieldGt, fieldViab] = getSampleFields(metadata, "GT", "VIAB");
   if (fieldGt === undefined) return null; // unlikely, but possible
 
-  const [fieldSvType, fieldRu, fieldRuMatch, fieldDisplayRu] = getInfoFields(
+  const [fieldSvType, fieldRu, fieldRuMatch, fieldDisplayRu, fieldRepCn] = getInfoFields(
     metadata,
     "SVTYPE",
-    "RU",
-    "RUMATCH",
+    "RU_CALL",
+    "RU_MATCH",
     "DisplayRU",
+    "RU_NR",
   );
 
   return {
@@ -219,23 +237,26 @@ function createConfigFieldCustomGenotypeForSample(
     description: () => getDescription(config),
     valueCount: () => 1,
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueGenotype => {
-      const [genotype, repeatCount, viab] = getSampleValues(
-        sample,
-        record,
-        valueIndex,
-        fieldGt,
-        fieldRepCn,
-        fieldViab,
-      ) as [Genotype, ValueString | undefined, number | null | undefined];
+      const [genotype, viab] = getSampleValues(sample, record, valueIndex, fieldGt, fieldViab) as [
+        Genotype,
+        number | null | undefined,
+      ];
 
-      const [svType, repeatUnitValue, repeatUnitMatch, displayRepeatUnit] = getInfoValues(
+      const [svType, repeatUnitValue, repeatUnitMatch, displayRepeatUnit, repeatCount] = getInfoValues(
         record,
         valueIndex,
         fieldSvType,
         fieldRu,
         fieldRuMatch,
         fieldDisplayRu,
-      ) as [ValueString | undefined, ValueString | undefined, ValueFlag | undefined, ValueString | undefined];
+        fieldRepCn,
+      ) as [
+        ValueString | undefined,
+        ValueString | undefined,
+        ValueFlag | undefined,
+        ValueString | undefined,
+        ValueString[] | undefined,
+      ];
       return {
         refAllele: record.data.r,
         altAlleles: record.data.a,
@@ -246,6 +267,59 @@ function createConfigFieldCustomGenotypeForSample(
         repeatUnitMatch,
         displayRepeatUnit,
         viab,
+      };
+    },
+  };
+}
+
+function createConfigFieldCustomConfidenceInterval(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueConfidenceInterval> | null {
+  if (sample === null) return null;
+  const fieldGt = getSampleField(metadata, "GT");
+  const fieldCi = getInfoField(metadata, "RU_CI");
+  return {
+    type: "composed",
+    id: "confidenceInterval",
+    label: () => getLabel(config, "Confidence interval"),
+    description: () => getDescription(config, "Confidence interval for repeat unit count"),
+    valueCount: () => 1,
+    value: (record: Item<VcfRecord>, valueIndex: number): CellValueConfidenceInterval => {
+      const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
+      const ci = getInfoValue(record, valueIndex, fieldCi) as ValueString[];
+
+      return {
+        genotype: genotype,
+        confidenceInterval: ci !== undefined ? ci : [],
+      };
+    },
+  };
+}
+
+function createConfigFieldCustomSpanningReads(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueSpanningReads> | null {
+  if (sample === null) return null;
+  const fieldGt = getSampleField(metadata, "GT");
+  const fieldSpan = getSampleField(metadata, "RU_SPAN");
+  return {
+    type: "composed",
+    id: "spanningReads",
+    label: () => getLabel(config, "Spanning Reads"),
+    description: () => getDescription(config, "Number of spanning reads for the genotype."),
+    valueCount: () => 1,
+    value: (record: Item<VcfRecord>, valueIndex: number): CellValueSpanningReads => {
+      console.log("here!");
+      const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
+      const spanning = getSampleValue(sample, record, valueIndex, fieldSpan) as ValueInteger[];
+
+      return {
+        genotype: genotype,
+        spanningReads: spanning !== undefined ? spanning : [],
       };
     },
   };

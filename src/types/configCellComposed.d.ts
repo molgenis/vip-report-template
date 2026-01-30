@@ -1,4 +1,4 @@
-import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueString } from "@molgenis/vip-report-vcf";
+import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueInteger, ValueString } from "@molgenis/vip-report-vcf";
 import { ValueCategorical } from "../utils/vcf.ts";
 
 export type CellValueClinVar = {
@@ -30,11 +30,21 @@ export type CellValueGenotype = {
   altAlleles: (string | null)[];
   genotype: Genotype;
   svType: ValueString | undefined;
-  repeatCount: ValueString | undefined;
+  repeatCount: ValueString[] | undefined;
   repeatUnitValue: ValueString | undefined;
   repeatUnitMatch: ValueFlag | undefined;
   displayRepeatUnit: ValueString | undefined;
   viab: number | null | undefined;
+};
+
+export type CellValueConfidenceInterval = {
+  genotype: Genotype;
+  confidenceInterval: ValueString[];
+};
+
+export type CellValueSpanningReads = {
+  genotype: Genotype;
+  spanningReads: ValueInteger[];
 };
 
 export type CellValueHpo = {
@@ -78,6 +88,8 @@ export type CellValueCustom =
   | CellValueGene
   | CellValueGnomAd
   | CellValueGenotype
+  | CellValueConfidenceInterval
+  | CellValueSpanningReads
   | CellValueHpo
   | CellValueInheritanceModes
   | CellValueLocus

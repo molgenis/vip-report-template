@@ -242,22 +242,23 @@ describe("config cells composed", () => {
         };
 
         const fieldGt = { id: "FORMAT/GT" };
-        const fieldRepCn = { id: "FORMAT/REPCN" };
         const fieldViab = { id: "FORMAT/VIAB" };
         const fieldSvType = { id: "INFO/SVTYPE" };
-        const fieldRu = { id: "INFO/RU" };
+        const fieldRuCall = { id: "INFO/RU_CALL" };
+        const fieldRu = { id: "INFO/RU_NR" };
         const fieldRuMatch = { id: "INFO/RUMATCH" };
         const fieldDisplayRu = { id: "INFO/DisplayRU" };
-        vi.mocked(getSampleFields).mockReturnValue([fieldGt, fieldRepCn, fieldViab] as FieldMetadataWrapper[]);
+        vi.mocked(getSampleFields).mockReturnValue([fieldGt, fieldViab] as FieldMetadataWrapper[]);
         vi.mocked(getInfoFields).mockReturnValue([
           fieldSvType,
           fieldRu,
           fieldRuMatch,
           fieldDisplayRu,
+          fieldRuCall
         ] as FieldMetadataWrapper[]);
         vi.mocked(getInfoValueCount).mockReturnValue(1);
-        vi.mocked(getSampleValues).mockReturnValue([0, 1, 2]);
-        vi.mocked(getInfoValues).mockReturnValue([3, 4, 5, 6]);
+        vi.mocked(getSampleValues).mockReturnValue([0, 1]);
+        vi.mocked(getInfoValues).mockReturnValue([2, 3, 4, 5, "6"]);
 
         const cell = initConfigCellComposed(config, variantType, metadata, sample) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
@@ -267,20 +268,22 @@ describe("config cells composed", () => {
         expect(cell.valueCount(record)).toStrictEqual(1);
         expect(cell.value(record, 1)).toStrictEqual({
           altAlleles: ["C", "T"],
-          displayRepeatUnit: 6,
+          displayRepeatUnit: 5,
           genotype: 0,
           refAllele: "A",
-          repeatCount: 1,
-          repeatUnitMatch: 5,
-          repeatUnitValue: 4,
-          svType: 3,
-          viab: 2,
+          repeatCount: "6",
+          repeatUnitMatch: 4,
+          repeatUnitValue: 3,
+          svType: 2,
+          viab: 1,
         });
 
-        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
-        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "SVTYPE", "RU", "RUMATCH", "DisplayRU");
-        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 1, fieldGt, fieldRepCn, fieldViab);
-        expect(getInfoValues).toHaveBeenCalledWith(record, 1, fieldSvType, fieldRu, fieldRuMatch, fieldDisplayRu);
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "VIAB");
+        expect(getInfoFields).toHaveBeenCalledWith(
+          vcfMetadata, "SVTYPE", "RU_CALL", "RU_MATCH", "DisplayRU", "RU_NR",
+        );
+        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 1, fieldGt, fieldViab);
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, fieldSvType, fieldRu, fieldRuMatch, fieldDisplayRu, fieldRuCall);
       });
 
       test("genotype with required fields", () => {
@@ -314,16 +317,18 @@ describe("config cells composed", () => {
           viab: undefined,
         });
 
-        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
-        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "SVTYPE", "RU", "RUMATCH", "DisplayRU");
-        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 1, fieldGt, undefined, undefined);
-        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined);
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "VIAB");
+        expect(getInfoFields).toHaveBeenCalledWith(
+          vcfMetadata, "SVTYPE", "RU_CALL", "RU_MATCH", "DisplayRU", "RU_NR",
+        );
+        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 1, fieldGt, undefined);
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined, undefined);
       });
 
       test("genotype without required fields", () => {
         vi.mocked(getSampleFields).mockReturnValue([undefined, undefined, undefined, undefined]);
         expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
-        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "VIAB");
       });
 
       test("genotype without sample", () => {
@@ -346,10 +351,10 @@ describe("config cells composed", () => {
 
         const fieldGt = { id: "FORMAT/GT" };
         vi.mocked(getSampleFields).mockReturnValue([fieldGt, undefined, undefined] as FieldMetadataWrapper[]);
-        vi.mocked(getInfoFields).mockReturnValue([undefined, undefined, undefined, undefined]);
+        vi.mocked(getInfoFields).mockReturnValue([undefined, undefined, undefined, undefined, undefined]);
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getSampleValues).mockReturnValue([0, undefined, undefined]);
-        vi.mocked(getInfoValues).mockReturnValue([undefined, undefined, undefined, undefined]);
+        vi.mocked(getInfoValues).mockReturnValue([undefined, undefined, undefined, undefined, undefined]);
 
         const cell = initConfigCellComposed(
           configBase,
@@ -374,8 +379,10 @@ describe("config cells composed", () => {
           viab: undefined,
         });
 
-        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
-        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "SVTYPE", "RU", "RUMATCH", "DisplayRU");
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "VIAB");
+        expect(getInfoFields).toHaveBeenCalledWith(
+          vcfMetadata, "SVTYPE", "RU_CALL", "RU_MATCH", "DisplayRU", "RU_NR",
+        );
         expect(getSampleValues).toHaveBeenCalledWith(
           {
             item: {
@@ -392,9 +399,8 @@ describe("config cells composed", () => {
           1,
           fieldGt,
           undefined,
-          undefined,
         );
-        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined);
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined, undefined);
       });
 
       test("genotype_maternal no sample", () => {
@@ -425,10 +431,10 @@ describe("config cells composed", () => {
 
         const fieldGt = { id: "FORMAT/GT" };
         vi.mocked(getSampleFields).mockReturnValue([fieldGt, undefined, undefined] as FieldMetadataWrapper[]);
-        vi.mocked(getInfoFields).mockReturnValue([undefined, undefined, undefined, undefined]);
+        vi.mocked(getInfoFields).mockReturnValue([undefined, undefined, undefined, undefined, undefined]);
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getSampleValues).mockReturnValue([0, undefined, undefined]);
-        vi.mocked(getInfoValues).mockReturnValue([undefined, undefined, undefined, undefined]);
+        vi.mocked(getInfoValues).mockReturnValue([undefined, undefined, undefined, undefined, undefined]);
 
         const cell = initConfigCellComposed(
           configBase,
@@ -453,8 +459,15 @@ describe("config cells composed", () => {
           viab: undefined,
         });
 
-        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "REPCN", "VIAB");
-        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "SVTYPE", "RU", "RUMATCH", "DisplayRU");
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "VIAB");
+        expect(getInfoFields).toHaveBeenCalledWith(
+          vcfMetadata,
+          "SVTYPE",
+          "RU_CALL",
+          "RU_MATCH",
+          "DisplayRU",
+          "RU_NR"
+        );
         expect(getSampleValues).toHaveBeenCalledWith(
           {
             item: {
@@ -471,9 +484,8 @@ describe("config cells composed", () => {
           1,
           fieldGt,
           undefined,
-          undefined,
         );
-        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined);
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, undefined, undefined, undefined, undefined, undefined);
       });
 
       test("genotype_paternal no sample", () => {

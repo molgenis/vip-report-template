@@ -5,11 +5,14 @@ import { FieldGenotype } from "./FieldGenotype";
 import { FieldGene } from "./FieldGene";
 import { ErrorNotification } from "../../ErrorNotification";
 import { FieldClinVar } from "./FieldClinVar";
+import { FieldConfidenceInterval } from "./FieldConfidenceInterval";
+import { FieldSpanningReads } from "./FieldSpanningReads";
 import { FieldGnomAd } from "./FieldGnomAd";
 import { FieldHpo } from "./FieldHpo";
 import { ConfigCellCustom } from "../../../types/configCells";
 import {
   CellValueClinVar,
+  CellValueConfidenceInterval,
   CellValueCustom,
   CellValueGene,
   CellValueGenotype,
@@ -17,6 +20,7 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
+  CellValueSpanningReads,
   CellValueVipC,
   CellValueVipCS,
   CellValueVkgl,
@@ -36,6 +40,9 @@ export const FieldComposed: Component<{
       <Match when={id() === "clinVar"}>
         <FieldClinVar value={props.value as CellValueClinVar} />
       </Match>
+      <Match when={id() === "confidenceInterval"}>
+        <FieldConfidenceInterval value={props.value as CellValueConfidenceInterval} />
+      </Match>
       <Match when={id() === "gene"}>
         <FieldGene value={props.value as CellValueGene} />
       </Match>
@@ -53,6 +60,9 @@ export const FieldComposed: Component<{
       </Match>
       <Match when={id() === "locus"}>
         <FieldLocus value={props.value as CellValueLocus} />
+      </Match>
+      <Match when={id() === "spanningReads"}>
+        <FieldSpanningReads value={props.value as CellValueSpanningReads} />
       </Match>
       <Match when={id() === "vipC"}>
         <FieldVipC value={props.value as CellValueVipC} />

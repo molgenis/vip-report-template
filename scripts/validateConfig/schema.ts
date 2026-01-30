@@ -106,6 +106,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
         name: {
           enum: [
             "clinVar",
+            "confidenceInterval",
             "gene",
             "genotype",
             "genotype_maternal",
@@ -114,6 +115,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
             "hpo",
             "inheritancePattern",
             "locus",
+            "spanningReads",
             "vipC",
             "vipCS",
             "vkgl",
