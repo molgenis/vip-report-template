@@ -26,7 +26,6 @@ import {
   CellValueVkgl,
 } from "../../types/configCellComposed";
 import {
-  getInfoField,
   getInfoFields,
   getInfoNestedField,
   getInfoNestedFields,
@@ -218,17 +217,17 @@ function createConfigFieldCustomGenotypeForSample(
 ): ConfigCellCustom<CellValueGenotype> | null {
   if (sample === null) return null;
 
-  const [fieldGt, fieldViab] = getSampleFields(metadata, "GT", "VIAB");
-  if (fieldGt === undefined) return null; // unlikely, but possible
-
-  const [fieldSvType, fieldRu, fieldRuMatch, fieldDisplayRu, fieldRepCn] = getInfoFields(
+  const [fieldGt, fieldViab, fieldRu, fieldRuMatch, fieldRepCn] = getSampleFields(
     metadata,
-    "SVTYPE",
+    "GT",
+    "VIAB",
     "RU_CALL",
     "RU_MATCH",
-    "DisplayRU",
     "RU_NR",
   );
+  if (fieldGt === undefined) return null; // unlikely, but possible
+
+  const [fieldSvType, fieldDisplayRu] = getInfoFields(metadata, "SVTYPE", "DisplayRU");
 
   return {
     type: "composed",
@@ -237,26 +236,28 @@ function createConfigFieldCustomGenotypeForSample(
     description: () => getDescription(config),
     valueCount: () => 1,
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueGenotype => {
-      const [genotype, viab] = getSampleValues(sample, record, valueIndex, fieldGt, fieldViab) as [
-        Genotype,
-        number | null | undefined,
-      ];
-
-      const [svType, repeatUnitValue, repeatUnitMatch, displayRepeatUnit, repeatCount] = getInfoValues(
+      const [genotype, viab, repeatUnitValue, repeatUnitMatch, repeatCount] = getSampleValues(
+        sample,
         record,
         valueIndex,
-        fieldSvType,
+        fieldGt,
+        fieldViab,
         fieldRu,
         fieldRuMatch,
-        fieldDisplayRu,
         fieldRepCn,
       ) as [
+        Genotype,
+        number | null | undefined,
         ValueString | undefined,
-        ValueString | undefined,
-        ValueFlag | undefined,
-        ValueString | undefined,
+        ValueInteger | undefined,
         ValueString[] | undefined,
       ];
+
+      const [svType, displayRepeatUnit] = getInfoValues(record, valueIndex, fieldSvType, fieldDisplayRu) as [
+        ValueString | undefined,
+        ValueString | undefined,
+      ];
+
       return {
         refAllele: record.data.r,
         altAlleles: record.data.a,
@@ -279,7 +280,7 @@ function createConfigFieldCustomConfidenceInterval(
 ): ConfigCellCustom<CellValueConfidenceInterval> | null {
   if (sample === null) return null;
   const fieldGt = getSampleField(metadata, "GT");
-  const fieldCi = getInfoField(metadata, "RU_CI");
+  const fieldCi = getSampleField(metadata, "RU_CI");
   return {
     type: "composed",
     id: "confidenceInterval",
@@ -288,7 +289,7 @@ function createConfigFieldCustomConfidenceInterval(
     valueCount: () => 1,
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueConfidenceInterval => {
       const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
-      const ci = getInfoValue(record, valueIndex, fieldCi) as ValueString[];
+      const ci = getSampleValue(sample, record, valueIndex, fieldCi) as ValueString[];
 
       return {
         genotype: genotype,

@@ -18,7 +18,7 @@ export const FieldGenotypeStr: Component<{
       <span class="ml-1">{`(n=${props.value.genotype.a
         .map((allele) => (allele !== null ? props.value.repeatCount![allele - 1] : "?"))
         .join("/")})`}</span>
-      <Show when={props.value.repeatUnitMatch === false}>
+      <Show when={props.value.repeatUnitMatch === 0}>
         <abbr
           title={"the called repeat unit does not match the repeat unit in the loci bed file"}
           class="ml-1 is-clickable"
