@@ -7,7 +7,7 @@ export const FieldConfidenceInterval: Component<{
   return (
     <span>
       {props.value.genotype.a
-        .map((allele) => (allele !== null ? props.value.confidenceInterval![allele - 1] : "?"))
+        .map((allele) => (allele !== null ? props.value.confidenceInterval[allele - 1] : "?"))
         .join("/")}
     </span>
   );
