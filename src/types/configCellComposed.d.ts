@@ -39,12 +39,12 @@ export type CellValueGenotype = {
 
 export type CellValueConfidenceInterval = {
   genotype: Genotype;
-  confidenceInterval: ValueString[] | undefined;
+  confidenceInterval: ValueString[];
 };
 
 export type CellValueSpanningReads = {
   genotype: Genotype;
-  spanningReads: ValueInteger[] | undefined;
+  spanningReads: ValueInteger[];
 };
 
 export type CellValueHpo = {

@@ -288,11 +288,11 @@ function createConfigFieldCustomConfidenceInterval(
     valueCount: () => 1,
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueConfidenceInterval => {
       const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
-      const ci = getInfoValue(record, valueIndex, fieldCi) as ValueString[] | undefined;
+      const ci = getInfoValue(record, valueIndex, fieldCi) as ValueString[];
 
       return {
         genotype: genotype,
-        confidenceInterval: ci,
+        confidenceInterval: ci !== undefined ? ci : [],
       };
     },
   };
@@ -315,11 +315,11 @@ function createConfigFieldCustomSpanningReads(
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueSpanningReads => {
       console.log("here!");
       const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
-      const spanning = getSampleValue(sample, record, valueIndex, fieldSpan) as ValueInteger[] | undefined;
+      const spanning = getSampleValue(sample, record, valueIndex, fieldSpan) as ValueInteger[];
 
       return {
         genotype: genotype,
-        spanningReads: spanning,
+        spanningReads: spanning !== undefined ? spanning : [],
       };
     },
   };

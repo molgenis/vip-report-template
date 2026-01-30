@@ -16,8 +16,7 @@ export const FieldGenotypeStr: Component<{
         </abbr>
       </Show>
       <span class="ml-1">{`(n=${props.value.genotype.a
-        .filter((allele) => allele !== null)
-        .map((allele) => props.value.repeatCount![allele! - 1])
+        .map((allele) => (allele !== null ? props.value.repeatCount![allele - 1] : "."))
         .join("/")})`}</span>
       <Show when={props.value.repeatUnitMatch === false}>
         <abbr
