@@ -4,11 +4,15 @@ import { CellValueSpanningReads } from "../../../types/configCellComposed";
 export const FieldSpanningReads: Component<{
   value: CellValueSpanningReads;
 }> = (props) => {
-  return (
-    <span>
-      {props.value.genotype.a
+  const value = () => {
+    if (props.value.genotype.t === "hom_a" || props.value.genotype.t === "hom_r") {
+      return props.value.spanningReads[0];
+    } else {
+      return props.value.genotype.a
         .map((allele) => (allele !== null ? props.value.spanningReads[allele - 1] : "?"))
-        .join("/")}
-    </span>
-  );
+        .join("/");
+    }
+  };
+
+  return <span>{value()}</span>;
 };
