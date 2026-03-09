@@ -1,5 +1,6 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldLocus } from "./FieldLocus";
+import { Classification } from "../../poc/Classification";
 import { FieldVipC } from "./FieldVipC";
 import { FieldGenotype } from "./FieldGenotype";
 import { FieldGene } from "./FieldGene";
@@ -72,6 +73,9 @@ export const FieldComposed: Component<{
       </Match>
       <Match when={id() === "vkgl"}>
         <FieldVkgl value={props.value as CellValueVkgl} />
+      </Match>
+      <Match when={id() === "classification"}>
+        <Classification locus={props.value as CellValueLocus} />
       </Match>
     </Switch>
   );

@@ -78,7 +78,6 @@ render(
       <Show when={error() !== undefined}>
         <ErrorNotification error={error()} />
       </Show>
-      <ErrorBoundary fallback={(err) => <ErrorNotification error={err} />}>
         <HashRouter root={App}>
           <Route path="/" component={Home} />
           <Route path="/samples">
@@ -117,7 +116,6 @@ render(
           </Route>
           <Route path="/help" component={Help} />
         </HashRouter>
-      </ErrorBoundary>
     </Provider>
   ),
   document.body,

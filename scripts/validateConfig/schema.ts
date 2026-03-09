@@ -119,6 +119,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
             "vipC",
             "vipCS",
             "vkgl",
+            "classification",
           ],
         },
       },
