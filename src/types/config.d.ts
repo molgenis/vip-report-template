@@ -47,7 +47,8 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "spanningReads"
     | "vipC"
     | "vipCS"
-    | "vkgl";
+    | "vkgl"
+    | "classification";
 }
 
 export interface ConfigJsonSort {

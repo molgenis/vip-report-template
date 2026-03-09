@@ -81,6 +81,9 @@ export function initConfigCellComposed(
     case "locus":
       fieldConfig = createConfigFieldCustomLocus(configStatic, sample, variantType);
       break;
+    case "classification":
+      fieldConfig = createConfigFieldClassification(configStatic, sample, variantType);
+      break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
       break;
@@ -444,6 +447,27 @@ function createConfigFieldCustomLocus(
     }),
   };
 }
+
+function createConfigFieldClassification(
+  config: ConfigJsonFieldComposed,
+  sample: SampleContainer | null,
+  variantType: VariantType,
+): ConfigCellCustom<CellValueLocus> {
+  const components = sample ? ["samples", sample.item.id] : [];
+  return {
+    type: "composed",
+    id: "classification",
+    label: () => getLabel(config, "Classification"),
+    description: () => getDescription(config),
+    valueCount: () => 1,
+    value: (record: Item<VcfRecord>): CellValueLocus => ({
+      c: record.data.c,
+      p: record.data.p,
+      href: href([...components, "variants", variantType.id, "variant", record.id]),
+    }),
+  };
+}
+
 
 function createConfigFieldCustomVipC(
   config: ConfigJsonFieldComposed,

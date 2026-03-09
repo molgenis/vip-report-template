@@ -213,6 +213,10 @@
           "name": "locus"
         },
         {
+          "type": "composed",
+          "name": "classification"
+        },
+        {
           "type": "fixed",
           "name": "ref"
         },
