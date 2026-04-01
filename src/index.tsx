@@ -18,6 +18,7 @@ import {
   faHome,
   faInfo,
   faSearch,
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
 import { createSignal, ErrorBoundary, Show } from "solid-js";
@@ -49,6 +50,7 @@ library.add(
   faHome,
   faInfo,
   faSearch,
+  faComment,
 );
 
 function processIcons() {

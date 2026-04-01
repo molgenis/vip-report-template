@@ -28,10 +28,11 @@ export const VariantsContainer: Component<{
   metadata: MetadataContainer;
   variantType: VariantType;
   sample: SampleContainer | null;
+  reportId: string;
 }> = (props) => {
   const navigate = useNavigate();
 
-  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
+  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
   const query = () =>
     createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());

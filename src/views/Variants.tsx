@@ -3,7 +3,7 @@ import { Loader } from "../components/Loader";
 import { parseVariantType } from "../utils/variantType.ts";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { VariantsContainer } from "../components/VariantsContainer";
-import { getConfig, getMetadata } from "./data/data";
+import { getConfig, getMetadata, getReportId } from "./data/data";
 import { VariantBreadcrumb } from "../components/VariantBreadcrumb.tsx";
 import { useStore } from "../store";
 import { wrapStore } from "../store/variants.ts";
@@ -14,6 +14,7 @@ export const Variants: Component<RouteSectionProps> = (props) => {
   const variantType = () => parseVariantType(props.params.variantType);
   const config = createAsync(() => getConfig());
   const metadata = createAsync(() => getMetadata());
+  const reportId = createAsync(() => getReportId());
 
   return (
     <>
@@ -28,6 +29,7 @@ export const Variants: Component<RouteSectionProps> = (props) => {
                 metadata={metadata()}
                 variantType={variantType()}
                 sample={null}
+                reportId={reportId() as string}
               />
             )}
           </Show>

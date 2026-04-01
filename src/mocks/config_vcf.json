@@ -217,6 +217,10 @@
           "name": "classification"
         },
         {
+          "type": "composed",
+          "name": "comment"
+        },
+        {
           "type": "fixed",
           "name": "ref"
         },

@@ -53,6 +53,10 @@ export class MockApiClient implements Api {
   constructor() {
     this.dataSetId = MockApiClient.dataSetIds[0]!;
   }
+  async getReportId() {
+    const apiClient = await this.getApiClient();
+    return apiClient.getReportId();
+  }
 
   async getInfoOrder() {
     const apiClient = await this.getApiClient();
@@ -179,6 +183,7 @@ async function createApiClient(id: string): Promise<Api> {
 
 async function fetchReportDataGRCh38Family(): Promise<ReportData> {
   return {
+    id: "MockIdFamily",
     database: await fetchDatabaseFamily(),
     fastaGz: await fetchFastaGzGRCh38(),
     genesGz: await fetchGenesGzGRCh38(),
@@ -194,6 +199,7 @@ async function fetchReportDataGRCh38Family(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38FamilyNoVep() {
   return {
+    id: "MockIdFamilyNoVep",
     database: await fetchDatabaseNoVep(),
     fastaGz: await fetchFastaGzGRCh38(),
     genesGz: await fetchGenesGzGRCh38(),
@@ -209,6 +215,7 @@ async function fetchReportDataGRCh38FamilyNoVep() {
 
 async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
   return {
+    id: "MockId1Sample",
     database: await fetchDatabaseSamples1(),
     fastaGz: await fetchFastaGzGRCh38(),
     genesGz: await fetchGenesGzGRCh38(),
@@ -224,6 +231,7 @@ async function fetchReportDataGRCh38Data1Sample(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
   return {
+    id: "MockId10oSample",
     database: await fetchDatabaseSamples100(),
     fastaGz: await fetchFastaGzGRCh38(),
     genesGz: await fetchGenesGzGRCh38(),
@@ -233,6 +241,7 @@ async function fetchReportDataGRCh38Data100Samples(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38Str(): Promise<ReportData> {
   return {
+    id: "MockIdStr",
     database: await fetchDatabaseStr(),
     fastaGz: await fetchFastaGzGRCh38(),
     genesGz: await fetchGenesGzGRCh38(),
@@ -248,6 +257,7 @@ async function fetchReportDataGRCh38Str(): Promise<ReportData> {
 
 async function fetchReportDataGRCh38NoSample(): Promise<ReportData> {
   return {
+    id: "MockIdNoSample",
     database: await fetchDatabaseSamples0(),
     fastaGz: await fetchFastaGzGRCh38(),
     genesGz: await fetchGenesGzGRCh38(),

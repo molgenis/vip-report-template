@@ -1,7 +1,7 @@
 import { Component, Show } from "solid-js";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
-import { getConfig, getDecisionTree, getMetadata, getRecordById } from "./data/data";
+import { getConfig, getDecisionTree, getMetadata, getRecordById, getReportId } from "./data/data";
 import { parseId } from "../utils/utils.ts";
 import { VariantConsequenceContainer } from "../components/VariantConsequenceContainer.tsx";
 import { parseVariantType } from "../utils/variantType.ts";
@@ -14,6 +14,7 @@ export const VariantConsequence: Component<RouteSectionProps> = (props) => {
   const record = createAsync(() => getRecordById(props.params.variantId));
   const config = createAsync(() => getConfig());
   const decisionTree = createAsync(() => getDecisionTree());
+  const reportId = createAsync(() => getReportId());
 
   return (
     <Show when={record()} fallback={<Loader />}>
@@ -36,6 +37,7 @@ export const VariantConsequence: Component<RouteSectionProps> = (props) => {
                           sample={null}
                           decisionTree={decisionTree()}
                           sampleTree={null}
+                          reportId={ reportId() as string }
                         />
                       )}
                     </Show>

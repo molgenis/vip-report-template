@@ -1,5 +1,5 @@
 import { Component, Match, Switch } from "solid-js";
-import { FilterValue } from "../../../types/configFilter";
+import { ConfigFilterField, FilterValue, FilterValueCategorical } from "../../../types/configFilter";
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
@@ -26,6 +26,7 @@ import { FilterInheritance } from "./FilterInheritance.tsx";
 import { FilterDeNovo } from "./FilterDeNovo.tsx";
 import { FilterVipC } from "./FilterVipC.tsx";
 import { FilterVipCS } from "./FilterVipCS.tsx";
+import { FilterClassification } from "../../poc/FilterClassification.tsx";
 
 export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterValue>> = (props) => {
   const id = () => props.config.id;
@@ -45,6 +46,16 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterLocus
           config={props.config as ConfigFilterLocus}
           value={props.value as FilterValueLocus | undefined}
+          defaultValue={props.defaultValue}
+          onValueChange={props.onValueChange}
+          onValueClear={props.onValueClear}
+          isInited={props.isInited}
+        />
+      </Match>
+      <Match when={id() === "composed/filterClassification"}>
+        <FilterClassification
+          config={props.config as ConfigFilterField}
+          value={props.value as FilterValueCategorical | undefined}
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}

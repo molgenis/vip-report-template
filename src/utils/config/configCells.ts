@@ -13,15 +13,16 @@ export function initConfigCells(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): ConfigCells {
   const configCells: (ConfigCell | null)[] = configs.flatMap((configStaticField) => {
     let configCells: (ConfigCell | null)[];
     if (configStaticField.type === "group") {
       configCells = [
-        initConfigCellItemGroup(configStaticField as ConfigJsonFieldItemGroup, variantType, metadata, sample),
+        initConfigCellItemGroup(configStaticField as ConfigJsonFieldItemGroup, variantType, metadata, sample, reportId),
       ];
     } else {
-      configCells = initConfigCellItem(configStaticField as ConfigJsonFieldItem, variantType, metadata, sample);
+      configCells = initConfigCellItem(configStaticField as ConfigJsonFieldItem, variantType, metadata, sample, reportId);
     }
     return configCells;
   });
@@ -33,8 +34,9 @@ function initConfigCellItemGroup(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ) {
-  const configFields = initConfigCells(config.fields, variantType, metadata, sample) as ConfigCellItem[];
+  const configFields = initConfigCells(config.fields, variantType, metadata, sample, reportId) as ConfigCellItem[];
 
   let fieldConfig: ConfigCellGroup | null;
   if (configFields.length === 0) {
@@ -50,7 +52,9 @@ function initConfigCellItem(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): ConfigCell[] {
+  console.log("initConfigCellItem reportID: "+ reportId);
   const type = config.type;
 
   let configFields: (ConfigCell | null)[];
@@ -67,7 +71,7 @@ function initConfigCellItem(
       configFields = sample ? initConfigCellGenotype(config, metadata.records, sample) : [];
       break;
     case "composed":
-      configFields = [initConfigCellComposed(config, variantType, metadata, sample)];
+      configFields = [initConfigCellComposed(config, variantType, metadata, sample, reportId)];
       break;
   }
   return configFields.filter((configField) => configField !== null);

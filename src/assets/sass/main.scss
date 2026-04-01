@@ -94,3 +94,13 @@ table.is-borderless td,
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.pane-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+}
+
+.pane-content--open {
+  max-height: 1000px;
+}

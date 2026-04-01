@@ -1,8 +1,20 @@
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
-import inlinePlugin from "@molgenis/vite-plugin-inline";
+import inlinePlugin from "@molgenis/vite-plugin-inline";;
 
 export default defineConfig(({ command }) => ({
+  server: {
+    proxy: {
+      "/RD3/graphql": {
+        target: "http://localhost:8080/",
+        changeOrigin: true,
+        headers: {
+          "x-molgenis-token":
+            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6NDkzMDcwNjI3NiwiaWF0IjoxNzc1MDMyNjc2LCJqdGkiOiJ0ZXN0In0.AZ9ftcCiU3nU4khzz-Z_PBEU-6Ff7-qj39-9qFqHXQ4",
+        },
+      },
+    },
+  },
   plugins: [solidPlugin(), inlinePlugin()],
   esbuild: {
     // @molgenis/vite-plugin-inline requires ascii input and cannot handle UTF-8 input
