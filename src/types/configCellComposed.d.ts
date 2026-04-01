@@ -60,6 +60,8 @@ export type CellValueInheritanceModes = {
 
 export type CellValueLocus = { c: string; p: number; href: string };
 
+export type CellValueRD3 = { c: string; p: number; a: string; id: number; s: string | undefined; report: string };
+
 export type CellValueVipC = {
   href: string;
   vipC: ValueCategorical;
@@ -93,6 +95,7 @@ export type CellValueCustom =
   | CellValueHpo
   | CellValueInheritanceModes
   | CellValueLocus
+  | CellValueRD3
   | CellValueVipC
   | CellValueVipCS
   | CellValueVkgl;
