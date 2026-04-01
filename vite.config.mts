@@ -20,6 +20,10 @@ export default defineConfig(({ command }) => ({
         manualChunks: undefined,
       },
     },
+    // unclear how to migrate to new default Lightning CSS
+    cssMinify: "esbuild",
+    // unclear how to migrate to new default Oxc e.g. esbuild.charset and esbuild.pure
+    minify: "esbuild",
   },
   assetsInclude: "**/*.blob",
   test: {
