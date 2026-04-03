@@ -37,6 +37,7 @@ describe("query", () => {
       const fieldMetadata = { id: "GT", number: { type: "NUMBER", count: 1 } } as FieldMetadataWrapper;
       const vcfMetadata = {
         format: { GT: fieldMetadata },
+        info: { SVTYPE: fieldMetadata},
       } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
       const meta = {
         app: {},
@@ -56,6 +57,33 @@ describe("query", () => {
         operator: "and",
       });
       expect(createQueryVariantType).toHaveBeenCalledWith(variantType);
+      expect(createQuerySample).toHaveBeenCalledWith(configVip, sample, meta);
+      expect(createQueryFilters).toHaveBeenCalledWith(configFilters, filterValues);
+    });
+
+    test("variant type missing, sample and filters", () => {
+      const querySample: Query = { selector: "c", operator: "==", args: "d" };
+      const queryFilters: Query = { selector: "e", operator: "==", args: "f" };
+      const fieldMetadata = { id: "GT", number: { type: "NUMBER", count: 1 } } as FieldMetadataWrapper;
+      const vcfMetadata = {
+        format: { GT: fieldMetadata },
+        info: {  },
+      } as Partial<VcfMetadataContainer> as VcfMetadataContainer;
+      const meta = {
+        app: {},
+        records: vcfMetadata,
+        variantTypeIds: {},
+      } as MetadataContainer;
+      vi.mocked(createQuerySample).mockReturnValue(querySample);
+      vi.mocked(createQueryFilters).mockReturnValue(queryFilters);
+
+      expect(createQuery(config, meta, variantType, sample, filterValues)).toStrictEqual({
+        args: [
+          { selector: "c", operator: "==", args: "d" },
+          { selector: "e", operator: "==", args: "f" },
+        ],
+        operator: "and",
+      });
       expect(createQuerySample).toHaveBeenCalledWith(configVip, sample, meta);
       expect(createQueryFilters).toHaveBeenCalledWith(configFilters, filterValues);
     });
