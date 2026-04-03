@@ -1,0 +1,10 @@
+allowBuilds:
+  "@parcel/watcher": true
+  esbuild: true
+blockExoticSubdeps: true
+minimumReleaseAge: 720
+minimumReleaseAgeExclude:
+  - "@molgenis/vip-report-api"
+  - "@molgenis/vip-report-vcf"
+  - "@molgenis/vite-plugin-inline"
+trustPolicy: no-downgrade
