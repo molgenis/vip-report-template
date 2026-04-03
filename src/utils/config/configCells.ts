@@ -54,7 +54,6 @@ function initConfigCellItem(
   sample: SampleContainer | null,
   reportId: string,
 ): ConfigCell[] {
-  console.log("initConfigCellItem reportID: "+ reportId);
   const type = config.type;
 
   let configFields: (ConfigCell | null)[];

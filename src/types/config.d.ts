@@ -106,7 +106,7 @@ export interface ConfigJsonFilterGenotype extends DescribableFilter {
 
 export interface ConfigJsonFilterComposed extends DescribableFilter {
   type: "composed";
-  name: "allelicImbalance" | "deNovo" | "hpo" | "inheritanceMatch" | "locus" | "vipC" | "vipCS";
+  name: "allelicImbalance" | "deNovo" | "hpo" | "inheritanceMatch" | "locus" | "vipC" | "vipCS" | "classification";
 }
 
 export type ConfigJsonFilter =

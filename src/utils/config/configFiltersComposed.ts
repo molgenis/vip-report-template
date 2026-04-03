@@ -1,5 +1,6 @@
 import {
   ConfigFilterAllelicImbalance,
+  ConfigFilterClassification,
   ConfigFilterComposed,
   ConfigFilterDeNovo,
   ConfigFilterHpo,
@@ -45,6 +46,9 @@ export function initConfigFilterComposed(
       break;
     case "vipCS":
       filter = createConfigFilterVipCS(config, configVip, metadata.records, sample);
+      break;
+    case "classification":
+      filter = createConfigFilterClassification(config, configVip, metadata.records, sample);
       break;
     default:
       throw new ConfigInvalidError(`unknown composed filter name '${id}'`);
@@ -221,6 +225,34 @@ function createConfigFilterVipCS(
     label: () => getLabel(configStatic, vipCSField.label || "VIPC_S"),
     description: () => getDescription(configStatic, vipCSField.description),
     field: { ...vipCSField, categories: treeCategories, required: true },
+    defaultValue: configStatic.defaultValue,
+    sample,
+  };
+}
+
+function createConfigFilterClassification(
+  configStatic: ConfigJsonFilterComposed,
+  configVip: ConfigVip,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigFilterClassification | null {
+  if (sample === null || !sample.item.data.proband) return null;
+  const vipCSField = getSampleField(metadata, "VIPC_S");
+  if (vipCSField === undefined) return null;
+
+  const categories = vipCSField.categories;
+  if (categories === undefined) return null;
+
+  // exclude categories that were removed after filtering
+  const classSet = new Set(configVip.params.vcf.filter_samples.classes.split(","));
+  const treeCategories = Object.fromEntries(Object.entries(categories).filter(([key]) => classSet.has(key)));
+  if (Object.keys(treeCategories).length <= 1) return null;
+
+  return {
+    type: "composed",
+    id: configStatic.name,
+    label: () => getLabel(configStatic, "RD3 Class"),
+    description: () => getDescription(configStatic, "RD3 Classification"),
     defaultValue: configStatic.defaultValue,
     sample,
   };

@@ -479,6 +479,10 @@
           "defaultValue": "true"
         },
         {
+          "type": "composed",
+          "name": "classification"
+        },
+        {
           "type": "info",
           "name": "n_object0/n_string1"
         },

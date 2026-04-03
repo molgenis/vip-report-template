@@ -4,22 +4,22 @@ import {
   ConfigFilterField,
   FilterCategory,
   FilterCategoryId,
-  FilterValueCategorical,
 } from "../../types/configFilter";
 import { Checkbox, CheckboxEvent } from "../form/Checkbox";
 import { FilterProps } from "../filter/Filter.tsx";
+import { FilterValueClassification } from "../../types/configFilterComposed";
 
 type FilterValueCategoricalMap = { [key: FilterCategoryId]: null };
 
-export const FilterClassification: Component<FilterProps<ConfigFilterField, FilterValueCategorical>> = (props) => {
+export const FilterClassification: Component<FilterProps<ConfigFilterField, FilterValueClassification>> = (props) => {
   const [values, setValues] = createSignal<FilterValueCategoricalMap>({});
 
   const categories = (): FilterCategory[] => {
     const categories = [];
-      categories.push({
-        id: "-",
-        label: "-",
-      });
+    categories.push({
+      id: "-",
+      label: "-",
+    });
     categories.push({
       id: "B",
       label: "B",
@@ -40,13 +40,13 @@ export const FilterClassification: Component<FilterProps<ConfigFilterField, Filt
       id: "P",
       label: "P",
     });
-    
+
     return categories;
   };
 
   createEffect(() => {
-    if (props.value && props.value.length > 0) {
-      const newValues: FilterValueCategoricalMap = props.value.reduce((acc, v) => ({ ...acc, [v]: null }), {});
+    if (props.value && props.value.values && props.value.values.length > 0) {
+      const newValues: FilterValueCategoricalMap = props.value.values.reduce((acc, v) => ({ ...acc, [v]: null }), {});
       setValues(newValues);
     }
   });
@@ -74,11 +74,34 @@ export const FilterClassification: Component<FilterProps<ConfigFilterField, Filt
     onValuesChange({});
   };
 
-  const onValuesChange = (values: FilterValueCategoricalMap) => {
+  const onValuesChange = async (values: FilterValueCategoricalMap) => {
     setValues(values);
 
+    const rows = async () => {
+      const res = await fetch("/RD3/graphql", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          query: `
+            {
+              VIPInfo(filter: { classification: { match_any: ["${Object.keys(values).join('","')}"] }, reportId: { equals: "${props.reportId}" } }) {
+                vipId
+              }
+            }
+          `,
+        }),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      return data?.data?.VIPInfo ?? [];
+    }
     if (Object.keys(values).length > 0) {
-      props.onValueChange({ value: Object.keys(values) as FilterValueCategorical });
+      const result = await rows();
+      const numbers = result.map((item: { vipId: string }) => parseInt(item.vipId, 10));
+
+      props.onValueChange({ value: { values: Object.keys(values), ids: numbers, report: props.reportId } });
     } else {
       props.onValueClear();
     }
@@ -104,7 +127,7 @@ export const FilterClassification: Component<FilterProps<ConfigFilterField, Filt
         values = props.config.defaultValue.split(",");
         validateValues(values, categories());
       }
-      props.onValueChange({ value: values as FilterValueCategorical });
+      props.onValueChange({ value: {ids: [], values: values, report: props.reportId }});
     }
   });
 
@@ -112,8 +135,8 @@ export const FilterClassification: Component<FilterProps<ConfigFilterField, Filt
     <FilterWrapper
       config={{
         type: "composed",
-        id: "Classification",
-        label: () => "Classification",
+        id: "classification",
+        label: () => "RD3 Classification",
         description: () => "RD3 Classification",
       }}
     >

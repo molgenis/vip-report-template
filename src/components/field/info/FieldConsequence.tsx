@@ -1,15 +1,26 @@
-import { Component } from "solid-js";
+import { Component, Show } from "solid-js";
 import { Abbr } from "../../Abbr";
+import { ValueCategorical } from "../../../utils/vcf.ts";
 
-export const FieldConsequence: Component<{ value: string[] }> = (props) => {
+export const FieldConsequence: Component<{ value: ValueCategorical[] }> = (props) => {
   return (
-    <>
-      <span>{props.value[0]}</span>
-      {props.value.length > 1 && (
-        <span>
-          , <Abbr title={props.value.slice(1).join(", ")} value={"\u2026"} />
-        </span>
-      )}
-    </>
+    <Show when={props.value?.length > 0}>
+      <span>
+        {props.value[0]?.label}
+        {props.value.length > 1 && (
+          <>
+            ,{" "}
+            <Abbr
+              title={props.value
+                .slice(1)
+                .filter((csq) => csq !== null)
+                .map((csq) => csq.label)
+                .join(", ")}
+              value="…"
+            />
+          </>
+        )}
+      </span>
+    </Show>
   );
 };

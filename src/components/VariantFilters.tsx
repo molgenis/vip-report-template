@@ -10,6 +10,7 @@ export const VariantFilters: Component<{
   onFilterChange: FilterChangeCallback;
   onFilterClear: FilterClearCallback;
   filtersInited: FilterInitedList;
+  reportId: string;
 }> = (props) => {
   return (
     <For each={props.filterConfigs}>
@@ -20,6 +21,7 @@ export const VariantFilters: Component<{
           onValueChange={(event) => props.onFilterChange({ id: filter.id, ...event })}
           onValueClear={() => props.onFilterClear({ id: filter.id })}
           isInited={props.filtersInited.includes(filter.id)}
+          reportId={props.reportId}
         />
       )}
     </For>

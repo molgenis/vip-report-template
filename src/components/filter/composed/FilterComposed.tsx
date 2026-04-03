@@ -1,5 +1,5 @@
 import { Component, Match, Switch } from "solid-js";
-import { ConfigFilterField, FilterValue, FilterValueCategorical } from "../../../types/configFilter";
+import { ConfigFilterField, FilterCategoryId, FilterValue, FilterValueCategorical } from "../../../types/configFilter";
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
@@ -10,6 +10,7 @@ import {
   ConfigFilterVipC,
   ConfigFilterVipCS,
   FilterValueAllelicImbalance,
+  FilterValueClassification,
   FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
@@ -40,6 +41,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/locus"}>
@@ -50,16 +52,20 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
-      <Match when={id() === "composed/filterClassification"}>
+      <Match when={id() === "composed/classification"}>
         <FilterClassification
           config={props.config as ConfigFilterField}
-          value={props.value as FilterValueCategorical | undefined}
+          value={
+            { values: props.value as FilterCategoryId[], report: props.reportId } as FilterValueClassification
+          }
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/allelicImbalance"}>
@@ -70,6 +76,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/inheritanceMatch"}>
@@ -80,6 +87,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/deNovo"}>
@@ -90,6 +98,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/vipC"}>
@@ -100,6 +109,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/vipCS"}>
@@ -110,6 +120,7 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          reportId={props.reportId}
         />
       </Match>
     </Switch>
