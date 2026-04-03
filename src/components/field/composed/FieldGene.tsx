@@ -52,9 +52,11 @@ export const FieldGene: Component<{
               </Show>
             </span>
           )}
-          <abbr title={value()} class="ml-1 is-clickable">
-            <i class="fas fa-comment has-text-info" />
-          </abbr>
+          <Show when={value() !== "-"} fallback={""}>
+            <abbr title={value()} class="ml-1 is-clickable">
+              <i class="fas fa-comment has-text-info" />
+            </abbr>
+          </Show>
         </>
       )}
     </Show>
