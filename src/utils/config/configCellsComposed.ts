@@ -467,7 +467,6 @@ function createConfigFieldClassification(
   sample: SampleContainer | null,
   reportId: string,
 ): ConfigCellCustom<CellValueRD3> {
-  console.log("createConfigFieldClassification");
   return {
     type: "composed",
     id: "classification",
@@ -490,7 +489,6 @@ function createConfigFieldComment(
   sample: SampleContainer | null,
   reportId: string,
 ): ConfigCellCustom<CellValueRD3> {
-  console.log("createConfigFieldComment");
   return {
     type: "composed",
     id: "comment",
@@ -513,7 +511,6 @@ function createConfigFieldClassificationViewer(
   sample: SampleContainer | null,
   reportId: string,
 ): ConfigCellCustom<CellValueRD3> {
-  console.log("createConfigFieldClassification");
   return {
     type: "composed",
     id: "classificationViewer",
@@ -536,7 +533,6 @@ function createConfigFieldCommentViewer(
   sample: SampleContainer | null,
   reportId: string,
 ): ConfigCellCustom<CellValueRD3> {
-  console.log("createConfigFieldComment");
   return {
     type: "composed",
     id: "commentViewer",

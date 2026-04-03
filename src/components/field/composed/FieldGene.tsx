@@ -18,7 +18,6 @@ export const FieldGene: Component<{
     return `https://www.genenames.org/tools/search/#!/?${queryString}`;
   };
 
-  console.log(props.value.geneIdentifier);
   const [value] = createResource(async () => {
     const res = await fetch("/RD3/graphql", {
       method: "POST",

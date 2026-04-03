@@ -1,5 +1,6 @@
 import {
   ConfigFilterAllelicImbalance,
+  ConfigFilterClassification,
   ConfigFilterComposed,
   ConfigFilterDeNovo,
   ConfigFilterHpo,
@@ -7,6 +8,7 @@ import {
   ConfigFilterVipC,
   ConfigFilterVipCS,
   FilterValueAllelicImbalance,
+  FilterValueClassification,
   FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
@@ -27,6 +29,7 @@ import { createQueryFilterFieldCategorical } from "./queryFilterField.ts";
 
 export function createQueryFilterComposed(filter: ConfigFilterComposed, filterValue: FilterValue): Query {
   let query: Query;
+
   switch (filter.id) {
     case "composed/hpo":
       query = createQueryFilterHpo(filter as ConfigFilterHpo, filterValue as FilterValueHpo);
@@ -38,6 +41,12 @@ export function createQueryFilterComposed(filter: ConfigFilterComposed, filterVa
       query = createQueryFilterAllelicImbalance(
         filter as ConfigFilterAllelicImbalance,
         filterValue as FilterValueAllelicImbalance,
+      );
+      break;
+    case "composed/classification":
+      query = createQueryFilterClassification(
+        filter as ConfigFilterClassification,
+        filterValue as FilterValueClassification,
       );
       break;
     case "composed/inheritanceMatch":
@@ -198,6 +207,17 @@ function createQueryFilterInheritanceMatch(
     queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
   }
   return createQueryComposed(queryParts, "or");
+}
+
+function createQueryFilterClassification(
+  filter: ConfigFilterClassification,
+  filterValue: FilterValueClassification,
+) {
+    return {
+      selector: "v._id",
+      operator: "in",
+      args: filterValue.ids.length > 0 ? filterValue.ids:[-1],
+    } as Query;
 }
 
 function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: FilterValueDeNovo): Query {

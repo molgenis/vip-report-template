@@ -70,8 +70,7 @@ export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
           return;
         }
 
-        const data = await res.json();
-        console.log("GraphQL result:", data);
+        await res.json();
       } catch (error) {
         console.error("Fetch error:", error);
       }

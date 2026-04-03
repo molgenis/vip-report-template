@@ -39,6 +39,7 @@ export const FilterInheritance: Component<FilterProps<ConfigFilterInheritanceMat
       onValueChange={props.onValueChange}
       onValueClear={props.onValueClear}
       isInited={props.isInited}
+      reportId={props.reportId}
     />
   );
 };

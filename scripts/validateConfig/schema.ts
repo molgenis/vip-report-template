@@ -216,7 +216,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     info: {
@@ -226,7 +226,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     format: {
@@ -236,7 +236,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     genotype: {
@@ -246,19 +246,19 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     composed: {
       properties: {
         name: {
-          enum: ["allelicImbalance", "deNovo", "hpo", "inheritanceMatch", "locus", "vipC", "vipCS"],
+          enum: ["allelicImbalance", "deNovo", "hpo", "inheritanceMatch", "locus", "vipC", "vipCS", "classification"],
         },
       },
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
   },
