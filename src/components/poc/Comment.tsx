@@ -4,14 +4,14 @@ import { CellValueRD3 } from "../../types/configCellComposed";
 export const Comment: Component<{ rd3: CellValueRD3 }> = (props) => {
   // Fetch initial value from GraphQL
   const [value] = createResource(async () => {
-    const id = `${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}:${props.rd3.report}`;
+    const id = `${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}`;
     const res = await fetch("/RD3/graphql", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         query: `
           {
-            VIPNotes(filter: { variant: { equals: "${id}" } }){
+          VIPNotes(filter: { variant: { equals: "${id}" }, reportId: {equals: "${props.rd3.report}"} }){
               mg_updatedBy,note
             }
           }
