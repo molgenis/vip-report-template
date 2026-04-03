@@ -1,5 +1,6 @@
-import { Component, createResource } from "solid-js";
+import { Component, createResource, Show } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
+import { Abbr } from "../Abbr.tsx";
 
 export const Comment: Component<{ rd3: CellValueRD3 }> = (props) => {
   // Fetch initial value from GraphQL
@@ -24,8 +25,10 @@ export const Comment: Component<{ rd3: CellValueRD3 }> = (props) => {
   });
 
   return (
-    <abbr title={value()} class="ml-1 is-clickable">
-      <i class="fas fa-comment has-text-info" />
-    </abbr>
+    <Show when={value() !== "-"} fallback={""}>
+      <abbr title={value()} class="ml-1 is-clickable">
+        <i class="fas fa-comment has-text-info" />
+      </abbr>
+    </Show>
   );
 };
