@@ -18,7 +18,7 @@ export function createQuery(
   const queryParts: Query[] = [];
 
   const queryVariantType = createQueryVariantType(variantType);
-  if (queryVariantType !== null) {
+  if (queryVariantType !== null && Object.hasOwn(meta.records.info, "SVTYPE")) {
     queryParts.push(queryVariantType);
   }
 
