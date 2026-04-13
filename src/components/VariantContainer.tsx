@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component, createSignal, Show } from "solid-js";
 import { MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { Item, Sample } from "@molgenis/vip-report-api";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
@@ -11,6 +11,7 @@ import { VariantType } from "../utils/variantType.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { initConfig } from "../utils/config/config.ts";
+import { A } from "@solidjs/router";
 
 export const VariantContainer: Component<{
   config: ConfigJson;
@@ -21,6 +22,8 @@ export const VariantContainer: Component<{
 }> = (props) => {
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
+  const [showEmpty, setShowEmpty] = createSignal(false);
+  const toggleShowEmpty = () => setShowEmpty((isShow) => !isShow);
 
   return (
     <>
@@ -35,8 +38,18 @@ export const VariantContainer: Component<{
           <VariantTable variant={props.record.data} />
         </div>
         <div class="column is-3">
-          <h1 class="title is-5">Info</h1>
-          <VariantInfoTable variantType={props.variantType} metadata={props.metadata} record={props.record} />
+          <h1 class="title is-5">
+            Info
+            <A href="#" onClick={toggleShowEmpty} class="small-blue-link">
+              {showEmpty() ? "(Hide empty fields)" : "(Show empty fields)"}
+            </A>
+          </h1>
+          <VariantInfoTable
+            variantType={props.variantType}
+            metadata={props.metadata}
+            record={props.record}
+            isShowEmpty={showEmpty()}
+          />
         </div>
         <Show when={config().variant.samplesCells}>
           {(samplesCells) => (

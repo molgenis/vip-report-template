@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js";
+import { Component, createSignal, Show } from "solid-js";
 import { MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api";
@@ -12,6 +12,7 @@ import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigJson } from "../types/config";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { initConfig } from "../utils/config/config.ts";
+import { A } from "@solidjs/router";
 
 export const VariantConsequenceContainer: Component<{
   config: ConfigJson;
@@ -36,66 +37,84 @@ export const VariantConsequenceContainer: Component<{
     }
     return false;
   };
+  const [showEmptyInfo, setShowEmptyInfo] = createSignal(false);
+  const toggleShowEmptyInfo = () => setShowEmptyInfo((isShow) => !isShow);
+  const [showEmptyCsq, setShowEmptyCsq] = createSignal(false);
+  const toggleShowEmptyCsq = () => setShowEmptyCsq((isShow) => !isShow);
 
   return (
-    <>
-      <div class="columns">
-        <div class="column is-4">
-          <div>
-            <h1 class="title is-5">Info</h1>
-            <VariantInfoTable variantType={props.variantType} metadata={props.metadata} record={props.record} />
-          </div>
-          <div class="mt-3">
-            <h1 class="title is-5">Consequence</h1>
-            <VariantConsequenceTable
-              variantType={props.variantType}
-              metadata={props.metadata}
-              record={props.record}
-              consequenceId={props.consequenceId}
-            />
-          </div>
-          <div class="mt-3">
-            <h1 class="title is-5">Record</h1>
-            <VariantTable variant={props.record.data} />
-          </div>
+    <div class="columns">
+      <div class="column is-4">
+        <div>
+          <h1 class="title is-5">
+            Info
+            <A href="#" onClick={toggleShowEmptyInfo} class="small-blue-link">
+              {showEmptyInfo() ? "(Hide empty fields)" : "(Show empty fields)"}
+            </A>
+          </h1>
+          <VariantInfoTable
+            variantType={props.variantType}
+            metadata={props.metadata}
+            record={props.record}
+            isShowEmpty={showEmptyInfo()}
+          />
         </div>
-        <div class="column is-8">
-          <Show when={config().variant.samplesCells}>
-            {(samplesCells) => (
-              <div class="column">
-                <h1 class="title is-5">Samples</h1>
-                <VariantGenotypeTable
-                  config={samplesCells()}
-                  samples={samples()}
-                  metadata={props.metadata}
-                  variantType={props.variantType}
-                  record={props.record}
-                />
-              </div>
-            )}
-          </Show>
-          <div class="columns mt-3">
-            {props.decisionTree !== null && hasDecisionTreePathMeta() && (
-              <div class="column is-6">
-                <h1 class="title is-5">Variant classification tree path</h1>
-                <DecisionTreePath
-                  decisionTree={props.decisionTree}
-                  path={getDecisionTreePath(props.metadata.records, props.record, props.consequenceId)}
-                />
-              </div>
-            )}
-            {showSampleTree() && props.sampleTree !== null && hasSampleTreePathMeta() && props.sample && (
-              <div class="column is-6">
-                <h1 class="title is-5">Sample classification tree path</h1>
-                <DecisionTreePath
-                  decisionTree={props.sampleTree}
-                  path={getSampleTreePath(props.metadata.records, props.sample, props.record, props.consequenceId)}
-                />
-              </div>
-            )}
-          </div>
+        <div class="mt-3">
+          <h1 class="title is-5">
+            Consequence
+            <A href="#" onClick={toggleShowEmptyCsq} class="small-blue-link">
+              {showEmptyCsq() ? "(Hide empty fields)" : "(Show empty fields)"}
+            </A>
+          </h1>
+          <VariantConsequenceTable
+            variantType={props.variantType}
+            metadata={props.metadata}
+            record={props.record}
+            consequenceId={props.consequenceId}
+            isShowEmpty={showEmptyCsq()}
+          />
+        </div>
+        <div class="mt-3">
+          <h1 class="title is-5">Record</h1>
+          <VariantTable variant={props.record.data} />
         </div>
       </div>
-    </>
+      <div class="column is-8">
+        <Show when={config().variant.samplesCells}>
+          {(samplesCells) => (
+            <div class="column">
+              <h1 class="title is-5">Samples</h1>
+              <VariantGenotypeTable
+                config={samplesCells()}
+                samples={samples()}
+                metadata={props.metadata}
+                variantType={props.variantType}
+                record={props.record}
+              />
+            </div>
+          )}
+        </Show>
+        <div class="columns mt-3">
+          {props.decisionTree !== null && hasDecisionTreePathMeta() && (
+            <div class="column is-6">
+              <h1 class="title is-5">Variant classification tree path</h1>
+              <DecisionTreePath
+                decisionTree={props.decisionTree}
+                path={getDecisionTreePath(props.metadata.records, props.record, props.consequenceId)}
+              />
+            </div>
+          )}
+          {showSampleTree() && props.sampleTree !== null && hasSampleTreePathMeta() && props.sample && (
+            <div class="column is-6">
+              <h1 class="title is-5">Sample classification tree path</h1>
+              <DecisionTreePath
+                decisionTree={props.sampleTree}
+                path={getSampleTreePath(props.metadata.records, props.sample, props.record, props.consequenceId)}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
