@@ -94,3 +94,11 @@ table.is-borderless td,
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.small-blue-link {
+  display: inline;
+  font-size: 0.8rem;
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: normal;
+}
