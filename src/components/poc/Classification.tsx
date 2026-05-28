@@ -1,5 +1,8 @@
 import { Component, createEffect, createResource, createSignal, For, onCleanup } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
+//import { createApi } from "../../api/factory";
+
+//const api = createApi();
 
 export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
   const OPTIONS = ["-", "B", "LB", "VUS", "LP", "P"] as const;
@@ -44,33 +47,9 @@ export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
 
     timeout = setTimeout(async () => {
       try {
-        const res = await fetch("/RD3/graphql", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            query: `
-              mutation {
-                save(VIPInfo: { 
-                  id: "${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}:${props.rd3.report}", 
-                  variant: "${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}", 
-                  reportId: "${props.rd3.report}",
-                  vipId: "${props.rd3.id}",
-                  sampleId: "${props.rd3.s}",
-                  classification: "${newValue}" 
-                }) { 
-                  message 
-                }
-              }
-            `,
-          }),
-        });
-
-        if (!res.ok) {
-          console.error("GraphQL error:", await res.text());
-          return;
-        }
-
-        await res.json();
+        const result = "TODO"; //(await api).doSomething();
+        console.log(result);
+        console.log(newValue);
       } catch (error) {
         console.error("Fetch error:", error);
       }
@@ -92,4 +71,4 @@ export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
       <For each={OPTIONS}>{(opt) => <option value={opt}>{opt}</option>}</For>
     </select>
   );
-};;
+};

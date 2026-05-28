@@ -45,13 +45,15 @@
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "@molgenis/vip-report-api": "file:C:\\Users\\bartc\\WebstormProjects\\vip-report-api",
+    "@molgenis/vip-report-rd3": "file:C:\\Users\\bartc\\WebstormProjects\\vip-report-rd3",
     "@molgenis/vip-report-vcf": "^4.0.7",
     "@solidjs/router": "^0.16.1",
     "ajv": "^8.18.0",
     "base64-js": "^1.5.1",
     "igv": "^3.8.0",
     "solid-js": "^1.9.12",
-    "sql.js": "^1.13.0"
+    "sql.js": "^1.13.0",
+    "xlsx": "^0.18.5"
   },
   "lint-staged": {
     "src/**/*.{tsx,ts}": [

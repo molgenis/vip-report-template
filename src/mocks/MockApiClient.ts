@@ -54,8 +54,8 @@ export class MockApiClient implements Api {
     this.dataSetId = MockApiClient.dataSetIds[0]!;
   }
   async getReportId() {
-    const apiClient = await this.getApiClient();
-    return apiClient.getReportId();
+    //const apiClient = await this.getApiClient();
+    return "MockId"; //FIXME apiClient.getReportId();
   }
 
   async getInfoOrder() {
