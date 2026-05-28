@@ -1,8 +1,20 @@
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
-import inlinePlugin from "@molgenis/vite-plugin-inline";;
+import inlinePlugin from "@molgenis/vite-plugin-inline";
+import { loadEnv } from "vite";
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command }) => {
+  const env = loadEnv(command, process.cwd(), "");
+  console.log(env.EXTERNAL_API);
+
+  return {
+  define: {
+    __EXTERNAL_API__: JSON.stringify(
+      env.EXTERNAL_API !== undefined
+        ? "RD3"
+      : "DEFAULT"
+    ),
+  },
   server: {
     proxy: {
       "/RD3/graphql": {
@@ -16,6 +28,7 @@ export default defineConfig(({ command }) => ({
     },
   },
   plugins: [solidPlugin(), inlinePlugin()],
+
   esbuild: {
     // @molgenis/vite-plugin-inline requires ascii input and cannot handle UTF-8 input
     charset: "ascii",
@@ -51,4 +64,4 @@ export default defineConfig(({ command }) => ({
       },
     },
   },
-}));
+}});

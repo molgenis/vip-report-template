@@ -43,6 +43,8 @@ export type SampleContainer = {
   otherPedigreeSamples: Item<Sample>[];
   variantTypeIds: Set<VariantTypeId>;
 };
+declare const __EXTERNAL_API__: string | undefined;
+console.log(__EXTERNAL_API__);
 
 // lazy import MockApiClient to ensure that it is excluded from the build artifact
 const api = import.meta.env.PROD
