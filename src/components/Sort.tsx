@@ -20,7 +20,12 @@ export const Sort: Component<{
   const onSortChange = (event: Event) => {
     const index = Number((event.target as HTMLInputElement).value);
     if (index === -1) {
-      props.onClear();
+      props.onChange({
+        order: [
+          { compare: "asc", property: "c" },
+          { compare: "asc", property: "p" },
+        ],
+      });
     } else {
       const sortOption = sortableOptions()[index]!;
       props.onChange({
