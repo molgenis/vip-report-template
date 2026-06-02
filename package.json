@@ -44,7 +44,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
-    "@molgenis/vip-report-api": "7.0.7",
+    "@molgenis/vip-report-api": "7.0.8",
     "@molgenis/vip-report-vcf": "^4.0.8",
     "@solidjs/router": "^0.16.1",
     "ajv": "^8.18.0",
