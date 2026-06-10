@@ -1,7 +1,8 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldLocus } from "./FieldLocus";
-import { Classification } from "../../poc/Classification";
+import { NotesInputButton } from "../../poc/NotesInput.tsx";
 import { Comment } from "../../poc/Comment";
+import { CommentEditor } from "../../poc/CommentEditor";
 import { FieldVipC } from "./FieldVipC";
 import { FieldGenotype } from "./FieldGenotype";
 import { FieldGene } from "./FieldGene";
@@ -76,11 +77,8 @@ export const FieldComposed: Component<{
       <Match when={id() === "vkgl"}>
         <FieldVkgl value={props.value as CellValueVkgl} />
       </Match>
-      <Match when={id() === "classification"}>
-        <Classification rd3={props.value as CellValueRD3} />
-      </Match>
-      <Match when={id() === "comment"}>
-        <Comment rd3={props.value as CellValueRD3} />
+      <Match when={id() === "notesInput"}>
+        <NotesInputButton variantKey={props.value as CellValueRD3} />
       </Match>
     </Switch>
   );

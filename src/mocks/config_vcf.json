@@ -210,15 +210,11 @@
       "all": [
         {
           "type": "composed",
+          "name": "notesInput"
+        },
+        {
+          "type": "composed",
           "name": "locus"
-        },
-        {
-          "type": "composed",
-          "name": "classification"
-        },
-        {
-          "type": "composed",
-          "name": "comment"
         },
         {
           "type": "fixed",

@@ -6,7 +6,9 @@ import { PageChangeCallback, Pager } from "./Pager";
 import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
-import { ButtonDownload } from "./form/ButtonDownload";
+import { Download } from "./form/Download.tsx";
+import { Upload } from "./form/Upload.tsx";
+import { Settings } from "./form/Settings.tsx";
 import { ConfigCells, ConfigRecordsPerPage } from "../types/config";
 import { ConfigCellGroup, ConfigCellInfo } from "../types/configCells";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/query/sort.ts";
@@ -15,6 +17,7 @@ import { MetadataContainer } from "../utils/api.ts";
 import { ConfigSort } from "../types/configSort";
 
 export type RecordsDownloadCallback = () => void;
+export type NotesDownloadCallback = () => void;
 
 export const VariantResults: Component<{
   metadata: MetadataContainer;
@@ -22,8 +25,10 @@ export const VariantResults: Component<{
   records: PagedItems<VcfRecord>;
   sortOptions: ConfigSort[] | undefined;
   recordsPerPage: ConfigRecordsPerPage;
+  reportId: string;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
+  onNotesDownload: NotesDownloadCallback;
   onPageChange: PageChangeCallback;
   onSortChange: SortChangeCallback;
   onSortClear: SortClearCallback;
@@ -71,12 +76,14 @@ export const VariantResults: Component<{
             {sortOptions().length > 0 && (
               <Sort options={sortOptions()} onChange={props.onSortChange} onClear={props.onSortClear} />
             )}
-            <div class="control">
-              <ButtonDownload
-                title="Download vcf file with records matching filters and search queries"
-                onClick={props.onRecordsDownload}
+              <Download
+                onClickVcf={props.onRecordsDownload}
+                onClickNotes={props.onNotesDownload}
               />
-            </div>
+              <Upload />
+              <Settings
+                reportId={props.reportId}
+              />
           </div>
         </div>
       </div>

@@ -21,6 +21,7 @@ import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigJson } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
 import { VariantStore } from "../store/variants.ts";
+import { createNotesApi } from "../api/DefaultNotesApi";
 
 export const VariantsContainer: Component<{
   store: VariantStore;
@@ -31,12 +32,12 @@ export const VariantsContainer: Component<{
   reportId: string;
 }> = (props) => {
   const navigate = useNavigate();
+  const notesApi = createNotesApi();
 
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
   const query = () =>
     createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());
-
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
   const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
@@ -82,7 +83,17 @@ export const VariantsContainer: Component<{
     props.store.setPageNumber(event.page);
   };
 
+  const onNotesDownload = async () => {
+    console.log("ON NOTES DOWNLOAD");
+    try {
+      await notesApi.download(props.reportId);
+    } catch (error) {
+      console.error("Download error:", error);
+    }
+  };
+
   const onRecordsDownload = async () => {
+    console.log("ON RECORDS DOWNLOAD");
     const samples = props.sample ? getPedigreeSamples(props.sample) : [];
     const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
     const sampleIds = samples ? samples.map((sample) => sample.id) : ([] as number[]);
@@ -171,6 +182,7 @@ export const VariantsContainer: Component<{
                 metadata={props.metadata}
                 fieldConfigs={config().variants.cells}
                 records={records()}
+                reportId={props.reportId}
                 sortOptions={config().variants.sorts}
                 recordsPerPage={config().variants.recordsPerPage.map((option) => ({
                   ...option,
@@ -179,6 +191,7 @@ export const VariantsContainer: Component<{
                 onPageChange={onPageChange}
                 onRecordsPerPageChange={onRecordsPerPageChange}
                 onRecordsDownload={onRecordsDownload}
+                onNotesDownload={onNotesDownload}
                 onSortChange={onSortChange}
                 onSortClear={onSortClear}
               />
