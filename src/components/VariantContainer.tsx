@@ -15,7 +15,7 @@ import { initConfig } from "../utils/config/config.ts";
 import { Classification } from "./poc/Classification.tsx";
 import { CellValueRD3 } from "../types/configCellComposed";
 import { CommentEditor } from "./poc/CommentEditor.tsx";
-import { ClassificationViewer } from "./poc/ClassificationViewer.tsx";
+import { ClassificationList } from "./poc/ClassificationList.tsx";
 import { CommentViewer } from "./poc/CommentViewer.tsx";
 
 export const VariantContainer: Component<{
@@ -65,7 +65,7 @@ export const VariantContainer: Component<{
                   <b>Other runs: </b>
                 </span>
                 <br />
-                <ClassificationViewer rd3={createConfigFieldCustomRD3()} />
+                <ClassificationList rd3={createConfigFieldCustomRD3()} />
                 <br />
               </div>
               <div class="column">

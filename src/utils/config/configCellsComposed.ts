@@ -83,21 +83,9 @@ export function initConfigCellComposed(
     case "locus":
       fieldConfig = createConfigFieldCustomLocus(configStatic, sample, variantType);
       break;
-    case "classification":
-      fieldConfig = createConfigFieldClassification(configStatic, sample, reportId);
-      break;
-    case "comment":
-      fieldConfig = createConfigFieldComment(configStatic, sample, reportId);
-      break;
-    case "classificationViewer":
-      fieldConfig = createConfigFieldClassificationViewer(configStatic, sample, reportId);
-      break;
-    case "commentViewer":
-      fieldConfig = createConfigFieldCommentViewer(configStatic, sample, reportId);
-      break;
-    case "commentEditor":
-      fieldConfig = createConfigFieldCommentEditor(configStatic, sample, reportId);
-      break;
+    case "notesInput":
+      fieldConfig = createConfigFieldNotesInput(configStatic, sample, reportId);
+    break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
       break;
@@ -462,102 +450,14 @@ function createConfigFieldCustomLocus(
   };
 }
 
-function createConfigFieldClassification(
+function createConfigFieldNotesInput(
   config: ConfigJsonFieldComposed,
   sample: SampleContainer | null,
   reportId: string,
 ): ConfigCellCustom<CellValueRD3> {
   return {
     type: "composed",
-    id: "classification",
-    label: () => getLabel(config, "Classification"),
-    description: () => getDescription(config),
-    valueCount: () => 1,
-    value: (record: Item<VcfRecord>): CellValueRD3 => ({
-      c: record.data.c,
-      p: record.data.p,
-      a: record.data.a.toString(),
-      id: record.id,
-      s: sample?.item.data.person.individualId,
-      report: reportId,
-    }),
-  };
-}
-
-function createConfigFieldComment(
-  config: ConfigJsonFieldComposed,
-  sample: SampleContainer | null,
-  reportId: string,
-): ConfigCellCustom<CellValueRD3> {
-  return {
-    type: "composed",
-    id: "comment",
-    label: () => getLabel(config, "Comments"),
-    description: () => getDescription(config),
-    valueCount: () => 1,
-    value: (record: Item<VcfRecord>): CellValueRD3 => ({
-      c: record.data.c,
-      p: record.data.p,
-      a: record.data.a.toString(),
-      id: record.id,
-      s: sample?.item.data.person.individualId,
-      report: reportId,
-    }),
-  };
-}
-
-function createConfigFieldClassificationViewer(
-  config: ConfigJsonFieldComposed,
-  sample: SampleContainer | null,
-  reportId: string,
-): ConfigCellCustom<CellValueRD3> {
-  return {
-    type: "composed",
-    id: "classificationViewer",
-    label: () => getLabel(config, "Classification"),
-    description: () => getDescription(config),
-    valueCount: () => 1,
-    value: (record: Item<VcfRecord>): CellValueRD3 => ({
-      c: record.data.c,
-      p: record.data.p,
-      a: record.data.a.toString(),
-      id: record.id,
-      s: sample?.item.data.person.individualId,
-      report: reportId,
-    }),
-  };
-}
-
-function createConfigFieldCommentViewer(
-  config: ConfigJsonFieldComposed,
-  sample: SampleContainer | null,
-  reportId: string,
-): ConfigCellCustom<CellValueRD3> {
-  return {
-    type: "composed",
-    id: "commentViewer",
-    label: () => getLabel(config, "Comments"),
-    description: () => getDescription(config),
-    valueCount: () => 1,
-    value: (record: Item<VcfRecord>): CellValueRD3 => ({
-      c: record.data.c,
-      p: record.data.p,
-      a: record.data.a.toString(),
-      id: record.id,
-      s: sample?.item.data.person.individualId,
-      report: reportId,
-    }),
-  };
-}
-
-function createConfigFieldCommentEditor(
-  config: ConfigJsonFieldComposed,
-  sample: SampleContainer | null,
-  reportId: string,
-): ConfigCellCustom<CellValueRD3> {
-  return {
-    type: "composed",
-    id: "commentEditor",
+    id: "notesInput",
     label: () => getLabel(config, "variant comments"),
     description: () => getDescription(config),
     valueCount: () => 1,

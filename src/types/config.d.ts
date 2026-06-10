@@ -48,11 +48,7 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "vipC"
     | "vipCS"
     | "vkgl"
-    | "classification"
-    | "comment"
-    | "classificationViewer"
-    | "commentViewer"
-    | "commentEditor";
+    | "notesInput";
 }
 
 export interface ConfigJsonSort {

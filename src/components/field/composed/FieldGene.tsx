@@ -18,26 +18,6 @@ export const FieldGene: Component<{
     return `https://www.genenames.org/tools/search/#!/?${queryString}`;
   };
 
-  const [value] = createResource(async () => {
-    const res = await fetch("/RD3/graphql", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        query: `
-          {
-            VIPGeneNotes(filter: { gene: { equals: "${props.value.geneIdentifier}" } }){
-              mg_updatedBy,note
-            }
-          }
-        `,
-      }),
-    });
-    const data = await res.json();
-    const notes =
-      data?.data?.VIPGeneNotes?.map((item: any) => item.mg_updatedBy + ": " + item.note).filter(Boolean) || [];
-    return notes.length ? notes.join("\n") : "-";
-  });
-
   return (
     <Show when={props.value.symbol} keyed>
       {(symbol) => (
@@ -52,11 +32,6 @@ export const FieldGene: Component<{
               </Show>
             </span>
           )}
-          <Show when={value() !== "-"} fallback={""}>
-            <abbr title={value()} class="ml-1 is-clickable">
-              <i class="fas fa-comment has-text-info" />
-            </abbr>
-          </Show>
         </>
       )}
     </Show>

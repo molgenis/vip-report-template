@@ -12,7 +12,9 @@ export type VariantKey = {
   Position: number;
   Reference: string;
   Alternative: string;
-  Identifier: string;
+  RU_NR: number | undefined;
+  RU: string | undefined;
+  END: number | undefined;
 };
 export type ReportId = string;
 export type Classification = {

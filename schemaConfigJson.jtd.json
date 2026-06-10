@@ -166,11 +166,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -382,11 +378,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -598,11 +590,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -814,11 +802,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -1510,11 +1494,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -1745,11 +1725,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -1980,11 +1956,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -2215,11 +2187,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -2504,11 +2472,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -2720,11 +2684,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -2936,11 +2896,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -3152,11 +3108,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -3848,11 +3800,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -4083,11 +4031,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -4318,11 +4262,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -4553,11 +4493,7 @@
                                     "vipC",
                                     "vipCS",
                                     "vkgl",
-                                    "classification",
-                                    "comment",
-                                    "commentEditor",
-                                    "classificationViewer",
-                                    "commentViewer"
+                                    "notesInput"
                                   ]
                                 }
                               },
@@ -4842,11 +4778,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -5058,11 +4990,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -5274,11 +5202,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -5490,11 +5414,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -5712,11 +5632,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -5928,11 +5844,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -6144,11 +6056,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -6360,11 +6268,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -6584,11 +6488,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -6800,11 +6700,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -7016,11 +6912,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -7232,11 +7124,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -7454,11 +7342,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -7670,11 +7554,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -7886,11 +7766,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -8102,11 +7978,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -8326,11 +8198,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -8542,11 +8410,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -8758,11 +8622,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -8974,11 +8834,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -9198,11 +9054,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -9414,11 +9266,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -9630,11 +9478,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },
@@ -9846,11 +9690,7 @@
                           "vipC",
                           "vipCS",
                           "vkgl",
-                          "classification",
-                          "comment",
-                          "commentEditor",
-                          "classificationViewer",
-                          "commentViewer"
+                          "notesInput"
                         ]
                       }
                     },

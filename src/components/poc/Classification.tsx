@@ -1,40 +1,37 @@
 import { Component, createEffect, createResource, createSignal, For, onCleanup } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
-//import { createApi } from "../../api/factory";
+import { createNotesApi } from "../../api/DefaultNotesApi";
+import type { VariantKey, FeatureIdentifier, ReportId, Status } from "../../types/NotesApi";
 
-//const api = createApi();
+const notesApi = createNotesApi();
 
 export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
   const OPTIONS = ["-", "B", "LB", "VUS", "LP", "P"] as const;
   type Option = (typeof OPTIONS)[number];
 
-  // Fetch initial value from GraphQL (typed as string)
-  const [initialValue] = createResource<string>(async () => {
-    const id = `${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}:${props.rd3.report}`;
-    const res = await fetch("/RD3/graphql", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        query: `
-        {
-          VIPInfo(filter: { id: { equals: "${id}" } }){
-            classification
-          }
-        }
-      `,
-      }),
-    });
+  const variantKey: VariantKey = {
+    Chromosome: props.rd3.c,
+    Position: props.rd3.p,
+    Reference: "", // FIXME: important because of deletions
+    Alternative: props.rd3.a,
+    Identifier: props.rd3.id + "", // FIXME string
+  };
 
-    if (!res.ok) throw new Error(await res.text());
+  const reportId: ReportId = props.rd3.report;
+  const feature: FeatureIdentifier = "clinical_significance";
+  const status: Status = "approved";
 
-    const data = await res.json();
-    return data?.data?.VIPInfo?.[0]?.classification || "-";
+  // Fetch initial classification from NotesApi
+  const [classification] = createResource(async () => {
+    const c = await notesApi.retrieveClassification(variantKey, feature, reportId);
+    return c?.value ?? "-";
   });
 
   const [value, setValue] = createSignal<string>("-");
 
+  // Initialize value from fetched classification
   createEffect(() => {
-    const val = initialValue();
+    const val = classification();
     if (val && OPTIONS.includes(val as Option)) {
       setValue(val);
     }
@@ -47,11 +44,17 @@ export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
 
     timeout = setTimeout(async () => {
       try {
-        const result = "TODO"; //(await api).doSomething();
-        console.log(result);
-        console.log(newValue);
+        await notesApi.storeClassification(
+          {
+            value: newValue,
+            variantKey: variantKey,
+            feature: feature,
+            reportId: reportId,
+            status: status
+          },
+        );
       } catch (error) {
-        console.error("Fetch error:", error);
+        console.error("Classification save error:", error);
       }
     }, 500);
   };
@@ -67,7 +70,11 @@ export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
   });
 
   return (
-    <select value={value()} onChange={(e) => setValue(e.currentTarget.value as Option)} disabled={initialValue.loading}>
+    <select
+      value={value()}
+      onChange={(e) => setValue(e.currentTarget.value as Option)}
+      disabled={classification.loading}
+    >
       <For each={OPTIONS}>{(opt) => <option value={opt}>{opt}</option>}</For>
     </select>
   );

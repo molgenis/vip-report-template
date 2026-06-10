@@ -6,6 +6,7 @@ import { ConfigCells } from "../types/config";
 import { Abbr } from "./Abbr";
 import { Field } from "./field/Field";
 import { Table } from "./Table.tsx";
+import { ModalButton } from "./Modal.tsx";
 
 export const RecordsTable: Component<{
   fieldConfigs: ConfigCells;

@@ -1,34 +1,56 @@
-import { Component, createResource, Show } from "solid-js";
+import { Component, createResource, Show, createEffect } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
-import { Abbr } from "../Abbr.tsx";
+import { createNotesApi } from "../../api/DefaultNotesApi";
+import type { VariantKey, ReportId } from "../../types/NotesApi";
 
-export const Comment: Component<{ rd3: CellValueRD3 }> = (props) => {
-  // Fetch initial value from GraphQL
-  const [value] = createResource(async () => {
-    const id = `${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}`;
-    const res = await fetch("/RD3/graphql", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        query: `
-          {
-          VIPNotes(filter: { variant: { equals: "${id}" }, reportId: {equals: "${props.rd3.report}"} }){
-              mg_updatedBy,note
-            }
-          }
-        `,
-      }),
-    });
-    const data = await res.json();
-    const notes = data?.data?.VIPNotes?.map((item: any) => item.mg_updatedBy + ": " + item.note).filter(Boolean) || [];
-    return notes.length ? notes.join("\n") : "-";
+const notesApi = createNotesApi();
+
+export const Comment: Component<{ rd3: CellValueRD3; refresh?: number }> = (props) => {
+  const variantKey = () => ({
+    Chromosome: props.rd3.c,
+    Position: props.rd3.p,
+    Reference: "", // FIXME: important because of deletions
+    Alternative: props.rd3.a,
+    Identifier: props.rd3.id + "", // FIXME string
+  }) as VariantKey;
+
+  const reportId = () => props.rd3.report as ReportId;
+
+  // Fetch all notes for the variant from browser storage via notesApi
+  const [notes, { refetch }] = createResource(async () => {
+    console.log("retrieve comment");
+    return await notesApi.retrieveNotesForVariant(variantKey(), reportId());
   });
 
+  // Refetch when refresh prop changes
+  createEffect(() => {
+    if (props.refresh) {
+      refetch();
+    }
+  });
+
+  // Format notes into display text
+  const value = () => {
+    const notesList = notes();
+    if (!notesList || notesList.length === 0) return "-";
+    return notesList
+      .map((note) => note.id + ": " + note.content)
+      .join("\n");
+  };
+
+  // Check if there are any notes
+  const hasNotes = () => {
+    const notesList = notes();
+    return notesList && notesList.length > 0;
+  };
+
   return (
-    <Show when={value() !== "-"} fallback={""}>
+    <>
       <abbr title={value()} class="ml-1 is-clickable">
-        <i class="fas fa-comment has-text-info" />
+        <Show when={hasNotes()} fallback={<i class="fas fa-comment has-text-grey" />}>
+          <i class="fas fa-comment has-text-info" />
+        </Show>
       </abbr>
-    </Show>
+    </>
   );
 };
