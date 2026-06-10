@@ -115,7 +115,7 @@ describe("query composed filters", () => {
         args: [
           {
             args: [
-              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_ALT", "HOM_REF"] },
+              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_VAR", "HOM_REF"] },
               { selector: "viab", operator: "==", args: "inside" },
             ],
             operator: "and",
@@ -146,7 +146,7 @@ describe("query composed filters", () => {
         args: [
           {
             args: [
-              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_ALT", "HOM_REF"] },
+              { selector: ["s", 1, "GT_type"], operator: "in", args: ["HOM_VAR", "HOM_REF"] },
               { selector: "viab", operator: "==", args: "outside" },
             ],
             operator: "and",
