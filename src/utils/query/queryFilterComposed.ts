@@ -94,7 +94,7 @@ function createQueryFilterAllelicImbalance(
           {
             operator: "in",
             selector: gtTypeSelector,
-            args: ["HOM_ALT", "HOM_REF"],
+            args: ["HOM_VAR", "HOM_REF"],
           },
           createQueryFilterClosedInterval(viabSelector, { left: 0.02, right: 0.98 }),
         ],
@@ -124,7 +124,7 @@ function createQueryFilterAllelicImbalance(
           {
             operator: "in",
             selector: gtTypeSelector,
-            args: ["HOM_ALT", "HOM_REF"],
+            args: ["HOM_VAR", "HOM_REF"],
           },
           createQueryFilterClosedIntervalOutside(viabSelector, { left: 0.02, right: 0.98 }),
         ],
