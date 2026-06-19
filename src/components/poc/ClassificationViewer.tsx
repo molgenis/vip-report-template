@@ -1,25 +1,25 @@
 import { Component, createEffect, createResource } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
-import { createNotesApi } from "../../api/DefaultNotesApi";
-import type { VariantKey, FeatureIdentifier, ReportId, Status } from "../../types/NotesApi";
+import type { VariantKey } from "../../types/NotesApi";
+import { retrieveClassification } from "../../api/NotesApi.utils";
 
-const notesApi = createNotesApi();
-
-export const ClassificationViewer: Component<{ rd3: CellValueRD3; refresh?: number }> = (props) => {
+export const ClassificationViewer: Component<{ rd3: CellValueRD3; altIndex: number; refresh?: number }> = (props) => {
   const variantKey: VariantKey = {
-    Chromosome: props.rd3.c,
-    Position: props.rd3.p,
+    Chromosome: props.rd3.r.c,
+    Position: props.rd3.r.p,
     Reference: "", // FIXME: important because of deletions
-    Alternative: props.rd3.a,
-    Identifier: props.rd3.id + "", // FIXME string
+    Alternative: props.rd3.r.a[0],//FIXME: what to do with multiple alts
+    RU_NR: undefined, //FIXME
+    RU: undefined, //FIXME
+    END: undefined, //FIXME
   };
 
-  const reportId: ReportId = props.rd3.report;
-  const feature: FeatureIdentifier = "clinical_significance";
+  const reportId: string = props.rd3.report;
+  const feature: string = "clinical_significance";
 
   // Fetch initial classification from NotesApi
   const [classification, { refetch }] = createResource(async () => {
-    const c = await notesApi.retrieveClassification(variantKey, feature, reportId);
+    const c = retrieveClassification(variantKey, feature, reportId);
     return c?.value ?? "-";
   });
 

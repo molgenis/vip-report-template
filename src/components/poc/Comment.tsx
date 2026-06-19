@@ -1,25 +1,26 @@
 import { Component, createResource, Show, createEffect } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
-import { createNotesApi } from "../../api/DefaultNotesApi";
-import type { VariantKey, ReportId } from "../../types/NotesApi";
+import type { VariantKey } from "../../types/NotesApi";
+import { retrieveNotesForVariant } from "../../api/NotesApi.utils";
+import { formatDate } from "../../utils/config/dateUtils";
 
-const notesApi = createNotesApi();
 
-export const Comment: Component<{ rd3: CellValueRD3; refresh?: number }> = (props) => {
+export const Comment: Component<{ rd3: CellValueRD3; refresh?: number; altIndex: number }> = (props) => {
   const variantKey = () => ({
-    Chromosome: props.rd3.c,
-    Position: props.rd3.p,
+    Chromosome: props.rd3.r.c,
+    Position: props.rd3.r.p,
     Reference: "", // FIXME: important because of deletions
-    Alternative: props.rd3.a,
-    Identifier: props.rd3.id + "", // FIXME string
+    Alternative: props.rd3.r.a[0],//FIXME: what to do with multiple alts
+    RU_NR: undefined, //FIXME
+    RU: undefined, //FIXME
+    END: undefined, //FIXME
   }) as VariantKey;
 
-  const reportId = () => props.rd3.report as ReportId;
+  const reportId = () => props.rd3.report;
 
   // Fetch all notes for the variant from browser storage via notesApi
   const [notes, { refetch }] = createResource(async () => {
-    console.log("retrieve comment");
-    return await notesApi.retrieveNotesForVariant(variantKey(), reportId());
+    return await retrieveNotesForVariant(variantKey(), reportId());
   });
 
   // Refetch when refresh prop changes
@@ -34,7 +35,7 @@ export const Comment: Component<{ rd3: CellValueRD3; refresh?: number }> = (prop
     const notesList = notes();
     if (!notesList || notesList.length === 0) return "-";
     return notesList
-      .map((note) => note.id + ": " + note.content)
+      .map((note) => note.createdBy + "("+ formatDate(note.updatedAt) + ") : " + note.content)
       .join("\n");
   };
 

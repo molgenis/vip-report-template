@@ -22,6 +22,7 @@ import { ConfigJson } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
 import { VariantStore } from "../store/variants.ts";
 import { createNotesApi } from "../api/DefaultNotesApi";
+import { createFileApi } from "../api/FileApi.tsx";
 
 export const VariantsContainer: Component<{
   store: VariantStore;
@@ -33,6 +34,7 @@ export const VariantsContainer: Component<{
 }> = (props) => {
   const navigate = useNavigate();
   const notesApi = createNotesApi();
+  const fileApi = createFileApi(notesApi);
 
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
@@ -86,7 +88,7 @@ export const VariantsContainer: Component<{
   const onNotesDownload = async () => {
     console.log("ON NOTES DOWNLOAD");
     try {
-      await notesApi.download(props.reportId);
+      await fileApi.download(props.reportId);
     } catch (error) {
       console.error("Download error:", error);
     }

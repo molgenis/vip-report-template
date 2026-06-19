@@ -36,7 +36,6 @@ export const Download: Component<{
                 class="button is-block is-fullwidth is-info"
                 style="margin-top: 0.5rem"
                 onClick={() => {
-                  console.log("Clicked!");
                   props.onClickNotes();
                   setOpen(false);
                 }}

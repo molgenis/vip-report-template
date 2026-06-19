@@ -462,10 +462,7 @@ function createConfigFieldNotesInput(
     description: () => getDescription(config),
     valueCount: () => 1,
     value: (record: Item<VcfRecord>): CellValueRD3 => ({
-      c: record.data.c,
-      p: record.data.p,
-      a: record.data.a.toString(),
-      id: record.id,
+      r: record.data,
       s: sample?.item.data.person.individualId,
       report: reportId,
     }),
