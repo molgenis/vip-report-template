@@ -9,7 +9,7 @@ type VIPInfoRow = {
 
 export const ClassificationList: Component<{ rd3: CellValueRD3 }> = (props) => {
   const [rows] = createResource<VIPInfoRow[]>(async () => {
-    const id = `${props.rd3.c}:${props.rd3.p}:${props.rd3.a}:${props.rd3.s}`;
+    const id = `${props.rd3.r.c}:${props.rd3.r.p}:${props.rd3.r.a}:${props.rd3.s}`;
 
     const res = await fetch("/RD3/graphql", {
       method: "POST",

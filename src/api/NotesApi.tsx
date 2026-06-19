@@ -1,37 +1,24 @@
 import type {
   Note,
-  VariantKey,
-  ReportId,
   Classification,
-  FeatureIdentifier,
+  ClassificationOption,
+  VariantKey,
 } from "../types/NotesApi";
 
 export interface NotesApi {
-  storeNote(note: string, variantKey: VariantKey, reportId: ReportId): Promise<Note>;
-
-  retrieveNote(variantKey: VariantKey, reportId: ReportId): Promise<Note | null>;
-
-  retrieveNotesForVariant(variantKey: VariantKey, reportId: ReportId): Promise<Note[]>;
-
-  retrieveNotes(reportId?: ReportId): Promise<Note[]>;
+  storeNote(note: Note): Promise<void>;
 
   storeClassification(
-    classification: Omit<Classification, "id" | "createdAt" | "updatedAt">,
-  ): Promise<Classification>;
+    classification: Classification,
+  ): Promise<void>;
 
-  retrieveClassification(
-    variantKey: VariantKey,
-    feature: FeatureIdentifier,
-    reportId: ReportId,
-  ): Promise<Classification | null>;
+  retrieveNotes(reportId: string, sampleId: string): Promise<Note[]>;
 
-  retrieveClassifications(reportId: ReportId): Promise<Classification[]>;
+  retrieveClassifications(reportId: string, sampleId: string): Promise<Classification[]>;
 
-  removeNote(noteId: string): Promise<void>;
+  removeNote(variantKey: VariantKey, sampleId: string, reportId: string): Promise<void>;
 
-  removeClassification(classificationId: string): Promise<void>;
+  removeClassification(variantKey: VariantKey, sampleId: string, reportId: string): Promise<void>;
 
-  load(excelFile: File): Promise<string>;
-
-  download(reportId: ReportId): Promise<void>;
+  getClassificationOptions(): Promise<ClassificationOption[]>;
 }

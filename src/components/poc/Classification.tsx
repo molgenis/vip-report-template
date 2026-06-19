@@ -1,39 +1,70 @@
-import { Component, createEffect, createResource, createSignal, For, onCleanup } from "solid-js";
+import {
+  Component,
+  createEffect,
+  createResource,
+  createSignal,
+  For,
+  JSX,
+  onCleanup,
+} from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
 import { createNotesApi } from "../../api/DefaultNotesApi";
-import type { VariantKey, FeatureIdentifier, ReportId, Status } from "../../types/NotesApi";
+import type {
+  VariantKey,
+  Status,
+  ClassificationOption,
+} from "../../types/NotesApi";
+import {
+  retrieveClassification,
+} from "../../api/NotesApi.utils";
 
 const notesApi = createNotesApi();
 
-export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
-  const OPTIONS = ["-", "B", "LB", "VUS", "LP", "P"] as const;
-  type Option = (typeof OPTIONS)[number];
+const DEFAULT_OPTION: ClassificationOption = {
+  value: "-",
+  description: "-",
+};
 
-  const variantKey: VariantKey = {
-    Chromosome: props.rd3.c,
-    Position: props.rd3.p,
-    Reference: "", // FIXME: important because of deletions
-    Alternative: props.rd3.a,
-    Identifier: props.rd3.id + "", // FIXME string
-  };
-
-  const reportId: ReportId = props.rd3.report;
-  const feature: FeatureIdentifier = "clinical_significance";
-  const status: Status = "approved";
-
-  // Fetch initial classification from NotesApi
-  const [classification] = createResource(async () => {
-    const c = await notesApi.retrieveClassification(variantKey, feature, reportId);
-    return c?.value ?? "-";
+export const Classification: Component<{ rd3: CellValueRD3, altIndex: number }> = (props) => {
+  const [OPTIONS] = createResource(async () => {
+    return notesApi.getClassificationOptions();
   });
 
-  const [value, setValue] = createSignal<string>("-");
+  const variantKey: VariantKey = {
+    Chromosome: props.rd3.r.c,
+    Position: props.rd3.r.p,
+    Reference: props.rd3.r.r,
+    Alternative: props.rd3.r.a[0], // FIXME: what to do with multiple alts
+    RU_NR: undefined, // FIXME
+    RU: undefined, // FIXME
+    END: undefined, // FIXME
+  };
 
-  // Initialize value from fetched classification
+  const reportId: string = props.rd3.report;
+  const sampleId: string = props.rd3.s;
+  const feature = "clinical_significance"; // FIXME
+  const status: Status = "approved"; // FIXME placeholder
+  const [classification] = createResource(async () => {
+    return retrieveClassification(variantKey, feature, reportId);
+  });
+
+  const [value, setValue] = createSignal<ClassificationOption>(DEFAULT_OPTION);
+
   createEffect(() => {
     const val = classification();
-    if (val && OPTIONS.includes(val as Option)) {
-      setValue(val);
+    if (!val) {
+      setValue(DEFAULT_OPTION);
+      return;
+    }
+
+    const options = OPTIONS();
+    if (!options) return;
+
+    const option = options.find((o) => o.value === val.value);
+    if (option) {
+      setValue(option);
+    } else {
+      setValue(DEFAULT_OPTION);
     }
   });
 
@@ -42,40 +73,66 @@ export const Classification: Component<{ rd3: CellValueRD3 }> = (props) => {
   const debouncedSave = async (newValue: string) => {
     if (timeout) clearTimeout(timeout);
 
-    timeout = setTimeout(async () => {
-      try {
-        await notesApi.storeClassification(
-          {
-            value: newValue,
-            variantKey: variantKey,
-            feature: feature,
-            reportId: reportId,
-            status: status
-          },
-        );
-      } catch (error) {
-        console.error("Classification save error:", error);
-      }
-    }, 500);
+    if(newValue !== '-'){
+      timeout = setTimeout(async () => {
+        try {
+          await notesApi.storeClassification(
+            {
+              value: newValue,
+              variantKey: variantKey,
+              feature: feature,
+              reportId: reportId,
+              status: status,
+              id: undefined,
+              sampleId: sampleId,
+              createdAt: undefined,
+              updatedAt: undefined
+            },
+          );
+        } catch (error) {
+          console.error("Classification save error:", error);
+        }
+      }, 500);
+    } else {
+      notesApi.removeClassification(variantKey, sampleId, reportId);
+    }
   };
 
-  // Debounce on value change
   createEffect(() => {
-    debouncedSave(value());
+    debouncedSave(value().value);
   });
 
-  // Cleanup timeout
   onCleanup(() => {
     if (timeout) clearTimeout(timeout);
   });
 
+  const handleChange: JSX.EventHandlerUnion<HTMLSelectElement, Event> = (e) => {
+    const opts = OPTIONS();
+    if (!opts) return;
+
+    const newVal = (e.currentTarget as HTMLSelectElement).value;
+    if (newVal === "-") {
+      setValue(DEFAULT_OPTION);
+      return;
+    }
+
+    const option = opts.find((o) => o.value === newVal);
+    if (option) {
+      setValue(option);
+    }
+  };
+
   return (
     <select
-      value={value()}
-      onChange={(e) => setValue(e.currentTarget.value as Option)}
+      value={value().value}
+      onChange={handleChange}
       disabled={classification.loading}
     >
-      <For each={OPTIONS}>{(opt) => <option value={opt}>{opt}</option>}</For>
+      <option value={DEFAULT_OPTION.value}>{DEFAULT_OPTION.description}</option>
+
+      <For each={OPTIONS() ?? []}>
+        {(opt) => <option value={opt.value}>{opt.description}</option>}
+      </For>
     </select>
   );
 };

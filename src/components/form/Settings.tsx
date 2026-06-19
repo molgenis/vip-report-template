@@ -20,12 +20,8 @@ export const Settings: Component<{
       const notesKey = `notes_${props.reportId}`;
       const classificationsKey = `classifications_${props.reportId}`;
 
-      console.log("REMOVE!");
-      console.log(notesKey);
-      console.log(classificationsKey);
       localStorage.removeItem(notesKey);
       localStorage.removeItem(classificationsKey);
-      console.log("REMOVED!");
       setMessage("All notes and classifications for this report have been deleted from browser storage.");
     } catch (error) {
       setMessage(`Failed to delete data: ${String(error)}`);
@@ -38,7 +34,6 @@ export const Settings: Component<{
     <>
       <button
         class="button is-info"
-        title={props.title}
         onClick={() => setOpen(true)}
       >
         <span class="icon is-small">
@@ -47,18 +42,31 @@ export const Settings: Component<{
       </button>
 
       {open() && (
-        <div class="modal is-active" onClick={() => setOpen(false)}>
+        <div class="modal is-active" onClick={() => {
+          setOpen(false);
+          window.location.reload();
+        }}>
           <div class="modal-background" />
           {/* prevent inner clicks from closing */}
           <div class="modal-content" onClick={(e) => e.stopPropagation()}>
             <div class="box">
               <h3 class="title is-size-6 mb-2">Clear browser data</h3>
-              <p class="help is-warning mb-3">
-                Clear all notes and classifications from the browser storage.
-              </p>
-              <p class="help is-danger mb-4">
-                This action only affects this report and cannot be undone.
-              </p>
+              
+        <div class="notification is-danger is-light">
+          <b>Warning: </b> This will clear <b>all notes and classifications for this report</b> from the browser storage<br/>
+          This can not be undone.
+        </div>
+        {message() && (
+                <div
+                  class={
+                    message()!.startsWith("Failed")
+                      ? "notification is-danger is-light"
+                      : "notification is-success is-light"
+                  }
+                >
+                  {message()}
+                </div>
+              )}
 
               <button
                 class="button is-danger is-fullwidth"
@@ -67,24 +75,16 @@ export const Settings: Component<{
               >
                 Delete data
               </button>
-
-              {message() && (
-                <p
-                  class={
-                    message()!.startsWith("Failed")
-                      ? "help is-danger mt-3"
-                      : "help is-success mt-3"
-                  }
-                >
-                  {message()}
-                </p>
-              )}
             </div>
           </div>
           <button
             class="modal-close is-large"
             aria-label="close"
-            onClick={() => setOpen(false)}
+            onClick={
+                () => {setOpen(false);
+                window.location.reload();
+              }
+            }
           />
         </div>
       )}

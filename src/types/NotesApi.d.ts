@@ -1,12 +1,14 @@
-//FIXME
 export type Note = {
   id: string;
   content: string;
   variantKey: VariantKey;
-  reportId: ReportId;
+  reportId: string;
+  sampleId: string;
   createdAt: string;
   updatedAt: string;
+  createdBy: string;
 };
+
 export type VariantKey = {
   Chromosome: string;
   Position: number;
@@ -16,16 +18,23 @@ export type VariantKey = {
   RU: string | undefined;
   END: number | undefined;
 };
-export type ReportId = string;
+
 export type Classification = {
   id: string;
   value: string;
   variantKey: VariantKey;
-  feature: FeatureIdentifier;
-  reportId: ReportId;
+  feature: string;
+  reportId: string;
+  sampleId: string;
   status: Status;
   createdAt: string;
   updatedAt: string;
+  createdBy: string;
 };
-export type FeatureIdentifier = string;
+
+export type ClassificationOption = {
+  value: string | undefined;
+  description: string;
+};
+
 export type Status = "pending" | "approved";
