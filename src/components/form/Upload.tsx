@@ -1,5 +1,5 @@
-import { Component, createSignal, Show } from "solid-js";
-import { createNotesApi } from "../../api/DefaultNotesApi";
+import { Component, createSignal } from "solid-js";
+import { createNotesApi } from "../../api/NotesApiFactory";
 import { createFileApi } from "../../api/FileApi";
 
 const notesApi = createNotesApi();
@@ -54,7 +54,6 @@ export const Upload: Component<{
           window.location.reload();
         }}>
           <div class="modal-background" />
-          {/* stop click bubbling from content */}
           <div class="modal-content" onClick={(e) => e.stopPropagation()}>
             <div class="box">
               <h3 class="title is-size-6 mb-2">Upload Notes and Classifications</h3>

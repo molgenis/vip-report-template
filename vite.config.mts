@@ -5,27 +5,15 @@ import { loadEnv } from "vite";
 
 export default defineConfig(({ command }) => {
   const env = loadEnv(command, process.cwd(), "");
-  console.log(env.EXTERNAL_API);
+  console.log(env["EXTERNAL_API"]);
 
   return {
   define: {
     __EXTERNAL_API__: JSON.stringify(
-      env.EXTERNAL_API !== undefined
+      env["EXTERNAL_API"] !== undefined
         ? "RD3"
-      : "DEFAULT"
+      : undefined
     ),
-  },
-  server: {
-    proxy: {
-      "/RD3/graphql": {
-        target: "http://localhost:8080/",
-        changeOrigin: true,
-        headers: {
-          "x-molgenis-token":
-            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6NDkzMDcwNjI3NiwiaWF0IjoxNzc1MDMyNjc2LCJqdGkiOiJ0ZXN0In0.AZ9ftcCiU3nU4khzz-Z_PBEU-6Ff7-qj39-9qFqHXQ4",
-        },
-      },
-    },
   },
   plugins: [solidPlugin(), inlinePlugin()],
 

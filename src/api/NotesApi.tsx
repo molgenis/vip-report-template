@@ -2,7 +2,6 @@ import type {
   Note,
   Classification,
   ClassificationOption,
-  VariantKey,
 } from "../types/NotesApi";
 
 export interface NotesApi {
@@ -10,15 +9,15 @@ export interface NotesApi {
 
   storeClassification(
     classification: Classification,
-  ): Promise<void>;
+  ): Promise<Classification>;
 
-  retrieveNotes(reportId: string, sampleId: string): Promise<Note[]>;
+  retrieveNotes(reportId: string, sampleId: string | undefined): Promise<Note[]>;
 
-  retrieveClassifications(reportId: string, sampleId: string): Promise<Classification[]>;
+  retrieveClassifications(reportId: string, sampleId: string | undefined): Promise<Classification[]>;
 
-  removeNote(variantKey: VariantKey, sampleId: string, reportId: string): Promise<void>;
+  removeNote(id: string, sampleId: string, reportId: string): Promise<void>;
 
-  removeClassification(variantKey: VariantKey, sampleId: string, reportId: string): Promise<void>;
+  removeClassification(id: string, sampleId: string, reportId: string): Promise<void>;
 
   getClassificationOptions(): Promise<ClassificationOption[]>;
 }

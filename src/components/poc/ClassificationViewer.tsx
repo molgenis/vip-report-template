@@ -1,38 +1,54 @@
 import { Component, createEffect, createResource } from "solid-js";
 import { CellValueRD3 } from "../../types/configCellComposed";
-import type { VariantKey } from "../../types/NotesApi";
 import { retrieveClassification } from "../../api/NotesApi.utils";
+import { createNotesApi } from "../../api/NotesApiFactory";
 
-export const ClassificationViewer: Component<{ rd3: CellValueRD3; altIndex: number; refresh?: number }> = (props) => {
-  const variantKey: VariantKey = {
-    Chromosome: props.rd3.r.c,
-    Position: props.rd3.r.p,
-    Reference: "", // FIXME: important because of deletions
-    Alternative: props.rd3.r.a[0],//FIXME: what to do with multiple alts
-    RU_NR: undefined, //FIXME
-    RU: undefined, //FIXME
-    END: undefined, //FIXME
-  };
+export const ClassificationViewer: Component<{ rd3: CellValueRD3; refresh?: number }> = (props) => {
+  const notesApi = createNotesApi();
 
-  const reportId: string = props.rd3.report;
-  const feature: string = "clinical_significance";
+  const alts = () => props.rd3.r.data.a;
+  const reportId = () => props.rd3.report;
 
-  // Fetch initial classification from NotesApi
-  const [classification, { refetch }] = createResource(async () => {
-    const c = retrieveClassification(variantKey, feature, reportId);
-    return c?.value ?? "-";
+  const variantKeyForAlt = (alt: string) => ({
+    Chromosome: props.rd3.r.data.c,
+    Position: props.rd3.r.data.p,
+    Reference: props.rd3.r.data.r,
+    Alternative: alt,
+    RU_NR: undefined,
+    RU: undefined,
+    END: undefined,
   });
 
-  // Refetch when refresh prop changes
+  const [classifications, { refetch }] = createResource(async () => {
+    const altList = alts();
+    const id = reportId();
+
+    const results = await Promise.all(
+      altList.map(async (alt) => {
+        const vk = variantKeyForAlt(alt);
+        const c = await retrieveClassification(notesApi, vk, id, props.rd3.s); //FIXME
+        return c?.value ?? "-";
+      }),
+    );
+
+    return results;
+  });
+
   createEffect(() => {
     if (props.refresh) {
       refetch();
     }
   });
 
+  const classesString = () => {
+    const vals = classifications();
+    if (!vals || vals.length === 0) return "-";
+    return vals.join(", ");
+  };
+
   return (
     <>
-      <span>{classification() !== undefined ? classification() : "-"}</span>
+      <span>{classesString()}</span>
     </>
   );
 };
