@@ -21,7 +21,7 @@ import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigJson } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
 import { VariantStore } from "../store/variants.ts";
-import { createNotesApi } from "../api/DefaultNotesApi";
+import { createNotesApi } from "../api/NotesApiFactory.tsx";
 import { createFileApi } from "../api/FileApi.tsx";
 
 export const VariantsContainer: Component<{

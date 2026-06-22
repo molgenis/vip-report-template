@@ -1,4 +1,11 @@
-import { Component, createSignal, JSX, Show, For } from "solid-js";
+import {
+  Component,
+  createEffect,
+  createSignal,
+  JSX,
+  Show,
+  For,
+} from "solid-js";
 import { Portal } from "solid-js/web";
 import { Classification } from "./Classification";
 import { CommentEditor } from "./CommentEditor";
@@ -12,30 +19,37 @@ type NotesInputProps = {
   children: JSX.Element;
   variantKey: CellValueRD3;
   altIndex: number;
+  onAltIndexChange: (index: number) => void;
 };
 
-const [altIndex, setAltIndex] = createSignal(0);
-
 export const NotesInput: Component<NotesInputProps> = (props) => {
+  let contentRef: HTMLDivElement | undefined;
+
+  const setContentRef = (el: HTMLDivElement) => {
+    contentRef = el;
+  };
+
+  createEffect(() => {
+    if (props.open && contentRef) {
+      contentRef.scrollTop = 0;
+    }
+  });
+
   const commaSeparatedAlts = (alts: string[]) => {
-    const parts = alts.map((item, index) => {
-      const content =
-        item.length > 5 ? (
-          <abbr title={item}>{item.slice(0, 5)}…</abbr>
-        ) : (
-          item
-        );
-
-      // add comma except after last element
-      return (
-        <span>
-          {content}
-          {index < alts.length - 1 ? ", " : ""}
-        </span>
-      );
-    });
-
-    return <>{parts}</>;
+    return (
+      <>
+        {alts.map((item, index) => (
+          <span>
+            {item.length > 5 ? (
+              <abbr title={item}>{item.slice(0, 5)}…</abbr>
+            ) : (
+              item
+            )}
+            {index < alts.length - 1 ? ", " : ""}
+          </span>
+        ))}
+      </>
+    );
   };
 
   return (
@@ -54,6 +68,7 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
           onClick={props.onClose}
         >
           <div
+            ref={setContentRef}
             style={{
               background: "#fff",
               padding: "1rem",
@@ -61,6 +76,8 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
               "max-width": "800px",
               width: "100%",
               position: "relative",
+              "max-height": "80vh",
+              "overflow-y": "auto",
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -71,17 +88,15 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
                 padding: "0 0 0.5rem 0",
               }}
             >
-              <h2
-                style={{
-                  margin: 0,
-                  "font-size": "1.25rem",
-                }}
-              >
-                <b>Variant:</b> {props.variantKey.r.c}:{props.variantKey.r.p}{" "}
-                <b>Reference:</b> {props.variantKey.r.r}{" "}
-                <b>Alternatives:</b> {commaSeparatedAlts(props.variantKey.r.a)}
+              <h2 style={{ margin: 0, "font-size": "1.25rem" }}>
+                <b>Variant:</b>{" "}
+                {props.variantKey.r.data.c}:{props.variantKey.r.data.p}{" "}
+                <b>Reference:</b> {props.variantKey.r.data.r}{" "}
+                <b>Alternatives:</b>{" "}
+                {commaSeparatedAlts(props.variantKey.r.data.a)}
               </h2>
             </header>
+
             <button
               onClick={props.onClose}
               style={{
@@ -96,33 +111,45 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
             >
               ×
             </button>
+
             <div class="notification is-warning is-light">
-          <b>Warning: </b> Classification and notes are stored in browser storage
-          and will be deleted if browser data is cleared. Please download them to
-          keep them safe.
-        </div>
-            <Show when={props.variantKey.r.a.length > 1}>
-                <div style={{ "margin-bottom": "0.5rem" }}>
-                  <label>
-                    <b>Selected alternative:</b>{" "}
-                    <select
-                      value={props.altIndex}
-                      onChange={(e) =>
-                        setAltIndex(Number((e.currentTarget as HTMLSelectElement).value))
-                      }
-                    >
-                      <For each={props.variantKey.r.a}>
-                        {(alt, i) => (
-                          <option value={i()}>
-                            {alt.length > 5 ? `${alt.slice(0, 5)}…` : alt}
-                          </option>
-                        )}
-                      </For>
-                    </select>
-                  </label>
-                </div>
-              </Show>
+              <b>Warning:</b> Classification and notes are stored in browser storage
+              and will be deleted if browser data is cleared.
+            </div>
+
+            <Show when={props.variantKey.r.data.a.length > 1}>
+              <div style={{ "margin-bottom": "0.5rem" }}>
+                <label>
+                  <b>Select alt allele:</b>{" "}
+                  <select
+                    value={props.altIndex}
+                    onChange={(e) =>
+                      props.onAltIndexChange(
+                        Number(e.currentTarget.value),
+                      )
+                    }
+                  >
+                    <For each={props.variantKey.r.data.a}>
+                      {(alt, i) => (
+                        <option value={i()}>
+                          {alt.length > 5
+                            ? `${alt.slice(0, 5)}…`
+                            : alt}
+                        </option>
+                      )}
+                    </For>
+                  </select>
+                </label>
+              </div>
+            </Show>
+
             {props.children}
+
+            <div class="control">
+              <button class="button is-primary ml-2" onClick={props.onClose}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </Portal>
@@ -137,36 +164,60 @@ type NotesInputButtonProps = {
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [refreshKey, setRefreshKey] = createSignal(0);
-  const handleClose = () => {
-    setOpen(false);
-    refresh();
-  };
+  const [altIndex, setAltIndex] = createSignal(0);
 
   const refresh = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
+  const showPopup = () => {
+    setAltIndex(0);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    refresh();
+  };
+
   return (
     <>
       <span>
-        <button onClick={() => setOpen(true)}>
-          <span>
-            <i class="fas fa-edit"></i>
-          </span>
+        <button onClick={showPopup}>
+          <i class="fas fa-edit"></i>
         </button>
-        <Comment rd3={props.variant} refresh={refreshKey()} altIndex={altIndex()} />
+
+        <Comment
+          rd3={props.variant}
+          refresh={refreshKey()}
+          callback={showPopup}
+        />
+
         <ClassificationViewer
           rd3={props.variant}
           refresh={refreshKey()}
-          altIndex={altIndex()}
         />
       </span>
-      <NotesInput open={open()} onClose={handleClose} variantKey={props.variant} altIndex={altIndex()}>
+
+      <NotesInput
+        open={open()}
+        onClose={handleClose}
+        variantKey={props.variant}
+        altIndex={altIndex()}
+        onAltIndexChange={setAltIndex}
+      >
         <br />
-        <b>Classification:</b> <Classification rd3={props.variant} altIndex={altIndex()} />
+
+        <Classification
+          rd3={props.variant}
+          altIndex={altIndex()}
+        />
+
         <br />
+
         <b>Notes:</b>
         <br />
+
         <CommentEditor
           rd3={props.variant}
           altIndex={altIndex()}

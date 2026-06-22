@@ -1,5 +1,6 @@
 import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueInteger, ValueString, VcfRecord } from "@molgenis/vip-report-vcf";
 import { ValueCategorical } from "../utils/vcf.ts";
+import { Item } from "@molgenis/vip-report-api";
 
 export type CellValueClinVar = {
   clnSigs: ValueCategorical[];
@@ -60,7 +61,7 @@ export type CellValueInheritanceModes = {
 
 export type CellValueLocus = { c: string; p: number; href: string };
 
-export type CellValueRD3 = { r: VcfRecord; s: string | undefined; report: string };
+export type CellValueRD3 = { r: Item<VcfRecord>; s: string | undefined; report: string };
 
 export type CellValueVipC = {
   href: string;

@@ -1,11 +1,7 @@
 import { Component, createSignal } from "solid-js";
-import { createNotesApi } from "../../api/DefaultNotesApi";
-import type { ReportId } from "../../types/NotesApi";
-
-const notesApi = createNotesApi();
 
 export const Settings: Component<{
-  reportId: ReportId;
+  reportId: string;
 }> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [busy, setBusy] = createSignal(false);
