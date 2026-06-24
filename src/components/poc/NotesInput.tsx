@@ -5,21 +5,36 @@ import {
   JSX,
   Show,
   For,
+  createResource,
 } from "solid-js";
 import { Portal } from "solid-js/web";
-import { Classification } from "./Classification";
-import { CommentEditor } from "./CommentEditor";
 import { Comment } from "./Comment";
-import { CellValueRD3 } from "../../types/configCellComposed";
+import { CellValueUserClassification } from "../../types/configCellComposed";
 import { ClassificationViewer } from "./ClassificationViewer";
+import { getNotesApi } from "../../api/NotesApiFactory";
+import {
+  Classification,
+  ClassificationOption,
+  Note,
+  Status,
+} from "../../types/NotesApi";
+import {
+  retrieveClassification,
+  retrieveNotesForVariant,
+} from "../../api/NotesApi.utils";
+import { formatDate } from "../../utils/config/dateUtils";
+import type { VariantKey } from "../../types/NotesApi"; // or wherever VariantKey lives
+
+const notesApi = getNotesApi();
 
 type NotesInputProps = {
   open: boolean;
   onClose: () => void;
   children: JSX.Element;
-  variantKey: CellValueRD3;
+  userClassification: CellValueUserClassification;
   altIndex: number;
   onAltIndexChange: (index: number) => void;
+  classificationSaved: boolean;
 };
 
 export const NotesInput: Component<NotesInputProps> = (props) => {
@@ -34,23 +49,6 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
       contentRef.scrollTop = 0;
     }
   });
-
-  const commaSeparatedAlts = (alts: string[]) => {
-    return (
-      <>
-        {alts.map((item, index) => (
-          <span>
-            {item.length > 5 ? (
-              <abbr title={item}>{item.slice(0, 5)}…</abbr>
-            ) : (
-              item
-            )}
-            {index < alts.length - 1 ? ", " : ""}
-          </span>
-        ))}
-      </>
-    );
-  };
 
   return (
     <Show when={props.open}>
@@ -89,11 +87,9 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
               }}
             >
               <h2 style={{ margin: 0, "font-size": "1.25rem" }}>
-                <b>Variant:</b>{" "}
-                {props.variantKey.r.data.c}:{props.variantKey.r.data.p}{" "}
-                <b>Reference:</b> {props.variantKey.r.data.r}{" "}
-                <b>Alternatives:</b>{" "}
-                {commaSeparatedAlts(props.variantKey.r.data.a)}
+                {props.userClassification.feature}:
+                {props.userClassification.hgvsC}(
+                {props.userClassification.hgvsP})
               </h2>
             </header>
 
@@ -112,29 +108,27 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
               ×
             </button>
 
-            <div class="notification is-warning is-light">
-              <b>Warning:</b> Classification and notes are stored in browser storage
-              and will be deleted if browser data is cleared.
-            </div>
+            <Show when={props.classificationSaved}>
+              <div class="notification is-success is-light">
+                Classification saved successfully.
+              </div>
+            </Show>
 
-            <Show when={props.variantKey.r.data.a.length > 1}>
+            {/* alt allele UI currently disabled */}
+            <Show when={0 > 1}>
               <div style={{ "margin-bottom": "0.5rem" }}>
                 <label>
                   <b>Select alt allele:</b>{" "}
                   <select
                     value={props.altIndex}
                     onChange={(e) =>
-                      props.onAltIndexChange(
-                        Number(e.currentTarget.value),
-                      )
+                      props.onAltIndexChange(Number(e.currentTarget.value))
                     }
                   >
-                    <For each={props.variantKey.r.data.a}>
+                    <For each={undefined}>
                       {(alt, i) => (
                         <option value={i()}>
-                          {alt.length > 5
-                            ? `${alt.slice(0, 5)}…`
-                            : alt}
+                          {alt.length > 5 ? `${alt.slice(0, 5)}…` : alt}
                         </option>
                       )}
                     </For>
@@ -144,12 +138,6 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
             </Show>
 
             {props.children}
-
-            <div class="control">
-              <button class="button is-primary ml-2" onClick={props.onClose}>
-                Close
-              </button>
-            </div>
           </div>
         </div>
       </Portal>
@@ -158,26 +146,189 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
 };
 
 type NotesInputButtonProps = {
-  variant: CellValueRD3;
+  value: CellValueUserClassification;
 };
 
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [refreshKey, setRefreshKey] = createSignal(0);
   const [altIndex, setAltIndex] = createSignal(0);
+  const [classificationSaved, setClassificationSaved] = createSignal(false);
 
   const refresh = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
   const showPopup = () => {
-    setAltIndex(0);
+    setClassificationSaved(false);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
     refresh();
+  };
+
+  const [OPTIONS] = createResource(async () => {
+    return notesApi.getClassificationOptions();
+  });
+
+  const DEFAULT_OPTION: ClassificationOption = {
+    value: "",
+    description: "",
+  };
+
+  // FIX: include hgvsC and hgvsP in VariantKey to match your global type
+  const variantKey = (): VariantKey => ({
+    Chromosome: props.value.c,
+    Position: props.value.p,
+    Reference: props.value.r,
+    Alternative: props.value.a,
+    END: props.value.END,
+    feature: props.value.feature,
+    hgvsC: props.value.hgvsC ?? "",
+    hgvsP: props.value.hgvsP ?? "",
+  });
+
+  const reportId = () => props.value.report;
+  const sampleId =
+    props.value.s !== undefined
+      ? props.value.s.item.data.person.individualId
+      : undefined;
+  const status: Status = "approved";
+
+  const [classification, { refetch: refetchClassification }] = createResource(
+    () => ({
+      vk: variantKey(),
+      reportId: reportId(),
+      refresh: refreshKey(),
+    }),
+    async (src) =>
+      retrieveClassification(notesApi, src.vk, src.reportId, sampleId),
+  );
+
+  const [value, setValue] =
+    createSignal<ClassificationOption>(DEFAULT_OPTION);
+
+  const save = async () => {
+    try {
+      const currentValue: Classification | undefined = classification();
+
+      await notesApi.storeClassification({
+        value: value().value,
+        variantKey: variantKey(),
+        reportId: reportId(),
+        status,
+        id: currentValue?.id,
+        sampleId,
+        createdAt: undefined,
+        updatedAt: undefined,
+        createdBy: undefined,
+      });
+
+      await refetchClassification();
+      setClassificationSaved(true);
+      refresh();
+    } catch (error) {
+      console.error("Classification save error:", error);
+    }
+  };
+
+  const handleChange: JSX.EventHandlerUnion<HTMLSelectElement, Event> = (e) => {
+    const opts = OPTIONS();
+    if (!opts) return;
+
+    const option = opts.find((o) => o.value === e.currentTarget.value);
+    if (option) {
+      setValue(option);
+    }
+  };
+
+  const [notes, { refetch: refetchNotes }] = createResource(
+    () => ({
+      vk: variantKey(),
+      reportId: reportId(),
+      refresh: refreshKey(),
+    }),
+    async (src) => {
+      return retrieveNotesForVariant(
+        notesApi,
+        src.vk,
+        src.reportId,
+        sampleId,
+        false,
+      );
+    },
+  );
+
+  const [noteValue, setNoteValue] = createSignal("");
+
+  const saveNote = async () => {
+    try {
+      if (!noteValue().trim()) return;
+
+      await notesApi.storeNote({
+        id: undefined,
+        content: noteValue(),
+        variantKey: variantKey(),
+        reportId: reportId(),
+        sampleId,
+        createdAt: undefined,
+        updatedAt: undefined,
+        createdBy: undefined,
+      });
+
+      await refetchNotes();
+      setNoteValue("");
+      refresh();
+    } catch (error) {
+      console.error("Save error:", error);
+    }
+  };
+
+  const removeNote = async (note: Note) => {
+    try {
+      await notesApi.removeNote(note.id, reportId());
+      await refetchNotes();
+      refresh();
+    } catch (error) {
+      console.error("Remove error:", error);
+    }
+  };
+
+  const notesWithSameFeature = () => {
+    const list = notes();
+    if (!list) return [];
+    return list.filter(
+      (note) => note.variantKey.feature === props.value.feature,
+    );
+  };
+
+  const notesWithOtherFeature = () => {
+    const list = notes();
+    if (!list) return [];
+    return list.filter(
+      (note) => note.variantKey.feature !== props.value.feature,
+    );
+  };
+
+  const formatNoteLabel = (note: Note) => {
+    const feature = note.variantKey.feature ?? "";
+    const hgvsC = note.variantKey.hgvsC ?? "";
+    const hgvsP = note.variantKey.hgvsP ?? "";
+
+    if (!feature && !hgvsC && !hgvsP) return "";
+
+    if (!hgvsC && !hgvsP) return feature;
+
+    const hgvsPart =
+      hgvsC && hgvsP
+        ? `${hgvsC}(${hgvsP})`
+        : hgvsC
+        ? hgvsC
+        : `(${hgvsP})`;
+
+    return feature ? `${feature}:${hgvsPart}` : hgvsPart;
   };
 
   return (
@@ -188,13 +339,13 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         </button>
 
         <Comment
-          rd3={props.variant}
+          userClassification={props.value}
           refresh={refreshKey()}
           callback={showPopup}
         />
 
         <ClassificationViewer
-          rd3={props.variant}
+          userClassification={props.value}
           refresh={refreshKey()}
         />
       </span>
@@ -202,27 +353,128 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       <NotesInput
         open={open()}
         onClose={handleClose}
-        variantKey={props.variant}
+        userClassification={props.value}
         altIndex={altIndex()}
         onAltIndexChange={setAltIndex}
+        classificationSaved={classificationSaved()}
       >
         <br />
 
-        <Classification
-          rd3={props.variant}
-          altIndex={altIndex()}
-        />
+        <div>
+          <b>Classification:</b>{" "}
+          <select
+            value={value().value}
+            onChange={handleChange}
+            disabled={classification.loading}
+          >
+            <option value={DEFAULT_OPTION.value}>
+              {DEFAULT_OPTION.description}
+            </option>
 
+            <For each={OPTIONS() ?? []}>
+              {(opt) => (
+                <option value={opt.value}>{opt.description}</option>
+              )}
+            </For>
+          </select>
+        </div>
+        <br />
+        <button class="button is-primary ml-2" onClick={save}>
+          Save Classification
+        </button>
+        <br />
+        <hr />
+        <b>Add a note:</b>
         <br />
 
-        <b>Notes:</b>
-        <br />
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <textarea
+              rows="2"
+              cols="50"
+              value={noteValue()}
+              onInput={(e) => setNoteValue(e.currentTarget.value)}
+              class="textarea"
+            />
+            <br />
+            <button class="button is-primary ml-2" onClick={saveNote}>
+              Add note
+            </button>
+          </div>
+        </div>
 
-        <CommentEditor
-          rd3={props.variant}
-          altIndex={altIndex()}
-          callback={refresh}
-        />
+        <Show when={!notes.loading && notes()}>
+          <div class="mt-3">
+            <Show when={notesWithSameFeature().length > 0}>
+              <h4 class="has-text-weight-semibold">
+                Notes for this feature
+              </h4>
+              <For each={notesWithSameFeature()}>
+                {(note) => (
+                  <div class="box has-background-light mb-2 p-3">
+                    <div class="is-flex is-justify-content-space-between is-align-items-start">
+                      <div>
+                        <span class="is-size-6 is-italic mb-1">
+                          ({formatDate(note.updatedAt)})
+                        </span>
+                      </div>
+
+                      <button
+                        class="button is-small is-danger is-light"
+                        onClick={() => removeNote(note)}
+                      >
+                        Remove note
+                      </button>
+                    </div>
+
+                    <div>{note.content}</div>
+                  </div>
+                )}
+              </For>
+            </Show>
+
+            <Show when={notesWithOtherFeature().length > 0}>
+              <h4 class="has-text-weight-semibold mt-4">
+                Notes for other features
+              </h4>
+              <For each={notesWithOtherFeature()}>
+                {(note) => (
+                  <div class="box has-background-light mb-2 p-3">
+                    <div class="is-flex is-justify-content-space-between is-align-items-start">
+                      <div>
+                        <span class="heading is-size-6 mb-1">
+                          ({formatNoteLabel(note)} -{" "}
+                        </span>
+                        <span class="is-size-6 is-italic mb-1">
+                          {formatDate(note.updatedAt)})
+                        </span>
+                      </div>
+
+                      <button
+                        class="button is-small is-danger is-light"
+                        onClick={() => removeNote(note)}
+                      >
+                        Remove note
+                      </button>
+                    </div>
+
+                    <div>{note.content}</div>
+                  </div>
+                )}
+              </For>
+            </Show>
+
+            <Show when={(notes()?.length ?? 0) === 0}>
+              <p class="has-text-grey-light">No notes.</p>
+            </Show>
+          </div>
+        </Show>
+
+        <Show when={notes.error}>
+          <p class="help is-danger">
+            Error loading notes: {String(notes.error)}
+          </p>
+        </Show>
       </NotesInput>
     </>
   );

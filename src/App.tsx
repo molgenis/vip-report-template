@@ -1,10 +1,11 @@
-import { onMount, ParentComponent } from "solid-js";
+import { onCleanup, onMount, ParentComponent, createSignal } from "solid-js";
 import { A, Location, Navigator, useLocation, useNavigate } from "@solidjs/router";
 import { DatasetDropdown } from "./components/DatasetDropdown";
 import { fetchSampleProbandIds, isDatasetSupport } from "./utils/api.ts";
 import { href } from "./utils/utils.ts";
-import { getMetadata } from "./views/data/data.tsx";
+import { getMetadata, getReportId } from "./views/data/data.tsx";
 import { HtsFileMetadata } from "@molgenis/vip-report-api";
+import { getNotesApi } from "./api/NotesApiFactory.tsx";
 
 // export for development purposes
 export function init(navigate: Navigator, location?: Location) {
@@ -25,11 +26,41 @@ export function init(navigate: Navigator, location?: Location) {
   })();
 }
 
+let reloadInProgress = false;
+
 const App: ParentComponent = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const notesApi = getNotesApi();
 
-  onMount(() => init(navigate, location));
+  const [reportId, setReportId] = createSignal<string | null>(null);
+
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    if (!notesApi.hasUnsavedData(reportId()) || reloadInProgress) return;
+
+    e.preventDefault();
+    e.returnValue = "";
+    return "";
+  };
+
+  onMount(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    (async () => {
+      try {
+        const id = await getReportId();
+        setReportId(id);
+      } catch (err) {
+        console.error("Failed to get reportId", err);
+      }
+    })();
+
+    init(navigate, location);
+  });
+
+  onCleanup(() => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  });
 
   return (
     <>

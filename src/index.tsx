@@ -21,6 +21,7 @@ import {
   faHome,
   faInfo,
   faSearch,
+  faSave,
   faUpload
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
@@ -55,6 +56,7 @@ library.add(
   faExternalLink,
   faHome,
   faInfo,
+  faSave,
   faSearch,
   faUpload
 );

@@ -14,19 +14,18 @@ export function sameVariant(a: VariantKey, b: VariantKey): boolean {
     a.Chromosome === b.Chromosome &&
     a.Position === b.Position &&
     a.Reference === b.Reference &&
-    a.RU_NR === b.RU_NR &&
-    a.RU === b.RU &&
     a.END === b.END
   );
 }
 
-export function sameVariantAndAllele(
+export function sameVariantAndFeature(
   a: VariantKey,
   b: VariantKey
 ): boolean {
   return (
     sameVariant(a, b) &&
-    a.Alternative === b.Alternative
+    a.Alternative === b.Alternative &&
+    a.feature === b.feature
   );
 }
 
@@ -41,7 +40,7 @@ export async function retrieveNotesForVariant(
 
   if (filterOnAlt) {
     return notes.filter((note) =>
-      sameVariantAndAllele(note.variantKey, variantKey)
+    sameVariantAndFeature(note.variantKey, variantKey)
     );
   }
 
@@ -60,7 +59,7 @@ export async function retrieveClassification(
 
   return (
     all.find((c) =>
-      sameVariantAndAllele(c.variantKey, variantKey)
+      sameVariantAndFeature(c.variantKey, variantKey)
     ) ?? null
   );
 }

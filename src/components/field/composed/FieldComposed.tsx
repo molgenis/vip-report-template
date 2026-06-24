@@ -21,7 +21,7 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
-  CellValueRD3,
+  CellValueUserClassification,
   CellValueSpanningReads,
   CellValueVipC,
   CellValueVipCS,
@@ -76,7 +76,7 @@ export const FieldComposed: Component<{
         <FieldVkgl value={props.value as CellValueVkgl} />
       </Match>
       <Match when={id() === "notesInput"}>
-        <NotesInputButton variant={props.value as CellValueRD3} />
+        <NotesInputButton value={props.value as CellValueUserClassification} />
       </Match>
     </Switch>
   );

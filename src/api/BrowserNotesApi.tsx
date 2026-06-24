@@ -2,15 +2,53 @@ import type { Note, Classification, ClassificationOption } from "../types/NotesA
 import type { NotesApi } from "./NotesApi";
 import {
   generateId,
-  sameVariantAndAllele,
+  sameVariantAndFeature,
 } from "./NotesApi.utils";
 import { StorageAdapter } from "./StorageAdapter";
 
 export class BrowserNotesApi implements NotesApi {
   constructor(private storage: StorageAdapter) {}
 
+  clear(reportId: string) {
+      this.storage.remove(this.getNotesKey(reportId));
+      this.storage.remove(this.getClassificationsKey(reportId));
+      this.storage.remove(this.getStateKey(reportId));
+
+      this.setSavedState(true, reportId);
+  }
+
+  getCurrentUserName(): string | undefined {
+    return undefined;
+  }
+
+  hasUnsavedData(reportId: string): boolean {
+    console.log("HERE!");
+    const raw = this.storage.get(this.getStateKey(reportId));
+    if (raw == null) {
+      return false;
+    }
+  
+    try {
+      const saved = JSON.parse(raw) as boolean;
+      return !saved;
+    } catch { //in case of problems assume unsaved data
+      return true;
+    }
+  }
+
+  setSavedState(saved: boolean, reportId: string): void {
+    this.storage.set(
+      this.getStateKey(reportId),
+      JSON.stringify(saved)
+    );
+  }
+
   private getNotesKey(reportId: string) {
     return `notes_${reportId}`;
+  }
+
+  private getStateKey(reportId: string) {
+    return `state_${reportId}`;
   }
 
   private getClassificationsKey(reportId: string) {
@@ -23,6 +61,7 @@ export class BrowserNotesApi implements NotesApi {
   }
 
   private saveNotes(reportId: string, notes: Note[]) {
+    this.setSavedState(false, reportId);
     this.storage.set(
       this.getNotesKey(reportId),
       JSON.stringify(notes)
@@ -35,28 +74,42 @@ export class BrowserNotesApi implements NotesApi {
   }
 
   private saveClassifications(reportId: string, data: Classification[]) {
+    this.setSavedState(false, reportId);
     this.storage.set(
       this.getClassificationsKey(reportId),
       JSON.stringify(data)
     );
   }
 
-  async storeNote(note: Omit<Note, "id" | "createdAt" | "updatedAt">) {
+  async storeNote(note: Note) {
     const notes = this.loadNotes(note.reportId);
     const now = new Date().toISOString();
-
+  
+    const id = note.id ? note.id : generateId();
+  
     const newNote: Note = {
-      id: generateId(),
+      id,
       content: note.content,
       variantKey: note.variantKey,
       reportId: note.reportId,
       sampleId: note.sampleId,
-      createdAt: now,
+      createdAt: note.createdAt ? note.createdAt : now,
       updatedAt: now,
       createdBy: "",
     };
-
-    notes.push(newNote);
+  
+    const idx = notes.findIndex(n => n.id === id);
+  
+    if (idx >= 0) {
+      notes[idx] = {
+        ...notes[idx],
+        ...newNote,
+        createdAt: notes[idx].createdAt,
+      };
+    } else {
+      notes.push(newNote);
+    }
+  
     this.saveNotes(note.reportId, notes);
   }
 
@@ -90,13 +143,12 @@ export class BrowserNotesApi implements NotesApi {
     const idx = list.findIndex(
       c =>
         c.reportId === classification.reportId &&
-        sameVariantAndAllele(c.variantKey, classification.variantKey)
+        sameVariantAndFeature(c.variantKey, classification.variantKey)
     );
 
     const updated: Classification = {
       id: idx >= 0 ? list[idx].id : generateId(),
       value: classification.value,
-      feature: classification.feature,
       variantKey: classification.variantKey,
       reportId: classification.reportId,
       sampleId: classification.sampleId,
@@ -113,11 +165,12 @@ export class BrowserNotesApi implements NotesApi {
     return updated;
   }
 
-  async removeNote(id: string, sampleId: string, reportId: string) {
+  async removeNote(id: string, reportId: string) {
     const notes = this.loadNotes(reportId);
     this.saveNotes(
       reportId,
-      notes.filter(n => !(n.id === id && n.sampleId === sampleId))
+      notes.filter(n => !(n.id === id)
+      )
     );
   }
 
