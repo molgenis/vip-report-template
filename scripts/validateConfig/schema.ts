@@ -186,6 +186,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
                       "vipC",
                       "vipCS",
                       "vkgl",
+                      "notesInput",
                     ],
                   },
                 },
@@ -248,7 +249,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
     composed: {
       properties: {
         name: {
-          enum: ["allelicImbalance", "deNovo", "hpo", "inheritanceMatch", "locus", "vipC", "vipCS", "classification"],
+          enum: ["allelicImbalance", "deNovo", "hpo", "inheritanceMatch", "locus", "vipC", "vipCS"],
         },
       },
       optionalProperties: {

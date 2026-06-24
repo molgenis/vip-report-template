@@ -1,23 +1,24 @@
 import { Component, createSignal } from "solid-js";
+import { getNotesApi } from "../../api/NotesApiFactory";
 
+
+//FIXME: remove!
 export const Settings: Component<{
+  refetch?: () => void;
   reportId: string;
 }> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [busy, setBusy] = createSignal(false);
   const [message, setMessage] = createSignal<string | null>(null);
+  const notesApi = getNotesApi();
 
   const clearReportData = async () => {
     try {
       setBusy(true);
       setMessage(null);
 
-      // Remove notes and classifications for this reportId
-      const notesKey = `notes_${props.reportId}`;
-      const classificationsKey = `classifications_${props.reportId}`;
+      notesApi.clear(props.reportId);
 
-      localStorage.removeItem(notesKey);
-      localStorage.removeItem(classificationsKey);
       setMessage("All notes and classifications for this report have been deleted from browser storage.");
     } catch (error) {
       setMessage(`Failed to delete data: ${String(error)}`);
@@ -40,7 +41,9 @@ export const Settings: Component<{
       {open() && (
         <div class="modal is-active" onClick={() => {
           setOpen(false);
-          window.location.reload();
+          if (props.refetch) {
+            props.refetch();
+          }
         }}>
           <div class="modal-background" />
           {/* prevent inner clicks from closing */}
@@ -49,7 +52,7 @@ export const Settings: Component<{
               <h3 class="title is-size-6 mb-2">Clear browser data</h3>
               
         <div class="notification is-danger is-light">
-          <b>Warning: </b> This will clear <b>all notes and classifications for this report</b> from the browser storage<br/>
+          <b>Warning: </b> This will clear <b>all notes and classifications for this report</b><br/>
           This can not be undone.
         </div>
         {message() && (
@@ -77,8 +80,8 @@ export const Settings: Component<{
             class="modal-close is-large"
             aria-label="close"
             onClick={
-                () => {setOpen(false);
-                window.location.reload();
+                () => {
+                  setOpen(false);
               }
             }
           />

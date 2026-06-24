@@ -1,39 +1,44 @@
 import { Component, createSignal } from "solid-js";
-import { createNotesApi } from "../../api/NotesApiFactory";
+import { getNotesApi } from "../../api/NotesApiFactory";
 import { createFileApi } from "../../api/FileApi";
 
-const notesApi = createNotesApi();
+const notesApi = getNotesApi();
 const fileApi = createFileApi(notesApi);
 
 export const Upload: Component<{
-  refetch?: () => Promise<void>;
+  refetch?: () => void;
+  reportId: string;
 }> = (props) => {
   const [open, setOpen] = createSignal(false);
-  const [selectedFile, setSelectedFile] = createSignal<File | null>(null);
   const [message, setMessage] = createSignal<string | null>(null);
+  const [uploading, setUploading] = createSignal(false);
 
-  const handleFileSelect = (e: Event) => {
+  const handleFileSelect = async (e: Event) => {
     const target = e.target as HTMLInputElement;
     const file = target.files?.[0] ?? null;
-    setSelectedFile(file);
     setMessage(null);
-  };
 
-  const upload = async () => {
-    const file = selectedFile();
     if (!file) return;
 
+    setUploading(true);
     try {
-      const message = await fileApi.load(file);
-      setMessage(message);
+      // Preserve saved state around the import
+      const state = !notesApi.hasUnsavedData(props.reportId);
+      const msg = await fileApi.load(file);
+      notesApi.setSavedState(state, props.reportId);
+      setMessage(msg);
+
       if (props.refetch) {
         await props.refetch();
       }
-      setSelectedFile(null);
-      const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-      if (input) input.value = "";
     } catch (error) {
-      setMessage(`Upload failed: ${error}`);
+      setMessage(`Upload failed: ${String(error)}`);
+    } finally {
+      setUploading(false);
+      // Clear the input so selecting the same file again works
+      target.value = "";
+      // Close modal after upload completes
+      setOpen(false);
     }
   };
 
@@ -41,7 +46,10 @@ export const Upload: Component<{
     <>
       <button
         class="button is-info"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setMessage(null);
+          setOpen(true);
+        }}
       >
         <span class="icon is-small">
           <i class="fas fa-upload" />
@@ -49,18 +57,26 @@ export const Upload: Component<{
       </button>
 
       {open() && (
-        <div class="modal is-active" onClick={() => {
-          setOpen(false);
-          window.location.reload();
-        }}>
+        <div
+          class="modal is-active"
+          onClick={() => {
+            if (!uploading()) setOpen(false);
+          }}
+        >
           <div class="modal-background" />
-          <div class="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            class="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div class="box">
-              <h3 class="title is-size-6 mb-2">Upload Notes and Classifications</h3>
+              <h3 class="title is-size-6 mb-2">
+                Upload Notes and Classifications
+              </h3>
+
               {message() && (
                 <div
                   class={
-                    message()!.startsWith("Failed")
+                    message()!.startsWith("Upload failed")
                       ? "notification is-danger is-light"
                       : "notification is-success is-light"
                   }
@@ -68,11 +84,13 @@ export const Upload: Component<{
                   {message()}
                 </div>
               )}
+
               <p class="help is-info mb-3">
-                Select an excel file with notes and classifications to be loaded.
+                Select an Excel file with notes and classifications to be
+                loaded.
               </p>
 
-              <div class="field has-addons mt-2">
+              <div class="field">
                 <div class="control">
                   <label class="button is-primary">
                     <input
@@ -80,18 +98,10 @@ export const Upload: Component<{
                       accept=".xlsx,.xls"
                       onChange={handleFileSelect}
                       class="is-hidden"
+                      disabled={uploading()}
                     />
-                    {selectedFile() ? selectedFile()!.name : "Select Excel"}
+                    {uploading() ? "Uploading…" : "Select Excel"}
                   </label>
-                </div>
-                <div class="control">
-                  <button
-                    class="button is-success ml-2"
-                    onClick={upload}
-                    disabled={!selectedFile()}
-                  >
-                    Upload
-                  </button>
                 </div>
               </div>
             </div>
@@ -100,10 +110,9 @@ export const Upload: Component<{
           <button
             class="modal-close is-large"
             aria-label="close"
-            onClick={
-              () => {setOpen(false);
-            }
-          }
+            onClick={() => {
+              if (!uploading()) setOpen(false);
+            }}
           />
         </div>
       )}

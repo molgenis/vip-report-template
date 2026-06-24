@@ -21,7 +21,7 @@ import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigJson } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
 import { VariantStore } from "../store/variants.ts";
-import { createNotesApi } from "../api/NotesApiFactory.tsx";
+import { getNotesApi } from "../api/NotesApiFactory.tsx";
 import { createFileApi } from "../api/FileApi.tsx";
 
 export const VariantsContainer: Component<{
@@ -33,16 +33,18 @@ export const VariantsContainer: Component<{
   reportId: string;
 }> = (props) => {
   const navigate = useNavigate();
-  const notesApi = createNotesApi();
+  const notesApi = getNotesApi();
   const fileApi = createFileApi(notesApi);
 
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
-  const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
+  const variantTypeIds = () =>
+    props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds;
   const query = () =>
     createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
-  const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
+  const defaultRecordsPerPage = () =>
+    config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
   const recordsPerPage = () =>
     props.store.getPageSize() !== null ? props.store.getPageSize()! : defaultRecordsPerPage();
 
@@ -64,7 +66,8 @@ export const VariantsContainer: Component<{
     return Object.hasOwn(props.metadata.records.info, "SVTYPE");
   };
 
-  const [records] = createResource(
+  // Main records resource
+  const [records, { refetch }] = createResource(
     (): RecordParams => ({
       query: query() || undefined,
       page: props.store.getPageNumber() || 0,
@@ -74,6 +77,11 @@ export const VariantsContainer: Component<{
     }),
     fetchRecords,
   );
+
+  // This is what VariantResults will call
+  const onRefresh = async () => {
+    await refetch();
+  };
 
   const onFilterChange = (event: FilterChangeEvent) => {
     props.store.setFilterValue(event.id, event.value);
@@ -86,7 +94,6 @@ export const VariantsContainer: Component<{
   };
 
   const onNotesDownload = async () => {
-    console.log("ON NOTES DOWNLOAD");
     try {
       await fileApi.download(props.reportId);
     } catch (error) {
@@ -95,9 +102,10 @@ export const VariantsContainer: Component<{
   };
 
   const onRecordsDownload = async () => {
-    console.log("ON RECORDS DOWNLOAD");
     const samples = props.sample ? getPedigreeSamples(props.sample) : [];
-    const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
+    const filter = samples
+      ? { samples: samples.map((sample) => sample.data.person.individualId) }
+      : undefined;
     const sampleIds = samples ? samples.map((sample) => sample.id) : ([] as number[]);
 
     // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
@@ -124,11 +132,15 @@ export const VariantsContainer: Component<{
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", createVcfDownloadFilename(props.metadata.app.htsFile as HtsFileMetadata));
+    link.setAttribute(
+      "download",
+      createVcfDownloadFilename(props.metadata.app.htsFile as HtsFileMetadata),
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
   const onRecordsPerPageChange = (event: RecordsPerPageChangeEvent) => {
     props.store.setPageSize(event.number);
   };
@@ -196,6 +208,7 @@ export const VariantsContainer: Component<{
                 onNotesDownload={onNotesDownload}
                 onSortChange={onSortChange}
                 onSortClear={onSortClear}
+                onRefresh={onRefresh}
               />
             )}
           </Show>

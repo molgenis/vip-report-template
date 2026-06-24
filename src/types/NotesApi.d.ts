@@ -14,16 +14,16 @@ export type VariantKey = {
   Position: number;
   Reference: string;
   Alternative: string;
-  RU_NR: number | undefined;
-  RU: string | undefined;
   END: number | undefined;
+  feature: string;
+  hgvsC: string;
+  hgvsP: string;
 };
 
 export type Classification = {
   id: string;
   value: string;
   variantKey: VariantKey;
-  feature: string;
   reportId: string;
   sampleId: string;
   status: Status;

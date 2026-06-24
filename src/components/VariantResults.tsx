@@ -6,15 +6,14 @@ import { PageChangeCallback, Pager } from "./Pager";
 import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
-import { Download } from "./form/Download.tsx";
+import { ButtonDownload } from "./form/ButtonDownload.tsx";
 import { Upload } from "./form/Upload.tsx";
-import { Settings } from "./form/Settings.tsx";
 import { ConfigCells, ConfigRecordsPerPage } from "../types/config";
 import { ConfigCellGroup, ConfigCellInfo } from "../types/configCells";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/query/sort.ts";
-
 import { MetadataContainer } from "../utils/api.ts";
 import { ConfigSort } from "../types/configSort";
+import { ButtonSave } from "./form/ButtonSave.tsx";
 
 export type RecordsDownloadCallback = () => void;
 export type NotesDownloadCallback = () => void;
@@ -32,14 +31,22 @@ export const VariantResults: Component<{
   onPageChange: PageChangeCallback;
   onSortChange: SortChangeCallback;
   onSortClear: SortClearCallback;
+  onRefresh: () => void;                 // NEW
 }> = (props) => {
+  const handleRefresh = () => {
+    console.log("VariantResults.handleRefresh");
+    props.onRefresh();                   // delegate to parent
+  };
+
   const sortOptions = (): ConfigSort[] => {
     if (props.sortOptions !== undefined && props.sortOptions.length !== 0) {
       return props.sortOptions;
     } else {
       return props.fieldConfigs
         .flatMap((fieldConfig) =>
-          fieldConfig.type === "group" ? (fieldConfig as ConfigCellGroup).fieldConfigs : [fieldConfig],
+          fieldConfig.type === "group"
+            ? (fieldConfig as ConfigCellGroup).fieldConfigs
+            : [fieldConfig],
         )
         .filter((fieldConfig) => fieldConfig.type === "info")
         .map((fieldConfig) => fieldConfig as ConfigCellInfo)
@@ -62,28 +69,40 @@ export const VariantResults: Component<{
         <div class="column is-offset-1-fullhd is-3-fullhd is-4">
           <Show when={props.records} fallback={<Loader />} keyed>
             {(records) => (
-              <span class="is-pulled-left inline-control-text ml-2">{records.page.totalElements} records</span>
+              <span class="is-pulled-left inline-control-text ml-2">
+                {records.page.totalElements} records
+              </span>
             )}
           </Show>
         </div>
         <div class="column is-4">
           <Show when={props.records} fallback={<Loader />} keyed>
-            {(records) => <Pager page={records.page} onPageChange={props.onPageChange} />}
+            {(records) => (
+              <Pager page={records.page} onPageChange={props.onPageChange} />
+            )}
           </Show>
         </div>
         <div class="column">
           <div class="field is-grouped is-grouped-right">
             {sortOptions().length > 0 && (
-              <Sort options={sortOptions()} onChange={props.onSortChange} onClear={props.onSortClear} />
+              <Sort
+                options={sortOptions()}
+                onChange={props.onSortChange}
+                onClear={props.onSortClear}
+              />
             )}
-              <Download
-                onClickVcf={props.onRecordsDownload}
-                onClickNotes={props.onNotesDownload}
+            <ButtonDownload
+                title="Download vcf file with records matching filters and search queries"
+                onClick={props.onRecordsDownload}
               />
-              <Upload />
-              <Settings
-                reportId={props.reportId}
-              />
+            <ButtonSave
+              title="Download your notes and classifications"
+              onClick={props.onNotesDownload}
+            />
+            <Upload
+              reportId={props.reportId}
+              refetch={handleRefresh}
+            />
           </div>
         </div>
       </div>
@@ -92,11 +111,17 @@ export const VariantResults: Component<{
           <Show when={props.records} fallback={<Loader />} keyed>
             {(records) => (
               <>
-                <RecordsTable fieldConfigs={props.fieldConfigs} records={records.items} />
+                <RecordsTable
+                  fieldConfigs={props.fieldConfigs}
+                  records={records.items}
+                />
                 <div class="columns is-gapless">
                   <div class="column">
                     <div class="field is-grouped is-grouped-right">
-                      <RecordsPerPage config={props.recordsPerPage} onChange={props.onRecordsPerPageChange} />
+                      <RecordsPerPage
+                        config={props.recordsPerPage}
+                        onChange={props.onRecordsPerPageChange}
+                      />
                     </div>
                   </div>
                 </div>

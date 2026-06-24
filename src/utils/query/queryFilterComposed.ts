@@ -43,12 +43,6 @@ export function createQueryFilterComposed(filter: ConfigFilterComposed, filterVa
         filterValue as FilterValueAllelicImbalance,
       );
       break;
-    case "composed/classification":
-      query = createQueryFilterClassification(
-        filter as ConfigFilterClassification,
-        filterValue as FilterValueClassification,
-      );
-      break;
     case "composed/inheritanceMatch":
       query = createQueryFilterInheritanceMatch(
         filter as ConfigFilterInheritanceMatch,

@@ -1,13 +1,13 @@
 import { BrowserNotesApi } from "./BrowserNotesApi";
-import { LocalStorageAdapter } from "./LocalStorageAdapter";
+import { MemoryStorageAdapter } from "./MemoryStorageAdapter";
 import type { NotesApi } from "./NotesApi";
-//import { rd3Api } from "@molgenis/vip-report-rd3";
 
-declare const __EXTERNAL_API__: string | undefined;
+let browserNotesApi : NotesApi = undefined;
 
-export function createNotesApi(): NotesApi {
-  if (__EXTERNAL_API__) {
-    return undefined; //FIXME rd3Api;
+export function getNotesApi(): NotesApi {
+  //In the future switching to integration with rd3 buildtime can be managed here
+  if(browserNotesApi === undefined){
+    browserNotesApi = new BrowserNotesApi(new MemoryStorageAdapter());
   }
-  return new BrowserNotesApi(new LocalStorageAdapter());
+  return browserNotesApi
 }

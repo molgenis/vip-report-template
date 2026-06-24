@@ -210,10 +210,6 @@
       "all": [
         {
           "type": "composed",
-          "name": "notesInput"
-        },
-        {
-          "type": "composed",
           "name": "locus"
         },
         {
@@ -243,6 +239,10 @@
         {
           "type": "group",
           "fields": [
+            {
+              "type": "composed",
+              "name": "notesInput"
+            },
             {
               "type": "info",
               "name": "CSQ/Consequence"
@@ -473,10 +473,6 @@
           "type": "info",
           "name": "CSQ/PICK",
           "defaultValue": "true"
-        },
-        {
-          "type": "composed",
-          "name": "classification"
         },
         {
           "type": "info",

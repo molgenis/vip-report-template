@@ -20,7 +20,7 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
-  CellValueRD3,
+  CellValueUserClassification,
   CellValueSpanningReads,
   CellValueVipC,
   CellValueVipCS,
@@ -84,7 +84,8 @@ export function initConfigCellComposed(
       fieldConfig = createConfigFieldCustomLocus(configStatic, sample, variantType);
       break;
     case "notesInput":
-      fieldConfig = createConfigFieldNotesInput(configStatic, sample, reportId);
+      fieldConfig = createConfigFieldNotesInput(configStatic, metadata.records, sample, reportId);
+      console.log(fieldConfig.value);
     break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
@@ -452,20 +453,53 @@ function createConfigFieldCustomLocus(
 
 function createConfigFieldNotesInput(
   config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
   reportId: string,
-): ConfigCellCustom<CellValueRD3> {
+): ConfigCellCustom<CellValueUserClassification> {
+  const [fieldHgvsC, fieldHgvsP, fieldFeature, fieldAlleleNum] = getInfoNestedFields(
+    metadata,
+    "CSQ",
+    "HGVSc",
+    "HGVSp",
+    "Feature",
+    "ALLELE_NUM",
+  );
+  const [fieldEND] = getInfoFields(
+    metadata,
+    "END"
+  );
+
   return {
     type: "composed",
     id: "notesInput",
-    label: () => getLabel(config, "variant comments"),
-    description: () => getDescription(config),
-    valueCount: () => 1,
-    value: (record: Item<VcfRecord>): CellValueRD3 => ({
-      r: record,
-      s: sample?.item.data.person.individualId,
-      report: reportId,
-    }),
+    label: () => getLabel(config, "Classification"),
+    description: () => getDescription(config, "User classification and notes"),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldFeature),
+    value: (record: Item<VcfRecord>, valueIndex: number): CellValueUserClassification => {
+      const [hgvsC, hgvsP, feature, END, alleleNum] = getInfoValues(
+        record,
+        valueIndex,
+        fieldHgvsC,
+        fieldHgvsP,
+        fieldFeature,
+        fieldEND,
+        fieldAlleleNum
+      ) as [string| undefined, string | undefined, string, number | undefined, number];
+
+      return {
+        c: record.data.c,
+        p: record.data.p,
+        r: record.data.r,
+        a: record.data.a[alleleNum],
+        s: sample,
+        hgvsC,
+        hgvsP,
+        feature,
+        END,
+        report: reportId
+      };
+    },
   };
 }
 

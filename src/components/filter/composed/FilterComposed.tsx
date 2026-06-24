@@ -1,5 +1,5 @@
 import { Component, Match, Switch } from "solid-js";
-import { ConfigFilterField, FilterCategoryId, FilterValue, FilterValueCategorical } from "../../../types/configFilter";
+import { FilterValue } from "../../../types/configFilter";
 import {
   ConfigFilterAllelicImbalance,
   ConfigFilterComposed,
@@ -10,7 +10,6 @@ import {
   ConfigFilterVipC,
   ConfigFilterVipCS,
   FilterValueAllelicImbalance,
-  FilterValueClassification,
   FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
@@ -27,7 +26,6 @@ import { FilterInheritance } from "./FilterInheritance.tsx";
 import { FilterDeNovo } from "./FilterDeNovo.tsx";
 import { FilterVipC } from "./FilterVipC.tsx";
 import { FilterVipCS } from "./FilterVipCS.tsx";
-import { FilterClassification } from "../../poc/FilterClassification.tsx";
 
 export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterValue>> = (props) => {
   const id = () => props.config.id;
@@ -48,19 +46,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
         <FilterLocus
           config={props.config as ConfigFilterLocus}
           value={props.value as FilterValueLocus | undefined}
-          defaultValue={props.defaultValue}
-          onValueChange={props.onValueChange}
-          onValueClear={props.onValueClear}
-          isInited={props.isInited}
-          reportId={props.reportId}
-        />
-      </Match>
-      <Match when={id() === "composed/classification"}>
-        <FilterClassification
-          config={props.config as ConfigFilterField}
-          value={
-            { values: props.value as FilterCategoryId[], report: props.reportId } as FilterValueClassification
-          }
           defaultValue={props.defaultValue}
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
