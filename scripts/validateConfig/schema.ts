@@ -126,6 +126,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        additionalConfig: {}
       },
     },
     group: {
@@ -193,6 +194,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
                 optionalProperties: {
                   label: { type: "string" },
                   description: { type: "string" },
+                  additionalConfig: {}
                 },
               },
             },

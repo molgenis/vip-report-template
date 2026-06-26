@@ -45,6 +45,7 @@ import { href } from "../utils.ts";
 import { ConfigJsonFieldComposed } from "../../types/config";
 import { getDescription, getLabel } from "./config.ts";
 import { ConfigInvalidError } from "../error.ts";
+import { ClassificationOption } from "../../types/NotesApi";
 
 export function initConfigCellComposed(
   configStatic: ConfigJsonFieldComposed,
@@ -493,6 +494,10 @@ function createConfigFieldNotesInput(
         feature,
         END,
         report: reportId,
+        options:
+          config.additionalConfig !== undefined
+            ? (config.additionalConfig["classification_options"] as ClassificationOption[])
+            : undefined,
       };
     },
   };

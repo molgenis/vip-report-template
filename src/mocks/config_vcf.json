@@ -241,7 +241,16 @@
           "fields": [
             {
               "type": "composed",
-              "name": "notesInput"
+              "name": "notesInput",
+              "additionalConfig": {"classification_options": [
+                { "value": "B", "label": "Benign" },
+                { "value": "LB", "label": "Likely Benign" },
+                { "value": "VUS", "label": "Variant of Uncertain Significance" },
+                { "value": "LP", "label": "Likely Pathogenic" },
+                { "value": "P", "label": "Pathogenic" },
+                { "value": "-", "label": "Artefact" }
+              ]
+            }
             },
             {
               "type": "info",
