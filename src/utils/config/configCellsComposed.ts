@@ -483,11 +483,15 @@ function createConfigFieldNotesInput(
         fieldAlleleNum,
       ) as [string | undefined, string | undefined, string, number | undefined, number];
 
+      console.log("?????");
+      console.log("record.a:" + record.data.a);
+      console.log("record.num:" + alleleNum);
+
       return {
         c: record.data.c,
         p: record.data.p,
         r: record.data.r,
-        a: record.data.a[alleleNum],
+        a: Array.isArray(record.data.a) ? record.data.a?.[alleleNum] : record.data.a,
         s: sample,
         hgvsC,
         hgvsP,

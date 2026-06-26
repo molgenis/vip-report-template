@@ -15,11 +15,17 @@ export class BrowserNotesApi implements NotesApi {
   }
 
   getCurrentUserName(): string | undefined {
-    return undefined;
+    return this.storage.get(this.getUserKey());
   }
 
+  setCurrentUserName(name: string): void {
+    this.storage.set(this.getUserKey(), JSON.stringify(name));
+  }
+
+  isUsernameFromBackend(): boolean {
+    return false;
+  }
   hasUnsavedData(reportId: string): boolean {
-    console.log("HERE!");
     const raw = this.storage.get(this.getStateKey(reportId));
     if (raw == null) {
       return false;
@@ -44,6 +50,10 @@ export class BrowserNotesApi implements NotesApi {
 
   private getStateKey(reportId: string) {
     return `state_${reportId}`;
+  }
+
+  private getUserKey() {
+    return `current_user`;
   }
 
   private getClassificationsKey(reportId: string) {
@@ -76,6 +86,8 @@ export class BrowserNotesApi implements NotesApi {
 
     const id = note.id ? note.id : generateId();
 
+    const username = note.createdBy;
+
     const newNote: Note = {
       id,
       content: note.content,
@@ -84,7 +96,7 @@ export class BrowserNotesApi implements NotesApi {
       sampleId: note.sampleId,
       createdAt: note.createdAt ? note.createdAt : now,
       updatedAt: now,
-      createdBy: "",
+      createdBy: username !== undefined ? username : "",
     };
 
     const idx = notes.findIndex((n) => n.id === id);

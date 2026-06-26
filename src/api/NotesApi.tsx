@@ -1,15 +1,9 @@
-import type {
-  Note,
-  Classification,
-  ClassificationOption,
-} from "../types/NotesApi";
+import type { Note, Classification, ClassificationOption } from "../types/NotesApi";
 
 export interface NotesApi {
   storeNote(note: Note): Promise<void>;
 
-  storeClassification(
-    classification: Classification,
-  ): Promise<Classification>;
+  storeClassification(classification: Classification): Promise<Classification>;
 
   retrieveNotes(reportId: string, sampleId: string | undefined): Promise<Note[]>;
 
@@ -21,7 +15,11 @@ export interface NotesApi {
 
   getClassificationOptions(): Promise<ClassificationOption[]>;
 
+  isUsernameFromBackend(): boolean;
+
   getCurrentUserName(): string | undefined;
+
+  setCurrentUserName(name: string): void;
 
   hasUnsavedData(reportId: string): boolean;
 
