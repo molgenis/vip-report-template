@@ -1,11 +1,10 @@
 import { Component, createResource, Show, createEffect } from "solid-js";
 import { CellValueUserClassification } from "../../types/configCellComposed";
 import { retrieveNotesForVariant } from "../../api/NotesApi.utils";
-import { formatDate } from "../../utils/config/dateUtils";
 import { getNotesApi } from "../../api/NotesApiFactory";
 import type { VariantKey } from "../../types/NotesApi";
 
-export const Comment: Component<{
+export const Notes: Component<{
   userClassification: CellValueUserClassification;
   refresh?: number;
   callback: () => void;
@@ -47,7 +46,9 @@ export const Comment: Component<{
     const list = notes();
     if (!list || list.length === 0) return "-";
 
-    return list.map((note) => `${note.createdBy} (${formatDate(note.updatedAt)}): ${note.content}`).join("\n");
+    return list
+      .map((note) => `${note.createdBy && note.createdBy ? `${note.createdBy}:` : ""} ${note.content}`)
+      .join("\n");
   };
 
   const hasNotes = () => {

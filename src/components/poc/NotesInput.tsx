@@ -1,6 +1,6 @@
 import { Component, createEffect, createSignal, JSX, Show, For, createResource } from "solid-js";
 import { Portal } from "solid-js/web";
-import { Comment } from "./Comment";
+import { Notes } from "./Notes";
 import { CellValueUserClassification } from "../../types/configCellComposed";
 import { ClassificationViewer } from "./ClassificationViewer";
 import { getNotesApi } from "../../api/NotesApiFactory";
@@ -11,14 +11,22 @@ import { Select } from "../form/Select";
 
 const notesApi = getNotesApi();
 
+// Remove outer quotes from a string like "\"Alice\"" → "Alice"
+function stripOuterQuotes(value: string | null | undefined): string {
+  if (!value) return "";
+  const trimmed = value.trim();
+  if (trimmed.length >= 2 && trimmed.startsWith('"') && trimmed.endsWith('"')) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
 type NotesInputProps = {
   open: boolean;
   onClose: () => void;
   onDismissSaved: () => void;
   children: JSX.Element;
   userClassification: CellValueUserClassification;
-  altIndex: number;
-  onAltIndexChange: (index: number) => void;
   classificationSaved: boolean;
 };
 
@@ -53,7 +61,9 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
             <Show when={props.classificationSaved}>
               <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
                 <span>Classification saved successfully.</span>
-                <button class="delete" type="button" onClick={() => props.onDismissSaved()} />
+                <button class="notes-modal-close" type="button" onClick={() => props.onDismissSaved()}>
+                  ×
+                </button>
               </div>
             </Show>
 
@@ -72,15 +82,16 @@ type NotesInputButtonProps = {
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [refreshKey, setRefreshKey] = createSignal(0);
-  const [altIndex, setAltIndex] = createSignal(0);
   const [classificationSaved, setClassificationSaved] = createSignal(false);
 
-  const refresh = () => {
-    setRefreshKey((prev) => prev + 1);
-  };
+  const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()));
+
+  const refresh = () => setRefreshKey((prev) => prev + 1);
 
   const showPopup = () => {
     setClassificationSaved(false);
+    const current = stripOuterQuotes(notesApi.getCurrentUserName());
+    setUsername(current);
     setOpen(true);
   };
 
@@ -91,17 +102,16 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
   const [classificationOptions] = createResource(async () => {
     const options = await notesApi.getClassificationOptions();
-
-    if (!options || options.length === 0) {
-      return props.value.options;
-    }
-
-    return options;
+    return !options || options.length === 0 ? props.value.options : options;
   });
 
-  const default_classification: ClassificationOption = {
+  const [isSetUsernameEnabled] = createResource(async () => {
+    return !notesApi.isUsernameFromBackend();
+  });
+
+  const defaultClassification: ClassificationOption = {
     value: "",
-    description: "Select a classifcation",
+    label: "Select a classification",
   };
 
   const variantKey = (): VariantKey => ({
@@ -131,7 +141,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId),
   );
 
-  const [value, setValue] = createSignal<ClassificationOption>(default_classification);
+  const [value, setValue] = createSignal<ClassificationOption>(defaultClassification);
 
   createEffect(() => {
     const current = classification();
@@ -139,22 +149,19 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     if (!current || !opts) return;
 
     const opt = opts.find((o) => o.value === current.value);
-    if (opt) {
-      setValue(opt);
-    } else {
-      setValue(default_classification);
-    }
+    setValue(opt ?? defaultClassification);
   });
 
-  const handleChange = async (value: string) => {
-    const selectedOption = classificationOptions().find((o) => o.value === value);
+  // Save classification and update username in API
+  const handleChange = async (val: string) => {
+    const selectedOption = classificationOptions()?.find((o) => o.value === val) ?? defaultClassification;
     setValue(selectedOption);
 
     try {
       const currentValue: Classification | undefined = classification();
 
       await notesApi.storeClassification({
-        value: value,
+        value: val,
         variantKey: variantKey(),
         reportId: reportId(),
         status,
@@ -166,7 +173,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       });
 
       await refetchClassification();
-
       setClassificationSaved(true);
       refresh();
     } catch (error) {
@@ -181,16 +187,15 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       refresh: refreshKey(),
       sampleId: sampleId(),
     }),
-    async (source) => {
-      return retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, false);
-    },
+    async (source) => retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, false),
   );
 
   const [noteValue, setNoteValue] = createSignal("");
-
   const saveNote = async () => {
     try {
       if (!noteValue().trim()) return;
+
+      await notesApi.setCurrentUserName(username() || "");
 
       await notesApi.storeNote({
         id: undefined,
@@ -200,7 +205,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         sampleId: sampleId(),
         createdAt: undefined,
         updatedAt: undefined,
-        createdBy: undefined,
+        createdBy: username() || undefined,
       });
 
       await refetchNotes();
@@ -239,7 +244,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     const hgvsP = note.variantKey.hgvsP ?? "";
 
     if (!feature && !hgvsC && !hgvsP) return "";
-
     if (!hgvsC && !hgvsP) return feature;
 
     const hgvsPart = hgvsC && hgvsP ? `${hgvsC}(${hgvsP})` : hgvsC ? hgvsC : `(${hgvsP})`;
@@ -255,7 +259,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         </a>
 
         <ClassificationViewer userClassification={props.value} refresh={refreshKey()} />
-        <Comment userClassification={props.value} refresh={refreshKey()} callback={showPopup} />
+        <Notes userClassification={props.value} refresh={refreshKey()} callback={showPopup} />
       </span>
 
       <NotesInput
@@ -263,8 +267,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         onClose={handleClose}
         onDismissSaved={() => setClassificationSaved(false)}
         userClassification={props.value}
-        altIndex={altIndex()}
-        onAltIndexChange={setAltIndex}
         classificationSaved={classificationSaved()}
       >
         <br />
@@ -274,19 +276,35 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
           <Select
             placeholder={"Select classification"}
             value={value().value}
-            options={classificationOptions().map((option) => ({
-              id: option.value,
-              label: option.label,
-            }))}
+            options={
+              classificationOptions()?.map((option) => ({
+                id: option.value,
+                label: option.label,
+              })) ?? []
+            }
             onValueChange={(e) => handleChange(e.value)}
           />
         </div>
-
-        <br />
         <hr />
-
-        <b>Add a note:</b>
-        <br />
+        <header class="notes-modal-header">
+          <h2 class="notes-modal-title">Notes</h2>
+        </header>
+        <Show when={isSetUsernameEnabled()}>
+          <div class="field">
+            <div class="is-flex is-align-items-center">
+              <label class="label mr-2">Name:</label>
+              <div class="control">
+                <input
+                  type="text"
+                  class="input"
+                  value={username()}
+                  onInput={(e) => setUsername(e.currentTarget.value)}
+                  placeholder="Enter your name (optional)"
+                />
+              </div>
+            </div>
+          </div>
+        </Show>
 
         <div class="field has-addons">
           <div class="control is-expanded">
@@ -296,6 +314,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
               value={noteValue()}
               onInput={(e) => setNoteValue(e.currentTarget.value)}
               class="textarea"
+              placeholder="Enter your note"
             />
             <br />
             <button class="button is-primary ml-2" onClick={saveNote}>
@@ -308,13 +327,18 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
           <div class="mt-3">
             <Show when={notesWithSameFeature().length > 0}>
               <h4 class="has-text-weight-semibold">Notes for this feature</h4>
-
               <For each={notesWithSameFeature()}>
                 {(note) => (
                   <div class="box has-background-light mb-2 p-3">
                     <div class="is-flex is-justify-content-space-between is-align-items-start">
                       <div>
-                        <span class="is-size-6 is-italic mb-1">({formatDate(note.updatedAt)})</span>
+                        <span class="is-size-6 is-italic mb-1">
+                          (
+                          {note.createdBy && note.createdBy
+                            ? `${note.createdBy} on ${formatDate(note.updatedAt)}`
+                            : formatDate(note.updatedAt)}
+                          )
+                        </span>
                       </div>
 
                       <button class="button is-small is-danger is-light" onClick={() => removeNote(note)}>
@@ -330,15 +354,18 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
             <Show when={notesWithOtherFeature().length > 0}>
               <h4 class="has-text-weight-semibold mt-4">Notes for other features</h4>
-
               <For each={notesWithOtherFeature()}>
                 {(note) => (
                   <div class="box has-background-light mb-2 p-3">
                     <div class="is-flex is-justify-content-space-between is-align-items-start">
                       <div>
                         <span class="heading is-size-6 mb-1">({formatNoteLabel(note)} - </span>
-
-                        <span class="is-size-6 is-italic mb-1">{formatDate(note.updatedAt)})</span>
+                        <span class="is-size-6 is-italic mb-1">
+                          {note.createdBy && note.createdBy
+                            ? `${note.createdBy} on ${formatDate(note.updatedAt)}`
+                            : formatDate(note.updatedAt)}
+                          )
+                        </span>
                       </div>
 
                       <button class="button is-small is-danger is-light" onClick={() => removeNote(note)}>

@@ -42,6 +42,15 @@ const CLASSIFICATION_COLUMNS = [
   "hgvsP",
 ] as const;
 
+function stripOuterQuotes(value: string | number | undefined): string | number | undefined {
+  if (typeof value !== "string") return value;
+  const trimmed = value.trim();
+  if (trimmed.length >= 2 && trimmed.startsWith('"') && trimmed.endsWith('"')) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
 export class FileApi {
   constructor(private readonly notesApi: NotesApi) {}
 
@@ -62,16 +71,19 @@ export class FileApi {
   }
 
   private unflattenNote(row: FlatNote): Note {
-    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, ...rest } = row;
+    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, createdBy, content, ...rest } =
+      row;
 
     return {
       ...rest,
+      content: stripOuterQuotes(content) as string,
+      createdBy: (stripOuterQuotes(createdBy) as string) || this.notesApi.getCurrentUserName() || "",
       variantKey: {
         Chromosome,
-        Position: Number(Position),
+        Position: Number(stripOuterQuotes(Position) as number | string),
         Reference,
         Alternative,
-        END: END == null ? undefined : Number(END),
+        END: END == null ? undefined : Number(stripOuterQuotes(END) as number | string),
         feature: feature ?? "",
         hgvsC: hgvsC ?? "",
         hgvsP: hgvsP ?? "",
@@ -80,16 +92,18 @@ export class FileApi {
   }
 
   private unflattenClassification(row: FlatClassification): Classification {
-    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, ...rest } = row;
+    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, createdBy, value, ...rest } = row;
 
     return {
       ...rest,
+      value: stripOuterQuotes(value) as string,
+      createdBy: (stripOuterQuotes(createdBy) as string) || "",
       variantKey: {
         Chromosome,
-        Position: Number(Position),
+        Position: Number(stripOuterQuotes(Position) as number | string),
         Reference,
         Alternative,
-        END: END == null ? undefined : Number(END),
+        END: END == null ? undefined : Number(stripOuterQuotes(END) as number | string),
         feature: feature ?? "",
         hgvsC: hgvsC ?? "",
         hgvsP: hgvsP ?? "",
@@ -113,7 +127,10 @@ export class FileApi {
 
     const headers = (rows[0] ?? []).map(String);
 
-    const missing = expectedColumns.filter((column) => !headers.includes(column));
+    const effectiveExpectedColumns =
+      sheetName === "Classifications" ? expectedColumns.filter((c) => c !== "createdBy") : expectedColumns;
+
+    const missing = effectiveExpectedColumns.filter((column) => !headers.includes(column));
 
     if (missing.length > 0) {
       throw new Error(`${sheetName} sheet is missing required columns: ${missing.join(", ")}`);
@@ -137,10 +154,7 @@ export class FileApi {
 
           const workbook = read(data, { type: "array" });
 
-          // Validate metadata sheet and reportId before importing
           const reportIdFromFile = this.getReportIdFromWorkbook(utils, workbook);
-
-          // Optional: you could compare reportIdFromFile with current reportId if needed
 
           const notesSheet = workbook.Sheets["Notes"];
 
@@ -201,22 +215,38 @@ export class FileApi {
     const workbook = utils.book_new();
 
     if (notes.length > 0) {
-      const flatNotes = notes.map((note) => this.flattenVariantKey(note));
+      const flatNotes = notes.map((note) =>
+        this.flattenVariantKey({
+          ...note,
+          createdBy: (stripOuterQuotes(note.createdBy) as string) ?? "",
+        }),
+      );
 
       const notesSheet = utils.json_to_sheet(flatNotes);
-
       utils.book_append_sheet(workbook, notesSheet, "Notes");
     }
 
     if (classifications.length > 0) {
-      const flatClassifications = classifications.map((classification) => this.flattenVariantKey(classification));
+      const useBackendUsername = this.notesApi.isUsernameFromBackend?.() ?? false;
+
+      const flatClassifications = classifications.map((classification) => {
+        const base = this.flattenVariantKey(classification);
+        const cleanedCreatedBy = stripOuterQuotes(classification.createdBy);
+
+        if (useBackendUsername && cleanedCreatedBy) {
+          return {
+            ...base,
+            createdBy: cleanedCreatedBy as string,
+          };
+        }
+        return base;
+      });
 
       const classificationsSheet = utils.json_to_sheet(flatClassifications);
 
       utils.book_append_sheet(workbook, classificationsSheet, "Classifications");
     }
 
-    // Always add a Metadata sheet with reportId
     const metadataSheet = utils.json_to_sheet([
       {
         key: "reportId",
@@ -230,17 +260,16 @@ export class FileApi {
     this.notesApi.setSavedState(true, reportId);
   }
 
-  /**
-   * Extracts and validates reportId from the Metadata sheet of a workbook.
-   * Throws if the sheet is missing or reportId is not present.
-   */
   private getReportIdFromWorkbook(utils: typeof import("xlsx").utils, workbook: XLSX.WorkBook): string {
     const metadataSheet = workbook.Sheets["Metadata"];
     if (!metadataSheet) {
       throw new Error("Metadata sheet is missing");
     }
 
-    const rows = utils.sheet_to_json<{ key: string; value: string }>(metadataSheet);
+    const rows = utils.sheet_to_json<{
+      key: string;
+      value: string;
+    }>(metadataSheet);
 
     if (!rows || rows.length === 0) {
       throw new Error("Metadata sheet is empty");
@@ -254,9 +283,6 @@ export class FileApi {
     return String(reportRow.value);
   }
 
-  /**
-   * Public helper: read a File and return the reportId from its Metadata sheet.
-   */
   async getReportIdFromFile(excelFile: File): Promise<string> {
     const { read, utils } = await import("xlsx");
 
