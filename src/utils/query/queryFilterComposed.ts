@@ -1,6 +1,5 @@
 import {
   ConfigFilterAllelicImbalance,
-  ConfigFilterClassification,
   ConfigFilterComposed,
   ConfigFilterDeNovo,
   ConfigFilterHpo,
@@ -8,7 +7,6 @@ import {
   ConfigFilterVipC,
   ConfigFilterVipCS,
   FilterValueAllelicImbalance,
-  FilterValueClassification,
   FilterValueDeNovo,
   FilterValueHpo,
   FilterValueInheritanceMatch,
@@ -201,17 +199,6 @@ function createQueryFilterInheritanceMatch(
     queryParts.push(createQueryComposed(queryPartsUndefined, "or"));
   }
   return createQueryComposed(queryParts, "or");
-}
-
-function createQueryFilterClassification(
-  filter: ConfigFilterClassification,
-  filterValue: FilterValueClassification,
-) {
-    return {
-      selector: "v._id",
-      operator: "in",
-      args: filterValue.ids.length > 0 ? filterValue.ids:[-1],
-    } as Query;
 }
 
 function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: FilterValueDeNovo): Query {

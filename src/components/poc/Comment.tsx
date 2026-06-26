@@ -3,6 +3,7 @@ import { CellValueUserClassification } from "../../types/configCellComposed";
 import { retrieveNotesForVariant } from "../../api/NotesApi.utils";
 import { formatDate } from "../../utils/config/dateUtils";
 import { getNotesApi } from "../../api/NotesApiFactory";
+import type { VariantKey } from "../../types/NotesApi";
 
 export const Comment: Component<{
   userClassification: CellValueUserClassification;
@@ -10,26 +11,31 @@ export const Comment: Component<{
   callback: () => void;
 }> = (props) => {
   const notesApi = getNotesApi();
+
   const reportId = () => props.userClassification.report;
 
-  const variantKey = {
+  const variantKey = (): VariantKey => ({
     Chromosome: props.userClassification.c,
     Position: props.userClassification.p,
     Reference: props.userClassification.r,
     Alternative: props.userClassification.a,
     END: props.userClassification.END,
     feature: props.userClassification.feature,
-  };
-
-  const [notes, { refetch }] = createResource(async () => {
-    return retrieveNotesForVariant(
-      notesApi,
-      variantKey,
-      reportId(),
-      props.userClassification.s.item.data.person.individualId,
-      true,
-    );
+    hgvsC: props.userClassification.hgvsC ?? "",
+    hgvsP: props.userClassification.hgvsP ?? "",
   });
+
+  const sampleId = () => props.userClassification.s.item.data.person.individualId;
+
+  const [notes, { refetch }] = createResource(
+    () => ({
+      vk: variantKey(),
+      reportId: reportId(),
+      sampleId: sampleId(),
+      refresh: props.refresh ?? 0,
+    }),
+    async (source) => retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, true),
+  );
 
   createEffect(() => {
     if (props.refresh !== undefined) {
@@ -41,12 +47,7 @@ export const Comment: Component<{
     const list = notes();
     if (!list || list.length === 0) return "-";
 
-    return list
-      .map(
-        (note) =>
-          `${note.createdBy} (${formatDate(note.updatedAt)}): ${note.content}`,
-      )
-      .join("\n");
+    return list.map((note) => `${note.createdBy} (${formatDate(note.updatedAt)}): ${note.content}`).join("\n");
   };
 
   const hasNotes = () => {
@@ -55,16 +56,10 @@ export const Comment: Component<{
   };
 
   return (
-    <>
+    <Show when={hasNotes()}>
       <abbr title={value()} class="ml-1 is-clickable">
-        <Show when={hasNotes()}>
-          <button onClick={() => props.callback()}>
-            <span>
-              <i class="fas fa-comment has-text-info" />
-            </span>
-          </button>
-        </Show>
+        <i class="fa fa-comment" />
       </abbr>
-    </>
+    </Show>
   );
 };

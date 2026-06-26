@@ -1,35 +1,20 @@
-import {
-  Component,
-  createEffect,
-  createSignal,
-  JSX,
-  Show,
-  For,
-  createResource,
-} from "solid-js";
+import { Component, createEffect, createSignal, JSX, Show, For, createResource } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Comment } from "./Comment";
 import { CellValueUserClassification } from "../../types/configCellComposed";
 import { ClassificationViewer } from "./ClassificationViewer";
 import { getNotesApi } from "../../api/NotesApiFactory";
-import {
-  Classification,
-  ClassificationOption,
-  Note,
-  Status,
-} from "../../types/NotesApi";
-import {
-  retrieveClassification,
-  retrieveNotesForVariant,
-} from "../../api/NotesApi.utils";
+import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../types/NotesApi";
+import { retrieveClassification, retrieveNotesForVariant } from "../../api/NotesApi.utils";
 import { formatDate } from "../../utils/config/dateUtils";
-import type { VariantKey } from "../../types/NotesApi"; // or wherever VariantKey lives
+import { Select } from "../form/Select";
 
 const notesApi = getNotesApi();
 
 type NotesInputProps = {
   open: boolean;
   onClose: () => void;
+  onDismissSaved: () => void;
   children: JSX.Element;
   userClassification: CellValueUserClassification;
   altIndex: number;
@@ -53,87 +38,22 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
   return (
     <Show when={props.open}>
       <Portal>
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            "align-items": "center",
-            "justify-content": "center",
-            "z-index": 9999,
-          }}
-          onClick={props.onClose}
-        >
-          <div
-            ref={setContentRef}
-            style={{
-              background: "#fff",
-              padding: "1rem",
-              "border-radius": "8px",
-              "max-width": "800px",
-              width: "100%",
-              position: "relative",
-              "max-height": "80vh",
-              "overflow-y": "auto",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <header
-              style={{
-                "border-bottom": "1px solid #ddd",
-                "margin-bottom": "1rem",
-                padding: "0 0 0.5rem 0",
-              }}
-            >
-              <h2 style={{ margin: 0, "font-size": "1.25rem" }}>
-                {props.userClassification.feature}:
-                {props.userClassification.hgvsC}(
-                {props.userClassification.hgvsP})
+        <div class="notes-modal-overlay" onClick={() => props.onClose()}>
+          <div ref={setContentRef} class="notes-modal-content" onClick={(e) => e.stopPropagation()}>
+            <header class="notes-modal-header">
+              <h2 class="notes-modal-title">
+                {props.userClassification.feature}:{props.userClassification.hgvsC}({props.userClassification.hgvsP})
               </h2>
             </header>
 
-            <button
-              onClick={props.onClose}
-              style={{
-                position: "absolute",
-                top: "0.5rem",
-                right: "0.5rem",
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-                "font-size": "1.2rem",
-              }}
-            >
+            <button onClick={() => props.onClose()} class="notes-modal-close">
               ×
             </button>
 
             <Show when={props.classificationSaved}>
-              <div class="notification is-success is-light">
-                Classification saved successfully.
-              </div>
-            </Show>
-
-            {/* alt allele UI currently disabled */}
-            <Show when={0 > 1}>
-              <div style={{ "margin-bottom": "0.5rem" }}>
-                <label>
-                  <b>Select alt allele:</b>{" "}
-                  <select
-                    value={props.altIndex}
-                    onChange={(e) =>
-                      props.onAltIndexChange(Number(e.currentTarget.value))
-                    }
-                  >
-                    <For each={undefined}>
-                      {(alt, i) => (
-                        <option value={i()}>
-                          {alt.length > 5 ? `${alt.slice(0, 5)}…` : alt}
-                        </option>
-                      )}
-                    </For>
-                  </select>
-                </label>
+              <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
+                <span>Classification saved successfully.</span>
+                <button class="delete" type="button" onClick={() => props.onDismissSaved()} />
               </div>
             </Show>
 
@@ -178,7 +98,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     description: "",
   };
 
-  // FIX: include hgvsC and hgvsP in VariantKey to match your global type
   const variantKey = (): VariantKey => ({
     Chromosome: props.value.c,
     Position: props.value.p,
@@ -191,10 +110,9 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   });
 
   const reportId = () => props.value.report;
-  const sampleId =
-    props.value.s !== undefined
-      ? props.value.s.item.data.person.individualId
-      : undefined;
+
+  const sampleId = () => (props.value.s !== undefined ? props.value.s.item.data.person.individualId : undefined);
+
   const status: Status = "approved";
 
   const [classification, { refetch: refetchClassification }] = createResource(
@@ -202,45 +120,51 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       vk: variantKey(),
       reportId: reportId(),
       refresh: refreshKey(),
+      sampleId: sampleId(),
     }),
-    async (src) =>
-      retrieveClassification(notesApi, src.vk, src.reportId, sampleId),
+    async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId),
   );
 
-  const [value, setValue] =
-    createSignal<ClassificationOption>(DEFAULT_OPTION);
+  const [value, setValue] = createSignal<ClassificationOption>(DEFAULT_OPTION);
 
-  const save = async () => {
+  createEffect(() => {
+    const current = classification();
+    const opts = OPTIONS();
+    if (!current || !opts) return;
+
+    const opt = opts.find((o) => o.value === current.value);
+    if (opt) {
+      setValue(opt);
+    } else {
+      setValue(DEFAULT_OPTION);
+    }
+  });
+
+  const handleChange = async (value: string) => {
+    const selectedOption = OPTIONS().find((o) => o.value === value);
+    setValue(selectedOption);
+
     try {
       const currentValue: Classification | undefined = classification();
 
       await notesApi.storeClassification({
-        value: value().value,
+        value: value,
         variantKey: variantKey(),
         reportId: reportId(),
         status,
         id: currentValue?.id,
-        sampleId,
+        sampleId: sampleId(),
         createdAt: undefined,
         updatedAt: undefined,
         createdBy: undefined,
       });
 
       await refetchClassification();
+
       setClassificationSaved(true);
       refresh();
     } catch (error) {
       console.error("Classification save error:", error);
-    }
-  };
-
-  const handleChange: JSX.EventHandlerUnion<HTMLSelectElement, Event> = (e) => {
-    const opts = OPTIONS();
-    if (!opts) return;
-
-    const option = opts.find((o) => o.value === e.currentTarget.value);
-    if (option) {
-      setValue(option);
     }
   };
 
@@ -249,15 +173,10 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       vk: variantKey(),
       reportId: reportId(),
       refresh: refreshKey(),
+      sampleId: sampleId(),
     }),
-    async (src) => {
-      return retrieveNotesForVariant(
-        notesApi,
-        src.vk,
-        src.reportId,
-        sampleId,
-        false,
-      );
+    async (source) => {
+      return retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, false);
     },
   );
 
@@ -272,7 +191,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         content: noteValue(),
         variantKey: variantKey(),
         reportId: reportId(),
-        sampleId,
+        sampleId: sampleId(),
         createdAt: undefined,
         updatedAt: undefined,
         createdBy: undefined,
@@ -299,17 +218,13 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const notesWithSameFeature = () => {
     const list = notes();
     if (!list) return [];
-    return list.filter(
-      (note) => note.variantKey.feature === props.value.feature,
-    );
+    return list.filter((note) => note.variantKey.feature === props.value.feature);
   };
 
   const notesWithOtherFeature = () => {
     const list = notes();
     if (!list) return [];
-    return list.filter(
-      (note) => note.variantKey.feature !== props.value.feature,
-    );
+    return list.filter((note) => note.variantKey.feature !== props.value.feature);
   };
 
   const formatNoteLabel = (note: Note) => {
@@ -321,12 +236,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
     if (!hgvsC && !hgvsP) return feature;
 
-    const hgvsPart =
-      hgvsC && hgvsP
-        ? `${hgvsC}(${hgvsP})`
-        : hgvsC
-        ? hgvsC
-        : `(${hgvsP})`;
+    const hgvsPart = hgvsC && hgvsP ? `${hgvsC}(${hgvsP})` : hgvsC ? hgvsC : `(${hgvsP})`;
 
     return feature ? `${feature}:${hgvsPart}` : hgvsPart;
   };
@@ -334,25 +244,18 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   return (
     <>
       <span>
-        <button onClick={showPopup}>
-          <i class="fas fa-edit"></i>
-        </button>
+        <a onClick={showPopup}>
+          <i class="fas fa-edit" />
+        </a>
 
-        <Comment
-          userClassification={props.value}
-          refresh={refreshKey()}
-          callback={showPopup}
-        />
-
-        <ClassificationViewer
-          userClassification={props.value}
-          refresh={refreshKey()}
-        />
+        <ClassificationViewer userClassification={props.value} refresh={refreshKey()} />
+        <Comment userClassification={props.value} refresh={refreshKey()} callback={showPopup} />
       </span>
 
       <NotesInput
         open={open()}
         onClose={handleClose}
+        onDismissSaved={() => setClassificationSaved(false)}
         userClassification={props.value}
         altIndex={altIndex()}
         onAltIndexChange={setAltIndex}
@@ -362,28 +265,20 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
         <div>
           <b>Classification:</b>{" "}
-          <select
+          <Select
+            placeholder={"Select classification"}
             value={value().value}
-            onChange={handleChange}
-            disabled={classification.loading}
-          >
-            <option value={DEFAULT_OPTION.value}>
-              {DEFAULT_OPTION.description}
-            </option>
-
-            <For each={OPTIONS() ?? []}>
-              {(opt) => (
-                <option value={opt.value}>{opt.description}</option>
-              )}
-            </For>
-          </select>
+            options={OPTIONS().map((option) => ({
+              id: option.value,
+              label: option.description,
+            }))}
+            onValueChange={(e) => handleChange(e.value)}
+          />
         </div>
-        <br />
-        <button class="button is-primary ml-2" onClick={save}>
-          Save Classification
-        </button>
+
         <br />
         <hr />
+
         <b>Add a note:</b>
         <br />
 
@@ -406,23 +301,17 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         <Show when={!notes.loading && notes()}>
           <div class="mt-3">
             <Show when={notesWithSameFeature().length > 0}>
-              <h4 class="has-text-weight-semibold">
-                Notes for this feature
-              </h4>
+              <h4 class="has-text-weight-semibold">Notes for this feature</h4>
+
               <For each={notesWithSameFeature()}>
                 {(note) => (
                   <div class="box has-background-light mb-2 p-3">
                     <div class="is-flex is-justify-content-space-between is-align-items-start">
                       <div>
-                        <span class="is-size-6 is-italic mb-1">
-                          ({formatDate(note.updatedAt)})
-                        </span>
+                        <span class="is-size-6 is-italic mb-1">({formatDate(note.updatedAt)})</span>
                       </div>
 
-                      <button
-                        class="button is-small is-danger is-light"
-                        onClick={() => removeNote(note)}
-                      >
+                      <button class="button is-small is-danger is-light" onClick={() => removeNote(note)}>
                         Remove note
                       </button>
                     </div>
@@ -434,26 +323,19 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
             </Show>
 
             <Show when={notesWithOtherFeature().length > 0}>
-              <h4 class="has-text-weight-semibold mt-4">
-                Notes for other features
-              </h4>
+              <h4 class="has-text-weight-semibold mt-4">Notes for other features</h4>
+
               <For each={notesWithOtherFeature()}>
                 {(note) => (
                   <div class="box has-background-light mb-2 p-3">
                     <div class="is-flex is-justify-content-space-between is-align-items-start">
                       <div>
-                        <span class="heading is-size-6 mb-1">
-                          ({formatNoteLabel(note)} -{" "}
-                        </span>
-                        <span class="is-size-6 is-italic mb-1">
-                          {formatDate(note.updatedAt)})
-                        </span>
+                        <span class="heading is-size-6 mb-1">({formatNoteLabel(note)} - </span>
+
+                        <span class="is-size-6 is-italic mb-1">{formatDate(note.updatedAt)})</span>
                       </div>
 
-                      <button
-                        class="button is-small is-danger is-light"
-                        onClick={() => removeNote(note)}
-                      >
+                      <button class="button is-small is-danger is-light" onClick={() => removeNote(note)}>
                         Remove note
                       </button>
                     </div>
@@ -471,9 +353,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         </Show>
 
         <Show when={notes.error}>
-          <p class="help is-danger">
-            Error loading notes: {String(notes.error)}
-          </p>
+          <p class="help is-danger">Error loading notes: {String(notes.error)}</p>
         </Show>
       </NotesInput>
     </>
