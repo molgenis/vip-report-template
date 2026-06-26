@@ -1,9 +1,6 @@
-import type {
-  Note,
-  Classification,
-  VariantKey,
-} from "../types/NotesApi";
+import type { Note, Classification, VariantKey } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
+import type XLSX from "xlsx";
 
 type FlatNote = Omit<Note, "variantKey"> & VariantKey;
 type FlatClassification = Omit<Classification, "variantKey"> & VariantKey;
@@ -48,9 +45,7 @@ const CLASSIFICATION_COLUMNS = [
 export class FileApi {
   constructor(private readonly notesApi: NotesApi) {}
 
-  private flattenVariantKey<T extends { variantKey: VariantKey }>(
-    item: T,
-  ): Omit<T, "variantKey"> & VariantKey {
+  private flattenVariantKey<T extends { variantKey: VariantKey }>(item: T): Omit<T, "variantKey"> & VariantKey {
     const { variantKey, ...rest } = item;
 
     return {
@@ -67,17 +62,7 @@ export class FileApi {
   }
 
   private unflattenNote(row: FlatNote): Note {
-    const {
-      Chromosome,
-      Position,
-      Reference,
-      Alternative,
-      END,
-      feature,
-      hgvsC,
-      hgvsP,
-      ...rest
-    } = row;
+    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, ...rest } = row;
 
     return {
       ...rest,
@@ -95,17 +80,7 @@ export class FileApi {
   }
 
   private unflattenClassification(row: FlatClassification): Classification {
-    const {
-      Chromosome,
-      Position,
-      Reference,
-      Alternative,
-      END,
-      feature,
-      hgvsC,
-      hgvsP,
-      ...rest
-    } = row;
+    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, ...rest } = row;
 
     return {
       ...rest,
@@ -138,14 +113,10 @@ export class FileApi {
 
     const headers = (rows[0] ?? []).map(String);
 
-    const missing = expectedColumns.filter(
-      column => !headers.includes(column),
-    );
+    const missing = expectedColumns.filter((column) => !headers.includes(column));
 
     if (missing.length > 0) {
-      throw new Error(
-        `${sheetName} sheet is missing required columns: ${missing.join(", ")}`,
-      );
+      throw new Error(`${sheetName} sheet is missing required columns: ${missing.join(", ")}`);
     }
   }
 
@@ -155,7 +126,7 @@ export class FileApi {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
-      reader.onload = async e => {
+      reader.onload = async (e) => {
         try {
           const data = e.target?.result;
 
@@ -166,15 +137,15 @@ export class FileApi {
 
           const workbook = read(data, { type: "array" });
 
+          // Validate metadata sheet and reportId before importing
+          const reportIdFromFile = this.getReportIdFromWorkbook(utils, workbook);
+
+          // Optional: you could compare reportIdFromFile with current reportId if needed
+
           const notesSheet = workbook.Sheets["Notes"];
 
           if (notesSheet) {
-            this.validateSheet(
-              utils,
-              notesSheet,
-              NOTE_COLUMNS,
-              "Notes",
-            );
+            this.validateSheet(utils, notesSheet, NOTE_COLUMNS, "Notes");
 
             const rows = utils.sheet_to_json<FlatNote>(notesSheet);
 
@@ -185,27 +156,16 @@ export class FileApi {
 
               seen.add(row.id);
 
-              await this.notesApi.storeNote(
-                this.unflattenNote(row),
-              );
+              await this.notesApi.storeNote(this.unflattenNote(row));
             }
           }
 
-          const classificationsSheet =
-            workbook.Sheets["Classifications"];
+          const classificationsSheet = workbook.Sheets["Classifications"];
 
           if (classificationsSheet) {
-            this.validateSheet(
-              utils,
-              classificationsSheet,
-              CLASSIFICATION_COLUMNS,
-              "Classifications",
-            );
+            this.validateSheet(utils, classificationsSheet, CLASSIFICATION_COLUMNS, "Classifications");
 
-            const rows =
-              utils.sheet_to_json<FlatClassification>(
-                classificationsSheet,
-              );
+            const rows = utils.sheet_to_json<FlatClassification>(classificationsSheet);
 
             const seen = new Set<string>();
 
@@ -214,28 +174,19 @@ export class FileApi {
 
               seen.add(row.id);
 
-              await this.notesApi.storeClassification(
-                this.unflattenClassification(row),
-              );
+              await this.notesApi.storeClassification(this.unflattenClassification(row));
             }
           }
 
-          resolve(
-            "Successfully imported notes and classifications from Excel",
-          );
+          resolve(`Successfully imported notes and classifications from Excel for reportId ${reportIdFromFile}`);
         } catch (error) {
           console.error(error);
 
-          reject(
-            error instanceof Error
-              ? error.message
-              : "Failed to parse Excel file",
-          );
+          reject(error instanceof Error ? error.message : "Failed to parse Excel file");
         }
       };
 
-      reader.onerror = () =>
-        reject("Failed to read Excel file");
+      reader.onerror = () => reject("Failed to read Excel file");
 
       reader.readAsArrayBuffer(excelFile);
     });
@@ -245,48 +196,74 @@ export class FileApi {
     const { utils, writeFile } = await import("xlsx");
 
     const notes = await this.notesApi.retrieveNotes(reportId, undefined);
-    const classifications =
-      await this.notesApi.retrieveClassifications(reportId, undefined);
+    const classifications = await this.notesApi.retrieveClassifications(reportId, undefined);
 
     const workbook = utils.book_new();
 
     if (notes.length > 0) {
-      const flatNotes = notes.map(note =>
-        this.flattenVariantKey(note),
-      );
+      const flatNotes = notes.map((note) => this.flattenVariantKey(note));
 
       const notesSheet = utils.json_to_sheet(flatNotes);
 
-      utils.book_append_sheet(
-        workbook,
-        notesSheet,
-        "Notes",
-      );
+      utils.book_append_sheet(workbook, notesSheet, "Notes");
     }
 
     if (classifications.length > 0) {
-      const flatClassifications = classifications.map(
-        classification =>
-          this.flattenVariantKey(classification),
-      );
+      const flatClassifications = classifications.map((classification) => this.flattenVariantKey(classification));
 
-      const classificationsSheet = utils.json_to_sheet(
-        flatClassifications,
-      );
+      const classificationsSheet = utils.json_to_sheet(flatClassifications);
 
-      utils.book_append_sheet(
-        workbook,
-        classificationsSheet,
-        "Classifications",
-      );
+      utils.book_append_sheet(workbook, classificationsSheet, "Classifications");
     }
 
-    if (workbook.SheetNames.length === 0) {
-      throw new Error("No data available to export");
-    }
+    // Always add a Metadata sheet with reportId
+    const metadataSheet = utils.json_to_sheet([
+      {
+        key: "reportId",
+        value: reportId,
+      },
+    ]);
+
+    utils.book_append_sheet(workbook, metadataSheet, "Metadata");
 
     writeFile(workbook, `notes_${reportId}.xlsx`);
     this.notesApi.setSavedState(true, reportId);
+  }
+
+  /**
+   * Extracts and validates reportId from the Metadata sheet of a workbook.
+   * Throws if the sheet is missing or reportId is not present.
+   */
+  private getReportIdFromWorkbook(utils: typeof import("xlsx").utils, workbook: XLSX.WorkBook): string {
+    const metadataSheet = workbook.Sheets["Metadata"];
+    if (!metadataSheet) {
+      throw new Error("Metadata sheet is missing");
+    }
+
+    const rows = utils.sheet_to_json<{ key: string; value: string }>(metadataSheet);
+
+    if (!rows || rows.length === 0) {
+      throw new Error("Metadata sheet is empty");
+    }
+
+    const reportRow = rows.find((row) => row.key === "reportId");
+    if (!reportRow || !reportRow.value) {
+      throw new Error("Metadata sheet does not contain a reportId");
+    }
+
+    return String(reportRow.value);
+  }
+
+  /**
+   * Public helper: read a File and return the reportId from its Metadata sheet.
+   */
+  async getReportIdFromFile(excelFile: File): Promise<string> {
+    const { read, utils } = await import("xlsx");
+
+    const data = await excelFile.arrayBuffer();
+    const workbook = read(data, { type: "array" });
+
+    return this.getReportIdFromWorkbook(utils, workbook);
   }
 }
 

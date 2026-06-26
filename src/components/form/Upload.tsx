@@ -22,7 +22,23 @@ export const Upload: Component<{
 
     setUploading(true);
     try {
-      // Preserve saved state around the import
+      // 1) Read reportId from Excel metadata
+      const reportIdFromFile = await fileApi.getReportIdFromFile(file);
+
+      // 2) If different, ask user whether to continue
+      if (reportIdFromFile !== props.reportId) {
+        const proceed = window.confirm(
+          `The selected file belongs to a different report.\n\n` + `Do you want to continue importing anyway?`,
+        );
+        if (!proceed) {
+          // User cancelled: stop here, keep modal open
+          setUploading(false);
+          target.value = "";
+          return;
+        }
+      }
+
+      // 3) Preserve saved state around the import
       const state = !notesApi.hasUnsavedData(props.reportId);
       const msg = await fileApi.load(file);
       notesApi.setSavedState(state, props.reportId);
@@ -37,7 +53,7 @@ export const Upload: Component<{
       setUploading(false);
       // Clear the input so selecting the same file again works
       target.value = "";
-      // Close modal after upload completes
+      // Close modal after upload completes or confirm
       setOpen(false);
     }
   };
@@ -64,14 +80,9 @@ export const Upload: Component<{
           }}
         >
           <div class="modal-background" />
-          <div
-            class="modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div class="modal-content" onClick={(e) => e.stopPropagation()}>
             <div class="box">
-              <h3 class="title is-size-6 mb-2">
-                Upload Notes and Classifications
-              </h3>
+              <h3 class="title is-size-6 mb-2">Upload Notes and Classifications</h3>
 
               {message() && (
                 <div
@@ -85,10 +96,7 @@ export const Upload: Component<{
                 </div>
               )}
 
-              <p class="help is-info mb-3">
-                Select an Excel file with notes and classifications to be
-                loaded.
-              </p>
+              <p class="help is-info mb-3">Select an Excel file with notes and classifications to be loaded.</p>
 
               <div class="field">
                 <div class="control">

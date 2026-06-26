@@ -31,11 +31,10 @@ export const VariantResults: Component<{
   onPageChange: PageChangeCallback;
   onSortChange: SortChangeCallback;
   onSortClear: SortClearCallback;
-  onRefresh: () => void;                 // NEW
+  onRefresh: () => void;
 }> = (props) => {
   const handleRefresh = () => {
-    console.log("VariantResults.handleRefresh");
-    props.onRefresh();                   // delegate to parent
+    props.onRefresh();
   };
 
   const sortOptions = (): ConfigSort[] => {
@@ -44,9 +43,7 @@ export const VariantResults: Component<{
     } else {
       return props.fieldConfigs
         .flatMap((fieldConfig) =>
-          fieldConfig.type === "group"
-            ? (fieldConfig as ConfigCellGroup).fieldConfigs
-            : [fieldConfig],
+          fieldConfig.type === "group" ? (fieldConfig as ConfigCellGroup).fieldConfigs : [fieldConfig],
         )
         .filter((fieldConfig) => fieldConfig.type === "info")
         .map((fieldConfig) => fieldConfig as ConfigCellInfo)
@@ -69,40 +66,26 @@ export const VariantResults: Component<{
         <div class="column is-offset-1-fullhd is-3-fullhd is-4">
           <Show when={props.records} fallback={<Loader />} keyed>
             {(records) => (
-              <span class="is-pulled-left inline-control-text ml-2">
-                {records.page.totalElements} records
-              </span>
+              <span class="is-pulled-left inline-control-text ml-2">{records.page.totalElements} records</span>
             )}
           </Show>
         </div>
         <div class="column is-4">
           <Show when={props.records} fallback={<Loader />} keyed>
-            {(records) => (
-              <Pager page={records.page} onPageChange={props.onPageChange} />
-            )}
+            {(records) => <Pager page={records.page} onPageChange={props.onPageChange} />}
           </Show>
         </div>
         <div class="column">
           <div class="field is-grouped is-grouped-right">
             {sortOptions().length > 0 && (
-              <Sort
-                options={sortOptions()}
-                onChange={props.onSortChange}
-                onClear={props.onSortClear}
-              />
+              <Sort options={sortOptions()} onChange={props.onSortChange} onClear={props.onSortClear} />
             )}
             <ButtonDownload
-                title="Download vcf file with records matching filters and search queries"
-                onClick={props.onRecordsDownload}
-              />
-            <ButtonSave
-              title="Download your notes and classifications"
-              onClick={props.onNotesDownload}
+              title="Download vcf file with records matching filters and search queries"
+              onClick={props.onRecordsDownload}
             />
-            <Upload
-              reportId={props.reportId}
-              refetch={handleRefresh}
-            />
+            <ButtonSave title="Download your notes and classifications" onClick={props.onNotesDownload} />
+            <Upload reportId={props.reportId} refetch={handleRefresh} />
           </div>
         </div>
       </div>
@@ -111,17 +94,11 @@ export const VariantResults: Component<{
           <Show when={props.records} fallback={<Loader />} keyed>
             {(records) => (
               <>
-                <RecordsTable
-                  fieldConfigs={props.fieldConfigs}
-                  records={records.items}
-                />
+                <RecordsTable fieldConfigs={props.fieldConfigs} records={records.items} />
                 <div class="columns is-gapless">
                   <div class="column">
                     <div class="field is-grouped is-grouped-right">
-                      <RecordsPerPage
-                        config={props.recordsPerPage}
-                        onChange={props.onRecordsPerPageChange}
-                      />
+                      <RecordsPerPage config={props.recordsPerPage} onChange={props.onRecordsPerPageChange} />
                     </div>
                   </div>
                 </div>

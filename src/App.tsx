@@ -26,8 +26,6 @@ export function init(navigate: Navigator, location?: Location) {
   })();
 }
 
-let reloadInProgress = false;
-
 const App: ParentComponent = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +34,7 @@ const App: ParentComponent = (props) => {
   const [reportId, setReportId] = createSignal<string | null>(null);
 
   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    if (!notesApi.hasUnsavedData(reportId()) || reloadInProgress) return;
+    if (!notesApi.hasUnsavedData(reportId())) return;
 
     e.preventDefault();
     e.returnValue = "";

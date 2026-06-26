@@ -1,4 +1,4 @@
-import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueInteger, ValueString, VcfRecord } from "@molgenis/vip-report-vcf";
+import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueInteger, ValueString } from "@molgenis/vip-report-vcf";
 import { ValueCategorical } from "../utils/vcf.ts";
 import { SampleContainer } from "../utils/api.ts";
 
@@ -61,17 +61,17 @@ export type CellValueInheritanceModes = {
 
 export type CellValueLocus = { c: string; p: number; href: string };
 
-export type CellValueUserClassification = { 
-  s: SampleContainer | undefined; 
-  c: string,
-  p: number,
-  r: string,
-  a: string | null,
-  hgvsC: string,
-  hgvsP: string,
-  feature: string,
-  END: number | null,
-  report: string 
+export type CellValueUserClassification = {
+  s: SampleContainer | undefined;
+  c: string;
+  p: number;
+  r: string;
+  a: string | null;
+  hgvsC: string;
+  hgvsP: string;
+  feature: string;
+  END: number | null;
+  report: string;
 };
 
 export type CellValueVipC = {

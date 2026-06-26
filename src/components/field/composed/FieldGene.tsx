@@ -1,4 +1,4 @@
-import { Component, createResource, Show } from "solid-js";
+import { Component, Show } from "solid-js";
 import { Anchor } from "../../Anchor";
 import { Abbr } from "../../Abbr";
 import { CellValueGene } from "../../../types/configCellComposed";

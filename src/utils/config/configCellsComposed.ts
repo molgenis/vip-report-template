@@ -85,8 +85,7 @@ export function initConfigCellComposed(
       break;
     case "notesInput":
       fieldConfig = createConfigFieldNotesInput(configStatic, metadata.records, sample, reportId);
-      console.log(fieldConfig.value);
-    break;
+      break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
       break;
@@ -320,7 +319,6 @@ function createConfigFieldCustomSpanningReads(
     description: () => getDescription(config, "Number of spanning reads for the genotype."),
     valueCount: () => 1,
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueSpanningReads => {
-      console.log("here!");
       const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
       const spanning = getSampleValue(sample, record, valueIndex, fieldSpan) as ValueInteger[];
 
@@ -465,10 +463,7 @@ function createConfigFieldNotesInput(
     "Feature",
     "ALLELE_NUM",
   );
-  const [fieldEND] = getInfoFields(
-    metadata,
-    "END"
-  );
+  const [fieldEND] = getInfoFields(metadata, "END");
 
   return {
     type: "composed",
@@ -484,8 +479,8 @@ function createConfigFieldNotesInput(
         fieldHgvsP,
         fieldFeature,
         fieldEND,
-        fieldAlleleNum
-      ) as [string| undefined, string | undefined, string, number | undefined, number];
+        fieldAlleleNum,
+      ) as [string | undefined, string | undefined, string, number | undefined, number];
 
       return {
         c: record.data.c,
@@ -497,7 +492,7 @@ function createConfigFieldNotesInput(
         hgvsP,
         feature,
         END,
-        report: reportId
+        report: reportId,
       };
     },
   };
