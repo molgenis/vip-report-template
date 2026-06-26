@@ -1,20 +1,17 @@
 import type { Note, Classification, ClassificationOption } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
-import {
-  generateId,
-  sameVariantAndFeature,
-} from "./NotesApi.utils";
+import { generateId, sameVariantAndFeature } from "./NotesApi.utils";
 import { StorageAdapter } from "./StorageAdapter";
 
 export class BrowserNotesApi implements NotesApi {
   constructor(private storage: StorageAdapter) {}
 
   clear(reportId: string) {
-      this.storage.remove(this.getNotesKey(reportId));
-      this.storage.remove(this.getClassificationsKey(reportId));
-      this.storage.remove(this.getStateKey(reportId));
+    this.storage.remove(this.getNotesKey(reportId));
+    this.storage.remove(this.getClassificationsKey(reportId));
+    this.storage.remove(this.getStateKey(reportId));
 
-      this.setSavedState(true, reportId);
+    this.setSavedState(true, reportId);
   }
 
   getCurrentUserName(): string | undefined {
@@ -27,20 +24,18 @@ export class BrowserNotesApi implements NotesApi {
     if (raw == null) {
       return false;
     }
-  
+
     try {
       const saved = JSON.parse(raw) as boolean;
       return !saved;
-    } catch { //in case of problems assume unsaved data
+    } catch {
+      //in case of problems assume unsaved data
       return true;
     }
   }
 
   setSavedState(saved: boolean, reportId: string): void {
-    this.storage.set(
-      this.getStateKey(reportId),
-      JSON.stringify(saved)
-    );
+    this.storage.set(this.getStateKey(reportId), JSON.stringify(saved));
   }
 
   private getNotesKey(reportId: string) {
@@ -62,10 +57,7 @@ export class BrowserNotesApi implements NotesApi {
 
   private saveNotes(reportId: string, notes: Note[]) {
     this.setSavedState(false, reportId);
-    this.storage.set(
-      this.getNotesKey(reportId),
-      JSON.stringify(notes)
-    );
+    this.storage.set(this.getNotesKey(reportId), JSON.stringify(notes));
   }
 
   private loadClassifications(reportId: string): Classification[] {
@@ -75,18 +67,15 @@ export class BrowserNotesApi implements NotesApi {
 
   private saveClassifications(reportId: string, data: Classification[]) {
     this.setSavedState(false, reportId);
-    this.storage.set(
-      this.getClassificationsKey(reportId),
-      JSON.stringify(data)
-    );
+    this.storage.set(this.getClassificationsKey(reportId), JSON.stringify(data));
   }
 
   async storeNote(note: Note) {
     const notes = this.loadNotes(note.reportId);
     const now = new Date().toISOString();
-  
+
     const id = note.id ? note.id : generateId();
-  
+
     const newNote: Note = {
       id,
       content: note.content,
@@ -97,9 +86,9 @@ export class BrowserNotesApi implements NotesApi {
       updatedAt: now,
       createdBy: "",
     };
-  
-    const idx = notes.findIndex(n => n.id === id);
-  
+
+    const idx = notes.findIndex((n) => n.id === id);
+
     if (idx >= 0) {
       notes[idx] = {
         ...notes[idx],
@@ -109,7 +98,7 @@ export class BrowserNotesApi implements NotesApi {
     } else {
       notes.push(newNote);
     }
-  
+
     this.saveNotes(note.reportId, notes);
   }
 
@@ -135,15 +124,13 @@ export class BrowserNotesApi implements NotesApi {
   }
 
   async storeClassification(
-    classification: Omit<Classification, "id" | "createdAt" | "updatedAt">
+    classification: Omit<Classification, "id" | "createdAt" | "updatedAt">,
   ): Promise<Classification> {
     const list = this.loadClassifications(classification.reportId);
     const now = new Date().toISOString();
 
     const idx = list.findIndex(
-      c =>
-        c.reportId === classification.reportId &&
-        sameVariantAndFeature(c.variantKey, classification.variantKey)
+      (c) => c.reportId === classification.reportId && sameVariantAndFeature(c.variantKey, classification.variantKey),
     );
 
     const updated: Classification = {
@@ -169,8 +156,7 @@ export class BrowserNotesApi implements NotesApi {
     const notes = this.loadNotes(reportId);
     this.saveNotes(
       reportId,
-      notes.filter(n => !(n.id === id)
-      )
+      notes.filter((n) => !(n.id === id)),
     );
   }
 
@@ -178,17 +164,11 @@ export class BrowserNotesApi implements NotesApi {
     const list = this.loadClassifications(reportId);
     this.saveClassifications(
       reportId,
-      list.filter(c => !(c.id === id && c.sampleId === sampleId))
+      list.filter((c) => !(c.id === id && c.sampleId === sampleId)),
     );
   }
 
   async getClassificationOptions(): Promise<ClassificationOption[]> {
-    return [
-      { value: "B", description: "Benign" },
-      { value: "LB", description: "Likely Benign" },
-      { value: "VUS", description: "Variant of Uncertain Significance" },
-      { value: "LP", description: "Likely Pathogenic" },
-      { value: "P", description: "Pathogenic" },
-    ];
+    return undefined;
   }
 }

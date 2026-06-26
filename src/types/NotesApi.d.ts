@@ -34,7 +34,7 @@ export type Classification = {
 
 export type ClassificationOption = {
   value: string | undefined;
-  description: string;
+  label: string;
 };
 
 export type Status = "pending" | "approved";

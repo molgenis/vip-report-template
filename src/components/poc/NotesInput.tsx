@@ -89,13 +89,19 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     refresh();
   };
 
-  const [OPTIONS] = createResource(async () => {
-    return notesApi.getClassificationOptions();
+  const [classificationOptions] = createResource(async () => {
+    const options = await notesApi.getClassificationOptions();
+
+    if (!options || options.length === 0) {
+      return props.value.options;
+    }
+
+    return options;
   });
 
-  const DEFAULT_OPTION: ClassificationOption = {
+  const default_classification: ClassificationOption = {
     value: "",
-    description: "",
+    description: "Select a classifcation",
   };
 
   const variantKey = (): VariantKey => ({
@@ -125,23 +131,23 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId),
   );
 
-  const [value, setValue] = createSignal<ClassificationOption>(DEFAULT_OPTION);
+  const [value, setValue] = createSignal<ClassificationOption>(default_classification);
 
   createEffect(() => {
     const current = classification();
-    const opts = OPTIONS();
+    const opts = classificationOptions();
     if (!current || !opts) return;
 
     const opt = opts.find((o) => o.value === current.value);
     if (opt) {
       setValue(opt);
     } else {
-      setValue(DEFAULT_OPTION);
+      setValue(default_classification);
     }
   });
 
   const handleChange = async (value: string) => {
-    const selectedOption = OPTIONS().find((o) => o.value === value);
+    const selectedOption = classificationOptions().find((o) => o.value === value);
     setValue(selectedOption);
 
     try {
@@ -268,9 +274,9 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
           <Select
             placeholder={"Select classification"}
             value={value().value}
-            options={OPTIONS().map((option) => ({
+            options={classificationOptions().map((option) => ({
               id: option.value,
-              label: option.description,
+              label: option.label,
             }))}
             onValueChange={(e) => handleChange(e.value)}
           />

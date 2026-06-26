@@ -1,6 +1,7 @@
 import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueInteger, ValueString } from "@molgenis/vip-report-vcf";
 import { ValueCategorical } from "../utils/vcf.ts";
 import { SampleContainer } from "../utils/api.ts";
+import { ClassificationOption } from "./NotesApi";
 
 export type CellValueClinVar = {
   clnSigs: ValueCategorical[];
@@ -72,6 +73,7 @@ export type CellValueUserClassification = {
   feature: string;
   END: number | null;
   report: string;
+  options: ClassificationOption[] | undefined;
 };
 
 export type CellValueVipC = {

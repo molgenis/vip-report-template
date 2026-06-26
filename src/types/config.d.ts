@@ -49,6 +49,7 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "vipCS"
     | "vkgl"
     | "notesInput";
+  additionalConfig?: Record<string, unknown>;
 }
 
 export interface ConfigJsonSort {
