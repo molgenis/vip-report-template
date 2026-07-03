@@ -16,9 +16,11 @@ export default defineConfig(({ command }) => {
   },
   plugins: [solidPlugin(), inlinePlugin()],
 
+
   esbuild: {
     // @molgenis/vite-plugin-inline requires ascii input and cannot handle UTF-8 input
     charset: "ascii",
+    pure: command === "build" ? [] : [],
     pure: command === "build" ? [] : [],
   },
   build: {
@@ -32,6 +34,10 @@ export default defineConfig(({ command }) => {
         manualChunks: undefined,
       },
     },
+    // unclear how to migrate to new default Lightning CSS
+    cssMinify: "esbuild",
+    // unclear how to migrate to new default Oxc e.g. esbuild.charset and esbuild.pure
+    minify: "esbuild",
     // unclear how to migrate to new default Lightning CSS
     cssMinify: "esbuild",
     // unclear how to migrate to new default Oxc e.g. esbuild.charset and esbuild.pure
