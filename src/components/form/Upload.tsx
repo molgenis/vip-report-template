@@ -68,7 +68,7 @@ export const Upload: Component<{
         }}
       >
         <span class="icon is-small">
-          <i class="fas fa-upload" />
+          <i class="fas fa-folder-open" />
         </span>
       </button>
 

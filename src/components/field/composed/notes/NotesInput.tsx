@@ -1,17 +1,16 @@
 import { Component, createEffect, createSignal, JSX, Show, For, createResource } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Notes } from "./Notes";
-import { CellValueUserClassification } from "../../types/configCellComposed";
+import { CellValueUserClassification } from "../../../../types/configCellComposed";
 import { ClassificationViewer } from "./ClassificationViewer";
-import { getNotesApi } from "../../api/NotesApiFactory";
-import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../types/NotesApi";
-import { retrieveClassification, retrieveNotesForVariant } from "../../api/NotesApi.utils";
-import { formatDate } from "../../utils/config/dateUtils";
-import { Select } from "../form/Select";
+import { getNotesApi } from "../../../../api/NotesApiFactory";
+import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../../../types/NotesApi";
+import { retrieveClassification, retrieveNotesForVariant } from "../../../../api/NotesApi.utils";
+import { formatDate } from "../../../../utils/config/dateUtils";
+import { Select } from "../../../form/Select";
 
 const notesApi = getNotesApi();
 
-// Remove outer quotes from a string like "\"Alice\"" → "Alice"
 function stripOuterQuotes(value: string | null | undefined): string {
   if (!value) return "";
   const trimmed = value.trim();
@@ -43,16 +42,36 @@ export const NotesInput: Component<NotesInputProps> = (props) => {
     }
   });
 
+  const headerTitle = () => {
+    const { feature, hgvsC, hgvsP, svType, ru, ruNr } = props.userClassification;
+
+    if (svType === "STR") {
+      return (
+        <>
+          {feature} (<b>Repeat unit:</b> {ru} <b>Number of units:</b> {ruNr})
+        </>
+      );
+    }
+
+    return `${feature}:${hgvsC}(${hgvsP})`;
+  };
+
+  const isRuNrError = () => props.userClassification.ruNr === -1;
+
   return (
     <Show when={props.open}>
       <Portal>
         <div class="notes-modal-overlay" onClick={() => props.onClose()}>
           <div ref={setContentRef} class="notes-modal-content" onClick={(e) => e.stopPropagation()}>
             <header class="notes-modal-header">
-              <h2 class="notes-modal-title">
-                {props.userClassification.feature}:{props.userClassification.hgvsC}({props.userClassification.hgvsP})
-              </h2>
+              <h2 class="notes-modal-title">{headerTitle()}</h2>
             </header>
+
+            <Show when={isRuNrError()}>
+              <div class="notification is-danger is-light mt-2">
+                This tandem repeat allele was not obeserved for this sample.
+              </div>
+            </Show>
 
             <button onClick={() => props.onClose()} class="notes-modal-close">
               ×
@@ -83,9 +102,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [refreshKey, setRefreshKey] = createSignal(0);
   const [classificationSaved, setClassificationSaved] = createSignal(false);
-
   const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()));
-
   const refresh = () => setRefreshKey((prev) => prev + 1);
 
   const showPopup = () => {
@@ -120,9 +137,11 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     Reference: props.value.r,
     Alternative: props.value.a,
     END: props.value.END,
-    feature: props.value.feature,
+    feature: props.value.feature ?? "",
     hgvsC: props.value.hgvsC ?? "",
     hgvsP: props.value.hgvsP ?? "",
+    ru: props.value.ru ?? "",
+    ruNr: props.value.ruNr,
   });
 
   const reportId = () => props.value.report;
@@ -152,7 +171,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     setValue(opt ?? defaultClassification);
   });
 
-  // Save classification and update username in API
   const handleChange = async (val: string) => {
     const selectedOption = classificationOptions()?.find((o) => o.value === val) ?? defaultClassification;
     setValue(selectedOption);
@@ -251,6 +269,8 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     return feature ? `${feature}:${hgvsPart}` : hgvsPart;
   };
 
+  const disableAllInputs = () => props.value.ruNr === -1;
+
   return (
     <>
       <span>
@@ -283,6 +303,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
               })) ?? []
             }
             onValueChange={(e) => handleChange(e.value)}
+            disabled={disableAllInputs()}
           />
         </div>
         <hr />
@@ -300,6 +321,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
                   value={username()}
                   onInput={(e) => setUsername(e.currentTarget.value)}
                   placeholder="Enter your name (optional)"
+                  disabled={disableAllInputs()}
                 />
               </div>
             </div>
@@ -315,9 +337,10 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
               onInput={(e) => setNoteValue(e.currentTarget.value)}
               class="textarea"
               placeholder="Enter your note"
+              disabled={disableAllInputs()}
             />
             <br />
-            <button class="button is-primary ml-2" onClick={saveNote}>
+            <button class="button is-primary ml-2" onClick={saveNote} disabled={disableAllInputs()}>
               Add note
             </button>
           </div>

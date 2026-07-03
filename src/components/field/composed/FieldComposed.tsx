@@ -1,6 +1,6 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldLocus } from "./FieldLocus";
-import { NotesInputButton } from "../../poc/NotesInput.tsx";
+import { NotesInputButton } from "./notes/NotesInput.tsx";
 import { FieldVipC } from "./FieldVipC";
 import { FieldGenotype } from "./FieldGenotype";
 import { FieldGene } from "./FieldGene";
@@ -26,10 +26,12 @@ import {
   CellValueVipC,
   CellValueVipCS,
   CellValueVkgl,
+  CellValueStrNr,
 } from "../../../types/configCellComposed";
 import { FieldVkgl } from "./FieldVkgl";
 import { FieldInheritanceModes } from "./FieldInheritanceModes";
 import { FieldVipCS } from "./FieldVipCS.tsx";
+import { FieldRuNr } from "./FieldRuNr.tsx";
 
 export const FieldComposed: Component<{
   config: ConfigCellCustom<CellValueCustom>;
@@ -62,6 +64,9 @@ export const FieldComposed: Component<{
       </Match>
       <Match when={id() === "locus"}>
         <FieldLocus value={props.value as CellValueLocus} />
+      </Match>
+      <Match when={id() === "numberOfRepeatUnits"}>
+        <FieldRuNr value={props.value as CellValueStrNr} />
       </Match>
       <Match when={id() === "spanningReads"}>
         <FieldSpanningReads value={props.value as CellValueSpanningReads} />

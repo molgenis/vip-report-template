@@ -2,13 +2,12 @@ import type { Note, Classification, VariantKey } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
 import type XLSX from "xlsx";
 
-type FlatNote = Omit<Note, "variantKey"> & VariantKey;
-type FlatClassification = Omit<Classification, "variantKey"> & VariantKey;
+type FlatNote = Omit<Note, "variantKey" | "reportId"> & VariantKey;
+type FlatClassification = Omit<Classification, "variantKey" | "reportId"> & VariantKey;
 
 const NOTE_COLUMNS = [
   "id",
   "content",
-  "reportId",
   "sampleId",
   "createdAt",
   "updatedAt",
@@ -21,12 +20,13 @@ const NOTE_COLUMNS = [
   "feature",
   "hgvsC",
   "hgvsP",
+  "ru",
+  "ruNr",
 ] as const;
 
 const CLASSIFICATION_COLUMNS = [
   "id",
   "value",
-  "reportId",
   "sampleId",
   "status",
   "createdAt",
@@ -40,6 +40,8 @@ const CLASSIFICATION_COLUMNS = [
   "feature",
   "hgvsC",
   "hgvsP",
+  "ru",
+  "ruNr",
 ] as const;
 
 function stripOuterQuotes(value: string | number | undefined): string | number | undefined {
@@ -49,6 +51,41 @@ function stripOuterQuotes(value: string | number | undefined): string | number |
     return trimmed.slice(1, -1);
   }
   return trimmed;
+}
+
+function parseOptionalNumber(value: number | string | null | undefined): number | undefined {
+  if (value === null || value === undefined) return undefined;
+  const cleaned = stripOuterQuotes(value) as number | string;
+  const num = Number(cleaned);
+  return Number.isNaN(num) ? undefined : num;
+}
+
+function buildVariantKey(row: {
+  Chromosome: string;
+  Position: number | string;
+  Reference: string;
+  Alternative: string | null;
+  END?: number | string | null;
+  feature?: string;
+  hgvsC?: string;
+  hgvsP?: string;
+  ru?: string;
+  ruNr?: number | string | null;
+}): VariantKey {
+  const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, ru, ruNr } = row;
+
+  return {
+    Chromosome,
+    Position: parseOptionalNumber(Position)!,
+    Reference,
+    Alternative,
+    END: parseOptionalNumber(END),
+    feature: feature ?? "",
+    hgvsC: hgvsC ?? "",
+    hgvsP: hgvsP ?? "",
+    ru: ru ?? "",
+    ruNr: parseOptionalNumber(ruNr),
+  };
 }
 
 export class FileApi {
@@ -67,47 +104,82 @@ export class FileApi {
       feature: variantKey.feature,
       hgvsC: variantKey.hgvsC,
       hgvsP: variantKey.hgvsP,
+      ru: variantKey.ru,
+      ruNr: variantKey.ruNr,
     };
   }
 
-  private unflattenNote(row: FlatNote): Note {
-    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, createdBy, content, ...rest } =
-      row;
+  private unflattenNote(row: FlatNote, reportId: string): Note {
+    const {
+      Chromosome,
+      Position,
+      Reference,
+      Alternative,
+      END,
+      feature,
+      hgvsC,
+      hgvsP,
+      ru,
+      ruNr,
+      createdBy,
+      content,
+      ...rest
+    } = row;
 
     return {
       ...rest,
+      reportId,
       content: stripOuterQuotes(content) as string,
       createdBy: (stripOuterQuotes(createdBy) as string) || this.notesApi.getCurrentUserName() || "",
-      variantKey: {
+      variantKey: buildVariantKey({
         Chromosome,
-        Position: Number(stripOuterQuotes(Position) as number | string),
+        Position,
         Reference,
         Alternative,
-        END: END == null ? undefined : Number(stripOuterQuotes(END) as number | string),
-        feature: feature ?? "",
-        hgvsC: hgvsC ?? "",
-        hgvsP: hgvsP ?? "",
-      },
+        END,
+        feature,
+        hgvsC,
+        hgvsP,
+        ru,
+        ruNr,
+      }),
     };
   }
 
-  private unflattenClassification(row: FlatClassification): Classification {
-    const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, createdBy, value, ...rest } = row;
+  private unflattenClassification(row: FlatClassification, reportId: string): Classification {
+    const {
+      Chromosome,
+      Position,
+      Reference,
+      Alternative,
+      END,
+      feature,
+      hgvsC,
+      hgvsP,
+      ru,
+      ruNr,
+      createdBy,
+      value,
+      ...rest
+    } = row;
 
     return {
       ...rest,
+      reportId,
       value: stripOuterQuotes(value) as string,
       createdBy: (stripOuterQuotes(createdBy) as string) || "",
-      variantKey: {
+      variantKey: buildVariantKey({
         Chromosome,
-        Position: Number(stripOuterQuotes(Position) as number | string),
+        Position,
         Reference,
         Alternative,
-        END: END == null ? undefined : Number(stripOuterQuotes(END) as number | string),
-        feature: feature ?? "",
-        hgvsC: hgvsC ?? "",
-        hgvsP: hgvsP ?? "",
-      },
+        END,
+        feature,
+        hgvsC,
+        hgvsP,
+        ru,
+        ruNr,
+      }),
     };
   }
 
@@ -162,15 +234,13 @@ export class FileApi {
             this.validateSheet(utils, notesSheet, NOTE_COLUMNS, "Notes");
 
             const rows = utils.sheet_to_json<FlatNote>(notesSheet);
-
             const seen = new Set<string>();
 
             for (const row of rows) {
               if (!row.id || seen.has(row.id)) continue;
 
               seen.add(row.id);
-
-              await this.notesApi.storeNote(this.unflattenNote(row));
+              await this.notesApi.storeNote(this.unflattenNote(row, reportIdFromFile));
             }
           }
 
@@ -180,15 +250,13 @@ export class FileApi {
             this.validateSheet(utils, classificationsSheet, CLASSIFICATION_COLUMNS, "Classifications");
 
             const rows = utils.sheet_to_json<FlatClassification>(classificationsSheet);
-
             const seen = new Set<string>();
 
             for (const row of rows) {
               if (!row.id || seen.has(row.id)) continue;
 
               seen.add(row.id);
-
-              await this.notesApi.storeClassification(this.unflattenClassification(row));
+              await this.notesApi.storeClassification(this.unflattenClassification(row, reportIdFromFile));
             }
           }
 

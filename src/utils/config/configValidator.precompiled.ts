@@ -1923,6 +1923,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   data51 === "inheritancePattern" ||
                                                   data51 === "locus" ||
                                                   data51 === "ref" ||
+                                                  data51 === "numberOfRepeatUnits" ||
                                                   data51 === "vipC" ||
                                                   data51 === "vipCS" ||
                                                   data51 === "vkgl" ||
@@ -3577,6 +3578,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     data85 === "inheritancePattern" ||
                                                     data85 === "locus" ||
                                                     data85 === "ref" ||
+                                                    data85 === "numberOfRepeatUnits" ||
                                                     data85 === "vipC" ||
                                                     data85 === "vipCS" ||
                                                     data85 === "vkgl" ||
@@ -5263,6 +5265,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       data119 === "inheritancePattern" ||
                                                       data119 === "locus" ||
                                                       data119 === "ref" ||
+                                                      data119 === "numberOfRepeatUnits" ||
                                                       data119 === "vipC" ||
                                                       data119 === "vipCS" ||
                                                       data119 === "vkgl" ||
@@ -6969,6 +6972,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data153 === "inheritancePattern" ||
                                                         data153 === "locus" ||
                                                         data153 === "ref" ||
+                                                        data153 === "numberOfRepeatUnits" ||
                                                         data153 === "vipC" ||
                                                         data153 === "vipCS" ||
                                                         data153 === "vkgl" ||
@@ -12585,6 +12589,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                         data282 === "inheritancePattern" ||
                                                                         data282 === "locus" ||
                                                                         data282 === "ref" ||
+                                                                        data282 === "numberOfRepeatUnits" ||
                                                                         data282 === "vipC" ||
                                                                         data282 === "vipCS" ||
                                                                         data282 === "vkgl" ||
@@ -14886,6 +14891,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                           data321 === "inheritancePattern" ||
                                                                           data321 === "locus" ||
                                                                           data321 === "ref" ||
+                                                                          data321 === "numberOfRepeatUnits" ||
                                                                           data321 === "vipC" ||
                                                                           data321 === "vipCS" ||
                                                                           data321 === "vkgl" ||
@@ -17224,6 +17230,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                             data360 === "inheritancePattern" ||
                                                                             data360 === "locus" ||
                                                                             data360 === "ref" ||
+                                                                            data360 === "numberOfRepeatUnits" ||
                                                                             data360 === "vipC" ||
                                                                             data360 === "vipCS" ||
                                                                             data360 === "vkgl" ||
@@ -19582,6 +19589,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                               data399 === "inheritancePattern" ||
                                                                               data399 === "locus" ||
                                                                               data399 === "ref" ||
+                                                                              data399 === "numberOfRepeatUnits" ||
                                                                               data399 === "vipC" ||
                                                                               data399 === "vipCS" ||
                                                                               data399 === "vkgl" ||
@@ -22190,6 +22198,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     data452 === "inheritancePattern" ||
                                                     data452 === "locus" ||
                                                     data452 === "ref" ||
+                                                    data452 === "numberOfRepeatUnits" ||
                                                     data452 === "vipC" ||
                                                     data452 === "vipCS" ||
                                                     data452 === "vkgl" ||
@@ -23839,6 +23848,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       data486 === "inheritancePattern" ||
                                                       data486 === "locus" ||
                                                       data486 === "ref" ||
+                                                      data486 === "numberOfRepeatUnits" ||
                                                       data486 === "vipC" ||
                                                       data486 === "vipCS" ||
                                                       data486 === "vkgl" ||
@@ -25505,6 +25515,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data520 === "inheritancePattern" ||
                                                         data520 === "locus" ||
                                                         data520 === "ref" ||
+                                                        data520 === "numberOfRepeatUnits" ||
                                                         data520 === "vipC" ||
                                                         data520 === "vipCS" ||
                                                         data520 === "vkgl" ||
@@ -27174,6 +27185,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data554 === "inheritancePattern" ||
                                                           data554 === "locus" ||
                                                           data554 === "ref" ||
+                                                          data554 === "numberOfRepeatUnits" ||
                                                           data554 === "vipC" ||
                                                           data554 === "vipCS" ||
                                                           data554 === "vkgl" ||
@@ -32754,6 +32766,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                           data683 === "inheritancePattern" ||
                                                                           data683 === "locus" ||
                                                                           data683 === "ref" ||
+                                                                          data683 === "numberOfRepeatUnits" ||
                                                                           data683 === "vipC" ||
                                                                           data683 === "vipCS" ||
                                                                           data683 === "vkgl" ||
@@ -35084,6 +35097,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                             data722 === "inheritancePattern" ||
                                                                             data722 === "locus" ||
                                                                             data722 === "ref" ||
+                                                                            data722 === "numberOfRepeatUnits" ||
                                                                             data722 === "vipC" ||
                                                                             data722 === "vipCS" ||
                                                                             data722 === "vkgl" ||
@@ -37433,6 +37447,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                               data761 === "inheritancePattern" ||
                                                                               data761 === "locus" ||
                                                                               data761 === "ref" ||
+                                                                              data761 === "numberOfRepeatUnits" ||
                                                                               data761 === "vipC" ||
                                                                               data761 === "vipCS" ||
                                                                               data761 === "vkgl" ||
@@ -39813,6 +39828,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                                 data800 === "inheritancePattern" ||
                                                                                 data800 === "locus" ||
                                                                                 data800 === "ref" ||
+                                                                                data800 === "numberOfRepeatUnits" ||
                                                                                 data800 === "vipC" ||
                                                                                 data800 === "vipCS" ||
                                                                                 data800 === "vkgl" ||
@@ -42454,6 +42470,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       data853 === "inheritancePattern" ||
                                                       data853 === "locus" ||
                                                       data853 === "ref" ||
+                                                      data853 === "numberOfRepeatUnits" ||
                                                       data853 === "vipC" ||
                                                       data853 === "vipCS" ||
                                                       data853 === "vkgl" ||
@@ -44164,6 +44181,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data887 === "inheritancePattern" ||
                                                         data887 === "locus" ||
                                                         data887 === "ref" ||
+                                                        data887 === "numberOfRepeatUnits" ||
                                                         data887 === "vipC" ||
                                                         data887 === "vipCS" ||
                                                         data887 === "vkgl" ||
@@ -45883,6 +45901,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data921 === "inheritancePattern" ||
                                                           data921 === "locus" ||
                                                           data921 === "ref" ||
+                                                          data921 === "numberOfRepeatUnits" ||
                                                           data921 === "vipC" ||
                                                           data921 === "vipCS" ||
                                                           data921 === "vkgl" ||
@@ -47609,6 +47628,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data955 === "inheritancePattern" ||
                                                             data955 === "locus" ||
                                                             data955 === "ref" ||
+                                                            data955 === "numberOfRepeatUnits" ||
                                                             data955 === "vipC" ||
                                                             data955 === "vipCS" ||
                                                             data955 === "vkgl" ||
@@ -49413,6 +49433,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data990 === "inheritancePattern" ||
                                                         data990 === "locus" ||
                                                         data990 === "ref" ||
+                                                        data990 === "numberOfRepeatUnits" ||
                                                         data990 === "vipC" ||
                                                         data990 === "vipCS" ||
                                                         data990 === "vkgl" ||
@@ -51160,6 +51181,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1024 === "inheritancePattern" ||
                                                           data1024 === "locus" ||
                                                           data1024 === "ref" ||
+                                                          data1024 === "numberOfRepeatUnits" ||
                                                           data1024 === "vipC" ||
                                                           data1024 === "vipCS" ||
                                                           data1024 === "vkgl" ||
@@ -52908,6 +52930,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1058 === "inheritancePattern" ||
                                                             data1058 === "locus" ||
                                                             data1058 === "ref" ||
+                                                            data1058 === "numberOfRepeatUnits" ||
                                                             data1058 === "vipC" ||
                                                             data1058 === "vipCS" ||
                                                             data1058 === "vkgl" ||
@@ -54662,6 +54685,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1092 === "inheritancePattern" ||
                                                               data1092 === "locus" ||
                                                               data1092 === "ref" ||
+                                                              data1092 === "numberOfRepeatUnits" ||
                                                               data1092 === "vipC" ||
                                                               data1092 === "vipCS" ||
                                                               data1092 === "vkgl" ||
@@ -56443,6 +56467,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data1128 === "inheritancePattern" ||
                                                         data1128 === "locus" ||
                                                         data1128 === "ref" ||
+                                                        data1128 === "numberOfRepeatUnits" ||
                                                         data1128 === "vipC" ||
                                                         data1128 === "vipCS" ||
                                                         data1128 === "vkgl" ||
@@ -58113,6 +58138,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1162 === "inheritancePattern" ||
                                                           data1162 === "locus" ||
                                                           data1162 === "ref" ||
+                                                          data1162 === "numberOfRepeatUnits" ||
                                                           data1162 === "vipC" ||
                                                           data1162 === "vipCS" ||
                                                           data1162 === "vkgl" ||
@@ -59816,6 +59842,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1196 === "inheritancePattern" ||
                                                             data1196 === "locus" ||
                                                             data1196 === "ref" ||
+                                                            data1196 === "numberOfRepeatUnits" ||
                                                             data1196 === "vipC" ||
                                                             data1196 === "vipCS" ||
                                                             data1196 === "vkgl" ||
@@ -61531,6 +61558,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1230 === "inheritancePattern" ||
                                                               data1230 === "locus" ||
                                                               data1230 === "ref" ||
+                                                              data1230 === "numberOfRepeatUnits" ||
                                                               data1230 === "vipC" ||
                                                               data1230 === "vipCS" ||
                                                               data1230 === "vkgl" ||
@@ -63310,6 +63338,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1265 === "inheritancePattern" ||
                                                           data1265 === "locus" ||
                                                           data1265 === "ref" ||
+                                                          data1265 === "numberOfRepeatUnits" ||
                                                           data1265 === "vipC" ||
                                                           data1265 === "vipCS" ||
                                                           data1265 === "vkgl" ||
@@ -65037,6 +65066,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1299 === "inheritancePattern" ||
                                                             data1299 === "locus" ||
                                                             data1299 === "ref" ||
+                                                            data1299 === "numberOfRepeatUnits" ||
                                                             data1299 === "vipC" ||
                                                             data1299 === "vipCS" ||
                                                             data1299 === "vkgl" ||
@@ -66789,6 +66819,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1333 === "inheritancePattern" ||
                                                               data1333 === "locus" ||
                                                               data1333 === "ref" ||
+                                                              data1333 === "numberOfRepeatUnits" ||
                                                               data1333 === "vipC" ||
                                                               data1333 === "vipCS" ||
                                                               data1333 === "vkgl" ||
@@ -68541,6 +68572,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data1367 === "inheritancePattern" ||
                                                                 data1367 === "locus" ||
                                                                 data1367 === "ref" ||
+                                                                data1367 === "numberOfRepeatUnits" ||
                                                                 data1367 === "vipC" ||
                                                                 data1367 === "vipCS" ||
                                                                 data1367 === "vkgl" ||
@@ -70429,6 +70461,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1403 === "inheritancePattern" ||
                                                           data1403 === "locus" ||
                                                           data1403 === "ref" ||
+                                                          data1403 === "numberOfRepeatUnits" ||
                                                           data1403 === "vipC" ||
                                                           data1403 === "vipCS" ||
                                                           data1403 === "vkgl" ||
@@ -72228,6 +72261,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1437 === "inheritancePattern" ||
                                                             data1437 === "locus" ||
                                                             data1437 === "ref" ||
+                                                            data1437 === "numberOfRepeatUnits" ||
                                                             data1437 === "vipC" ||
                                                             data1437 === "vipCS" ||
                                                             data1437 === "vkgl" ||
@@ -74035,6 +74069,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1471 === "inheritancePattern" ||
                                                               data1471 === "locus" ||
                                                               data1471 === "ref" ||
+                                                              data1471 === "numberOfRepeatUnits" ||
                                                               data1471 === "vipC" ||
                                                               data1471 === "vipCS" ||
                                                               data1471 === "vkgl" ||
@@ -75843,6 +75878,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data1505 === "inheritancePattern" ||
                                                                 data1505 === "locus" ||
                                                                 data1505 === "ref" ||
+                                                                data1505 === "numberOfRepeatUnits" ||
                                                                 data1505 === "vipC" ||
                                                                 data1505 === "vipCS" ||
                                                                 data1505 === "vkgl" ||
@@ -77724,6 +77760,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1541 === "inheritancePattern" ||
                                                             data1541 === "locus" ||
                                                             data1541 === "ref" ||
+                                                            data1541 === "numberOfRepeatUnits" ||
                                                             data1541 === "vipC" ||
                                                             data1541 === "vipCS" ||
                                                             data1541 === "vkgl" ||
@@ -79521,6 +79558,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1575 === "inheritancePattern" ||
                                                               data1575 === "locus" ||
                                                               data1575 === "ref" ||
+                                                              data1575 === "numberOfRepeatUnits" ||
                                                               data1575 === "vipC" ||
                                                               data1575 === "vipCS" ||
                                                               data1575 === "vkgl" ||
@@ -81322,6 +81360,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data1609 === "inheritancePattern" ||
                                                                 data1609 === "locus" ||
                                                                 data1609 === "ref" ||
+                                                                data1609 === "numberOfRepeatUnits" ||
                                                                 data1609 === "vipC" ||
                                                                 data1609 === "vipCS" ||
                                                                 data1609 === "vkgl" ||
@@ -83135,6 +83174,7 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   data1643 === "inheritancePattern" ||
                                                                   data1643 === "locus" ||
                                                                   data1643 === "ref" ||
+                                                                  data1643 === "numberOfRepeatUnits" ||
                                                                   data1643 === "vipC" ||
                                                                   data1643 === "vipCS" ||
                                                                   data1643 === "vkgl" ||

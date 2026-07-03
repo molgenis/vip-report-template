@@ -71,9 +71,16 @@ export type CellValueUserClassification = {
   hgvsC: string;
   hgvsP: string;
   feature: string;
+  svType: string;
   END: number | null;
   report: string;
+  ru: string;
+  ruNr: number | undefined;
   options: ClassificationOption[] | undefined;
+};
+
+export type CellValueStrNr = {
+  ruNr: number | undefined;
 };
 
 export type CellValueVipC = {
@@ -110,6 +117,7 @@ export type CellValueCustom =
   | CellValueInheritanceModes
   | CellValueLocus
   | CellValueUserClassification
+  | CellValueStrNr
   | CellValueVipC
   | CellValueVipCS
   | CellValueVkgl;

@@ -10,12 +10,17 @@ export type SelectProps = {
   options: SelectOption[];
   value?: SelectValue;
   onValueChange: SelectChangeCallback;
+  disabled?: boolean;
 };
 
 export const Select: Component<SelectProps> = (props) => {
   return (
     <div class="select is-small is-fullwidth">
-      <select required onChange={(e) => props.onValueChange({ value: (e.target as HTMLSelectElement).value })}>
+      <select
+        required
+        onChange={(e) => props.onValueChange({ value: (e.target as HTMLSelectElement).value })}
+        disabled={props.disabled}
+      >
         <Show when={props.placeholder}>
           <option value="" selected={props.value === undefined}>
             {props.placeholder}

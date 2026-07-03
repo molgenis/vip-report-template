@@ -1,8 +1,8 @@
 import { Component, createResource, Show, createEffect } from "solid-js";
-import { CellValueUserClassification } from "../../types/configCellComposed";
-import { retrieveNotesForVariant } from "../../api/NotesApi.utils";
-import { getNotesApi } from "../../api/NotesApiFactory";
-import type { VariantKey } from "../../types/NotesApi";
+import { CellValueUserClassification } from "../../../../types/configCellComposed";
+import { retrieveNotesForVariant } from "../../../../api/NotesApi.utils";
+import { getNotesApi } from "../../../../api/NotesApiFactory";
+import type { VariantKey } from "../../../../types/NotesApi";
 
 export const Notes: Component<{
   userClassification: CellValueUserClassification;
@@ -19,9 +19,11 @@ export const Notes: Component<{
     Reference: props.userClassification.r,
     Alternative: props.userClassification.a,
     END: props.userClassification.END,
-    feature: props.userClassification.feature,
+    feature: props.userClassification.feature ?? "",
     hgvsC: props.userClassification.hgvsC ?? "",
     hgvsP: props.userClassification.hgvsP ?? "",
+    ru: props.userClassification.ru ?? "",
+    ruNr: props.userClassification.ruNr,
   });
 
   const sampleId = () => props.userClassification.s.item.data.person.individualId;

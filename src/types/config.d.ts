@@ -44,6 +44,7 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "inheritancePattern"
     | "locus"
     | "ref"
+    | "numberOfRepeatUnits"
     | "spanningReads"
     | "vipC"
     | "vipCS"

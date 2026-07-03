@@ -18,6 +18,8 @@ export type VariantKey = {
   feature: string;
   hgvsC: string;
   hgvsP: string;
+  ru: string | undefined;
+  ruNr: number | undefined;
 };
 
 export type Classification = {

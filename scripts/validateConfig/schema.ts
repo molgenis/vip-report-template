@@ -184,6 +184,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
                       "inheritancePattern",
                       "locus",
                       "ref",
+                      "numberOfRepeatUnits",
                       "vipC",
                       "vipCS",
                       "vkgl",

@@ -5,7 +5,6 @@ import { loadEnv } from "vite";
 
 export default defineConfig(({ command }) => {
   const env = loadEnv(command, process.cwd(), "");
-  console.log(env["EXTERNAL_API"]);
 
   return {
   define: {

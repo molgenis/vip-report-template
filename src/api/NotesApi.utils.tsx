@@ -1,8 +1,4 @@
-import type {
-  Note,
-  Classification,
-  VariantKey,
-} from "../types/NotesApi";
+import type { Note, Classification, VariantKey } from "../types/NotesApi";
 import { NotesApi } from "./NotesApi";
 
 export function generateId(): string {
@@ -10,21 +6,15 @@ export function generateId(): string {
 }
 
 export function sameVariant(a: VariantKey, b: VariantKey): boolean {
-  return (
-    a.Chromosome === b.Chromosome &&
-    a.Position === b.Position &&
-    a.Reference === b.Reference &&
-    a.END === b.END
-  );
+  return a.Chromosome === b.Chromosome && a.Position === b.Position && a.Reference === b.Reference && a.END === b.END;
 }
 
-export function sameVariantAndFeature(
-  a: VariantKey,
-  b: VariantKey
-): boolean {
+export function sameVariantAndFeature(a: VariantKey, b: VariantKey): boolean {
   return (
     sameVariant(a, b) &&
     a.Alternative === b.Alternative &&
+    a.ruNr === b.ruNr &&
+    a.ru === b.ru &&
     a.feature === b.feature
   );
 }
@@ -34,19 +24,15 @@ export async function retrieveNotesForVariant(
   variantKey: VariantKey,
   reportId: string,
   sampleId: string | undefined,
-  filterOnAlt: boolean
+  filterOnAlt: boolean,
 ): Promise<Note[]> {
   const notes = await api.retrieveNotes(reportId, sampleId);
 
   if (filterOnAlt) {
-    return notes.filter((note) =>
-    sameVariantAndFeature(note.variantKey, variantKey)
-    );
+    return notes.filter((note) => sameVariantAndFeature(note.variantKey, variantKey));
   }
 
-  return notes.filter((note) =>
-    sameVariant(note.variantKey, variantKey)
-  );
+  return notes.filter((note) => sameVariant(note.variantKey, variantKey));
 }
 
 export async function retrieveClassification(
@@ -57,9 +43,5 @@ export async function retrieveClassification(
 ): Promise<Classification | null> {
   const all = await api.retrieveClassifications(reportId, sampleId);
 
-  return (
-    all.find((c) =>
-      sameVariantAndFeature(c.variantKey, variantKey)
-    ) ?? null
-  );
+  return all.find((c) => sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
 }

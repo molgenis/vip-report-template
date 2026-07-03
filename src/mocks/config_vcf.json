@@ -240,17 +240,19 @@
           "type": "group",
           "fields": [
             {
-              "type": "composed",
-              "name": "notesInput",
-              "additionalConfig": {"classification_options": [
+                "type": "composed",
+                "name": "notesInput",
+                "additionalConfig": 
+              {"classification_options": [
                 { "value": "B", "label": "Benign" },
                 { "value": "LB", "label": "Likely Benign" },
                 { "value": "VUS", "label": "Variant of Uncertain Significance" },
                 { "value": "LP", "label": "Likely Pathogenic" },
                 { "value": "P", "label": "Pathogenic" },
-                { "value": "-", "label": "Artefact" }
-              ]
-            }
+                { "value": "A", "label": "Artefact" },
+                { "value": "-", "label": "Processed but not classified" }
+                ]
+              }
             },
             {
               "type": "info",
