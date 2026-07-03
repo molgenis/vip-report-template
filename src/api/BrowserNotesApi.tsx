@@ -142,7 +142,10 @@ export class BrowserNotesApi implements NotesApi {
     const now = new Date().toISOString();
 
     const idx = list.findIndex(
-      (c) => c.reportId === classification.reportId && sameVariantAndFeature(c.variantKey, classification.variantKey),
+      (c) =>
+        c.reportId === classification.reportId &&
+        c.sampleId === classification.sampleId &&
+        sameVariantAndFeature(c.variantKey, classification.variantKey),
     );
 
     const updated: Classification = {

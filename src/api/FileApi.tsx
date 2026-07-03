@@ -91,22 +91,27 @@ function buildVariantKey(row: {
 export class FileApi {
   constructor(private readonly notesApi: NotesApi) {}
 
-  private flattenVariantKey<T extends { variantKey: VariantKey }>(item: T): Omit<T, "variantKey"> & VariantKey {
-    const { variantKey, ...rest } = item;
-
-    return {
-      ...rest,
-      Chromosome: variantKey.Chromosome,
-      Position: variantKey.Position,
-      Reference: variantKey.Reference,
-      Alternative: variantKey.Alternative,
-      END: variantKey.END,
-      feature: variantKey.feature,
-      hgvsC: variantKey.hgvsC,
-      hgvsP: variantKey.hgvsP,
-      ru: variantKey.ru,
-      ruNr: variantKey.ruNr,
-    };
+  private flattenVariantKey(item: {
+    id: string;
+    content?: string;
+    value?: string;
+    sampleId?: string;
+    status?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    createdBy?: string;
+    Chromosome: string;
+    Position: number;
+    Reference: string;
+    Alternative: string | null;
+    END?: number;
+    feature?: string;
+    hgvsC?: string;
+    hgvsP?: string;
+    ru?: string;
+    ruNr?: number;
+  }): FlatNote | FlatClassification {
+    return item as FlatNote | FlatClassification;
   }
 
   private unflattenNote(row: FlatNote, reportId: string): Note {
@@ -285,8 +290,22 @@ export class FileApi {
     if (notes.length > 0) {
       const flatNotes = notes.map((note) =>
         this.flattenVariantKey({
-          ...note,
+          id: note.id,
+          content: note.content,
+          sampleId: note.sampleId,
+          createdAt: note.createdAt,
+          updatedAt: note.updatedAt,
           createdBy: (stripOuterQuotes(note.createdBy) as string) ?? "",
+          Chromosome: note.variantKey.Chromosome,
+          Position: note.variantKey.Position,
+          Reference: note.variantKey.Reference,
+          Alternative: note.variantKey.Alternative,
+          END: note.variantKey.END,
+          feature: note.variantKey.feature,
+          hgvsC: note.variantKey.hgvsC,
+          hgvsP: note.variantKey.hgvsP,
+          ru: note.variantKey.ru,
+          ruNr: note.variantKey.ruNr,
         }),
       );
 
@@ -298,16 +317,28 @@ export class FileApi {
       const useBackendUsername = this.notesApi.isUsernameFromBackend?.() ?? false;
 
       const flatClassifications = classifications.map((classification) => {
-        const base = this.flattenVariantKey(classification);
-        const cleanedCreatedBy = stripOuterQuotes(classification.createdBy);
-
-        if (useBackendUsername && cleanedCreatedBy) {
-          return {
-            ...base,
-            createdBy: cleanedCreatedBy as string,
-          };
-        }
-        return base;
+        return this.flattenVariantKey({
+          id: classification.id,
+          value: classification.value,
+          sampleId: classification.sampleId,
+          status: classification.status,
+          createdAt: classification.createdAt,
+          updatedAt: classification.updatedAt,
+          createdBy:
+            useBackendUsername && classification.createdBy
+              ? ((stripOuterQuotes(classification.createdBy) as string) ?? "")
+              : "",
+          Chromosome: classification.variantKey.Chromosome,
+          Position: classification.variantKey.Position,
+          Reference: classification.variantKey.Reference,
+          Alternative: classification.variantKey.Alternative,
+          END: classification.variantKey.END,
+          feature: classification.variantKey.feature,
+          hgvsC: classification.variantKey.hgvsC,
+          hgvsP: classification.variantKey.hgvsP,
+          ru: classification.variantKey.ru,
+          ruNr: classification.variantKey.ruNr,
+        });
       });
 
       const classificationsSheet = utils.json_to_sheet(flatClassifications);

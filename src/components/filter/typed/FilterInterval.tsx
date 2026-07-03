@@ -44,7 +44,6 @@ export const FilterInterval: Component<FilterProps<ConfigFilterField, FilterValu
               `'${props.config.defaultValue}' is not a valid default value for field '${props.config.field.id}'.`,
             );
           }
-          console.log("7");
           setRightInputValue(split[1]);
         }
         onApply();

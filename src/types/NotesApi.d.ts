@@ -4,8 +4,8 @@ export type Note = {
   variantKey: VariantKey;
   reportId: string;
   sampleId: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   createdBy: string;
 };
 
@@ -29,8 +29,8 @@ export type Classification = {
   reportId: string;
   sampleId: string;
   status: Status;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   createdBy: string;
 };
 

@@ -29,10 +29,10 @@ export async function retrieveNotesForVariant(
   const notes = await api.retrieveNotes(reportId, sampleId);
 
   if (filterOnAlt) {
-    return notes.filter((note) => sameVariantAndFeature(note.variantKey, variantKey));
+    return notes.filter((note) => note.sampleId === sampleId && sameVariantAndFeature(note.variantKey, variantKey));
   }
 
-  return notes.filter((note) => sameVariant(note.variantKey, variantKey));
+  return notes.filter((note) => note.sampleId === sampleId && sameVariant(note.variantKey, variantKey));
 }
 
 export async function retrieveClassification(
@@ -43,5 +43,6 @@ export async function retrieveClassification(
 ): Promise<Classification | null> {
   const all = await api.retrieveClassifications(reportId, sampleId);
 
-  return all.find((c) => sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
+  console.log("FIND!");
+  return all.find((c) => c.sampleId === sampleId && sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
 }
