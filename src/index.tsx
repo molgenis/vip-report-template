@@ -18,13 +18,10 @@ import {
   faFolderOpen,
   faDownload,
   faEdit,
-  faEdit,
   faExternalLink,
   faHome,
   faInfo,
   faSearch,
-  faSave,
-  faUpload,
   faSave,
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";

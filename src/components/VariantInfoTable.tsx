@@ -1,5 +1,4 @@
 import { Component, For, Show } from "solid-js";
-import { Component, For, Show } from "solid-js";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { Table } from "./Table.tsx";
 import { Item } from "@molgenis/vip-report-api";
@@ -7,7 +6,6 @@ import { RecordsTableCell, RecordsTableHeaderCell } from "./RecordsTable.tsx";
 import { initConfigCells } from "../utils/config/configCells.ts";
 import { MetadataContainer } from "../utils/api.ts";
 import { VariantType } from "../utils/variantType.ts";
-import { ConfigCellInfo } from "../types/configCells";
 import { ConfigCellInfo } from "../types/configCells";
 
 export const VariantInfoTable: Component<{

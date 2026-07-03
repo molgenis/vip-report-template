@@ -22,7 +22,6 @@ import {
   CellValueInheritanceModes,
   CellValueLocus,
   CellValueUserClassification,
-  CellValueUserClassification,
   CellValueSpanningReads,
   CellValueVipC,
   CellValueVipCS,
@@ -56,7 +55,6 @@ export function initConfigCellComposed(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
-  reportId: string,
   reportId: string,
 ): ConfigCellCustom<CellValueCustom> | null {
   const id = configStatic.name;

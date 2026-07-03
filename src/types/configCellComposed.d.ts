@@ -2,8 +2,6 @@ import { Genotype, InfoMetadata, ValueFlag, ValueFloat, ValueInteger, ValueStrin
 import { ValueCategorical } from "../utils/vcf.ts";
 import { SampleContainer } from "../utils/api.ts";
 import { ClassificationOption } from "./NotesApi";
-import { SampleContainer } from "../utils/api.ts";
-import { ClassificationOption } from "./NotesApi";
 
 export type CellValueClinVar = {
   clnSigs: ValueCategorical[];
