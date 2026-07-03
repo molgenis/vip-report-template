@@ -82,10 +82,7 @@ export class BrowserNotesApi implements NotesApi {
 
   async storeNote(note: Note) {
     const notes = this.loadNotes(note.reportId);
-    const now = new Date().toISOString();
-
     const id = note.id ? note.id : generateId();
-
     const username = note.createdBy;
 
     const newNote: Note = {
@@ -94,8 +91,8 @@ export class BrowserNotesApi implements NotesApi {
       variantKey: note.variantKey,
       reportId: note.reportId,
       sampleId: note.sampleId,
-      createdAt: note.createdAt ? note.createdAt : now,
-      updatedAt: now,
+      createdAt: new Date(),
+      updatedAt: new Date(),
       createdBy: username !== undefined ? username : "",
     };
 
@@ -139,7 +136,6 @@ export class BrowserNotesApi implements NotesApi {
     classification: Omit<Classification, "id" | "createdAt" | "updatedAt">,
   ): Promise<Classification> {
     const list = this.loadClassifications(classification.reportId);
-    const now = new Date().toISOString();
 
     const idx = list.findIndex(
       (c) =>
@@ -155,8 +151,8 @@ export class BrowserNotesApi implements NotesApi {
       reportId: classification.reportId,
       sampleId: classification.sampleId,
       status: classification.status,
-      createdAt: idx >= 0 ? list[idx].createdAt : now,
-      updatedAt: now,
+      createdAt: idx >= 0 ? list[idx].createdAt : new Date(),
+      updatedAt: new Date(),
       createdBy: "",
     };
 
