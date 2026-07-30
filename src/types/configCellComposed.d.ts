@@ -72,7 +72,7 @@ export type CellValueUserClassification = {
   hgvsP: string;
   feature: string;
   svType: string;
-  END: number | null;
+  end: number | null;
   report: string;
   ru: string;
   ruNr: number | undefined;

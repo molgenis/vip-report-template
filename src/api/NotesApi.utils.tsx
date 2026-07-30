@@ -6,13 +6,13 @@ export function generateId(): string {
 }
 
 export function sameVariant(a: VariantKey, b: VariantKey): boolean {
-  return a.Chromosome === b.Chromosome && a.Position === b.Position && a.Reference === b.Reference && a.END === b.END;
+  return a.chromosome === b.chromosome && a.position === b.position && a.reference === b.reference && a.end === b.end;
 }
 
 export function sameVariantAndFeature(a: VariantKey, b: VariantKey): boolean {
   return (
     sameVariant(a, b) &&
-    a.Alternative === b.Alternative &&
+    a.alternative === b.alternative &&
     a.ruNr === b.ruNr &&
     a.ru === b.ru &&
     a.feature === b.feature
@@ -42,7 +42,5 @@ export async function retrieveClassification(
   sampleId: string | undefined,
 ): Promise<Classification | null> {
   const all = await api.retrieveClassifications(reportId, sampleId);
-
-  console.log("FIND!");
   return all.find((c) => c.sampleId === sampleId && sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
 }

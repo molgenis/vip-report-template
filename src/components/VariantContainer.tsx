@@ -10,7 +10,6 @@ import { ConfigJson } from "../types/config";
 import { VariantType } from "../utils/variantType.ts";
 import { getPedigreeSamples } from "../utils/sample.ts";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
-import { CollapsiblePane } from "../components/CollapsablePane.tsx";
 import { initConfig } from "../utils/config/config.ts";
 import { A } from "@solidjs/router";
 
@@ -31,9 +30,7 @@ export const VariantContainer: Component<{
     <>
       <div class="columns">
         <div class="column">
-          <CollapsiblePane title="Genome Browser" defaultOpen={false}>
-            <GenomeBrowser metadata={props.metadata} samples={samples()} record={props.record} />
-          </CollapsiblePane>
+          <GenomeBrowser metadata={props.metadata} samples={samples()} record={props.record} />
         </div>
       </div>
       <div class="columns">
@@ -53,6 +50,7 @@ export const VariantContainer: Component<{
             metadata={props.metadata}
             record={props.record}
             isShowEmpty={showEmpty()}
+            reportId={props.reportId}
           />
         </div>
         <Show when={config().variant.samplesCells}>

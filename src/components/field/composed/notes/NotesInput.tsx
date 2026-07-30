@@ -132,11 +132,11 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   };
 
   const variantKey = (): VariantKey => ({
-    Chromosome: props.value.c,
-    Position: props.value.p,
-    Reference: props.value.r,
-    Alternative: props.value.a,
-    END: props.value.END,
+    chromosome: props.value.c,
+    position: props.value.p,
+    reference: props.value.r,
+    alternative: props.value.a,
+    end: props.value.end,
     feature: props.value.feature ?? "",
     hgvsC: props.value.hgvsC ?? "",
     hgvsP: props.value.hgvsP ?? "",

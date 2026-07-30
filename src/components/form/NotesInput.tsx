@@ -1,13 +1,13 @@
 import { Component, createEffect, createSignal, JSX, Show, For, createResource } from "solid-js";
 import { Portal } from "solid-js/web";
-import { Notes } from "./Notes";
+import { Notes } from "../notes/Notes";
 import { CellValueUserClassification } from "../../types/configCellComposed";
-import { ClassificationViewer } from "./ClassificationViewer";
+import { ClassificationViewer } from "../notes/ClassificationViewer";
 import { getNotesApi } from "../../api/NotesApiFactory";
 import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../types/NotesApi";
 import { retrieveClassification, retrieveNotesForVariant } from "../../api/NotesApi.utils";
 import { formatDate } from "../../utils/config/dateUtils";
-import { Select } from "../form/Select";
+import { Select } from "./Select";
 
 const notesApi = getNotesApi();
 
@@ -115,14 +115,16 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   };
 
   const variantKey = (): VariantKey => ({
-    Chromosome: props.value.c,
-    Position: props.value.p,
-    Reference: props.value.r,
-    Alternative: props.value.a,
-    END: props.value.END,
+    chromosome: props.value.c,
+    position: props.value.p,
+    reference: props.value.r,
+    alternative: props.value.a,
+    end: props.value.end,
     feature: props.value.feature,
     hgvsC: props.value.hgvsC ?? "",
     hgvsP: props.value.hgvsP ?? "",
+    ru: props.value.ru,
+    ruNr: props.value.ruNr,
   });
 
   const reportId = () => props.value.report;

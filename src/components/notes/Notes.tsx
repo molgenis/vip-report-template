@@ -14,14 +14,16 @@ export const Notes: Component<{
   const reportId = () => props.userClassification.report;
 
   const variantKey = (): VariantKey => ({
-    Chromosome: props.userClassification.c,
-    Position: props.userClassification.p,
-    Reference: props.userClassification.r,
-    Alternative: props.userClassification.a,
-    END: props.userClassification.END,
+    chromosome: props.userClassification.c,
+    position: props.userClassification.p,
+    reference: props.userClassification.r,
+    alternative: props.userClassification.a,
+    end: props.userClassification.end,
     feature: props.userClassification.feature,
     hgvsC: props.userClassification.hgvsC ?? "",
     hgvsP: props.userClassification.hgvsP ?? "",
+    ru: props.userClassification.ru,
+    ruNr: props.userClassification.ruNr,
   });
 
   const sampleId = () => props.userClassification.s.item.data.person.individualId;

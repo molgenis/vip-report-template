@@ -11,7 +11,7 @@ type NotesFormProps = {
     p: number;
     r: string;
     a: string | null;
-    END?: number;
+    end?: number;
     feature: string;
     hgvsC?: string;
     hgvsP?: string;

@@ -480,7 +480,7 @@ function createConfigFieldNotesInput(
     description: () => getDescription(config, "User classification and notes"),
     valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldFeature),
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueUserClassification => {
-      const [hgvsC, hgvsP, feature, END, alleleNum, svType] = getInfoValues(
+      const [hgvsC, hgvsP, feature, end, alleleNum, svType] = getInfoValues(
         record,
         valueIndex,
         fieldHgvsC,
@@ -509,7 +509,7 @@ function createConfigFieldNotesInput(
         hgvsC,
         hgvsP,
         feature,
-        END,
+        end,
         report: reportId,
         ru: ru,
         ruNr: ruNr !== undefined ? getRuNrFieldValueForAllele(gt, alleleNum, ruNr) : undefined,

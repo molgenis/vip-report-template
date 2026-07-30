@@ -12,11 +12,11 @@ const NOTE_COLUMNS = [
   "createdAt",
   "updatedAt",
   "createdBy",
-  "Chromosome",
-  "Position",
-  "Reference",
-  "Alternative",
-  "END",
+  "chromosome",
+  "position",
+  "reference",
+  "alternative",
+  "end",
   "feature",
   "hgvsC",
   "hgvsP",
@@ -32,11 +32,11 @@ const CLASSIFICATION_COLUMNS = [
   "createdAt",
   "updatedAt",
   "createdBy",
-  "Chromosome",
-  "Position",
-  "Reference",
-  "Alternative",
-  "END",
+  "chromosome",
+  "position",
+  "reference",
+  "alternative",
+  "end",
   "feature",
   "hgvsC",
   "hgvsP",
@@ -61,25 +61,25 @@ function parseOptionalNumber(value: number | string | null | undefined): number 
 }
 
 function buildVariantKey(row: {
-  Chromosome: string;
-  Position: number | string;
-  Reference: string;
-  Alternative: string | null;
-  END?: number | string | null;
+  chromosome: string;
+  position: number | string;
+  reference: string;
+  alternative: string | null;
+  end?: number | string | null;
   feature?: string;
   hgvsC?: string;
   hgvsP?: string;
   ru?: string;
   ruNr?: number | string | null;
 }): VariantKey {
-  const { Chromosome, Position, Reference, Alternative, END, feature, hgvsC, hgvsP, ru, ruNr } = row;
+  const { chromosome, position, reference, alternative, end, feature, hgvsC, hgvsP, ru, ruNr } = row;
 
   return {
-    Chromosome,
-    Position: parseOptionalNumber(Position)!,
-    Reference,
-    Alternative,
-    END: parseOptionalNumber(END),
+    chromosome,
+    position: parseOptionalNumber(position)!,
+    reference,
+    alternative,
+    end: parseOptionalNumber(end),
     feature: feature ?? "",
     hgvsC: hgvsC ?? "",
     hgvsP: hgvsP ?? "",
@@ -100,11 +100,11 @@ export class FileApi {
     createdAt?: Date;
     updatedAt?: Date;
     createdBy?: string;
-    Chromosome: string;
-    Position: number;
-    Reference: string;
-    Alternative: string | null;
-    END?: number;
+    chromosome: string;
+    position: number;
+    reference: string;
+    alternative: string | null;
+    end?: number;
     feature?: string;
     hgvsC?: string;
     hgvsP?: string;
@@ -116,11 +116,11 @@ export class FileApi {
 
   private unflattenNote(row: FlatNote, reportId: string): Note {
     const {
-      Chromosome,
-      Position,
-      Reference,
-      Alternative,
-      END,
+      chromosome,
+      position,
+      reference,
+      alternative,
+      end,
       feature,
       hgvsC,
       hgvsP,
@@ -137,11 +137,11 @@ export class FileApi {
       content: stripOuterQuotes(content) as string,
       createdBy: (stripOuterQuotes(createdBy) as string) || this.notesApi.getCurrentUserName() || "",
       variantKey: buildVariantKey({
-        Chromosome,
-        Position,
-        Reference,
-        Alternative,
-        END,
+        chromosome,
+        position,
+        reference,
+        alternative,
+        end,
         feature,
         hgvsC,
         hgvsP,
@@ -153,11 +153,11 @@ export class FileApi {
 
   private unflattenClassification(row: FlatClassification, reportId: string): Classification {
     const {
-      Chromosome,
-      Position,
-      Reference,
-      Alternative,
-      END,
+      chromosome,
+      position,
+      reference,
+      alternative,
+      end,
       feature,
       hgvsC,
       hgvsP,
@@ -174,11 +174,11 @@ export class FileApi {
       value: stripOuterQuotes(value) as string,
       createdBy: (stripOuterQuotes(createdBy) as string) || "",
       variantKey: buildVariantKey({
-        Chromosome,
-        Position,
-        Reference,
-        Alternative,
-        END,
+        chromosome,
+        position,
+        reference,
+        alternative,
+        end,
         feature,
         hgvsC,
         hgvsP,
@@ -296,11 +296,11 @@ export class FileApi {
           createdAt: note.createdAt,
           updatedAt: note.updatedAt,
           createdBy: (stripOuterQuotes(note.createdBy) as string) ?? "",
-          Chromosome: note.variantKey.Chromosome,
-          Position: note.variantKey.Position,
-          Reference: note.variantKey.Reference,
-          Alternative: note.variantKey.Alternative,
-          END: note.variantKey.END,
+          chromosome: note.variantKey.chromosome,
+          position: note.variantKey.position,
+          reference: note.variantKey.reference,
+          alternative: note.variantKey.alternative,
+          end: note.variantKey.end,
           feature: note.variantKey.feature,
           hgvsC: note.variantKey.hgvsC,
           hgvsP: note.variantKey.hgvsP,
@@ -328,11 +328,11 @@ export class FileApi {
             useBackendUsername && classification.createdBy
               ? ((stripOuterQuotes(classification.createdBy) as string) ?? "")
               : "",
-          Chromosome: classification.variantKey.Chromosome,
-          Position: classification.variantKey.Position,
-          Reference: classification.variantKey.Reference,
-          Alternative: classification.variantKey.Alternative,
-          END: classification.variantKey.END,
+          chromosome: classification.variantKey.chromosome,
+          position: classification.variantKey.position,
+          reference: classification.variantKey.reference,
+          alternative: classification.variantKey.alternative,
+          end: classification.variantKey.end,
           feature: classification.variantKey.feature,
           hgvsC: classification.variantKey.hgvsC,
           hgvsP: classification.variantKey.hgvsP,

@@ -58,6 +58,7 @@ export const VariantConsequenceContainer: Component<{
             metadata={props.metadata}
             record={props.record}
             isShowEmpty={showEmptyInfo()}
+            reportId={props.reportId}
           />
         </div>
         <div class="mt-3">

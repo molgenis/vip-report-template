@@ -10,11 +10,11 @@ export type Note = {
 };
 
 export type VariantKey = {
-  Chromosome: string;
-  Position: number;
-  Reference: string;
-  Alternative: string;
-  END: number | undefined;
+  chromosome: string;
+  position: number;
+  reference: string;
+  alternative: string;
+  end: number | undefined;
   feature: string;
   hgvsC: string;
   hgvsP: string;
