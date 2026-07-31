@@ -1,6 +1,7 @@
 import type { Note, Classification, VariantKey } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
 import type XLSX from "xlsx";
+import { stripOuterQuotes } from "./NotesApi.utils";
 
 type FlatNote = Omit<Note, "variantKey" | "reportId"> & VariantKey;
 type FlatClassification = Omit<Classification, "variantKey" | "reportId"> & VariantKey;
@@ -43,15 +44,6 @@ const CLASSIFICATION_COLUMNS = [
   "ru",
   "ruNr",
 ] as const;
-
-function stripOuterQuotes(value: string | number | undefined): string | number | undefined {
-  if (typeof value !== "string") return value;
-  const trimmed = value.trim();
-  if (trimmed.length >= 2 && trimmed.startsWith('"') && trimmed.endsWith('"')) {
-    return trimmed.slice(1, -1);
-  }
-  return trimmed;
-}
 
 function parseOptionalNumber(value: number | string | null | undefined): number | undefined {
   if (value === null || value === undefined) return undefined;

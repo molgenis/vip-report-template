@@ -44,3 +44,12 @@ export async function retrieveClassification(
   const all = await api.retrieveClassifications(reportId, sampleId);
   return all.find((c) => c.sampleId === sampleId && sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
 }
+
+export function stripOuterQuotes(value: string | number | undefined): string | number | undefined {
+  if (typeof value !== "string") return value;
+  const trimmed = value.trim();
+  if (trimmed.length >= 2 && trimmed.startsWith('"') && trimmed.endsWith('"')) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}

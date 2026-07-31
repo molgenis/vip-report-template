@@ -1,6 +1,6 @@
 import type { Note, Classification, ClassificationOption } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
-import { generateId, sameVariantAndFeature } from "./NotesApi.utils";
+import { generateId, sameVariantAndFeature, stripOuterQuotes } from "./NotesApi.utils";
 import { StorageAdapter } from "./StorageAdapter";
 
 export class BrowserNotesApi implements NotesApi {
@@ -15,7 +15,7 @@ export class BrowserNotesApi implements NotesApi {
   }
 
   getCurrentUserName(): string | undefined {
-    return this.storage.get(this.getUserKey());
+    return stripOuterQuotes(this.storage.get(this.getUserKey())) as string;
   }
 
   setCurrentUserName(name: string): void {
