@@ -478,7 +478,7 @@ function createConfigFieldNotesInput(
     id: "notesInput",
     label: () => getLabel(config, "Classification"),
     description: () => getDescription(config, "User classification and notes"),
-    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldFeature),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldAlleleNum),
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueUserClassification => {
       const [hgvsC, hgvsP, feature, end, alleleNum, svType] = getInfoValues(
         record,
@@ -527,7 +527,7 @@ function createConfigFieldStrNr(
   metadata: VcfMetadataContainer,
   sample: SampleContainer | null,
 ): ConfigCellCustom<CellValueStrNr> {
-  const [fieldFeature, fieldAlleleNum] = getInfoNestedFields(metadata, "CSQ", "Feature", "ALLELE_NUM");
+  const [fieldAlleleNum] = getInfoNestedFields(metadata, "CSQ", "ALLELE_NUM");
 
   const [fieldRuNr, fieldGt] = getSampleFields(metadata, "RU_NR", "GT");
 
@@ -536,7 +536,7 @@ function createConfigFieldStrNr(
     id: "numberOfRepeatUnits",
     label: () => getLabel(config, "Repeat Units"),
     description: () => getDescription(config, "Number of Repeat Units"),
-    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldFeature),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldAlleleNum),
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueStrNr => {
       const [alleleNum] = getInfoValues(record, valueIndex, fieldAlleleNum) as [number];
 
