@@ -1,6 +1,6 @@
 import { Component, For, Show } from "solid-js";
 import { Note } from "../../../../types/NotesApi";
-import { formatDate } from "../../../../utils/config/dateUtils";
+import { formatDate } from "../../../../utils/dateUtils";
 
 type NotesListProps = {
   notes: Note[];

@@ -6,7 +6,7 @@ import { ClassificationViewer } from "./ClassificationViewer";
 import { getNotesApi } from "../../../../api/NotesApiFactory";
 import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../../../types/NotesApi";
 import { retrieveClassification, retrieveNotesForVariant } from "../../../../api/NotesApi.utils";
-import { formatDate } from "../../../../utils/config/dateUtils";
+import { formatDate } from "../../../../utils/dateUtils";
 import { Select } from "../../../form/Select";
 
 const notesApi = getNotesApi();
