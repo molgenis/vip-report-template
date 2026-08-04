@@ -2,16 +2,12 @@ import { coverageConfigDefaults, defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
 import inlinePlugin from "@molgenis/vite-plugin-inline";
 
-export default defineConfig(({ command }) => {
-
-  return {
+export default defineConfig(({ command }) => ({
   plugins: [solidPlugin(), inlinePlugin()],
-
-
   esbuild: {
     // @molgenis/vite-plugin-inline requires ascii input and cannot handle UTF-8 input
     charset: "ascii",
-    pure: command === "build" ? [] : [],
+    pure: command === "build" ? ["console.log"] : [],
   },
   build: {
     target: "es2022",
@@ -43,4 +39,4 @@ export default defineConfig(({ command }) => {
       },
     },
   },
-}});
+}));
