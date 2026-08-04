@@ -22,7 +22,7 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       '@molgenis/vip-report-vcf':
-        specifier: ^4.0.7
+        specifier: ^4.0.8
         version: 4.0.8
       '@solidjs/router':
         specifier: ^0.16.1
