@@ -80,12 +80,12 @@ export const VariantResults: Component<{
             {sortOptions().length > 0 && (
               <Sort options={sortOptions()} onChange={props.onSortChange} onClear={props.onSortClear} />
             )}
+            <ButtonSave title="Download your notes and classifications" onClick={props.onNotesDownload} />
+            <Upload reportId={props.reportId} refetch={handleRefresh} />
             <ButtonDownload
               title="Download vcf file with records matching filters and search queries"
               onClick={props.onRecordsDownload}
             />
-            <ButtonSave title="Download your notes and classifications" onClick={props.onNotesDownload} />
-            <Upload reportId={props.reportId} refetch={handleRefresh} />
           </div>
         </div>
       </div>
