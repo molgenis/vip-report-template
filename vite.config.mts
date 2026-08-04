@@ -1,19 +1,10 @@
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
 import inlinePlugin from "@molgenis/vite-plugin-inline";
-import { loadEnv } from "vite";
 
 export default defineConfig(({ command }) => {
-  const env = loadEnv(command, process.cwd(), "");
 
   return {
-  define: {
-    __EXTERNAL_API__: JSON.stringify(
-      env["EXTERNAL_API"] !== undefined
-        ? "RD3"
-      : undefined
-    ),
-  },
   plugins: [solidPlugin(), inlinePlugin()],
 
 
