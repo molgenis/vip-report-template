@@ -137,9 +137,9 @@ describe("FileApi", () => {
     it("imports notes", async () => {
       vi.mocked(XLSX.read).mockReturnValue(createWorkbookWithNotes());
 
-      const result = await fileApi.load({} as File);
+      const result = await fileApi.load({} as File, "reportTestId");
 
-      expect(result).toContain("reportTestId");
+      expect(result).toContain("Successfully imported notes and classifications from Excel");
 
       expect(notesApi.storeNote).toHaveBeenCalledTimes(1);
 
@@ -162,42 +162,11 @@ describe("FileApi", () => {
     it("imports classifications", async () => {
       vi.mocked(XLSX.read).mockReturnValue(createWorkbookWithClassifications());
 
-      const result = await fileApi.load({} as File);
+      const result = await fileApi.load({} as File, "reportTestId");
 
-      expect(result).toContain("testReport");
+      expect(result).toContain("Successfully imported notes and classifications from Excel");
 
       expect(notesApi.storeClassification).toHaveBeenCalledTimes(1);
-    });
-
-    it("throws when metadata sheet is missing", async () => {
-      const workbook = XLSX.utils.book_new();
-
-      vi.mocked(XLSX.read).mockReturnValue(workbook);
-
-      await expect(fileApi.load({} as File)).rejects.toThrow(
-        "Metadata sheet is missing",
-      );
-    });
-
-    it("throws when reportId is missing", async () => {
-      const workbook = XLSX.utils.book_new();
-
-      XLSX.utils.book_append_sheet(
-        workbook,
-        XLSX.utils.json_to_sheet([
-          {
-            key: "otherKey",
-            value: "123",
-          },
-        ]),
-        "Metadata",
-      );
-
-      vi.mocked(XLSX.read).mockReturnValue(workbook);
-
-      await expect(fileApi.load({} as File)).rejects.toThrow(
-        "Metadata sheet does not contain a reportId",
-      );
     });
   });
 

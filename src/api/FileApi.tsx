@@ -206,7 +206,7 @@ export class FileApi {
     }
   }
 
-  async load(excelFile: File): Promise<string> {
+  async load(excelFile: File, reportId: string): Promise<string> {
     const { read, utils } = await import("xlsx");
 
     return new Promise((resolve, reject) => {
@@ -222,9 +222,6 @@ export class FileApi {
           }
 
           const workbook = read(data, { type: "array" });
-
-          const reportIdFromFile = this.getReportIdFromWorkbook(utils, workbook);
-
           const notesSheet = workbook.Sheets["Notes"];
 
           if (notesSheet) {
@@ -237,7 +234,7 @@ export class FileApi {
               if (!row.id || seen.has(row.id)) continue;
 
               seen.add(row.id);
-              await this.notesApi.storeNote(this.unflattenNote(row, reportIdFromFile));
+              await this.notesApi.storeNote(this.unflattenNote(row, reportId));
             }
           }
 
@@ -253,11 +250,11 @@ export class FileApi {
               if (!row.id || seen.has(row.id)) continue;
 
               seen.add(row.id);
-              await this.notesApi.storeClassification(this.unflattenClassification(row, reportIdFromFile));
+              await this.notesApi.storeClassification(this.unflattenClassification(row, reportId));
             }
           }
 
-          resolve(`Successfully imported notes and classifications from Excel for reportId ${reportIdFromFile}`);
+          resolve(`Successfully imported notes and classifications from Excel`);
         } catch (error) {
           console.error(error);
 

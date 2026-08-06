@@ -40,7 +40,7 @@ export const Upload: Component<{
 
       // 3) Preserve saved state around the import
       const state = !notesApi.hasUnsavedData(props.reportId);
-      const msg = await fileApi.load(file);
+      const msg = await fileApi.load(file, props.reportId);
       notesApi.setSavedState(state, props.reportId);
       setMessage(msg);
 
