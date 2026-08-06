@@ -1,29 +1,28 @@
-import { Component, JSX, Show } from "solid-js";
+import { Component, createEffect, JSX, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
 
-type NotesModalProps = {
+type NotesInputModalProps = {
   open: boolean;
   onClose: () => void;
   onDismissSaved: () => void;
+  children: JSX.Element;
   userClassification: CellValueUserClassification;
   classificationSaved: boolean;
-  children: JSX.Element;
 };
 
-export const NotesModal: Component<NotesModalProps> = (props) => {
+export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
   let contentRef: HTMLDivElement | undefined;
 
   const setContentRef = (el: HTMLDivElement) => {
     contentRef = el;
   };
 
-  // Scroll to top when opened
-  const onOpen = () => {
-    if (contentRef) {
+  createEffect(() => {
+    if (props.open && contentRef) {
       contentRef.scrollTop = 0;
     }
-  };
+  });
 
   const headerTitle = () => {
     const { feature, hgvsC, hgvsP, svType, ru, ruNr } = props.userClassification;
@@ -36,7 +35,7 @@ export const NotesModal: Component<NotesModalProps> = (props) => {
       );
     }
 
-    return `${feature}:${hgvsC}(${hgvsP})`;
+    return `${feature}:${hgvsC}` + `${hgvsP === null ? "" : "(" + hgvsP + ")"}`;
   };
 
   const isRuNrError = () => props.userClassification.ruNr === -1;
@@ -45,7 +44,7 @@ export const NotesModal: Component<NotesModalProps> = (props) => {
     <Show when={props.open}>
       <Portal>
         <div class="notes-modal-overlay" onClick={() => props.onClose()}>
-          <div ref={setContentRef} class="notes-modal-content" onClick={(e) => e.stopPropagation()} onMount={onOpen}>
+          <div ref={setContentRef} class="notes-modal-content" onClick={(e) => e.stopPropagation()}>
             <header class="notes-modal-header">
               <h2 class="notes-modal-title">{headerTitle()}</h2>
             </header>

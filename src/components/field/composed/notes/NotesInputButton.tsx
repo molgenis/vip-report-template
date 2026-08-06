@@ -1,24 +1,16 @@
-import { Component, createEffect, createSignal, Show, createResource } from "solid-js";
-import { Notes } from "./Notes";
+import { Component, createSignal, createResource, createEffect } from "solid-js";
+import { Notes } from "./NotesIcon";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
-import { ClassificationViewer } from "./ClassificationViewer";
+import { ClassificationViewer } from "./ClassificationIcon";
 import { getNotesApi } from "../../../../api/NotesApiFactory";
 import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../../../types/NotesApi";
-import { retrieveClassification, retrieveNotesForVariant } from "../../../../api/NotesApi.utils";
-import { NotesModal } from "./NotesModal";
-import { NotesForm } from "./NotesForm";
+import { retrieveClassification, retrieveNotesForVariant, stripOuterQuotes } from "../../../../api/NotesApi.utils";
+import { NotesInputModal } from "./NotesInputModal";
+import { ClassificationSelector } from "./ClassificationSelector";
+import { NoteForm } from "./NoteForm";
 import { NotesList } from "./NotesList";
 
 const notesApi = getNotesApi();
-
-function stripOuterQuotes(value: string | null | undefined): string {
-  if (!value) return "";
-  const trimmed = value.trim();
-  if (trimmed.length >= 2 && trimmed.startsWith('"') && trimmed.endsWith('"')) {
-    return trimmed.slice(1, -1);
-  }
-  return trimmed;
-}
 
 type NotesInputButtonProps = {
   value: CellValueUserClassification;
@@ -28,14 +20,12 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [open, setOpen] = createSignal(false);
   const [refreshKey, setRefreshKey] = createSignal(0);
   const [classificationSaved, setClassificationSaved] = createSignal(false);
-
-  const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()));
-
+  const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()) as string);
   const refresh = () => setRefreshKey((prev) => prev + 1);
 
   const showPopup = () => {
     setClassificationSaved(false);
-    const current = stripOuterQuotes(notesApi.getCurrentUserName());
+    const current = stripOuterQuotes(notesApi.getCurrentUserName()) as string;
     setUsername(current);
     setOpen(true);
   };
@@ -137,7 +127,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   );
 
   const [noteValue, setNoteValue] = createSignal("");
-
   const saveNote = async () => {
     try {
       if (!noteValue().trim()) return;
@@ -186,35 +175,45 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         <Notes userClassification={props.value} refresh={refreshKey()} callback={showPopup} />
       </span>
 
-      <NotesModal
+      <NotesInputModal
         open={open()}
         onClose={handleClose}
         onDismissSaved={() => setClassificationSaved(false)}
         userClassification={props.value}
         classificationSaved={classificationSaved()}
       >
-        <NotesForm
-          userClassification={props.value}
-          classificationOptions={classificationOptions() ?? []}
-          value={value()}
-          onClassificationChange={handleChange}
-          username={username()}
-          setUsername={setUsername}
-          isSetUsernameEnabled={isSetUsernameEnabled() ?? false}
-          noteValue={noteValue()}
-          setNoteValue={setNoteValue}
-          onSaveNote={saveNote}
+        <br />
+
+        <ClassificationSelector
+          value={value().value}
+          options={classificationOptions()?.map((option) => ({ id: option.value, label: option.label })) ?? []}
+          onValueChange={handleChange}
           disabled={disableAllInputs()}
         />
 
-        <Show when={!notes.loading && notes()}>
-          <NotesList notes={notes() ?? []} userFeature={props.value.feature} onRemoveNote={removeNote} />
-        </Show>
+        <hr />
+        <header class="notes-modal-header">
+          <h2 class="notes-modal-title">Notes</h2>
+        </header>
 
-        <Show when={notes.error}>
-          <p class="help is-danger">Error loading notes: {String(notes.error)}</p>
-        </Show>
-      </NotesModal>
+        <NoteForm
+          showUsernameField={!!isSetUsernameEnabled()}
+          username={username()}
+          onUsernameChange={setUsername}
+          noteValue={noteValue()}
+          onNoteValueChange={setNoteValue}
+          onSave={saveNote}
+          disabled={disableAllInputs()}
+        />
+
+        <NotesList
+          loading={notes.loading}
+          notes={notes()}
+          error={notes.error}
+          currentFeature={props.value.feature}
+          onRemove={removeNote}
+        />
+      </NotesInputModal>
     </>
   );
 };

@@ -53,3 +53,16 @@ export function stripOuterQuotes(value: string | number | undefined): string | n
   }
   return trimmed;
 }
+
+export function formatNoteLabel(note: Note): string {
+  const feature = note.variantKey.feature ?? "";
+  const hgvsC = note.variantKey.hgvsC ?? "";
+  const hgvsP = note.variantKey.hgvsP ?? "";
+
+  if (!feature && !hgvsC && !hgvsP) return "";
+  if (!hgvsC && !hgvsP) return feature;
+
+  const hgvsPart = hgvsC && hgvsP ? `${hgvsC}(${hgvsP})` : hgvsC ? hgvsC : "";
+
+  return feature ? `${feature}:${hgvsPart}` : hgvsPart;
+}

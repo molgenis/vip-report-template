@@ -1,6 +1,4 @@
-export const formatDate = (isoString: string) => {
-  const date = new Date(isoString);
-
+export const formatDate = (date: Date) => {
   const parts = new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
     month: "2-digit",

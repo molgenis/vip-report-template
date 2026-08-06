@@ -1,6 +1,6 @@
 import { Component, Match, Switch } from "solid-js";
 import { FieldLocus } from "./FieldLocus";
-import { NotesInputButton } from "./notes/NotesInput.tsx";
+import { NotesInputButton } from "./notes/NotesInputButton.tsx";
 import { FieldVipC } from "./FieldVipC";
 import { FieldGenotype } from "./FieldGenotype";
 import { FieldGene } from "./FieldGene";

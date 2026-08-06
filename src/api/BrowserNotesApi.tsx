@@ -62,7 +62,20 @@ export class BrowserNotesApi implements NotesApi {
 
   private loadNotes(reportId: string): Note[] {
     const raw = this.storage.get(this.getNotesKey(reportId));
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+
+    return JSON.parse(raw).map(
+      (
+        note: Omit<Note, "createdAt" | "updatedAt"> & {
+          createdAt: string;
+          updatedAt: string;
+        },
+      ) => ({
+        ...note,
+        createdAt: new Date(note.createdAt),
+        updatedAt: new Date(note.updatedAt),
+      }),
+    );
   }
 
   private saveNotes(reportId: string, notes: Note[]) {
@@ -72,7 +85,20 @@ export class BrowserNotesApi implements NotesApi {
 
   private loadClassifications(reportId: string): Classification[] {
     const raw = this.storage.get(this.getClassificationsKey(reportId));
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+
+    return JSON.parse(raw).map(
+      (
+        classification: Omit<Classification, "createdAt" | "updatedAt"> & {
+          createdAt: string;
+          updatedAt: string;
+        },
+      ) => ({
+        ...classification,
+        createdAt: new Date(classification.createdAt),
+        updatedAt: new Date(classification.updatedAt),
+      }),
+    );
   }
 
   private saveClassifications(reportId: string, data: Classification[]) {
@@ -112,19 +138,6 @@ export class BrowserNotesApi implements NotesApi {
   }
 
   async retrieveNotes(reportId?: string): Promise<Note[]> {
-    if (!reportId) {
-      const all: Note[] = [];
-
-      this.storage.keys?.().forEach((key) => {
-        if (key.startsWith("notes_")) {
-          const raw = this.storage.get(key);
-          if (raw) all.push(...JSON.parse(raw));
-        }
-      });
-
-      return all;
-    }
-
     return this.loadNotes(reportId);
   }
 
