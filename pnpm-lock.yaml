@@ -44,8 +44,8 @@ importers:
         version: 1.14.2
     devDependencies:
       '@molgenis/vite-plugin-inline':
-        specifier: ^2.0.3
-        version: 2.0.3(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(sass@1.102.0))
+        specifier: ^2.0.4
+        version: 2.0.4(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(sass@1.102.0))
       '@types/async-lock':
         specifier: ^1.4.2
         version: 1.4.2
@@ -487,11 +487,11 @@ packages:
     resolution: {integrity: sha512-jToSEVd9vs18uzRQIf8EX7AWTENmG1yz+rj/UWyw9uj3qegXEcudOVjWCqelcCBqZhTcJUXH5JJhjiNTLpledg==}
     engines: {node: '24', pnpm: '10'}
 
-  '@molgenis/vite-plugin-inline@2.0.3':
-    resolution: {integrity: sha512-184B/Fm/WdPl5XWQor6g9oFA3Jl876F5rsx3FLMlE9ZvSh8z+za9Cccw9gO5sUL1VX45aJzuOXzKYGhmi8hUdg==}
+  '@molgenis/vite-plugin-inline@2.0.4':
+    resolution: {integrity: sha512-8rtvQjieCt8WuVBEC0gx/7v5TkiBKjrKKmjQCApEf4rAM9iwjKtlKVbT5XZOIWYnjEO/vjbenBRw4olnHhHAFw==}
     engines: {node: '24', pnpm: '10'}
     peerDependencies:
-      vite: ^8.0.7
+      vite: ^8.2.1
 
   '@oxc-project/types@0.144.0':
     resolution: {integrity: sha512-nuhZIOLuI6TFQ32I/WnUx+SCPY7SdSKwgnFHydAuoS1+Z4BRcaP+RRJmGzl9lw+0OFF7UmaESf7KQRXaNLHypg==}
@@ -1988,7 +1988,7 @@ snapshots:
 
   '@molgenis/vip-report-vcf@4.0.9': {}
 
-  '@molgenis/vite-plugin-inline@2.0.3(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(sass@1.102.0))':
+  '@molgenis/vite-plugin-inline@2.0.4(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(sass@1.102.0))':
     dependencies:
       vite: 8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(sass@1.102.0)
 

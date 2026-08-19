@@ -1,6 +1,6 @@
 {
   "name": "@molgenis/vip-report-template",
-  "version": "8.4.2",
+  "version": "8.4.3",
   "description": "Report Template for Variant Call Format (VCF) Report Generator",
   "scripts": {
     "build": "vite build",
@@ -21,7 +21,7 @@
     }
   },
   "devDependencies": {
-    "@molgenis/vite-plugin-inline": "^2.0.3",
+    "@molgenis/vite-plugin-inline": "^2.0.4",
     "@types/async-lock": "^1.4.2",
     "@types/node": "^24.13.3",
     "@vitest/coverage-v8": "^4.1.11",
