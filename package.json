@@ -52,7 +52,7 @@
     "igv": "^3.8.5",
     "solid-js": "^1.9.15",
     "sql.js": "^1.13.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "lint-staged": {
     "src/**/*.{tsx,ts}": [
