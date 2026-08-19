@@ -345,7 +345,7 @@
                 { "value": "VUS", "label": "Variant of Uncertain Significance" },
                 { "value": "LP", "label": "Likely Pathogenic" },
                 { "value": "P", "label": "Pathogenic" },
-                { "value": "A", "label": "Artefact" },
+                { "value": "A", "label": "Artifact" },
                 { "value": "-", "label": "Processed but not classified" }
                 ]
               }
