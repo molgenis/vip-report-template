@@ -1,4 +1,4 @@
-import { Component, createEffect, JSX, Show } from "solid-js";
+import { Component, createEffect, JSX } from "solid-js";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
 
 type NotesInputModalProps = {
@@ -6,6 +6,7 @@ type NotesInputModalProps = {
   onClose: () => void;
   children: JSX.Element;
   userClassification: CellValueUserClassification;
+  title: string;
 };
 
 export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
@@ -21,21 +22,6 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
     }
   });
 
-  const headerTitle = () => {
-    const { feature, hgvsC, hgvsP, svType, ru, ruNr } = props.userClassification;
-
-    if (svType === "STR") {
-      return (
-        <>
-          {feature} (<b>Repeat unit:</b> {ru} <b>Number of units:</b> {ruNr})
-        </>
-      );
-    }
-    return `${hgvsC}` + `${hgvsP === null ? "" : "(" + hgvsP + ")"}`;
-  };
-
-  const isRuNrError = () => props.userClassification.ruNr === -1;
-
   return (
     <div class="modal notes-modal" classList={{ "is-active": props.isOpen }}>
       <div class="modal-background" onClick={() => props.onClose()} />
@@ -43,15 +29,8 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
         <button class="modal-close is-large" aria-label="close" type="button" onClick={() => props.onClose()} />
 
         <header class="notes-modal-header">
-          <h2 class="notes-modal-title">{headerTitle()}</h2>
+          <h2 class="notes-modal-title">{props.title}</h2>
         </header>
-
-        <Show when={isRuNrError()}>
-          <div class="notification is-danger is-light mt-2">
-            This tandem repeat allele was not observed for this sample.
-          </div>
-        </Show>
-
         {props.children}
       </div>
     </div>

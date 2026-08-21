@@ -14,7 +14,7 @@ import { dataVersion, notifyDataChanged } from "../../../../utils/upload/uploadS
 const notesApi = getNotesApi();
 
 type NotesInputButtonProps = {
-  value: CellValueUserClassification;
+  userClassification: CellValueUserClassification;
 };
 
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
@@ -33,7 +33,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
   const [classificationOptions] = createResource(async () => {
     const options = await notesApi.getClassificationOptions();
-    return !options || options.length === 0 ? props.value.options : options;
+    return !options || options.length === 0 ? props.userClassification.options : options;
   });
 
   const [isSetUsernameEnabled] = createResource(async () => {
@@ -46,21 +46,22 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   };
 
   const variantKey = (): VariantKey => ({
-    chromosome: props.value.c,
-    position: props.value.p,
-    reference: props.value.r,
-    alternative: props.value.a,
-    end: props.value.end,
-    feature: props.value.feature ?? "",
-    hgvsC: props.value.hgvsC ?? "",
-    hgvsP: props.value.hgvsP ?? "",
-    ru: props.value.ru ?? "",
-    ruNr: props.value.ruNr,
+    chromosome: props.userClassification.c,
+    position: props.userClassification.p,
+    reference: props.userClassification.r,
+    alternative: props.userClassification.a,
+    end: props.userClassification.end,
+    feature: props.userClassification.feature ?? "",
+    hgvsC: props.userClassification.hgvsC ?? "",
+    hgvsP: props.userClassification.hgvsP ?? "",
+    ru: props.userClassification.ru ?? "",
+    ruNr: props.userClassification.ruNr,
   });
 
-  const reportId = () => props.value.report;
+  const reportId = () => props.userClassification.report;
 
-  const sampleId = () => (props.value.s !== undefined ? props.value.s.item.data.person.individualId : undefined);
+  const sampleId = () =>
+    props.userClassification.s !== undefined ? props.userClassification.s.item.data.person.individualId : undefined;
 
   const status: Status = "approved";
 
@@ -153,7 +154,21 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     }
   };
 
-  const disableAllInputs = () => props.value.ruNr === -1;
+  const modalTitle = () => {
+    const { feature, hgvsC, hgvsP, svType, ru, ruNr } = props.userClassification;
+
+    if (svType === "STR") {
+      return (
+        <>
+          {feature} (<b>Repeat unit:</b> {ru} <b>Number of units:</b> {ruNr})
+        </>
+      );
+    }
+    return `${hgvsC}` + `${hgvsP === null ? "" : "(" + hgvsP + ")"}`;
+  };
+
+  const disableAllInputs = () => props.userClassification.ruNr === -1;
+  const isRuNrError = () => props.userClassification.ruNr === -1;
 
   return (
     <>
@@ -162,17 +177,27 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
           <i class="fas fa-edit" />
         </a>
 
-        <ClassificationViewer userClassification={props.value} />
-        <Notes userClassification={props.value} callback={openModal} />
+        <ClassificationViewer userClassification={props.userClassification} />
+        <Notes userClassification={props.userClassification} callback={openModal} />
       </span>
 
-      <NotesInputModal isOpen={isModalOpen()} onClose={closeModal} userClassification={props.value}>
+      <NotesInputModal
+        isOpen={isModalOpen()}
+        onClose={closeModal}
+        userClassification={props.userClassification}
+        title={modalTitle() as string}
+      >
         <Show when={classificationSaved()}>
           <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
             <span>Classification saved successfully.</span>
             <button class="notes-modal-close" type="button">
               ×
             </button>
+          </div>
+        </Show>
+        <Show when={isRuNrError()}>
+          <div class="notification is-danger is-light mt-2">
+            This tandem repeat allele was not observed for this sample.
           </div>
         </Show>
 
@@ -201,7 +226,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
             loading={notes.loading}
             notes={notes()}
             error={notes.error}
-            currentFeature={props.value.feature}
+            currentFeature={props.userClassification.feature}
             onRemove={removeNote}
           />
         </div>

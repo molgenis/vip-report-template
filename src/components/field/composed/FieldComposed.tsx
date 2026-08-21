@@ -81,7 +81,7 @@ export const FieldComposed: Component<{
         <FieldVkgl value={props.value as CellValueVkgl} />
       </Match>
       <Match when={id() === "notesInput"}>
-        <NotesInputButton value={props.value as CellValueUserClassification} />
+        <NotesInputButton userClassification={props.value as CellValueUserClassification} />
       </Match>
     </Switch>
   );
