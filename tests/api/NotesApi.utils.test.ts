@@ -6,8 +6,9 @@ import {
   retrieveNotesForVariant,
   retrieveClassification,
   stripOuterQuotes,
+  formatNoteLabel,
 } from "../../src/api/NotesApi.utils";
-import { VariantKey } from "../../src/types/NotesApi";
+import { Note, VariantKey } from "../../src/types/NotesApi";
 
 describe("NotesApi.utils", () => {
   describe("generateId", () => {
@@ -320,5 +321,64 @@ describe("NotesApi.utils", () => {
     it("returns undefined unchanged", () => {
         expect(stripOuterQuotes(undefined)).toBeUndefined();
     });
+    });
+
+    function makeNote(overrides: Partial<Note["variantKey"]> = {}): Note {
+      return {
+        id: "1",
+        content: "test",
+        variantKey: {
+          chromosome: "1",
+          position: 100,
+          reference: "A",
+          alternative: "T",
+          end: 100,
+          feature: "",
+          hgvsC: "",
+          hgvsP: "",
+          ru: "",
+          ruNr: 0,
+          ...overrides,
+        },
+        reportId: "report-1",
+        sampleId: "sample-1",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: "tester",
+      } as Note;
+    }
+    
+    describe("formatNoteLabel", () => {
+      it("returns an empty string when feature, hgvsC, and hgvsP are all missing", () => {
+        expect(formatNoteLabel(makeNote())).toBe("1-100-A-T");
+      });
+    
+      it("returns just the feature when hgvsC and hgvsP are missing", () => {
+        expect(formatNoteLabel(makeNote({ feature: "GENE1" }))).toBe("GENE1");
+      });
+    
+      it("returns just hgvsC when only hgvsC is present (no feature, no hgvsP)", () => {
+        expect(formatNoteLabel(makeNote({ hgvsC: "c.123A>T" }))).toBe("c.123A>T");
+      });
+    
+      it("returns feature:hgvsC when feature and hgvsC are present but hgvsP is not", () => {
+        expect(formatNoteLabel(makeNote({ feature: "GENE1", hgvsC: "c.123A>T" }))).toBe("GENE1:c.123A>T");
+      });
+    
+      it("returns hgvsC(hgvsP) when both hgvs fields are present but feature is not", () => {
+        expect(formatNoteLabel(makeNote({ hgvsC: "c.123A>T", hgvsP: "p.Lys41Asn" }))).toBe("c.123A>T(p.Lys41Asn)");
+      });
+    
+      it("returns feature:hgvsC(hgvsP) when feature, hgvsC, and hgvsP are all present", () => {
+        expect(
+          formatNoteLabel(makeNote({ feature: "GENE1", hgvsC: "c.123A>T", hgvsP: "p.Lys41Asn" })),
+        ).toBe("GENE1:c.123A>T(p.Lys41Asn)");
+      });
+    
+      it("treats null variantKey fields the same as empty strings", () => {
+        expect(
+          formatNoteLabel(makeNote({ feature: null as unknown as string, hgvsC: null as unknown as string, hgvsP: null as unknown as string })),
+        ).toBe("1-100-A-T");
+      });
     });
 });

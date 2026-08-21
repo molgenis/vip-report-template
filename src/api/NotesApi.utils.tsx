@@ -61,8 +61,9 @@ export function formatNoteLabel(note: Note): string {
   const feature = note.variantKey.feature ?? "";
   const hgvsC = note.variantKey.hgvsC ?? "";
   const hgvsP = note.variantKey.hgvsP ?? "";
+  const fallback = `${note.variantKey.chromosome}-${note.variantKey.position}-${note.variantKey.reference}-${note.variantKey.alternative}`;
 
-  if (!feature && !hgvsC && !hgvsP) return "";
+  if (!feature && !hgvsC && !hgvsP) return fallback;
   if (!hgvsC && !hgvsP) return feature;
 
   const hgvsPart = hgvsC && hgvsP ? `${hgvsC}(${hgvsP})` : hgvsC ? hgvsC : "";
