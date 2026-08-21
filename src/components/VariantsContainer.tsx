@@ -21,8 +21,6 @@ import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigJson } from "../types/config";
 import { createSort } from "../utils/query/sort.ts";
 import { VariantStore } from "../store/variants.ts";
-import { getNotesApi } from "../api/NotesApiFactory.tsx";
-import { createFileApi } from "../api/FileApi.tsx";
 
 export const VariantsContainer: Component<{
   store: VariantStore;
@@ -33,18 +31,14 @@ export const VariantsContainer: Component<{
   reportId: string;
 }> = (props) => {
   const navigate = useNavigate();
-  const notesApi = getNotesApi();
-  const fileApi = createFileApi(notesApi);
 
   const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
-  const variantTypeIds = () =>
-    props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds;
+  const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
   const query = () =>
     createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
-  const defaultRecordsPerPage = () =>
-    config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
+  const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
   const recordsPerPage = () =>
     props.store.getPageSize() !== null ? props.store.getPageSize()! : defaultRecordsPerPage();
 
@@ -66,7 +60,6 @@ export const VariantsContainer: Component<{
     return Object.hasOwn(props.metadata.records.info, "SVTYPE");
   };
 
-  // Main records resource
   const [records, { refetch }] = createResource(
     (): RecordParams => ({
       query: query() || undefined,
@@ -78,7 +71,6 @@ export const VariantsContainer: Component<{
     fetchRecords,
   );
 
-  // This is what VariantResults will call
   const onRefresh = async () => {
     await refetch();
   };
@@ -93,22 +85,11 @@ export const VariantsContainer: Component<{
     props.store.setPageNumber(event.page);
   };
 
-  const onNotesDownload = async () => {
-    try {
-      await fileApi.download(props.reportId);
-    } catch (error) {
-      console.error("Download error:", error);
-    }
-  };
-
   const onRecordsDownload = async () => {
     const samples = props.sample ? getPedigreeSamples(props.sample) : [];
-    const filter = samples
-      ? { samples: samples.map((sample) => sample.data.person.individualId) }
-      : undefined;
+    const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
     const sampleIds = samples ? samples.map((sample) => sample.id) : ([] as number[]);
 
-    // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
     const records = await fetchRecords({
       query: query() || undefined,
       page: 0,
@@ -132,10 +113,7 @@ export const VariantsContainer: Component<{
     const url = window.URL.createObjectURL(new Blob([vcf]));
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute(
-      "download",
-      createVcfDownloadFilename(props.metadata.app.htsFile as HtsFileMetadata),
-    );
+    link.setAttribute("download", createVcfDownloadFilename(props.metadata.app.htsFile as HtsFileMetadata));
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -205,7 +183,6 @@ export const VariantsContainer: Component<{
                 onPageChange={onPageChange}
                 onRecordsPerPageChange={onRecordsPerPageChange}
                 onRecordsDownload={onRecordsDownload}
-                onNotesDownload={onNotesDownload}
                 onSortChange={onSortChange}
                 onSortClear={onSortClear}
                 onRefresh={onRefresh}

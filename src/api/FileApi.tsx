@@ -3,8 +3,16 @@ import type { NotesApi } from "./NotesApi";
 import type XLSX from "xlsx";
 import { stripOuterQuotes } from "./NotesApi.utils";
 
-type FlatNote = Omit<Note, "variantKey" | "reportId"> & VariantKey;
-type FlatClassification = Omit<Classification, "variantKey" | "reportId"> & VariantKey;
+type FlatNote = Omit<Note, "variantKey" | "reportId"> &
+  VariantKey & {
+    createdAt: number;
+    updatedAt: number;
+  };
+type FlatClassification = Omit<Classification, "variantKey" | "reportId"> &
+  VariantKey & {
+    createdAt: number;
+    updatedAt: number;
+  };
 
 const NOTE_COLUMNS = [
   "id",
@@ -120,6 +128,8 @@ export class FileApi {
       ruNr,
       createdBy,
       content,
+      createdAt,
+      updatedAt,
       ...rest
     } = row;
 
@@ -128,6 +138,8 @@ export class FileApi {
       reportId,
       content: stripOuterQuotes(content) as string,
       createdBy: (stripOuterQuotes(createdBy) as string) || this.notesApi.getCurrentUserName() || "",
+      createdAt: this.excelSerialToDate(createdAt),
+      updatedAt: this.excelSerialToDate(updatedAt),
       variantKey: buildVariantKey({
         chromosome,
         position,
@@ -157,11 +169,15 @@ export class FileApi {
       ruNr,
       createdBy,
       value,
+      createdAt,
+      updatedAt,
       ...rest
     } = row;
 
     return {
       ...rest,
+      createdAt: this.excelSerialToDate(createdAt),
+      updatedAt: this.excelSerialToDate(updatedAt),
       reportId,
       value: stripOuterQuotes(value) as string,
       createdBy: (stripOuterQuotes(createdBy) as string) || "",
@@ -178,6 +194,22 @@ export class FileApi {
         ruNr,
       }),
     };
+  }
+
+  private excelSerialToDate(serial: number): Date {
+    const excelEpochUTC = Date.UTC(1899, 11, 30);
+    const utcDate = new Date(excelEpochUTC + serial * 86400 * 1000);
+
+    // Reinterpret the UTC-based components as local time
+    return new Date(
+      utcDate.getUTCFullYear(),
+      utcDate.getUTCMonth(),
+      utcDate.getUTCDate(),
+      utcDate.getUTCHours(),
+      utcDate.getUTCMinutes(),
+      utcDate.getUTCSeconds(),
+      utcDate.getUTCMilliseconds(),
+    );
   }
 
   private validateSheet(
@@ -208,6 +240,8 @@ export class FileApi {
 
   async load(excelFile: File, reportId: string): Promise<string> {
     const { read, utils } = await import("xlsx");
+
+    this.notesApi.clear(reportId);
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

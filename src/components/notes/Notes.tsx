@@ -3,6 +3,7 @@ import { CellValueUserClassification } from "../../types/configCellComposed";
 import { retrieveNotesForVariant } from "../../api/NotesApi.utils";
 import { getNotesApi } from "../../api/NotesApiFactory";
 import type { VariantKey } from "../../types/NotesApi";
+import { dataVersion } from "../../utils/upload/uploadSignal";
 
 export const Notes: Component<{
   userClassification: CellValueUserClassification;
@@ -29,12 +30,7 @@ export const Notes: Component<{
   const sampleId = () => props.userClassification.s.item.data.person.individualId;
 
   const [notes, { refetch }] = createResource(
-    () => ({
-      vk: variantKey(),
-      reportId: reportId(),
-      sampleId: sampleId(),
-      refresh: props.refresh ?? 0,
-    }),
+    () => ({ vk: variantKey(), reportId: reportId(), sampleId: sampleId(), version: dataVersion() }),
     async (source) => retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, true),
   );
 

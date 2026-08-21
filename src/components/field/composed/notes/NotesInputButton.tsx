@@ -9,6 +9,7 @@ import { NotesInputModal } from "./NotesInputModal";
 import { ClassificationSelector } from "./ClassificationSelector";
 import { NoteForm } from "./NoteForm";
 import { NotesList } from "./NotesList";
+import { dataVersion, notifyDataChanged } from "../../../../utils/upload/uploadSignal";
 
 const notesApi = getNotesApi();
 
@@ -17,23 +18,18 @@ type NotesInputButtonProps = {
 };
 
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
-  const [open, setOpen] = createSignal(false);
-  const [refreshKey, setRefreshKey] = createSignal(0);
+  const [isModalOpen, setIsModalOpen] = createSignal(false);
   const [classificationSaved, setClassificationSaved] = createSignal(false);
   const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()) as string);
-  const refresh = () => setRefreshKey((prev) => prev + 1);
 
-  const showPopup = () => {
+  const openModal = () => {
     setClassificationSaved(false);
     const current = stripOuterQuotes(notesApi.getCurrentUserName()) as string;
     setUsername(current);
-    setOpen(true);
+    setIsModalOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    refresh();
-  };
+  const closeModal = () => setIsModalOpen(false);
 
   const [classificationOptions] = createResource(async () => {
     const options = await notesApi.getClassificationOptions();
@@ -72,8 +68,8 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     () => ({
       vk: variantKey(),
       reportId: reportId(),
-      refresh: refreshKey(),
       sampleId: sampleId(),
+      version: dataVersion(),
     }),
     async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId),
   );
@@ -109,21 +105,18 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       });
 
       await refetchClassification();
+      notifyDataChanged();
       setClassificationSaved(true);
-      refresh();
     } catch (error) {
       console.error("Classification save error:", error);
     }
   };
 
   const [notes, { refetch: refetchNotes }] = createResource(
-    () => ({
-      vk: variantKey(),
-      reportId: reportId(),
-      refresh: refreshKey(),
-      sampleId: sampleId(),
-    }),
-    async (source) => retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, false),
+    () => ({ vk: variantKey(), reportId: reportId(), sampleId: sampleId(), version: dataVersion() }),
+    async (source) => {
+      return retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, false);
+    },
   );
 
   const [noteValue, setNoteValue] = createSignal("");
@@ -144,9 +137,8 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         createdBy: username() || undefined,
       });
 
-      await refetchNotes();
+      notifyDataChanged();
       setNoteValue("");
-      refresh();
     } catch (error) {
       console.error("Save error:", error);
     }
@@ -156,7 +148,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     try {
       await notesApi.removeNote(note.id, reportId());
       await refetchNotes();
-      refresh();
     } catch (error) {
       console.error("Remove error:", error);
     }
@@ -167,17 +158,17 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   return (
     <>
       <span>
-        <a onClick={showPopup}>
+        <a class="js-modal-trigger" onClick={openModal}>
           <i class="fas fa-edit" />
         </a>
 
-        <ClassificationViewer userClassification={props.value} refresh={refreshKey()} />
-        <Notes userClassification={props.value} refresh={refreshKey()} callback={showPopup} />
+        <ClassificationViewer userClassification={props.value} />
+        <Notes userClassification={props.value} callback={openModal} />
       </span>
 
       <NotesInputModal
-        open={open()}
-        onClose={handleClose}
+        isOpen={isModalOpen()}
+        onClose={closeModal}
         onDismissSaved={() => setClassificationSaved(false)}
         userClassification={props.value}
         classificationSaved={classificationSaved()}

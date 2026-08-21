@@ -7,13 +7,11 @@ import { RecordsTable } from "./RecordsTable";
 import { RecordsPerPage, RecordsPerPageChangeCallback } from "./RecordsPerPage";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { ButtonDownload } from "./form/ButtonDownload.tsx";
-import { Upload } from "./form/Upload.tsx";
 import { ConfigCells, ConfigRecordsPerPage } from "../types/config";
 import { ConfigCellGroup, ConfigCellInfo } from "../types/configCells";
 import { DIRECTION_ASCENDING, DIRECTION_DESCENDING } from "../utils/query/sort.ts";
 import { MetadataContainer } from "../utils/api.ts";
 import { ConfigSort } from "../types/configSort";
-import { ButtonSave } from "./form/ButtonSave.tsx";
 
 export type RecordsDownloadCallback = () => void;
 export type NotesDownloadCallback = () => void;
@@ -27,16 +25,11 @@ export const VariantResults: Component<{
   reportId: string;
   onRecordsPerPageChange: RecordsPerPageChangeCallback;
   onRecordsDownload: RecordsDownloadCallback;
-  onNotesDownload: NotesDownloadCallback;
   onPageChange: PageChangeCallback;
   onSortChange: SortChangeCallback;
   onSortClear: SortClearCallback;
   onRefresh: () => void;
 }> = (props) => {
-  const handleRefresh = () => {
-    props.onRefresh();
-  };
-
   const sortOptions = (): ConfigSort[] => {
     if (props.sortOptions !== undefined && props.sortOptions.length !== 0) {
       return props.sortOptions;
@@ -80,8 +73,6 @@ export const VariantResults: Component<{
             {sortOptions().length > 0 && (
               <Sort options={sortOptions()} onChange={props.onSortChange} onClear={props.onSortClear} />
             )}
-            <ButtonSave title="Download your notes and classifications" onClick={props.onNotesDownload} />
-            <Upload reportId={props.reportId} refetch={handleRefresh} />
             <ButtonDownload
               title="Download vcf file with records matching filters and search queries"
               onClick={props.onRecordsDownload}

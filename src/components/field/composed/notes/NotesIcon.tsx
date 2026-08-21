@@ -1,15 +1,17 @@
-import { Component, createResource, Show, createEffect } from "solid-js";
+import { Component, createResource, createSignal, For, Show } from "solid-js";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
 import { retrieveNotesForVariant } from "../../../../api/NotesApi.utils";
 import { getNotesApi } from "../../../../api/NotesApiFactory";
 import type { VariantKey } from "../../../../types/NotesApi";
+import { dataVersion } from "../../../../utils/upload/uploadSignal";
+import { formatDate } from "../../../../utils/dateUtils";
 
 export const Notes: Component<{
   userClassification: CellValueUserClassification;
-  refresh?: number;
   callback: () => void;
 }> = (props) => {
   const notesApi = getNotesApi();
+  const [tooltipOpen, setTooltipOpen] = createSignal(false);
 
   const reportId = () => props.userClassification.report;
 
@@ -28,41 +30,50 @@ export const Notes: Component<{
 
   const sampleId = () => props.userClassification.s.item.data.person.individualId;
 
-  const [notes, { refetch }] = createResource(
-    () => ({
-      vk: variantKey(),
-      reportId: reportId(),
-      sampleId: sampleId(),
-      refresh: props.refresh ?? 0,
-    }),
-    async (source) => retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, true),
+  const [notes] = createResource(
+    () => ({ vk: variantKey(), reportId: reportId(), sampleId: sampleId(), version: dataVersion() }),
+    async (source) => {
+      return retrieveNotesForVariant(notesApi, source.vk, source.reportId, source.sampleId, true);
+    },
   );
-
-  createEffect(() => {
-    if (props.refresh !== undefined) {
-      refetch();
-    }
-  });
-
-  const value = () => {
-    const list = notes();
-    if (!list || list.length === 0) return "-";
-
-    return list
-      .map((note) => `${note.createdBy && note.createdBy ? `${note.createdBy}:` : ""} ${note.content}`)
-      .join("\n");
-  };
 
   const hasNotes = () => {
     const list = notes();
     return !!list && list.length > 0;
   };
 
+  const noteMeta = (note: { createdBy?: string; createdAt?: Date }) => {
+    return [note.createdBy, note.createdAt ? formatDate(note.createdAt) : null].filter(Boolean).join(", ");
+  };
+
   return (
     <Show when={hasNotes()}>
-      <abbr title={value()} class="ml-1 is-clickable">
-        <i class="fa fa-comment" />
-      </abbr>
+      <span
+        class="notes-tooltip-wrapper"
+        onMouseEnter={() => setTooltipOpen(true)}
+        onMouseLeave={() => setTooltipOpen(false)}
+        onFocusIn={() => setTooltipOpen(true)}
+        onFocusOut={() => setTooltipOpen(false)}
+      >
+        <abbr class="ml-1 is-clickable" tabindex="0">
+          <i class="fa fa-comment" />
+        </abbr>
+
+        <Show when={tooltipOpen()}>
+          <div class="notes-tooltip" role="tooltip">
+            <For each={notes()}>
+              {(note) => (
+                <div class="notes-tooltip-entry">
+                  <span>{note.content}</span>
+                  <Show when={noteMeta(note)}>
+                    <span class="notes-tooltip-meta"> ({noteMeta(note)})</span>
+                  </Show>
+                </div>
+              )}
+            </For>
+          </div>
+        </Show>
+      </span>
     </Show>
   );
 };

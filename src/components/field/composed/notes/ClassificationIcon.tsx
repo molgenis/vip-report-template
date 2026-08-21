@@ -3,6 +3,7 @@ import { CellValueUserClassification } from "../../../../types/configCellCompose
 import { retrieveClassification } from "../../../../api/NotesApi.utils";
 import { getNotesApi } from "../../../../api/NotesApiFactory";
 import type { VariantKey } from "../../../../types/NotesApi";
+import { dataVersion } from "../../../../utils/upload/uploadSignal";
 
 export const ClassificationViewer: Component<{
   userClassification: CellValueUserClassification;
@@ -31,6 +32,7 @@ export const ClassificationViewer: Component<{
       vk: variantKey(),
       reportId: reportId(),
       sampleId: sampleId(),
+      version: dataVersion(),
     }),
     async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId),
   );

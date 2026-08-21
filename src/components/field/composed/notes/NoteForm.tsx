@@ -43,7 +43,7 @@ export const NoteForm: Component<NoteFormProps> = (props) => {
             disabled={props.disabled}
           />
           <br />
-          <button class="button is-primary ml-2" onClick={props.onSave} disabled={props.disabled}>
+          <button class="button is-primary ml-2" onClick={() => props.onSave()} disabled={props.disabled}>
             Add note
           </button>
         </div>

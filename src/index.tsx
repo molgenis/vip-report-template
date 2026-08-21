@@ -24,6 +24,7 @@ import {
   faSearch,
   faSave,
   faUpload,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
 import { createSignal, ErrorBoundary, Show } from "solid-js";
@@ -53,19 +54,16 @@ library.add(
   faCog,
   faComment,
   faCog,
-  faComment,
   faDownload,
-  faEdit,
   faEdit,
   faExternalLink,
   faFolderOpen,
   faHome,
   faInfo,
   faSave,
-  faSave,
   faSearch,
   faUpload,
-  faUpload,
+  faTrash,
 );
 
 function processIcons() {

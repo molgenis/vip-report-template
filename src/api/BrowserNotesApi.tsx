@@ -117,8 +117,8 @@ export class BrowserNotesApi implements NotesApi {
       variantKey: note.variantKey,
       reportId: note.reportId,
       sampleId: note.sampleId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: note.createdAt ? note.createdAt : new Date(),
+      updatedAt: note.updatedAt ? note.updatedAt : new Date(),
       createdBy: username !== undefined ? username : "",
     };
 

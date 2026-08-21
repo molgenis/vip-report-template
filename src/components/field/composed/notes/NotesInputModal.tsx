@@ -1,9 +1,8 @@
 import { Component, createEffect, JSX, Show } from "solid-js";
-import { Portal } from "solid-js/web";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
 
 type NotesInputModalProps = {
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
   onDismissSaved: () => void;
   children: JSX.Element;
@@ -19,7 +18,7 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
   };
 
   createEffect(() => {
-    if (props.open && contentRef) {
+    if (props.isOpen && contentRef) {
       contentRef.scrollTop = 0;
     }
   });
@@ -34,44 +33,38 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
         </>
       );
     }
-
-    return `${feature}:${hgvsC}` + `${hgvsP === null ? "" : "(" + hgvsP + ")"}`;
+    return `${hgvsC}` + `${hgvsP === null ? "" : "(" + hgvsP + ")"}`;
   };
 
   const isRuNrError = () => props.userClassification.ruNr === -1;
 
   return (
-    <Show when={props.open}>
-      <Portal>
-        <div class="notes-modal-overlay" onClick={() => props.onClose()}>
-          <div ref={setContentRef} class="notes-modal-content" onClick={(e) => e.stopPropagation()}>
-            <header class="notes-modal-header">
-              <h2 class="notes-modal-title">{headerTitle()}</h2>
-            </header>
+    <div class="modal notes-modal" classList={{ "is-active": props.isOpen }}>
+      <div class="modal-background" onClick={() => props.onClose()} />
+      <div ref={setContentRef} class="notes-modal-content" onClick={(e) => e.stopPropagation()}>
+        <button class="modal-close is-large" aria-label="close" type="button" onClick={() => props.onClose()} />
 
-            <Show when={isRuNrError()}>
-              <div class="notification is-danger is-light mt-2">
-                This tandem repeat allele was not observed for this sample.
-              </div>
-            </Show>
+        <header class="notes-modal-header">
+          <h2 class="notes-modal-title">{headerTitle()}</h2>
+        </header>
 
-            <button onClick={() => props.onClose()} class="notes-modal-close">
+        <Show when={isRuNrError()}>
+          <div class="notification is-danger is-light mt-2">
+            This tandem repeat allele was not observed for this sample.
+          </div>
+        </Show>
+
+        <Show when={props.classificationSaved}>
+          <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
+            <span>Classification saved successfully.</span>
+            <button class="notes-modal-close" type="button" onClick={() => props.onDismissSaved()}>
               ×
             </button>
-
-            <Show when={props.classificationSaved}>
-              <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
-                <span>Classification saved successfully.</span>
-                <button class="notes-modal-close" type="button" onClick={() => props.onDismissSaved()}>
-                  ×
-                </button>
-              </div>
-            </Show>
-
-            {props.children}
           </div>
-        </div>
-      </Portal>
-    </Show>
+        </Show>
+
+        {props.children}
+      </div>
+    </div>
   );
 };

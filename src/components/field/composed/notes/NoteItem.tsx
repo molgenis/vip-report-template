@@ -26,7 +26,7 @@ export const NoteItem: Component<NoteItemProps> = (props) => {
         </div>
 
         <button class="button is-small is-danger is-light" onClick={() => props.onRemove(props.note)}>
-          Remove note
+          <i class="fas fa-trash" />
         </button>
       </div>
 

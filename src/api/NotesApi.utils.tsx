@@ -27,12 +27,15 @@ export async function retrieveNotesForVariant(
   filterOnAlt: boolean,
 ): Promise<Note[]> {
   const notes = await api.retrieveNotes(reportId, sampleId);
-
   if (filterOnAlt) {
-    return notes.filter((note) => note.sampleId === sampleId && sameVariantAndFeature(note.variantKey, variantKey));
+    return notes
+      .filter((note) => note.sampleId === sampleId && sameVariantAndFeature(note.variantKey, variantKey))
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
-  return notes.filter((note) => note.sampleId === sampleId && sameVariant(note.variantKey, variantKey));
+  return notes
+    .filter((note) => note.sampleId === sampleId && sameVariant(note.variantKey, variantKey))
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 }
 
 export async function retrieveClassification(

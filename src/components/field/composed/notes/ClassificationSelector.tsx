@@ -18,6 +18,8 @@ export const ClassificationSelector: Component<ClassificationSelectorProps> = (p
         options={props.options}
         onValueChange={(e) => props.onValueChange(e.value)}
         disabled={props.disabled}
+        small={false}
+        fullwidth={false}
       />
     </div>
   );
