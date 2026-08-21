@@ -1,4 +1,4 @@
-import { Component, createSignal, createResource, createEffect } from "solid-js";
+import { Component, createSignal, createResource, createEffect, Show } from "solid-js";
 import { Notes } from "./NotesIcon";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
 import { ClassificationViewer } from "./ClassificationIcon";
@@ -166,44 +166,45 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         <Notes userClassification={props.value} callback={openModal} />
       </span>
 
-      <NotesInputModal
-        isOpen={isModalOpen()}
-        onClose={closeModal}
-        onDismissSaved={() => setClassificationSaved(false)}
-        userClassification={props.value}
-        classificationSaved={classificationSaved()}
-      >
-        <br />
+      <NotesInputModal isOpen={isModalOpen()} onClose={closeModal} userClassification={props.value}>
+        <Show when={classificationSaved()}>
+          <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
+            <span>Classification saved successfully.</span>
+            <button class="notes-modal-close" type="button">
+              ×
+            </button>
+          </div>
+        </Show>
 
-        <ClassificationSelector
-          value={value().value}
-          options={classificationOptions()?.map((option) => ({ id: option.value, label: option.label })) ?? []}
-          onValueChange={handleChange}
-          disabled={disableAllInputs()}
-        />
+        <div class="notes-modal-section">
+          <h3 class="notes-modal-section-title">Classification</h3>
+          <ClassificationSelector
+            value={value().value}
+            options={classificationOptions()?.map((option) => ({ id: option.value, label: option.label })) ?? []}
+            onValueChange={handleChange}
+            disabled={disableAllInputs()}
+          />
+        </div>
 
-        <hr />
-        <header class="notes-modal-header">
-          <h2 class="notes-modal-title">Notes</h2>
-        </header>
-
-        <NoteForm
-          showUsernameField={!!isSetUsernameEnabled()}
-          username={username()}
-          onUsernameChange={setUsername}
-          noteValue={noteValue()}
-          onNoteValueChange={setNoteValue}
-          onSave={saveNote}
-          disabled={disableAllInputs()}
-        />
-
-        <NotesList
-          loading={notes.loading}
-          notes={notes()}
-          error={notes.error}
-          currentFeature={props.value.feature}
-          onRemove={removeNote}
-        />
+        <div class="notes-modal-section">
+          <h3 class="notes-modal-section-title">Notes</h3>
+          <NoteForm
+            showUsernameField={!!isSetUsernameEnabled()}
+            username={username()}
+            onUsernameChange={setUsername}
+            noteValue={noteValue()}
+            onNoteValueChange={setNoteValue}
+            onSave={saveNote}
+            disabled={disableAllInputs()}
+          />
+          <NotesList
+            loading={notes.loading}
+            notes={notes()}
+            error={notes.error}
+            currentFeature={props.value.feature}
+            onRemove={removeNote}
+          />
+        </div>
       </NotesInputModal>
     </>
   );

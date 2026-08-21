@@ -165,3 +165,36 @@ table.is-borderless td,
   font-style: italic;
   opacity: 0.85;
 }
+
+.notes-modal-header {
+  margin: -1.5rem -1.5rem 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  border-radius: 6px 6px 0 0;
+}
+
+.notes-modal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #363636;
+  margin: 0;
+  padding-right: 2.5rem; /* keep clear of the close button */
+}
+
+.notes-modal-section {
+  padding: 1.25rem 0;
+}
+
+.notes-modal-section + .notes-modal-section {
+  border-top: 1px solid #eee;
+}
+
+.notes-modal-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #7a7a7a;
+  margin: 0 0 0.75rem;
+}

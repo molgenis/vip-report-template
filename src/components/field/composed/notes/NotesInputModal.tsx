@@ -4,10 +4,8 @@ import { CellValueUserClassification } from "../../../../types/configCellCompose
 type NotesInputModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onDismissSaved: () => void;
   children: JSX.Element;
   userClassification: CellValueUserClassification;
-  classificationSaved: boolean;
 };
 
 export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
@@ -51,15 +49,6 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
         <Show when={isRuNrError()}>
           <div class="notification is-danger is-light mt-2">
             This tandem repeat allele was not observed for this sample.
-          </div>
-        </Show>
-
-        <Show when={props.classificationSaved}>
-          <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
-            <span>Classification saved successfully.</span>
-            <button class="notes-modal-close" type="button" onClick={() => props.onDismissSaved()}>
-              ×
-            </button>
           </div>
         </Show>
 
