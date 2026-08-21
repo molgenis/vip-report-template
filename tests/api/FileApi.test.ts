@@ -43,6 +43,7 @@ describe("FileApi", () => {
       getCurrentUserName: vi.fn().mockReturnValue("test-user"),
       setSavedState: vi.fn(),
       isUsernameFromBackend: vi.fn().mockReturnValue(false),
+      clear: vi.fn(),
     };
 
     fileApi = new FileApi(notesApi);
