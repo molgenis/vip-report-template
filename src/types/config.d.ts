@@ -44,10 +44,13 @@ export interface ConfigJsonFieldComposed extends Describable {
     | "inheritancePattern"
     | "locus"
     | "ref"
+    | "numberOfRepeatUnits"
     | "spanningReads"
     | "vipC"
     | "vipCS"
-    | "vkgl";
+    | "vkgl"
+    | "notesInput";
+  additionalConfig?: Record<string, unknown>;
 }
 
 export interface ConfigJsonSort {
@@ -101,7 +104,7 @@ export interface ConfigJsonFilterGenotype extends DescribableFilter {
 
 export interface ConfigJsonFilterComposed extends DescribableFilter {
   type: "composed";
-  name: "allelicImbalance" | "deNovo" | "hpo" | "inheritanceMatch" | "locus" | "vipC" | "vipCS";
+  name: "allelicImbalance" | "deNovo" | "hpo" | "inheritanceMatch" | "locus" | "vipC" | "vipCS" | "classification";
 }
 
 export type ConfigJsonFilter =

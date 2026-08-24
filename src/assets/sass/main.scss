@@ -102,3 +102,99 @@ table.is-borderless td,
   text-decoration: none;
   font-weight: normal;
 }
+
+.pane-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+}
+
+.pane-content--open {
+  max-height: 1000px;
+}
+
+.notes-modal-content {
+  position: relative;
+  margin: auto;
+  width: fit-content !important;
+  height: fit-content !important;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: white;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.notes-alt-select-wrapper {
+  margin-bottom: 0.5rem;
+}
+
+.comment-underline {
+  text-decoration: underline dotted;
+}
+
+.notes-tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.notes-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+  background: #363636;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  white-space: pre-line;
+  width: max-content;
+  max-width: 320px;
+  font-size: 0.85rem;
+  z-index: 20;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.notes-tooltip-entry + .notes-tooltip-entry {
+  margin-top: 0.35rem;
+}
+
+.notes-tooltip-meta {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.notes-modal-header {
+  margin: -1.5rem -1.5rem 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  border-radius: 6px 6px 0 0;
+}
+
+.notes-modal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #363636;
+  margin: 0;
+  padding-right: 2.5rem; /* keep clear of the close button */
+}
+
+.notes-modal-section {
+  padding: 1.25rem 0;
+}
+
+.notes-modal-section + .notes-modal-section {
+  border-top: 1px solid #eee;
+}
+
+.notes-modal-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #7a7a7a;
+  margin: 0 0 0.75rem;
+}

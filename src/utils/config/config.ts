@@ -29,14 +29,15 @@ export function initConfig(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): Config {
   const configVip = initConfigVip(config.vip, metadata);
 
   const configStaticVariants: ConfigJsonVariants = sample !== null ? config.sample_variants : config.variants;
-  const configVariants = initConfigVariants(configStaticVariants, configVip, variantType, metadata, sample);
+  const configVariants = initConfigVariants(configStaticVariants, configVip, variantType, metadata, sample, reportId);
 
   const configStaticVariant: ConfigJsonVariant = sample !== null ? config.sample_variant : config.variant;
-  const configVariant = initConfigVariant(configStaticVariant, variantType, metadata, sample);
+  const configVariant = initConfigVariant(configStaticVariant, variantType, metadata, sample, reportId);
 
   const configStaticVariantConsequence: ConfigJsonVariantConsequence =
     sample !== null ? config.sample_variant_consequence : config.variant_consequence;
@@ -45,6 +46,7 @@ export function initConfig(
     variantType,
     metadata,
     sample,
+    reportId,
   );
 
   return {
@@ -61,8 +63,9 @@ function initConfigVariants(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): ConfigVariants {
-  const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample);
+  const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample, reportId);
   const filters = initConfigVariantsFilters(config.filters, configVip, variantType, metadata, sample);
   const sorts = initConfigVariantsSorts(config.sorts, variantType, metadata);
   const recordsPerPage = initConfigVariantsRecordsPerPage(config.recordsPerPage, variantType);
@@ -79,6 +82,7 @@ function initConfigVariantsCellsSamples(
   sample: SampleContainer,
   variantType: VariantType,
   metadata: MetadataContainer,
+  reportId: string,
 ): ConfigSamplesCells | undefined {
   const samples: SampleContainer[] = [
     sample,
@@ -89,7 +93,7 @@ function initConfigVariantsCellsSamples(
 
   const cellsSamples: ConfigSamplesCells = {};
   samples.forEach(
-    (sample) => (cellsSamples[sample.item.id] = initConfigVariantsCells(config, variantType, metadata, sample)),
+    (sample) => (cellsSamples[sample.item.id] = initConfigVariantsCells(config, variantType, metadata, sample, reportId)),
   );
   return cellsSamples;
 }
@@ -99,11 +103,12 @@ function initConfigVariant(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): ConfigVariant {
-  const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample);
+  const cells = initConfigVariantsCells(config.cells, variantType, metadata, sample, reportId);
   const cellsSamples =
     sample && config.sample_cells
-      ? initConfigVariantsCellsSamples(config.sample_cells, sample, variantType, metadata)
+      ? initConfigVariantsCellsSamples(config.sample_cells, sample, variantType, metadata, reportId)
       : undefined;
 
   return {
@@ -117,10 +122,11 @@ function initConfigVariantConsequence(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): ConfigVariantConsequence {
   const cellsSamples =
     sample && config.sample_cells
-      ? initConfigVariantsCellsSamples(config.sample_cells, sample, variantType, metadata)
+      ? initConfigVariantsCellsSamples(config.sample_cells, sample, variantType, metadata, reportId)
       : undefined;
 
   return {
@@ -133,12 +139,13 @@ function initConfigVariantsCells(
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ) {
   const configValue = config[variantType.id] || config["all"];
   if (configValue === undefined) throw new ConfigInvalidError(`missing required property 'cells.${variantType.id}'`);
   if (configValue.length === 0)
     throw new ConfigInvalidError(`property 'cells.${variantType.id}' requires at least one value`);
-  return initConfigCells(configValue, variantType, metadata, sample);
+  return initConfigCells(configValue, variantType, metadata, sample, reportId);
 }
 
 function initConfigVariantsFilters(

@@ -59,6 +59,11 @@ export async function fetchConfig(): Promise<ConfigJson> {
   return validateConfig(config);
 }
 
+export async function fetchReportId(): Promise<string> {
+  console.log("Api.fetchReportId");
+  return await api.getReportId();
+}
+
 export async function fetchDecisionTree(): Promise<DecisionTree | null> {
   console.log("Api.fetchDecisionTree");
   return await api.getDecisionTree();

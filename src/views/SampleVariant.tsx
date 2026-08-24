@@ -1,7 +1,7 @@
 import { Component, Show } from "solid-js";
 import { createAsync, RouteSectionProps } from "@solidjs/router";
 import { Loader } from "../components/Loader";
-import { getConfig, getMetadata, getRecordById, getSampleById } from "./data/data";
+import { getConfig, getMetadata, getRecordById, getReportId, getSampleById } from "./data/data";
 import { parseVariantType } from "../utils/variantType.ts";
 import { VariantContainer } from "../components/VariantContainer.tsx";
 import { VariantBreadcrumb } from "../components/VariantBreadcrumb.tsx";
@@ -15,6 +15,7 @@ export const SampleVariant: Component<RouteSectionProps> = (props) => {
   const record = createAsync(() => getRecordById(props.params.variantId, samples()));
   const metadata = createAsync(() => getMetadata());
   const config = createAsync(() => getConfig());
+  const reportId = createAsync(() => getReportId());
 
   return (
     <Show when={sample()} fallback={<Loader />}>
@@ -33,6 +34,7 @@ export const SampleVariant: Component<RouteSectionProps> = (props) => {
                         variantType={variantType()}
                         record={record()}
                         sample={sample()}
+                        reportId={reportId() as string}
                       />
                     )}
                   </Show>

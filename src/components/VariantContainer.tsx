@@ -19,8 +19,9 @@ export const VariantContainer: Component<{
   variantType: VariantType;
   record: Item<VcfRecord>;
   sample: SampleContainer | null;
+  reportId: string;
 }> = (props) => {
-  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
+  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
   const [showEmpty, setShowEmpty] = createSignal(false);
   const toggleShowEmpty = () => setShowEmpty((isShow) => !isShow);
@@ -49,6 +50,7 @@ export const VariantContainer: Component<{
             metadata={props.metadata}
             record={props.record}
             isShowEmpty={showEmpty()}
+            reportId={props.reportId}
           />
         </div>
         <Show when={config().variant.samplesCells}>

@@ -13,6 +13,7 @@ export const VariantInfoTable: Component<{
   metadata: MetadataContainer;
   record: Item<VcfRecord>;
   isShowEmpty: boolean;
+  reportId: string;
 }> = (props) => {
   const configCells = () =>
     initConfigCells(
@@ -25,6 +26,7 @@ export const VariantInfoTable: Component<{
       props.variantType,
       props.metadata,
       null,
+      props.reportId,
     ).filter((configCell) => configCell.type !== "group");
 
   function isEmptyValue(fieldConfig: ConfigCellInfo) {

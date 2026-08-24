@@ -28,14 +28,14 @@ export const VariantsContainer: Component<{
   metadata: MetadataContainer;
   variantType: VariantType;
   sample: SampleContainer | null;
+  reportId: string;
 }> = (props) => {
   const navigate = useNavigate();
 
-  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
+  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
   const variantTypeIds = () => (props.sample !== null ? props.sample.variantTypeIds : props.metadata.variantTypeIds);
   const query = () =>
     createQuery(config(), props.metadata, props.variantType, props.sample, props.store.getFilterValues());
-
   const defaultSort = () => config().variants.sorts.find((configSort) => configSort.selected);
   const sort = () => createSort(props.store.getSort(), defaultSort()) || undefined;
   const defaultRecordsPerPage = () => config().variants.recordsPerPage.find((option) => option.selected)?.number || 10;
@@ -60,7 +60,7 @@ export const VariantsContainer: Component<{
     return Object.hasOwn(props.metadata.records.info, "SVTYPE");
   };
 
-  const [records] = createResource(
+  const [records, { refetch }] = createResource(
     (): RecordParams => ({
       query: query() || undefined,
       page: props.store.getPageNumber() || 0,
@@ -70,6 +70,10 @@ export const VariantsContainer: Component<{
     }),
     fetchRecords,
   );
+
+  const onRefresh = async () => {
+    await refetch();
+  };
 
   const onFilterChange = (event: FilterChangeEvent) => {
     props.store.setFilterValue(event.id, event.value);
@@ -86,7 +90,6 @@ export const VariantsContainer: Component<{
     const filter = samples ? { samples: samples.map((sample) => sample.data.person.individualId) } : undefined;
     const sampleIds = samples ? samples.map((sample) => sample.id) : ([] as number[]);
 
-    // create vcf using all records that match filters, use default sort to ensure valid vcf ordering
     const records = await fetchRecords({
       query: query() || undefined,
       page: 0,
@@ -115,6 +118,7 @@ export const VariantsContainer: Component<{
     link.click();
     document.body.removeChild(link);
   };
+
   const onRecordsPerPageChange = (event: RecordsPerPageChangeEvent) => {
     props.store.setPageSize(event.number);
   };
@@ -158,6 +162,7 @@ export const VariantsContainer: Component<{
                 onFilterChange={onFilterChange}
                 onFilterClear={onFilterClear}
                 filtersInited={props.store.getFiltersInited()}
+                reportId={props.reportId}
               />
             </div>
           </div>
@@ -169,6 +174,7 @@ export const VariantsContainer: Component<{
                 metadata={props.metadata}
                 fieldConfigs={config().variants.cells}
                 records={records()}
+                reportId={props.reportId}
                 sortOptions={config().variants.sorts}
                 recordsPerPage={config().variants.recordsPerPage.map((option) => ({
                   ...option,
@@ -179,6 +185,7 @@ export const VariantsContainer: Component<{
                 onRecordsDownload={onRecordsDownload}
                 onSortChange={onSortChange}
                 onSortClear={onSortClear}
+                onRefresh={onRefresh}
               />
             )}
           </Show>

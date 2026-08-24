@@ -27,6 +27,7 @@ import { createQueryFilterFieldCategorical } from "./queryFilterField.ts";
 
 export function createQueryFilterComposed(filter: ConfigFilterComposed, filterValue: FilterValue): Query {
   let query: Query;
+
   switch (filter.id) {
     case "composed/hpo":
       query = createQueryFilterHpo(filter as ConfigFilterHpo, filterValue as FilterValueHpo);

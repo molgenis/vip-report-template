@@ -1159,7 +1159,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     data34 === "spanningReads" ||
                                     data34 === "vipC" ||
                                     data34 === "vipCS" ||
-                                    data34 === "vkgl")
+                                    data34 === "vkgl" ||
+                                    data34 === "notesInput")
                                 )
                               ) {
                                 validate57.errors = [
@@ -1241,7 +1242,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       key6 !== "type" &&
                                       key6 !== "name" &&
                                       key6 !== "label" &&
-                                      key6 !== "description"
+                                      key6 !== "description" &&
+                                      key6 !== "additionalConfig"
                                     ) {
                                       validate57.errors = [
                                         {
@@ -1921,9 +1923,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   data51 === "inheritancePattern" ||
                                                   data51 === "locus" ||
                                                   data51 === "ref" ||
+                                                  data51 === "numberOfRepeatUnits" ||
                                                   data51 === "vipC" ||
                                                   data51 === "vipCS" ||
-                                                  data51 === "vkgl")
+                                                  data51 === "vkgl" ||
+                                                  data51 === "notesInput")
                                               )
                                             ) {
                                               validate57.errors = [
@@ -2024,7 +2028,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     key11 !== "type" &&
                                                     key11 !== "name" &&
                                                     key11 !== "label" &&
-                                                    key11 !== "description"
+                                                    key11 !== "description" &&
+                                                    key11 !== "additionalConfig"
                                                   ) {
                                                     validate57.errors = [
                                                       {
@@ -2809,7 +2814,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       data68 === "spanningReads" ||
                                       data68 === "vipC" ||
                                       data68 === "vipCS" ||
-                                      data68 === "vkgl")
+                                      data68 === "vkgl" ||
+                                      data68 === "notesInput")
                                   )
                                 ) {
                                   validate57.errors = [
@@ -2891,7 +2897,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         key17 !== "type" &&
                                         key17 !== "name" &&
                                         key17 !== "label" &&
-                                        key17 !== "description"
+                                        key17 !== "description" &&
+                                        key17 !== "additionalConfig"
                                       ) {
                                         validate57.errors = [
                                           {
@@ -3571,9 +3578,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     data85 === "inheritancePattern" ||
                                                     data85 === "locus" ||
                                                     data85 === "ref" ||
+                                                    data85 === "numberOfRepeatUnits" ||
                                                     data85 === "vipC" ||
                                                     data85 === "vipCS" ||
-                                                    data85 === "vkgl")
+                                                    data85 === "vkgl" ||
+                                                    data85 === "notesInput")
                                                 )
                                               ) {
                                                 validate57.errors = [
@@ -3674,7 +3683,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       key22 !== "type" &&
                                                       key22 !== "name" &&
                                                       key22 !== "label" &&
-                                                      key22 !== "description"
+                                                      key22 !== "description" &&
+                                                      key22 !== "additionalConfig"
                                                     ) {
                                                       validate57.errors = [
                                                         {
@@ -4459,7 +4469,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         data102 === "spanningReads" ||
                                         data102 === "vipC" ||
                                         data102 === "vipCS" ||
-                                        data102 === "vkgl")
+                                        data102 === "vkgl" ||
+                                        data102 === "notesInput")
                                     )
                                   ) {
                                     validate57.errors = [
@@ -4541,7 +4552,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           key28 !== "type" &&
                                           key28 !== "name" &&
                                           key28 !== "label" &&
-                                          key28 !== "description"
+                                          key28 !== "description" &&
+                                          key28 !== "additionalConfig"
                                         ) {
                                           validate57.errors = [
                                             {
@@ -5253,9 +5265,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       data119 === "inheritancePattern" ||
                                                       data119 === "locus" ||
                                                       data119 === "ref" ||
+                                                      data119 === "numberOfRepeatUnits" ||
                                                       data119 === "vipC" ||
                                                       data119 === "vipCS" ||
-                                                      data119 === "vkgl")
+                                                      data119 === "vkgl" ||
+                                                      data119 === "notesInput")
                                                   )
                                                 ) {
                                                   validate57.errors = [
@@ -5360,7 +5374,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         key33 !== "type" &&
                                                         key33 !== "name" &&
                                                         key33 !== "label" &&
-                                                        key33 !== "description"
+                                                        key33 !== "description" &&
+                                                        key33 !== "additionalConfig"
                                                       ) {
                                                         validate57.errors = [
                                                           {
@@ -6149,7 +6164,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           data136 === "spanningReads" ||
                                           data136 === "vipC" ||
                                           data136 === "vipCS" ||
-                                          data136 === "vkgl")
+                                          data136 === "vkgl" ||
+                                          data136 === "notesInput")
                                       )
                                     ) {
                                       validate57.errors = [
@@ -6231,7 +6247,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             key39 !== "type" &&
                                             key39 !== "name" &&
                                             key39 !== "label" &&
-                                            key39 !== "description"
+                                            key39 !== "description" &&
+                                            key39 !== "additionalConfig"
                                           ) {
                                             validate57.errors = [
                                               {
@@ -6955,9 +6972,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data153 === "inheritancePattern" ||
                                                         data153 === "locus" ||
                                                         data153 === "ref" ||
+                                                        data153 === "numberOfRepeatUnits" ||
                                                         data153 === "vipC" ||
                                                         data153 === "vipCS" ||
-                                                        data153 === "vkgl")
+                                                        data153 === "vkgl" ||
+                                                        data153 === "notesInput")
                                                     )
                                                   ) {
                                                     validate57.errors = [
@@ -7062,7 +7081,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           key44 !== "type" &&
                                                           key44 !== "name" &&
                                                           key44 !== "label" &&
-                                                          key44 !== "description"
+                                                          key44 !== "description" &&
+                                                          key44 !== "additionalConfig"
                                                         ) {
                                                           validate57.errors = [
                                                             {
@@ -11634,7 +11654,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data265 === "spanningReads" ||
                                                           data265 === "vipC" ||
                                                           data265 === "vipCS" ||
-                                                          data265 === "vkgl")
+                                                          data265 === "vkgl" ||
+                                                          data265 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -11741,7 +11762,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key72 !== "type" &&
                                                             key72 !== "name" &&
                                                             key72 !== "label" &&
-                                                            key72 !== "description"
+                                                            key72 !== "description" &&
+                                                            key72 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -12567,9 +12589,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                         data282 === "inheritancePattern" ||
                                                                         data282 === "locus" ||
                                                                         data282 === "ref" ||
+                                                                        data282 === "numberOfRepeatUnits" ||
                                                                         data282 === "vipC" ||
                                                                         data282 === "vipCS" ||
-                                                                        data282 === "vkgl")
+                                                                        data282 === "vkgl" ||
+                                                                        data282 === "notesInput")
                                                                     )
                                                                   ) {
                                                                     validate57.errors = [
@@ -12690,7 +12714,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                           key77 !== "type" &&
                                                                           key77 !== "name" &&
                                                                           key77 !== "label" &&
-                                                                          key77 !== "description"
+                                                                          key77 !== "description" &&
+                                                                          key77 !== "additionalConfig"
                                                                         ) {
                                                                           validate57.errors = [
                                                                             {
@@ -13919,7 +13944,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data304 === "spanningReads" ||
                                                             data304 === "vipC" ||
                                                             data304 === "vipCS" ||
-                                                            data304 === "vkgl")
+                                                            data304 === "vkgl" ||
+                                                            data304 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -14026,7 +14052,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key85 !== "type" &&
                                                               key85 !== "name" &&
                                                               key85 !== "label" &&
-                                                              key85 !== "description"
+                                                              key85 !== "description" &&
+                                                              key85 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -14864,9 +14891,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                           data321 === "inheritancePattern" ||
                                                                           data321 === "locus" ||
                                                                           data321 === "ref" ||
+                                                                          data321 === "numberOfRepeatUnits" ||
                                                                           data321 === "vipC" ||
                                                                           data321 === "vipCS" ||
-                                                                          data321 === "vkgl")
+                                                                          data321 === "vkgl" ||
+                                                                          data321 === "notesInput")
                                                                       )
                                                                     ) {
                                                                       validate57.errors = [
@@ -14990,7 +15019,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                             key90 !== "type" &&
                                                                             key90 !== "name" &&
                                                                             key90 !== "label" &&
-                                                                            key90 !== "description"
+                                                                            key90 !== "description" &&
+                                                                            key90 !== "additionalConfig"
                                                                           ) {
                                                                             validate57.errors = [
                                                                               {
@@ -16233,7 +16263,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data343 === "spanningReads" ||
                                                               data343 === "vipC" ||
                                                               data343 === "vipCS" ||
-                                                              data343 === "vkgl")
+                                                              data343 === "vkgl" ||
+                                                              data343 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -16340,7 +16371,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key98 !== "type" &&
                                                                 key98 !== "name" &&
                                                                 key98 !== "label" &&
-                                                                key98 !== "description"
+                                                                key98 !== "description" &&
+                                                                key98 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -17198,9 +17230,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                             data360 === "inheritancePattern" ||
                                                                             data360 === "locus" ||
                                                                             data360 === "ref" ||
+                                                                            data360 === "numberOfRepeatUnits" ||
                                                                             data360 === "vipC" ||
                                                                             data360 === "vipCS" ||
-                                                                            data360 === "vkgl")
+                                                                            data360 === "vkgl" ||
+                                                                            data360 === "notesInput")
                                                                         )
                                                                       ) {
                                                                         validate57.errors = [
@@ -17329,7 +17363,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                               key103 !== "type" &&
                                                                               key103 !== "name" &&
                                                                               key103 !== "label" &&
-                                                                              key103 !== "description"
+                                                                              key103 !== "description" &&
+                                                                              key103 !== "additionalConfig"
                                                                             ) {
                                                                               validate57.errors = [
                                                                                 {
@@ -18578,7 +18613,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data382 === "spanningReads" ||
                                                                 data382 === "vipC" ||
                                                                 data382 === "vipCS" ||
-                                                                data382 === "vkgl")
+                                                                data382 === "vkgl" ||
+                                                                data382 === "notesInput")
                                                             )
                                                           ) {
                                                             validate57.errors = [
@@ -18685,7 +18721,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   key111 !== "type" &&
                                                                   key111 !== "name" &&
                                                                   key111 !== "label" &&
-                                                                  key111 !== "description"
+                                                                  key111 !== "description" &&
+                                                                  key111 !== "additionalConfig"
                                                                 ) {
                                                                   validate57.errors = [
                                                                     {
@@ -19552,9 +19589,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                               data399 === "inheritancePattern" ||
                                                                               data399 === "locus" ||
                                                                               data399 === "ref" ||
+                                                                              data399 === "numberOfRepeatUnits" ||
                                                                               data399 === "vipC" ||
                                                                               data399 === "vipCS" ||
-                                                                              data399 === "vkgl")
+                                                                              data399 === "vkgl" ||
+                                                                              data399 === "notesInput")
                                                                           )
                                                                         ) {
                                                                           validate57.errors = [
@@ -19683,7 +19722,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                                 key116 !== "type" &&
                                                                                 key116 !== "name" &&
                                                                                 key116 !== "label" &&
-                                                                                key116 !== "description"
+                                                                                key116 !== "description" &&
+                                                                                key116 !== "additionalConfig"
                                                                               ) {
                                                                                 validate57.errors = [
                                                                                   {
@@ -21395,7 +21435,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       data435 === "spanningReads" ||
                                       data435 === "vipC" ||
                                       data435 === "vipCS" ||
-                                      data435 === "vkgl")
+                                      data435 === "vkgl" ||
+                                      data435 === "notesInput")
                                   )
                                 ) {
                                   validate57.errors = [
@@ -21476,7 +21517,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         key131 !== "type" &&
                                         key131 !== "name" &&
                                         key131 !== "label" &&
-                                        key131 !== "description"
+                                        key131 !== "description" &&
+                                        key131 !== "additionalConfig"
                                       ) {
                                         validate57.errors = [
                                           {
@@ -22156,9 +22198,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     data452 === "inheritancePattern" ||
                                                     data452 === "locus" ||
                                                     data452 === "ref" ||
+                                                    data452 === "numberOfRepeatUnits" ||
                                                     data452 === "vipC" ||
                                                     data452 === "vipCS" ||
-                                                    data452 === "vkgl")
+                                                    data452 === "vkgl" ||
+                                                    data452 === "notesInput")
                                                 )
                                               ) {
                                                 validate57.errors = [
@@ -22259,7 +22303,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       key136 !== "type" &&
                                                       key136 !== "name" &&
                                                       key136 !== "label" &&
-                                                      key136 !== "description"
+                                                      key136 !== "description" &&
+                                                      key136 !== "additionalConfig"
                                                     ) {
                                                       validate57.errors = [
                                                         {
@@ -23040,7 +23085,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         data469 === "spanningReads" ||
                                         data469 === "vipC" ||
                                         data469 === "vipCS" ||
-                                        data469 === "vkgl")
+                                        data469 === "vkgl" ||
+                                        data469 === "notesInput")
                                     )
                                   ) {
                                     validate57.errors = [
@@ -23121,7 +23167,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           key142 !== "type" &&
                                           key142 !== "name" &&
                                           key142 !== "label" &&
-                                          key142 !== "description"
+                                          key142 !== "description" &&
+                                          key142 !== "additionalConfig"
                                         ) {
                                           validate57.errors = [
                                             {
@@ -23801,9 +23848,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       data486 === "inheritancePattern" ||
                                                       data486 === "locus" ||
                                                       data486 === "ref" ||
+                                                      data486 === "numberOfRepeatUnits" ||
                                                       data486 === "vipC" ||
                                                       data486 === "vipCS" ||
-                                                      data486 === "vkgl")
+                                                      data486 === "vkgl" ||
+                                                      data486 === "notesInput")
                                                   )
                                                 ) {
                                                   validate57.errors = [
@@ -23904,7 +23953,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         key147 !== "type" &&
                                                         key147 !== "name" &&
                                                         key147 !== "label" &&
-                                                        key147 !== "description"
+                                                        key147 !== "description" &&
+                                                        key147 !== "additionalConfig"
                                                       ) {
                                                         validate57.errors = [
                                                           {
@@ -24689,7 +24739,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           data503 === "spanningReads" ||
                                           data503 === "vipC" ||
                                           data503 === "vipCS" ||
-                                          data503 === "vkgl")
+                                          data503 === "vkgl" ||
+                                          data503 === "notesInput")
                                       )
                                     ) {
                                       validate57.errors = [
@@ -24771,7 +24822,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             key153 !== "type" &&
                                             key153 !== "name" &&
                                             key153 !== "label" &&
-                                            key153 !== "description"
+                                            key153 !== "description" &&
+                                            key153 !== "additionalConfig"
                                           ) {
                                             validate57.errors = [
                                               {
@@ -25463,9 +25515,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data520 === "inheritancePattern" ||
                                                         data520 === "locus" ||
                                                         data520 === "ref" ||
+                                                        data520 === "numberOfRepeatUnits" ||
                                                         data520 === "vipC" ||
                                                         data520 === "vipCS" ||
-                                                        data520 === "vkgl")
+                                                        data520 === "vkgl" ||
+                                                        data520 === "notesInput")
                                                     )
                                                   ) {
                                                     validate57.errors = [
@@ -25566,7 +25620,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           key158 !== "type" &&
                                                           key158 !== "name" &&
                                                           key158 !== "label" &&
-                                                          key158 !== "description"
+                                                          key158 !== "description" &&
+                                                          key158 !== "additionalConfig"
                                                         ) {
                                                           validate57.errors = [
                                                             {
@@ -26354,7 +26409,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             data537 === "spanningReads" ||
                                             data537 === "vipC" ||
                                             data537 === "vipCS" ||
-                                            data537 === "vkgl")
+                                            data537 === "vkgl" ||
+                                            data537 === "notesInput")
                                         )
                                       ) {
                                         validate57.errors = [
@@ -26436,7 +26492,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               key164 !== "type" &&
                                               key164 !== "name" &&
                                               key164 !== "label" &&
-                                              key164 !== "description"
+                                              key164 !== "description" &&
+                                              key164 !== "additionalConfig"
                                             ) {
                                               validate57.errors = [
                                                 {
@@ -27128,9 +27185,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data554 === "inheritancePattern" ||
                                                           data554 === "locus" ||
                                                           data554 === "ref" ||
+                                                          data554 === "numberOfRepeatUnits" ||
                                                           data554 === "vipC" ||
                                                           data554 === "vipCS" ||
-                                                          data554 === "vkgl")
+                                                          data554 === "vkgl" ||
+                                                          data554 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -27231,7 +27290,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key169 !== "type" &&
                                                             key169 !== "name" &&
                                                             key169 !== "label" &&
-                                                            key169 !== "description"
+                                                            key169 !== "description" &&
+                                                            key169 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -31759,7 +31819,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data666 === "spanningReads" ||
                                                             data666 === "vipC" ||
                                                             data666 === "vipCS" ||
-                                                            data666 === "vkgl")
+                                                            data666 === "vkgl" ||
+                                                            data666 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -31866,7 +31927,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key197 !== "type" &&
                                                               key197 !== "name" &&
                                                               key197 !== "label" &&
-                                                              key197 !== "description"
+                                                              key197 !== "description" &&
+                                                              key197 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -32704,9 +32766,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                           data683 === "inheritancePattern" ||
                                                                           data683 === "locus" ||
                                                                           data683 === "ref" ||
+                                                                          data683 === "numberOfRepeatUnits" ||
                                                                           data683 === "vipC" ||
                                                                           data683 === "vipCS" ||
-                                                                          data683 === "vkgl")
+                                                                          data683 === "vkgl" ||
+                                                                          data683 === "notesInput")
                                                                       )
                                                                     ) {
                                                                       validate57.errors = [
@@ -32830,7 +32894,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                             key202 !== "type" &&
                                                                             key202 !== "name" &&
                                                                             key202 !== "label" &&
-                                                                            key202 !== "description"
+                                                                            key202 !== "description" &&
+                                                                            key202 !== "additionalConfig"
                                                                           ) {
                                                                             validate57.errors = [
                                                                               {
@@ -34065,7 +34130,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data705 === "spanningReads" ||
                                                               data705 === "vipC" ||
                                                               data705 === "vipCS" ||
-                                                              data705 === "vkgl")
+                                                              data705 === "vkgl" ||
+                                                              data705 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -34172,7 +34238,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key210 !== "type" &&
                                                                 key210 !== "name" &&
                                                                 key210 !== "label" &&
-                                                                key210 !== "description"
+                                                                key210 !== "description" &&
+                                                                key210 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -35030,9 +35097,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                             data722 === "inheritancePattern" ||
                                                                             data722 === "locus" ||
                                                                             data722 === "ref" ||
+                                                                            data722 === "numberOfRepeatUnits" ||
                                                                             data722 === "vipC" ||
                                                                             data722 === "vipCS" ||
-                                                                            data722 === "vkgl")
+                                                                            data722 === "vkgl" ||
+                                                                            data722 === "notesInput")
                                                                         )
                                                                       ) {
                                                                         validate57.errors = [
@@ -35161,7 +35230,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                               key215 !== "type" &&
                                                                               key215 !== "name" &&
                                                                               key215 !== "label" &&
-                                                                              key215 !== "description"
+                                                                              key215 !== "description" &&
+                                                                              key215 !== "additionalConfig"
                                                                             ) {
                                                                               validate57.errors = [
                                                                                 {
@@ -36401,7 +36471,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data744 === "spanningReads" ||
                                                                 data744 === "vipC" ||
                                                                 data744 === "vipCS" ||
-                                                                data744 === "vkgl")
+                                                                data744 === "vkgl" ||
+                                                                data744 === "notesInput")
                                                             )
                                                           ) {
                                                             validate57.errors = [
@@ -36508,7 +36579,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   key223 !== "type" &&
                                                                   key223 !== "name" &&
                                                                   key223 !== "label" &&
-                                                                  key223 !== "description"
+                                                                  key223 !== "description" &&
+                                                                  key223 !== "additionalConfig"
                                                                 ) {
                                                                   validate57.errors = [
                                                                     {
@@ -37375,9 +37447,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                               data761 === "inheritancePattern" ||
                                                                               data761 === "locus" ||
                                                                               data761 === "ref" ||
+                                                                              data761 === "numberOfRepeatUnits" ||
                                                                               data761 === "vipC" ||
                                                                               data761 === "vipCS" ||
-                                                                              data761 === "vkgl")
+                                                                              data761 === "vkgl" ||
+                                                                              data761 === "notesInput")
                                                                           )
                                                                         ) {
                                                                           validate57.errors = [
@@ -37506,7 +37580,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                                 key228 !== "type" &&
                                                                                 key228 !== "name" &&
                                                                                 key228 !== "label" &&
-                                                                                key228 !== "description"
+                                                                                key228 !== "description" &&
+                                                                                key228 !== "additionalConfig"
                                                                               ) {
                                                                                 validate57.errors = [
                                                                                   {
@@ -38754,7 +38829,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   data783 === "spanningReads" ||
                                                                   data783 === "vipC" ||
                                                                   data783 === "vipCS" ||
-                                                                  data783 === "vkgl")
+                                                                  data783 === "vkgl" ||
+                                                                  data783 === "notesInput")
                                                               )
                                                             ) {
                                                               validate57.errors = [
@@ -38861,7 +38937,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                     key236 !== "type" &&
                                                                     key236 !== "name" &&
                                                                     key236 !== "label" &&
-                                                                    key236 !== "description"
+                                                                    key236 !== "description" &&
+                                                                    key236 !== "additionalConfig"
                                                                   ) {
                                                                     validate57.errors = [
                                                                       {
@@ -39751,9 +39828,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                                 data800 === "inheritancePattern" ||
                                                                                 data800 === "locus" ||
                                                                                 data800 === "ref" ||
+                                                                                data800 === "numberOfRepeatUnits" ||
                                                                                 data800 === "vipC" ||
                                                                                 data800 === "vipCS" ||
-                                                                                data800 === "vkgl")
+                                                                                data800 === "vkgl" ||
+                                                                                data800 === "notesInput")
                                                                             )
                                                                           ) {
                                                                             validate57.errors = [
@@ -39885,7 +39964,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                                   key241 !== "type" &&
                                                                                   key241 !== "name" &&
                                                                                   key241 !== "label" &&
-                                                                                  key241 !== "description"
+                                                                                  key241 !== "description" &&
+                                                                                  key241 !== "additionalConfig"
                                                                                 ) {
                                                                                   validate57.errors = [
                                                                                     {
@@ -41594,7 +41674,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         data836 === "spanningReads" ||
                                         data836 === "vipC" ||
                                         data836 === "vipCS" ||
-                                        data836 === "vkgl")
+                                        data836 === "vkgl" ||
+                                        data836 === "notesInput")
                                     )
                                   ) {
                                     validate57.errors = [
@@ -41676,7 +41757,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           key256 !== "type" &&
                                           key256 !== "name" &&
                                           key256 !== "label" &&
-                                          key256 !== "description"
+                                          key256 !== "description" &&
+                                          key256 !== "additionalConfig"
                                         ) {
                                           validate57.errors = [
                                             {
@@ -42388,9 +42470,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       data853 === "inheritancePattern" ||
                                                       data853 === "locus" ||
                                                       data853 === "ref" ||
+                                                      data853 === "numberOfRepeatUnits" ||
                                                       data853 === "vipC" ||
                                                       data853 === "vipCS" ||
-                                                      data853 === "vkgl")
+                                                      data853 === "vkgl" ||
+                                                      data853 === "notesInput")
                                                   )
                                                 ) {
                                                   validate57.errors = [
@@ -42495,7 +42579,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         key261 !== "type" &&
                                                         key261 !== "name" &&
                                                         key261 !== "label" &&
-                                                        key261 !== "description"
+                                                        key261 !== "description" &&
+                                                        key261 !== "additionalConfig"
                                                       ) {
                                                         validate57.errors = [
                                                           {
@@ -43284,7 +43369,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           data870 === "spanningReads" ||
                                           data870 === "vipC" ||
                                           data870 === "vipCS" ||
-                                          data870 === "vkgl")
+                                          data870 === "vkgl" ||
+                                          data870 === "notesInput")
                                       )
                                     ) {
                                       validate57.errors = [
@@ -43366,7 +43452,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             key267 !== "type" &&
                                             key267 !== "name" &&
                                             key267 !== "label" &&
-                                            key267 !== "description"
+                                            key267 !== "description" &&
+                                            key267 !== "additionalConfig"
                                           ) {
                                             validate57.errors = [
                                               {
@@ -44094,9 +44181,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data887 === "inheritancePattern" ||
                                                         data887 === "locus" ||
                                                         data887 === "ref" ||
+                                                        data887 === "numberOfRepeatUnits" ||
                                                         data887 === "vipC" ||
                                                         data887 === "vipCS" ||
-                                                        data887 === "vkgl")
+                                                        data887 === "vkgl" ||
+                                                        data887 === "notesInput")
                                                     )
                                                   ) {
                                                     validate57.errors = [
@@ -44201,7 +44290,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           key272 !== "type" &&
                                                           key272 !== "name" &&
                                                           key272 !== "label" &&
-                                                          key272 !== "description"
+                                                          key272 !== "description" &&
+                                                          key272 !== "additionalConfig"
                                                         ) {
                                                           validate57.errors = [
                                                             {
@@ -44997,7 +45087,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             data904 === "spanningReads" ||
                                             data904 === "vipC" ||
                                             data904 === "vipCS" ||
-                                            data904 === "vkgl")
+                                            data904 === "vkgl" ||
+                                            data904 === "notesInput")
                                         )
                                       ) {
                                         validate57.errors = [
@@ -45080,7 +45171,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               key278 !== "type" &&
                                               key278 !== "name" &&
                                               key278 !== "label" &&
-                                              key278 !== "description"
+                                              key278 !== "description" &&
+                                              key278 !== "additionalConfig"
                                             ) {
                                               validate57.errors = [
                                                 {
@@ -45809,9 +45901,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data921 === "inheritancePattern" ||
                                                           data921 === "locus" ||
                                                           data921 === "ref" ||
+                                                          data921 === "numberOfRepeatUnits" ||
                                                           data921 === "vipC" ||
                                                           data921 === "vipCS" ||
-                                                          data921 === "vkgl")
+                                                          data921 === "vkgl" ||
+                                                          data921 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -45917,7 +46011,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key283 !== "type" &&
                                                             key283 !== "name" &&
                                                             key283 !== "label" &&
-                                                            key283 !== "description"
+                                                            key283 !== "description" &&
+                                                            key283 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -46719,7 +46814,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               data938 === "spanningReads" ||
                                               data938 === "vipC" ||
                                               data938 === "vipCS" ||
-                                              data938 === "vkgl")
+                                              data938 === "vkgl" ||
+                                              data938 === "notesInput")
                                           )
                                         ) {
                                           validate57.errors = [
@@ -46802,7 +46898,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 key289 !== "type" &&
                                                 key289 !== "name" &&
                                                 key289 !== "label" &&
-                                                key289 !== "description"
+                                                key289 !== "description" &&
+                                                key289 !== "additionalConfig"
                                               ) {
                                                 validate57.errors = [
                                                   {
@@ -47531,9 +47628,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data955 === "inheritancePattern" ||
                                                             data955 === "locus" ||
                                                             data955 === "ref" ||
+                                                            data955 === "numberOfRepeatUnits" ||
                                                             data955 === "vipC" ||
                                                             data955 === "vipCS" ||
-                                                            data955 === "vkgl")
+                                                            data955 === "vkgl" ||
+                                                            data955 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -47639,7 +47738,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key294 !== "type" &&
                                                               key294 !== "name" &&
                                                               key294 !== "label" &&
-                                                              key294 !== "description"
+                                                              key294 !== "description" &&
+                                                              key294 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -48515,7 +48615,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           data973 === "spanningReads" ||
                                           data973 === "vipC" ||
                                           data973 === "vipCS" ||
-                                          data973 === "vkgl")
+                                          data973 === "vkgl" ||
+                                          data973 === "notesInput")
                                       )
                                     ) {
                                       validate57.errors = [
@@ -48602,7 +48703,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             key301 !== "type" &&
                                             key301 !== "name" &&
                                             key301 !== "label" &&
-                                            key301 !== "description"
+                                            key301 !== "description" &&
+                                            key301 !== "additionalConfig"
                                           ) {
                                             validate57.errors = [
                                               {
@@ -49331,9 +49433,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data990 === "inheritancePattern" ||
                                                         data990 === "locus" ||
                                                         data990 === "ref" ||
+                                                        data990 === "numberOfRepeatUnits" ||
                                                         data990 === "vipC" ||
                                                         data990 === "vipCS" ||
-                                                        data990 === "vkgl")
+                                                        data990 === "vkgl" ||
+                                                        data990 === "notesInput")
                                                     )
                                                   ) {
                                                     validate57.errors = [
@@ -49439,7 +49543,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           key306 !== "type" &&
                                                           key306 !== "name" &&
                                                           key306 !== "label" &&
-                                                          key306 !== "description"
+                                                          key306 !== "description" &&
+                                                          key306 !== "additionalConfig"
                                                         ) {
                                                           validate57.errors = [
                                                             {
@@ -50257,7 +50362,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             data1007 === "spanningReads" ||
                                             data1007 === "vipC" ||
                                             data1007 === "vipCS" ||
-                                            data1007 === "vkgl")
+                                            data1007 === "vkgl" ||
+                                            data1007 === "notesInput")
                                         )
                                       ) {
                                         validate57.errors = [
@@ -50345,7 +50451,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               key312 !== "type" &&
                                               key312 !== "name" &&
                                               key312 !== "label" &&
-                                              key312 !== "description"
+                                              key312 !== "description" &&
+                                              key312 !== "additionalConfig"
                                             ) {
                                               validate57.errors = [
                                                 {
@@ -51074,9 +51181,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1024 === "inheritancePattern" ||
                                                           data1024 === "locus" ||
                                                           data1024 === "ref" ||
+                                                          data1024 === "numberOfRepeatUnits" ||
                                                           data1024 === "vipC" ||
                                                           data1024 === "vipCS" ||
-                                                          data1024 === "vkgl")
+                                                          data1024 === "vkgl" ||
+                                                          data1024 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -51182,7 +51291,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key317 !== "type" &&
                                                             key317 !== "name" &&
                                                             key317 !== "label" &&
-                                                            key317 !== "description"
+                                                            key317 !== "description" &&
+                                                            key317 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -52001,7 +52111,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               data1041 === "spanningReads" ||
                                               data1041 === "vipC" ||
                                               data1041 === "vipCS" ||
-                                              data1041 === "vkgl")
+                                              data1041 === "vkgl" ||
+                                              data1041 === "notesInput")
                                           )
                                         ) {
                                           validate57.errors = [
@@ -52089,7 +52200,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 key323 !== "type" &&
                                                 key323 !== "name" &&
                                                 key323 !== "label" &&
-                                                key323 !== "description"
+                                                key323 !== "description" &&
+                                                key323 !== "additionalConfig"
                                               ) {
                                                 validate57.errors = [
                                                   {
@@ -52818,9 +52930,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1058 === "inheritancePattern" ||
                                                             data1058 === "locus" ||
                                                             data1058 === "ref" ||
+                                                            data1058 === "numberOfRepeatUnits" ||
                                                             data1058 === "vipC" ||
                                                             data1058 === "vipCS" ||
-                                                            data1058 === "vkgl")
+                                                            data1058 === "vkgl" ||
+                                                            data1058 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -52926,7 +53040,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key328 !== "type" &&
                                                               key328 !== "name" &&
                                                               key328 !== "label" &&
-                                                              key328 !== "description"
+                                                              key328 !== "description" &&
+                                                              key328 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -53747,7 +53862,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 data1075 === "spanningReads" ||
                                                 data1075 === "vipC" ||
                                                 data1075 === "vipCS" ||
-                                                data1075 === "vkgl")
+                                                data1075 === "vkgl" ||
+                                                data1075 === "notesInput")
                                             )
                                           ) {
                                             validate57.errors = [
@@ -53835,7 +53951,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   key334 !== "type" &&
                                                   key334 !== "name" &&
                                                   key334 !== "label" &&
-                                                  key334 !== "description"
+                                                  key334 !== "description" &&
+                                                  key334 !== "additionalConfig"
                                                 ) {
                                                   validate57.errors = [
                                                     {
@@ -54568,9 +54685,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1092 === "inheritancePattern" ||
                                                               data1092 === "locus" ||
                                                               data1092 === "ref" ||
+                                                              data1092 === "numberOfRepeatUnits" ||
                                                               data1092 === "vipC" ||
                                                               data1092 === "vipCS" ||
-                                                              data1092 === "vkgl")
+                                                              data1092 === "vkgl" ||
+                                                              data1092 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -54676,7 +54795,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key339 !== "type" &&
                                                                 key339 !== "name" &&
                                                                 key339 !== "label" &&
-                                                                key339 !== "description"
+                                                                key339 !== "description" &&
+                                                                key339 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -55572,7 +55692,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           data1111 === "spanningReads" ||
                                           data1111 === "vipC" ||
                                           data1111 === "vipCS" ||
-                                          data1111 === "vkgl")
+                                          data1111 === "vkgl" ||
+                                          data1111 === "notesInput")
                                       )
                                     ) {
                                       validate57.errors = [
@@ -55653,7 +55774,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             key347 !== "type" &&
                                             key347 !== "name" &&
                                             key347 !== "label" &&
-                                            key347 !== "description"
+                                            key347 !== "description" &&
+                                            key347 !== "additionalConfig"
                                           ) {
                                             validate57.errors = [
                                               {
@@ -56345,9 +56467,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         data1128 === "inheritancePattern" ||
                                                         data1128 === "locus" ||
                                                         data1128 === "ref" ||
+                                                        data1128 === "numberOfRepeatUnits" ||
                                                         data1128 === "vipC" ||
                                                         data1128 === "vipCS" ||
-                                                        data1128 === "vkgl")
+                                                        data1128 === "vkgl" ||
+                                                        data1128 === "notesInput")
                                                     )
                                                   ) {
                                                     validate57.errors = [
@@ -56448,7 +56572,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           key352 !== "type" &&
                                                           key352 !== "name" &&
                                                           key352 !== "label" &&
-                                                          key352 !== "description"
+                                                          key352 !== "description" &&
+                                                          key352 !== "additionalConfig"
                                                         ) {
                                                           validate57.errors = [
                                                             {
@@ -57236,7 +57361,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             data1145 === "spanningReads" ||
                                             data1145 === "vipC" ||
                                             data1145 === "vipCS" ||
-                                            data1145 === "vkgl")
+                                            data1145 === "vkgl" ||
+                                            data1145 === "notesInput")
                                         )
                                       ) {
                                         validate57.errors = [
@@ -57318,7 +57444,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               key358 !== "type" &&
                                               key358 !== "name" &&
                                               key358 !== "label" &&
-                                              key358 !== "description"
+                                              key358 !== "description" &&
+                                              key358 !== "additionalConfig"
                                             ) {
                                               validate57.errors = [
                                                 {
@@ -58011,9 +58138,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1162 === "inheritancePattern" ||
                                                           data1162 === "locus" ||
                                                           data1162 === "ref" ||
+                                                          data1162 === "numberOfRepeatUnits" ||
                                                           data1162 === "vipC" ||
                                                           data1162 === "vipCS" ||
-                                                          data1162 === "vkgl")
+                                                          data1162 === "vkgl" ||
+                                                          data1162 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -58115,7 +58244,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key363 !== "type" &&
                                                             key363 !== "name" &&
                                                             key363 !== "label" &&
-                                                            key363 !== "description"
+                                                            key363 !== "description" &&
+                                                            key363 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -58903,7 +59033,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               data1179 === "spanningReads" ||
                                               data1179 === "vipC" ||
                                               data1179 === "vipCS" ||
-                                              data1179 === "vkgl")
+                                              data1179 === "vkgl" ||
+                                              data1179 === "notesInput")
                                           )
                                         ) {
                                           validate57.errors = [
@@ -58985,7 +59116,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 key369 !== "type" &&
                                                 key369 !== "name" &&
                                                 key369 !== "label" &&
-                                                key369 !== "description"
+                                                key369 !== "description" &&
+                                                key369 !== "additionalConfig"
                                               ) {
                                                 validate57.errors = [
                                                   {
@@ -59710,9 +59842,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1196 === "inheritancePattern" ||
                                                             data1196 === "locus" ||
                                                             data1196 === "ref" ||
+                                                            data1196 === "numberOfRepeatUnits" ||
                                                             data1196 === "vipC" ||
                                                             data1196 === "vipCS" ||
-                                                            data1196 === "vkgl")
+                                                            data1196 === "vkgl" ||
+                                                            data1196 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -59818,7 +59952,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key374 !== "type" &&
                                                               key374 !== "name" &&
                                                               key374 !== "label" &&
-                                                              key374 !== "description"
+                                                              key374 !== "description" &&
+                                                              key374 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -60610,7 +60745,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 data1213 === "spanningReads" ||
                                                 data1213 === "vipC" ||
                                                 data1213 === "vipCS" ||
-                                                data1213 === "vkgl")
+                                                data1213 === "vkgl" ||
+                                                data1213 === "notesInput")
                                             )
                                           ) {
                                             validate57.errors = [
@@ -60692,7 +60828,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   key380 !== "type" &&
                                                   key380 !== "name" &&
                                                   key380 !== "label" &&
-                                                  key380 !== "description"
+                                                  key380 !== "description" &&
+                                                  key380 !== "additionalConfig"
                                                 ) {
                                                   validate57.errors = [
                                                     {
@@ -61421,9 +61558,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1230 === "inheritancePattern" ||
                                                               data1230 === "locus" ||
                                                               data1230 === "ref" ||
+                                                              data1230 === "numberOfRepeatUnits" ||
                                                               data1230 === "vipC" ||
                                                               data1230 === "vipCS" ||
-                                                              data1230 === "vkgl")
+                                                              data1230 === "vkgl" ||
+                                                              data1230 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -61529,7 +61668,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key385 !== "type" &&
                                                                 key385 !== "name" &&
                                                                 key385 !== "label" &&
-                                                                key385 !== "description"
+                                                                key385 !== "description" &&
+                                                                key385 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -62383,7 +62523,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             data1248 === "spanningReads" ||
                                             data1248 === "vipC" ||
                                             data1248 === "vipCS" ||
-                                            data1248 === "vkgl")
+                                            data1248 === "vkgl" ||
+                                            data1248 === "notesInput")
                                         )
                                       ) {
                                         validate57.errors = [
@@ -62467,7 +62608,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               key392 !== "type" &&
                                               key392 !== "name" &&
                                               key392 !== "label" &&
-                                              key392 !== "description"
+                                              key392 !== "description" &&
+                                              key392 !== "additionalConfig"
                                             ) {
                                               validate57.errors = [
                                                 {
@@ -63196,9 +63338,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1265 === "inheritancePattern" ||
                                                           data1265 === "locus" ||
                                                           data1265 === "ref" ||
+                                                          data1265 === "numberOfRepeatUnits" ||
                                                           data1265 === "vipC" ||
                                                           data1265 === "vipCS" ||
-                                                          data1265 === "vkgl")
+                                                          data1265 === "vkgl" ||
+                                                          data1265 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -63304,7 +63448,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key397 !== "type" &&
                                                             key397 !== "name" &&
                                                             key397 !== "label" &&
-                                                            key397 !== "description"
+                                                            key397 !== "description" &&
+                                                            key397 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -64106,7 +64251,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               data1282 === "spanningReads" ||
                                               data1282 === "vipC" ||
                                               data1282 === "vipCS" ||
-                                              data1282 === "vkgl")
+                                              data1282 === "vkgl" ||
+                                              data1282 === "notesInput")
                                           )
                                         ) {
                                           validate57.errors = [
@@ -64190,7 +64336,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 key403 !== "type" &&
                                                 key403 !== "name" &&
                                                 key403 !== "label" &&
-                                                key403 !== "description"
+                                                key403 !== "description" &&
+                                                key403 !== "additionalConfig"
                                               ) {
                                                 validate57.errors = [
                                                   {
@@ -64919,9 +65066,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1299 === "inheritancePattern" ||
                                                             data1299 === "locus" ||
                                                             data1299 === "ref" ||
+                                                            data1299 === "numberOfRepeatUnits" ||
                                                             data1299 === "vipC" ||
                                                             data1299 === "vipCS" ||
-                                                            data1299 === "vkgl")
+                                                            data1299 === "vkgl" ||
+                                                            data1299 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -65027,7 +65176,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key408 !== "type" &&
                                                               key408 !== "name" &&
                                                               key408 !== "label" &&
-                                                              key408 !== "description"
+                                                              key408 !== "description" &&
+                                                              key408 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -65846,7 +65996,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 data1316 === "spanningReads" ||
                                                 data1316 === "vipC" ||
                                                 data1316 === "vipCS" ||
-                                                data1316 === "vkgl")
+                                                data1316 === "vkgl" ||
+                                                data1316 === "notesInput")
                                             )
                                           ) {
                                             validate57.errors = [
@@ -65934,7 +66085,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   key414 !== "type" &&
                                                   key414 !== "name" &&
                                                   key414 !== "label" &&
-                                                  key414 !== "description"
+                                                  key414 !== "description" &&
+                                                  key414 !== "additionalConfig"
                                                 ) {
                                                   validate57.errors = [
                                                     {
@@ -66667,9 +66819,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1333 === "inheritancePattern" ||
                                                               data1333 === "locus" ||
                                                               data1333 === "ref" ||
+                                                              data1333 === "numberOfRepeatUnits" ||
                                                               data1333 === "vipC" ||
                                                               data1333 === "vipCS" ||
-                                                              data1333 === "vkgl")
+                                                              data1333 === "vkgl" ||
+                                                              data1333 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -66775,7 +66929,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key419 !== "type" &&
                                                                 key419 !== "name" &&
                                                                 key419 !== "label" &&
-                                                                key419 !== "description"
+                                                                key419 !== "description" &&
+                                                                key419 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -67594,7 +67749,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   data1350 === "spanningReads" ||
                                                   data1350 === "vipC" ||
                                                   data1350 === "vipCS" ||
-                                                  data1350 === "vkgl")
+                                                  data1350 === "vkgl" ||
+                                                  data1350 === "notesInput")
                                               )
                                             ) {
                                               validate57.errors = [
@@ -67682,7 +67838,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     key425 !== "type" &&
                                                     key425 !== "name" &&
                                                     key425 !== "label" &&
-                                                    key425 !== "description"
+                                                    key425 !== "description" &&
+                                                    key425 !== "additionalConfig"
                                                   ) {
                                                     validate57.errors = [
                                                       {
@@ -68415,9 +68572,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data1367 === "inheritancePattern" ||
                                                                 data1367 === "locus" ||
                                                                 data1367 === "ref" ||
+                                                                data1367 === "numberOfRepeatUnits" ||
                                                                 data1367 === "vipC" ||
                                                                 data1367 === "vipCS" ||
-                                                                data1367 === "vkgl")
+                                                                data1367 === "vkgl" ||
+                                                                data1367 === "notesInput")
                                                             )
                                                           ) {
                                                             validate57.errors = [
@@ -68523,7 +68682,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   key430 !== "type" &&
                                                                   key430 !== "name" &&
                                                                   key430 !== "label" &&
-                                                                  key430 !== "description"
+                                                                  key430 !== "description" &&
+                                                                  key430 !== "additionalConfig"
                                                                 ) {
                                                                   validate57.errors = [
                                                                     {
@@ -69474,7 +69634,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             data1386 === "spanningReads" ||
                                             data1386 === "vipC" ||
                                             data1386 === "vipCS" ||
-                                            data1386 === "vkgl")
+                                            data1386 === "vkgl" ||
+                                            data1386 === "notesInput")
                                         )
                                       ) {
                                         validate57.errors = [
@@ -69569,7 +69730,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               key438 !== "type" &&
                                               key438 !== "name" &&
                                               key438 !== "label" &&
-                                              key438 !== "description"
+                                              key438 !== "description" &&
+                                              key438 !== "additionalConfig"
                                             ) {
                                               validate57.errors = [
                                                 {
@@ -70299,9 +70461,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           data1403 === "inheritancePattern" ||
                                                           data1403 === "locus" ||
                                                           data1403 === "ref" ||
+                                                          data1403 === "numberOfRepeatUnits" ||
                                                           data1403 === "vipC" ||
                                                           data1403 === "vipCS" ||
-                                                          data1403 === "vkgl")
+                                                          data1403 === "vkgl" ||
+                                                          data1403 === "notesInput")
                                                       )
                                                     ) {
                                                       validate57.errors = [
@@ -70407,7 +70571,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             key443 !== "type" &&
                                                             key443 !== "name" &&
                                                             key443 !== "label" &&
-                                                            key443 !== "description"
+                                                            key443 !== "description" &&
+                                                            key443 !== "additionalConfig"
                                                           ) {
                                                             validate57.errors = [
                                                               {
@@ -71269,7 +71434,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               data1420 === "spanningReads" ||
                                               data1420 === "vipC" ||
                                               data1420 === "vipCS" ||
-                                              data1420 === "vkgl")
+                                              data1420 === "vkgl" ||
+                                              data1420 === "notesInput")
                                           )
                                         ) {
                                           validate57.errors = [
@@ -71364,7 +71530,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 key449 !== "type" &&
                                                 key449 !== "name" &&
                                                 key449 !== "label" &&
-                                                key449 !== "description"
+                                                key449 !== "description" &&
+                                                key449 !== "additionalConfig"
                                               ) {
                                                 validate57.errors = [
                                                   {
@@ -72094,9 +72261,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1437 === "inheritancePattern" ||
                                                             data1437 === "locus" ||
                                                             data1437 === "ref" ||
+                                                            data1437 === "numberOfRepeatUnits" ||
                                                             data1437 === "vipC" ||
                                                             data1437 === "vipCS" ||
-                                                            data1437 === "vkgl")
+                                                            data1437 === "vkgl" ||
+                                                            data1437 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -72202,7 +72371,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key454 !== "type" &&
                                                               key454 !== "name" &&
                                                               key454 !== "label" &&
-                                                              key454 !== "description"
+                                                              key454 !== "description" &&
+                                                              key454 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -73068,7 +73238,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 data1454 === "spanningReads" ||
                                                 data1454 === "vipC" ||
                                                 data1454 === "vipCS" ||
-                                                data1454 === "vkgl")
+                                                data1454 === "vkgl" ||
+                                                data1454 === "notesInput")
                                             )
                                           ) {
                                             validate57.errors = [
@@ -73163,7 +73334,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   key460 !== "type" &&
                                                   key460 !== "name" &&
                                                   key460 !== "label" &&
-                                                  key460 !== "description"
+                                                  key460 !== "description" &&
+                                                  key460 !== "additionalConfig"
                                                 ) {
                                                   validate57.errors = [
                                                     {
@@ -73897,9 +74069,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1471 === "inheritancePattern" ||
                                                               data1471 === "locus" ||
                                                               data1471 === "ref" ||
+                                                              data1471 === "numberOfRepeatUnits" ||
                                                               data1471 === "vipC" ||
                                                               data1471 === "vipCS" ||
-                                                              data1471 === "vkgl")
+                                                              data1471 === "vkgl" ||
+                                                              data1471 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -74005,7 +74179,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key465 !== "type" &&
                                                                 key465 !== "name" &&
                                                                 key465 !== "label" &&
-                                                                key465 !== "description"
+                                                                key465 !== "description" &&
+                                                                key465 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -74871,7 +75046,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   data1488 === "spanningReads" ||
                                                   data1488 === "vipC" ||
                                                   data1488 === "vipCS" ||
-                                                  data1488 === "vkgl")
+                                                  data1488 === "vkgl" ||
+                                                  data1488 === "notesInput")
                                               )
                                             ) {
                                               validate57.errors = [
@@ -74966,7 +75142,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     key471 !== "type" &&
                                                     key471 !== "name" &&
                                                     key471 !== "label" &&
-                                                    key471 !== "description"
+                                                    key471 !== "description" &&
+                                                    key471 !== "additionalConfig"
                                                   ) {
                                                     validate57.errors = [
                                                       {
@@ -75701,9 +75878,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data1505 === "inheritancePattern" ||
                                                                 data1505 === "locus" ||
                                                                 data1505 === "ref" ||
+                                                                data1505 === "numberOfRepeatUnits" ||
                                                                 data1505 === "vipC" ||
                                                                 data1505 === "vipCS" ||
-                                                                data1505 === "vkgl")
+                                                                data1505 === "vkgl" ||
+                                                                data1505 === "notesInput")
                                                             )
                                                           ) {
                                                             validate57.errors = [
@@ -75810,7 +75989,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   key476 !== "type" &&
                                                                   key476 !== "name" &&
                                                                   key476 !== "label" &&
-                                                                  key476 !== "description"
+                                                                  key476 !== "description" &&
+                                                                  key476 !== "additionalConfig"
                                                                 ) {
                                                                   validate57.errors = [
                                                                     {
@@ -76758,7 +76938,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               data1524 === "spanningReads" ||
                                               data1524 === "vipC" ||
                                               data1524 === "vipCS" ||
-                                              data1524 === "vkgl")
+                                              data1524 === "vkgl" ||
+                                              data1524 === "notesInput")
                                           )
                                         ) {
                                           validate57.errors = [
@@ -76849,7 +77030,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 key484 !== "type" &&
                                                 key484 !== "name" &&
                                                 key484 !== "label" &&
-                                                key484 !== "description"
+                                                key484 !== "description" &&
+                                                key484 !== "additionalConfig"
                                               ) {
                                                 validate57.errors = [
                                                   {
@@ -77578,9 +77760,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                             data1541 === "inheritancePattern" ||
                                                             data1541 === "locus" ||
                                                             data1541 === "ref" ||
+                                                            data1541 === "numberOfRepeatUnits" ||
                                                             data1541 === "vipC" ||
                                                             data1541 === "vipCS" ||
-                                                            data1541 === "vkgl")
+                                                            data1541 === "vkgl" ||
+                                                            data1541 === "notesInput")
                                                         )
                                                       ) {
                                                         validate57.errors = [
@@ -77686,7 +77870,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               key489 !== "type" &&
                                                               key489 !== "name" &&
                                                               key489 !== "label" &&
-                                                              key489 !== "description"
+                                                              key489 !== "description" &&
+                                                              key489 !== "additionalConfig"
                                                             ) {
                                                               validate57.errors = [
                                                                 {
@@ -78542,7 +78727,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 data1558 === "spanningReads" ||
                                                 data1558 === "vipC" ||
                                                 data1558 === "vipCS" ||
-                                                data1558 === "vkgl")
+                                                data1558 === "vkgl" ||
+                                                data1558 === "notesInput")
                                             )
                                           ) {
                                             validate57.errors = [
@@ -78637,7 +78823,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   key495 !== "type" &&
                                                   key495 !== "name" &&
                                                   key495 !== "label" &&
-                                                  key495 !== "description"
+                                                  key495 !== "description" &&
+                                                  key495 !== "additionalConfig"
                                                 ) {
                                                   validate57.errors = [
                                                     {
@@ -79371,9 +79558,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                               data1575 === "inheritancePattern" ||
                                                               data1575 === "locus" ||
                                                               data1575 === "ref" ||
+                                                              data1575 === "numberOfRepeatUnits" ||
                                                               data1575 === "vipC" ||
                                                               data1575 === "vipCS" ||
-                                                              data1575 === "vkgl")
+                                                              data1575 === "vkgl" ||
+                                                              data1575 === "notesInput")
                                                           )
                                                         ) {
                                                           validate57.errors = [
@@ -79479,7 +79668,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 key500 !== "type" &&
                                                                 key500 !== "name" &&
                                                                 key500 !== "label" &&
-                                                                key500 !== "description"
+                                                                key500 !== "description" &&
+                                                                key500 !== "additionalConfig"
                                                               ) {
                                                                 validate57.errors = [
                                                                   {
@@ -80338,7 +80528,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   data1592 === "spanningReads" ||
                                                   data1592 === "vipC" ||
                                                   data1592 === "vipCS" ||
-                                                  data1592 === "vkgl")
+                                                  data1592 === "vkgl" ||
+                                                  data1592 === "notesInput")
                                               )
                                             ) {
                                               validate57.errors = [
@@ -80433,7 +80624,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     key506 !== "type" &&
                                                     key506 !== "name" &&
                                                     key506 !== "label" &&
-                                                    key506 !== "description"
+                                                    key506 !== "description" &&
+                                                    key506 !== "additionalConfig"
                                                   ) {
                                                     validate57.errors = [
                                                       {
@@ -81168,9 +81360,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 data1609 === "inheritancePattern" ||
                                                                 data1609 === "locus" ||
                                                                 data1609 === "ref" ||
+                                                                data1609 === "numberOfRepeatUnits" ||
                                                                 data1609 === "vipC" ||
                                                                 data1609 === "vipCS" ||
-                                                                data1609 === "vkgl")
+                                                                data1609 === "vkgl" ||
+                                                                data1609 === "notesInput")
                                                             )
                                                           ) {
                                                             validate57.errors = [
@@ -81277,7 +81471,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   key511 !== "type" &&
                                                                   key511 !== "name" &&
                                                                   key511 !== "label" &&
-                                                                  key511 !== "description"
+                                                                  key511 !== "description" &&
+                                                                  key511 !== "additionalConfig"
                                                                 ) {
                                                                   validate57.errors = [
                                                                     {
@@ -82139,7 +82334,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     data1626 === "spanningReads" ||
                                                     data1626 === "vipC" ||
                                                     data1626 === "vipCS" ||
-                                                    data1626 === "vkgl")
+                                                    data1626 === "vkgl" ||
+                                                    data1626 === "notesInput")
                                                 )
                                               ) {
                                                 validate57.errors = [
@@ -82234,7 +82430,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       key517 !== "type" &&
                                                       key517 !== "name" &&
                                                       key517 !== "label" &&
-                                                      key517 !== "description"
+                                                      key517 !== "description" &&
+                                                      key517 !== "additionalConfig"
                                                     ) {
                                                       validate57.errors = [
                                                         {
@@ -82977,9 +83174,11 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   data1643 === "inheritancePattern" ||
                                                                   data1643 === "locus" ||
                                                                   data1643 === "ref" ||
+                                                                  data1643 === "numberOfRepeatUnits" ||
                                                                   data1643 === "vipC" ||
                                                                   data1643 === "vipCS" ||
-                                                                  data1643 === "vkgl")
+                                                                  data1643 === "vkgl" ||
+                                                                  data1643 === "notesInput")
                                                               )
                                                             ) {
                                                               validate57.errors = [
@@ -83086,7 +83285,8 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                     key522 !== "type" &&
                                                                     key522 !== "name" &&
                                                                     key522 !== "label" &&
-                                                                    key522 !== "description"
+                                                                    key522 !== "description" &&
+                                                                    key522 !== "additionalConfig"
                                                                   ) {
                                                                     validate57.errors = [
                                                                       {

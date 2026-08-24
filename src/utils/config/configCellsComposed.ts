@@ -1,6 +1,7 @@
 import { ConfigCellCustom } from "../../types/configCells";
 import {
   Genotype,
+  GenotypeAllele,
   InfoMetadata,
   ValueFlag,
   ValueFloat,
@@ -20,10 +21,12 @@ import {
   CellValueHpo,
   CellValueInheritanceModes,
   CellValueLocus,
+  CellValueUserClassification,
   CellValueSpanningReads,
   CellValueVipC,
   CellValueVipCS,
   CellValueVkgl,
+  CellValueStrNr,
 } from "../../types/configCellComposed";
 import {
   getInfoFields,
@@ -44,12 +47,15 @@ import { href } from "../utils.ts";
 import { ConfigJsonFieldComposed } from "../../types/config";
 import { getDescription, getLabel } from "./config.ts";
 import { ConfigInvalidError } from "../error.ts";
+import { ClassificationOption } from "../../types/NotesApi";
+import { ValueNumber } from "../../types/configFilter";
 
 export function initConfigCellComposed(
   configStatic: ConfigJsonFieldComposed,
   variantType: VariantType,
   metadata: MetadataContainer,
   sample: SampleContainer | null,
+  reportId: string,
 ): ConfigCellCustom<CellValueCustom> | null {
   const id = configStatic.name;
   let fieldConfig: ConfigCellCustom<CellValueCustom> | null;
@@ -80,6 +86,12 @@ export function initConfigCellComposed(
       break;
     case "locus":
       fieldConfig = createConfigFieldCustomLocus(configStatic, sample, variantType);
+      break;
+    case "numberOfRepeatUnits":
+      fieldConfig = createConfigFieldStrNr(configStatic, metadata.records, sample);
+      break;
+    case "notesInput":
+      fieldConfig = createConfigFieldNotesInput(configStatic, metadata.records, sample, reportId);
       break;
     case "vipC":
       fieldConfig = createConfigFieldCustomVipC(configStatic, metadata.records, sample, variantType);
@@ -314,7 +326,6 @@ function createConfigFieldCustomSpanningReads(
     description: () => getDescription(config, "Number of spanning reads for the genotype."),
     valueCount: () => 1,
     value: (record: Item<VcfRecord>, valueIndex: number): CellValueSpanningReads => {
-      console.log("here!");
       const genotype = getSampleValue(sample, record, valueIndex, fieldGt) as Genotype;
       const spanning = getSampleValue(sample, record, valueIndex, fieldSpan) as ValueInteger[];
 
@@ -443,6 +454,114 @@ function createConfigFieldCustomLocus(
       href: href([...components, "variants", variantType.id, "variant", record.id]),
     }),
   };
+}
+
+function createConfigFieldNotesInput(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+  reportId: string,
+): ConfigCellCustom<CellValueUserClassification> {
+  const [fieldHgvsC, fieldHgvsP, fieldFeature, fieldAlleleNum] = getInfoNestedFields(
+    metadata,
+    "CSQ",
+    "HGVSc",
+    "HGVSp",
+    "Feature",
+    "ALLELE_NUM",
+  );
+  const [fieldEND, fieldSvType] = getInfoFields(metadata, "END", "SVTYPE");
+  const [fieldRu, fieldRuNr, fieldGt] = getSampleFields(metadata, "RU_CALL", "RU_NR", "GT");
+
+  return {
+    type: "composed",
+    id: "notesInput",
+    label: () => getLabel(config, "Classification"),
+    description: () => getDescription(config, "User classification and notes"),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldAlleleNum),
+    value: (record: Item<VcfRecord>, valueIndex: number): CellValueUserClassification => {
+      const [hgvsC, hgvsP, feature, end, alleleNum, svType] = getInfoValues(
+        record,
+        valueIndex,
+        fieldHgvsC,
+        fieldHgvsP,
+        fieldFeature,
+        fieldEND,
+        fieldAlleleNum,
+        fieldSvType,
+      ) as [string | undefined, string | undefined, string, number | undefined, number, string];
+
+      const [ru, ruNr, gt] = getSampleValues(sample, record, 0, fieldRu, fieldRuNr, fieldGt) as [
+        string | undefined,
+        ValueNumber[],
+        Genotype,
+      ];
+
+      const alleleIndex = alleleNum - 1; // VEP starts counting alternatives at 1, index 0 being the reference
+
+      return {
+        c: record.data.c,
+        p: record.data.p,
+        r: record.data.r,
+        a: Array.isArray(record.data.a) ? record.data.a?.[alleleIndex] : record.data.a,
+        s: sample,
+        svType,
+        hgvsC,
+        hgvsP,
+        feature,
+        end,
+        report: reportId,
+        ru: ru,
+        ruNr: ruNr !== undefined ? getRuNrFieldValueForAllele(gt, alleleNum, ruNr) : undefined,
+        options:
+          config.additionalConfig !== undefined
+            ? (config.additionalConfig["classification_options"] as ClassificationOption[])
+            : undefined,
+      };
+    },
+  };
+}
+
+function createConfigFieldStrNr(
+  config: ConfigJsonFieldComposed,
+  metadata: VcfMetadataContainer,
+  sample: SampleContainer | null,
+): ConfigCellCustom<CellValueStrNr> {
+  const [fieldAlleleNum] = getInfoNestedFields(metadata, "CSQ", "ALLELE_NUM");
+
+  const [fieldRuNr, fieldGt] = getSampleFields(metadata, "RU_NR", "GT");
+
+  return {
+    type: "composed",
+    id: "numberOfRepeatUnits",
+    label: () => getLabel(config, "Repeat Units"),
+    description: () => getDescription(config, "Number of Repeat Units"),
+    valueCount: (record: Item<VcfRecord>) => getInfoValueCount(record, fieldAlleleNum),
+    value: (record: Item<VcfRecord>, valueIndex: number): CellValueStrNr => {
+      const [alleleNum] = getInfoValues(record, valueIndex, fieldAlleleNum) as [number];
+
+      const [ruNr, gt] = getSampleValues(sample, record, 0, fieldRuNr, fieldGt) as [ValueNumber[], Genotype];
+
+      return {
+        ruNr: ruNr !== undefined ? getRuNrFieldValueForAllele(gt, alleleNum, ruNr) : undefined,
+      };
+    },
+  };
+}
+
+//helper to get the correct ru_nr based on combination of the CSQ alleleNr, the GT and the RuNr value
+//returns -1 if the VEP value is for an allele that does not belong to the sample
+function getRuNrFieldValueForAllele(genotype: Genotype, alleleNr: GenotypeAllele, ruNrs: number[]): number | undefined {
+  if (alleleNr === null) {
+    return undefined;
+  }
+
+  const idx = genotype.a.findIndex((allele) => allele === alleleNr);
+  if (idx === -1) {
+    return -1;
+  }
+
+  return Number(ruNrs[idx]);
 }
 
 function createConfigFieldCustomVipC(

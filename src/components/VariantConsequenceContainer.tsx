@@ -23,8 +23,9 @@ export const VariantConsequenceContainer: Component<{
   sample: SampleContainer | null;
   decisionTree: DecisionTree | null;
   sampleTree: DecisionTree | null;
+  reportId: string;
 }> = (props) => {
-  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample);
+  const config = () => initConfig(props.config, props.variantType, props.metadata, props.sample, props.reportId);
 
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
   const hasDecisionTreePathMeta = () =>
@@ -57,6 +58,7 @@ export const VariantConsequenceContainer: Component<{
             metadata={props.metadata}
             record={props.record}
             isShowEmpty={showEmptyInfo()}
+            reportId={props.reportId}
           />
         </div>
         <div class="mt-3">

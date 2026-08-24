@@ -119,12 +119,14 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
             "vipC",
             "vipCS",
             "vkgl",
+            "notesInput",
           ],
         },
       },
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
+        additionalConfig: {}
       },
     },
     group: {
@@ -182,15 +184,18 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
                       "inheritancePattern",
                       "locus",
                       "ref",
+                      "numberOfRepeatUnits",
                       "vipC",
                       "vipCS",
                       "vkgl",
+                      "notesInput",
                     ],
                   },
                 },
                 optionalProperties: {
                   label: { type: "string" },
                   description: { type: "string" },
+                  additionalConfig: {}
                 },
               },
             },
@@ -211,7 +216,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     info: {
@@ -221,7 +226,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     format: {
@@ -231,7 +236,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     genotype: {
@@ -241,7 +246,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
     composed: {
@@ -253,7 +258,7 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
       optionalProperties: {
         label: { type: "string" },
         description: { type: "string" },
-        defaultValue: { type: "string" }
+        defaultValue: { type: "string" },
       },
     },
   },

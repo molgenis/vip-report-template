@@ -10,12 +10,28 @@ export type SelectProps = {
   options: SelectOption[];
   value?: SelectValue;
   onValueChange: SelectChangeCallback;
+  disabled?: boolean;
+  small?: boolean;
+  fullwidth?: boolean;
 };
 
 export const Select: Component<SelectProps> = (props) => {
+  const isSmall = () => props.small ?? true;
+  const isFullwidth = () => props.fullwidth ?? true;
+
   return (
-    <div class="select is-small is-fullwidth">
-      <select required onChange={(e) => props.onValueChange({ value: (e.target as HTMLSelectElement).value })}>
+    <div
+      class="select"
+      classList={{
+        "is-small": isSmall(),
+        "is-fullwidth": isFullwidth(),
+      }}
+    >
+      <select
+        required
+        onChange={(e) => props.onValueChange({ value: (e.target as HTMLSelectElement).value })}
+        disabled={props.disabled}
+      >
         <Show when={props.placeholder}>
           <option value="" selected={props.value === undefined}>
             {props.placeholder}

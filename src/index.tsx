@@ -13,11 +13,18 @@ import {
   faCircleInfo,
   faCircleQuestion,
   faCircleXmark,
+  faCog,
+  faComment,
+  faFolderOpen,
   faDownload,
+  faEdit,
   faExternalLink,
   faHome,
   faInfo,
   faSearch,
+  faSave,
+  faUpload,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
 import { createSignal, ErrorBoundary, Show } from "solid-js";
@@ -44,11 +51,19 @@ library.add(
   faCircleXmark,
   faCircleInfo,
   faCircleQuestion,
+  faCog,
+  faComment,
+  faCog,
   faDownload,
+  faEdit,
   faExternalLink,
+  faFolderOpen,
   faHome,
   faInfo,
+  faSave,
   faSearch,
+  faUpload,
+  faTrash,
 );
 
 function processIcons() {

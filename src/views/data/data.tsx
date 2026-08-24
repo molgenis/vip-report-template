@@ -6,6 +6,7 @@ import {
   fetchDecisionTree,
   fetchMetadata,
   fetchRecordById,
+  fetchReportId,
   fetchSampleById,
   fetchSampleTree,
   MetadataContainer,
@@ -15,6 +16,8 @@ import { parseId } from "../../utils/utils.ts";
 import { ConfigJson } from "../../types/config";
 
 export const getConfig = query((): Promise<ConfigJson> => fetchConfig(), "config");
+
+export const getReportId = query((): Promise<string> => fetchReportId(), "reportId");
 
 export const getMetadata = query((): Promise<MetadataContainer> => fetchMetadata(), "metadata");
 

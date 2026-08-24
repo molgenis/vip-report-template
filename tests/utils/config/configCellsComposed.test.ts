@@ -19,7 +19,7 @@ import {
   getSampleValues,
 } from "../../../src/utils/vcf.ts";
 import { Item, Sample } from "@molgenis/vip-report-api";
-import { VcfRecord } from "@molgenis/vip-report-vcf";
+import { Genotype, VcfRecord } from "@molgenis/vip-report-vcf";
 
 describe("config cells composed", () => {
   vi.mock(import("../../../src/utils/vcf.ts"));
@@ -51,6 +51,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("clinVar");
@@ -88,7 +89,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getInfoValues).mockReturnValue([0, 1, 2]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, null) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, null, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("clinVar");
         expect(cell.label()).toStrictEqual("my_label");
@@ -109,7 +110,7 @@ describe("config cells composed", () => {
 
       test("clinVar without required fields", () => {
         vi.mocked(getInfoNestedFields).mockReturnValue([undefined, undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
         expect(getInfoNestedFields).toHaveBeenCalledWith(
           vcfMetadata,
           "CSQ",
@@ -142,6 +143,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("gene");
@@ -188,7 +190,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getInfoValues).mockReturnValue(["my_symbol", "my_gene", true, "my_symbol_source"]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, null) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, null, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("gene");
         expect(cell.label()).toStrictEqual("my_label");
@@ -215,7 +217,7 @@ describe("config cells composed", () => {
 
       test("gene without required fields", () => {
         vi.mocked(getInfoNestedFields).mockReturnValue([undefined, undefined, undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
         expect(getInfoNestedFields).toHaveBeenCalledWith(
           vcfMetadata,
           "CSQ",
@@ -257,7 +259,7 @@ describe("config cells composed", () => {
         vi.mocked(getSampleValues).mockReturnValue([0, 1, 3, 4, "6"]);
         vi.mocked(getInfoValues).mockReturnValue([2, 5]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, sample) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, sample, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("genotype");
         expect(cell.label()).toStrictEqual("my_label");
@@ -303,6 +305,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("genotype");
@@ -340,12 +343,12 @@ describe("config cells composed", () => {
 
       test("genotype without required fields", () => {
         vi.mocked(getSampleFields).mockReturnValue([undefined, undefined, undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample, "reportId")).toStrictEqual(null);
         expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "GT", "VIAB", "RU_CALL", "RU_MATCH", "RU_NR");
       });
 
       test("genotype without sample", () => {
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
       });
     });
 
@@ -381,6 +384,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("genotype");
@@ -427,7 +431,7 @@ describe("config cells composed", () => {
       });
 
       test("genotype_maternal no sample", () => {
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
       });
 
       test("genotype_maternal no mother", () => {
@@ -435,7 +439,7 @@ describe("config cells composed", () => {
           item: { id: 2, data: { person: { individualId: "sample2" } } },
           maternalSample: null,
         } as SampleContainer;
-        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample, "reportId")).toStrictEqual(null);
       });
     });
 
@@ -464,6 +468,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("genotype");
@@ -512,7 +517,7 @@ describe("config cells composed", () => {
       });
 
       test("genotype_paternal no sample", () => {
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
       });
 
       test("genotype_paternal no father", () => {
@@ -520,7 +525,7 @@ describe("config cells composed", () => {
           item: { id: 2, data: { person: { individualId: "sample2" } } },
           paternalSample: null,
         } as SampleContainer;
-        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample, "reportId")).toStrictEqual(null);
       });
     });
 
@@ -551,7 +556,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getInfoValues).mockReturnValue([0.12, 0.23, ["qc"], 0]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, null) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, null, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("gnomAdAf");
         expect(cell.label()).toStrictEqual("my_label");
@@ -604,6 +609,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("gnomAdAf");
@@ -635,7 +641,7 @@ describe("config cells composed", () => {
 
       test("gnomAdAf without required fields", () => {
         vi.mocked(getInfoNestedFields).mockReturnValue([undefined, undefined, undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
         expect(getInfoNestedFields).toHaveBeenCalledWith(
           vcfMetadata,
           "CSQ",
@@ -664,6 +670,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("hpo");
@@ -690,7 +697,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getInfoValues).mockReturnValue([["HP:0000951"], "HC"]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, null) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, null, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("hpo");
         expect(cell.label()).toStrictEqual("my_label");
@@ -705,7 +712,7 @@ describe("config cells composed", () => {
 
       test("hpo without required fields", () => {
         vi.mocked(getInfoNestedFields).mockReturnValue([undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
         expect(getInfoNestedFields).toHaveBeenCalledWith(vcfMetadata, "CSQ", "HPO", "GADO_PD");
       });
     });
@@ -732,7 +739,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValue).mockReturnValue(0);
         vi.mocked(getSampleValue).mockReturnValue(1);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, sample) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, sample, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("inheritancePattern");
         expect(cell.label()).toStrictEqual("my_label");
@@ -761,6 +768,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("inheritancePattern");
@@ -788,6 +796,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("inheritancePattern");
@@ -808,7 +817,7 @@ describe("config cells composed", () => {
 
       test("inheritancePattern without required fields", () => {
         vi.mocked(getInfoNestedField).mockReturnValue(undefined);
-        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample, "reportId")).toStrictEqual(null);
         expect(getInfoNestedField).toHaveBeenCalledWith(vcfMetadata, "CSQ", "InheritanceModesGene");
       });
     });
@@ -826,7 +835,7 @@ describe("config cells composed", () => {
           description: "my_description",
         };
         const sample = { item: { id: 2 } } as SampleContainer;
-        const cell = initConfigCellComposed(config, variantType, metadata, sample) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, sample, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("locus");
         expect(cell.label()).toStrictEqual("my_label");
@@ -845,6 +854,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("locus");
@@ -856,6 +866,130 @@ describe("config cells composed", () => {
           href: "/variants/snv/variant/0",
           p: 123,
         });
+      });
+    });
+
+    describe("notesInput", () => {
+      const configBase: ConfigJsonFieldComposed = {
+        type: "composed",
+        name: "notesInput",
+      };
+      const sample = { item: { id: 1 } } as SampleContainer;
+
+      test("notesInput", () => {
+        const gt: Genotype = {
+          a: [0,1],
+          t: "het"
+        }
+        const fieldGt = { id: "FORMAT/GT" };
+        const fieldRu = { id: "FORMAT/RU_CALL" };
+        const fieldRuNr = { id: "FORMAT/RU_NR" };
+        vi.mocked(getSampleFields).mockReturnValue([fieldRu, fieldRuNr, fieldGt] as FieldMetadataWrapper[]);
+        vi.mocked(getSampleValues).mockReturnValue(["GCA", [10,20], gt]);
+        const fieldAlleleNum = { id: "CSQ/ALLELE_NUM" };
+        const fieldHgvsC = { id: "CSQ/HGVSc" };
+        const fieldHgvsP = { id: "CSQ/HGVSp" };
+        const fieldFeature = { id: "CSQ/Feature" };
+        vi.mocked(getInfoNestedFields).mockReturnValue([fieldHgvsC, fieldHgvsP, fieldFeature, fieldAlleleNum] as FieldMetadataWrapper[]);
+        vi.mocked(getInfoValueCount).mockReturnValue(1);
+        vi.mocked(getInfoValues).mockReturnValue([1]);
+
+        const fieldEnd = { id: "INFO/END" };
+        const fieldSvType = { id: "INFO/SVTYPE" };
+        vi.mocked(getInfoFields).mockReturnValue([
+          fieldEnd,
+          fieldSvType,
+        ] as FieldMetadataWrapper[]);
+        vi.mocked(getInfoValueCount).mockReturnValue(1);
+        vi.mocked(getInfoValues).mockReturnValue([12345, "DEL"]);
+
+
+        const cell = initConfigCellComposed(
+          configBase,
+          variantType,
+          metadata,
+          sample,
+          "reportId",
+        ) as ConfigCellCustom<CellValueCustom>;
+        expect(cell.type).toStrictEqual("composed");
+        expect(cell.id).toStrictEqual("notesInput");
+        expect(cell.label()).toStrictEqual("Classification");
+        expect(cell.description()).toStrictEqual("User classification and notes");
+        expect(cell.valueCount(record)).toStrictEqual(1);
+        expect(cell.value(record, 1)).toStrictEqual({
+             "a": undefined,
+             "c": "chr1",
+             "end": undefined,
+             "feature": undefined,
+             "hgvsC": 12345,
+             "hgvsP": "DEL",
+             "options": undefined,
+             "p": 123,
+             "r": "A",
+             "report": "reportId",
+             "ru": "GCA",
+             "ruNr": -1,
+             "s": {
+               "item": {
+                 "id": 1,
+               },
+             },
+             "svType": undefined,
+        });
+
+        expect(getInfoNestedFields).toHaveBeenCalledWith(vcfMetadata, "CSQ", "HGVSc", "HGVSp", "Feature", "ALLELE_NUM");
+        expect(getInfoValueCount).toHaveBeenCalledWith(record, fieldAlleleNum);
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, fieldHgvsC,fieldHgvsP,fieldFeature,fieldEnd,fieldAlleleNum,fieldSvType,);
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "RU_CALL", "RU_NR", "GT");
+        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 0, fieldRu, fieldRuNr, fieldGt);
+        expect(getInfoFields).toHaveBeenCalledWith(vcfMetadata, "END", "SVTYPE");
+      });
+    });
+
+    describe("numberOfRepeatUnits", () => {
+      const configBase: ConfigJsonFieldComposed = {
+        type: "composed",
+        name: "numberOfRepeatUnits",
+      };
+      const sample = { item: { id: 1 } } as SampleContainer;
+
+      test("numberOfRepeatUnits", () => {
+
+
+        const gt: Genotype = {
+          a: [0,1],
+          t: "het"
+        }
+        const fieldGt = { id: "FORMAT/GT" };
+        const fieldRu = { id: "FORMAT/RU_NR" };
+        vi.mocked(getSampleFields).mockReturnValue([fieldRu, fieldGt] as FieldMetadataWrapper[]);
+        vi.mocked(getSampleValues).mockReturnValue([[10,20], gt]);
+        const fieldAlleleNum = { id: "CSQ/ALLELE_NUM" };
+        vi.mocked(getInfoNestedFields).mockReturnValue([fieldAlleleNum] as FieldMetadataWrapper[]);
+        vi.mocked(getInfoValueCount).mockReturnValue(1);
+        vi.mocked(getInfoValues).mockReturnValue([1]);
+
+        const cell = initConfigCellComposed(
+          configBase,
+          variantType,
+          metadata,
+          sample,
+          "reportId",
+        ) as ConfigCellCustom<CellValueCustom>;
+        expect(cell.type).toStrictEqual("composed");
+        expect(cell.id).toStrictEqual("numberOfRepeatUnits");
+        expect(cell.label()).toStrictEqual("Repeat Units");
+        expect(cell.description()).toStrictEqual("Number of Repeat Units");
+        expect(cell.valueCount(record)).toStrictEqual(1);
+        expect(cell.value(record, 1)).toStrictEqual({
+          "ruNr": 20,
+        });
+
+        expect(getInfoNestedFields).toHaveBeenCalledWith(vcfMetadata, "CSQ", "ALLELE_NUM");
+        expect(getInfoValueCount).toHaveBeenCalledWith(record, fieldAlleleNum);
+        expect(getInfoValues).toHaveBeenCalledWith(record, 1, fieldAlleleNum);
+        expect(getSampleFields).toHaveBeenCalledWith(vcfMetadata, "RU_NR", "GT");
+        expect(getSampleValues).toHaveBeenCalledWith(sample, record, 0, fieldRu, fieldGt);
       });
     });
 
@@ -876,6 +1010,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("vipC");
@@ -906,7 +1041,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getInfoValues).mockReturnValue(["LP", ["x", "y"]]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, sample) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, sample, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("vipC");
         expect(cell.label()).toStrictEqual("my_label");
@@ -925,7 +1060,7 @@ describe("config cells composed", () => {
 
       test("vipC without required fields", () => {
         vi.mocked(getInfoNestedFields).mockReturnValue([undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
         expect(getInfoNestedFields).toHaveBeenCalledWith(vcfMetadata, "CSQ", "VIPC", "VIPP");
       });
     });
@@ -954,6 +1089,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("vipCS");
@@ -979,6 +1115,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           sample,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("vipCS");
@@ -996,12 +1133,12 @@ describe("config cells composed", () => {
       });
 
       test("vipCS without sample", () => {
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
       });
 
       test("vipCS without required metadata", () => {
         vi.mocked(getSampleFields).mockReturnValue([undefined, undefined]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, sample)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, sample, "reportId")).toStrictEqual(null);
       });
     });
 
@@ -1042,6 +1179,7 @@ describe("config cells composed", () => {
           variantType,
           metadata,
           null,
+          "reportId",
         ) as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("vkgl");
@@ -1119,7 +1257,7 @@ describe("config cells composed", () => {
         vi.mocked(getInfoValueCount).mockReturnValue(1);
         vi.mocked(getInfoValues).mockReturnValue(["B", "LB", "VUS", "LP", "P", "LP", "VUS", "LB", "B"]);
 
-        const cell = initConfigCellComposed(config, variantType, metadata, null) as ConfigCellCustom<CellValueCustom>;
+        const cell = initConfigCellComposed(config, variantType, metadata, null, "reportId") as ConfigCellCustom<CellValueCustom>;
         expect(cell.type).toStrictEqual("composed");
         expect(cell.id).toStrictEqual("vkgl");
         expect(cell.label()).toStrictEqual("my_label");
@@ -1178,7 +1316,7 @@ describe("config cells composed", () => {
           undefined,
           undefined,
         ]);
-        expect(initConfigCellComposed(configBase, variantType, metadata, null)).toStrictEqual(null);
+        expect(initConfigCellComposed(configBase, variantType, metadata, null, "reportId")).toStrictEqual(null);
         expect(getInfoNestedFields).toHaveBeenCalledWith(
           vcfMetadata,
           "CSQ",
