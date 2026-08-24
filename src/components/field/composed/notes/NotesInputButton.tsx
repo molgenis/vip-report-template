@@ -190,7 +190,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         <Show when={classificationSaved()}>
           <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
             <span>Classification saved successfully.</span>
-            <button class="notes-modal-close" type="button">
+            <button class="notes-modal-close" type="button" onClick={() => setClassificationSaved(false)}>
               ×
             </button>
           </div>
