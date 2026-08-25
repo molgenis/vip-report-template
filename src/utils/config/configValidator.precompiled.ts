@@ -639,18 +639,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                             if (data21.name !== undefined) {
                               let data22 = data21.name;
                               const _errs28 = errors;
-                              if (
-                                !(
-                                  typeof data22 == "string" &&
-                                  (data22 === "chrom" ||
-                                    data22 === "pos" ||
-                                    data22 === "id" ||
-                                    data22 === "ref" ||
-                                    data22 === "alt" ||
-                                    data22 === "qual" ||
-                                    data22 === "filter")
-                                )
-                              ) {
+                              if (!(
+                                typeof data22 == "string" &&
+                                (data22 === "chrom" ||
+                                  data22 === "pos" ||
+                                  data22 === "id" ||
+                                  data22 === "ref" ||
+                                  data22 === "alt" ||
+                                  data22 === "qual" ||
+                                  data22 === "filter")
+                              )) {
                                 validate57.errors = [
                                   {
                                     instancePath: instancePath + "/sample_variants/cells/all/" + i0 + "/name",
@@ -1143,26 +1141,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                             if (data21.name !== undefined) {
                               let data34 = data21.name;
                               const _errs44 = errors;
-                              if (
-                                !(
-                                  typeof data34 == "string" &&
-                                  (data34 === "clinVar" ||
-                                    data34 === "confidenceInterval" ||
-                                    data34 === "gene" ||
-                                    data34 === "genotype" ||
-                                    data34 === "genotype_maternal" ||
-                                    data34 === "genotype_paternal" ||
-                                    data34 === "gnomAdAf" ||
-                                    data34 === "hpo" ||
-                                    data34 === "inheritancePattern" ||
-                                    data34 === "locus" ||
-                                    data34 === "spanningReads" ||
-                                    data34 === "vipC" ||
-                                    data34 === "vipCS" ||
-                                    data34 === "vkgl" ||
-                                    data34 === "notesInput")
-                                )
-                              ) {
+                              if (!(
+                                typeof data34 == "string" &&
+                                (data34 === "clinVar" ||
+                                  data34 === "confidenceInterval" ||
+                                  data34 === "gene" ||
+                                  data34 === "genotype" ||
+                                  data34 === "genotype_maternal" ||
+                                  data34 === "genotype_paternal" ||
+                                  data34 === "gnomAdAf" ||
+                                  data34 === "hpo" ||
+                                  data34 === "inheritancePattern" ||
+                                  data34 === "locus" ||
+                                  data34 === "spanningReads" ||
+                                  data34 === "vipC" ||
+                                  data34 === "vipCS" ||
+                                  data34 === "vkgl" ||
+                                  data34 === "notesInput" ||
+                                  data34 === "numberOfRepeatUnits")
+                              )) {
                                 validate57.errors = [
                                   {
                                     instancePath: instancePath + "/sample_variants/cells/all/" + i0 + "/name",
@@ -1323,18 +1320,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data38.name !== undefined) {
                                             let data39 = data38.name;
                                             const _errs51 = errors;
-                                            if (
-                                              !(
-                                                typeof data39 == "string" &&
-                                                (data39 === "chrom" ||
-                                                  data39 === "pos" ||
-                                                  data39 === "id" ||
-                                                  data39 === "ref" ||
-                                                  data39 === "alt" ||
-                                                  data39 === "qual" ||
-                                                  data39 === "filter")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data39 == "string" &&
+                                              (data39 === "chrom" ||
+                                                data39 === "pos" ||
+                                                data39 === "id" ||
+                                                data39 === "ref" ||
+                                                data39 === "alt" ||
+                                                data39 === "qual" ||
+                                                data39 === "filter")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -1912,24 +1907,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data38.name !== undefined) {
                                             let data51 = data38.name;
                                             const _errs67 = errors;
-                                            if (
-                                              !(
-                                                typeof data51 == "string" &&
-                                                (data51 === "clinVar" ||
-                                                  data51 === "gene" ||
-                                                  data51 === "genotype" ||
-                                                  data51 === "gnomAdAf" ||
-                                                  data51 === "hpo" ||
-                                                  data51 === "inheritancePattern" ||
-                                                  data51 === "locus" ||
-                                                  data51 === "ref" ||
-                                                  data51 === "numberOfRepeatUnits" ||
-                                                  data51 === "vipC" ||
-                                                  data51 === "vipCS" ||
-                                                  data51 === "vkgl" ||
-                                                  data51 === "notesInput")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data51 == "string" &&
+                                              (data51 === "clinVar" ||
+                                                data51 === "gene" ||
+                                                data51 === "genotype" ||
+                                                data51 === "gnomAdAf" ||
+                                                data51 === "hpo" ||
+                                                data51 === "inheritancePattern" ||
+                                                data51 === "locus" ||
+                                                data51 === "ref" ||
+                                                data51 === "numberOfRepeatUnits" ||
+                                                data51 === "vipC" ||
+                                                data51 === "vipCS" ||
+                                                data51 === "vkgl" ||
+                                                data51 === "notesInput")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -2294,18 +2287,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data55.name !== undefined) {
                                 let data56 = data55.name;
                                 const _errs73 = errors;
-                                if (
-                                  !(
-                                    typeof data56 == "string" &&
-                                    (data56 === "chrom" ||
-                                      data56 === "pos" ||
-                                      data56 === "id" ||
-                                      data56 === "ref" ||
-                                      data56 === "alt" ||
-                                      data56 === "qual" ||
-                                      data56 === "filter")
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data56 == "string" &&
+                                  (data56 === "chrom" ||
+                                    data56 === "pos" ||
+                                    data56 === "id" ||
+                                    data56 === "ref" ||
+                                    data56 === "alt" ||
+                                    data56 === "qual" ||
+                                    data56 === "filter")
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath: instancePath + "/sample_variants/cells/snv/" + i2 + "/name",
@@ -2798,26 +2789,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data55.name !== undefined) {
                                 let data68 = data55.name;
                                 const _errs89 = errors;
-                                if (
-                                  !(
-                                    typeof data68 == "string" &&
-                                    (data68 === "clinVar" ||
-                                      data68 === "confidenceInterval" ||
-                                      data68 === "gene" ||
-                                      data68 === "genotype" ||
-                                      data68 === "genotype_maternal" ||
-                                      data68 === "genotype_paternal" ||
-                                      data68 === "gnomAdAf" ||
-                                      data68 === "hpo" ||
-                                      data68 === "inheritancePattern" ||
-                                      data68 === "locus" ||
-                                      data68 === "spanningReads" ||
-                                      data68 === "vipC" ||
-                                      data68 === "vipCS" ||
-                                      data68 === "vkgl" ||
-                                      data68 === "notesInput")
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data68 == "string" &&
+                                  (data68 === "clinVar" ||
+                                    data68 === "confidenceInterval" ||
+                                    data68 === "gene" ||
+                                    data68 === "genotype" ||
+                                    data68 === "genotype_maternal" ||
+                                    data68 === "genotype_paternal" ||
+                                    data68 === "gnomAdAf" ||
+                                    data68 === "hpo" ||
+                                    data68 === "inheritancePattern" ||
+                                    data68 === "locus" ||
+                                    data68 === "spanningReads" ||
+                                    data68 === "vipC" ||
+                                    data68 === "vipCS" ||
+                                    data68 === "vkgl" ||
+                                    data68 === "notesInput" ||
+                                    data68 === "numberOfRepeatUnits")
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath: instancePath + "/sample_variants/cells/snv/" + i2 + "/name",
@@ -2978,18 +2968,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data72.name !== undefined) {
                                               let data73 = data72.name;
                                               const _errs96 = errors;
-                                              if (
-                                                !(
-                                                  typeof data73 == "string" &&
-                                                  (data73 === "chrom" ||
-                                                    data73 === "pos" ||
-                                                    data73 === "id" ||
-                                                    data73 === "ref" ||
-                                                    data73 === "alt" ||
-                                                    data73 === "qual" ||
-                                                    data73 === "filter")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data73 == "string" &&
+                                                (data73 === "chrom" ||
+                                                  data73 === "pos" ||
+                                                  data73 === "id" ||
+                                                  data73 === "ref" ||
+                                                  data73 === "alt" ||
+                                                  data73 === "qual" ||
+                                                  data73 === "filter")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -3567,24 +3555,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data72.name !== undefined) {
                                               let data85 = data72.name;
                                               const _errs112 = errors;
-                                              if (
-                                                !(
-                                                  typeof data85 == "string" &&
-                                                  (data85 === "clinVar" ||
-                                                    data85 === "gene" ||
-                                                    data85 === "genotype" ||
-                                                    data85 === "gnomAdAf" ||
-                                                    data85 === "hpo" ||
-                                                    data85 === "inheritancePattern" ||
-                                                    data85 === "locus" ||
-                                                    data85 === "ref" ||
-                                                    data85 === "numberOfRepeatUnits" ||
-                                                    data85 === "vipC" ||
-                                                    data85 === "vipCS" ||
-                                                    data85 === "vkgl" ||
-                                                    data85 === "notesInput")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data85 == "string" &&
+                                                (data85 === "clinVar" ||
+                                                  data85 === "gene" ||
+                                                  data85 === "genotype" ||
+                                                  data85 === "gnomAdAf" ||
+                                                  data85 === "hpo" ||
+                                                  data85 === "inheritancePattern" ||
+                                                  data85 === "locus" ||
+                                                  data85 === "ref" ||
+                                                  data85 === "numberOfRepeatUnits" ||
+                                                  data85 === "vipC" ||
+                                                  data85 === "vipCS" ||
+                                                  data85 === "vkgl" ||
+                                                  data85 === "notesInput")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -3949,18 +3935,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data89.name !== undefined) {
                                   let data90 = data89.name;
                                   const _errs118 = errors;
-                                  if (
-                                    !(
-                                      typeof data90 == "string" &&
-                                      (data90 === "chrom" ||
-                                        data90 === "pos" ||
-                                        data90 === "id" ||
-                                        data90 === "ref" ||
-                                        data90 === "alt" ||
-                                        data90 === "qual" ||
-                                        data90 === "filter")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data90 == "string" &&
+                                    (data90 === "chrom" ||
+                                      data90 === "pos" ||
+                                      data90 === "id" ||
+                                      data90 === "ref" ||
+                                      data90 === "alt" ||
+                                      data90 === "qual" ||
+                                      data90 === "filter")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/sample_variants/cells/str/" + i4 + "/name",
@@ -4453,26 +4437,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data89.name !== undefined) {
                                   let data102 = data89.name;
                                   const _errs134 = errors;
-                                  if (
-                                    !(
-                                      typeof data102 == "string" &&
-                                      (data102 === "clinVar" ||
-                                        data102 === "confidenceInterval" ||
-                                        data102 === "gene" ||
-                                        data102 === "genotype" ||
-                                        data102 === "genotype_maternal" ||
-                                        data102 === "genotype_paternal" ||
-                                        data102 === "gnomAdAf" ||
-                                        data102 === "hpo" ||
-                                        data102 === "inheritancePattern" ||
-                                        data102 === "locus" ||
-                                        data102 === "spanningReads" ||
-                                        data102 === "vipC" ||
-                                        data102 === "vipCS" ||
-                                        data102 === "vkgl" ||
-                                        data102 === "notesInput")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data102 == "string" &&
+                                    (data102 === "clinVar" ||
+                                      data102 === "confidenceInterval" ||
+                                      data102 === "gene" ||
+                                      data102 === "genotype" ||
+                                      data102 === "genotype_maternal" ||
+                                      data102 === "genotype_paternal" ||
+                                      data102 === "gnomAdAf" ||
+                                      data102 === "hpo" ||
+                                      data102 === "inheritancePattern" ||
+                                      data102 === "locus" ||
+                                      data102 === "spanningReads" ||
+                                      data102 === "vipC" ||
+                                      data102 === "vipCS" ||
+                                      data102 === "vkgl" ||
+                                      data102 === "notesInput" ||
+                                      data102 === "numberOfRepeatUnits")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/sample_variants/cells/str/" + i4 + "/name",
@@ -4633,18 +4616,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data106.name !== undefined) {
                                                 let data107 = data106.name;
                                                 const _errs141 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data107 == "string" &&
-                                                    (data107 === "chrom" ||
-                                                      data107 === "pos" ||
-                                                      data107 === "id" ||
-                                                      data107 === "ref" ||
-                                                      data107 === "alt" ||
-                                                      data107 === "qual" ||
-                                                      data107 === "filter")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data107 == "string" &&
+                                                  (data107 === "chrom" ||
+                                                    data107 === "pos" ||
+                                                    data107 === "id" ||
+                                                    data107 === "ref" ||
+                                                    data107 === "alt" ||
+                                                    data107 === "qual" ||
+                                                    data107 === "filter")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -5254,24 +5235,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data106.name !== undefined) {
                                                 let data119 = data106.name;
                                                 const _errs157 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data119 == "string" &&
-                                                    (data119 === "clinVar" ||
-                                                      data119 === "gene" ||
-                                                      data119 === "genotype" ||
-                                                      data119 === "gnomAdAf" ||
-                                                      data119 === "hpo" ||
-                                                      data119 === "inheritancePattern" ||
-                                                      data119 === "locus" ||
-                                                      data119 === "ref" ||
-                                                      data119 === "numberOfRepeatUnits" ||
-                                                      data119 === "vipC" ||
-                                                      data119 === "vipCS" ||
-                                                      data119 === "vkgl" ||
-                                                      data119 === "notesInput")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data119 == "string" &&
+                                                  (data119 === "clinVar" ||
+                                                    data119 === "gene" ||
+                                                    data119 === "genotype" ||
+                                                    data119 === "gnomAdAf" ||
+                                                    data119 === "hpo" ||
+                                                    data119 === "inheritancePattern" ||
+                                                    data119 === "locus" ||
+                                                    data119 === "ref" ||
+                                                    data119 === "numberOfRepeatUnits" ||
+                                                    data119 === "vipC" ||
+                                                    data119 === "vipCS" ||
+                                                    data119 === "vkgl" ||
+                                                    data119 === "notesInput")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -5644,18 +5623,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data123.name !== undefined) {
                                     let data124 = data123.name;
                                     const _errs163 = errors;
-                                    if (
-                                      !(
-                                        typeof data124 == "string" &&
-                                        (data124 === "chrom" ||
-                                          data124 === "pos" ||
-                                          data124 === "id" ||
-                                          data124 === "ref" ||
-                                          data124 === "alt" ||
-                                          data124 === "qual" ||
-                                          data124 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data124 == "string" &&
+                                      (data124 === "chrom" ||
+                                        data124 === "pos" ||
+                                        data124 === "id" ||
+                                        data124 === "ref" ||
+                                        data124 === "alt" ||
+                                        data124 === "qual" ||
+                                        data124 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/sample_variants/cells/sv/" + i6 + "/name",
@@ -6148,26 +6125,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data123.name !== undefined) {
                                     let data136 = data123.name;
                                     const _errs179 = errors;
-                                    if (
-                                      !(
-                                        typeof data136 == "string" &&
-                                        (data136 === "clinVar" ||
-                                          data136 === "confidenceInterval" ||
-                                          data136 === "gene" ||
-                                          data136 === "genotype" ||
-                                          data136 === "genotype_maternal" ||
-                                          data136 === "genotype_paternal" ||
-                                          data136 === "gnomAdAf" ||
-                                          data136 === "hpo" ||
-                                          data136 === "inheritancePattern" ||
-                                          data136 === "locus" ||
-                                          data136 === "spanningReads" ||
-                                          data136 === "vipC" ||
-                                          data136 === "vipCS" ||
-                                          data136 === "vkgl" ||
-                                          data136 === "notesInput")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data136 == "string" &&
+                                      (data136 === "clinVar" ||
+                                        data136 === "confidenceInterval" ||
+                                        data136 === "gene" ||
+                                        data136 === "genotype" ||
+                                        data136 === "genotype_maternal" ||
+                                        data136 === "genotype_paternal" ||
+                                        data136 === "gnomAdAf" ||
+                                        data136 === "hpo" ||
+                                        data136 === "inheritancePattern" ||
+                                        data136 === "locus" ||
+                                        data136 === "spanningReads" ||
+                                        data136 === "vipC" ||
+                                        data136 === "vipCS" ||
+                                        data136 === "vkgl" ||
+                                        data136 === "notesInput" ||
+                                        data136 === "numberOfRepeatUnits")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/sample_variants/cells/sv/" + i6 + "/name",
@@ -6328,18 +6304,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data140.name !== undefined) {
                                                   let data141 = data140.name;
                                                   const _errs186 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data141 == "string" &&
-                                                      (data141 === "chrom" ||
-                                                        data141 === "pos" ||
-                                                        data141 === "id" ||
-                                                        data141 === "ref" ||
-                                                        data141 === "alt" ||
-                                                        data141 === "qual" ||
-                                                        data141 === "filter")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data141 == "string" &&
+                                                    (data141 === "chrom" ||
+                                                      data141 === "pos" ||
+                                                      data141 === "id" ||
+                                                      data141 === "ref" ||
+                                                      data141 === "alt" ||
+                                                      data141 === "qual" ||
+                                                      data141 === "filter")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -6961,24 +6935,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data140.name !== undefined) {
                                                   let data153 = data140.name;
                                                   const _errs202 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data153 == "string" &&
-                                                      (data153 === "clinVar" ||
-                                                        data153 === "gene" ||
-                                                        data153 === "genotype" ||
-                                                        data153 === "gnomAdAf" ||
-                                                        data153 === "hpo" ||
-                                                        data153 === "inheritancePattern" ||
-                                                        data153 === "locus" ||
-                                                        data153 === "ref" ||
-                                                        data153 === "numberOfRepeatUnits" ||
-                                                        data153 === "vipC" ||
-                                                        data153 === "vipCS" ||
-                                                        data153 === "vkgl" ||
-                                                        data153 === "notesInput")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data153 == "string" &&
+                                                    (data153 === "clinVar" ||
+                                                      data153 === "gene" ||
+                                                      data153 === "genotype" ||
+                                                      data153 === "gnomAdAf" ||
+                                                      data153 === "hpo" ||
+                                                      data153 === "inheritancePattern" ||
+                                                      data153 === "locus" ||
+                                                      data153 === "ref" ||
+                                                      data153 === "numberOfRepeatUnits" ||
+                                                      data153 === "vipC" ||
+                                                      data153 === "vipCS" ||
+                                                      data153 === "vkgl" ||
+                                                      data153 === "notesInput")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -7412,18 +7384,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data158.name !== undefined) {
                                 let data159 = data158.name;
                                 const _errs209 = errors;
-                                if (
-                                  !(
-                                    typeof data159 == "string" &&
-                                    (data159 === "chrom" ||
-                                      data159 === "pos" ||
-                                      data159 === "id" ||
-                                      data159 === "ref" ||
-                                      data159 === "alt" ||
-                                      data159 === "qual" ||
-                                      data159 === "filter")
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data159 == "string" &&
+                                  (data159 === "chrom" ||
+                                    data159 === "pos" ||
+                                    data159 === "id" ||
+                                    data159 === "ref" ||
+                                    data159 === "alt" ||
+                                    data159 === "qual" ||
+                                    data159 === "filter")
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath: instancePath + "/sample_variants/filters/all/" + i8 + "/name",
@@ -8008,18 +7978,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data158.name !== undefined) {
                                 let data175 = data158.name;
                                 const _errs229 = errors;
-                                if (
-                                  !(
-                                    typeof data175 == "string" &&
-                                    (data175 === "allelicImbalance" ||
-                                      data175 === "deNovo" ||
-                                      data175 === "hpo" ||
-                                      data175 === "inheritanceMatch" ||
-                                      data175 === "locus" ||
-                                      data175 === "vipC" ||
-                                      data175 === "vipCS")
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data175 == "string" &&
+                                  (data175 === "allelicImbalance" ||
+                                    data175 === "deNovo" ||
+                                    data175 === "hpo" ||
+                                    data175 === "inheritanceMatch" ||
+                                    data175 === "locus" ||
+                                    data175 === "vipC" ||
+                                    data175 === "vipCS")
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath: instancePath + "/sample_variants/filters/all/" + i8 + "/name",
@@ -8260,18 +8228,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data180.name !== undefined) {
                                   let data181 = data180.name;
                                   const _errs236 = errors;
-                                  if (
-                                    !(
-                                      typeof data181 == "string" &&
-                                      (data181 === "chrom" ||
-                                        data181 === "pos" ||
-                                        data181 === "id" ||
-                                        data181 === "ref" ||
-                                        data181 === "alt" ||
-                                        data181 === "qual" ||
-                                        data181 === "filter")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data181 == "string" &&
+                                    (data181 === "chrom" ||
+                                      data181 === "pos" ||
+                                      data181 === "id" ||
+                                      data181 === "ref" ||
+                                      data181 === "alt" ||
+                                      data181 === "qual" ||
+                                      data181 === "filter")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/sample_variants/filters/snv/" + i9 + "/name",
@@ -8856,18 +8822,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data180.name !== undefined) {
                                   let data197 = data180.name;
                                   const _errs256 = errors;
-                                  if (
-                                    !(
-                                      typeof data197 == "string" &&
-                                      (data197 === "allelicImbalance" ||
-                                        data197 === "deNovo" ||
-                                        data197 === "hpo" ||
-                                        data197 === "inheritanceMatch" ||
-                                        data197 === "locus" ||
-                                        data197 === "vipC" ||
-                                        data197 === "vipCS")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data197 == "string" &&
+                                    (data197 === "allelicImbalance" ||
+                                      data197 === "deNovo" ||
+                                      data197 === "hpo" ||
+                                      data197 === "inheritanceMatch" ||
+                                      data197 === "locus" ||
+                                      data197 === "vipC" ||
+                                      data197 === "vipCS")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/sample_variants/filters/snv/" + i9 + "/name",
@@ -9108,18 +9072,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data202.name !== undefined) {
                                     let data203 = data202.name;
                                     const _errs263 = errors;
-                                    if (
-                                      !(
-                                        typeof data203 == "string" &&
-                                        (data203 === "chrom" ||
-                                          data203 === "pos" ||
-                                          data203 === "id" ||
-                                          data203 === "ref" ||
-                                          data203 === "alt" ||
-                                          data203 === "qual" ||
-                                          data203 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data203 == "string" &&
+                                      (data203 === "chrom" ||
+                                        data203 === "pos" ||
+                                        data203 === "id" ||
+                                        data203 === "ref" ||
+                                        data203 === "alt" ||
+                                        data203 === "qual" ||
+                                        data203 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/sample_variants/filters/str/" + i10 + "/name",
@@ -9720,18 +9682,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data202.name !== undefined) {
                                     let data219 = data202.name;
                                     const _errs283 = errors;
-                                    if (
-                                      !(
-                                        typeof data219 == "string" &&
-                                        (data219 === "allelicImbalance" ||
-                                          data219 === "deNovo" ||
-                                          data219 === "hpo" ||
-                                          data219 === "inheritanceMatch" ||
-                                          data219 === "locus" ||
-                                          data219 === "vipC" ||
-                                          data219 === "vipCS")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data219 == "string" &&
+                                      (data219 === "allelicImbalance" ||
+                                        data219 === "deNovo" ||
+                                        data219 === "hpo" ||
+                                        data219 === "inheritanceMatch" ||
+                                        data219 === "locus" ||
+                                        data219 === "vipC" ||
+                                        data219 === "vipCS")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/sample_variants/filters/str/" + i10 + "/name",
@@ -9976,18 +9936,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data224.name !== undefined) {
                                       let data225 = data224.name;
                                       const _errs290 = errors;
-                                      if (
-                                        !(
-                                          typeof data225 == "string" &&
-                                          (data225 === "chrom" ||
-                                            data225 === "pos" ||
-                                            data225 === "id" ||
-                                            data225 === "ref" ||
-                                            data225 === "alt" ||
-                                            data225 === "qual" ||
-                                            data225 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data225 == "string" &&
+                                        (data225 === "chrom" ||
+                                          data225 === "pos" ||
+                                          data225 === "id" ||
+                                          data225 === "ref" ||
+                                          data225 === "alt" ||
+                                          data225 === "qual" ||
+                                          data225 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/sample_variants/filters/sv/" + i11 + "/name",
@@ -10588,18 +10546,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data224.name !== undefined) {
                                       let data241 = data224.name;
                                       const _errs310 = errors;
-                                      if (
-                                        !(
-                                          typeof data241 == "string" &&
-                                          (data241 === "allelicImbalance" ||
-                                            data241 === "deNovo" ||
-                                            data241 === "hpo" ||
-                                            data241 === "inheritanceMatch" ||
-                                            data241 === "locus" ||
-                                            data241 === "vipC" ||
-                                            data241 === "vipCS")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data241 == "string" &&
+                                        (data241 === "allelicImbalance" ||
+                                          data241 === "deNovo" ||
+                                          data241 === "hpo" ||
+                                          data241 === "inheritanceMatch" ||
+                                          data241 === "locus" ||
+                                          data241 === "vipC" ||
+                                          data241 === "vipCS")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/sample_variants/filters/sv/" + i11 + "/name",
@@ -10920,9 +10876,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data250.direction !== undefined) {
                                           let data251 = data250.direction;
                                           const _errs320 = errors;
-                                          if (
-                                            !(typeof data251 == "string" && (data251 === "asc" || data251 === "desc"))
-                                          ) {
+                                          if (!(
+                                            typeof data251 == "string" &&
+                                            (data251 === "asc" || data251 === "desc")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -10996,18 +10953,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data252.name !== undefined) {
                                                     let data253 = data252.name;
                                                     const _errs323 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data253 == "string" &&
-                                                        (data253 === "chrom" ||
-                                                          data253 === "pos" ||
-                                                          data253 === "id" ||
-                                                          data253 === "ref" ||
-                                                          data253 === "alt" ||
-                                                          data253 === "qual" ||
-                                                          data253 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data253 == "string" &&
+                                                      (data253 === "chrom" ||
+                                                        data253 === "pos" ||
+                                                        data253 === "id" ||
+                                                        data253 === "ref" ||
+                                                        data253 === "alt" ||
+                                                        data253 === "qual" ||
+                                                        data253 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -11638,26 +11593,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data252.name !== undefined) {
                                                     let data265 = data252.name;
                                                     const _errs339 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data265 == "string" &&
-                                                        (data265 === "clinVar" ||
-                                                          data265 === "confidenceInterval" ||
-                                                          data265 === "gene" ||
-                                                          data265 === "genotype" ||
-                                                          data265 === "genotype_maternal" ||
-                                                          data265 === "genotype_paternal" ||
-                                                          data265 === "gnomAdAf" ||
-                                                          data265 === "hpo" ||
-                                                          data265 === "inheritancePattern" ||
-                                                          data265 === "locus" ||
-                                                          data265 === "spanningReads" ||
-                                                          data265 === "vipC" ||
-                                                          data265 === "vipCS" ||
-                                                          data265 === "vkgl" ||
-                                                          data265 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data265 == "string" &&
+                                                      (data265 === "clinVar" ||
+                                                        data265 === "confidenceInterval" ||
+                                                        data265 === "gene" ||
+                                                        data265 === "genotype" ||
+                                                        data265 === "genotype_maternal" ||
+                                                        data265 === "genotype_paternal" ||
+                                                        data265 === "gnomAdAf" ||
+                                                        data265 === "hpo" ||
+                                                        data265 === "inheritancePattern" ||
+                                                        data265 === "locus" ||
+                                                        data265 === "spanningReads" ||
+                                                        data265 === "vipC" ||
+                                                        data265 === "vipCS" ||
+                                                        data265 === "vkgl" ||
+                                                        data265 === "notesInput" ||
+                                                        data265 === "numberOfRepeatUnits")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -11868,18 +11822,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 if (data269.name !== undefined) {
                                                                   let data270 = data269.name;
                                                                   const _errs346 = errors;
-                                                                  if (
-                                                                    !(
-                                                                      typeof data270 == "string" &&
-                                                                      (data270 === "chrom" ||
-                                                                        data270 === "pos" ||
-                                                                        data270 === "id" ||
-                                                                        data270 === "ref" ||
-                                                                        data270 === "alt" ||
-                                                                        data270 === "qual" ||
-                                                                        data270 === "filter")
-                                                                    )
-                                                                  ) {
+                                                                  if (!(
+                                                                    typeof data270 == "string" &&
+                                                                    (data270 === "chrom" ||
+                                                                      data270 === "pos" ||
+                                                                      data270 === "id" ||
+                                                                      data270 === "ref" ||
+                                                                      data270 === "alt" ||
+                                                                      data270 === "qual" ||
+                                                                      data270 === "filter")
+                                                                  )) {
                                                                     validate57.errors = [
                                                                       {
                                                                         instancePath:
@@ -12578,24 +12530,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                 if (data269.name !== undefined) {
                                                                   let data282 = data269.name;
                                                                   const _errs362 = errors;
-                                                                  if (
-                                                                    !(
-                                                                      typeof data282 == "string" &&
-                                                                      (data282 === "clinVar" ||
-                                                                        data282 === "gene" ||
-                                                                        data282 === "genotype" ||
-                                                                        data282 === "gnomAdAf" ||
-                                                                        data282 === "hpo" ||
-                                                                        data282 === "inheritancePattern" ||
-                                                                        data282 === "locus" ||
-                                                                        data282 === "ref" ||
-                                                                        data282 === "numberOfRepeatUnits" ||
-                                                                        data282 === "vipC" ||
-                                                                        data282 === "vipCS" ||
-                                                                        data282 === "vkgl" ||
-                                                                        data282 === "notesInput")
-                                                                    )
-                                                                  ) {
+                                                                  if (!(
+                                                                    typeof data282 == "string" &&
+                                                                    (data282 === "clinVar" ||
+                                                                      data282 === "gene" ||
+                                                                      data282 === "genotype" ||
+                                                                      data282 === "gnomAdAf" ||
+                                                                      data282 === "hpo" ||
+                                                                      data282 === "inheritancePattern" ||
+                                                                      data282 === "locus" ||
+                                                                      data282 === "ref" ||
+                                                                      data282 === "numberOfRepeatUnits" ||
+                                                                      data282 === "vipC" ||
+                                                                      data282 === "vipCS" ||
+                                                                      data282 === "vkgl" ||
+                                                                      data282 === "notesInput")
+                                                                  )) {
                                                                     validate57.errors = [
                                                                       {
                                                                         instancePath:
@@ -13210,9 +13160,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data289.direction !== undefined) {
                                             let data290 = data289.direction;
                                             const _errs370 = errors;
-                                            if (
-                                              !(typeof data290 == "string" && (data290 === "asc" || data290 === "desc"))
-                                            ) {
+                                            if (!(
+                                              typeof data290 == "string" &&
+                                              (data290 === "asc" || data290 === "desc")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -13286,18 +13237,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data291.name !== undefined) {
                                                       let data292 = data291.name;
                                                       const _errs373 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data292 == "string" &&
-                                                          (data292 === "chrom" ||
-                                                            data292 === "pos" ||
-                                                            data292 === "id" ||
-                                                            data292 === "ref" ||
-                                                            data292 === "alt" ||
-                                                            data292 === "qual" ||
-                                                            data292 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data292 == "string" &&
+                                                        (data292 === "chrom" ||
+                                                          data292 === "pos" ||
+                                                          data292 === "id" ||
+                                                          data292 === "ref" ||
+                                                          data292 === "alt" ||
+                                                          data292 === "qual" ||
+                                                          data292 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -13928,26 +13877,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data291.name !== undefined) {
                                                       let data304 = data291.name;
                                                       const _errs389 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data304 == "string" &&
-                                                          (data304 === "clinVar" ||
-                                                            data304 === "confidenceInterval" ||
-                                                            data304 === "gene" ||
-                                                            data304 === "genotype" ||
-                                                            data304 === "genotype_maternal" ||
-                                                            data304 === "genotype_paternal" ||
-                                                            data304 === "gnomAdAf" ||
-                                                            data304 === "hpo" ||
-                                                            data304 === "inheritancePattern" ||
-                                                            data304 === "locus" ||
-                                                            data304 === "spanningReads" ||
-                                                            data304 === "vipC" ||
-                                                            data304 === "vipCS" ||
-                                                            data304 === "vkgl" ||
-                                                            data304 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data304 == "string" &&
+                                                        (data304 === "clinVar" ||
+                                                          data304 === "confidenceInterval" ||
+                                                          data304 === "gene" ||
+                                                          data304 === "genotype" ||
+                                                          data304 === "genotype_maternal" ||
+                                                          data304 === "genotype_paternal" ||
+                                                          data304 === "gnomAdAf" ||
+                                                          data304 === "hpo" ||
+                                                          data304 === "inheritancePattern" ||
+                                                          data304 === "locus" ||
+                                                          data304 === "spanningReads" ||
+                                                          data304 === "vipC" ||
+                                                          data304 === "vipCS" ||
+                                                          data304 === "vkgl" ||
+                                                          data304 === "notesInput" ||
+                                                          data304 === "numberOfRepeatUnits")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -14158,18 +14106,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   if (data308.name !== undefined) {
                                                                     let data309 = data308.name;
                                                                     const _errs396 = errors;
-                                                                    if (
-                                                                      !(
-                                                                        typeof data309 == "string" &&
-                                                                        (data309 === "chrom" ||
-                                                                          data309 === "pos" ||
-                                                                          data309 === "id" ||
-                                                                          data309 === "ref" ||
-                                                                          data309 === "alt" ||
-                                                                          data309 === "qual" ||
-                                                                          data309 === "filter")
-                                                                      )
-                                                                    ) {
+                                                                    if (!(
+                                                                      typeof data309 == "string" &&
+                                                                      (data309 === "chrom" ||
+                                                                        data309 === "pos" ||
+                                                                        data309 === "id" ||
+                                                                        data309 === "ref" ||
+                                                                        data309 === "alt" ||
+                                                                        data309 === "qual" ||
+                                                                        data309 === "filter")
+                                                                    )) {
                                                                       validate57.errors = [
                                                                         {
                                                                           instancePath:
@@ -14880,24 +14826,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   if (data308.name !== undefined) {
                                                                     let data321 = data308.name;
                                                                     const _errs412 = errors;
-                                                                    if (
-                                                                      !(
-                                                                        typeof data321 == "string" &&
-                                                                        (data321 === "clinVar" ||
-                                                                          data321 === "gene" ||
-                                                                          data321 === "genotype" ||
-                                                                          data321 === "gnomAdAf" ||
-                                                                          data321 === "hpo" ||
-                                                                          data321 === "inheritancePattern" ||
-                                                                          data321 === "locus" ||
-                                                                          data321 === "ref" ||
-                                                                          data321 === "numberOfRepeatUnits" ||
-                                                                          data321 === "vipC" ||
-                                                                          data321 === "vipCS" ||
-                                                                          data321 === "vkgl" ||
-                                                                          data321 === "notesInput")
-                                                                      )
-                                                                    ) {
+                                                                    if (!(
+                                                                      typeof data321 == "string" &&
+                                                                      (data321 === "clinVar" ||
+                                                                        data321 === "gene" ||
+                                                                        data321 === "genotype" ||
+                                                                        data321 === "gnomAdAf" ||
+                                                                        data321 === "hpo" ||
+                                                                        data321 === "inheritancePattern" ||
+                                                                        data321 === "locus" ||
+                                                                        data321 === "ref" ||
+                                                                        data321 === "numberOfRepeatUnits" ||
+                                                                        data321 === "vipC" ||
+                                                                        data321 === "vipCS" ||
+                                                                        data321 === "vkgl" ||
+                                                                        data321 === "notesInput")
+                                                                    )) {
                                                                       validate57.errors = [
                                                                         {
                                                                           instancePath:
@@ -15522,12 +15466,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data328.direction !== undefined) {
                                               let data329 = data328.direction;
                                               const _errs420 = errors;
-                                              if (
-                                                !(
-                                                  typeof data329 == "string" &&
-                                                  (data329 === "asc" || data329 === "desc")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data329 == "string" &&
+                                                (data329 === "asc" || data329 === "desc")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -15605,18 +15547,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data330.name !== undefined) {
                                                         let data331 = data330.name;
                                                         const _errs423 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data331 == "string" &&
-                                                            (data331 === "chrom" ||
-                                                              data331 === "pos" ||
-                                                              data331 === "id" ||
-                                                              data331 === "ref" ||
-                                                              data331 === "alt" ||
-                                                              data331 === "qual" ||
-                                                              data331 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data331 == "string" &&
+                                                          (data331 === "chrom" ||
+                                                            data331 === "pos" ||
+                                                            data331 === "id" ||
+                                                            data331 === "ref" ||
+                                                            data331 === "alt" ||
+                                                            data331 === "qual" ||
+                                                            data331 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -16247,26 +16187,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data330.name !== undefined) {
                                                         let data343 = data330.name;
                                                         const _errs439 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data343 == "string" &&
-                                                            (data343 === "clinVar" ||
-                                                              data343 === "confidenceInterval" ||
-                                                              data343 === "gene" ||
-                                                              data343 === "genotype" ||
-                                                              data343 === "genotype_maternal" ||
-                                                              data343 === "genotype_paternal" ||
-                                                              data343 === "gnomAdAf" ||
-                                                              data343 === "hpo" ||
-                                                              data343 === "inheritancePattern" ||
-                                                              data343 === "locus" ||
-                                                              data343 === "spanningReads" ||
-                                                              data343 === "vipC" ||
-                                                              data343 === "vipCS" ||
-                                                              data343 === "vkgl" ||
-                                                              data343 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data343 == "string" &&
+                                                          (data343 === "clinVar" ||
+                                                            data343 === "confidenceInterval" ||
+                                                            data343 === "gene" ||
+                                                            data343 === "genotype" ||
+                                                            data343 === "genotype_maternal" ||
+                                                            data343 === "genotype_paternal" ||
+                                                            data343 === "gnomAdAf" ||
+                                                            data343 === "hpo" ||
+                                                            data343 === "inheritancePattern" ||
+                                                            data343 === "locus" ||
+                                                            data343 === "spanningReads" ||
+                                                            data343 === "vipC" ||
+                                                            data343 === "vipCS" ||
+                                                            data343 === "vkgl" ||
+                                                            data343 === "notesInput" ||
+                                                            data343 === "numberOfRepeatUnits")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -16477,18 +16416,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                     if (data347.name !== undefined) {
                                                                       let data348 = data347.name;
                                                                       const _errs446 = errors;
-                                                                      if (
-                                                                        !(
-                                                                          typeof data348 == "string" &&
-                                                                          (data348 === "chrom" ||
-                                                                            data348 === "pos" ||
-                                                                            data348 === "id" ||
-                                                                            data348 === "ref" ||
-                                                                            data348 === "alt" ||
-                                                                            data348 === "qual" ||
-                                                                            data348 === "filter")
-                                                                        )
-                                                                      ) {
+                                                                      if (!(
+                                                                        typeof data348 == "string" &&
+                                                                        (data348 === "chrom" ||
+                                                                          data348 === "pos" ||
+                                                                          data348 === "id" ||
+                                                                          data348 === "ref" ||
+                                                                          data348 === "alt" ||
+                                                                          data348 === "qual" ||
+                                                                          data348 === "filter")
+                                                                      )) {
                                                                         validate57.errors = [
                                                                           {
                                                                             instancePath:
@@ -17219,24 +17156,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                     if (data347.name !== undefined) {
                                                                       let data360 = data347.name;
                                                                       const _errs462 = errors;
-                                                                      if (
-                                                                        !(
-                                                                          typeof data360 == "string" &&
-                                                                          (data360 === "clinVar" ||
-                                                                            data360 === "gene" ||
-                                                                            data360 === "genotype" ||
-                                                                            data360 === "gnomAdAf" ||
-                                                                            data360 === "hpo" ||
-                                                                            data360 === "inheritancePattern" ||
-                                                                            data360 === "locus" ||
-                                                                            data360 === "ref" ||
-                                                                            data360 === "numberOfRepeatUnits" ||
-                                                                            data360 === "vipC" ||
-                                                                            data360 === "vipCS" ||
-                                                                            data360 === "vkgl" ||
-                                                                            data360 === "notesInput")
-                                                                        )
-                                                                      ) {
+                                                                      if (!(
+                                                                        typeof data360 == "string" &&
+                                                                        (data360 === "clinVar" ||
+                                                                          data360 === "gene" ||
+                                                                          data360 === "genotype" ||
+                                                                          data360 === "gnomAdAf" ||
+                                                                          data360 === "hpo" ||
+                                                                          data360 === "inheritancePattern" ||
+                                                                          data360 === "locus" ||
+                                                                          data360 === "ref" ||
+                                                                          data360 === "numberOfRepeatUnits" ||
+                                                                          data360 === "vipC" ||
+                                                                          data360 === "vipCS" ||
+                                                                          data360 === "vkgl" ||
+                                                                          data360 === "notesInput")
+                                                                      )) {
                                                                         validate57.errors = [
                                                                           {
                                                                             instancePath:
@@ -17868,12 +17803,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data367.direction !== undefined) {
                                                 let data368 = data367.direction;
                                                 const _errs470 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data368 == "string" &&
-                                                    (data368 === "asc" || data368 === "desc")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data368 == "string" &&
+                                                  (data368 === "asc" || data368 === "desc")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -17955,18 +17888,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data369.name !== undefined) {
                                                           let data370 = data369.name;
                                                           const _errs473 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data370 == "string" &&
-                                                              (data370 === "chrom" ||
-                                                                data370 === "pos" ||
-                                                                data370 === "id" ||
-                                                                data370 === "ref" ||
-                                                                data370 === "alt" ||
-                                                                data370 === "qual" ||
-                                                                data370 === "filter")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data370 == "string" &&
+                                                            (data370 === "chrom" ||
+                                                              data370 === "pos" ||
+                                                              data370 === "id" ||
+                                                              data370 === "ref" ||
+                                                              data370 === "alt" ||
+                                                              data370 === "qual" ||
+                                                              data370 === "filter")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -18597,26 +18528,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data369.name !== undefined) {
                                                           let data382 = data369.name;
                                                           const _errs489 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data382 == "string" &&
-                                                              (data382 === "clinVar" ||
-                                                                data382 === "confidenceInterval" ||
-                                                                data382 === "gene" ||
-                                                                data382 === "genotype" ||
-                                                                data382 === "genotype_maternal" ||
-                                                                data382 === "genotype_paternal" ||
-                                                                data382 === "gnomAdAf" ||
-                                                                data382 === "hpo" ||
-                                                                data382 === "inheritancePattern" ||
-                                                                data382 === "locus" ||
-                                                                data382 === "spanningReads" ||
-                                                                data382 === "vipC" ||
-                                                                data382 === "vipCS" ||
-                                                                data382 === "vkgl" ||
-                                                                data382 === "notesInput")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data382 == "string" &&
+                                                            (data382 === "clinVar" ||
+                                                              data382 === "confidenceInterval" ||
+                                                              data382 === "gene" ||
+                                                              data382 === "genotype" ||
+                                                              data382 === "genotype_maternal" ||
+                                                              data382 === "genotype_paternal" ||
+                                                              data382 === "gnomAdAf" ||
+                                                              data382 === "hpo" ||
+                                                              data382 === "inheritancePattern" ||
+                                                              data382 === "locus" ||
+                                                              data382 === "spanningReads" ||
+                                                              data382 === "vipC" ||
+                                                              data382 === "vipCS" ||
+                                                              data382 === "vkgl" ||
+                                                              data382 === "notesInput" ||
+                                                              data382 === "numberOfRepeatUnits")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -18827,18 +18757,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                       if (data386.name !== undefined) {
                                                                         let data387 = data386.name;
                                                                         const _errs496 = errors;
-                                                                        if (
-                                                                          !(
-                                                                            typeof data387 == "string" &&
-                                                                            (data387 === "chrom" ||
-                                                                              data387 === "pos" ||
-                                                                              data387 === "id" ||
-                                                                              data387 === "ref" ||
-                                                                              data387 === "alt" ||
-                                                                              data387 === "qual" ||
-                                                                              data387 === "filter")
-                                                                          )
-                                                                        ) {
+                                                                        if (!(
+                                                                          typeof data387 == "string" &&
+                                                                          (data387 === "chrom" ||
+                                                                            data387 === "pos" ||
+                                                                            data387 === "id" ||
+                                                                            data387 === "ref" ||
+                                                                            data387 === "alt" ||
+                                                                            data387 === "qual" ||
+                                                                            data387 === "filter")
+                                                                        )) {
                                                                           validate57.errors = [
                                                                             {
                                                                               instancePath:
@@ -19578,24 +19506,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                       if (data386.name !== undefined) {
                                                                         let data399 = data386.name;
                                                                         const _errs512 = errors;
-                                                                        if (
-                                                                          !(
-                                                                            typeof data399 == "string" &&
-                                                                            (data399 === "clinVar" ||
-                                                                              data399 === "gene" ||
-                                                                              data399 === "genotype" ||
-                                                                              data399 === "gnomAdAf" ||
-                                                                              data399 === "hpo" ||
-                                                                              data399 === "inheritancePattern" ||
-                                                                              data399 === "locus" ||
-                                                                              data399 === "ref" ||
-                                                                              data399 === "numberOfRepeatUnits" ||
-                                                                              data399 === "vipC" ||
-                                                                              data399 === "vipCS" ||
-                                                                              data399 === "vkgl" ||
-                                                                              data399 === "notesInput")
-                                                                          )
-                                                                        ) {
+                                                                        if (!(
+                                                                          typeof data399 == "string" &&
+                                                                          (data399 === "clinVar" ||
+                                                                            data399 === "gene" ||
+                                                                            data399 === "genotype" ||
+                                                                            data399 === "gnomAdAf" ||
+                                                                            data399 === "hpo" ||
+                                                                            data399 === "inheritancePattern" ||
+                                                                            data399 === "locus" ||
+                                                                            data399 === "ref" ||
+                                                                            data399 === "numberOfRepeatUnits" ||
+                                                                            data399 === "vipC" ||
+                                                                            data399 === "vipCS" ||
+                                                                            data399 === "vkgl" ||
+                                                                            data399 === "notesInput")
+                                                                        )) {
                                                                           validate57.errors = [
                                                                             {
                                                                               instancePath:
@@ -20232,15 +20158,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data404.number !== undefined) {
                                 let data405 = data404.number;
                                 const _errs518 = errors;
-                                if (
-                                  !(
-                                    typeof data405 == "number" &&
-                                    isFinite(data405) &&
-                                    !(data405 % 1) &&
-                                    data405 >= 0 &&
-                                    data405 <= 65535
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data405 == "number" &&
+                                  isFinite(data405) &&
+                                  !(data405 % 1) &&
+                                  data405 >= 0 &&
+                                  data405 <= 65535
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath:
@@ -20372,15 +20296,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data408.number !== undefined) {
                                   let data409 = data408.number;
                                   const _errs522 = errors;
-                                  if (
-                                    !(
-                                      typeof data409 == "number" &&
-                                      isFinite(data409) &&
-                                      !(data409 % 1) &&
-                                      data409 >= 0 &&
-                                      data409 <= 65535
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data409 == "number" &&
+                                    isFinite(data409) &&
+                                    !(data409 % 1) &&
+                                    data409 >= 0 &&
+                                    data409 <= 65535
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath:
@@ -20512,15 +20434,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data412.number !== undefined) {
                                     let data413 = data412.number;
                                     const _errs526 = errors;
-                                    if (
-                                      !(
-                                        typeof data413 == "number" &&
-                                        isFinite(data413) &&
-                                        !(data413 % 1) &&
-                                        data413 >= 0 &&
-                                        data413 <= 65535
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data413 == "number" &&
+                                      isFinite(data413) &&
+                                      !(data413 % 1) &&
+                                      data413 >= 0 &&
+                                      data413 <= 65535
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath:
@@ -20652,15 +20572,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data416.number !== undefined) {
                                       let data417 = data416.number;
                                       const _errs530 = errors;
-                                      if (
-                                        !(
-                                          typeof data417 == "number" &&
-                                          isFinite(data417) &&
-                                          !(data417 % 1) &&
-                                          data417 >= 0 &&
-                                          data417 <= 65535
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data417 == "number" &&
+                                        isFinite(data417) &&
+                                        !(data417 % 1) &&
+                                        data417 >= 0 &&
+                                        data417 <= 65535
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath:
@@ -20919,18 +20837,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data422.name !== undefined) {
                                 let data423 = data422.name;
                                 const _errs537 = errors;
-                                if (
-                                  !(
-                                    typeof data423 == "string" &&
-                                    (data423 === "chrom" ||
-                                      data423 === "pos" ||
-                                      data423 === "id" ||
-                                      data423 === "ref" ||
-                                      data423 === "alt" ||
-                                      data423 === "qual" ||
-                                      data423 === "filter")
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data423 == "string" &&
+                                  (data423 === "chrom" ||
+                                    data423 === "pos" ||
+                                    data423 === "id" ||
+                                    data423 === "ref" ||
+                                    data423 === "alt" ||
+                                    data423 === "qual" ||
+                                    data423 === "filter")
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath: instancePath + "/variants/cells/all/" + i28 + "/name",
@@ -21419,26 +21335,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                               if (data422.name !== undefined) {
                                 let data435 = data422.name;
                                 const _errs553 = errors;
-                                if (
-                                  !(
-                                    typeof data435 == "string" &&
-                                    (data435 === "clinVar" ||
-                                      data435 === "confidenceInterval" ||
-                                      data435 === "gene" ||
-                                      data435 === "genotype" ||
-                                      data435 === "genotype_maternal" ||
-                                      data435 === "genotype_paternal" ||
-                                      data435 === "gnomAdAf" ||
-                                      data435 === "hpo" ||
-                                      data435 === "inheritancePattern" ||
-                                      data435 === "locus" ||
-                                      data435 === "spanningReads" ||
-                                      data435 === "vipC" ||
-                                      data435 === "vipCS" ||
-                                      data435 === "vkgl" ||
-                                      data435 === "notesInput")
-                                  )
-                                ) {
+                                if (!(
+                                  typeof data435 == "string" &&
+                                  (data435 === "clinVar" ||
+                                    data435 === "confidenceInterval" ||
+                                    data435 === "gene" ||
+                                    data435 === "genotype" ||
+                                    data435 === "genotype_maternal" ||
+                                    data435 === "genotype_paternal" ||
+                                    data435 === "gnomAdAf" ||
+                                    data435 === "hpo" ||
+                                    data435 === "inheritancePattern" ||
+                                    data435 === "locus" ||
+                                    data435 === "spanningReads" ||
+                                    data435 === "vipC" ||
+                                    data435 === "vipCS" ||
+                                    data435 === "vkgl" ||
+                                    data435 === "notesInput" ||
+                                    data435 === "numberOfRepeatUnits")
+                                )) {
                                   validate57.errors = [
                                     {
                                       instancePath: instancePath + "/variants/cells/all/" + i28 + "/name",
@@ -21598,18 +21513,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data439.name !== undefined) {
                                               let data440 = data439.name;
                                               const _errs560 = errors;
-                                              if (
-                                                !(
-                                                  typeof data440 == "string" &&
-                                                  (data440 === "chrom" ||
-                                                    data440 === "pos" ||
-                                                    data440 === "id" ||
-                                                    data440 === "ref" ||
-                                                    data440 === "alt" ||
-                                                    data440 === "qual" ||
-                                                    data440 === "filter")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data440 == "string" &&
+                                                (data440 === "chrom" ||
+                                                  data440 === "pos" ||
+                                                  data440 === "id" ||
+                                                  data440 === "ref" ||
+                                                  data440 === "alt" ||
+                                                  data440 === "qual" ||
+                                                  data440 === "filter")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -22187,24 +22100,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data439.name !== undefined) {
                                               let data452 = data439.name;
                                               const _errs576 = errors;
-                                              if (
-                                                !(
-                                                  typeof data452 == "string" &&
-                                                  (data452 === "clinVar" ||
-                                                    data452 === "gene" ||
-                                                    data452 === "genotype" ||
-                                                    data452 === "gnomAdAf" ||
-                                                    data452 === "hpo" ||
-                                                    data452 === "inheritancePattern" ||
-                                                    data452 === "locus" ||
-                                                    data452 === "ref" ||
-                                                    data452 === "numberOfRepeatUnits" ||
-                                                    data452 === "vipC" ||
-                                                    data452 === "vipCS" ||
-                                                    data452 === "vkgl" ||
-                                                    data452 === "notesInput")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data452 == "string" &&
+                                                (data452 === "clinVar" ||
+                                                  data452 === "gene" ||
+                                                  data452 === "genotype" ||
+                                                  data452 === "gnomAdAf" ||
+                                                  data452 === "hpo" ||
+                                                  data452 === "inheritancePattern" ||
+                                                  data452 === "locus" ||
+                                                  data452 === "ref" ||
+                                                  data452 === "numberOfRepeatUnits" ||
+                                                  data452 === "vipC" ||
+                                                  data452 === "vipCS" ||
+                                                  data452 === "vkgl" ||
+                                                  data452 === "notesInput")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -22569,18 +22480,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data456.name !== undefined) {
                                   let data457 = data456.name;
                                   const _errs582 = errors;
-                                  if (
-                                    !(
-                                      typeof data457 == "string" &&
-                                      (data457 === "chrom" ||
-                                        data457 === "pos" ||
-                                        data457 === "id" ||
-                                        data457 === "ref" ||
-                                        data457 === "alt" ||
-                                        data457 === "qual" ||
-                                        data457 === "filter")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data457 == "string" &&
+                                    (data457 === "chrom" ||
+                                      data457 === "pos" ||
+                                      data457 === "id" ||
+                                      data457 === "ref" ||
+                                      data457 === "alt" ||
+                                      data457 === "qual" ||
+                                      data457 === "filter")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/variants/cells/snv/" + i30 + "/name",
@@ -23069,26 +22978,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data456.name !== undefined) {
                                   let data469 = data456.name;
                                   const _errs598 = errors;
-                                  if (
-                                    !(
-                                      typeof data469 == "string" &&
-                                      (data469 === "clinVar" ||
-                                        data469 === "confidenceInterval" ||
-                                        data469 === "gene" ||
-                                        data469 === "genotype" ||
-                                        data469 === "genotype_maternal" ||
-                                        data469 === "genotype_paternal" ||
-                                        data469 === "gnomAdAf" ||
-                                        data469 === "hpo" ||
-                                        data469 === "inheritancePattern" ||
-                                        data469 === "locus" ||
-                                        data469 === "spanningReads" ||
-                                        data469 === "vipC" ||
-                                        data469 === "vipCS" ||
-                                        data469 === "vkgl" ||
-                                        data469 === "notesInput")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data469 == "string" &&
+                                    (data469 === "clinVar" ||
+                                      data469 === "confidenceInterval" ||
+                                      data469 === "gene" ||
+                                      data469 === "genotype" ||
+                                      data469 === "genotype_maternal" ||
+                                      data469 === "genotype_paternal" ||
+                                      data469 === "gnomAdAf" ||
+                                      data469 === "hpo" ||
+                                      data469 === "inheritancePattern" ||
+                                      data469 === "locus" ||
+                                      data469 === "spanningReads" ||
+                                      data469 === "vipC" ||
+                                      data469 === "vipCS" ||
+                                      data469 === "vkgl" ||
+                                      data469 === "notesInput" ||
+                                      data469 === "numberOfRepeatUnits")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/variants/cells/snv/" + i30 + "/name",
@@ -23248,18 +23156,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data473.name !== undefined) {
                                                 let data474 = data473.name;
                                                 const _errs605 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data474 == "string" &&
-                                                    (data474 === "chrom" ||
-                                                      data474 === "pos" ||
-                                                      data474 === "id" ||
-                                                      data474 === "ref" ||
-                                                      data474 === "alt" ||
-                                                      data474 === "qual" ||
-                                                      data474 === "filter")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data474 == "string" &&
+                                                  (data474 === "chrom" ||
+                                                    data474 === "pos" ||
+                                                    data474 === "id" ||
+                                                    data474 === "ref" ||
+                                                    data474 === "alt" ||
+                                                    data474 === "qual" ||
+                                                    data474 === "filter")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -23837,24 +23743,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data473.name !== undefined) {
                                                 let data486 = data473.name;
                                                 const _errs621 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data486 == "string" &&
-                                                    (data486 === "clinVar" ||
-                                                      data486 === "gene" ||
-                                                      data486 === "genotype" ||
-                                                      data486 === "gnomAdAf" ||
-                                                      data486 === "hpo" ||
-                                                      data486 === "inheritancePattern" ||
-                                                      data486 === "locus" ||
-                                                      data486 === "ref" ||
-                                                      data486 === "numberOfRepeatUnits" ||
-                                                      data486 === "vipC" ||
-                                                      data486 === "vipCS" ||
-                                                      data486 === "vkgl" ||
-                                                      data486 === "notesInput")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data486 == "string" &&
+                                                  (data486 === "clinVar" ||
+                                                    data486 === "gene" ||
+                                                    data486 === "genotype" ||
+                                                    data486 === "gnomAdAf" ||
+                                                    data486 === "hpo" ||
+                                                    data486 === "inheritancePattern" ||
+                                                    data486 === "locus" ||
+                                                    data486 === "ref" ||
+                                                    data486 === "numberOfRepeatUnits" ||
+                                                    data486 === "vipC" ||
+                                                    data486 === "vipCS" ||
+                                                    data486 === "vkgl" ||
+                                                    data486 === "notesInput")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -24219,18 +24123,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data490.name !== undefined) {
                                     let data491 = data490.name;
                                     const _errs627 = errors;
-                                    if (
-                                      !(
-                                        typeof data491 == "string" &&
-                                        (data491 === "chrom" ||
-                                          data491 === "pos" ||
-                                          data491 === "id" ||
-                                          data491 === "ref" ||
-                                          data491 === "alt" ||
-                                          data491 === "qual" ||
-                                          data491 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data491 == "string" &&
+                                      (data491 === "chrom" ||
+                                        data491 === "pos" ||
+                                        data491 === "id" ||
+                                        data491 === "ref" ||
+                                        data491 === "alt" ||
+                                        data491 === "qual" ||
+                                        data491 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/variants/cells/str/" + i32 + "/name",
@@ -24723,26 +24625,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data490.name !== undefined) {
                                     let data503 = data490.name;
                                     const _errs643 = errors;
-                                    if (
-                                      !(
-                                        typeof data503 == "string" &&
-                                        (data503 === "clinVar" ||
-                                          data503 === "confidenceInterval" ||
-                                          data503 === "gene" ||
-                                          data503 === "genotype" ||
-                                          data503 === "genotype_maternal" ||
-                                          data503 === "genotype_paternal" ||
-                                          data503 === "gnomAdAf" ||
-                                          data503 === "hpo" ||
-                                          data503 === "inheritancePattern" ||
-                                          data503 === "locus" ||
-                                          data503 === "spanningReads" ||
-                                          data503 === "vipC" ||
-                                          data503 === "vipCS" ||
-                                          data503 === "vkgl" ||
-                                          data503 === "notesInput")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data503 == "string" &&
+                                      (data503 === "clinVar" ||
+                                        data503 === "confidenceInterval" ||
+                                        data503 === "gene" ||
+                                        data503 === "genotype" ||
+                                        data503 === "genotype_maternal" ||
+                                        data503 === "genotype_paternal" ||
+                                        data503 === "gnomAdAf" ||
+                                        data503 === "hpo" ||
+                                        data503 === "inheritancePattern" ||
+                                        data503 === "locus" ||
+                                        data503 === "spanningReads" ||
+                                        data503 === "vipC" ||
+                                        data503 === "vipCS" ||
+                                        data503 === "vkgl" ||
+                                        data503 === "notesInput" ||
+                                        data503 === "numberOfRepeatUnits")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/variants/cells/str/" + i32 + "/name",
@@ -24903,18 +24804,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data507.name !== undefined) {
                                                   let data508 = data507.name;
                                                   const _errs650 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data508 == "string" &&
-                                                      (data508 === "chrom" ||
-                                                        data508 === "pos" ||
-                                                        data508 === "id" ||
-                                                        data508 === "ref" ||
-                                                        data508 === "alt" ||
-                                                        data508 === "qual" ||
-                                                        data508 === "filter")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data508 == "string" &&
+                                                    (data508 === "chrom" ||
+                                                      data508 === "pos" ||
+                                                      data508 === "id" ||
+                                                      data508 === "ref" ||
+                                                      data508 === "alt" ||
+                                                      data508 === "qual" ||
+                                                      data508 === "filter")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -25504,24 +25403,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data507.name !== undefined) {
                                                   let data520 = data507.name;
                                                   const _errs666 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data520 == "string" &&
-                                                      (data520 === "clinVar" ||
-                                                        data520 === "gene" ||
-                                                        data520 === "genotype" ||
-                                                        data520 === "gnomAdAf" ||
-                                                        data520 === "hpo" ||
-                                                        data520 === "inheritancePattern" ||
-                                                        data520 === "locus" ||
-                                                        data520 === "ref" ||
-                                                        data520 === "numberOfRepeatUnits" ||
-                                                        data520 === "vipC" ||
-                                                        data520 === "vipCS" ||
-                                                        data520 === "vkgl" ||
-                                                        data520 === "notesInput")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data520 == "string" &&
+                                                    (data520 === "clinVar" ||
+                                                      data520 === "gene" ||
+                                                      data520 === "genotype" ||
+                                                      data520 === "gnomAdAf" ||
+                                                      data520 === "hpo" ||
+                                                      data520 === "inheritancePattern" ||
+                                                      data520 === "locus" ||
+                                                      data520 === "ref" ||
+                                                      data520 === "numberOfRepeatUnits" ||
+                                                      data520 === "vipC" ||
+                                                      data520 === "vipCS" ||
+                                                      data520 === "vkgl" ||
+                                                      data520 === "notesInput")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -25889,18 +25786,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data524.name !== undefined) {
                                       let data525 = data524.name;
                                       const _errs672 = errors;
-                                      if (
-                                        !(
-                                          typeof data525 == "string" &&
-                                          (data525 === "chrom" ||
-                                            data525 === "pos" ||
-                                            data525 === "id" ||
-                                            data525 === "ref" ||
-                                            data525 === "alt" ||
-                                            data525 === "qual" ||
-                                            data525 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data525 == "string" &&
+                                        (data525 === "chrom" ||
+                                          data525 === "pos" ||
+                                          data525 === "id" ||
+                                          data525 === "ref" ||
+                                          data525 === "alt" ||
+                                          data525 === "qual" ||
+                                          data525 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variants/cells/sv/" + i34 + "/name",
@@ -26393,26 +26288,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data524.name !== undefined) {
                                       let data537 = data524.name;
                                       const _errs688 = errors;
-                                      if (
-                                        !(
-                                          typeof data537 == "string" &&
-                                          (data537 === "clinVar" ||
-                                            data537 === "confidenceInterval" ||
-                                            data537 === "gene" ||
-                                            data537 === "genotype" ||
-                                            data537 === "genotype_maternal" ||
-                                            data537 === "genotype_paternal" ||
-                                            data537 === "gnomAdAf" ||
-                                            data537 === "hpo" ||
-                                            data537 === "inheritancePattern" ||
-                                            data537 === "locus" ||
-                                            data537 === "spanningReads" ||
-                                            data537 === "vipC" ||
-                                            data537 === "vipCS" ||
-                                            data537 === "vkgl" ||
-                                            data537 === "notesInput")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data537 == "string" &&
+                                        (data537 === "clinVar" ||
+                                          data537 === "confidenceInterval" ||
+                                          data537 === "gene" ||
+                                          data537 === "genotype" ||
+                                          data537 === "genotype_maternal" ||
+                                          data537 === "genotype_paternal" ||
+                                          data537 === "gnomAdAf" ||
+                                          data537 === "hpo" ||
+                                          data537 === "inheritancePattern" ||
+                                          data537 === "locus" ||
+                                          data537 === "spanningReads" ||
+                                          data537 === "vipC" ||
+                                          data537 === "vipCS" ||
+                                          data537 === "vkgl" ||
+                                          data537 === "notesInput" ||
+                                          data537 === "numberOfRepeatUnits")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variants/cells/sv/" + i34 + "/name",
@@ -26573,18 +26467,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data541.name !== undefined) {
                                                     let data542 = data541.name;
                                                     const _errs695 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data542 == "string" &&
-                                                        (data542 === "chrom" ||
-                                                          data542 === "pos" ||
-                                                          data542 === "id" ||
-                                                          data542 === "ref" ||
-                                                          data542 === "alt" ||
-                                                          data542 === "qual" ||
-                                                          data542 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data542 == "string" &&
+                                                      (data542 === "chrom" ||
+                                                        data542 === "pos" ||
+                                                        data542 === "id" ||
+                                                        data542 === "ref" ||
+                                                        data542 === "alt" ||
+                                                        data542 === "qual" ||
+                                                        data542 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -27174,24 +27066,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data541.name !== undefined) {
                                                     let data554 = data541.name;
                                                     const _errs711 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data554 == "string" &&
-                                                        (data554 === "clinVar" ||
-                                                          data554 === "gene" ||
-                                                          data554 === "genotype" ||
-                                                          data554 === "gnomAdAf" ||
-                                                          data554 === "hpo" ||
-                                                          data554 === "inheritancePattern" ||
-                                                          data554 === "locus" ||
-                                                          data554 === "ref" ||
-                                                          data554 === "numberOfRepeatUnits" ||
-                                                          data554 === "vipC" ||
-                                                          data554 === "vipCS" ||
-                                                          data554 === "vkgl" ||
-                                                          data554 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data554 == "string" &&
+                                                      (data554 === "clinVar" ||
+                                                        data554 === "gene" ||
+                                                        data554 === "genotype" ||
+                                                        data554 === "gnomAdAf" ||
+                                                        data554 === "hpo" ||
+                                                        data554 === "inheritancePattern" ||
+                                                        data554 === "locus" ||
+                                                        data554 === "ref" ||
+                                                        data554 === "numberOfRepeatUnits" ||
+                                                        data554 === "vipC" ||
+                                                        data554 === "vipCS" ||
+                                                        data554 === "vkgl" ||
+                                                        data554 === "notesInput")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -27615,18 +27505,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data559.name !== undefined) {
                                   let data560 = data559.name;
                                   const _errs718 = errors;
-                                  if (
-                                    !(
-                                      typeof data560 == "string" &&
-                                      (data560 === "chrom" ||
-                                        data560 === "pos" ||
-                                        data560 === "id" ||
-                                        data560 === "ref" ||
-                                        data560 === "alt" ||
-                                        data560 === "qual" ||
-                                        data560 === "filter")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data560 == "string" &&
+                                    (data560 === "chrom" ||
+                                      data560 === "pos" ||
+                                      data560 === "id" ||
+                                      data560 === "ref" ||
+                                      data560 === "alt" ||
+                                      data560 === "qual" ||
+                                      data560 === "filter")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/variants/filters/all/" + i36 + "/name",
@@ -28211,18 +28099,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data559.name !== undefined) {
                                   let data576 = data559.name;
                                   const _errs738 = errors;
-                                  if (
-                                    !(
-                                      typeof data576 == "string" &&
-                                      (data576 === "allelicImbalance" ||
-                                        data576 === "deNovo" ||
-                                        data576 === "hpo" ||
-                                        data576 === "inheritanceMatch" ||
-                                        data576 === "locus" ||
-                                        data576 === "vipC" ||
-                                        data576 === "vipCS")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data576 == "string" &&
+                                    (data576 === "allelicImbalance" ||
+                                      data576 === "deNovo" ||
+                                      data576 === "hpo" ||
+                                      data576 === "inheritanceMatch" ||
+                                      data576 === "locus" ||
+                                      data576 === "vipC" ||
+                                      data576 === "vipCS")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/variants/filters/all/" + i36 + "/name",
@@ -28463,18 +28349,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data581.name !== undefined) {
                                     let data582 = data581.name;
                                     const _errs745 = errors;
-                                    if (
-                                      !(
-                                        typeof data582 == "string" &&
-                                        (data582 === "chrom" ||
-                                          data582 === "pos" ||
-                                          data582 === "id" ||
-                                          data582 === "ref" ||
-                                          data582 === "alt" ||
-                                          data582 === "qual" ||
-                                          data582 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data582 == "string" &&
+                                      (data582 === "chrom" ||
+                                        data582 === "pos" ||
+                                        data582 === "id" ||
+                                        data582 === "ref" ||
+                                        data582 === "alt" ||
+                                        data582 === "qual" ||
+                                        data582 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/variants/filters/snv/" + i37 + "/name",
@@ -29059,18 +28943,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data581.name !== undefined) {
                                     let data598 = data581.name;
                                     const _errs765 = errors;
-                                    if (
-                                      !(
-                                        typeof data598 == "string" &&
-                                        (data598 === "allelicImbalance" ||
-                                          data598 === "deNovo" ||
-                                          data598 === "hpo" ||
-                                          data598 === "inheritanceMatch" ||
-                                          data598 === "locus" ||
-                                          data598 === "vipC" ||
-                                          data598 === "vipCS")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data598 == "string" &&
+                                      (data598 === "allelicImbalance" ||
+                                        data598 === "deNovo" ||
+                                        data598 === "hpo" ||
+                                        data598 === "inheritanceMatch" ||
+                                        data598 === "locus" ||
+                                        data598 === "vipC" ||
+                                        data598 === "vipCS")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/variants/filters/snv/" + i37 + "/name",
@@ -29311,18 +29193,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data603.name !== undefined) {
                                       let data604 = data603.name;
                                       const _errs772 = errors;
-                                      if (
-                                        !(
-                                          typeof data604 == "string" &&
-                                          (data604 === "chrom" ||
-                                            data604 === "pos" ||
-                                            data604 === "id" ||
-                                            data604 === "ref" ||
-                                            data604 === "alt" ||
-                                            data604 === "qual" ||
-                                            data604 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data604 == "string" &&
+                                        (data604 === "chrom" ||
+                                          data604 === "pos" ||
+                                          data604 === "id" ||
+                                          data604 === "ref" ||
+                                          data604 === "alt" ||
+                                          data604 === "qual" ||
+                                          data604 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variants/filters/str/" + i38 + "/name",
@@ -29907,18 +29787,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data603.name !== undefined) {
                                       let data620 = data603.name;
                                       const _errs792 = errors;
-                                      if (
-                                        !(
-                                          typeof data620 == "string" &&
-                                          (data620 === "allelicImbalance" ||
-                                            data620 === "deNovo" ||
-                                            data620 === "hpo" ||
-                                            data620 === "inheritanceMatch" ||
-                                            data620 === "locus" ||
-                                            data620 === "vipC" ||
-                                            data620 === "vipCS")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data620 == "string" &&
+                                        (data620 === "allelicImbalance" ||
+                                          data620 === "deNovo" ||
+                                          data620 === "hpo" ||
+                                          data620 === "inheritanceMatch" ||
+                                          data620 === "locus" ||
+                                          data620 === "vipC" ||
+                                          data620 === "vipCS")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variants/filters/str/" + i38 + "/name",
@@ -30160,18 +30038,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data625.name !== undefined) {
                                         let data626 = data625.name;
                                         const _errs799 = errors;
-                                        if (
-                                          !(
-                                            typeof data626 == "string" &&
-                                            (data626 === "chrom" ||
-                                              data626 === "pos" ||
-                                              data626 === "id" ||
-                                              data626 === "ref" ||
-                                              data626 === "alt" ||
-                                              data626 === "qual" ||
-                                              data626 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data626 == "string" &&
+                                          (data626 === "chrom" ||
+                                            data626 === "pos" ||
+                                            data626 === "id" ||
+                                            data626 === "ref" ||
+                                            data626 === "alt" ||
+                                            data626 === "qual" ||
+                                            data626 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/variants/filters/sv/" + i39 + "/name",
@@ -30756,18 +30632,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data625.name !== undefined) {
                                         let data642 = data625.name;
                                         const _errs819 = errors;
-                                        if (
-                                          !(
-                                            typeof data642 == "string" &&
-                                            (data642 === "allelicImbalance" ||
-                                              data642 === "deNovo" ||
-                                              data642 === "hpo" ||
-                                              data642 === "inheritanceMatch" ||
-                                              data642 === "locus" ||
-                                              data642 === "vipC" ||
-                                              data642 === "vipCS")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data642 == "string" &&
+                                          (data642 === "allelicImbalance" ||
+                                            data642 === "deNovo" ||
+                                            data642 === "hpo" ||
+                                            data642 === "inheritanceMatch" ||
+                                            data642 === "locus" ||
+                                            data642 === "vipC" ||
+                                            data642 === "vipCS")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/variants/filters/sv/" + i39 + "/name",
@@ -31085,9 +30959,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data651.direction !== undefined) {
                                             let data652 = data651.direction;
                                             const _errs829 = errors;
-                                            if (
-                                              !(typeof data652 == "string" && (data652 === "asc" || data652 === "desc"))
-                                            ) {
+                                            if (!(
+                                              typeof data652 == "string" &&
+                                              (data652 === "asc" || data652 === "desc")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -31161,18 +31036,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data653.name !== undefined) {
                                                       let data654 = data653.name;
                                                       const _errs832 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data654 == "string" &&
-                                                          (data654 === "chrom" ||
-                                                            data654 === "pos" ||
-                                                            data654 === "id" ||
-                                                            data654 === "ref" ||
-                                                            data654 === "alt" ||
-                                                            data654 === "qual" ||
-                                                            data654 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data654 == "string" &&
+                                                        (data654 === "chrom" ||
+                                                          data654 === "pos" ||
+                                                          data654 === "id" ||
+                                                          data654 === "ref" ||
+                                                          data654 === "alt" ||
+                                                          data654 === "qual" ||
+                                                          data654 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -31803,26 +31676,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data653.name !== undefined) {
                                                       let data666 = data653.name;
                                                       const _errs848 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data666 == "string" &&
-                                                          (data666 === "clinVar" ||
-                                                            data666 === "confidenceInterval" ||
-                                                            data666 === "gene" ||
-                                                            data666 === "genotype" ||
-                                                            data666 === "genotype_maternal" ||
-                                                            data666 === "genotype_paternal" ||
-                                                            data666 === "gnomAdAf" ||
-                                                            data666 === "hpo" ||
-                                                            data666 === "inheritancePattern" ||
-                                                            data666 === "locus" ||
-                                                            data666 === "spanningReads" ||
-                                                            data666 === "vipC" ||
-                                                            data666 === "vipCS" ||
-                                                            data666 === "vkgl" ||
-                                                            data666 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data666 == "string" &&
+                                                        (data666 === "clinVar" ||
+                                                          data666 === "confidenceInterval" ||
+                                                          data666 === "gene" ||
+                                                          data666 === "genotype" ||
+                                                          data666 === "genotype_maternal" ||
+                                                          data666 === "genotype_paternal" ||
+                                                          data666 === "gnomAdAf" ||
+                                                          data666 === "hpo" ||
+                                                          data666 === "inheritancePattern" ||
+                                                          data666 === "locus" ||
+                                                          data666 === "spanningReads" ||
+                                                          data666 === "vipC" ||
+                                                          data666 === "vipCS" ||
+                                                          data666 === "vkgl" ||
+                                                          data666 === "notesInput" ||
+                                                          data666 === "numberOfRepeatUnits")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -32033,18 +31905,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   if (data670.name !== undefined) {
                                                                     let data671 = data670.name;
                                                                     const _errs855 = errors;
-                                                                    if (
-                                                                      !(
-                                                                        typeof data671 == "string" &&
-                                                                        (data671 === "chrom" ||
-                                                                          data671 === "pos" ||
-                                                                          data671 === "id" ||
-                                                                          data671 === "ref" ||
-                                                                          data671 === "alt" ||
-                                                                          data671 === "qual" ||
-                                                                          data671 === "filter")
-                                                                      )
-                                                                    ) {
+                                                                    if (!(
+                                                                      typeof data671 == "string" &&
+                                                                      (data671 === "chrom" ||
+                                                                        data671 === "pos" ||
+                                                                        data671 === "id" ||
+                                                                        data671 === "ref" ||
+                                                                        data671 === "alt" ||
+                                                                        data671 === "qual" ||
+                                                                        data671 === "filter")
+                                                                    )) {
                                                                       validate57.errors = [
                                                                         {
                                                                           instancePath:
@@ -32755,24 +32625,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                   if (data670.name !== undefined) {
                                                                     let data683 = data670.name;
                                                                     const _errs871 = errors;
-                                                                    if (
-                                                                      !(
-                                                                        typeof data683 == "string" &&
-                                                                        (data683 === "clinVar" ||
-                                                                          data683 === "gene" ||
-                                                                          data683 === "genotype" ||
-                                                                          data683 === "gnomAdAf" ||
-                                                                          data683 === "hpo" ||
-                                                                          data683 === "inheritancePattern" ||
-                                                                          data683 === "locus" ||
-                                                                          data683 === "ref" ||
-                                                                          data683 === "numberOfRepeatUnits" ||
-                                                                          data683 === "vipC" ||
-                                                                          data683 === "vipCS" ||
-                                                                          data683 === "vkgl" ||
-                                                                          data683 === "notesInput")
-                                                                      )
-                                                                    ) {
+                                                                    if (!(
+                                                                      typeof data683 == "string" &&
+                                                                      (data683 === "clinVar" ||
+                                                                        data683 === "gene" ||
+                                                                        data683 === "genotype" ||
+                                                                        data683 === "gnomAdAf" ||
+                                                                        data683 === "hpo" ||
+                                                                        data683 === "inheritancePattern" ||
+                                                                        data683 === "locus" ||
+                                                                        data683 === "ref" ||
+                                                                        data683 === "numberOfRepeatUnits" ||
+                                                                        data683 === "vipC" ||
+                                                                        data683 === "vipCS" ||
+                                                                        data683 === "vkgl" ||
+                                                                        data683 === "notesInput")
+                                                                    )) {
                                                                       validate57.errors = [
                                                                         {
                                                                           instancePath:
@@ -33393,12 +33261,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data690.direction !== undefined) {
                                               let data691 = data690.direction;
                                               const _errs879 = errors;
-                                              if (
-                                                !(
-                                                  typeof data691 == "string" &&
-                                                  (data691 === "asc" || data691 === "desc")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data691 == "string" &&
+                                                (data691 === "asc" || data691 === "desc")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -33472,18 +33338,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data692.name !== undefined) {
                                                         let data693 = data692.name;
                                                         const _errs882 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data693 == "string" &&
-                                                            (data693 === "chrom" ||
-                                                              data693 === "pos" ||
-                                                              data693 === "id" ||
-                                                              data693 === "ref" ||
-                                                              data693 === "alt" ||
-                                                              data693 === "qual" ||
-                                                              data693 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data693 == "string" &&
+                                                          (data693 === "chrom" ||
+                                                            data693 === "pos" ||
+                                                            data693 === "id" ||
+                                                            data693 === "ref" ||
+                                                            data693 === "alt" ||
+                                                            data693 === "qual" ||
+                                                            data693 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -34114,26 +33978,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data692.name !== undefined) {
                                                         let data705 = data692.name;
                                                         const _errs898 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data705 == "string" &&
-                                                            (data705 === "clinVar" ||
-                                                              data705 === "confidenceInterval" ||
-                                                              data705 === "gene" ||
-                                                              data705 === "genotype" ||
-                                                              data705 === "genotype_maternal" ||
-                                                              data705 === "genotype_paternal" ||
-                                                              data705 === "gnomAdAf" ||
-                                                              data705 === "hpo" ||
-                                                              data705 === "inheritancePattern" ||
-                                                              data705 === "locus" ||
-                                                              data705 === "spanningReads" ||
-                                                              data705 === "vipC" ||
-                                                              data705 === "vipCS" ||
-                                                              data705 === "vkgl" ||
-                                                              data705 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data705 == "string" &&
+                                                          (data705 === "clinVar" ||
+                                                            data705 === "confidenceInterval" ||
+                                                            data705 === "gene" ||
+                                                            data705 === "genotype" ||
+                                                            data705 === "genotype_maternal" ||
+                                                            data705 === "genotype_paternal" ||
+                                                            data705 === "gnomAdAf" ||
+                                                            data705 === "hpo" ||
+                                                            data705 === "inheritancePattern" ||
+                                                            data705 === "locus" ||
+                                                            data705 === "spanningReads" ||
+                                                            data705 === "vipC" ||
+                                                            data705 === "vipCS" ||
+                                                            data705 === "vkgl" ||
+                                                            data705 === "notesInput" ||
+                                                            data705 === "numberOfRepeatUnits")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -34344,18 +34207,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                     if (data709.name !== undefined) {
                                                                       let data710 = data709.name;
                                                                       const _errs905 = errors;
-                                                                      if (
-                                                                        !(
-                                                                          typeof data710 == "string" &&
-                                                                          (data710 === "chrom" ||
-                                                                            data710 === "pos" ||
-                                                                            data710 === "id" ||
-                                                                            data710 === "ref" ||
-                                                                            data710 === "alt" ||
-                                                                            data710 === "qual" ||
-                                                                            data710 === "filter")
-                                                                        )
-                                                                      ) {
+                                                                      if (!(
+                                                                        typeof data710 == "string" &&
+                                                                        (data710 === "chrom" ||
+                                                                          data710 === "pos" ||
+                                                                          data710 === "id" ||
+                                                                          data710 === "ref" ||
+                                                                          data710 === "alt" ||
+                                                                          data710 === "qual" ||
+                                                                          data710 === "filter")
+                                                                      )) {
                                                                         validate57.errors = [
                                                                           {
                                                                             instancePath:
@@ -35086,24 +34947,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                     if (data709.name !== undefined) {
                                                                       let data722 = data709.name;
                                                                       const _errs921 = errors;
-                                                                      if (
-                                                                        !(
-                                                                          typeof data722 == "string" &&
-                                                                          (data722 === "clinVar" ||
-                                                                            data722 === "gene" ||
-                                                                            data722 === "genotype" ||
-                                                                            data722 === "gnomAdAf" ||
-                                                                            data722 === "hpo" ||
-                                                                            data722 === "inheritancePattern" ||
-                                                                            data722 === "locus" ||
-                                                                            data722 === "ref" ||
-                                                                            data722 === "numberOfRepeatUnits" ||
-                                                                            data722 === "vipC" ||
-                                                                            data722 === "vipCS" ||
-                                                                            data722 === "vkgl" ||
-                                                                            data722 === "notesInput")
-                                                                        )
-                                                                      ) {
+                                                                      if (!(
+                                                                        typeof data722 == "string" &&
+                                                                        (data722 === "clinVar" ||
+                                                                          data722 === "gene" ||
+                                                                          data722 === "genotype" ||
+                                                                          data722 === "gnomAdAf" ||
+                                                                          data722 === "hpo" ||
+                                                                          data722 === "inheritancePattern" ||
+                                                                          data722 === "locus" ||
+                                                                          data722 === "ref" ||
+                                                                          data722 === "numberOfRepeatUnits" ||
+                                                                          data722 === "vipC" ||
+                                                                          data722 === "vipCS" ||
+                                                                          data722 === "vkgl" ||
+                                                                          data722 === "notesInput")
+                                                                      )) {
                                                                         validate57.errors = [
                                                                           {
                                                                             instancePath:
@@ -35730,12 +35589,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data729.direction !== undefined) {
                                                 let data730 = data729.direction;
                                                 const _errs929 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data730 == "string" &&
-                                                    (data730 === "asc" || data730 === "desc")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data730 == "string" &&
+                                                  (data730 === "asc" || data730 === "desc")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -35813,18 +35670,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data731.name !== undefined) {
                                                           let data732 = data731.name;
                                                           const _errs932 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data732 == "string" &&
-                                                              (data732 === "chrom" ||
-                                                                data732 === "pos" ||
-                                                                data732 === "id" ||
-                                                                data732 === "ref" ||
-                                                                data732 === "alt" ||
-                                                                data732 === "qual" ||
-                                                                data732 === "filter")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data732 == "string" &&
+                                                            (data732 === "chrom" ||
+                                                              data732 === "pos" ||
+                                                              data732 === "id" ||
+                                                              data732 === "ref" ||
+                                                              data732 === "alt" ||
+                                                              data732 === "qual" ||
+                                                              data732 === "filter")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -36455,26 +36310,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data731.name !== undefined) {
                                                           let data744 = data731.name;
                                                           const _errs948 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data744 == "string" &&
-                                                              (data744 === "clinVar" ||
-                                                                data744 === "confidenceInterval" ||
-                                                                data744 === "gene" ||
-                                                                data744 === "genotype" ||
-                                                                data744 === "genotype_maternal" ||
-                                                                data744 === "genotype_paternal" ||
-                                                                data744 === "gnomAdAf" ||
-                                                                data744 === "hpo" ||
-                                                                data744 === "inheritancePattern" ||
-                                                                data744 === "locus" ||
-                                                                data744 === "spanningReads" ||
-                                                                data744 === "vipC" ||
-                                                                data744 === "vipCS" ||
-                                                                data744 === "vkgl" ||
-                                                                data744 === "notesInput")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data744 == "string" &&
+                                                            (data744 === "clinVar" ||
+                                                              data744 === "confidenceInterval" ||
+                                                              data744 === "gene" ||
+                                                              data744 === "genotype" ||
+                                                              data744 === "genotype_maternal" ||
+                                                              data744 === "genotype_paternal" ||
+                                                              data744 === "gnomAdAf" ||
+                                                              data744 === "hpo" ||
+                                                              data744 === "inheritancePattern" ||
+                                                              data744 === "locus" ||
+                                                              data744 === "spanningReads" ||
+                                                              data744 === "vipC" ||
+                                                              data744 === "vipCS" ||
+                                                              data744 === "vkgl" ||
+                                                              data744 === "notesInput" ||
+                                                              data744 === "numberOfRepeatUnits")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -36685,18 +36539,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                       if (data748.name !== undefined) {
                                                                         let data749 = data748.name;
                                                                         const _errs955 = errors;
-                                                                        if (
-                                                                          !(
-                                                                            typeof data749 == "string" &&
-                                                                            (data749 === "chrom" ||
-                                                                              data749 === "pos" ||
-                                                                              data749 === "id" ||
-                                                                              data749 === "ref" ||
-                                                                              data749 === "alt" ||
-                                                                              data749 === "qual" ||
-                                                                              data749 === "filter")
-                                                                          )
-                                                                        ) {
+                                                                        if (!(
+                                                                          typeof data749 == "string" &&
+                                                                          (data749 === "chrom" ||
+                                                                            data749 === "pos" ||
+                                                                            data749 === "id" ||
+                                                                            data749 === "ref" ||
+                                                                            data749 === "alt" ||
+                                                                            data749 === "qual" ||
+                                                                            data749 === "filter")
+                                                                        )) {
                                                                           validate57.errors = [
                                                                             {
                                                                               instancePath:
@@ -37436,24 +37288,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                       if (data748.name !== undefined) {
                                                                         let data761 = data748.name;
                                                                         const _errs971 = errors;
-                                                                        if (
-                                                                          !(
-                                                                            typeof data761 == "string" &&
-                                                                            (data761 === "clinVar" ||
-                                                                              data761 === "gene" ||
-                                                                              data761 === "genotype" ||
-                                                                              data761 === "gnomAdAf" ||
-                                                                              data761 === "hpo" ||
-                                                                              data761 === "inheritancePattern" ||
-                                                                              data761 === "locus" ||
-                                                                              data761 === "ref" ||
-                                                                              data761 === "numberOfRepeatUnits" ||
-                                                                              data761 === "vipC" ||
-                                                                              data761 === "vipCS" ||
-                                                                              data761 === "vkgl" ||
-                                                                              data761 === "notesInput")
-                                                                          )
-                                                                        ) {
+                                                                        if (!(
+                                                                          typeof data761 == "string" &&
+                                                                          (data761 === "clinVar" ||
+                                                                            data761 === "gene" ||
+                                                                            data761 === "genotype" ||
+                                                                            data761 === "gnomAdAf" ||
+                                                                            data761 === "hpo" ||
+                                                                            data761 === "inheritancePattern" ||
+                                                                            data761 === "locus" ||
+                                                                            data761 === "ref" ||
+                                                                            data761 === "numberOfRepeatUnits" ||
+                                                                            data761 === "vipC" ||
+                                                                            data761 === "vipCS" ||
+                                                                            data761 === "vkgl" ||
+                                                                            data761 === "notesInput")
+                                                                        )) {
                                                                           validate57.errors = [
                                                                             {
                                                                               instancePath:
@@ -38080,12 +37930,10 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data768.direction !== undefined) {
                                                   let data769 = data768.direction;
                                                   const _errs979 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data769 == "string" &&
-                                                      (data769 === "asc" || data769 === "desc")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data769 == "string" &&
+                                                    (data769 === "asc" || data769 === "desc")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -38163,18 +38011,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           if (data770.name !== undefined) {
                                                             let data771 = data770.name;
                                                             const _errs982 = errors;
-                                                            if (
-                                                              !(
-                                                                typeof data771 == "string" &&
-                                                                (data771 === "chrom" ||
-                                                                  data771 === "pos" ||
-                                                                  data771 === "id" ||
-                                                                  data771 === "ref" ||
-                                                                  data771 === "alt" ||
-                                                                  data771 === "qual" ||
-                                                                  data771 === "filter")
-                                                              )
-                                                            ) {
+                                                            if (!(
+                                                              typeof data771 == "string" &&
+                                                              (data771 === "chrom" ||
+                                                                data771 === "pos" ||
+                                                                data771 === "id" ||
+                                                                data771 === "ref" ||
+                                                                data771 === "alt" ||
+                                                                data771 === "qual" ||
+                                                                data771 === "filter")
+                                                            )) {
                                                               validate57.errors = [
                                                                 {
                                                                   instancePath:
@@ -38813,26 +38659,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           if (data770.name !== undefined) {
                                                             let data783 = data770.name;
                                                             const _errs998 = errors;
-                                                            if (
-                                                              !(
-                                                                typeof data783 == "string" &&
-                                                                (data783 === "clinVar" ||
-                                                                  data783 === "confidenceInterval" ||
-                                                                  data783 === "gene" ||
-                                                                  data783 === "genotype" ||
-                                                                  data783 === "genotype_maternal" ||
-                                                                  data783 === "genotype_paternal" ||
-                                                                  data783 === "gnomAdAf" ||
-                                                                  data783 === "hpo" ||
-                                                                  data783 === "inheritancePattern" ||
-                                                                  data783 === "locus" ||
-                                                                  data783 === "spanningReads" ||
-                                                                  data783 === "vipC" ||
-                                                                  data783 === "vipCS" ||
-                                                                  data783 === "vkgl" ||
-                                                                  data783 === "notesInput")
-                                                              )
-                                                            ) {
+                                                            if (!(
+                                                              typeof data783 == "string" &&
+                                                              (data783 === "clinVar" ||
+                                                                data783 === "confidenceInterval" ||
+                                                                data783 === "gene" ||
+                                                                data783 === "genotype" ||
+                                                                data783 === "genotype_maternal" ||
+                                                                data783 === "genotype_paternal" ||
+                                                                data783 === "gnomAdAf" ||
+                                                                data783 === "hpo" ||
+                                                                data783 === "inheritancePattern" ||
+                                                                data783 === "locus" ||
+                                                                data783 === "spanningReads" ||
+                                                                data783 === "vipC" ||
+                                                                data783 === "vipCS" ||
+                                                                data783 === "vkgl" ||
+                                                                data783 === "notesInput" ||
+                                                                data783 === "numberOfRepeatUnits")
+                                                            )) {
                                                               validate57.errors = [
                                                                 {
                                                                   instancePath:
@@ -39045,18 +38890,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                         if (data787.name !== undefined) {
                                                                           let data788 = data787.name;
                                                                           const _errs1005 = errors;
-                                                                          if (
-                                                                            !(
-                                                                              typeof data788 == "string" &&
-                                                                              (data788 === "chrom" ||
-                                                                                data788 === "pos" ||
-                                                                                data788 === "id" ||
-                                                                                data788 === "ref" ||
-                                                                                data788 === "alt" ||
-                                                                                data788 === "qual" ||
-                                                                                data788 === "filter")
-                                                                            )
-                                                                          ) {
+                                                                          if (!(
+                                                                            typeof data788 == "string" &&
+                                                                            (data788 === "chrom" ||
+                                                                              data788 === "pos" ||
+                                                                              data788 === "id" ||
+                                                                              data788 === "ref" ||
+                                                                              data788 === "alt" ||
+                                                                              data788 === "qual" ||
+                                                                              data788 === "filter")
+                                                                          )) {
                                                                             validate57.errors = [
                                                                               {
                                                                                 instancePath:
@@ -39817,24 +39660,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                                         if (data787.name !== undefined) {
                                                                           let data800 = data787.name;
                                                                           const _errs1021 = errors;
-                                                                          if (
-                                                                            !(
-                                                                              typeof data800 == "string" &&
-                                                                              (data800 === "clinVar" ||
-                                                                                data800 === "gene" ||
-                                                                                data800 === "genotype" ||
-                                                                                data800 === "gnomAdAf" ||
-                                                                                data800 === "hpo" ||
-                                                                                data800 === "inheritancePattern" ||
-                                                                                data800 === "locus" ||
-                                                                                data800 === "ref" ||
-                                                                                data800 === "numberOfRepeatUnits" ||
-                                                                                data800 === "vipC" ||
-                                                                                data800 === "vipCS" ||
-                                                                                data800 === "vkgl" ||
-                                                                                data800 === "notesInput")
-                                                                            )
-                                                                          ) {
+                                                                          if (!(
+                                                                            typeof data800 == "string" &&
+                                                                            (data800 === "clinVar" ||
+                                                                              data800 === "gene" ||
+                                                                              data800 === "genotype" ||
+                                                                              data800 === "gnomAdAf" ||
+                                                                              data800 === "hpo" ||
+                                                                              data800 === "inheritancePattern" ||
+                                                                              data800 === "locus" ||
+                                                                              data800 === "ref" ||
+                                                                              data800 === "numberOfRepeatUnits" ||
+                                                                              data800 === "vipC" ||
+                                                                              data800 === "vipCS" ||
+                                                                              data800 === "vkgl" ||
+                                                                              data800 === "notesInput")
+                                                                          )) {
                                                                             validate57.errors = [
                                                                               {
                                                                                 instancePath:
@@ -40472,15 +40313,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data805.number !== undefined) {
                                   let data806 = data805.number;
                                   const _errs1027 = errors;
-                                  if (
-                                    !(
-                                      typeof data806 == "number" &&
-                                      isFinite(data806) &&
-                                      !(data806 % 1) &&
-                                      data806 >= 0 &&
-                                      data806 <= 65535
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data806 == "number" &&
+                                    isFinite(data806) &&
+                                    !(data806 % 1) &&
+                                    data806 >= 0 &&
+                                    data806 <= 65535
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/variants/recordsPerPage/all/" + i52 + "/number",
@@ -40611,15 +40450,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data809.number !== undefined) {
                                     let data810 = data809.number;
                                     const _errs1031 = errors;
-                                    if (
-                                      !(
-                                        typeof data810 == "number" &&
-                                        isFinite(data810) &&
-                                        !(data810 % 1) &&
-                                        data810 >= 0 &&
-                                        data810 <= 65535
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data810 == "number" &&
+                                      isFinite(data810) &&
+                                      !(data810 % 1) &&
+                                      data810 >= 0 &&
+                                      data810 <= 65535
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath:
@@ -40751,15 +40588,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data813.number !== undefined) {
                                       let data814 = data813.number;
                                       const _errs1035 = errors;
-                                      if (
-                                        !(
-                                          typeof data814 == "number" &&
-                                          isFinite(data814) &&
-                                          !(data814 % 1) &&
-                                          data814 >= 0 &&
-                                          data814 <= 65535
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data814 == "number" &&
+                                        isFinite(data814) &&
+                                        !(data814 % 1) &&
+                                        data814 >= 0 &&
+                                        data814 <= 65535
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath:
@@ -40891,15 +40726,13 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data817.number !== undefined) {
                                         let data818 = data817.number;
                                         const _errs1039 = errors;
-                                        if (
-                                          !(
-                                            typeof data818 == "number" &&
-                                            isFinite(data818) &&
-                                            !(data818 % 1) &&
-                                            data818 >= 0 &&
-                                            data818 <= 65535
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data818 == "number" &&
+                                          isFinite(data818) &&
+                                          !(data818 % 1) &&
+                                          data818 >= 0 &&
+                                          data818 <= 65535
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -41154,18 +40987,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data823.name !== undefined) {
                                   let data824 = data823.name;
                                   const _errs1046 = errors;
-                                  if (
-                                    !(
-                                      typeof data824 == "string" &&
-                                      (data824 === "chrom" ||
-                                        data824 === "pos" ||
-                                        data824 === "id" ||
-                                        data824 === "ref" ||
-                                        data824 === "alt" ||
-                                        data824 === "qual" ||
-                                        data824 === "filter")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data824 == "string" &&
+                                    (data824 === "chrom" ||
+                                      data824 === "pos" ||
+                                      data824 === "id" ||
+                                      data824 === "ref" ||
+                                      data824 === "alt" ||
+                                      data824 === "qual" ||
+                                      data824 === "filter")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/sample_variant/cells/all/" + i56 + "/name",
@@ -41658,26 +41489,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                 if (data823.name !== undefined) {
                                   let data836 = data823.name;
                                   const _errs1062 = errors;
-                                  if (
-                                    !(
-                                      typeof data836 == "string" &&
-                                      (data836 === "clinVar" ||
-                                        data836 === "confidenceInterval" ||
-                                        data836 === "gene" ||
-                                        data836 === "genotype" ||
-                                        data836 === "genotype_maternal" ||
-                                        data836 === "genotype_paternal" ||
-                                        data836 === "gnomAdAf" ||
-                                        data836 === "hpo" ||
-                                        data836 === "inheritancePattern" ||
-                                        data836 === "locus" ||
-                                        data836 === "spanningReads" ||
-                                        data836 === "vipC" ||
-                                        data836 === "vipCS" ||
-                                        data836 === "vkgl" ||
-                                        data836 === "notesInput")
-                                    )
-                                  ) {
+                                  if (!(
+                                    typeof data836 == "string" &&
+                                    (data836 === "clinVar" ||
+                                      data836 === "confidenceInterval" ||
+                                      data836 === "gene" ||
+                                      data836 === "genotype" ||
+                                      data836 === "genotype_maternal" ||
+                                      data836 === "genotype_paternal" ||
+                                      data836 === "gnomAdAf" ||
+                                      data836 === "hpo" ||
+                                      data836 === "inheritancePattern" ||
+                                      data836 === "locus" ||
+                                      data836 === "spanningReads" ||
+                                      data836 === "vipC" ||
+                                      data836 === "vipCS" ||
+                                      data836 === "vkgl" ||
+                                      data836 === "notesInput" ||
+                                      data836 === "numberOfRepeatUnits")
+                                  )) {
                                     validate57.errors = [
                                       {
                                         instancePath: instancePath + "/sample_variant/cells/all/" + i56 + "/name",
@@ -41838,18 +41668,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data840.name !== undefined) {
                                                 let data841 = data840.name;
                                                 const _errs1069 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data841 == "string" &&
-                                                    (data841 === "chrom" ||
-                                                      data841 === "pos" ||
-                                                      data841 === "id" ||
-                                                      data841 === "ref" ||
-                                                      data841 === "alt" ||
-                                                      data841 === "qual" ||
-                                                      data841 === "filter")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data841 == "string" &&
+                                                  (data841 === "chrom" ||
+                                                    data841 === "pos" ||
+                                                    data841 === "id" ||
+                                                    data841 === "ref" ||
+                                                    data841 === "alt" ||
+                                                    data841 === "qual" ||
+                                                    data841 === "filter")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -42459,24 +42287,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                               if (data840.name !== undefined) {
                                                 let data853 = data840.name;
                                                 const _errs1085 = errors;
-                                                if (
-                                                  !(
-                                                    typeof data853 == "string" &&
-                                                    (data853 === "clinVar" ||
-                                                      data853 === "gene" ||
-                                                      data853 === "genotype" ||
-                                                      data853 === "gnomAdAf" ||
-                                                      data853 === "hpo" ||
-                                                      data853 === "inheritancePattern" ||
-                                                      data853 === "locus" ||
-                                                      data853 === "ref" ||
-                                                      data853 === "numberOfRepeatUnits" ||
-                                                      data853 === "vipC" ||
-                                                      data853 === "vipCS" ||
-                                                      data853 === "vkgl" ||
-                                                      data853 === "notesInput")
-                                                  )
-                                                ) {
+                                                if (!(
+                                                  typeof data853 == "string" &&
+                                                  (data853 === "clinVar" ||
+                                                    data853 === "gene" ||
+                                                    data853 === "genotype" ||
+                                                    data853 === "gnomAdAf" ||
+                                                    data853 === "hpo" ||
+                                                    data853 === "inheritancePattern" ||
+                                                    data853 === "locus" ||
+                                                    data853 === "ref" ||
+                                                    data853 === "numberOfRepeatUnits" ||
+                                                    data853 === "vipC" ||
+                                                    data853 === "vipCS" ||
+                                                    data853 === "vkgl" ||
+                                                    data853 === "notesInput")
+                                                )) {
                                                   validate57.errors = [
                                                     {
                                                       instancePath:
@@ -42849,18 +42675,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data857.name !== undefined) {
                                     let data858 = data857.name;
                                     const _errs1091 = errors;
-                                    if (
-                                      !(
-                                        typeof data858 == "string" &&
-                                        (data858 === "chrom" ||
-                                          data858 === "pos" ||
-                                          data858 === "id" ||
-                                          data858 === "ref" ||
-                                          data858 === "alt" ||
-                                          data858 === "qual" ||
-                                          data858 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data858 == "string" &&
+                                      (data858 === "chrom" ||
+                                        data858 === "pos" ||
+                                        data858 === "id" ||
+                                        data858 === "ref" ||
+                                        data858 === "alt" ||
+                                        data858 === "qual" ||
+                                        data858 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/sample_variant/cells/snv/" + i58 + "/name",
@@ -43353,26 +43177,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data857.name !== undefined) {
                                     let data870 = data857.name;
                                     const _errs1107 = errors;
-                                    if (
-                                      !(
-                                        typeof data870 == "string" &&
-                                        (data870 === "clinVar" ||
-                                          data870 === "confidenceInterval" ||
-                                          data870 === "gene" ||
-                                          data870 === "genotype" ||
-                                          data870 === "genotype_maternal" ||
-                                          data870 === "genotype_paternal" ||
-                                          data870 === "gnomAdAf" ||
-                                          data870 === "hpo" ||
-                                          data870 === "inheritancePattern" ||
-                                          data870 === "locus" ||
-                                          data870 === "spanningReads" ||
-                                          data870 === "vipC" ||
-                                          data870 === "vipCS" ||
-                                          data870 === "vkgl" ||
-                                          data870 === "notesInput")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data870 == "string" &&
+                                      (data870 === "clinVar" ||
+                                        data870 === "confidenceInterval" ||
+                                        data870 === "gene" ||
+                                        data870 === "genotype" ||
+                                        data870 === "genotype_maternal" ||
+                                        data870 === "genotype_paternal" ||
+                                        data870 === "gnomAdAf" ||
+                                        data870 === "hpo" ||
+                                        data870 === "inheritancePattern" ||
+                                        data870 === "locus" ||
+                                        data870 === "spanningReads" ||
+                                        data870 === "vipC" ||
+                                        data870 === "vipCS" ||
+                                        data870 === "vkgl" ||
+                                        data870 === "notesInput" ||
+                                        data870 === "numberOfRepeatUnits")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/sample_variant/cells/snv/" + i58 + "/name",
@@ -43537,18 +43360,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data874.name !== undefined) {
                                                   let data875 = data874.name;
                                                   const _errs1114 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data875 == "string" &&
-                                                      (data875 === "chrom" ||
-                                                        data875 === "pos" ||
-                                                        data875 === "id" ||
-                                                        data875 === "ref" ||
-                                                        data875 === "alt" ||
-                                                        data875 === "qual" ||
-                                                        data875 === "filter")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data875 == "string" &&
+                                                    (data875 === "chrom" ||
+                                                      data875 === "pos" ||
+                                                      data875 === "id" ||
+                                                      data875 === "ref" ||
+                                                      data875 === "alt" ||
+                                                      data875 === "qual" ||
+                                                      data875 === "filter")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -44170,24 +43991,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data874.name !== undefined) {
                                                   let data887 = data874.name;
                                                   const _errs1130 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data887 == "string" &&
-                                                      (data887 === "clinVar" ||
-                                                        data887 === "gene" ||
-                                                        data887 === "genotype" ||
-                                                        data887 === "gnomAdAf" ||
-                                                        data887 === "hpo" ||
-                                                        data887 === "inheritancePattern" ||
-                                                        data887 === "locus" ||
-                                                        data887 === "ref" ||
-                                                        data887 === "numberOfRepeatUnits" ||
-                                                        data887 === "vipC" ||
-                                                        data887 === "vipCS" ||
-                                                        data887 === "vkgl" ||
-                                                        data887 === "notesInput")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data887 == "string" &&
+                                                    (data887 === "clinVar" ||
+                                                      data887 === "gene" ||
+                                                      data887 === "genotype" ||
+                                                      data887 === "gnomAdAf" ||
+                                                      data887 === "hpo" ||
+                                                      data887 === "inheritancePattern" ||
+                                                      data887 === "locus" ||
+                                                      data887 === "ref" ||
+                                                      data887 === "numberOfRepeatUnits" ||
+                                                      data887 === "vipC" ||
+                                                      data887 === "vipCS" ||
+                                                      data887 === "vkgl" ||
+                                                      data887 === "notesInput")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -44563,18 +44382,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data891.name !== undefined) {
                                       let data892 = data891.name;
                                       const _errs1136 = errors;
-                                      if (
-                                        !(
-                                          typeof data892 == "string" &&
-                                          (data892 === "chrom" ||
-                                            data892 === "pos" ||
-                                            data892 === "id" ||
-                                            data892 === "ref" ||
-                                            data892 === "alt" ||
-                                            data892 === "qual" ||
-                                            data892 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data892 == "string" &&
+                                        (data892 === "chrom" ||
+                                          data892 === "pos" ||
+                                          data892 === "id" ||
+                                          data892 === "ref" ||
+                                          data892 === "alt" ||
+                                          data892 === "qual" ||
+                                          data892 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/sample_variant/cells/str/" + i60 + "/name",
@@ -45071,26 +44888,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data891.name !== undefined) {
                                       let data904 = data891.name;
                                       const _errs1152 = errors;
-                                      if (
-                                        !(
-                                          typeof data904 == "string" &&
-                                          (data904 === "clinVar" ||
-                                            data904 === "confidenceInterval" ||
-                                            data904 === "gene" ||
-                                            data904 === "genotype" ||
-                                            data904 === "genotype_maternal" ||
-                                            data904 === "genotype_paternal" ||
-                                            data904 === "gnomAdAf" ||
-                                            data904 === "hpo" ||
-                                            data904 === "inheritancePattern" ||
-                                            data904 === "locus" ||
-                                            data904 === "spanningReads" ||
-                                            data904 === "vipC" ||
-                                            data904 === "vipCS" ||
-                                            data904 === "vkgl" ||
-                                            data904 === "notesInput")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data904 == "string" &&
+                                        (data904 === "clinVar" ||
+                                          data904 === "confidenceInterval" ||
+                                          data904 === "gene" ||
+                                          data904 === "genotype" ||
+                                          data904 === "genotype_maternal" ||
+                                          data904 === "genotype_paternal" ||
+                                          data904 === "gnomAdAf" ||
+                                          data904 === "hpo" ||
+                                          data904 === "inheritancePattern" ||
+                                          data904 === "locus" ||
+                                          data904 === "spanningReads" ||
+                                          data904 === "vipC" ||
+                                          data904 === "vipCS" ||
+                                          data904 === "vkgl" ||
+                                          data904 === "notesInput" ||
+                                          data904 === "numberOfRepeatUnits")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/sample_variant/cells/str/" + i60 + "/name",
@@ -45256,18 +45072,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data908.name !== undefined) {
                                                     let data909 = data908.name;
                                                     const _errs1159 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data909 == "string" &&
-                                                        (data909 === "chrom" ||
-                                                          data909 === "pos" ||
-                                                          data909 === "id" ||
-                                                          data909 === "ref" ||
-                                                          data909 === "alt" ||
-                                                          data909 === "qual" ||
-                                                          data909 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data909 == "string" &&
+                                                      (data909 === "chrom" ||
+                                                        data909 === "pos" ||
+                                                        data909 === "id" ||
+                                                        data909 === "ref" ||
+                                                        data909 === "alt" ||
+                                                        data909 === "qual" ||
+                                                        data909 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -45890,24 +45704,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data908.name !== undefined) {
                                                     let data921 = data908.name;
                                                     const _errs1175 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data921 == "string" &&
-                                                        (data921 === "clinVar" ||
-                                                          data921 === "gene" ||
-                                                          data921 === "genotype" ||
-                                                          data921 === "gnomAdAf" ||
-                                                          data921 === "hpo" ||
-                                                          data921 === "inheritancePattern" ||
-                                                          data921 === "locus" ||
-                                                          data921 === "ref" ||
-                                                          data921 === "numberOfRepeatUnits" ||
-                                                          data921 === "vipC" ||
-                                                          data921 === "vipCS" ||
-                                                          data921 === "vkgl" ||
-                                                          data921 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data921 == "string" &&
+                                                      (data921 === "clinVar" ||
+                                                        data921 === "gene" ||
+                                                        data921 === "genotype" ||
+                                                        data921 === "gnomAdAf" ||
+                                                        data921 === "hpo" ||
+                                                        data921 === "inheritancePattern" ||
+                                                        data921 === "locus" ||
+                                                        data921 === "ref" ||
+                                                        data921 === "numberOfRepeatUnits" ||
+                                                        data921 === "vipC" ||
+                                                        data921 === "vipCS" ||
+                                                        data921 === "vkgl" ||
+                                                        data921 === "notesInput")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -46290,18 +46102,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data925.name !== undefined) {
                                         let data926 = data925.name;
                                         const _errs1181 = errors;
-                                        if (
-                                          !(
-                                            typeof data926 == "string" &&
-                                            (data926 === "chrom" ||
-                                              data926 === "pos" ||
-                                              data926 === "id" ||
-                                              data926 === "ref" ||
-                                              data926 === "alt" ||
-                                              data926 === "qual" ||
-                                              data926 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data926 == "string" &&
+                                          (data926 === "chrom" ||
+                                            data926 === "pos" ||
+                                            data926 === "id" ||
+                                            data926 === "ref" ||
+                                            data926 === "alt" ||
+                                            data926 === "qual" ||
+                                            data926 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/sample_variant/cells/sv/" + i62 + "/name",
@@ -46798,26 +46608,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data925.name !== undefined) {
                                         let data938 = data925.name;
                                         const _errs1197 = errors;
-                                        if (
-                                          !(
-                                            typeof data938 == "string" &&
-                                            (data938 === "clinVar" ||
-                                              data938 === "confidenceInterval" ||
-                                              data938 === "gene" ||
-                                              data938 === "genotype" ||
-                                              data938 === "genotype_maternal" ||
-                                              data938 === "genotype_paternal" ||
-                                              data938 === "gnomAdAf" ||
-                                              data938 === "hpo" ||
-                                              data938 === "inheritancePattern" ||
-                                              data938 === "locus" ||
-                                              data938 === "spanningReads" ||
-                                              data938 === "vipC" ||
-                                              data938 === "vipCS" ||
-                                              data938 === "vkgl" ||
-                                              data938 === "notesInput")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data938 == "string" &&
+                                          (data938 === "clinVar" ||
+                                            data938 === "confidenceInterval" ||
+                                            data938 === "gene" ||
+                                            data938 === "genotype" ||
+                                            data938 === "genotype_maternal" ||
+                                            data938 === "genotype_paternal" ||
+                                            data938 === "gnomAdAf" ||
+                                            data938 === "hpo" ||
+                                            data938 === "inheritancePattern" ||
+                                            data938 === "locus" ||
+                                            data938 === "spanningReads" ||
+                                            data938 === "vipC" ||
+                                            data938 === "vipCS" ||
+                                            data938 === "vkgl" ||
+                                            data938 === "notesInput" ||
+                                            data938 === "numberOfRepeatUnits")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/sample_variant/cells/sv/" + i62 + "/name",
@@ -46983,18 +46792,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data942.name !== undefined) {
                                                       let data943 = data942.name;
                                                       const _errs1204 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data943 == "string" &&
-                                                          (data943 === "chrom" ||
-                                                            data943 === "pos" ||
-                                                            data943 === "id" ||
-                                                            data943 === "ref" ||
-                                                            data943 === "alt" ||
-                                                            data943 === "qual" ||
-                                                            data943 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data943 == "string" &&
+                                                        (data943 === "chrom" ||
+                                                          data943 === "pos" ||
+                                                          data943 === "id" ||
+                                                          data943 === "ref" ||
+                                                          data943 === "alt" ||
+                                                          data943 === "qual" ||
+                                                          data943 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -47617,24 +47424,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data942.name !== undefined) {
                                                       let data955 = data942.name;
                                                       const _errs1220 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data955 == "string" &&
-                                                          (data955 === "clinVar" ||
-                                                            data955 === "gene" ||
-                                                            data955 === "genotype" ||
-                                                            data955 === "gnomAdAf" ||
-                                                            data955 === "hpo" ||
-                                                            data955 === "inheritancePattern" ||
-                                                            data955 === "locus" ||
-                                                            data955 === "ref" ||
-                                                            data955 === "numberOfRepeatUnits" ||
-                                                            data955 === "vipC" ||
-                                                            data955 === "vipCS" ||
-                                                            data955 === "vkgl" ||
-                                                            data955 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data955 == "string" &&
+                                                        (data955 === "clinVar" ||
+                                                          data955 === "gene" ||
+                                                          data955 === "genotype" ||
+                                                          data955 === "gnomAdAf" ||
+                                                          data955 === "hpo" ||
+                                                          data955 === "inheritancePattern" ||
+                                                          data955 === "locus" ||
+                                                          data955 === "ref" ||
+                                                          data955 === "numberOfRepeatUnits" ||
+                                                          data955 === "vipC" ||
+                                                          data955 === "vipCS" ||
+                                                          data955 === "vkgl" ||
+                                                          data955 === "notesInput")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -48075,18 +47880,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data960.name !== undefined) {
                                     let data961 = data960.name;
                                     const _errs1227 = errors;
-                                    if (
-                                      !(
-                                        typeof data961 == "string" &&
-                                        (data961 === "chrom" ||
-                                          data961 === "pos" ||
-                                          data961 === "id" ||
-                                          data961 === "ref" ||
-                                          data961 === "alt" ||
-                                          data961 === "qual" ||
-                                          data961 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data961 == "string" &&
+                                      (data961 === "chrom" ||
+                                        data961 === "pos" ||
+                                        data961 === "id" ||
+                                        data961 === "ref" ||
+                                        data961 === "alt" ||
+                                        data961 === "qual" ||
+                                        data961 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath:
@@ -48599,26 +48402,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data960.name !== undefined) {
                                     let data973 = data960.name;
                                     const _errs1243 = errors;
-                                    if (
-                                      !(
-                                        typeof data973 == "string" &&
-                                        (data973 === "clinVar" ||
-                                          data973 === "confidenceInterval" ||
-                                          data973 === "gene" ||
-                                          data973 === "genotype" ||
-                                          data973 === "genotype_maternal" ||
-                                          data973 === "genotype_paternal" ||
-                                          data973 === "gnomAdAf" ||
-                                          data973 === "hpo" ||
-                                          data973 === "inheritancePattern" ||
-                                          data973 === "locus" ||
-                                          data973 === "spanningReads" ||
-                                          data973 === "vipC" ||
-                                          data973 === "vipCS" ||
-                                          data973 === "vkgl" ||
-                                          data973 === "notesInput")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data973 == "string" &&
+                                      (data973 === "clinVar" ||
+                                        data973 === "confidenceInterval" ||
+                                        data973 === "gene" ||
+                                        data973 === "genotype" ||
+                                        data973 === "genotype_maternal" ||
+                                        data973 === "genotype_paternal" ||
+                                        data973 === "gnomAdAf" ||
+                                        data973 === "hpo" ||
+                                        data973 === "inheritancePattern" ||
+                                        data973 === "locus" ||
+                                        data973 === "spanningReads" ||
+                                        data973 === "vipC" ||
+                                        data973 === "vipCS" ||
+                                        data973 === "vkgl" ||
+                                        data973 === "notesInput" ||
+                                        data973 === "numberOfRepeatUnits")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath:
@@ -48788,18 +48590,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data977.name !== undefined) {
                                                   let data978 = data977.name;
                                                   const _errs1250 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data978 == "string" &&
-                                                      (data978 === "chrom" ||
-                                                        data978 === "pos" ||
-                                                        data978 === "id" ||
-                                                        data978 === "ref" ||
-                                                        data978 === "alt" ||
-                                                        data978 === "qual" ||
-                                                        data978 === "filter")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data978 == "string" &&
+                                                    (data978 === "chrom" ||
+                                                      data978 === "pos" ||
+                                                      data978 === "id" ||
+                                                      data978 === "ref" ||
+                                                      data978 === "alt" ||
+                                                      data978 === "qual" ||
+                                                      data978 === "filter")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -49422,24 +49222,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data977.name !== undefined) {
                                                   let data990 = data977.name;
                                                   const _errs1266 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data990 == "string" &&
-                                                      (data990 === "clinVar" ||
-                                                        data990 === "gene" ||
-                                                        data990 === "genotype" ||
-                                                        data990 === "gnomAdAf" ||
-                                                        data990 === "hpo" ||
-                                                        data990 === "inheritancePattern" ||
-                                                        data990 === "locus" ||
-                                                        data990 === "ref" ||
-                                                        data990 === "numberOfRepeatUnits" ||
-                                                        data990 === "vipC" ||
-                                                        data990 === "vipCS" ||
-                                                        data990 === "vkgl" ||
-                                                        data990 === "notesInput")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data990 == "string" &&
+                                                    (data990 === "clinVar" ||
+                                                      data990 === "gene" ||
+                                                      data990 === "genotype" ||
+                                                      data990 === "gnomAdAf" ||
+                                                      data990 === "hpo" ||
+                                                      data990 === "inheritancePattern" ||
+                                                      data990 === "locus" ||
+                                                      data990 === "ref" ||
+                                                      data990 === "numberOfRepeatUnits" ||
+                                                      data990 === "vipC" ||
+                                                      data990 === "vipCS" ||
+                                                      data990 === "vkgl" ||
+                                                      data990 === "notesInput")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -49822,18 +49620,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data994.name !== undefined) {
                                       let data995 = data994.name;
                                       const _errs1272 = errors;
-                                      if (
-                                        !(
-                                          typeof data995 == "string" &&
-                                          (data995 === "chrom" ||
-                                            data995 === "pos" ||
-                                            data995 === "id" ||
-                                            data995 === "ref" ||
-                                            data995 === "alt" ||
-                                            data995 === "qual" ||
-                                            data995 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data995 == "string" &&
+                                        (data995 === "chrom" ||
+                                          data995 === "pos" ||
+                                          data995 === "id" ||
+                                          data995 === "ref" ||
+                                          data995 === "alt" ||
+                                          data995 === "qual" ||
+                                          data995 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath:
@@ -50346,26 +50142,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data994.name !== undefined) {
                                       let data1007 = data994.name;
                                       const _errs1288 = errors;
-                                      if (
-                                        !(
-                                          typeof data1007 == "string" &&
-                                          (data1007 === "clinVar" ||
-                                            data1007 === "confidenceInterval" ||
-                                            data1007 === "gene" ||
-                                            data1007 === "genotype" ||
-                                            data1007 === "genotype_maternal" ||
-                                            data1007 === "genotype_paternal" ||
-                                            data1007 === "gnomAdAf" ||
-                                            data1007 === "hpo" ||
-                                            data1007 === "inheritancePattern" ||
-                                            data1007 === "locus" ||
-                                            data1007 === "spanningReads" ||
-                                            data1007 === "vipC" ||
-                                            data1007 === "vipCS" ||
-                                            data1007 === "vkgl" ||
-                                            data1007 === "notesInput")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1007 == "string" &&
+                                        (data1007 === "clinVar" ||
+                                          data1007 === "confidenceInterval" ||
+                                          data1007 === "gene" ||
+                                          data1007 === "genotype" ||
+                                          data1007 === "genotype_maternal" ||
+                                          data1007 === "genotype_paternal" ||
+                                          data1007 === "gnomAdAf" ||
+                                          data1007 === "hpo" ||
+                                          data1007 === "inheritancePattern" ||
+                                          data1007 === "locus" ||
+                                          data1007 === "spanningReads" ||
+                                          data1007 === "vipC" ||
+                                          data1007 === "vipCS" ||
+                                          data1007 === "vkgl" ||
+                                          data1007 === "notesInput" ||
+                                          data1007 === "numberOfRepeatUnits")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath:
@@ -50536,18 +50331,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1011.name !== undefined) {
                                                     let data1012 = data1011.name;
                                                     const _errs1295 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1012 == "string" &&
-                                                        (data1012 === "chrom" ||
-                                                          data1012 === "pos" ||
-                                                          data1012 === "id" ||
-                                                          data1012 === "ref" ||
-                                                          data1012 === "alt" ||
-                                                          data1012 === "qual" ||
-                                                          data1012 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1012 == "string" &&
+                                                      (data1012 === "chrom" ||
+                                                        data1012 === "pos" ||
+                                                        data1012 === "id" ||
+                                                        data1012 === "ref" ||
+                                                        data1012 === "alt" ||
+                                                        data1012 === "qual" ||
+                                                        data1012 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -51170,24 +50963,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1011.name !== undefined) {
                                                     let data1024 = data1011.name;
                                                     const _errs1311 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1024 == "string" &&
-                                                        (data1024 === "clinVar" ||
-                                                          data1024 === "gene" ||
-                                                          data1024 === "genotype" ||
-                                                          data1024 === "gnomAdAf" ||
-                                                          data1024 === "hpo" ||
-                                                          data1024 === "inheritancePattern" ||
-                                                          data1024 === "locus" ||
-                                                          data1024 === "ref" ||
-                                                          data1024 === "numberOfRepeatUnits" ||
-                                                          data1024 === "vipC" ||
-                                                          data1024 === "vipCS" ||
-                                                          data1024 === "vkgl" ||
-                                                          data1024 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1024 == "string" &&
+                                                      (data1024 === "clinVar" ||
+                                                        data1024 === "gene" ||
+                                                        data1024 === "genotype" ||
+                                                        data1024 === "gnomAdAf" ||
+                                                        data1024 === "hpo" ||
+                                                        data1024 === "inheritancePattern" ||
+                                                        data1024 === "locus" ||
+                                                        data1024 === "ref" ||
+                                                        data1024 === "numberOfRepeatUnits" ||
+                                                        data1024 === "vipC" ||
+                                                        data1024 === "vipCS" ||
+                                                        data1024 === "vkgl" ||
+                                                        data1024 === "notesInput")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -51571,18 +51362,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1028.name !== undefined) {
                                         let data1029 = data1028.name;
                                         const _errs1317 = errors;
-                                        if (
-                                          !(
-                                            typeof data1029 == "string" &&
-                                            (data1029 === "chrom" ||
-                                              data1029 === "pos" ||
-                                              data1029 === "id" ||
-                                              data1029 === "ref" ||
-                                              data1029 === "alt" ||
-                                              data1029 === "qual" ||
-                                              data1029 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1029 == "string" &&
+                                          (data1029 === "chrom" ||
+                                            data1029 === "pos" ||
+                                            data1029 === "id" ||
+                                            data1029 === "ref" ||
+                                            data1029 === "alt" ||
+                                            data1029 === "qual" ||
+                                            data1029 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -52095,26 +51884,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1028.name !== undefined) {
                                         let data1041 = data1028.name;
                                         const _errs1333 = errors;
-                                        if (
-                                          !(
-                                            typeof data1041 == "string" &&
-                                            (data1041 === "clinVar" ||
-                                              data1041 === "confidenceInterval" ||
-                                              data1041 === "gene" ||
-                                              data1041 === "genotype" ||
-                                              data1041 === "genotype_maternal" ||
-                                              data1041 === "genotype_paternal" ||
-                                              data1041 === "gnomAdAf" ||
-                                              data1041 === "hpo" ||
-                                              data1041 === "inheritancePattern" ||
-                                              data1041 === "locus" ||
-                                              data1041 === "spanningReads" ||
-                                              data1041 === "vipC" ||
-                                              data1041 === "vipCS" ||
-                                              data1041 === "vkgl" ||
-                                              data1041 === "notesInput")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1041 == "string" &&
+                                          (data1041 === "clinVar" ||
+                                            data1041 === "confidenceInterval" ||
+                                            data1041 === "gene" ||
+                                            data1041 === "genotype" ||
+                                            data1041 === "genotype_maternal" ||
+                                            data1041 === "genotype_paternal" ||
+                                            data1041 === "gnomAdAf" ||
+                                            data1041 === "hpo" ||
+                                            data1041 === "inheritancePattern" ||
+                                            data1041 === "locus" ||
+                                            data1041 === "spanningReads" ||
+                                            data1041 === "vipC" ||
+                                            data1041 === "vipCS" ||
+                                            data1041 === "vkgl" ||
+                                            data1041 === "notesInput" ||
+                                            data1041 === "numberOfRepeatUnits")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -52285,18 +52073,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1045.name !== undefined) {
                                                       let data1046 = data1045.name;
                                                       const _errs1340 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1046 == "string" &&
-                                                          (data1046 === "chrom" ||
-                                                            data1046 === "pos" ||
-                                                            data1046 === "id" ||
-                                                            data1046 === "ref" ||
-                                                            data1046 === "alt" ||
-                                                            data1046 === "qual" ||
-                                                            data1046 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1046 == "string" &&
+                                                        (data1046 === "chrom" ||
+                                                          data1046 === "pos" ||
+                                                          data1046 === "id" ||
+                                                          data1046 === "ref" ||
+                                                          data1046 === "alt" ||
+                                                          data1046 === "qual" ||
+                                                          data1046 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -52919,24 +52705,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1045.name !== undefined) {
                                                       let data1058 = data1045.name;
                                                       const _errs1356 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1058 == "string" &&
-                                                          (data1058 === "clinVar" ||
-                                                            data1058 === "gene" ||
-                                                            data1058 === "genotype" ||
-                                                            data1058 === "gnomAdAf" ||
-                                                            data1058 === "hpo" ||
-                                                            data1058 === "inheritancePattern" ||
-                                                            data1058 === "locus" ||
-                                                            data1058 === "ref" ||
-                                                            data1058 === "numberOfRepeatUnits" ||
-                                                            data1058 === "vipC" ||
-                                                            data1058 === "vipCS" ||
-                                                            data1058 === "vkgl" ||
-                                                            data1058 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1058 == "string" &&
+                                                        (data1058 === "clinVar" ||
+                                                          data1058 === "gene" ||
+                                                          data1058 === "genotype" ||
+                                                          data1058 === "gnomAdAf" ||
+                                                          data1058 === "hpo" ||
+                                                          data1058 === "inheritancePattern" ||
+                                                          data1058 === "locus" ||
+                                                          data1058 === "ref" ||
+                                                          data1058 === "numberOfRepeatUnits" ||
+                                                          data1058 === "vipC" ||
+                                                          data1058 === "vipCS" ||
+                                                          data1058 === "vkgl" ||
+                                                          data1058 === "notesInput")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -53321,18 +53105,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1062.name !== undefined) {
                                           let data1063 = data1062.name;
                                           const _errs1362 = errors;
-                                          if (
-                                            !(
-                                              typeof data1063 == "string" &&
-                                              (data1063 === "chrom" ||
-                                                data1063 === "pos" ||
-                                                data1063 === "id" ||
-                                                data1063 === "ref" ||
-                                                data1063 === "alt" ||
-                                                data1063 === "qual" ||
-                                                data1063 === "filter")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1063 == "string" &&
+                                            (data1063 === "chrom" ||
+                                              data1063 === "pos" ||
+                                              data1063 === "id" ||
+                                              data1063 === "ref" ||
+                                              data1063 === "alt" ||
+                                              data1063 === "qual" ||
+                                              data1063 === "filter")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -53846,26 +53628,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1062.name !== undefined) {
                                           let data1075 = data1062.name;
                                           const _errs1378 = errors;
-                                          if (
-                                            !(
-                                              typeof data1075 == "string" &&
-                                              (data1075 === "clinVar" ||
-                                                data1075 === "confidenceInterval" ||
-                                                data1075 === "gene" ||
-                                                data1075 === "genotype" ||
-                                                data1075 === "genotype_maternal" ||
-                                                data1075 === "genotype_paternal" ||
-                                                data1075 === "gnomAdAf" ||
-                                                data1075 === "hpo" ||
-                                                data1075 === "inheritancePattern" ||
-                                                data1075 === "locus" ||
-                                                data1075 === "spanningReads" ||
-                                                data1075 === "vipC" ||
-                                                data1075 === "vipCS" ||
-                                                data1075 === "vkgl" ||
-                                                data1075 === "notesInput")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1075 == "string" &&
+                                            (data1075 === "clinVar" ||
+                                              data1075 === "confidenceInterval" ||
+                                              data1075 === "gene" ||
+                                              data1075 === "genotype" ||
+                                              data1075 === "genotype_maternal" ||
+                                              data1075 === "genotype_paternal" ||
+                                              data1075 === "gnomAdAf" ||
+                                              data1075 === "hpo" ||
+                                              data1075 === "inheritancePattern" ||
+                                              data1075 === "locus" ||
+                                              data1075 === "spanningReads" ||
+                                              data1075 === "vipC" ||
+                                              data1075 === "vipCS" ||
+                                              data1075 === "vkgl" ||
+                                              data1075 === "notesInput" ||
+                                              data1075 === "numberOfRepeatUnits")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -54040,18 +53821,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1079.name !== undefined) {
                                                         let data1080 = data1079.name;
                                                         const _errs1385 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1080 == "string" &&
-                                                            (data1080 === "chrom" ||
-                                                              data1080 === "pos" ||
-                                                              data1080 === "id" ||
-                                                              data1080 === "ref" ||
-                                                              data1080 === "alt" ||
-                                                              data1080 === "qual" ||
-                                                              data1080 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1080 == "string" &&
+                                                          (data1080 === "chrom" ||
+                                                            data1080 === "pos" ||
+                                                            data1080 === "id" ||
+                                                            data1080 === "ref" ||
+                                                            data1080 === "alt" ||
+                                                            data1080 === "qual" ||
+                                                            data1080 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -54674,24 +54453,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1079.name !== undefined) {
                                                         let data1092 = data1079.name;
                                                         const _errs1401 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1092 == "string" &&
-                                                            (data1092 === "clinVar" ||
-                                                              data1092 === "gene" ||
-                                                              data1092 === "genotype" ||
-                                                              data1092 === "gnomAdAf" ||
-                                                              data1092 === "hpo" ||
-                                                              data1092 === "inheritancePattern" ||
-                                                              data1092 === "locus" ||
-                                                              data1092 === "ref" ||
-                                                              data1092 === "numberOfRepeatUnits" ||
-                                                              data1092 === "vipC" ||
-                                                              data1092 === "vipCS" ||
-                                                              data1092 === "vkgl" ||
-                                                              data1092 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1092 == "string" &&
+                                                          (data1092 === "clinVar" ||
+                                                            data1092 === "gene" ||
+                                                            data1092 === "genotype" ||
+                                                            data1092 === "gnomAdAf" ||
+                                                            data1092 === "hpo" ||
+                                                            data1092 === "inheritancePattern" ||
+                                                            data1092 === "locus" ||
+                                                            data1092 === "ref" ||
+                                                            data1092 === "numberOfRepeatUnits" ||
+                                                            data1092 === "vipC" ||
+                                                            data1092 === "vipCS" ||
+                                                            data1092 === "vkgl" ||
+                                                            data1092 === "notesInput")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -55176,18 +54953,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data1098.name !== undefined) {
                                     let data1099 = data1098.name;
                                     const _errs1409 = errors;
-                                    if (
-                                      !(
-                                        typeof data1099 == "string" &&
-                                        (data1099 === "chrom" ||
-                                          data1099 === "pos" ||
-                                          data1099 === "id" ||
-                                          data1099 === "ref" ||
-                                          data1099 === "alt" ||
-                                          data1099 === "qual" ||
-                                          data1099 === "filter")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data1099 == "string" &&
+                                      (data1099 === "chrom" ||
+                                        data1099 === "pos" ||
+                                        data1099 === "id" ||
+                                        data1099 === "ref" ||
+                                        data1099 === "alt" ||
+                                        data1099 === "qual" ||
+                                        data1099 === "filter")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/variant/cells/all/" + i72 + "/name",
@@ -55676,26 +55451,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                   if (data1098.name !== undefined) {
                                     let data1111 = data1098.name;
                                     const _errs1425 = errors;
-                                    if (
-                                      !(
-                                        typeof data1111 == "string" &&
-                                        (data1111 === "clinVar" ||
-                                          data1111 === "confidenceInterval" ||
-                                          data1111 === "gene" ||
-                                          data1111 === "genotype" ||
-                                          data1111 === "genotype_maternal" ||
-                                          data1111 === "genotype_paternal" ||
-                                          data1111 === "gnomAdAf" ||
-                                          data1111 === "hpo" ||
-                                          data1111 === "inheritancePattern" ||
-                                          data1111 === "locus" ||
-                                          data1111 === "spanningReads" ||
-                                          data1111 === "vipC" ||
-                                          data1111 === "vipCS" ||
-                                          data1111 === "vkgl" ||
-                                          data1111 === "notesInput")
-                                      )
-                                    ) {
+                                    if (!(
+                                      typeof data1111 == "string" &&
+                                      (data1111 === "clinVar" ||
+                                        data1111 === "confidenceInterval" ||
+                                        data1111 === "gene" ||
+                                        data1111 === "genotype" ||
+                                        data1111 === "genotype_maternal" ||
+                                        data1111 === "genotype_paternal" ||
+                                        data1111 === "gnomAdAf" ||
+                                        data1111 === "hpo" ||
+                                        data1111 === "inheritancePattern" ||
+                                        data1111 === "locus" ||
+                                        data1111 === "spanningReads" ||
+                                        data1111 === "vipC" ||
+                                        data1111 === "vipCS" ||
+                                        data1111 === "vkgl" ||
+                                        data1111 === "notesInput" ||
+                                        data1111 === "numberOfRepeatUnits")
+                                    )) {
                                       validate57.errors = [
                                         {
                                           instancePath: instancePath + "/variant/cells/all/" + i72 + "/name",
@@ -55855,18 +55629,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data1115.name !== undefined) {
                                                   let data1116 = data1115.name;
                                                   const _errs1432 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data1116 == "string" &&
-                                                      (data1116 === "chrom" ||
-                                                        data1116 === "pos" ||
-                                                        data1116 === "id" ||
-                                                        data1116 === "ref" ||
-                                                        data1116 === "alt" ||
-                                                        data1116 === "qual" ||
-                                                        data1116 === "filter")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data1116 == "string" &&
+                                                    (data1116 === "chrom" ||
+                                                      data1116 === "pos" ||
+                                                      data1116 === "id" ||
+                                                      data1116 === "ref" ||
+                                                      data1116 === "alt" ||
+                                                      data1116 === "qual" ||
+                                                      data1116 === "filter")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -56456,24 +56228,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                 if (data1115.name !== undefined) {
                                                   let data1128 = data1115.name;
                                                   const _errs1448 = errors;
-                                                  if (
-                                                    !(
-                                                      typeof data1128 == "string" &&
-                                                      (data1128 === "clinVar" ||
-                                                        data1128 === "gene" ||
-                                                        data1128 === "genotype" ||
-                                                        data1128 === "gnomAdAf" ||
-                                                        data1128 === "hpo" ||
-                                                        data1128 === "inheritancePattern" ||
-                                                        data1128 === "locus" ||
-                                                        data1128 === "ref" ||
-                                                        data1128 === "numberOfRepeatUnits" ||
-                                                        data1128 === "vipC" ||
-                                                        data1128 === "vipCS" ||
-                                                        data1128 === "vkgl" ||
-                                                        data1128 === "notesInput")
-                                                    )
-                                                  ) {
+                                                  if (!(
+                                                    typeof data1128 == "string" &&
+                                                    (data1128 === "clinVar" ||
+                                                      data1128 === "gene" ||
+                                                      data1128 === "genotype" ||
+                                                      data1128 === "gnomAdAf" ||
+                                                      data1128 === "hpo" ||
+                                                      data1128 === "inheritancePattern" ||
+                                                      data1128 === "locus" ||
+                                                      data1128 === "ref" ||
+                                                      data1128 === "numberOfRepeatUnits" ||
+                                                      data1128 === "vipC" ||
+                                                      data1128 === "vipCS" ||
+                                                      data1128 === "vkgl" ||
+                                                      data1128 === "notesInput")
+                                                  )) {
                                                     validate57.errors = [
                                                       {
                                                         instancePath:
@@ -56841,18 +56611,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data1132.name !== undefined) {
                                       let data1133 = data1132.name;
                                       const _errs1454 = errors;
-                                      if (
-                                        !(
-                                          typeof data1133 == "string" &&
-                                          (data1133 === "chrom" ||
-                                            data1133 === "pos" ||
-                                            data1133 === "id" ||
-                                            data1133 === "ref" ||
-                                            data1133 === "alt" ||
-                                            data1133 === "qual" ||
-                                            data1133 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1133 == "string" &&
+                                        (data1133 === "chrom" ||
+                                          data1133 === "pos" ||
+                                          data1133 === "id" ||
+                                          data1133 === "ref" ||
+                                          data1133 === "alt" ||
+                                          data1133 === "qual" ||
+                                          data1133 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variant/cells/snv/" + i74 + "/name",
@@ -57345,26 +57113,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data1132.name !== undefined) {
                                       let data1145 = data1132.name;
                                       const _errs1470 = errors;
-                                      if (
-                                        !(
-                                          typeof data1145 == "string" &&
-                                          (data1145 === "clinVar" ||
-                                            data1145 === "confidenceInterval" ||
-                                            data1145 === "gene" ||
-                                            data1145 === "genotype" ||
-                                            data1145 === "genotype_maternal" ||
-                                            data1145 === "genotype_paternal" ||
-                                            data1145 === "gnomAdAf" ||
-                                            data1145 === "hpo" ||
-                                            data1145 === "inheritancePattern" ||
-                                            data1145 === "locus" ||
-                                            data1145 === "spanningReads" ||
-                                            data1145 === "vipC" ||
-                                            data1145 === "vipCS" ||
-                                            data1145 === "vkgl" ||
-                                            data1145 === "notesInput")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1145 == "string" &&
+                                        (data1145 === "clinVar" ||
+                                          data1145 === "confidenceInterval" ||
+                                          data1145 === "gene" ||
+                                          data1145 === "genotype" ||
+                                          data1145 === "genotype_maternal" ||
+                                          data1145 === "genotype_paternal" ||
+                                          data1145 === "gnomAdAf" ||
+                                          data1145 === "hpo" ||
+                                          data1145 === "inheritancePattern" ||
+                                          data1145 === "locus" ||
+                                          data1145 === "spanningReads" ||
+                                          data1145 === "vipC" ||
+                                          data1145 === "vipCS" ||
+                                          data1145 === "vkgl" ||
+                                          data1145 === "notesInput" ||
+                                          data1145 === "numberOfRepeatUnits")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variant/cells/snv/" + i74 + "/name",
@@ -57525,18 +57292,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1149.name !== undefined) {
                                                     let data1150 = data1149.name;
                                                     const _errs1477 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1150 == "string" &&
-                                                        (data1150 === "chrom" ||
-                                                          data1150 === "pos" ||
-                                                          data1150 === "id" ||
-                                                          data1150 === "ref" ||
-                                                          data1150 === "alt" ||
-                                                          data1150 === "qual" ||
-                                                          data1150 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1150 == "string" &&
+                                                      (data1150 === "chrom" ||
+                                                        data1150 === "pos" ||
+                                                        data1150 === "id" ||
+                                                        data1150 === "ref" ||
+                                                        data1150 === "alt" ||
+                                                        data1150 === "qual" ||
+                                                        data1150 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -58127,24 +57892,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1149.name !== undefined) {
                                                     let data1162 = data1149.name;
                                                     const _errs1493 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1162 == "string" &&
-                                                        (data1162 === "clinVar" ||
-                                                          data1162 === "gene" ||
-                                                          data1162 === "genotype" ||
-                                                          data1162 === "gnomAdAf" ||
-                                                          data1162 === "hpo" ||
-                                                          data1162 === "inheritancePattern" ||
-                                                          data1162 === "locus" ||
-                                                          data1162 === "ref" ||
-                                                          data1162 === "numberOfRepeatUnits" ||
-                                                          data1162 === "vipC" ||
-                                                          data1162 === "vipCS" ||
-                                                          data1162 === "vkgl" ||
-                                                          data1162 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1162 == "string" &&
+                                                      (data1162 === "clinVar" ||
+                                                        data1162 === "gene" ||
+                                                        data1162 === "genotype" ||
+                                                        data1162 === "gnomAdAf" ||
+                                                        data1162 === "hpo" ||
+                                                        data1162 === "inheritancePattern" ||
+                                                        data1162 === "locus" ||
+                                                        data1162 === "ref" ||
+                                                        data1162 === "numberOfRepeatUnits" ||
+                                                        data1162 === "vipC" ||
+                                                        data1162 === "vipCS" ||
+                                                        data1162 === "vkgl" ||
+                                                        data1162 === "notesInput")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -58513,18 +58276,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1166.name !== undefined) {
                                         let data1167 = data1166.name;
                                         const _errs1499 = errors;
-                                        if (
-                                          !(
-                                            typeof data1167 == "string" &&
-                                            (data1167 === "chrom" ||
-                                              data1167 === "pos" ||
-                                              data1167 === "id" ||
-                                              data1167 === "ref" ||
-                                              data1167 === "alt" ||
-                                              data1167 === "qual" ||
-                                              data1167 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1167 == "string" &&
+                                          (data1167 === "chrom" ||
+                                            data1167 === "pos" ||
+                                            data1167 === "id" ||
+                                            data1167 === "ref" ||
+                                            data1167 === "alt" ||
+                                            data1167 === "qual" ||
+                                            data1167 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/variant/cells/str/" + i76 + "/name",
@@ -59017,26 +58778,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1166.name !== undefined) {
                                         let data1179 = data1166.name;
                                         const _errs1515 = errors;
-                                        if (
-                                          !(
-                                            typeof data1179 == "string" &&
-                                            (data1179 === "clinVar" ||
-                                              data1179 === "confidenceInterval" ||
-                                              data1179 === "gene" ||
-                                              data1179 === "genotype" ||
-                                              data1179 === "genotype_maternal" ||
-                                              data1179 === "genotype_paternal" ||
-                                              data1179 === "gnomAdAf" ||
-                                              data1179 === "hpo" ||
-                                              data1179 === "inheritancePattern" ||
-                                              data1179 === "locus" ||
-                                              data1179 === "spanningReads" ||
-                                              data1179 === "vipC" ||
-                                              data1179 === "vipCS" ||
-                                              data1179 === "vkgl" ||
-                                              data1179 === "notesInput")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1179 == "string" &&
+                                          (data1179 === "clinVar" ||
+                                            data1179 === "confidenceInterval" ||
+                                            data1179 === "gene" ||
+                                            data1179 === "genotype" ||
+                                            data1179 === "genotype_maternal" ||
+                                            data1179 === "genotype_paternal" ||
+                                            data1179 === "gnomAdAf" ||
+                                            data1179 === "hpo" ||
+                                            data1179 === "inheritancePattern" ||
+                                            data1179 === "locus" ||
+                                            data1179 === "spanningReads" ||
+                                            data1179 === "vipC" ||
+                                            data1179 === "vipCS" ||
+                                            data1179 === "vkgl" ||
+                                            data1179 === "notesInput" ||
+                                            data1179 === "numberOfRepeatUnits")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/variant/cells/str/" + i76 + "/name",
@@ -59197,18 +58957,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1183.name !== undefined) {
                                                       let data1184 = data1183.name;
                                                       const _errs1522 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1184 == "string" &&
-                                                          (data1184 === "chrom" ||
-                                                            data1184 === "pos" ||
-                                                            data1184 === "id" ||
-                                                            data1184 === "ref" ||
-                                                            data1184 === "alt" ||
-                                                            data1184 === "qual" ||
-                                                            data1184 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1184 == "string" &&
+                                                        (data1184 === "chrom" ||
+                                                          data1184 === "pos" ||
+                                                          data1184 === "id" ||
+                                                          data1184 === "ref" ||
+                                                          data1184 === "alt" ||
+                                                          data1184 === "qual" ||
+                                                          data1184 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -59831,24 +59589,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1183.name !== undefined) {
                                                       let data1196 = data1183.name;
                                                       const _errs1538 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1196 == "string" &&
-                                                          (data1196 === "clinVar" ||
-                                                            data1196 === "gene" ||
-                                                            data1196 === "genotype" ||
-                                                            data1196 === "gnomAdAf" ||
-                                                            data1196 === "hpo" ||
-                                                            data1196 === "inheritancePattern" ||
-                                                            data1196 === "locus" ||
-                                                            data1196 === "ref" ||
-                                                            data1196 === "numberOfRepeatUnits" ||
-                                                            data1196 === "vipC" ||
-                                                            data1196 === "vipCS" ||
-                                                            data1196 === "vkgl" ||
-                                                            data1196 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1196 == "string" &&
+                                                        (data1196 === "clinVar" ||
+                                                          data1196 === "gene" ||
+                                                          data1196 === "genotype" ||
+                                                          data1196 === "gnomAdAf" ||
+                                                          data1196 === "hpo" ||
+                                                          data1196 === "inheritancePattern" ||
+                                                          data1196 === "locus" ||
+                                                          data1196 === "ref" ||
+                                                          data1196 === "numberOfRepeatUnits" ||
+                                                          data1196 === "vipC" ||
+                                                          data1196 === "vipCS" ||
+                                                          data1196 === "vkgl" ||
+                                                          data1196 === "notesInput")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -60225,18 +59981,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1200.name !== undefined) {
                                           let data1201 = data1200.name;
                                           const _errs1544 = errors;
-                                          if (
-                                            !(
-                                              typeof data1201 == "string" &&
-                                              (data1201 === "chrom" ||
-                                                data1201 === "pos" ||
-                                                data1201 === "id" ||
-                                                data1201 === "ref" ||
-                                                data1201 === "alt" ||
-                                                data1201 === "qual" ||
-                                                data1201 === "filter")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1201 == "string" &&
+                                            (data1201 === "chrom" ||
+                                              data1201 === "pos" ||
+                                              data1201 === "id" ||
+                                              data1201 === "ref" ||
+                                              data1201 === "alt" ||
+                                              data1201 === "qual" ||
+                                              data1201 === "filter")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath: instancePath + "/variant/cells/sv/" + i78 + "/name",
@@ -60729,26 +60483,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1200.name !== undefined) {
                                           let data1213 = data1200.name;
                                           const _errs1560 = errors;
-                                          if (
-                                            !(
-                                              typeof data1213 == "string" &&
-                                              (data1213 === "clinVar" ||
-                                                data1213 === "confidenceInterval" ||
-                                                data1213 === "gene" ||
-                                                data1213 === "genotype" ||
-                                                data1213 === "genotype_maternal" ||
-                                                data1213 === "genotype_paternal" ||
-                                                data1213 === "gnomAdAf" ||
-                                                data1213 === "hpo" ||
-                                                data1213 === "inheritancePattern" ||
-                                                data1213 === "locus" ||
-                                                data1213 === "spanningReads" ||
-                                                data1213 === "vipC" ||
-                                                data1213 === "vipCS" ||
-                                                data1213 === "vkgl" ||
-                                                data1213 === "notesInput")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1213 == "string" &&
+                                            (data1213 === "clinVar" ||
+                                              data1213 === "confidenceInterval" ||
+                                              data1213 === "gene" ||
+                                              data1213 === "genotype" ||
+                                              data1213 === "genotype_maternal" ||
+                                              data1213 === "genotype_paternal" ||
+                                              data1213 === "gnomAdAf" ||
+                                              data1213 === "hpo" ||
+                                              data1213 === "inheritancePattern" ||
+                                              data1213 === "locus" ||
+                                              data1213 === "spanningReads" ||
+                                              data1213 === "vipC" ||
+                                              data1213 === "vipCS" ||
+                                              data1213 === "vkgl" ||
+                                              data1213 === "notesInput" ||
+                                              data1213 === "numberOfRepeatUnits")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath: instancePath + "/variant/cells/sv/" + i78 + "/name",
@@ -60913,18 +60666,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1217.name !== undefined) {
                                                         let data1218 = data1217.name;
                                                         const _errs1567 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1218 == "string" &&
-                                                            (data1218 === "chrom" ||
-                                                              data1218 === "pos" ||
-                                                              data1218 === "id" ||
-                                                              data1218 === "ref" ||
-                                                              data1218 === "alt" ||
-                                                              data1218 === "qual" ||
-                                                              data1218 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1218 == "string" &&
+                                                          (data1218 === "chrom" ||
+                                                            data1218 === "pos" ||
+                                                            data1218 === "id" ||
+                                                            data1218 === "ref" ||
+                                                            data1218 === "alt" ||
+                                                            data1218 === "qual" ||
+                                                            data1218 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -61547,24 +61298,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1217.name !== undefined) {
                                                         let data1230 = data1217.name;
                                                         const _errs1583 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1230 == "string" &&
-                                                            (data1230 === "clinVar" ||
-                                                              data1230 === "gene" ||
-                                                              data1230 === "genotype" ||
-                                                              data1230 === "gnomAdAf" ||
-                                                              data1230 === "hpo" ||
-                                                              data1230 === "inheritancePattern" ||
-                                                              data1230 === "locus" ||
-                                                              data1230 === "ref" ||
-                                                              data1230 === "numberOfRepeatUnits" ||
-                                                              data1230 === "vipC" ||
-                                                              data1230 === "vipCS" ||
-                                                              data1230 === "vkgl" ||
-                                                              data1230 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1230 == "string" &&
+                                                          (data1230 === "clinVar" ||
+                                                            data1230 === "gene" ||
+                                                            data1230 === "genotype" ||
+                                                            data1230 === "gnomAdAf" ||
+                                                            data1230 === "hpo" ||
+                                                            data1230 === "inheritancePattern" ||
+                                                            data1230 === "locus" ||
+                                                            data1230 === "ref" ||
+                                                            data1230 === "numberOfRepeatUnits" ||
+                                                            data1230 === "vipC" ||
+                                                            data1230 === "vipCS" ||
+                                                            data1230 === "vkgl" ||
+                                                            data1230 === "notesInput")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -61999,18 +61748,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data1235.name !== undefined) {
                                       let data1236 = data1235.name;
                                       const _errs1590 = errors;
-                                      if (
-                                        !(
-                                          typeof data1236 == "string" &&
-                                          (data1236 === "chrom" ||
-                                            data1236 === "pos" ||
-                                            data1236 === "id" ||
-                                            data1236 === "ref" ||
-                                            data1236 === "alt" ||
-                                            data1236 === "qual" ||
-                                            data1236 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1236 == "string" &&
+                                        (data1236 === "chrom" ||
+                                          data1236 === "pos" ||
+                                          data1236 === "id" ||
+                                          data1236 === "ref" ||
+                                          data1236 === "alt" ||
+                                          data1236 === "qual" ||
+                                          data1236 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variant/sample_cells/all/" + i80 + "/name",
@@ -62507,26 +62254,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data1235.name !== undefined) {
                                       let data1248 = data1235.name;
                                       const _errs1606 = errors;
-                                      if (
-                                        !(
-                                          typeof data1248 == "string" &&
-                                          (data1248 === "clinVar" ||
-                                            data1248 === "confidenceInterval" ||
-                                            data1248 === "gene" ||
-                                            data1248 === "genotype" ||
-                                            data1248 === "genotype_maternal" ||
-                                            data1248 === "genotype_paternal" ||
-                                            data1248 === "gnomAdAf" ||
-                                            data1248 === "hpo" ||
-                                            data1248 === "inheritancePattern" ||
-                                            data1248 === "locus" ||
-                                            data1248 === "spanningReads" ||
-                                            data1248 === "vipC" ||
-                                            data1248 === "vipCS" ||
-                                            data1248 === "vkgl" ||
-                                            data1248 === "notesInput")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1248 == "string" &&
+                                        (data1248 === "clinVar" ||
+                                          data1248 === "confidenceInterval" ||
+                                          data1248 === "gene" ||
+                                          data1248 === "genotype" ||
+                                          data1248 === "genotype_maternal" ||
+                                          data1248 === "genotype_paternal" ||
+                                          data1248 === "gnomAdAf" ||
+                                          data1248 === "hpo" ||
+                                          data1248 === "inheritancePattern" ||
+                                          data1248 === "locus" ||
+                                          data1248 === "spanningReads" ||
+                                          data1248 === "vipC" ||
+                                          data1248 === "vipCS" ||
+                                          data1248 === "vkgl" ||
+                                          data1248 === "notesInput" ||
+                                          data1248 === "numberOfRepeatUnits")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath: instancePath + "/variant/sample_cells/all/" + i80 + "/name",
@@ -62693,18 +62439,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1252.name !== undefined) {
                                                     let data1253 = data1252.name;
                                                     const _errs1613 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1253 == "string" &&
-                                                        (data1253 === "chrom" ||
-                                                          data1253 === "pos" ||
-                                                          data1253 === "id" ||
-                                                          data1253 === "ref" ||
-                                                          data1253 === "alt" ||
-                                                          data1253 === "qual" ||
-                                                          data1253 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1253 == "string" &&
+                                                      (data1253 === "chrom" ||
+                                                        data1253 === "pos" ||
+                                                        data1253 === "id" ||
+                                                        data1253 === "ref" ||
+                                                        data1253 === "alt" ||
+                                                        data1253 === "qual" ||
+                                                        data1253 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -63327,24 +63071,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1252.name !== undefined) {
                                                     let data1265 = data1252.name;
                                                     const _errs1629 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1265 == "string" &&
-                                                        (data1265 === "clinVar" ||
-                                                          data1265 === "gene" ||
-                                                          data1265 === "genotype" ||
-                                                          data1265 === "gnomAdAf" ||
-                                                          data1265 === "hpo" ||
-                                                          data1265 === "inheritancePattern" ||
-                                                          data1265 === "locus" ||
-                                                          data1265 === "ref" ||
-                                                          data1265 === "numberOfRepeatUnits" ||
-                                                          data1265 === "vipC" ||
-                                                          data1265 === "vipCS" ||
-                                                          data1265 === "vkgl" ||
-                                                          data1265 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1265 == "string" &&
+                                                      (data1265 === "clinVar" ||
+                                                        data1265 === "gene" ||
+                                                        data1265 === "genotype" ||
+                                                        data1265 === "gnomAdAf" ||
+                                                        data1265 === "hpo" ||
+                                                        data1265 === "inheritancePattern" ||
+                                                        data1265 === "locus" ||
+                                                        data1265 === "ref" ||
+                                                        data1265 === "numberOfRepeatUnits" ||
+                                                        data1265 === "vipC" ||
+                                                        data1265 === "vipCS" ||
+                                                        data1265 === "vkgl" ||
+                                                        data1265 === "notesInput")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -63727,18 +63469,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1269.name !== undefined) {
                                         let data1270 = data1269.name;
                                         const _errs1635 = errors;
-                                        if (
-                                          !(
-                                            typeof data1270 == "string" &&
-                                            (data1270 === "chrom" ||
-                                              data1270 === "pos" ||
-                                              data1270 === "id" ||
-                                              data1270 === "ref" ||
-                                              data1270 === "alt" ||
-                                              data1270 === "qual" ||
-                                              data1270 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1270 == "string" &&
+                                          (data1270 === "chrom" ||
+                                            data1270 === "pos" ||
+                                            data1270 === "id" ||
+                                            data1270 === "ref" ||
+                                            data1270 === "alt" ||
+                                            data1270 === "qual" ||
+                                            data1270 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/variant/sample_cells/snv/" + i82 + "/name",
@@ -64235,26 +63975,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1269.name !== undefined) {
                                         let data1282 = data1269.name;
                                         const _errs1651 = errors;
-                                        if (
-                                          !(
-                                            typeof data1282 == "string" &&
-                                            (data1282 === "clinVar" ||
-                                              data1282 === "confidenceInterval" ||
-                                              data1282 === "gene" ||
-                                              data1282 === "genotype" ||
-                                              data1282 === "genotype_maternal" ||
-                                              data1282 === "genotype_paternal" ||
-                                              data1282 === "gnomAdAf" ||
-                                              data1282 === "hpo" ||
-                                              data1282 === "inheritancePattern" ||
-                                              data1282 === "locus" ||
-                                              data1282 === "spanningReads" ||
-                                              data1282 === "vipC" ||
-                                              data1282 === "vipCS" ||
-                                              data1282 === "vkgl" ||
-                                              data1282 === "notesInput")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1282 == "string" &&
+                                          (data1282 === "clinVar" ||
+                                            data1282 === "confidenceInterval" ||
+                                            data1282 === "gene" ||
+                                            data1282 === "genotype" ||
+                                            data1282 === "genotype_maternal" ||
+                                            data1282 === "genotype_paternal" ||
+                                            data1282 === "gnomAdAf" ||
+                                            data1282 === "hpo" ||
+                                            data1282 === "inheritancePattern" ||
+                                            data1282 === "locus" ||
+                                            data1282 === "spanningReads" ||
+                                            data1282 === "vipC" ||
+                                            data1282 === "vipCS" ||
+                                            data1282 === "vkgl" ||
+                                            data1282 === "notesInput" ||
+                                            data1282 === "numberOfRepeatUnits")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath: instancePath + "/variant/sample_cells/snv/" + i82 + "/name",
@@ -64421,18 +64160,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1286.name !== undefined) {
                                                       let data1287 = data1286.name;
                                                       const _errs1658 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1287 == "string" &&
-                                                          (data1287 === "chrom" ||
-                                                            data1287 === "pos" ||
-                                                            data1287 === "id" ||
-                                                            data1287 === "ref" ||
-                                                            data1287 === "alt" ||
-                                                            data1287 === "qual" ||
-                                                            data1287 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1287 == "string" &&
+                                                        (data1287 === "chrom" ||
+                                                          data1287 === "pos" ||
+                                                          data1287 === "id" ||
+                                                          data1287 === "ref" ||
+                                                          data1287 === "alt" ||
+                                                          data1287 === "qual" ||
+                                                          data1287 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -65055,24 +64792,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1286.name !== undefined) {
                                                       let data1299 = data1286.name;
                                                       const _errs1674 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1299 == "string" &&
-                                                          (data1299 === "clinVar" ||
-                                                            data1299 === "gene" ||
-                                                            data1299 === "genotype" ||
-                                                            data1299 === "gnomAdAf" ||
-                                                            data1299 === "hpo" ||
-                                                            data1299 === "inheritancePattern" ||
-                                                            data1299 === "locus" ||
-                                                            data1299 === "ref" ||
-                                                            data1299 === "numberOfRepeatUnits" ||
-                                                            data1299 === "vipC" ||
-                                                            data1299 === "vipCS" ||
-                                                            data1299 === "vkgl" ||
-                                                            data1299 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1299 == "string" &&
+                                                        (data1299 === "clinVar" ||
+                                                          data1299 === "gene" ||
+                                                          data1299 === "genotype" ||
+                                                          data1299 === "gnomAdAf" ||
+                                                          data1299 === "hpo" ||
+                                                          data1299 === "inheritancePattern" ||
+                                                          data1299 === "locus" ||
+                                                          data1299 === "ref" ||
+                                                          data1299 === "numberOfRepeatUnits" ||
+                                                          data1299 === "vipC" ||
+                                                          data1299 === "vipCS" ||
+                                                          data1299 === "vkgl" ||
+                                                          data1299 === "notesInput")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -65455,18 +65190,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1303.name !== undefined) {
                                           let data1304 = data1303.name;
                                           const _errs1680 = errors;
-                                          if (
-                                            !(
-                                              typeof data1304 == "string" &&
-                                              (data1304 === "chrom" ||
-                                                data1304 === "pos" ||
-                                                data1304 === "id" ||
-                                                data1304 === "ref" ||
-                                                data1304 === "alt" ||
-                                                data1304 === "qual" ||
-                                                data1304 === "filter")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1304 == "string" &&
+                                            (data1304 === "chrom" ||
+                                              data1304 === "pos" ||
+                                              data1304 === "id" ||
+                                              data1304 === "ref" ||
+                                              data1304 === "alt" ||
+                                              data1304 === "qual" ||
+                                              data1304 === "filter")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -65980,26 +65713,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1303.name !== undefined) {
                                           let data1316 = data1303.name;
                                           const _errs1696 = errors;
-                                          if (
-                                            !(
-                                              typeof data1316 == "string" &&
-                                              (data1316 === "clinVar" ||
-                                                data1316 === "confidenceInterval" ||
-                                                data1316 === "gene" ||
-                                                data1316 === "genotype" ||
-                                                data1316 === "genotype_maternal" ||
-                                                data1316 === "genotype_paternal" ||
-                                                data1316 === "gnomAdAf" ||
-                                                data1316 === "hpo" ||
-                                                data1316 === "inheritancePattern" ||
-                                                data1316 === "locus" ||
-                                                data1316 === "spanningReads" ||
-                                                data1316 === "vipC" ||
-                                                data1316 === "vipCS" ||
-                                                data1316 === "vkgl" ||
-                                                data1316 === "notesInput")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1316 == "string" &&
+                                            (data1316 === "clinVar" ||
+                                              data1316 === "confidenceInterval" ||
+                                              data1316 === "gene" ||
+                                              data1316 === "genotype" ||
+                                              data1316 === "genotype_maternal" ||
+                                              data1316 === "genotype_paternal" ||
+                                              data1316 === "gnomAdAf" ||
+                                              data1316 === "hpo" ||
+                                              data1316 === "inheritancePattern" ||
+                                              data1316 === "locus" ||
+                                              data1316 === "spanningReads" ||
+                                              data1316 === "vipC" ||
+                                              data1316 === "vipCS" ||
+                                              data1316 === "vkgl" ||
+                                              data1316 === "notesInput" ||
+                                              data1316 === "numberOfRepeatUnits")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -66174,18 +65906,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1320.name !== undefined) {
                                                         let data1321 = data1320.name;
                                                         const _errs1703 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1321 == "string" &&
-                                                            (data1321 === "chrom" ||
-                                                              data1321 === "pos" ||
-                                                              data1321 === "id" ||
-                                                              data1321 === "ref" ||
-                                                              data1321 === "alt" ||
-                                                              data1321 === "qual" ||
-                                                              data1321 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1321 == "string" &&
+                                                          (data1321 === "chrom" ||
+                                                            data1321 === "pos" ||
+                                                            data1321 === "id" ||
+                                                            data1321 === "ref" ||
+                                                            data1321 === "alt" ||
+                                                            data1321 === "qual" ||
+                                                            data1321 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -66808,24 +66538,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1320.name !== undefined) {
                                                         let data1333 = data1320.name;
                                                         const _errs1719 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1333 == "string" &&
-                                                            (data1333 === "clinVar" ||
-                                                              data1333 === "gene" ||
-                                                              data1333 === "genotype" ||
-                                                              data1333 === "gnomAdAf" ||
-                                                              data1333 === "hpo" ||
-                                                              data1333 === "inheritancePattern" ||
-                                                              data1333 === "locus" ||
-                                                              data1333 === "ref" ||
-                                                              data1333 === "numberOfRepeatUnits" ||
-                                                              data1333 === "vipC" ||
-                                                              data1333 === "vipCS" ||
-                                                              data1333 === "vkgl" ||
-                                                              data1333 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1333 == "string" &&
+                                                          (data1333 === "clinVar" ||
+                                                            data1333 === "gene" ||
+                                                            data1333 === "genotype" ||
+                                                            data1333 === "gnomAdAf" ||
+                                                            data1333 === "hpo" ||
+                                                            data1333 === "inheritancePattern" ||
+                                                            data1333 === "locus" ||
+                                                            data1333 === "ref" ||
+                                                            data1333 === "numberOfRepeatUnits" ||
+                                                            data1333 === "vipC" ||
+                                                            data1333 === "vipCS" ||
+                                                            data1333 === "vkgl" ||
+                                                            data1333 === "notesInput")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -67208,18 +66936,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data1337.name !== undefined) {
                                             let data1338 = data1337.name;
                                             const _errs1725 = errors;
-                                            if (
-                                              !(
-                                                typeof data1338 == "string" &&
-                                                (data1338 === "chrom" ||
-                                                  data1338 === "pos" ||
-                                                  data1338 === "id" ||
-                                                  data1338 === "ref" ||
-                                                  data1338 === "alt" ||
-                                                  data1338 === "qual" ||
-                                                  data1338 === "filter")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data1338 == "string" &&
+                                              (data1338 === "chrom" ||
+                                                data1338 === "pos" ||
+                                                data1338 === "id" ||
+                                                data1338 === "ref" ||
+                                                data1338 === "alt" ||
+                                                data1338 === "qual" ||
+                                                data1338 === "filter")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -67733,26 +67459,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data1337.name !== undefined) {
                                             let data1350 = data1337.name;
                                             const _errs1741 = errors;
-                                            if (
-                                              !(
-                                                typeof data1350 == "string" &&
-                                                (data1350 === "clinVar" ||
-                                                  data1350 === "confidenceInterval" ||
-                                                  data1350 === "gene" ||
-                                                  data1350 === "genotype" ||
-                                                  data1350 === "genotype_maternal" ||
-                                                  data1350 === "genotype_paternal" ||
-                                                  data1350 === "gnomAdAf" ||
-                                                  data1350 === "hpo" ||
-                                                  data1350 === "inheritancePattern" ||
-                                                  data1350 === "locus" ||
-                                                  data1350 === "spanningReads" ||
-                                                  data1350 === "vipC" ||
-                                                  data1350 === "vipCS" ||
-                                                  data1350 === "vkgl" ||
-                                                  data1350 === "notesInput")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data1350 == "string" &&
+                                              (data1350 === "clinVar" ||
+                                                data1350 === "confidenceInterval" ||
+                                                data1350 === "gene" ||
+                                                data1350 === "genotype" ||
+                                                data1350 === "genotype_maternal" ||
+                                                data1350 === "genotype_paternal" ||
+                                                data1350 === "gnomAdAf" ||
+                                                data1350 === "hpo" ||
+                                                data1350 === "inheritancePattern" ||
+                                                data1350 === "locus" ||
+                                                data1350 === "spanningReads" ||
+                                                data1350 === "vipC" ||
+                                                data1350 === "vipCS" ||
+                                                data1350 === "vkgl" ||
+                                                data1350 === "notesInput" ||
+                                                data1350 === "numberOfRepeatUnits")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -67927,18 +67652,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data1354.name !== undefined) {
                                                           let data1355 = data1354.name;
                                                           const _errs1748 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data1355 == "string" &&
-                                                              (data1355 === "chrom" ||
-                                                                data1355 === "pos" ||
-                                                                data1355 === "id" ||
-                                                                data1355 === "ref" ||
-                                                                data1355 === "alt" ||
-                                                                data1355 === "qual" ||
-                                                                data1355 === "filter")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data1355 == "string" &&
+                                                            (data1355 === "chrom" ||
+                                                              data1355 === "pos" ||
+                                                              data1355 === "id" ||
+                                                              data1355 === "ref" ||
+                                                              data1355 === "alt" ||
+                                                              data1355 === "qual" ||
+                                                              data1355 === "filter")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -68561,24 +68284,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data1354.name !== undefined) {
                                                           let data1367 = data1354.name;
                                                           const _errs1764 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data1367 == "string" &&
-                                                              (data1367 === "clinVar" ||
-                                                                data1367 === "gene" ||
-                                                                data1367 === "genotype" ||
-                                                                data1367 === "gnomAdAf" ||
-                                                                data1367 === "hpo" ||
-                                                                data1367 === "inheritancePattern" ||
-                                                                data1367 === "locus" ||
-                                                                data1367 === "ref" ||
-                                                                data1367 === "numberOfRepeatUnits" ||
-                                                                data1367 === "vipC" ||
-                                                                data1367 === "vipCS" ||
-                                                                data1367 === "vkgl" ||
-                                                                data1367 === "notesInput")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data1367 == "string" &&
+                                                            (data1367 === "clinVar" ||
+                                                              data1367 === "gene" ||
+                                                              data1367 === "genotype" ||
+                                                              data1367 === "gnomAdAf" ||
+                                                              data1367 === "hpo" ||
+                                                              data1367 === "inheritancePattern" ||
+                                                              data1367 === "locus" ||
+                                                              data1367 === "ref" ||
+                                                              data1367 === "numberOfRepeatUnits" ||
+                                                              data1367 === "vipC" ||
+                                                              data1367 === "vipCS" ||
+                                                              data1367 === "vkgl" ||
+                                                              data1367 === "notesInput")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -69061,18 +68782,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data1373.name !== undefined) {
                                       let data1374 = data1373.name;
                                       const _errs1772 = errors;
-                                      if (
-                                        !(
-                                          typeof data1374 == "string" &&
-                                          (data1374 === "chrom" ||
-                                            data1374 === "pos" ||
-                                            data1374 === "id" ||
-                                            data1374 === "ref" ||
-                                            data1374 === "alt" ||
-                                            data1374 === "qual" ||
-                                            data1374 === "filter")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1374 == "string" &&
+                                        (data1374 === "chrom" ||
+                                          data1374 === "pos" ||
+                                          data1374 === "id" ||
+                                          data1374 === "ref" ||
+                                          data1374 === "alt" ||
+                                          data1374 === "qual" ||
+                                          data1374 === "filter")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath:
@@ -69618,26 +69337,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                     if (data1373.name !== undefined) {
                                       let data1386 = data1373.name;
                                       const _errs1788 = errors;
-                                      if (
-                                        !(
-                                          typeof data1386 == "string" &&
-                                          (data1386 === "clinVar" ||
-                                            data1386 === "confidenceInterval" ||
-                                            data1386 === "gene" ||
-                                            data1386 === "genotype" ||
-                                            data1386 === "genotype_maternal" ||
-                                            data1386 === "genotype_paternal" ||
-                                            data1386 === "gnomAdAf" ||
-                                            data1386 === "hpo" ||
-                                            data1386 === "inheritancePattern" ||
-                                            data1386 === "locus" ||
-                                            data1386 === "spanningReads" ||
-                                            data1386 === "vipC" ||
-                                            data1386 === "vipCS" ||
-                                            data1386 === "vkgl" ||
-                                            data1386 === "notesInput")
-                                        )
-                                      ) {
+                                      if (!(
+                                        typeof data1386 == "string" &&
+                                        (data1386 === "clinVar" ||
+                                          data1386 === "confidenceInterval" ||
+                                          data1386 === "gene" ||
+                                          data1386 === "genotype" ||
+                                          data1386 === "genotype_maternal" ||
+                                          data1386 === "genotype_paternal" ||
+                                          data1386 === "gnomAdAf" ||
+                                          data1386 === "hpo" ||
+                                          data1386 === "inheritancePattern" ||
+                                          data1386 === "locus" ||
+                                          data1386 === "spanningReads" ||
+                                          data1386 === "vipC" ||
+                                          data1386 === "vipCS" ||
+                                          data1386 === "vkgl" ||
+                                          data1386 === "notesInput" ||
+                                          data1386 === "numberOfRepeatUnits")
+                                      )) {
                                         validate57.errors = [
                                           {
                                             instancePath:
@@ -69816,18 +69534,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1390.name !== undefined) {
                                                     let data1391 = data1390.name;
                                                     const _errs1795 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1391 == "string" &&
-                                                        (data1391 === "chrom" ||
-                                                          data1391 === "pos" ||
-                                                          data1391 === "id" ||
-                                                          data1391 === "ref" ||
-                                                          data1391 === "alt" ||
-                                                          data1391 === "qual" ||
-                                                          data1391 === "filter")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1391 == "string" &&
+                                                      (data1391 === "chrom" ||
+                                                        data1391 === "pos" ||
+                                                        data1391 === "id" ||
+                                                        data1391 === "ref" ||
+                                                        data1391 === "alt" ||
+                                                        data1391 === "qual" ||
+                                                        data1391 === "filter")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -70450,24 +70166,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                   if (data1390.name !== undefined) {
                                                     let data1403 = data1390.name;
                                                     const _errs1811 = errors;
-                                                    if (
-                                                      !(
-                                                        typeof data1403 == "string" &&
-                                                        (data1403 === "clinVar" ||
-                                                          data1403 === "gene" ||
-                                                          data1403 === "genotype" ||
-                                                          data1403 === "gnomAdAf" ||
-                                                          data1403 === "hpo" ||
-                                                          data1403 === "inheritancePattern" ||
-                                                          data1403 === "locus" ||
-                                                          data1403 === "ref" ||
-                                                          data1403 === "numberOfRepeatUnits" ||
-                                                          data1403 === "vipC" ||
-                                                          data1403 === "vipCS" ||
-                                                          data1403 === "vkgl" ||
-                                                          data1403 === "notesInput")
-                                                      )
-                                                    ) {
+                                                    if (!(
+                                                      typeof data1403 == "string" &&
+                                                      (data1403 === "clinVar" ||
+                                                        data1403 === "gene" ||
+                                                        data1403 === "genotype" ||
+                                                        data1403 === "gnomAdAf" ||
+                                                        data1403 === "hpo" ||
+                                                        data1403 === "inheritancePattern" ||
+                                                        data1403 === "locus" ||
+                                                        data1403 === "ref" ||
+                                                        data1403 === "numberOfRepeatUnits" ||
+                                                        data1403 === "vipC" ||
+                                                        data1403 === "vipCS" ||
+                                                        data1403 === "vkgl" ||
+                                                        data1403 === "notesInput")
+                                                    )) {
                                                       validate57.errors = [
                                                         {
                                                           instancePath:
@@ -70861,18 +70575,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1407.name !== undefined) {
                                         let data1408 = data1407.name;
                                         const _errs1817 = errors;
-                                        if (
-                                          !(
-                                            typeof data1408 == "string" &&
-                                            (data1408 === "chrom" ||
-                                              data1408 === "pos" ||
-                                              data1408 === "id" ||
-                                              data1408 === "ref" ||
-                                              data1408 === "alt" ||
-                                              data1408 === "qual" ||
-                                              data1408 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1408 == "string" &&
+                                          (data1408 === "chrom" ||
+                                            data1408 === "pos" ||
+                                            data1408 === "id" ||
+                                            data1408 === "ref" ||
+                                            data1408 === "alt" ||
+                                            data1408 === "qual" ||
+                                            data1408 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -71418,26 +71130,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1407.name !== undefined) {
                                         let data1420 = data1407.name;
                                         const _errs1833 = errors;
-                                        if (
-                                          !(
-                                            typeof data1420 == "string" &&
-                                            (data1420 === "clinVar" ||
-                                              data1420 === "confidenceInterval" ||
-                                              data1420 === "gene" ||
-                                              data1420 === "genotype" ||
-                                              data1420 === "genotype_maternal" ||
-                                              data1420 === "genotype_paternal" ||
-                                              data1420 === "gnomAdAf" ||
-                                              data1420 === "hpo" ||
-                                              data1420 === "inheritancePattern" ||
-                                              data1420 === "locus" ||
-                                              data1420 === "spanningReads" ||
-                                              data1420 === "vipC" ||
-                                              data1420 === "vipCS" ||
-                                              data1420 === "vkgl" ||
-                                              data1420 === "notesInput")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1420 == "string" &&
+                                          (data1420 === "clinVar" ||
+                                            data1420 === "confidenceInterval" ||
+                                            data1420 === "gene" ||
+                                            data1420 === "genotype" ||
+                                            data1420 === "genotype_maternal" ||
+                                            data1420 === "genotype_paternal" ||
+                                            data1420 === "gnomAdAf" ||
+                                            data1420 === "hpo" ||
+                                            data1420 === "inheritancePattern" ||
+                                            data1420 === "locus" ||
+                                            data1420 === "spanningReads" ||
+                                            data1420 === "vipC" ||
+                                            data1420 === "vipCS" ||
+                                            data1420 === "vkgl" ||
+                                            data1420 === "notesInput" ||
+                                            data1420 === "numberOfRepeatUnits")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -71616,18 +71327,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1424.name !== undefined) {
                                                       let data1425 = data1424.name;
                                                       const _errs1840 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1425 == "string" &&
-                                                          (data1425 === "chrom" ||
-                                                            data1425 === "pos" ||
-                                                            data1425 === "id" ||
-                                                            data1425 === "ref" ||
-                                                            data1425 === "alt" ||
-                                                            data1425 === "qual" ||
-                                                            data1425 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1425 == "string" &&
+                                                        (data1425 === "chrom" ||
+                                                          data1425 === "pos" ||
+                                                          data1425 === "id" ||
+                                                          data1425 === "ref" ||
+                                                          data1425 === "alt" ||
+                                                          data1425 === "qual" ||
+                                                          data1425 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -72250,24 +71959,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1424.name !== undefined) {
                                                       let data1437 = data1424.name;
                                                       const _errs1856 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1437 == "string" &&
-                                                          (data1437 === "clinVar" ||
-                                                            data1437 === "gene" ||
-                                                            data1437 === "genotype" ||
-                                                            data1437 === "gnomAdAf" ||
-                                                            data1437 === "hpo" ||
-                                                            data1437 === "inheritancePattern" ||
-                                                            data1437 === "locus" ||
-                                                            data1437 === "ref" ||
-                                                            data1437 === "numberOfRepeatUnits" ||
-                                                            data1437 === "vipC" ||
-                                                            data1437 === "vipCS" ||
-                                                            data1437 === "vkgl" ||
-                                                            data1437 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1437 == "string" &&
+                                                        (data1437 === "clinVar" ||
+                                                          data1437 === "gene" ||
+                                                          data1437 === "genotype" ||
+                                                          data1437 === "gnomAdAf" ||
+                                                          data1437 === "hpo" ||
+                                                          data1437 === "inheritancePattern" ||
+                                                          data1437 === "locus" ||
+                                                          data1437 === "ref" ||
+                                                          data1437 === "numberOfRepeatUnits" ||
+                                                          data1437 === "vipC" ||
+                                                          data1437 === "vipCS" ||
+                                                          data1437 === "vkgl" ||
+                                                          data1437 === "notesInput")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -72665,18 +72372,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1441.name !== undefined) {
                                           let data1442 = data1441.name;
                                           const _errs1862 = errors;
-                                          if (
-                                            !(
-                                              typeof data1442 == "string" &&
-                                              (data1442 === "chrom" ||
-                                                data1442 === "pos" ||
-                                                data1442 === "id" ||
-                                                data1442 === "ref" ||
-                                                data1442 === "alt" ||
-                                                data1442 === "qual" ||
-                                                data1442 === "filter")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1442 == "string" &&
+                                            (data1442 === "chrom" ||
+                                              data1442 === "pos" ||
+                                              data1442 === "id" ||
+                                              data1442 === "ref" ||
+                                              data1442 === "alt" ||
+                                              data1442 === "qual" ||
+                                              data1442 === "filter")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -73222,26 +72927,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1441.name !== undefined) {
                                           let data1454 = data1441.name;
                                           const _errs1878 = errors;
-                                          if (
-                                            !(
-                                              typeof data1454 == "string" &&
-                                              (data1454 === "clinVar" ||
-                                                data1454 === "confidenceInterval" ||
-                                                data1454 === "gene" ||
-                                                data1454 === "genotype" ||
-                                                data1454 === "genotype_maternal" ||
-                                                data1454 === "genotype_paternal" ||
-                                                data1454 === "gnomAdAf" ||
-                                                data1454 === "hpo" ||
-                                                data1454 === "inheritancePattern" ||
-                                                data1454 === "locus" ||
-                                                data1454 === "spanningReads" ||
-                                                data1454 === "vipC" ||
-                                                data1454 === "vipCS" ||
-                                                data1454 === "vkgl" ||
-                                                data1454 === "notesInput")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1454 == "string" &&
+                                            (data1454 === "clinVar" ||
+                                              data1454 === "confidenceInterval" ||
+                                              data1454 === "gene" ||
+                                              data1454 === "genotype" ||
+                                              data1454 === "genotype_maternal" ||
+                                              data1454 === "genotype_paternal" ||
+                                              data1454 === "gnomAdAf" ||
+                                              data1454 === "hpo" ||
+                                              data1454 === "inheritancePattern" ||
+                                              data1454 === "locus" ||
+                                              data1454 === "spanningReads" ||
+                                              data1454 === "vipC" ||
+                                              data1454 === "vipCS" ||
+                                              data1454 === "vkgl" ||
+                                              data1454 === "notesInput" ||
+                                              data1454 === "numberOfRepeatUnits")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -73424,18 +73128,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1458.name !== undefined) {
                                                         let data1459 = data1458.name;
                                                         const _errs1885 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1459 == "string" &&
-                                                            (data1459 === "chrom" ||
-                                                              data1459 === "pos" ||
-                                                              data1459 === "id" ||
-                                                              data1459 === "ref" ||
-                                                              data1459 === "alt" ||
-                                                              data1459 === "qual" ||
-                                                              data1459 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1459 == "string" &&
+                                                          (data1459 === "chrom" ||
+                                                            data1459 === "pos" ||
+                                                            data1459 === "id" ||
+                                                            data1459 === "ref" ||
+                                                            data1459 === "alt" ||
+                                                            data1459 === "qual" ||
+                                                            data1459 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -74058,24 +73760,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1458.name !== undefined) {
                                                         let data1471 = data1458.name;
                                                         const _errs1901 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1471 == "string" &&
-                                                            (data1471 === "clinVar" ||
-                                                              data1471 === "gene" ||
-                                                              data1471 === "genotype" ||
-                                                              data1471 === "gnomAdAf" ||
-                                                              data1471 === "hpo" ||
-                                                              data1471 === "inheritancePattern" ||
-                                                              data1471 === "locus" ||
-                                                              data1471 === "ref" ||
-                                                              data1471 === "numberOfRepeatUnits" ||
-                                                              data1471 === "vipC" ||
-                                                              data1471 === "vipCS" ||
-                                                              data1471 === "vkgl" ||
-                                                              data1471 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1471 == "string" &&
+                                                          (data1471 === "clinVar" ||
+                                                            data1471 === "gene" ||
+                                                            data1471 === "genotype" ||
+                                                            data1471 === "gnomAdAf" ||
+                                                            data1471 === "hpo" ||
+                                                            data1471 === "inheritancePattern" ||
+                                                            data1471 === "locus" ||
+                                                            data1471 === "ref" ||
+                                                            data1471 === "numberOfRepeatUnits" ||
+                                                            data1471 === "vipC" ||
+                                                            data1471 === "vipCS" ||
+                                                            data1471 === "vkgl" ||
+                                                            data1471 === "notesInput")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -74473,18 +74173,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data1475.name !== undefined) {
                                             let data1476 = data1475.name;
                                             const _errs1907 = errors;
-                                            if (
-                                              !(
-                                                typeof data1476 == "string" &&
-                                                (data1476 === "chrom" ||
-                                                  data1476 === "pos" ||
-                                                  data1476 === "id" ||
-                                                  data1476 === "ref" ||
-                                                  data1476 === "alt" ||
-                                                  data1476 === "qual" ||
-                                                  data1476 === "filter")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data1476 == "string" &&
+                                              (data1476 === "chrom" ||
+                                                data1476 === "pos" ||
+                                                data1476 === "id" ||
+                                                data1476 === "ref" ||
+                                                data1476 === "alt" ||
+                                                data1476 === "qual" ||
+                                                data1476 === "filter")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -75030,26 +74728,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data1475.name !== undefined) {
                                             let data1488 = data1475.name;
                                             const _errs1923 = errors;
-                                            if (
-                                              !(
-                                                typeof data1488 == "string" &&
-                                                (data1488 === "clinVar" ||
-                                                  data1488 === "confidenceInterval" ||
-                                                  data1488 === "gene" ||
-                                                  data1488 === "genotype" ||
-                                                  data1488 === "genotype_maternal" ||
-                                                  data1488 === "genotype_paternal" ||
-                                                  data1488 === "gnomAdAf" ||
-                                                  data1488 === "hpo" ||
-                                                  data1488 === "inheritancePattern" ||
-                                                  data1488 === "locus" ||
-                                                  data1488 === "spanningReads" ||
-                                                  data1488 === "vipC" ||
-                                                  data1488 === "vipCS" ||
-                                                  data1488 === "vkgl" ||
-                                                  data1488 === "notesInput")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data1488 == "string" &&
+                                              (data1488 === "clinVar" ||
+                                                data1488 === "confidenceInterval" ||
+                                                data1488 === "gene" ||
+                                                data1488 === "genotype" ||
+                                                data1488 === "genotype_maternal" ||
+                                                data1488 === "genotype_paternal" ||
+                                                data1488 === "gnomAdAf" ||
+                                                data1488 === "hpo" ||
+                                                data1488 === "inheritancePattern" ||
+                                                data1488 === "locus" ||
+                                                data1488 === "spanningReads" ||
+                                                data1488 === "vipC" ||
+                                                data1488 === "vipCS" ||
+                                                data1488 === "vkgl" ||
+                                                data1488 === "notesInput" ||
+                                                data1488 === "numberOfRepeatUnits")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -75232,18 +74929,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data1492.name !== undefined) {
                                                           let data1493 = data1492.name;
                                                           const _errs1930 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data1493 == "string" &&
-                                                              (data1493 === "chrom" ||
-                                                                data1493 === "pos" ||
-                                                                data1493 === "id" ||
-                                                                data1493 === "ref" ||
-                                                                data1493 === "alt" ||
-                                                                data1493 === "qual" ||
-                                                                data1493 === "filter")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data1493 == "string" &&
+                                                            (data1493 === "chrom" ||
+                                                              data1493 === "pos" ||
+                                                              data1493 === "id" ||
+                                                              data1493 === "ref" ||
+                                                              data1493 === "alt" ||
+                                                              data1493 === "qual" ||
+                                                              data1493 === "filter")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -75867,24 +75562,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data1492.name !== undefined) {
                                                           let data1505 = data1492.name;
                                                           const _errs1946 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data1505 == "string" &&
-                                                              (data1505 === "clinVar" ||
-                                                                data1505 === "gene" ||
-                                                                data1505 === "genotype" ||
-                                                                data1505 === "gnomAdAf" ||
-                                                                data1505 === "hpo" ||
-                                                                data1505 === "inheritancePattern" ||
-                                                                data1505 === "locus" ||
-                                                                data1505 === "ref" ||
-                                                                data1505 === "numberOfRepeatUnits" ||
-                                                                data1505 === "vipC" ||
-                                                                data1505 === "vipCS" ||
-                                                                data1505 === "vkgl" ||
-                                                                data1505 === "notesInput")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data1505 == "string" &&
+                                                            (data1505 === "clinVar" ||
+                                                              data1505 === "gene" ||
+                                                              data1505 === "genotype" ||
+                                                              data1505 === "gnomAdAf" ||
+                                                              data1505 === "hpo" ||
+                                                              data1505 === "inheritancePattern" ||
+                                                              data1505 === "locus" ||
+                                                              data1505 === "ref" ||
+                                                              data1505 === "numberOfRepeatUnits" ||
+                                                              data1505 === "vipC" ||
+                                                              data1505 === "vipCS" ||
+                                                              data1505 === "vkgl" ||
+                                                              data1505 === "notesInput")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -76385,18 +76078,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1511.name !== undefined) {
                                         let data1512 = data1511.name;
                                         const _errs1954 = errors;
-                                        if (
-                                          !(
-                                            typeof data1512 == "string" &&
-                                            (data1512 === "chrom" ||
-                                              data1512 === "pos" ||
-                                              data1512 === "id" ||
-                                              data1512 === "ref" ||
-                                              data1512 === "alt" ||
-                                              data1512 === "qual" ||
-                                              data1512 === "filter")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1512 == "string" &&
+                                          (data1512 === "chrom" ||
+                                            data1512 === "pos" ||
+                                            data1512 === "id" ||
+                                            data1512 === "ref" ||
+                                            data1512 === "alt" ||
+                                            data1512 === "qual" ||
+                                            data1512 === "filter")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -76922,26 +76613,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                       if (data1511.name !== undefined) {
                                         let data1524 = data1511.name;
                                         const _errs1970 = errors;
-                                        if (
-                                          !(
-                                            typeof data1524 == "string" &&
-                                            (data1524 === "clinVar" ||
-                                              data1524 === "confidenceInterval" ||
-                                              data1524 === "gene" ||
-                                              data1524 === "genotype" ||
-                                              data1524 === "genotype_maternal" ||
-                                              data1524 === "genotype_paternal" ||
-                                              data1524 === "gnomAdAf" ||
-                                              data1524 === "hpo" ||
-                                              data1524 === "inheritancePattern" ||
-                                              data1524 === "locus" ||
-                                              data1524 === "spanningReads" ||
-                                              data1524 === "vipC" ||
-                                              data1524 === "vipCS" ||
-                                              data1524 === "vkgl" ||
-                                              data1524 === "notesInput")
-                                          )
-                                        ) {
+                                        if (!(
+                                          typeof data1524 == "string" &&
+                                          (data1524 === "clinVar" ||
+                                            data1524 === "confidenceInterval" ||
+                                            data1524 === "gene" ||
+                                            data1524 === "genotype" ||
+                                            data1524 === "genotype_maternal" ||
+                                            data1524 === "genotype_paternal" ||
+                                            data1524 === "gnomAdAf" ||
+                                            data1524 === "hpo" ||
+                                            data1524 === "inheritancePattern" ||
+                                            data1524 === "locus" ||
+                                            data1524 === "spanningReads" ||
+                                            data1524 === "vipC" ||
+                                            data1524 === "vipCS" ||
+                                            data1524 === "vkgl" ||
+                                            data1524 === "notesInput" ||
+                                            data1524 === "numberOfRepeatUnits")
+                                        )) {
                                           validate57.errors = [
                                             {
                                               instancePath:
@@ -77115,18 +76805,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1528.name !== undefined) {
                                                       let data1529 = data1528.name;
                                                       const _errs1977 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1529 == "string" &&
-                                                          (data1529 === "chrom" ||
-                                                            data1529 === "pos" ||
-                                                            data1529 === "id" ||
-                                                            data1529 === "ref" ||
-                                                            data1529 === "alt" ||
-                                                            data1529 === "qual" ||
-                                                            data1529 === "filter")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1529 == "string" &&
+                                                        (data1529 === "chrom" ||
+                                                          data1529 === "pos" ||
+                                                          data1529 === "id" ||
+                                                          data1529 === "ref" ||
+                                                          data1529 === "alt" ||
+                                                          data1529 === "qual" ||
+                                                          data1529 === "filter")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -77749,24 +77437,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                     if (data1528.name !== undefined) {
                                                       let data1541 = data1528.name;
                                                       const _errs1993 = errors;
-                                                      if (
-                                                        !(
-                                                          typeof data1541 == "string" &&
-                                                          (data1541 === "clinVar" ||
-                                                            data1541 === "gene" ||
-                                                            data1541 === "genotype" ||
-                                                            data1541 === "gnomAdAf" ||
-                                                            data1541 === "hpo" ||
-                                                            data1541 === "inheritancePattern" ||
-                                                            data1541 === "locus" ||
-                                                            data1541 === "ref" ||
-                                                            data1541 === "numberOfRepeatUnits" ||
-                                                            data1541 === "vipC" ||
-                                                            data1541 === "vipCS" ||
-                                                            data1541 === "vkgl" ||
-                                                            data1541 === "notesInput")
-                                                        )
-                                                      ) {
+                                                      if (!(
+                                                        typeof data1541 == "string" &&
+                                                        (data1541 === "clinVar" ||
+                                                          data1541 === "gene" ||
+                                                          data1541 === "genotype" ||
+                                                          data1541 === "gnomAdAf" ||
+                                                          data1541 === "hpo" ||
+                                                          data1541 === "inheritancePattern" ||
+                                                          data1541 === "locus" ||
+                                                          data1541 === "ref" ||
+                                                          data1541 === "numberOfRepeatUnits" ||
+                                                          data1541 === "vipC" ||
+                                                          data1541 === "vipCS" ||
+                                                          data1541 === "vkgl" ||
+                                                          data1541 === "notesInput")
+                                                      )) {
                                                         validate57.errors = [
                                                           {
                                                             instancePath:
@@ -78154,18 +77840,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1545.name !== undefined) {
                                           let data1546 = data1545.name;
                                           const _errs1999 = errors;
-                                          if (
-                                            !(
-                                              typeof data1546 == "string" &&
-                                              (data1546 === "chrom" ||
-                                                data1546 === "pos" ||
-                                                data1546 === "id" ||
-                                                data1546 === "ref" ||
-                                                data1546 === "alt" ||
-                                                data1546 === "qual" ||
-                                                data1546 === "filter")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1546 == "string" &&
+                                            (data1546 === "chrom" ||
+                                              data1546 === "pos" ||
+                                              data1546 === "id" ||
+                                              data1546 === "ref" ||
+                                              data1546 === "alt" ||
+                                              data1546 === "qual" ||
+                                              data1546 === "filter")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -78711,26 +78395,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                         if (data1545.name !== undefined) {
                                           let data1558 = data1545.name;
                                           const _errs2015 = errors;
-                                          if (
-                                            !(
-                                              typeof data1558 == "string" &&
-                                              (data1558 === "clinVar" ||
-                                                data1558 === "confidenceInterval" ||
-                                                data1558 === "gene" ||
-                                                data1558 === "genotype" ||
-                                                data1558 === "genotype_maternal" ||
-                                                data1558 === "genotype_paternal" ||
-                                                data1558 === "gnomAdAf" ||
-                                                data1558 === "hpo" ||
-                                                data1558 === "inheritancePattern" ||
-                                                data1558 === "locus" ||
-                                                data1558 === "spanningReads" ||
-                                                data1558 === "vipC" ||
-                                                data1558 === "vipCS" ||
-                                                data1558 === "vkgl" ||
-                                                data1558 === "notesInput")
-                                            )
-                                          ) {
+                                          if (!(
+                                            typeof data1558 == "string" &&
+                                            (data1558 === "clinVar" ||
+                                              data1558 === "confidenceInterval" ||
+                                              data1558 === "gene" ||
+                                              data1558 === "genotype" ||
+                                              data1558 === "genotype_maternal" ||
+                                              data1558 === "genotype_paternal" ||
+                                              data1558 === "gnomAdAf" ||
+                                              data1558 === "hpo" ||
+                                              data1558 === "inheritancePattern" ||
+                                              data1558 === "locus" ||
+                                              data1558 === "spanningReads" ||
+                                              data1558 === "vipC" ||
+                                              data1558 === "vipCS" ||
+                                              data1558 === "vkgl" ||
+                                              data1558 === "notesInput" ||
+                                              data1558 === "numberOfRepeatUnits")
+                                          )) {
                                             validate57.errors = [
                                               {
                                                 instancePath:
@@ -78913,18 +78596,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1562.name !== undefined) {
                                                         let data1563 = data1562.name;
                                                         const _errs2022 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1563 == "string" &&
-                                                            (data1563 === "chrom" ||
-                                                              data1563 === "pos" ||
-                                                              data1563 === "id" ||
-                                                              data1563 === "ref" ||
-                                                              data1563 === "alt" ||
-                                                              data1563 === "qual" ||
-                                                              data1563 === "filter")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1563 == "string" &&
+                                                          (data1563 === "chrom" ||
+                                                            data1563 === "pos" ||
+                                                            data1563 === "id" ||
+                                                            data1563 === "ref" ||
+                                                            data1563 === "alt" ||
+                                                            data1563 === "qual" ||
+                                                            data1563 === "filter")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -79547,24 +79228,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                       if (data1562.name !== undefined) {
                                                         let data1575 = data1562.name;
                                                         const _errs2038 = errors;
-                                                        if (
-                                                          !(
-                                                            typeof data1575 == "string" &&
-                                                            (data1575 === "clinVar" ||
-                                                              data1575 === "gene" ||
-                                                              data1575 === "genotype" ||
-                                                              data1575 === "gnomAdAf" ||
-                                                              data1575 === "hpo" ||
-                                                              data1575 === "inheritancePattern" ||
-                                                              data1575 === "locus" ||
-                                                              data1575 === "ref" ||
-                                                              data1575 === "numberOfRepeatUnits" ||
-                                                              data1575 === "vipC" ||
-                                                              data1575 === "vipCS" ||
-                                                              data1575 === "vkgl" ||
-                                                              data1575 === "notesInput")
-                                                          )
-                                                        ) {
+                                                        if (!(
+                                                          typeof data1575 == "string" &&
+                                                          (data1575 === "clinVar" ||
+                                                            data1575 === "gene" ||
+                                                            data1575 === "genotype" ||
+                                                            data1575 === "gnomAdAf" ||
+                                                            data1575 === "hpo" ||
+                                                            data1575 === "inheritancePattern" ||
+                                                            data1575 === "locus" ||
+                                                            data1575 === "ref" ||
+                                                            data1575 === "numberOfRepeatUnits" ||
+                                                            data1575 === "vipC" ||
+                                                            data1575 === "vipCS" ||
+                                                            data1575 === "vkgl" ||
+                                                            data1575 === "notesInput")
+                                                        )) {
                                                           validate57.errors = [
                                                             {
                                                               instancePath:
@@ -79955,18 +79634,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data1579.name !== undefined) {
                                             let data1580 = data1579.name;
                                             const _errs2044 = errors;
-                                            if (
-                                              !(
-                                                typeof data1580 == "string" &&
-                                                (data1580 === "chrom" ||
-                                                  data1580 === "pos" ||
-                                                  data1580 === "id" ||
-                                                  data1580 === "ref" ||
-                                                  data1580 === "alt" ||
-                                                  data1580 === "qual" ||
-                                                  data1580 === "filter")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data1580 == "string" &&
+                                              (data1580 === "chrom" ||
+                                                data1580 === "pos" ||
+                                                data1580 === "id" ||
+                                                data1580 === "ref" ||
+                                                data1580 === "alt" ||
+                                                data1580 === "qual" ||
+                                                data1580 === "filter")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -80512,26 +80189,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                           if (data1579.name !== undefined) {
                                             let data1592 = data1579.name;
                                             const _errs2060 = errors;
-                                            if (
-                                              !(
-                                                typeof data1592 == "string" &&
-                                                (data1592 === "clinVar" ||
-                                                  data1592 === "confidenceInterval" ||
-                                                  data1592 === "gene" ||
-                                                  data1592 === "genotype" ||
-                                                  data1592 === "genotype_maternal" ||
-                                                  data1592 === "genotype_paternal" ||
-                                                  data1592 === "gnomAdAf" ||
-                                                  data1592 === "hpo" ||
-                                                  data1592 === "inheritancePattern" ||
-                                                  data1592 === "locus" ||
-                                                  data1592 === "spanningReads" ||
-                                                  data1592 === "vipC" ||
-                                                  data1592 === "vipCS" ||
-                                                  data1592 === "vkgl" ||
-                                                  data1592 === "notesInput")
-                                              )
-                                            ) {
+                                            if (!(
+                                              typeof data1592 == "string" &&
+                                              (data1592 === "clinVar" ||
+                                                data1592 === "confidenceInterval" ||
+                                                data1592 === "gene" ||
+                                                data1592 === "genotype" ||
+                                                data1592 === "genotype_maternal" ||
+                                                data1592 === "genotype_paternal" ||
+                                                data1592 === "gnomAdAf" ||
+                                                data1592 === "hpo" ||
+                                                data1592 === "inheritancePattern" ||
+                                                data1592 === "locus" ||
+                                                data1592 === "spanningReads" ||
+                                                data1592 === "vipC" ||
+                                                data1592 === "vipCS" ||
+                                                data1592 === "vkgl" ||
+                                                data1592 === "notesInput" ||
+                                                data1592 === "numberOfRepeatUnits")
+                                            )) {
                                               validate57.errors = [
                                                 {
                                                   instancePath:
@@ -80714,18 +80390,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data1596.name !== undefined) {
                                                           let data1597 = data1596.name;
                                                           const _errs2067 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data1597 == "string" &&
-                                                              (data1597 === "chrom" ||
-                                                                data1597 === "pos" ||
-                                                                data1597 === "id" ||
-                                                                data1597 === "ref" ||
-                                                                data1597 === "alt" ||
-                                                                data1597 === "qual" ||
-                                                                data1597 === "filter")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data1597 == "string" &&
+                                                            (data1597 === "chrom" ||
+                                                              data1597 === "pos" ||
+                                                              data1597 === "id" ||
+                                                              data1597 === "ref" ||
+                                                              data1597 === "alt" ||
+                                                              data1597 === "qual" ||
+                                                              data1597 === "filter")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -81349,24 +81023,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                         if (data1596.name !== undefined) {
                                                           let data1609 = data1596.name;
                                                           const _errs2083 = errors;
-                                                          if (
-                                                            !(
-                                                              typeof data1609 == "string" &&
-                                                              (data1609 === "clinVar" ||
-                                                                data1609 === "gene" ||
-                                                                data1609 === "genotype" ||
-                                                                data1609 === "gnomAdAf" ||
-                                                                data1609 === "hpo" ||
-                                                                data1609 === "inheritancePattern" ||
-                                                                data1609 === "locus" ||
-                                                                data1609 === "ref" ||
-                                                                data1609 === "numberOfRepeatUnits" ||
-                                                                data1609 === "vipC" ||
-                                                                data1609 === "vipCS" ||
-                                                                data1609 === "vkgl" ||
-                                                                data1609 === "notesInput")
-                                                            )
-                                                          ) {
+                                                          if (!(
+                                                            typeof data1609 == "string" &&
+                                                            (data1609 === "clinVar" ||
+                                                              data1609 === "gene" ||
+                                                              data1609 === "genotype" ||
+                                                              data1609 === "gnomAdAf" ||
+                                                              data1609 === "hpo" ||
+                                                              data1609 === "inheritancePattern" ||
+                                                              data1609 === "locus" ||
+                                                              data1609 === "ref" ||
+                                                              data1609 === "numberOfRepeatUnits" ||
+                                                              data1609 === "vipC" ||
+                                                              data1609 === "vipCS" ||
+                                                              data1609 === "vkgl" ||
+                                                              data1609 === "notesInput")
+                                                          )) {
                                                             validate57.errors = [
                                                               {
                                                                 instancePath:
@@ -81761,18 +81433,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data1613.name !== undefined) {
                                               let data1614 = data1613.name;
                                               const _errs2089 = errors;
-                                              if (
-                                                !(
-                                                  typeof data1614 == "string" &&
-                                                  (data1614 === "chrom" ||
-                                                    data1614 === "pos" ||
-                                                    data1614 === "id" ||
-                                                    data1614 === "ref" ||
-                                                    data1614 === "alt" ||
-                                                    data1614 === "qual" ||
-                                                    data1614 === "filter")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data1614 == "string" &&
+                                                (data1614 === "chrom" ||
+                                                  data1614 === "pos" ||
+                                                  data1614 === "id" ||
+                                                  data1614 === "ref" ||
+                                                  data1614 === "alt" ||
+                                                  data1614 === "qual" ||
+                                                  data1614 === "filter")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -82318,26 +81988,25 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                             if (data1613.name !== undefined) {
                                               let data1626 = data1613.name;
                                               const _errs2105 = errors;
-                                              if (
-                                                !(
-                                                  typeof data1626 == "string" &&
-                                                  (data1626 === "clinVar" ||
-                                                    data1626 === "confidenceInterval" ||
-                                                    data1626 === "gene" ||
-                                                    data1626 === "genotype" ||
-                                                    data1626 === "genotype_maternal" ||
-                                                    data1626 === "genotype_paternal" ||
-                                                    data1626 === "gnomAdAf" ||
-                                                    data1626 === "hpo" ||
-                                                    data1626 === "inheritancePattern" ||
-                                                    data1626 === "locus" ||
-                                                    data1626 === "spanningReads" ||
-                                                    data1626 === "vipC" ||
-                                                    data1626 === "vipCS" ||
-                                                    data1626 === "vkgl" ||
-                                                    data1626 === "notesInput")
-                                                )
-                                              ) {
+                                              if (!(
+                                                typeof data1626 == "string" &&
+                                                (data1626 === "clinVar" ||
+                                                  data1626 === "confidenceInterval" ||
+                                                  data1626 === "gene" ||
+                                                  data1626 === "genotype" ||
+                                                  data1626 === "genotype_maternal" ||
+                                                  data1626 === "genotype_paternal" ||
+                                                  data1626 === "gnomAdAf" ||
+                                                  data1626 === "hpo" ||
+                                                  data1626 === "inheritancePattern" ||
+                                                  data1626 === "locus" ||
+                                                  data1626 === "spanningReads" ||
+                                                  data1626 === "vipC" ||
+                                                  data1626 === "vipCS" ||
+                                                  data1626 === "vkgl" ||
+                                                  data1626 === "notesInput" ||
+                                                  data1626 === "numberOfRepeatUnits")
+                                              )) {
                                                 validate57.errors = [
                                                   {
                                                     instancePath:
@@ -82520,18 +82189,16 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           if (data1630.name !== undefined) {
                                                             let data1631 = data1630.name;
                                                             const _errs2112 = errors;
-                                                            if (
-                                                              !(
-                                                                typeof data1631 == "string" &&
-                                                                (data1631 === "chrom" ||
-                                                                  data1631 === "pos" ||
-                                                                  data1631 === "id" ||
-                                                                  data1631 === "ref" ||
-                                                                  data1631 === "alt" ||
-                                                                  data1631 === "qual" ||
-                                                                  data1631 === "filter")
-                                                              )
-                                                            ) {
+                                                            if (!(
+                                                              typeof data1631 == "string" &&
+                                                              (data1631 === "chrom" ||
+                                                                data1631 === "pos" ||
+                                                                data1631 === "id" ||
+                                                                data1631 === "ref" ||
+                                                                data1631 === "alt" ||
+                                                                data1631 === "qual" ||
+                                                                data1631 === "filter")
+                                                            )) {
                                                               validate57.errors = [
                                                                 {
                                                                   instancePath:
@@ -83163,24 +82830,22 @@ const validate: ValidateFunction<ConfigJson> = function validate57(
                                                           if (data1630.name !== undefined) {
                                                             let data1643 = data1630.name;
                                                             const _errs2128 = errors;
-                                                            if (
-                                                              !(
-                                                                typeof data1643 == "string" &&
-                                                                (data1643 === "clinVar" ||
-                                                                  data1643 === "gene" ||
-                                                                  data1643 === "genotype" ||
-                                                                  data1643 === "gnomAdAf" ||
-                                                                  data1643 === "hpo" ||
-                                                                  data1643 === "inheritancePattern" ||
-                                                                  data1643 === "locus" ||
-                                                                  data1643 === "ref" ||
-                                                                  data1643 === "numberOfRepeatUnits" ||
-                                                                  data1643 === "vipC" ||
-                                                                  data1643 === "vipCS" ||
-                                                                  data1643 === "vkgl" ||
-                                                                  data1643 === "notesInput")
-                                                              )
-                                                            ) {
+                                                            if (!(
+                                                              typeof data1643 == "string" &&
+                                                              (data1643 === "clinVar" ||
+                                                                data1643 === "gene" ||
+                                                                data1643 === "genotype" ||
+                                                                data1643 === "gnomAdAf" ||
+                                                                data1643 === "hpo" ||
+                                                                data1643 === "inheritancePattern" ||
+                                                                data1643 === "locus" ||
+                                                                data1643 === "ref" ||
+                                                                data1643 === "numberOfRepeatUnits" ||
+                                                                data1643 === "vipC" ||
+                                                                data1643 === "vipCS" ||
+                                                                data1643 === "vkgl" ||
+                                                                data1643 === "notesInput")
+                                                            )) {
                                                               validate57.errors = [
                                                                 {
                                                                   instancePath:

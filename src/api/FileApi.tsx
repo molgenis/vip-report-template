@@ -1,6 +1,6 @@
 import type { Note, Classification, VariantKey } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
-import type XLSX from "xlsx";
+import { read, utils, writeFile, type WorkBook } from "xlsx";
 import { stripOuterQuotes } from "./NotesApi.utils";
 
 type FlatNote = Omit<Note, "variantKey" | "reportId"> &
@@ -213,12 +213,12 @@ export class FileApi {
   }
 
   private validateSheet(
-    utils: typeof import("xlsx").utils,
+    sheetUtils: typeof utils,
     sheet: unknown,
     expectedColumns: readonly string[],
     sheetName: string,
   ): void {
-    const rows = utils.sheet_to_json<(string | number)[]>(sheet, {
+    const rows = sheetUtils.sheet_to_json<(string | number)[]>(sheet, {
       header: 1,
     });
 
@@ -239,8 +239,6 @@ export class FileApi {
   }
 
   async load(excelFile: File, reportId: string): Promise<string> {
-    const { read, utils } = await import("xlsx");
-
     this.notesApi.clear(reportId);
 
     return new Promise((resolve, reject) => {
@@ -303,8 +301,6 @@ export class FileApi {
   }
 
   async download(reportId: string): Promise<void> {
-    const { utils, writeFile } = await import("xlsx");
-
     const notes = await this.notesApi.retrieveNotes(reportId, undefined);
     const classifications = await this.notesApi.retrieveClassifications(reportId, undefined);
 
@@ -382,13 +378,13 @@ export class FileApi {
     this.notesApi.setSavedState(true, reportId);
   }
 
-  private getReportIdFromWorkbook(utils: typeof import("xlsx").utils, workbook: XLSX.WorkBook): string {
+  private getReportIdFromWorkbook(sheetUtils: typeof utils, workbook: WorkBook): string {
     const metadataSheet = workbook.Sheets["Metadata"];
     if (!metadataSheet) {
       throw new Error("Metadata sheet is missing");
     }
 
-    const rows = utils.sheet_to_json<{
+    const rows = sheetUtils.sheet_to_json<{
       key: string;
       value: string;
     }>(metadataSheet);
@@ -406,8 +402,6 @@ export class FileApi {
   }
 
   async getReportIdFromFile(excelFile: File): Promise<string> {
-    const { read, utils } = await import("xlsx");
-
     const data = await excelFile.arrayBuffer();
     const workbook = read(data, { type: "array" });
 

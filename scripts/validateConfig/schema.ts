@@ -120,6 +120,7 @@ const schemaConfigJsonField: JTDSchemaType<ConfigJsonField> = {
             "vipCS",
             "vkgl",
             "notesInput",
+            "numberOfRepeatUnits"
           ],
         },
       },
