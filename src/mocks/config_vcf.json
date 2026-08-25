@@ -444,6 +444,10 @@
         },
         {
           "type": "composed",
+          "name": "numberOfRepeatUnits"
+        },
+        {
+          "type": "composed",
           "name": "genotype",
           "label": "Proband"
         },
