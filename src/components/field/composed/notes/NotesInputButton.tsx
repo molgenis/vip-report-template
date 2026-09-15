@@ -4,7 +4,11 @@ import { CellValueUserClassification } from "../../../../types/configCellCompose
 import { ClassificationViewer } from "./ClassificationIcon";
 import { getNotesApi } from "../../../../api/NotesApiFactory";
 import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../../../types/NotesApi";
-import { retrieveClassification, retrieveNotesForVariant, stripOuterQuotes } from "../../../../api/NotesApi.utils";
+import {
+  retrieveClassificationForUser,
+  retrieveNotesForVariant,
+  stripOuterQuotes,
+} from "../../../../api/NotesApi.utils";
 import { NotesInputModal } from "./NotesInputModal";
 import { ClassificationSelector } from "./ClassificationSelector";
 import { NoteForm } from "./NoteForm";
@@ -37,6 +41,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   });
 
   const [isSetUsernameEnabled] = createResource(async () => {
+    console.log("TEST: " + notesApi.getCurrentUserName());
     return !notesApi.isUsernameFromBackend();
   });
 
@@ -72,7 +77,14 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       sampleId: sampleId(),
       version: dataVersion(),
     }),
-    async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId),
+    async (source) =>
+      retrieveClassificationForUser(
+        notesApi,
+        source.vk,
+        source.reportId,
+        source.sampleId,
+        notesApi.getCurrentUserName(),
+      ),
   );
 
   const [value, setValue] = createSignal<ClassificationOption>(defaultClassification);
@@ -92,7 +104,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
     try {
       const currentValue: Classification | undefined = classification();
-
+      console.log("Current: " + currentValue);
       await notesApi.storeClassification({
         value: val,
         variantKey: variantKey(),
@@ -105,6 +117,20 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         createdBy: undefined,
       });
 
+      console.log(
+        "New: " +
+          {
+            value: val,
+            variantKey: variantKey(),
+            reportId: reportId(),
+            status,
+            id: currentValue?.id,
+            sampleId: sampleId(),
+            createdAt: undefined,
+            updatedAt: undefined,
+            createdBy: undefined,
+          },
+      );
       await refetchClassification();
       notifyDataChanged();
       setClassificationSaved(true);
@@ -177,7 +203,10 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
           <i class="fas fa-edit" />
         </a>
 
-        <ClassificationViewer userClassification={props.userClassification} />
+        <ClassificationViewer
+          userClassification={props.userClassification}
+          options={classificationOptions()?.map((option) => ({ id: option.value, label: option.label })) ?? []}
+        />
         <Notes userClassification={props.userClassification} callback={openModal} />
       </span>
 

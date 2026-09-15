@@ -1,5 +1,6 @@
 import { Component, createEffect, JSX } from "solid-js";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
+import { Username } from "./Username";
 
 type NotesInputModalProps = {
   isOpen: boolean;
@@ -31,6 +32,7 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
         <header class="notes-modal-header">
           <h2 class="notes-modal-title">{props.title}</h2>
         </header>
+        <Username />
         {props.children}
       </div>
     </div>

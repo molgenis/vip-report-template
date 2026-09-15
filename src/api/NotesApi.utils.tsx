@@ -32,10 +32,10 @@ export async function retrieveNotesForVariant(
       .filter((note) => note.sampleId === sampleId && sameVariantAndFeature(note.variantKey, variantKey))
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
-
-  return notes
+  const filtered = notes
     .filter((note) => note.sampleId === sampleId && sameVariant(note.variantKey, variantKey))
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  return filtered;
 }
 
 export async function retrieveClassification(
@@ -43,9 +43,32 @@ export async function retrieveClassification(
   variantKey: VariantKey,
   reportId: string,
   sampleId: string | undefined,
+): Promise<Classification[] | null> {
+  const all = await api.retrieveClassifications(reportId, sampleId);
+  console.log("ALL:");
+  console.log(all);
+  const result = all.filter((c) => c.sampleId === sampleId && sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
+  console.log("RESULT:");
+  console.log(result);
+  return result;
+}
+
+export async function retrieveClassificationForUser(
+  api: NotesApi,
+  variantKey: VariantKey,
+  reportId: string,
+  sampleId: string | undefined,
+  username: string,
 ): Promise<Classification | null> {
   const all = await api.retrieveClassifications(reportId, sampleId);
-  return all.find((c) => c.sampleId === sampleId && sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
+  return (
+    all.find(
+      (c) =>
+        (c.createdBy === username || api.isUsernameFromBackend() === false) &&
+        c.sampleId === sampleId &&
+        sameVariantAndFeature(c.variantKey, variantKey),
+    ) ?? null
+  );
 }
 
 export function stripOuterQuotes(value: string | number | undefined): string | number | undefined {
@@ -57,7 +80,7 @@ export function stripOuterQuotes(value: string | number | undefined): string | n
   return trimmed;
 }
 
-export function formatNoteLabel(note: Note): string {
+export function formatNoteLabel(note: Note | Classification): string {
   const feature = note.variantKey.feature ?? "";
   const hgvsC = note.variantKey.hgvsC ?? "";
   const hgvsP = note.variantKey.hgvsP ?? "";

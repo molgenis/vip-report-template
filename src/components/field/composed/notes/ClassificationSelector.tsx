@@ -10,17 +10,31 @@ type ClassificationSelectorProps = {
 
 export const ClassificationSelector: Component<ClassificationSelectorProps> = (props) => {
   return (
-    <div>
-      <b>Classification:</b>{" "}
-      <Select
-        placeholder={"Select classification"}
-        value={props.value}
-        options={props.options}
-        onValueChange={(e) => props.onValueChange(e.value)}
-        disabled={props.disabled}
-        small={false}
-        fullwidth={false}
-      />
-    </div>
+    <>
+      <div>
+        <b>Your classification:</b>{" "}
+        <Select
+          placeholder={"Select classification"}
+          value={props.value}
+          options={props.options}
+          onValueChange={(e) => props.onValueChange(e.value)}
+          disabled={props.disabled}
+          small={false}
+          fullwidth={false}
+        />
+      </div>
+      <b>Classifications from other users:</b>
+      <br />
+      List of
+      <br />
+      Current
+      <br />
+      Classifications
+      <br />
+      Goes
+      <br />
+      Here
+      <br />
+    </>
   );
 };
