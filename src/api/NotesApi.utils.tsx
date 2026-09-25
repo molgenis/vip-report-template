@@ -28,9 +28,10 @@ export async function retrieveNotesForVariant(
 ): Promise<Note[]> {
   const notes = await api.retrieveNotes(reportId, sampleId);
   if (filterOnAlt) {
-    return notes
+    const filtered = notes
       .filter((note) => note.sampleId === sampleId && sameVariantAndFeature(note.variantKey, variantKey))
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return filtered;
   }
   const filtered = notes
     .filter((note) => note.sampleId === sampleId && sameVariant(note.variantKey, variantKey))
@@ -43,13 +44,15 @@ export async function retrieveClassification(
   variantKey: VariantKey,
   reportId: string,
   sampleId: string | undefined,
+  isSameFeature: boolean = true,
 ): Promise<Classification[] | null> {
   const all = await api.retrieveClassifications(reportId, sampleId);
-  console.log("ALL:");
-  console.log(all);
-  const result = all.filter((c) => c.sampleId === sampleId && sameVariantAndFeature(c.variantKey, variantKey)) ?? null;
-  console.log("RESULT:");
-  console.log(result);
+  const result =
+    all.filter(
+      (c) =>
+        (c.sampleId === sampleId && isSameFeature && sameVariantAndFeature(c.variantKey, variantKey)) ||
+        (!isSameFeature && sameVariant(c.variantKey, variantKey)),
+    ) ?? null;
   return result;
 }
 

@@ -1,4 +1,5 @@
 import { Component, createEffect, createSignal, Show } from "solid-js";
+import { Portal } from "solid-js/web";
 import { EmxSessionExpiredError } from "../api/EmxNotesApi";
 import { Login } from "./Login";
 
@@ -12,8 +13,6 @@ export const ErrorNotification: Component<{
 
   const [showLogin, setShowLogin] = createSignal(false);
 
-  // Automatically open the login dialog when the error indicates
-  // the session has expired, instead of showing an error message.
   createEffect(() => {
     if (isSessionExpired()) {
       setShowLogin(true);
@@ -50,13 +49,15 @@ export const ErrorNotification: Component<{
       </Show>
 
       <Show when={showLogin()}>
-        <div class="modal is-active">
-          <div class="modal-background" onClick={() => setShowLogin(false)} />
-          <div class="modal-content">
-            <Login />
+        <Portal mount={document.body}>
+          <div class="modal is-active" style={{ "z-index": 9999 }}>
+            <div class="modal-background" onClick={() => setShowLogin(false)} />
+            <div class="modal-content">
+              <Login />
+            </div>
+            <button class="modal-close is-large" aria-label="close" onClick={() => setShowLogin(false)} />
           </div>
-          <button class="modal-close is-large" aria-label="close" onClick={() => setShowLogin(false)} />
-        </div>
+        </Portal>
       </Show>
     </>
   );

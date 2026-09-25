@@ -6,6 +6,7 @@ import { formatNoteLabel } from "../../../../api/NotesApi.utils";
 type NoteItemProps = {
   note: Note;
   onRemove: (note: Note) => void;
+  canRemove?: boolean;
   showFeatureLabel?: boolean;
 };
 
@@ -25,9 +26,11 @@ export const NoteItem: Component<NoteItemProps> = (props) => {
           </Show>
         </div>
 
-        <button class="button is-small is-danger is-light" onClick={() => props.onRemove(props.note)}>
-          <i class="fas fa-trash" />
-        </button>
+        <Show when={props.canRemove}>
+          <button class="button is-small is-danger is-light" onClick={() => props.onRemove(props.note)}>
+            <i class="fas fa-trash" />
+          </button>
+        </Show>
       </div>
 
       <div>{props.note.content}</div>

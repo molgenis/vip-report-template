@@ -1,4 +1,5 @@
-import type { Note, Classification, ClassificationOption } from "../types/NotesApi";
+import type { Note, Classification, ClassificationOption, VariantKey } from "../types/NotesApi";
+import { ConsensusClassification } from "./EmxNotesApi";
 
 export interface NotesApi {
   storeNote(note: Note): Promise<void>;
@@ -26,4 +27,12 @@ export interface NotesApi {
   setSavedState(saved: boolean, reportId: string): void;
 
   clear(reportId: string);
+
+  getShowOtherFeatures();
+
+  setShowOtherFeatures(showOtherFeatures: boolean);
+
+  getConsensusClassification(reportId: string, variantKey: VariantKey): Promise<ConsensusClassification | undefined>;
+
+  storeConsensusClassification(reportId: string, variantKey: VariantKey, value: string, summary: string): Promise<void>;
 }

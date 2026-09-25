@@ -189,7 +189,7 @@ const App: ParentComponent = (props) => {
 
           <div class="navbar-end">
             <a class="navbar-item" onClick={(e) => e.preventDefault()}>
-              <Username />
+              <Username showLogout={true} />
             </a>
           </div>
         </div>

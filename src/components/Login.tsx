@@ -1,10 +1,6 @@
 import { Component, createSignal } from "solid-js";
 
-/**
- * EMX2 base URL — must go through the Vite proxy path `/emx2` in
- * the browser (see EmxNotesApi.ts for the same convention).
- */
-const EMX2_BASE_URL = "/emx2";
+const EMX2_BASE_URL = import.meta.env.DEV ? "/emx2" : "";
 
 interface GraphQlResponse<T> {
   data?: T;
@@ -14,23 +10,6 @@ interface GraphQlResponse<T> {
   }[];
 }
 
-/**
- * Simple email/password sign-in form for EMX2.
- *
- * Calls EMX2's server-wide (schema-less) `/api/graphql` endpoint —
- * sign-in applies to the whole server session, not a single schema.
- * `credentials: "include"` ensures the session cookie EMX2 sets on
- * success is sent on subsequent requests.
- *
- * NOTE: the exact mutation name/arguments/response shape below are
- * my best understanding of EMX2's API, not confirmed against your
- * server. Verify against your server's GraphiQL explorer
- * (`<server>/api/graphql`) and adjust the query if it differs.
- *
- * On success, reloads the page so the rest of the app (which reads
- * the session via `_session { email }`, see EmxNotesApi) picks up
- * the newly authenticated session.
- */
 export const Login: Component = () => {
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
@@ -106,8 +85,6 @@ export const Login: Component = () => {
     try {
       await signIn(email(), password());
 
-      // Simplest way to make sure every part of the app (username
-      // display, data queries, etc.) picks up the new session.
       window.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");

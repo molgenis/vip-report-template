@@ -1,52 +1,23 @@
 import type { Note, Classification, ClassificationOption, VariantKey } from "../types/NotesApi";
 import type { NotesApi } from "./NotesApi";
-import { generateId, retrieveClassificationForUser, sameVariantAndFeature } from "./NotesApi.utils";
+import { generateId, retrieveClassificationForUser } from "./NotesApi.utils";
 
-/**
- * EMX2 GraphQL configuration.
- *
- * IMPORTANT:
- * The browser must use the Vite proxy path `/emx2`.
- *
- * Browser:
- *   http://localhost:5173/emx2/VERDI/api/graphql
- *
- * Vite proxy:
- *   http://localhost:8080/VERDI/api/graphql
- *
- * Do NOT put http://localhost:8080 here.
- */
-const EMX2_BASE_URL = "/emx2";
-
-/**
- * EMX2 schema/database.
- */
+const EMX2_BASE_URL = import.meta.env.DEV ? "/emx2" : "";
 const EMX2_SCHEMA = "VERDI";
-
-/**
- * Authentication token.
- */
 const EMX2_AUTH_TOKEN = "admin";
-
-/**
- * EMX2 table names as they appear in GraphQL.
- *
- * Table names with spaces ("VIP Notes") map to GraphQL field/type
- * names with spaces stripped ("VIPNotes").
- */
-const NOTES_FIELD = "VIPNotes";
-const NOTES_INPUT_TYPE = "VIPNotesInput";
-
-const CLASSIFICATIONS_FIELD = "VIPClassification";
-const CLASSIFICATIONS_INPUT_TYPE = "VIPClassificationInput";
-
-/**
- * VIP Variant is now its own table (auto_id primary key "id").
- * VIP Notes / VIP Classification reference it through the "variant"
- * ref column instead of storing variant fields flat on the row.
- */
-const VARIANT_FIELD = "VIPVariant";
-const VARIANT_INPUT_TYPE = "VIPVariantInput";
+const DISCUSSION_FIELD = "VariantDiscussions";
+const DISCUSSION_INPUT_TYPE = "VariantDiscussionsInput";
+const VARIANT_FIELD = "GenomicVariants";
+const VARIANT_INPUT_TYPE = "GenomicVariantsInput";
+const VARIANT_SCHEMA = "RD3";
+const INDIVIDUAL_FIELD = "Individuals";
+const INDIVIDUAL_INPUT_TYPE = "IndividualsInput";
+const INTERPRETATION_FIELD = "VariantInterpretations";
+const INTERPRETATION_INPUT_TYPE = "VariantInterpretationsInput";
+const ANALYSIS_FIELD = "VariantInterpretationAnalyses";
+const ANALYSIS_INPUT_TYPE = "VariantInterpretationAnalysesInput";
+const CATALOGUE_ONTOLOGIES_SCHEMA = "CatalogueOntologies";
+const CLASSIFICATION_OPTIONS_FIELD = "VariantClassifications";
 
 interface GraphQlResponse<T> {
   data?: T;
@@ -56,18 +27,6 @@ interface GraphQlResponse<T> {
   }[];
 }
 
-/**
- * Thrown when EMX2 responds in a way that indicates the current
- * session is no longer valid (expired session / not authenticated).
- *
- * Depending on EMX2 version/configuration this can surface as
- * 401, 403, or 404 on the GraphQL endpoint — all three are treated
- * as "logged out" here.
- *
- * Consumers (e.g. ErrorNotification) can check for this with
- * `error instanceof EmxSessionExpiredError` to show a dedicated
- * "please log in again" message instead of a generic error.
- */
 export class EmxSessionExpiredError extends Error {
   readonly status: number;
 
@@ -79,21 +38,20 @@ export class EmxSessionExpiredError extends Error {
   }
 }
 
-/**
- * A row from VIP Notes / VIP Classification.
- *
- * "variant" is now a nested object (the referenced VIP Variant row),
- * not flat columns on this row.
- */
-interface EmxRow {
+interface EmxDiscussionRow {
   id: string;
-  sampleId: string;
 
-  content?: string;
-  value?: string;
-  status?: string;
+  variantInterpretation?: {
+    id: string;
+    interpretationAnalysis?: { id: string } | null;
+    individual?: { id: string } | null;
+    variant?: EmxVariantRow | null;
+  } | null;
 
-  variant?: EmxVariantRow | null;
+  nameOfCommenter?: { id: string } | null;
+  classification?: EmxClassification | null;
+  summary?: string | null;
+  timestamp?: string;
 
   mg_insertedOn?: string;
   mg_updatedOn?: string;
@@ -102,112 +60,72 @@ interface EmxRow {
   [key: string]: unknown;
 }
 
-/**
- * A row from VIP Variant.
- */
+interface EmxClassification {
+  name: string;
+  label: string;
+}
+
 interface EmxVariantRow {
   id: string;
 
-  chromosome?: string;
-  position?: number;
-  reference?: string;
-  alternative?: string;
-  end?: number;
-
-  feature?: string;
-  hgvsC?: string;
-  hgvsP?: string;
-
-  ru?: string;
-  ruNr?: number;
+  chromosome?: { name: string } | null;
+  sequenceFeatureID?: string;
+  cDNA?: string;
+  startPosition?: number | string;
+  stopPosition?: number | string;
+  referenceAllele?: string;
+  alternateAllele?: string;
+  transcriptHGVSIds?: string[];
+  proteinHGVSIds?: string[];
+  repeatUnit?: string;
+  repeatCount?: number;
+  geneIdOther?: string;
 
   [key: string]: unknown;
 }
 
-/**
- * NotesApi implementation backed by MOLGENIS EMX2 GraphQL.
- *
- * Authentication:
- *   Authorization: Bearer admin
- *
- * The frontend talks to:
- *
- *   /emx2/VERDI/api/graphql
- *
- * Vite proxies this to:
- *
- *   http://localhost:8080/VERDI/api/graphql
- *
- * USERNAME:
- *
- * The authenticated username is loaded automatically in the
- * constructor.
- *
- * getCurrentUserName() is synchronous and only reads the
- * in-memory cache.
- *
- * Consumers can subscribe using onUserNameChange() if they
- * need to react when the asynchronous lookup finishes.
- *
- * VARIANTS:
- *
- * VIP Variant has an auto_id primary key, so there is no natural
- * key to upsert against at the database level. Storing a note or
- * classification therefore first looks up a matching VIP Variant
- * row by its biological fields (chromosome/position/reference/
- * alternative/end/feature/hgvsC/hgvsP/ru/ruNr) and creates one if
- * none exists, then references it by id. See findOrCreateVariantId().
- */
+interface EmxAnalysisRow {
+  id: string;
+  individuals?: { id: string }[] | null;
+
+  [key: string]: unknown;
+}
+
+interface EmxInterpretationRow {
+  id: string;
+  classification?: EmxClassification | null;
+  classificationSummary?: string | null;
+  classificationDate?: string | null;
+
+  [key: string]: unknown;
+}
+
+interface EmxInterpretationFullRow {
+  id: string;
+  interpretationAnalysis?: { id: string } | null;
+  individual?: { id: string } | null;
+  variant?: { id: string } | null;
+  status?: { name: string } | null;
+}
+
+type ClassificationOptionsResponse = Record<string, { name: string; label?: string }[] | null | undefined>;
+
+export interface ConsensusClassification {
+  value: string;
+  label: string;
+  summary: string;
+}
 export class EmxNotesApi implements NotesApi {
-  // ---------------------------------------------------------------------------------------
-  // state
-  // ---------------------------------------------------------------------------------------
-
-  /**
-   * Cached authenticated username.
-   *
-   * This is populated asynchronously from EMX2.
-   */
   private cachedUserName: string | undefined;
-
-  /**
-   * Promise for the currently running username request.
-   *
-   * Prevents duplicate requests.
-   */
   private userNameRefreshPromise: Promise<string | undefined> | undefined;
-
-  /**
-   * Number of currently running write operations.
-   */
   private pendingWrites = 0;
-
-  /**
-   * List of callbacks interested in username changes.
-   */
   private userNameListeners: Array<(name: string | undefined) => void> = [];
 
   constructor(
     private baseUrl: string = EMX2_BASE_URL,
-
-    /**
-     * Currently all requests go to the VERDI schema.
-     *
-     * The reportId is still accepted because it is part
-     * of the NotesApi interface.
-     */
     private schemaResolver: (reportId: string) => string = () => EMX2_SCHEMA,
-
     private authToken: string = EMX2_AUTH_TOKEN,
   ) {
-    /**
-     * Start loading the authenticated user immediately.
-     *
-     * This intentionally does not use await because constructors
-     * cannot be async.
-     *
-     * getCurrentUserName() remains synchronous.
-     */
     void this.refreshCurrentUserName().catch((error) => {
       console.error("[EmxNotesApi] Failed to load current username:", error);
     });
@@ -217,14 +135,17 @@ export class EmxNotesApi implements NotesApi {
   // GraphQL
   // ---------------------------------------------------------------------------------------
 
-  private async graphql<T>(reportId: string, query: string, variables?: Record<string, unknown>): Promise<T> {
-    const schema = this.schemaResolver(reportId);
+  private async graphql<T>(
+    reportId: string,
+    query: string,
+    variables?: Record<string, unknown>,
+    schemaName?: string,
+  ): Promise<T> {
+    const schema = schemaName ? schemaName : this.schemaResolver(reportId);
 
     const baseUrl = this.baseUrl.replace(/\/$/, "");
 
     const url = `${baseUrl}/${encodeURIComponent(schema)}/api/graphql`;
-
-    console.log("[EmxNotesApi] GraphQL request:", url);
 
     const response = await fetch(url, {
       method: "POST",
@@ -252,13 +173,13 @@ export class EmxNotesApi implements NotesApi {
 
       if (response.status === 401 || response.status === 403 || response.status === 404) {
         throw new EmxSessionExpiredError(response.status, errorDetails);
+      } else {
+        throw new Error(
+          `EMX2 GraphQL request failed: ${response.status} ${
+            response.statusText
+          }${errorDetails ? ` - ${errorDetails}` : ""}`,
+        );
       }
-
-      throw new Error(
-        `EMX2 GraphQL request failed: ${response.status} ${
-          response.statusText
-        }${errorDetails ? ` - ${errorDetails}` : ""}`,
-      );
     }
 
     const json = (await response.json()) as GraphQlResponse<T>;
@@ -274,11 +195,6 @@ export class EmxNotesApi implements NotesApi {
     return json.data;
   }
 
-  /**
-   * Safely gets a row collection from a GraphQL response.
-   *
-   * A missing field is treated as an empty collection.
-   */
   private getRows<TRow>(data: Record<string, TRow[] | null | undefined>, field: string): TRow[] {
     const rows = data[field];
 
@@ -303,96 +219,139 @@ export class EmxNotesApi implements NotesApi {
     return rows;
   }
 
-  // ---------------------------------------------------------------------------------------
-  // variant helpers
-  // ---------------------------------------------------------------------------------------
+  private denormalizeChromosomeName(name: string | undefined | null): string | undefined {
+    if (!name) {
+      return undefined;
+    }
 
-  private rowToVariantKey(row: EmxRow): VariantKey {
-    const variant = row.variant ?? undefined;
+    return /^chr/i.test(name) ? name : `chr${name}`;
+  }
+
+  private toNumber(value: number | string | undefined | null): number | undefined {
+    if (value === undefined || value === null || value === "") {
+      return undefined;
+    }
+
+    const num = typeof value === "number" ? value : Number(value);
+
+    return Number.isNaN(num) ? undefined : num;
+  }
+
+  private rowToVariantKey(row: EmxDiscussionRow): VariantKey {
+    const variant = row.variantInterpretation?.variant ?? undefined;
 
     return {
-      chromosome: variant?.chromosome,
-      position: variant?.position,
-      reference: variant?.reference,
-      alternative: variant?.alternative,
-      end: variant?.end,
-      feature: variant?.feature,
-      hgvsC: variant?.hgvsC,
-      hgvsP: variant?.hgvsP,
-      ru: variant?.ru === undefined ? "" : variant.ru,
-      ruNr: variant?.ruNr,
+      chromosome: this.denormalizeChromosomeName(variant?.chromosome?.name),
+      position: this.toNumber(variant?.startPosition),
+      reference: variant?.referenceAllele,
+      alternative: variant?.alternateAllele,
+      end: this.toNumber(variant?.stopPosition),
+      feature: variant?.geneIdOther,
+      hgvsC: variant?.transcriptHGVSIds?.[0],
+      hgvsP: variant?.proteinHGVSIds?.[0],
+      ru: variant?.repeatUnit ?? "",
+      ruNr: variant?.repeatCount,
     };
   }
 
-  /**
-   * Builds an EMX2 filter object from a VariantKey, skipping fields
-   * that are undefined/null/empty so they don't narrow the match.
-   */
-  private variantKeyToFilter(variantKey: VariantKey): Record<string, { equals: unknown }> {
-    const filter: Record<string, { equals: unknown }> = {};
+  private variantKeyToId(variantKey: VariantKey): string {
+    const parts = [
+      variantKey.chromosome,
+      variantKey.position,
+      variantKey.reference,
+      variantKey.alternative,
+      variantKey.end,
+      variantKey.feature,
+      variantKey.hgvsC,
+      variantKey.hgvsP,
+      variantKey.ru,
+      variantKey.ruNr,
+    ];
 
-    for (const [field, value] of Object.entries(variantKey)) {
-      if (value === undefined || value === null || value === "") {
-        continue;
-      }
-
-      filter[field] = { equals: value };
-    }
-
-    return filter;
+    return parts.map((part) => (part === undefined || part === null ? "" : String(part))).join("|");
   }
 
-  /**
-   * Finds a VIP Variant row matching the given variant key, if any.
-   */
-  private async findVariant(reportId: string, variantKey: VariantKey): Promise<EmxVariantRow | undefined> {
-    const filter = this.variantKeyToFilter(variantKey);
+  private buildInterpretationId(analysisId: string, variantId: string): string {
+    return analysisId + "::" + variantId;
+  }
 
-    const data = await this.graphql<Record<string, EmxVariantRow[] | null | undefined>>(
+  private extractSequenceFeatureId(hgvsC: string | undefined | null): string | undefined {
+    if (!hgvsC) {
+      return undefined;
+    }
+
+    const colonIndex = hgvsC.indexOf(":");
+
+    if (colonIndex === -1) {
+      return undefined;
+    }
+
+    const accession = hgvsC.slice(0, colonIndex).trim();
+
+    return accession || undefined;
+  }
+
+  private extractCdnaChange(hgvsC: string | undefined | null): string | undefined {
+    if (!hgvsC) {
+      return undefined;
+    }
+
+    const colonIndex = hgvsC.indexOf(":");
+
+    const change = colonIndex === -1 ? hgvsC : hgvsC.slice(colonIndex + 1);
+
+    return change.trim() || undefined;
+  }
+
+  private normalizeChromosomeName(chromosome: string | undefined | null): string | undefined {
+    if (!chromosome) {
+      return undefined;
+    }
+
+    const stripped = chromosome.trim().replace(/^chr/i, "");
+
+    return stripped || undefined;
+  }
+
+  private buildGenomicVariantRow(id: string, variantKey: VariantKey): EmxVariantRow {
+    const chromosomeName = this.normalizeChromosomeName(variantKey.chromosome);
+
+    return {
+      id,
+      chromosome: chromosomeName ? { name: chromosomeName } : undefined,
+      sequenceFeatureID: this.extractSequenceFeatureId(variantKey.hgvsC),
+      cDNA: this.extractCdnaChange(variantKey.hgvsC),
+      startPosition: variantKey.position,
+      stopPosition: variantKey.end,
+      referenceAllele: variantKey.reference,
+      alternateAllele: variantKey.alternative,
+      transcriptHGVSIds: variantKey.hgvsC ? [variantKey.hgvsC] : undefined,
+      proteinHGVSIds: variantKey.hgvsP ? [variantKey.hgvsP] : undefined,
+      repeatUnit: variantKey.ru || undefined,
+      repeatCount: variantKey.ruNr,
+      geneIdOther: variantKey.feature || undefined,
+    };
+  }
+
+  private async findOrCreateVariantId(reportId: string, variantKey: VariantKey): Promise<string> {
+    const id = this.variantKeyToId(variantKey);
+
+    const data = await this.graphql<Record<string, { id: string }[] | null | undefined>>(
       reportId,
 
       `query FindVariant($filter: ${VARIANT_FIELD}Filter) {
         ${VARIANT_FIELD}(filter: $filter) {
           id
-          chromosome
-          position
-          reference
-          alternative
-          end
-          feature
-          hgvsC
-          hgvsP
-          ru
-          ruNr
         }
       }`,
 
-      { filter },
+      { filter: { id: { equals: id } } },
+
+      VARIANT_SCHEMA,
     );
-
     const rows = this.getRows(data, VARIANT_FIELD);
-
-    return rows[0];
-  }
-
-  /**
-   * Finds the VIP Variant row matching the given variant key, or
-   * creates one if it doesn't exist yet, and returns its id.
-   *
-   * VIP Variant uses an auto_id primary key, so there is no natural
-   * key to upsert against server-side — this does a look-up first,
-   * then an insert-and-refetch when nothing matches.
-   *
-   * Note: under concurrent requests for a brand-new variant, this
-   * can race and create a duplicate VIP Variant row. If that's a
-   * concern, consider adding a unique/composite key on the variant
-   * fields in the schema so "update" (upsert) can be used instead.
-   */
-  private async findOrCreateVariantId(reportId: string, variantKey: VariantKey): Promise<string> {
-    const existing = await this.findVariant(reportId, variantKey);
-
-    if (existing) {
-      return existing.id;
+    if (rows.length > 0) {
+      return id;
     }
 
     await this.graphql(
@@ -404,21 +363,166 @@ export class EmxNotesApi implements NotesApi {
         }
       }`,
 
-      { rows: [variantKey] },
+      { rows: [this.buildGenomicVariantRow(id, variantKey)] },
+
+      VARIANT_SCHEMA,
     );
 
-    const created = await this.findVariant(reportId, variantKey);
-
-    if (!created) {
-      throw new Error("EMX2: failed to locate VIP Variant row immediately after insert");
-    }
-
-    return created.id;
+    return id;
   }
 
-  // ---------------------------------------------------------------------------------------
-  // notes
-  // ---------------------------------------------------------------------------------------
+  private async findOrCreateIndividualId(reportId: string, sampleId: string): Promise<string> {
+    const data = await this.graphql<Record<string, { id: string }[] | null | undefined>>(
+      reportId,
+
+      `query FindIndividual($filter: ${INDIVIDUAL_FIELD}Filter) {
+        ${INDIVIDUAL_FIELD}(filter: $filter) {
+          id
+        }
+      }`,
+
+      { filter: { id: { equals: sampleId } } },
+
+      VARIANT_SCHEMA,
+    );
+
+    const rows = this.getRows(data, INDIVIDUAL_FIELD);
+
+    if (rows.length > 0) {
+      return sampleId;
+    }
+
+    await this.graphql(
+      reportId,
+
+      `mutation InsertIndividual($rows: [${INDIVIDUAL_INPUT_TYPE}]) {
+        insert(${INDIVIDUAL_FIELD}: $rows) {
+          message
+        }
+      }`,
+
+      { rows: [{ id: sampleId }] },
+
+      VARIANT_SCHEMA,
+    );
+
+    return sampleId;
+  }
+
+  private async findOrCreateAnalysisId(reportId: string, individualId: string): Promise<string> {
+    const data = await this.graphql<Record<string, EmxAnalysisRow[] | null | undefined>>(
+      reportId,
+
+      `query FindAnalysis($filter: ${ANALYSIS_FIELD}Filter) {
+        ${ANALYSIS_FIELD}(filter: $filter) {
+          id
+          individuals {
+            id
+          }
+        }
+      }`,
+
+      { filter: { id: { equals: reportId } } },
+
+      VARIANT_SCHEMA,
+    );
+
+    const rows = this.getRows(data, ANALYSIS_FIELD);
+    const existing = rows[0];
+
+    if (!existing) {
+      await this.graphql(
+        reportId,
+
+        `mutation InsertAnalysis($rows: [${ANALYSIS_INPUT_TYPE}]) {
+          insert(${ANALYSIS_FIELD}: $rows) {
+            message
+          }
+        }`,
+
+        { rows: [{ id: reportId, individuals: [{ id: individualId }] }] },
+
+        VARIANT_SCHEMA,
+      );
+
+      return reportId;
+    }
+
+    const existingIndividualIds = (existing.individuals ?? []).map((individual) => individual.id);
+
+    if (!existingIndividualIds.includes(individualId)) {
+      await this.graphql(
+        reportId,
+
+        `mutation UpdateAnalysis($rows: [${ANALYSIS_INPUT_TYPE}]) {
+          save(${ANALYSIS_FIELD}: $rows) {
+            message
+          }
+        }`,
+
+        {
+          rows: [
+            {
+              id: reportId,
+              individuals: [...existingIndividualIds.map((id) => ({ id })), { id: individualId }],
+            },
+          ],
+        },
+
+        VARIANT_SCHEMA,
+      );
+    }
+
+    return reportId;
+  }
+
+  private async ensureInterpretation(analysisId: string, variantId: string, individualId: string): Promise<string> {
+    const interpretationId = this.buildInterpretationId(analysisId, variantId);
+    const data = await this.graphql<Record<string, { id: string }[] | null | undefined>>(
+      analysisId,
+
+      `query FindInterpretation($filter: ${INTERPRETATION_FIELD}Filter) {
+        ${INTERPRETATION_FIELD}(filter: $filter) {
+          id
+        }
+      }`,
+
+      { filter: { id: { equals: interpretationId } } },
+
+      VARIANT_SCHEMA,
+    );
+
+    const rows = this.getRows(data, INTERPRETATION_FIELD);
+
+    if (rows.length > 0) {
+      return interpretationId;
+    }
+
+    await this.graphql(
+      analysisId,
+
+      `mutation InsertInterpretation($rows: [${INTERPRETATION_INPUT_TYPE}]) {
+        insert(${INTERPRETATION_FIELD}: $rows) {
+          message
+        }
+      }`,
+
+      {
+        rows: [
+          {
+            id: interpretationId,
+            interpretationAnalysis: { id: analysisId },
+            variant: { id: variantId },
+            individual: { id: individualId },
+          },
+        ],
+      },
+
+      VARIANT_SCHEMA,
+    );
+
+    return interpretationId;
+  }
 
   async storeNote(note: Note): Promise<void> {
     this.pendingWrites++;
@@ -428,23 +532,26 @@ export class EmxNotesApi implements NotesApi {
 
       const variantId = await this.findOrCreateVariantId(note.reportId, note.variantKey as VariantKey);
 
+      const individualId = await this.findOrCreateIndividualId(note.reportId, note.sampleId);
+
+      const analysisId = await this.findOrCreateAnalysisId(note.reportId, individualId);
+
+      const interpretationId = await this.ensureInterpretation(analysisId, variantId, individualId);
+
       const row = {
         id,
-
-        content: note.content,
-
-        sampleId: note.sampleId,
-
-        variant: { id: variantId },
+        variantInterpretation: { id: interpretationId },
+        summary: note.content,
+        timestamp: new Date().toISOString(),
       };
 
       await this.graphql(
         note.reportId,
 
-        `mutation UpsertNotes(
-          $rows: [${NOTES_INPUT_TYPE}]
+        `mutation UpsertDiscussion(
+          $rows: [${DISCUSSION_INPUT_TYPE}]
         ) {
-          save(${NOTES_FIELD}: $rows) {
+          save(${DISCUSSION_FIELD}: $rows) {
             message
           }
         }`,
@@ -452,6 +559,8 @@ export class EmxNotesApi implements NotesApi {
         {
           rows: [row],
         },
+
+        VARIANT_SCHEMA,
       );
     } finally {
       this.pendingWrites--;
@@ -459,32 +568,44 @@ export class EmxNotesApi implements NotesApi {
   }
 
   async retrieveNotes(reportId: string, sampleId?: string): Promise<Note[]> {
-    const data = await this.graphql<Record<string, EmxRow[] | null | undefined>>(
+    const data = await this.graphql<Record<string, EmxDiscussionRow[] | null | undefined>>(
       reportId,
 
       `query Notes(
-        $filter: ${NOTES_FIELD}Filter
+        $filter: ${DISCUSSION_FIELD}Filter
       ) {
-        ${NOTES_FIELD}(filter: $filter) {
+        ${DISCUSSION_FIELD}(filter: $filter) {
           id
-          content
-          sampleId
-
-          variant {
-            chromosome
-            position
-            reference
-            alternative
-            end
-
-            feature
-            hgvsC
-            hgvsP
-
-            ru
-            ruNr
+          summary
+          timestamp
+ 
+          variantInterpretation {
+            id
+            interpretationAnalysis {
+              id
+            }
+            individual {
+              id
+            }
+            variant {
+              id
+              chromosome {
+                name
+              }
+              sequenceFeatureID
+              cDNA
+              startPosition
+              stopPosition
+              referenceAllele
+              alternateAllele
+              transcriptHGVSIds
+              proteinHGVSIds
+              repeatUnit
+              repeatCount
+              geneIdOther
+            }
           }
-
+ 
           mg_insertedOn
           mg_updatedOn
           mg_insertedBy
@@ -492,37 +613,31 @@ export class EmxNotesApi implements NotesApi {
       }`,
 
       {
-        filter: sampleId
-          ? {
-              sampleId: {
-                equals: sampleId,
-              },
-            }
-          : undefined,
+        filter: {
+          variantInterpretation: {
+            interpretationAnalysis: { id: { equals: reportId } },
+          },
+        },
       },
+
+      VARIANT_SCHEMA,
     );
 
-    const rows = this.getRows(data, NOTES_FIELD);
+    const rows = this.getRows(data, DISCUSSION_FIELD);
+    const noteRows = rows.filter((row) => row.summary !== undefined && row.summary !== null && row.summary !== "");
 
-    return rows.map((row) => this.rowToNote(row, reportId));
+    return noteRows.map((row) => this.rowToNote(row, reportId, sampleId));
   }
 
-  private rowToNote(row: EmxRow, reportId: string): Note {
+  private rowToNote(row: EmxDiscussionRow, reportId: string, sampleId?: string): Note {
     return {
       id: row.id,
-
-      content: row.content as string,
-
-      sampleId: row.sampleId,
-
+      content: row.summary as string,
+      sampleId: row.variantInterpretation?.individual?.id ?? sampleId ?? "",
       reportId,
-
       variantKey: this.rowToVariantKey(row),
-
       createdAt: row.mg_insertedOn ? new Date(row.mg_insertedOn) : new Date(),
-
       updatedAt: row.mg_updatedOn ? new Date(row.mg_updatedOn) : new Date(),
-
       createdBy: row.mg_insertedBy ?? "",
     } as Note;
   }
@@ -534,10 +649,10 @@ export class EmxNotesApi implements NotesApi {
       await this.graphql(
         reportId,
 
-        `mutation DeleteNotes(
-          $rows: [${NOTES_INPUT_TYPE}]
+        `mutation DeleteDiscussion(
+          $rows: [${DISCUSSION_INPUT_TYPE}]
         ) {
-          delete(${NOTES_FIELD}: $rows) {
+          delete(${DISCUSSION_FIELD}: $rows) {
             message
           }
         }`,
@@ -545,15 +660,13 @@ export class EmxNotesApi implements NotesApi {
         {
           rows: [{ id }],
         },
+
+        VARIANT_SCHEMA,
       );
     } finally {
       this.pendingWrites--;
     }
   }
-
-  // ---------------------------------------------------------------------------------------
-  // classifications
-  // ---------------------------------------------------------------------------------------
 
   async storeClassification(
     classification: Omit<Classification, "id" | "createdAt" | "updatedAt">,
@@ -576,28 +689,26 @@ export class EmxNotesApi implements NotesApi {
         classification.variantKey as VariantKey,
       );
 
+      const individualId = await this.findOrCreateIndividualId(classification.reportId, classification.sampleId);
+
+      const analysisId = await this.findOrCreateAnalysisId(classification.reportId, individualId);
+
+      const interpretationId = await this.ensureInterpretation(analysisId, variantId, individualId);
+
       const row = {
         id,
-
-        value: classification.value,
-
-        sampleId: classification.sampleId,
-
-        // NOTE: "status" is intentionally omitted — VIP Classification
-        // has no "status" column in EMX2 yet. Add one to the schema
-        // (columnType: string) and restore this line if/when needed:
-        // status: classification.status,
-
-        variant: { id: variantId },
+        variantInterpretation: { id: interpretationId },
+        classification: { name: classification.value },
+        timestamp: new Date().toISOString(),
       };
 
       await this.graphql(
         classification.reportId,
 
-        `mutation UpsertClassifications(
-          $rows: [${CLASSIFICATIONS_INPUT_TYPE}]
+        `mutation UpsertDiscussion(
+          $rows: [${DISCUSSION_INPUT_TYPE}]
         ) {
-          save(${CLASSIFICATIONS_FIELD}: $rows) {
+          save(${DISCUSSION_FIELD}: $rows) {
             message
           }
         }`,
@@ -605,17 +716,14 @@ export class EmxNotesApi implements NotesApi {
         {
           rows: [row],
         },
+        VARIANT_SCHEMA,
       );
 
       return {
         ...classification,
-
         id,
-
         createdAt: existing?.createdAt ?? new Date(),
-
         updatedAt: new Date(),
-
         createdBy: existing?.createdBy ?? "",
       } as Classification;
     } finally {
@@ -624,32 +732,47 @@ export class EmxNotesApi implements NotesApi {
   }
 
   async retrieveClassifications(reportId: string, sampleId?: string): Promise<Classification[]> {
-    const data = await this.graphql<Record<string, EmxRow[] | null | undefined>>(
+    const data = await this.graphql<Record<string, EmxDiscussionRow[] | null | undefined>>(
       reportId,
 
       `query Classifications(
-        $filter: ${CLASSIFICATIONS_FIELD}Filter
+        $filter: ${DISCUSSION_FIELD}Filter
       ) {
-        ${CLASSIFICATIONS_FIELD}(filter: $filter) {
+        ${DISCUSSION_FIELD}(filter: $filter) {
           id
-          value
-          sampleId
-
-          variant {
-            chromosome
-            position
-            reference
-            alternative
-            end
-
-            feature
-            hgvsC
-            hgvsP
-
-            ru
-            ruNr
+          classification {
+            name
+            label
           }
-
+          timestamp
+ 
+          variantInterpretation {
+            id
+            interpretationAnalysis {
+              id
+            }
+            individual {
+              id
+            }
+            variant {
+              id
+              chromosome {
+                name
+              }
+              sequenceFeatureID
+              cDNA
+              startPosition
+              stopPosition
+              referenceAllele
+              alternateAllele
+              transcriptHGVSIds
+              proteinHGVSIds
+              repeatUnit
+              repeatCount
+              geneIdOther
+            }
+          }
+ 
           mg_insertedOn
           mg_updatedOn
           mg_insertedBy
@@ -657,74 +780,43 @@ export class EmxNotesApi implements NotesApi {
       }`,
 
       {
-        filter: sampleId
-          ? {
-              sampleId: {
-                equals: sampleId,
-              },
-            }
-          : undefined,
+        filter: {
+          variantInterpretation: {
+            interpretationAnalysis: { id: { equals: reportId } },
+          },
+        },
       },
+
+      VARIANT_SCHEMA,
     );
 
-    /**
-     * EMX2 may return:
-     *
-     *   {
-     *     "data": {}
-     *   }
-     *
-     * rather than:
-     *
-     *   {
-     *     "data": {
-     *       "VIPClassification": []
-     *     }
-     *   }
-     *
-     * Missing VIPClassification is therefore treated as
-     * "there are no classifications".
-     */
-    const rows = this.getRows(data, CLASSIFICATIONS_FIELD);
+    const rows = this.getRows(data, DISCUSSION_FIELD);
+    const classificationRows = rows.filter((row) => !!row.classification);
 
-    return rows.map((row) => this.rowToClassification(row, reportId));
+    return classificationRows.map((row) => this.rowToClassification(row, reportId, sampleId));
   }
 
-  private rowToClassification(row: EmxRow, reportId: string): Classification {
+  private showOtherFeatures = false;
+  getShowOtherFeatures() {
+    return this.showOtherFeatures;
+  }
+
+  setShowOtherFeatures(showOtherFeatures: boolean) {
+    this.showOtherFeatures = showOtherFeatures;
+  }
+
+  private rowToClassification(row: EmxDiscussionRow, reportId: string, sampleId?: string): Classification {
     return {
       id: row.id,
-
-      value: row.value as string,
-
-      // "status" has no backing column in EMX2 yet — defaulted here.
-      // Once the schema has a "status" column, switch back to:
-      // status: row.status as string,
-      status: (row.status as string) ?? "",
-
-      sampleId: row.sampleId,
-
+      value: row.classification?.name ?? "",
+      status: "pending",
+      sampleId: row.variantInterpretation?.individual?.id ?? sampleId ?? "",
       reportId,
-
       variantKey: this.rowToVariantKey(row),
-
       createdAt: row.mg_insertedOn ? new Date(row.mg_insertedOn) : new Date(),
-
       updatedAt: row.mg_updatedOn ? new Date(row.mg_updatedOn) : new Date(),
-
       createdBy: row.mg_insertedBy ?? "",
     } as Classification;
-  }
-
-  private async findClassification(
-    reportId: string,
-    sampleId: string,
-    variantKey: VariantKey,
-  ): Promise<Classification | undefined> {
-    const candidates = await this.retrieveClassifications(reportId, sampleId);
-
-    return candidates.find((classification) =>
-      sameVariantAndFeature(classification.variantKey as VariantKey, variantKey),
-    );
   }
 
   async removeClassification(id: string, _sampleId: string, reportId: string): Promise<void> {
@@ -734,10 +826,10 @@ export class EmxNotesApi implements NotesApi {
       await this.graphql(
         reportId,
 
-        `mutation DeleteClassifications(
-          $rows: [${CLASSIFICATIONS_INPUT_TYPE}]
+        `mutation DeleteDiscussion(
+          $rows: [${DISCUSSION_INPUT_TYPE}]
         ) {
-          delete(${CLASSIFICATIONS_FIELD}: $rows) {
+          delete(${DISCUSSION_FIELD}: $rows) {
             message
           }
         }`,
@@ -745,6 +837,8 @@ export class EmxNotesApi implements NotesApi {
         {
           rows: [{ id }],
         },
+
+        VARIANT_SCHEMA,
       );
     } finally {
       this.pendingWrites--;
@@ -752,38 +846,170 @@ export class EmxNotesApi implements NotesApi {
   }
 
   // ---------------------------------------------------------------------------------------
-  // classification options
+  // Consensus classification
+  //
+  // The consensus classification + its summary live directly on the VariantInterpretations
+  // row itself (columns "classification" / "classification summary" in the EMX2 model, i.e.
+  // GraphQL fields `classification` / `classificationSummary`) - NOT on VariantDiscussions,
+  // which is where individual users' own classifications/notes are stored. The
+  // VariantInterpretations row for a given report + variant is expected to already exist by
+  // the time these are called (created via ensureInterpretation as part of storeNote/
+  // storeClassification), so both methods below just resolve its deterministic id and
+  // read/update it directly.
   // ---------------------------------------------------------------------------------------
 
-  async getClassificationOptions(): Promise<ClassificationOption[]> {
-    /**
-     * No classification-options table
-     * was provided.
-     */
-    return [];
+  async getConsensusClassification(
+    reportId: string,
+    variantKey: VariantKey,
+  ): Promise<ConsensusClassification | undefined> {
+    const interpretationId = this.buildInterpretationId(reportId, this.variantKeyToId(variantKey));
+
+    const data = await this.graphql<Record<string, EmxInterpretationRow[] | null | undefined>>(
+      reportId,
+
+      `query ConsensusClassification($filter: ${INTERPRETATION_FIELD}Filter) {
+        ${INTERPRETATION_FIELD}(filter: $filter) {
+          id
+          classification {
+            name
+            label
+          }
+          classificationSummary
+        }
+      }`,
+
+      { filter: { id: { equals: interpretationId } } },
+
+      VARIANT_SCHEMA,
+    );
+
+    const rows = this.getRows(data, INTERPRETATION_FIELD);
+    const row = rows[0];
+
+    if (!row || !row.classification) {
+      return undefined;
+    }
+
+    return {
+      value: row.classification.name,
+      label: row.classification.label || row.classification.name,
+      summary: row.classificationSummary ?? "",
+    };
   }
 
-  // ---------------------------------------------------------------------------------------
-  // user
-  // ---------------------------------------------------------------------------------------
+  async storeConsensusClassification(
+    reportId: string,
+    variantKey: VariantKey,
+    value: string,
+    summary: string,
+  ): Promise<void> {
+    this.pendingWrites++;
+
+    try {
+      const interpretationId = this.buildInterpretationId(reportId, this.variantKeyToId(variantKey));
+
+      // Re-read the row's other links first. IMPORTANT: EMX2's `save` mutation replaces
+      // exactly the fields given in the payload - it does not merge - so if we sent only
+      // id/classification/classificationSummary/classificationDate (as the original version
+      // of this method did), interpretationAnalysis/individual/variant/status would all get
+      // wiped back to empty on every consensus save. That in turn silently broke
+      // retrieveNotes/retrieveClassifications for that variant, since those filter on
+      // variantInterpretation.interpretationAnalysis.id - a row with that link nulled out no
+      // longer matches, even though its linked notes/classifications are still in the DB
+      // untouched. Carrying the existing links forward in the same save call prevents that.
+      const existingData = await this.graphql<Record<string, EmxInterpretationFullRow[] | null | undefined>>(
+        reportId,
+
+        `query ExistingInterpretation($filter: ${INTERPRETATION_FIELD}Filter) {
+          ${INTERPRETATION_FIELD}(filter: $filter) {
+            id
+            interpretationAnalysis {
+              id
+            }
+            individual {
+              id
+            }
+            variant {
+              id
+            }
+            status {
+              name
+            }
+          }
+        }`,
+
+        { filter: { id: { equals: interpretationId } } },
+
+        VARIANT_SCHEMA,
+      );
+
+      const existingRows = this.getRows(existingData, INTERPRETATION_FIELD);
+      const existing = existingRows[0];
+
+      if (!existing) {
+        throw new Error(
+          `No VariantInterpretations row found for id "${interpretationId}"; cannot update consensus on a row that hasn't been created yet.`,
+        );
+      }
+
+      await this.graphql(
+        reportId,
+
+        `mutation UpdateConsensusClassification($rows: [${INTERPRETATION_INPUT_TYPE}]) {
+          save(${INTERPRETATION_FIELD}: $rows) {
+            message
+          }
+        }`,
+
+        {
+          rows: [
+            {
+              id: interpretationId,
+              interpretationAnalysis: existing.interpretationAnalysis
+                ? { id: existing.interpretationAnalysis.id }
+                : undefined,
+              individual: existing.individual ? { id: existing.individual.id } : undefined,
+              variant: existing.variant ? { id: existing.variant.id } : undefined,
+              status: existing.status ? { name: existing.status.name } : undefined,
+              classification: { name: value },
+              classificationSummary: summary,
+              classificationDate: new Date().toISOString().slice(0, 10),
+            },
+          ],
+        },
+
+        VARIANT_SCHEMA,
+      );
+    } finally {
+      this.pendingWrites--;
+    }
+  }
+
+  async getClassificationOptions(): Promise<ClassificationOption[]> {
+    const data = await this.graphql<ClassificationOptionsResponse>(
+      "",
+
+      `query ClassificationOptions {
+        ${CLASSIFICATION_OPTIONS_FIELD} {
+          name
+          label
+        }
+      }`,
+      undefined,
+      CATALOGUE_ONTOLOGIES_SCHEMA,
+    );
+
+    const rows = this.getRows(data, CLASSIFICATION_OPTIONS_FIELD);
+    return rows.map((row) => ({
+      value: row.name,
+      label: row.label || row.name,
+    }));
+  }
 
   isUsernameFromBackend(): boolean {
     return true;
   }
 
-  /**
-   * Register a callback that is called when the username
-   * becomes available or changes.
-   *
-   * Example:
-   *
-   *   const unsubscribe =
-   *     api.onUserNameChange((username) => {
-   *       console.log(username);
-   *     });
-   *
-   *   unsubscribe();
-   */
   onUserNameChange(callback: (name: string | undefined) => void): () => void {
     this.userNameListeners.push(callback);
 
@@ -793,10 +1019,6 @@ export class EmxNotesApi implements NotesApi {
   }
 
   private notifyUserNameChange(name: string | undefined): void {
-    /**
-     * Copy the array first so a listener can safely
-     * unsubscribe itself while notifications are running.
-     */
     for (const listener of [...this.userNameListeners]) {
       try {
         listener(name);
@@ -806,29 +1028,11 @@ export class EmxNotesApi implements NotesApi {
     }
   }
 
-  /**
-   * Synchronous username getter.
-   *
-   * This method NEVER performs a network request.
-   *
-   * It simply returns the currently cached username.
-   *
-   * Before the initial GraphQL request finishes, this can
-   * temporarily be undefined.
-   */
   getCurrentUserName(): string | undefined {
     return this.cachedUserName;
   }
 
-  /**
-   * Refreshes the username from EMX2.
-   *
-   * Multiple callers share the same request.
-   */
   async refreshCurrentUserName(): Promise<string | undefined> {
-    /**
-     * Don't start another request if one is already running.
-     */
     if (this.userNameRefreshPromise) {
       return this.userNameRefreshPromise;
     }
@@ -842,9 +1046,6 @@ export class EmxNotesApi implements NotesApi {
     }
   }
 
-  /**
-   * Performs the actual username GraphQL request.
-   */
   private async loadCurrentUserName(): Promise<string | undefined> {
     const data = await this.graphql<{
       _session?: {
@@ -861,12 +1062,8 @@ export class EmxNotesApi implements NotesApi {
     );
 
     const newUserName = data._session?.email;
-
     const changed = this.cachedUserName !== newUserName;
-
     this.cachedUserName = newUserName;
-
-    console.log("[EmxNotesApi] Current user:", this.cachedUserName);
 
     if (changed) {
       this.notifyUserNameChange(this.cachedUserName);
@@ -875,19 +1072,9 @@ export class EmxNotesApi implements NotesApi {
     return this.cachedUserName;
   }
 
-  /**
-   * Compatibility method for the NotesApi interface.
-   *
-   * The backend determines the authenticated user,
-   * so there is nothing to set locally.
-   */
   setCurrentUserName(): void {
     // No-op.
   }
-
-  // ---------------------------------------------------------------------------------------
-  // save state
-  // ---------------------------------------------------------------------------------------
 
   hasUnsavedData(): boolean {
     return this.pendingWrites > 0;
@@ -896,14 +1083,8 @@ export class EmxNotesApi implements NotesApi {
   setSavedState(): void {
     /**
      * No-op.
-     *
-     * Writes are sent directly to EMX2.
      */
   }
-
-  // ---------------------------------------------------------------------------------------
-  // clear
-  // ---------------------------------------------------------------------------------------
 
   clear(reportId: string): void {
     void this.clearAsync(reportId).catch((error) => {
@@ -918,46 +1099,28 @@ export class EmxNotesApi implements NotesApi {
       this.retrieveClassifications(reportId),
     ]);
 
-    await Promise.all([
-      notes.length
-        ? this.graphql(
-            reportId,
+    const allIds = [...notes, ...classifications].map((row) => ({ id: row.id }));
 
-            `mutation DeleteAllNotes(
-              $rows: [${NOTES_INPUT_TYPE}]
-            ) {
-              delete(${NOTES_FIELD}: $rows) {
-                message
-              }
-            }`,
+    if (allIds.length === 0) {
+      return;
+    }
 
-            {
-              rows: notes.map((note) => ({
-                id: note.id,
-              })),
-            },
-          )
-        : Promise.resolve(),
+    await this.graphql(
+      reportId,
 
-      classifications.length
-        ? this.graphql(
-            reportId,
+      `mutation DeleteAllDiscussions(
+        $rows: [${DISCUSSION_INPUT_TYPE}]
+      ) {
+        delete(${DISCUSSION_FIELD}: $rows) {
+          message
+        }
+      }`,
 
-            `mutation DeleteAllClassifications(
-              $rows: [${CLASSIFICATIONS_INPUT_TYPE}]
-            ) {
-              delete(${CLASSIFICATIONS_FIELD}: $rows) {
-                message
-              }
-            }`,
+      {
+        rows: allIds,
+      },
 
-            {
-              rows: classifications.map((classification) => ({
-                id: classification.id,
-              })),
-            },
-          )
-        : Promise.resolve(),
-    ]);
+      VARIANT_SCHEMA,
+    );
   }
 }

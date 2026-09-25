@@ -31,8 +31,8 @@ export const NotesInputModal: Component<NotesInputModalProps> = (props) => {
 
         <header class="notes-modal-header">
           <h2 class="notes-modal-title">{props.title}</h2>
+          <Username showLogout={false} />
         </header>
-        <Username />
         {props.children}
       </div>
     </div>

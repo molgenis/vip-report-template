@@ -1,11 +1,6 @@
-import { Component, createSignal } from "solid-js";
+import { Component, Show, createSignal } from "solid-js";
 
-/**
- * EMX2 base URL — must go through the Vite proxy path `/emx2` in
- * the browser (see EmxNotesApi.ts / Login.tsx for the same
- * convention).
- */
-const EMX2_BASE_URL = "/emx2";
+const EMX2_BASE_URL = import.meta.env.DEV ? "/emx2" : "";
 
 interface GraphQlResponse<T> {
   data?: T;
@@ -15,23 +10,6 @@ interface GraphQlResponse<T> {
   }[];
 }
 
-/**
- * Sign-out button for EMX2.
- *
- * Calls EMX2's server-wide (schema-less) `/api/graphql` endpoint —
- * sign-out applies to the whole server session, not a single
- * schema. `credentials: "include"` ensures the session cookie is
- * sent along so the server knows which session to end.
- *
- * NOTE: the exact mutation name/response shape below is my best
- * understanding of EMX2's API, not confirmed against your server.
- * Verify against your server's GraphiQL explorer
- * (`<server>/api/graphql`) and adjust the query if it differs.
- *
- * On success, reloads the page so the rest of the app (which reads
- * the session via `_session { email }`, see EmxNotesApi) picks up
- * the now-signed-out state.
- */
 export const Logout: Component = () => {
   const [error, setError] = createSignal<string | undefined>();
   const [submitting, setSubmitting] = createSignal(false);
@@ -105,11 +83,11 @@ export const Logout: Component = () => {
   };
 
   return (
-    <>
+    <Show when={import.meta.env.DEV}>
       <a class="navbar-item" onClick={onClick}>
         {submitting() ? "Signing out…" : "Log out"}
       </a>
       {error() && <p class="help is-danger">{error()}</p>}
-    </>
+    </Show>
   );
 };

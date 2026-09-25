@@ -1,10 +1,11 @@
-import { Component, createSignal, createResource, createEffect, Show } from "solid-js";
+import { Component, createSignal, createResource, createEffect, Show, For } from "solid-js";
 import { Notes } from "./NotesIcon";
 import { CellValueUserClassification } from "../../../../types/configCellComposed";
 import { ClassificationViewer } from "./ClassificationIcon";
 import { getNotesApi } from "../../../../api/NotesApiFactory";
 import { Classification, ClassificationOption, Note, Status, VariantKey } from "../../../../types/NotesApi";
 import {
+  retrieveClassification,
   retrieveClassificationForUser,
   retrieveNotesForVariant,
   stripOuterQuotes,
@@ -14,6 +15,10 @@ import { ClassificationSelector } from "./ClassificationSelector";
 import { NoteForm } from "./NoteForm";
 import { NotesList } from "./NotesList";
 import { dataVersion, notifyDataChanged } from "../../../../utils/upload/uploadSignal";
+import { ClassificationList } from "./ClassificationsList";
+import { EmxSessionExpiredError } from "../../../../api/EmxNotesApi";
+import { ErrorNotification } from "../../../../components/ErrorNotification"; // ADJUST to the real path
+import { SummaryItem } from "./SummaryItem";
 
 const notesApi = getNotesApi();
 
@@ -21,15 +26,37 @@ type NotesInputButtonProps = {
   userClassification: CellValueUserClassification;
 };
 
+type ConsensusCandidate = {
+  id: string;
+  value: string;
+  label: string;
+  source: string;
+};
+
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [isModalOpen, setIsModalOpen] = createSignal(false);
   const [classificationSaved, setClassificationSaved] = createSignal(false);
   const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()) as string);
+  const [showOtherFeatures, setShowOtherFeaturesSignal] = createSignal<boolean>(notesApi.getShowOtherFeatures());
+  const [sessionExpiredError, setSessionExpiredError] = createSignal<unknown>(undefined);
+
+  const handleApiError = (error: unknown) => {
+    console.error(error);
+    if (error instanceof EmxSessionExpiredError) {
+      setSessionExpiredError(error);
+    }
+  };
+
+  const setShowOtherFeatures = (value: boolean) => {
+    setShowOtherFeaturesSignal(value);
+    notesApi.setShowOtherFeatures(value);
+  };
 
   const openModal = () => {
     setClassificationSaved(false);
     const current = stripOuterQuotes(notesApi.getCurrentUserName()) as string;
     setUsername(current);
+    setShowOtherFeaturesSignal(notesApi.getShowOtherFeatures());
     setIsModalOpen(true);
   };
 
@@ -41,7 +68,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   });
 
   const [isSetUsernameEnabled] = createResource(async () => {
-    console.log("TEST: " + notesApi.getCurrentUserName());
     return !notesApi.isUsernameFromBackend();
   });
 
@@ -104,7 +130,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
     try {
       const currentValue: Classification | undefined = classification();
-      console.log("Current: " + currentValue);
       await notesApi.storeClassification({
         value: val,
         variantKey: variantKey(),
@@ -116,26 +141,11 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         updatedAt: undefined,
         createdBy: undefined,
       });
-
-      console.log(
-        "New: " +
-          {
-            value: val,
-            variantKey: variantKey(),
-            reportId: reportId(),
-            status,
-            id: currentValue?.id,
-            sampleId: sampleId(),
-            createdAt: undefined,
-            updatedAt: undefined,
-            createdBy: undefined,
-          },
-      );
       await refetchClassification();
       notifyDataChanged();
       setClassificationSaved(true);
     } catch (error) {
-      console.error("Classification save error:", error);
+      handleApiError(error);
     }
   };
 
@@ -167,7 +177,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       notifyDataChanged();
       setNoteValue("");
     } catch (error) {
-      console.error("Save error:", error);
+      handleApiError(error);
     }
   };
 
@@ -176,7 +186,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       await notesApi.removeNote(note.id, reportId());
       await refetchNotes();
     } catch (error) {
-      console.error("Remove error:", error);
+      handleApiError(error);
     }
   };
 
@@ -196,8 +206,105 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const disableAllInputs = () => props.userClassification.ruNr === -1;
   const isRuNrError = () => props.userClassification.ruNr === -1;
 
+  const [classifications] = createResource(
+    () => ({
+      vk: variantKey(),
+      reportId: reportId(),
+      sampleId: sampleId(),
+      version: dataVersion(),
+    }),
+    async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId, false),
+  );
+
+  const [consensus, { refetch: refetchConsensus }] = createResource(
+    () => (isModalOpen() ? { vk: variantKey(), reportId: reportId(), version: dataVersion() } : undefined),
+    async (source) => notesApi.getConsensusClassification(source.reportId, source.vk),
+  );
+
+  createEffect(() => {
+    const err = classification.error ?? notes.error ?? classifications.error ?? consensus.error;
+    if (err) {
+      handleApiError(err);
+    }
+  });
+
+  const consensusCandidates = (): ConsensusCandidate[] => {
+    const feature = props.userClassification.feature;
+    const opts = classificationOptions() ?? [];
+    const labelFor = (val: string) => opts.find((o) => o.value === val)?.label ?? val;
+
+    const seenValues = new Set<string>();
+    const candidates: ConsensusCandidate[] = [];
+
+    const own = value();
+    if (own.value) {
+      candidates.push({
+        id: "own",
+        value: own.value,
+        label: own.label ?? labelFor(own.value),
+        source: "You",
+      });
+      seenValues.add(own.value);
+    }
+
+    const others = classifications() ?? [];
+    for (const c of others) {
+      if (c.variantKey.feature !== feature) continue;
+      if (c.createdBy === username()) continue;
+      if (!c.value || seenValues.has(c.value)) continue;
+
+      candidates.push({
+        id: c.id,
+        value: c.value,
+        label: labelFor(c.value),
+        source: c.createdBy || "Unknown",
+      });
+      seenValues.add(c.value);
+    }
+
+    return candidates;
+  };
+
+  const [isEditingConsensus, setIsEditingConsensus] = createSignal(false);
+  const [consensusDropdownValue, setConsensusDropdownValue] = createSignal<string>("");
+  const [consensusText, setConsensusText] = createSignal("");
+
+  const consensusButtonLabel = () => {
+    const current = consensus();
+    return current ? `Update consensus` : "Set consensus";
+  };
+
+  const openConsensusEditor = () => {
+    const current = consensus();
+    setConsensusDropdownValue(current?.value ?? value().value);
+    setConsensusText(current?.summary ?? "");
+    setIsEditingConsensus(true);
+  };
+
+  const submitConsensus = async () => {
+    console.log("submitConsensus", {
+      value: consensusDropdownValue(),
+      summary: consensusText(),
+      variantKey: variantKey(),
+      reportId: reportId(),
+    });
+
+    try {
+      await notesApi.storeConsensusClassification(reportId(), variantKey(), consensusDropdownValue(), consensusText());
+      await refetchConsensus();
+      notifyDataChanged();
+      setIsEditingConsensus(false);
+    } catch (error) {
+      handleApiError(error);
+    }
+  };
+
   return (
     <>
+      <Show when={sessionExpiredError()}>
+        <ErrorNotification error={sessionExpiredError()} />
+      </Show>
+
       <span>
         <a class="js-modal-trigger" onClick={openModal}>
           <i class="fas fa-edit" />
@@ -205,7 +312,8 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
         <ClassificationViewer
           userClassification={props.userClassification}
-          options={classificationOptions()?.map((option) => ({ id: option.value, label: option.label })) ?? []}
+          options={classificationOptions() ?? []}
+          currentUser={username()}
         />
         <Notes userClassification={props.userClassification} callback={openModal} />
       </span>
@@ -216,6 +324,17 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         userClassification={props.userClassification}
         title={modalTitle() as string}
       >
+        <div class="is-flex is-justify-content-flex-end mb-2">
+          <label class="checkbox">
+            <input
+              type="checkbox"
+              checked={showOtherFeatures()}
+              onChange={(e) => setShowOtherFeatures(e.currentTarget.checked)}
+            />{" "}
+            Show other features
+          </label>
+        </div>
+
         <Show when={classificationSaved()}>
           <div class="notification is-success is-light is-flex is-justify-content-space-between is-align-items-center">
             <span>Classification saved successfully.</span>
@@ -229,14 +348,86 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
             This tandem repeat allele was not observed for this sample.
           </div>
         </Show>
+        <Show when={consensusCandidates().length !== 0}>
+          <div class="notes-modal-section">
+            <h3 class="notes-modal-section-title">Consensus</h3>
 
+            <Show when={!isEditingConsensus()}>
+              <Show when={consensus()}>
+                <div>
+                  <SummaryItem classification={consensus().label} summary={consensus().summary} />
+                </div>
+              </Show>
+              <Show when={!consensus()}>
+                <div>
+                  <SummaryItem classification={"No consensus yet."} summary={""} />
+                </div>
+              </Show>
+
+              <br />
+              <button
+                class="button is-primary ml-2"
+                type="button"
+                disabled={disableAllInputs() || consensus.loading || consensusCandidates().length === 0}
+                onClick={openConsensusEditor}
+              >
+                {consensusButtonLabel()}
+              </button>
+            </Show>
+
+            <Show when={isEditingConsensus()}>
+              <div class="field">
+                <div class="control">
+                  <div class="select">
+                    <select
+                      value={consensusDropdownValue()}
+                      onChange={(e) => setConsensusDropdownValue(e.currentTarget.value)}
+                      disabled={disableAllInputs()}
+                    >
+                      <For each={consensusCandidates()}>
+                        {(candidate) => <option value={candidate.value}>{candidate.label}</option>}
+                      </For>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <textarea
+                    rows="2"
+                    cols="50"
+                    value={consensusText()}
+                    onInput={(e) => setConsensusText(e.currentTarget.value)}
+                    disabled={disableAllInputs()}
+                    class="textarea"
+                    placeholder="Consensus summary..."
+                  />
+                  <br />
+                  <button class="button is-primary ml-2" onClick={submitConsensus} disabled={disableAllInputs()}>
+                    Submit consensus
+                  </button>
+                </div>
+              </div>
+            </Show>
+          </div>
+        </Show>
         <div class="notes-modal-section">
           <h3 class="notes-modal-section-title">Classification</h3>
           <ClassificationSelector
             value={value().value}
-            options={classificationOptions()?.map((option) => ({ id: option.value, label: option.label })) ?? []}
+            options={classificationOptions() ?? []}
             onValueChange={handleChange}
             disabled={disableAllInputs()}
+          />
+          <ClassificationList
+            loading={notes.loading}
+            classifications={classifications()}
+            error={notes.error}
+            currentFeature={props.userClassification.feature}
+            options={classificationOptions()}
+            currentUser={username()}
+            showOtherFeatures={showOtherFeatures()}
           />
         </div>
 
@@ -257,6 +448,8 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
             error={notes.error}
             currentFeature={props.userClassification.feature}
             onRemove={removeNote}
+            showOtherFeatures={showOtherFeatures()}
+            currentUser={username()}
           />
         </div>
       </NotesInputModal>

@@ -1,18 +1,25 @@
 import { Component, Show } from "solid-js";
-import { Classification } from "../../../../types/NotesApi";
+import { Classification, ClassificationOption } from "../../../../types/NotesApi";
 import { formatDate } from "../../../../utils/dateUtils";
 import { formatNoteLabel } from "../../../../api/NotesApi.utils";
 
 type NoteItemProps = {
   classification: Classification;
   showFeatureLabel?: boolean;
+  options: ClassificationOption[];
+  currentUser?: string;
 };
 
 export const ClassificationItem: Component<NoteItemProps> = (props) => {
-  const byline = () =>
-    props.classification.createdBy && props.classification.createdBy
-      ? `${props.classification.createdBy} on ${formatDate(props.classification.updatedAt)}`
-      : formatDate(props.classification.updatedAt);
+  const isOwnClassification = () =>
+    !!props.classification.createdBy && props.classification.createdBy === props.currentUser;
+
+  const byline = () => (
+    <Show when={props.classification.createdBy} fallback={formatDate(props.classification.updatedAt)}>
+      <span classList={{ "has-text-weight-bold": isOwnClassification() }}>{props.classification.createdBy}</span>
+      {` on ${formatDate(props.classification.updatedAt)}`}
+    </Show>
+  );
 
   return (
     <div class="box has-background-light mb-2 p-3">
@@ -25,7 +32,12 @@ export const ClassificationItem: Component<NoteItemProps> = (props) => {
         </div>
       </div>
 
-      <div>{props.classification.value}</div>
+      <div>
+        {props.options !== undefined
+          ? (props.options.find((option) => option.value === props.classification.value)?.label ??
+            props.classification.value)
+          : []}
+      </div>
     </div>
   );
 };
