@@ -22,6 +22,26 @@ import { SummaryItem } from "./SummaryItem";
 
 const notesApi = getNotesApi();
 
+const readUserName = (): string => ((stripOuterQuotes(notesApi.getCurrentUserName()) as string) ?? "").trim();
+const sameUser = (a?: string | null, b?: string | null) =>
+  ((stripOuterQuotes(a ?? "") as string) ?? "").trim().toLowerCase() ===
+    ((stripOuterQuotes(b ?? "") as string) ?? "").trim().toLowerCase() && !!(a ?? "").trim();
+
+// Shared by all rows: one poller waits until the user name exists (it is empty right after login).
+const [globalUser, setGlobalUser] = createSignal<string>(readUserName());
+if (!globalUser()) {
+  let attempts = 0;
+  const id = setInterval(() => {
+    const name = readUserName();
+    if (name) {
+      setGlobalUser(name);
+      clearInterval(id);
+    } else if (++attempts > 120) {
+      clearInterval(id); // give up after ~60s
+    }
+  }, 500);
+}
+
 type NotesInputButtonProps = {
   userClassification: CellValueUserClassification;
 };
@@ -36,9 +56,15 @@ type ConsensusCandidate = {
 export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const [isModalOpen, setIsModalOpen] = createSignal(false);
   const [classificationSaved, setClassificationSaved] = createSignal(false);
-  const [username, setUsername] = createSignal<string>(stripOuterQuotes(notesApi.getCurrentUserName()) as string);
+  const [username, setUsername] = createSignal<string>(globalUser());
   const [showOtherFeatures, setShowOtherFeaturesSignal] = createSignal<boolean>(notesApi.getShowOtherFeatures());
   const [sessionExpiredError, setSessionExpiredError] = createSignal<unknown>(undefined);
+
+  // Follow the shared user name as soon as it becomes available
+  createEffect(() => {
+    const name = globalUser();
+    if (name) setUsername(name);
+  });
 
   const handleApiError = (error: unknown) => {
     console.error(error);
@@ -54,8 +80,11 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
   const openModal = () => {
     setClassificationSaved(false);
-    const current = stripOuterQuotes(notesApi.getCurrentUserName()) as string;
-    setUsername(current);
+    const current = readUserName();
+    if (current) {
+      setGlobalUser(current);
+      setUsername(current);
+    }
     setShowOtherFeaturesSignal(notesApi.getShowOtherFeatures());
     setIsModalOpen(true);
   };
@@ -96,11 +125,14 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
 
   const status: Status = "approved";
 
+  // Refetches when the user becomes known (globalUser) or data changes.
+  // Passes the RAW name, exactly like the original code did.
   const [classification, { refetch: refetchClassification }] = createResource(
     () => ({
       vk: variantKey(),
       reportId: reportId(),
       sampleId: sampleId(),
+      user: globalUser(),
       version: dataVersion(),
     }),
     async (source) =>
@@ -113,14 +145,35 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
       ),
   );
 
+  const [classifications] = createResource(
+    () => ({
+      vk: variantKey(),
+      reportId: reportId(),
+      sampleId: sampleId(),
+      version: dataVersion(),
+    }),
+    async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId, false),
+  );
+
+  // The user's own classification: from the per-user fetch, falling back to the full list.
+  const myClassification = (): Classification | undefined => {
+    if (!classification.error && classification()) return classification();
+    if (classifications.error) return undefined;
+    const feature = props.userClassification.feature;
+    return (classifications() ?? []).find(
+      (c) => sameUser(c.createdBy, username() || globalUser()) && (c.variantKey?.feature ?? "") === (feature ?? ""),
+    );
+  };
+
   const [value, setValue] = createSignal<ClassificationOption>(defaultClassification);
 
+  // Preselect the user's classification once options and data are available.
   createEffect(() => {
-    const current = classification();
     const opts = classificationOptions();
-    if (!current || !opts) return;
+    if (!opts || classification.loading || classifications.loading) return;
 
-    const opt = opts.find((o) => o.value === current.value);
+    const current = myClassification();
+    const opt = current ? opts.find((o) => o.value === current.value) : undefined;
     setValue(opt ?? defaultClassification);
   });
 
@@ -129,7 +182,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     setValue(selectedOption);
 
     try {
-      const currentValue: Classification | undefined = classification();
+      const currentValue = myClassification();
       await notesApi.storeClassification({
         value: val,
         variantKey: variantKey(),
@@ -206,16 +259,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   const disableAllInputs = () => props.userClassification.ruNr === -1;
   const isRuNrError = () => props.userClassification.ruNr === -1;
 
-  const [classifications] = createResource(
-    () => ({
-      vk: variantKey(),
-      reportId: reportId(),
-      sampleId: sampleId(),
-      version: dataVersion(),
-    }),
-    async (source) => retrieveClassification(notesApi, source.vk, source.reportId, source.sampleId, false),
-  );
-
   const [consensus, { refetch: refetchConsensus }] = createResource(
     () => (isModalOpen() ? { vk: variantKey(), reportId: reportId(), version: dataVersion() } : undefined),
     async (source) => notesApi.getConsensusClassification(source.reportId, source.vk),
@@ -250,7 +293,7 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
     const others = classifications() ?? [];
     for (const c of others) {
       if (c.variantKey.feature !== feature) continue;
-      if (c.createdBy === username()) continue;
+      if (sameUser(c.createdBy, username())) continue;
       if (!c.value || seenValues.has(c.value)) continue;
 
       candidates.push({
@@ -282,13 +325,6 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
   };
 
   const submitConsensus = async () => {
-    console.log("submitConsensus", {
-      value: consensusDropdownValue(),
-      summary: consensusText(),
-      variantKey: variantKey(),
-      reportId: reportId(),
-    });
-
     try {
       await notesApi.storeConsensusClassification(reportId(), variantKey(), consensusDropdownValue(), consensusText());
       await refetchConsensus();
@@ -305,16 +341,20 @@ export const NotesInputButton: Component<NotesInputButtonProps> = (props) => {
         <ErrorNotification error={sessionExpiredError()} />
       </Show>
 
-      <span>
+      <span class="notes-input-cell">
         <a class="js-modal-trigger" onClick={openModal}>
           <i class="fas fa-edit" />
         </a>
 
-        <ClassificationViewer
-          userClassification={props.userClassification}
-          options={classificationOptions() ?? []}
-          currentUser={username()}
-        />
+        <For each={[`${dataVersion()}|${username()}`]}>
+          {() => (
+            <ClassificationViewer
+              userClassification={props.userClassification}
+              options={classificationOptions() ?? []}
+              currentUser={username()}
+            />
+          )}
+        </For>
         <Notes userClassification={props.userClassification} callback={openModal} />
       </span>
 

@@ -845,19 +845,6 @@ export class EmxNotesApi implements NotesApi {
     }
   }
 
-  // ---------------------------------------------------------------------------------------
-  // Consensus classification
-  //
-  // The consensus classification + its summary live directly on the VariantInterpretations
-  // row itself (columns "classification" / "classification summary" in the EMX2 model, i.e.
-  // GraphQL fields `classification` / `classificationSummary`) - NOT on VariantDiscussions,
-  // which is where individual users' own classifications/notes are stored. The
-  // VariantInterpretations row for a given report + variant is expected to already exist by
-  // the time these are called (created via ensureInterpretation as part of storeNote/
-  // storeClassification), so both methods below just resolve its deterministic id and
-  // read/update it directly.
-  // ---------------------------------------------------------------------------------------
-
   async getConsensusClassification(
     reportId: string,
     variantKey: VariantKey,
@@ -908,15 +895,6 @@ export class EmxNotesApi implements NotesApi {
     try {
       const interpretationId = this.buildInterpretationId(reportId, this.variantKeyToId(variantKey));
 
-      // Re-read the row's other links first. IMPORTANT: EMX2's `save` mutation replaces
-      // exactly the fields given in the payload - it does not merge - so if we sent only
-      // id/classification/classificationSummary/classificationDate (as the original version
-      // of this method did), interpretationAnalysis/individual/variant/status would all get
-      // wiped back to empty on every consensus save. That in turn silently broke
-      // retrieveNotes/retrieveClassifications for that variant, since those filter on
-      // variantInterpretation.interpretationAnalysis.id - a row with that link nulled out no
-      // longer matches, even though its linked notes/classifications are still in the DB
-      // untouched. Carrying the existing links forward in the same save call prevents that.
       const existingData = await this.graphql<Record<string, EmxInterpretationFullRow[] | null | undefined>>(
         reportId,
 
@@ -988,11 +966,11 @@ export class EmxNotesApi implements NotesApi {
   async getClassificationOptions(): Promise<ClassificationOption[]> {
     const data = await this.graphql<ClassificationOptionsResponse>(
       "",
-
       `query ClassificationOptions {
-        ${CLASSIFICATION_OPTIONS_FIELD} {
+        ${CLASSIFICATION_OPTIONS_FIELD}(orderby: { order: ASC }) {
           name
           label
+          order
         }
       }`,
       undefined,

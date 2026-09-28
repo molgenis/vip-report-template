@@ -17,6 +17,7 @@ export const Notes: Component<{
   const notesApi = getNotesApi();
   const [tooltipOpen, setTooltipOpen] = createSignal(false);
   let anchorRef: HTMLElement | undefined;
+  // `left` holds the balloon's RIGHT edge (balloon is shifted left via translate(-100%))
   const [pos, setPos] = createSignal({ top: 0, left: 0 });
 
   const reportId = () => props.userClassification.report;
@@ -54,16 +55,19 @@ export const Notes: Component<{
 
   const updatePosition = () => {
     if (!anchorRef) return;
-    const rect = anchorRef.getBoundingClientRect();
 
-    const idealLeft = rect.left + rect.width / 2;
-    const halfWidth = TOOLTIP_MAX_WIDTH / 2;
-    const left = Math.min(
-      Math.max(idealLeft, halfWidth + VIEWPORT_MARGIN),
-      window.innerWidth - halfWidth - VIEWPORT_MARGIN,
+    const cell = anchorRef.closest("td, th") as HTMLElement | null;
+    const rect = (cell ?? anchorRef).getBoundingClientRect();
+
+    const right = Math.min(
+      Math.max(rect.right, TOOLTIP_MAX_WIDTH + VIEWPORT_MARGIN),
+      window.innerWidth - VIEWPORT_MARGIN,
     );
 
-    setPos({ top: rect.bottom, left });
+    // Drop below the icon (not the whole cell) so it stays next to the note icon
+    const top = anchorRef.getBoundingClientRect().bottom;
+
+    setPos({ top, left: right });
   };
 
   const openTooltip = () => {
@@ -104,7 +108,7 @@ export const Notes: Component<{
                 position: "fixed",
                 top: `${pos().top}px`,
                 left: `${pos().left}px`,
-                transform: "translate(-50%, 6px)",
+                transform: "translate(-100%, 6px)",
               }}
             >
               <For each={notes()}>
@@ -112,7 +116,7 @@ export const Notes: Component<{
                   <div class="notes-tooltip-entry">
                     <span>{note.content}</span>
                     <Show when={noteMeta(note)}>
-                      &nbsp<span class="notes-tooltip-meta">({noteMeta(note)})</span>
+                      &nbsp;<span class="notes-tooltip-meta">({noteMeta(note)})</span>
                     </Show>
                   </div>
                 )}

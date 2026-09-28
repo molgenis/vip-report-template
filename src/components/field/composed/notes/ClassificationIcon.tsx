@@ -7,7 +7,7 @@ import type { ClassificationOption, VariantKey } from "../../../../types/NotesAp
 import { dataVersion } from "../../../../utils/upload/uploadSignal";
 import { formatDate } from "../../../../utils/dateUtils";
 
-const TOOLTIP_MAX_WIDTH = 750; // keep in sync with .notes-tooltip max-width in scss
+const TOOLTIP_MAX_WIDTH = 750;
 const VIEWPORT_MARGIN = 8;
 
 type ClassificationEntry = { value: string; createdBy?: string; createdAt?: Date };
@@ -15,15 +15,12 @@ type ClassificationEntry = { value: string; createdBy?: string; createdAt?: Date
 const metaFor = (entry: ClassificationEntry) =>
   [entry.createdBy, entry.createdAt ? formatDate(entry.createdAt) : null].filter(Boolean).join(", ");
 
-// Shared row for both "current user" and "other users" tooltip lists —
-// the only difference between them is whether the label is italicized.
 const TooltipRow: Component<{
   entry: ClassificationEntry;
   label: string;
-  italic?: boolean;
 }> = (props) => (
   <div class="notes-tooltip-entry">
-    <span>{props.italic ? <i>{props.label}</i> : props.label}</span>
+    <span>{props.label}</span>
     <Show when={metaFor(props.entry)}>
       &nbsp<span class="notes-tooltip-meta">({metaFor(props.entry)})</span>
     </Show>
@@ -92,11 +89,7 @@ export const ClassificationViewer: Component<{
       .map((c) => c.value),
   );
 
-  const showMissingIconInLabel = createMemo(
-    () => currentUserClassifications().length === 0 && otherClassificationsForLabel().length > 0,
-  );
-
-  const showMissingRowInTooltip = createMemo(
+  const showMissingClassificationWarning = createMemo(
     () => currentUserClassifications().length === 0 && otherUserClassifications().length > 0,
   );
 
@@ -115,11 +108,11 @@ export const ClassificationViewer: Component<{
       segments.push({
         key: "others",
         node: (
-          <i>
+          <>
             {otherClassificationsForLabel()
               .map((c) => c.value)
               .join(", ")}
-          </i>
+          </>
         ),
       });
     }
@@ -162,7 +155,7 @@ export const ClassificationViewer: Component<{
 
   return (
     <span
-      class="notes-tooltip-wrapper"
+      class="classifications-tooltip-wrapper"
       ref={anchorRef}
       onMouseEnter={openTooltip}
       onMouseLeave={() => setTooltipOpen(false)}
@@ -170,7 +163,7 @@ export const ClassificationViewer: Component<{
       onFocusOut={() => setTooltipOpen(false)}
     >
       <abbr class="ml-1 is-clickable" tabindex="0">
-        <Show when={showMissingIconInLabel()}>
+        <Show when={showMissingClassificationWarning()}>
           <i class="fas fa-circle-exclamation has-text-warning" />{" "}
         </Show>
         <For each={labelSegments()}>
@@ -195,7 +188,7 @@ export const ClassificationViewer: Component<{
               transform: "translate(-50%, 6px)",
             }}
           >
-            <Show when={showMissingRowInTooltip()}>
+            <Show when={showMissingClassificationWarning()}>
               <div class="notes-tooltip-entry">
                 <i class="fas fa-circle-exclamation has-text-warning" /> Not yet classified by current user.
               </div>
@@ -215,7 +208,7 @@ export const ClassificationViewer: Component<{
             </For>
 
             <For each={otherUserClassifications()}>
-              {(entry) => <TooltipRow entry={entry} label={optionLabel(entry)} italic />}
+              {(entry) => <TooltipRow entry={entry} label={optionLabel(entry)} />}
             </For>
           </div>
         </Portal>
