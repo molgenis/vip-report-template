@@ -134,26 +134,22 @@ table.is-borderless td,
   text-decoration: underline dotted;
 }
 
-.notes-tooltip-wrapper {
+.classification-tooltip-wrapper {
   position: relative;
   display: inline-block;
 }
 
 .notes-tooltip {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  margin-bottom: 6px;
-  background: #363636;
-  color: white;
+  background: white;
+  color: #363636;
   padding: 0.5rem 0.75rem;
   border-radius: 4px;
-  white-space: pre-line;
+  white-space: normal;
   width: max-content;
-  max-width: 320px;
-  font-size: 0.85rem;
-  z-index: 20;
+  max-width: 750px;
+  z-index: 9999;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  border: 1px solid #e0e0e0;
 }
 
 .notes-tooltip-entry + .notes-tooltip-entry {
@@ -196,4 +192,31 @@ table.is-borderless td,
   letter-spacing: 0.05em;
   color: #7a7a7a;
   margin: 0 0 0.75rem;
+}
+
+.notes-input-cell {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  vertical-align: middle;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.notes-input-cell > * {
+  flex: 0 0 auto;
+}
+
+.notes-input-cell .notes-tooltip-wrapper {
+  margin-left: auto;
+  position: static;
+  float: none;
+  transform: none;
+}
+
+td:has(> .notes-input-cell),
+th:has(> .notes-input-cell) {
+  min-width: max-content;
 }

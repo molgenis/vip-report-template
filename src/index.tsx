@@ -27,7 +27,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Provider } from "./store";
-import { createSignal, ErrorBoundary, Show } from "solid-js";
+import { ErrorBoundary } from "solid-js";
 import { HashRouter, Route } from "@solidjs/router";
 import { Home } from "./views/Home";
 import { Samples } from "./views/Samples";
@@ -78,21 +78,9 @@ if (document.readyState !== "loading") {
   window.addEventListener("DOMContentLoaded", processIcons);
 }
 
-const [error, setError] = createSignal<unknown>();
-window.addEventListener("error", function () {
-  setError({ message: "An unexpected error occurred" });
-});
-
-window.addEventListener("unhandledrejection", function () {
-  setError({ message: "An unexpected error occurred" });
-});
-
 render(
   () => (
     <Provider>
-      <Show when={error() !== undefined}>
-        <ErrorNotification error={error()} />
-      </Show>
       <ErrorBoundary fallback={(err) => <ErrorNotification error={err} />}>
         <HashRouter root={App}>
           <Route path="/" component={Home} />
