@@ -14,7 +14,7 @@ export function createQuerySample(config: ConfigVip, sample: SampleContainer, me
   const filterSelector = createSelectorSample(sample, filterField);
   const classFilter = createQueryFilterFieldCategorical(filterSelector, filterField, filterValues);
   const filters = [classFilter];
-  if (meta.records.format.GT !== undefined) {
+  if (meta.records.format["GT"] !== undefined) {
     const gtFilter = {
       selector: ["s", sample.item.id, "GT_type"],
       operator: "!in",
