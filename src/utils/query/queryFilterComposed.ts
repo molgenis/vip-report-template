@@ -21,7 +21,7 @@ import { createSelectorInfo, createSelectorSample } from "./selector.ts";
 import {
   createQueryFilterClosedInterval,
   createQueryFilterClosedIntervalOutside,
-  createQueryFilterString,
+  createQueryFilterStringOr,
 } from "./queryFilter.ts";
 import { createQueryFilterFieldCategorical } from "./queryFilterField.ts";
 
@@ -69,7 +69,7 @@ function createQueryFilterHpo(filter: ConfigFilterHpo, filterValue: FilterValueH
 }
 
 function createQueryFilterLocus(filterValue: FilterValueLocus): Query {
-  const queryParts: Query[] = [createQueryFilterString(["c"], [filterValue.chromosome], false)];
+  const queryParts: Query[] = [createQueryFilterStringOr(["c"], [filterValue.chromosome], false)];
 
   if (filterValue.start !== undefined || filterValue.end !== undefined) {
     const posQuery = createQueryFilterClosedInterval(["p"], { left: filterValue.start, right: filterValue.end });
@@ -87,7 +87,7 @@ function createQueryFilterAllelicImbalance(
   //GT_type is a technical field specific for the database, so no metadata present
   const gtTypeSelector = ["s", filter.sample.item.id, "GT_type"];
   const queryParts: Query[] = [];
-  if (filterValue.includes("true")) {
+  if (filterValue.categories.includes("true")) {
     const queryPartsTrue: Query[] = [];
     queryPartsTrue.push(
       createQueryComposed(
@@ -117,7 +117,7 @@ function createQueryFilterAllelicImbalance(
     );
     queryParts.push(createQueryComposed(queryPartsTrue, "or"));
   }
-  if (filterValue.includes("false")) {
+  if (filterValue.categories.includes("false")) {
     const queryPartsFalse: Query[] = [];
     queryPartsFalse.push(
       createQueryComposed(
@@ -147,7 +147,7 @@ function createQueryFilterAllelicImbalance(
     );
     queryParts.push(createQueryComposed(queryPartsFalse, "or"));
   }
-  if (filterValue.includes("__null")) {
+  if (filterValue.categories.includes("__null")) {
     const queryPartsUndefined: Query[] = [];
     queryPartsUndefined.push({
       selector: viabSelector,
@@ -170,21 +170,21 @@ function createQueryFilterInheritanceMatch(
 ): Query {
   const vimSelector = createSelectorSample(filter.sample, filter.vimField);
   const queryParts: Query[] = [];
-  if (filterValue.includes("true")) {
+  if (filterValue.categories.includes("true")) {
     queryParts.push({
       operator: "==",
       selector: vimSelector,
       args: 1,
     });
   }
-  if (filterValue.includes("false")) {
+  if (filterValue.categories.includes("false")) {
     queryParts.push({
       operator: "==",
       selector: vimSelector,
       args: 0,
     });
   }
-  if (filterValue.includes("potential")) {
+  if (filterValue.categories.includes("potential")) {
     const queryPartsUndefined: Query[] = [];
     queryPartsUndefined.push({
       selector: vimSelector,
@@ -204,21 +204,21 @@ function createQueryFilterInheritanceMatch(
 function createQueryFilterDeNovo(filter: ConfigFilterDeNovo, filterValue: FilterValueDeNovo): Query {
   const vidSelector = createSelectorSample(filter.sample, filter.vidField);
   const queryParts: Query[] = [];
-  if (filterValue.includes("true")) {
+  if (filterValue.categories.includes("true")) {
     queryParts.push({
       operator: "==",
       selector: vidSelector,
       args: 1,
     });
   }
-  if (filterValue.includes("false")) {
+  if (filterValue.categories.includes("false")) {
     queryParts.push({
       operator: "==",
       selector: vidSelector,
       args: 0,
     });
   }
-  if (filterValue.includes("potential")) {
+  if (filterValue.categories.includes("potential")) {
     const queryPartsUndefined: Query[] = [];
     queryPartsUndefined.push({
       selector: vidSelector,

@@ -26,6 +26,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          defaultComposedOperator={props.defaultComposedOperator}
         />
       </Match>
       <Match when={type() === "CHARACTER" || type() === "STRING"}>
@@ -54,6 +55,7 @@ export const FilterTyped: Component<FilterProps<ConfigFilterField, FilterValueFi
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
+          defaultComposedOperator={props.defaultComposedOperator}
         />
       </Match>
     </Switch>

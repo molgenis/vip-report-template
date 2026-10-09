@@ -66,11 +66,16 @@ describe("query sample", () => {
 
       expect(createQuerySample(config, sample, meta)).toStrictEqual(completeQuery);
       expect(createSelectorSample).toHaveBeenCalledWith(sample, filter_field);
-      expect(createQueryFilterFieldCategorical).toHaveBeenCalledWith(selector, filter_field, [
-        "U1",
-        "U2",
-        "__null",
-      ]);
+      expect(createQueryFilterFieldCategorical).toHaveBeenCalledWith(selector, filter_field, 
+           {
+               "categories": [
+                  "U1",
+                  "U2",
+                  "__null",
+                ],
+               "operator": "or",
+             },
+        );
     });
 
     test("create without filter field", () => {
