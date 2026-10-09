@@ -39,7 +39,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/locus"}>
@@ -50,7 +49,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/allelicImbalance"}>
@@ -61,7 +59,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/inheritanceMatch"}>
@@ -72,7 +69,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/deNovo"}>
@@ -83,7 +79,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/vipC"}>
@@ -94,7 +89,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={id() === "composed/vipCS"}>
@@ -105,7 +99,6 @@ export const FilterComposed: Component<FilterProps<ConfigFilterComposed, FilterV
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
     </Switch>

@@ -1,4 +1,4 @@
-import { Component, createEffect, createSignal, For, JSX, onMount, Show } from "solid-js";
+import { Component, createEffect, createSignal, For, JSX, onMount, Show, untrack } from "solid-js";
 import { FilterWrapper } from "../FilterWrapper";
 import {
   ConfigFilterField,
@@ -8,11 +8,24 @@ import {
 } from "../../../types/configFilter";
 import { Checkbox, CheckboxEvent } from "../../form/Checkbox";
 import { FilterProps } from "../Filter.tsx";
+import { FilterOperator, OperatorSwitch } from "../OperatorSwitch";
 
 type FilterValueCategoricalMap = { [key: FilterCategoryId]: null };
 
 export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterValueCategorical>> = (props) => {
   const [values, setValues] = createSignal<FilterValueCategoricalMap>({});
+
+  // Initial value only: later prop changes are synced by the createEffect below.
+  // Priority: saved value > prop default > config default > "or".
+  const [operator, setOperator] = createSignal<FilterOperator>(
+    untrack(
+      () =>
+        (props.value?.operator as FilterOperator | undefined) ??
+        props.defaultComposedOperator ??
+        props.config.defaultComposedOperator ??
+        "or",
+    ),
+  );
 
   const categories = (): FilterCategory[] => {
     const categories = Object.entries(props.config.field.categories!).map(([id, value]) => ({
@@ -48,9 +61,16 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
     );
   };
 
+  // sync local state with incoming props
   createEffect(() => {
-    if (props.value && props.value.length > 0) {
-      const newValues: FilterValueCategoricalMap = props.value.reduce((acc, v) => ({ ...acc, [v]: null }), {});
+    if (props.value?.operator) {
+      setOperator(props.value.operator as FilterOperator);
+    }
+    if (props.value && props.value.categories.length > 0) {
+      const newValues: FilterValueCategoricalMap = props.value.categories.reduce(
+        (acc, v) => ({ ...acc, [v]: null }),
+        {},
+      );
       setValues(newValues);
     }
   });
@@ -78,11 +98,24 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
     onValuesChange({});
   };
 
+  const onOperatorChange = (newOperator: FilterOperator) => {
+    setOperator(newOperator);
+
+    // only emit a value change if there is an active selection
+    if (Object.keys(values()).length > 0) {
+      props.onValueChange({
+        value: { categories: Object.keys(values()), operator: newOperator } as FilterValueCategorical,
+      });
+    }
+  };
+
   const onValuesChange = (values: FilterValueCategoricalMap) => {
     setValues(values);
 
     if (Object.keys(values).length > 0) {
-      props.onValueChange({ value: Object.keys(values) as FilterValueCategorical });
+      props.onValueChange({
+        value: { categories: Object.keys(values), operator: operator() } as FilterValueCategorical,
+      });
     } else {
       props.onValueClear();
     }
@@ -98,8 +131,10 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
   }
 
   onMount(() => {
-    if (props.config.defaultValue !== undefined && !props.isInited) {
-      let values;
+    if (props.isInited) return;
+
+    if (props.config.defaultValue !== undefined) {
+      let values: string[];
       if (props.config.defaultValue === "non_null") {
         values = categories()
           .map((cat) => cat.id)
@@ -108,13 +143,20 @@ export const FilterCategorical: Component<FilterProps<ConfigFilterField, FilterV
         values = props.config.defaultValue.split(",");
         validateValues(values, categories());
       }
-      props.onValueChange({ value: values as FilterValueCategorical });
+      props.onValueChange({
+        value: { categories: values, operator: operator() } as FilterValueCategorical,
+      });
     }
   });
 
   return (
     <FilterWrapper config={props.config} tooltipContentElement={tooltipContentElement()}>
       <div class="field">
+        <Show when={props.config.showComposedOperator === true}>
+          <div class="control mb-2">
+            <OperatorSwitch value={operator()} onChange={onOperatorChange} />
+          </div>
+        </Show>
         <For each={categories()}>
           {(category) => (
             <div class="control">

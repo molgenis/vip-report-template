@@ -11,31 +11,31 @@ import {
 } from "../../types/configFilter";
 import { Query } from "@molgenis/vip-report-api";
 import { UnexpectedEnumValueException } from "../error.ts";
-import { createQueryFilterClosedInterval, createQueryFilterString } from "./queryFilter.ts";
+import { createQueryFilterClosedInterval, createQueryFilterStringOr } from "./queryFilter.ts";
 
 export function createQueryFilterFixed(filter: ConfigFilterFixed, filterValue: FilterValueFixed): Query {
   let query: Query;
   switch (filter.id) {
     case "fixed/chrom":
-      query = createQueryFilterString(["c"], filterValue as FilterValueChrom, false);
+      query = createQueryFilterStringOr(["c"], filterValue as FilterValueChrom, false);
       break;
     case "fixed/pos":
       query = createQueryFilterClosedInterval(["p"], filterValue as FilterValuePos);
       break;
     case "fixed/id":
-      query = createQueryFilterString(["i"], filterValue as FilterValueId, true);
+      query = createQueryFilterStringOr(["i"], filterValue as FilterValueId, true);
       break;
     case "fixed/ref":
-      query = createQueryFilterString(["r"], filterValue as FilterValueRef, false);
+      query = createQueryFilterStringOr(["r"], filterValue as FilterValueRef, false);
       break;
     case "fixed/alt":
-      query = createQueryFilterString(["a"], filterValue as FilterValueAlt, true);
+      query = createQueryFilterStringOr(["a"], filterValue as FilterValueAlt, true);
       break;
     case "fixed/qual":
       query = createQueryFilterClosedInterval(["q"], filterValue as FilterValueQual);
       break;
     case "fixed/filter":
-      query = createQueryFilterString(["f"], filterValue as FilterValueFilter, true);
+      query = createQueryFilterStringOr(["f"], filterValue as FilterValueFilter, true);
       break;
     default:
       throw new UnexpectedEnumValueException(filter.id);
