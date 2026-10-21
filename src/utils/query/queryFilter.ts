@@ -102,7 +102,7 @@ export function createQueryFilterStringAnd(
   if (filterValues.length > 0) {
     queryParts.push({
       selector,
-      operator: "contains_all",
+      operator: "has_all",
       args: filterValues,
     });
   }
