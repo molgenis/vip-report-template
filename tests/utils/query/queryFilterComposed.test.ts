@@ -18,7 +18,7 @@ import { Query } from "@molgenis/vip-report-api";
 import {
   createQueryFilterClosedInterval,
   createQueryFilterClosedIntervalOutside,
-  createQueryFilterString,
+  createQueryFilterStringOr,
 } from "../../../src/utils/query/queryFilter.ts";
 import { SampleContainer } from "../../../src/utils/api.ts";
 import { createQueryFilterFieldCategorical } from "../../../src/utils/query/queryFilterField.ts";
@@ -51,13 +51,13 @@ describe("query composed filters", () => {
 
         const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1", start: 1, end: 2 } as FilterValueLocus;
-        vi.mocked(createQueryFilterString).mockReturnValue(query);
+        vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryPos);
         expect(createQueryFilterComposed(config, value)).toStrictEqual({
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
+        expect(createQueryFilterStringOr).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: 1, right: 2 });
       });
 
@@ -66,13 +66,13 @@ describe("query composed filters", () => {
 
         const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1", start: 1 } as FilterValueLocus;
-        vi.mocked(createQueryFilterString).mockReturnValue(query);
+        vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryPos);
         expect(createQueryFilterComposed(config, value)).toStrictEqual({
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
+        expect(createQueryFilterStringOr).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: 1, right: undefined });
       });
 
@@ -81,22 +81,22 @@ describe("query composed filters", () => {
 
         const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1", end: 2 } as FilterValueLocus;
-        vi.mocked(createQueryFilterString).mockReturnValue(query);
+        vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryPos);
         expect(createQueryFilterComposed(config, value)).toStrictEqual({
           args: [query, queryPos],
           operator: "and",
         });
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
+        expect(createQueryFilterStringOr).toHaveBeenCalledWith(["c"], ["chr1"], false);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["p"], { left: undefined, right: 2 });
       });
 
       test("locus chr", () => {
         const config = { type: "composed", id: "composed/locus" } as ConfigFilterLocus;
         const value = { chromosome: "chr1" } as FilterValueLocus;
-        vi.mocked(createQueryFilterString).mockReturnValue(query);
+        vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
         expect(createQueryFilterComposed(config, value)).toStrictEqual(query);
-        expect(createQueryFilterString).toHaveBeenCalledWith(["c"], ["chr1"], false);
+        expect(createQueryFilterStringOr).toHaveBeenCalledWith(["c"], ["chr1"], false);
       });
     });
 
@@ -134,7 +134,7 @@ describe("query composed filters", () => {
       test("true", () => {
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryInterval);
         vi.mocked(createQueryFilterClosedIntervalOutside).mockReturnValue(queryIntervalClosed);
-        expect(createQueryFilterComposed(config, ["true"])).toStrictEqual(expectedTrueQuery);
+        expect(createQueryFilterComposed(config, {categories: ["true"]})).toStrictEqual(expectedTrueQuery);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["s", 1, "VIAB"], { left: 0.02, right: 0.98 });
         expect(createQueryFilterClosedIntervalOutside).toHaveBeenCalledWith(["s", 1, "VIAB"], {
           left: 0.2,
@@ -165,7 +165,7 @@ describe("query composed filters", () => {
       test("false", () => {
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryInterval);
         vi.mocked(createQueryFilterClosedIntervalOutside).mockReturnValue(queryIntervalClosed);
-        expect(createQueryFilterComposed(config, ["false"])).toStrictEqual(expectedFalseQuery);
+        expect(createQueryFilterComposed(config, {categories: ["false"]})).toStrictEqual(expectedFalseQuery);
         expect(createQueryFilterClosedInterval).toHaveBeenCalledWith(["s", 1, "VIAB"], {
           left: 0.2,
           right: 0.8,
@@ -187,14 +187,14 @@ describe("query composed filters", () => {
       test("__null", () => {
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryInterval);
         vi.mocked(createQueryFilterClosedIntervalOutside).mockReturnValue(queryIntervalClosed);
-        expect(createQueryFilterComposed(config, ["__null"])).toStrictEqual(expectedNullQuery);
+        expect(createQueryFilterComposed(config, {categories: ["__null"]})).toStrictEqual(expectedNullQuery);
       });
 
       test("mixed", () => {
         vi.mocked(createQueryFilterClosedInterval).mockReturnValue(queryInterval);
         vi.mocked(createQueryFilterClosedIntervalOutside).mockReturnValue(queryIntervalClosed);
 
-        expect(createQueryFilterComposed(config, ["true", "__null"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["true", "__null"]})).toStrictEqual({
           args: [expectedTrueQuery, expectedNullQuery],
           operator: "or",
         });
@@ -210,7 +210,7 @@ describe("query composed filters", () => {
       } as ConfigFilterInheritanceMatch;
 
       test("true", () => {
-        expect(createQueryFilterComposed(config, ["true"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["true"]})).toStrictEqual({
           selector: ["s", 1, "VIM"],
           operator: "==",
           args: 1,
@@ -218,7 +218,7 @@ describe("query composed filters", () => {
       });
 
       test("false", () => {
-        expect(createQueryFilterComposed(config, ["false"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["false"]})).toStrictEqual({
           selector: ["s", 1, "VIM"],
           operator: "==",
           args: 0,
@@ -226,7 +226,7 @@ describe("query composed filters", () => {
       });
 
       test("potential", () => {
-        expect(createQueryFilterComposed(config, ["potential"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["potential"]})).toStrictEqual({
           args: [
             { selector: ["s", 1, "VIM"], operator: "==", args: null },
             { selector: ["s", 1, "VIM"], operator: "==", args: undefined },
@@ -236,7 +236,7 @@ describe("query composed filters", () => {
       });
 
       test("match and potential", () => {
-        expect(createQueryFilterComposed(config, ["true","potential"])).toStrictEqual(
+        expect(createQueryFilterComposed(config, {categories: ["true","potential"]})).toStrictEqual(
           {
             args: [{
               selector: ["s", 1, "VIM"],
@@ -264,7 +264,7 @@ describe("query composed filters", () => {
       } as ConfigFilterDeNovo;
 
       test("true", () => {
-        expect(createQueryFilterComposed(config, ["true"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["true"]})).toStrictEqual({
           selector: ["s", 1, "VID"],
           operator: "==",
           args: 1,
@@ -272,7 +272,7 @@ describe("query composed filters", () => {
       });
 
       test("false", () => {
-        expect(createQueryFilterComposed(config, ["false"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["false"]})).toStrictEqual({
           selector: ["s", 1, "VID"],
           operator: "==",
           args: 0,
@@ -280,7 +280,7 @@ describe("query composed filters", () => {
       });
 
       test("potential", () => {
-        expect(createQueryFilterComposed(config, ["potential"])).toStrictEqual({
+        expect(createQueryFilterComposed(config, {categories: ["potential"]})).toStrictEqual({
           args: [
             { selector: ["s", 1, "VID"], operator: "==", args: null },
             { selector: ["s", 1, "VID"], operator: "==", args: undefined },

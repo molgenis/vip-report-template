@@ -13,6 +13,7 @@ import { ConfigFilterComposed, FilterValueComposed } from "../../types/configFil
 import { FilterComposed } from "./composed/FilterComposed";
 import { ErrorNotification } from "../ErrorNotification";
 import { FilterFixed } from "./fixed/FilterFixed.tsx";
+import { ComposedQueryOperator } from "@molgenis/vip-report-api";
 
 export interface FilterValueChangeEvent<FilterValueType> {
   value: FilterValueType;
@@ -25,10 +26,11 @@ export interface FilterProps<C extends ConfigFilterBase, FilterValueType> {
   config: C;
   value?: FilterValueType;
   defaultValue?: string;
+  showComposedOperator?: boolean;
+  defaultComposedOperator?: ComposedQueryOperator;
   onValueChange: FilterValueChangeCallback<FilterValueType>;
   onValueClear: FilterValueClearCallback;
   isInited: boolean;
-  reportId: string;
 }
 
 export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props) => {
@@ -43,7 +45,6 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={type() === "info" || type() === "genotype"}>
@@ -53,7 +54,6 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
       <Match when={type() === "composed"}>
@@ -63,7 +63,6 @@ export const Filter: Component<FilterProps<ConfigFilter, FilterValue>> = (props)
           onValueChange={props.onValueChange}
           onValueClear={props.onValueClear}
           isInited={props.isInited}
-          reportId={props.reportId}
         />
       </Match>
     </Switch>

@@ -536,7 +536,9 @@
         {
           "type": "info",
           "name": "CSQ/GADO_PD",
-          "label": "Gene-phenotype association (GADO)"
+          "label": "Gene-phenotype association (GADO)",
+          "showComposedOperator": true,
+          "defaultComposedOperator": "and"
         },
         {
           "type": "info",
@@ -580,6 +582,13 @@
           "name": "allelicImbalance",
           "label": "Allelic Imbalance",
           "description": "Sample genotype shows allelic imbalance, calculated by: the allelic depth (AD) value of the first allele divided by the sum of the AD values for the genotype. For hetrozygotic genotypes values below 0.02 or above 0.8 are considered imbalanced. For homozygotic genotypes values between 0.02 and 0.98 are considered imbalanced."
+        },
+        {
+          "type": "info",
+          "name": "CSQ/Consequence",
+          "defaultValue": "stop_gained,frameshift_variant,stop_lost,start_lost,inframe_insertion,inframe_deletion,missense_variant,protein_altering_variant,incomplete_terminal_codon_variant,start_retained_variant,stop_retained_variant,synonymous_variant,coding_sequence_variant",
+          "showComposedOperator": true,
+          "defaultComposedOperator": "or"
         }
       ],
       "str": [
@@ -594,7 +603,9 @@
         },
         {
           "type": "info",
-          "name": "CSQ/PICK"
+          "name": "CSQ/PICK",
+          "showComposedOperator": true,
+          "defaultComposedOperator": "or"
         },
         {
           "type": "info",
