@@ -34,6 +34,8 @@ function createConfigFilterInfo(config: ConfigJsonFilterInfo, field: FieldMetada
     defaultValue: config.defaultValue,
     type: "info",
     id: field.id,
+    defaultComposedOperator: config.defaultComposedOperator,
+    showComposedOperator: config.showComposedOperator,
     label: () => getLabel(config, field.label || field.id),
     description: () => getDescription(config, field.description),
     field,

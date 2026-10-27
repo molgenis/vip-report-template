@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
 import { Query } from "@molgenis/vip-report-api";
-import { createQueryFilterClosedInterval, createQueryFilterString } from "../../../src/utils/query/queryFilter.ts";
+import { createQueryFilterClosedInterval, createQueryFilterStringOr } from "../../../src/utils/query/queryFilter.ts";
 import { createQueryFilterField } from "../../../src/utils/query/queryFilterField.ts";
 import { ConfigFilterField, ConfigFilterFormat } from "../../../src/types/configFilter";
 import { FieldMetadata } from "@molgenis/vip-report-vcf";
@@ -21,27 +21,28 @@ describe("query filter fixed", () => {
       const field = { id: "f", type: "CATEGORICAL", number: { type: "NUMBER", count: 1 }, categories } as FieldMetadata;
       const config = { type: "info", id: "filter", field } as ConfigFilterField;
       const value = ["x"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
-      expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false);
+      const filterValue = {categories: value};
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
+      expect(createQueryFilterField(config, filterValue)).toStrictEqual(query);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["n", "f"], value, false);
     });
 
     test("CHARACTER count=1 info", () => {
       const field = { id: "f", type: "CHARACTER", number: { type: "NUMBER", count: 1 } } as FieldMetadata;
       const config = { type: "info", id: "filter", field } as ConfigFilterField;
       const value = ["x"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "f"], value, false);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["n", "f"], value, false);
     });
 
     test("STRING count=* info nested", () => {
       const field = { id: "c", parent: { id: "p" }, type: "STRING", number: { type: "OTHER" } } as FieldMetadata;
       const config = { type: "info", id: "filter", field } as ConfigFilterField;
       const value = ["x"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["n", "p", "c"], value, true);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["n", "p", "c"], value, true);
     });
 
     test("STRING count=* genotype", () => {
@@ -49,9 +50,9 @@ describe("query filter fixed", () => {
       const sample = { item: { id: 1, data: { index: 1 } } } as SampleContainer;
       const config = { type: "genotype", id: "filter", field, sample } as ConfigFilterFormat;
       const value = ["x"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterField(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["s", 1, "f"], value, true);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["s", 1, "f"], value, true);
     });
 
     test("FLOAT count=1 info", () => {
