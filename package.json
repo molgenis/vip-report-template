@@ -45,7 +45,7 @@
     "base64-js": "^1.5.1",
     "igv": "^3.8.5",
     "solid-js": "^1.9.17",
-    "sql.js": "^1.13.0",
+    "sql.js": "^1.15.2",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "lint-staged": {

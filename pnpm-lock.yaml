@@ -40,7 +40,7 @@ importers:
         specifier: ^1.9.17
         version: 1.9.17
       sql.js:
-        specifier: ^1.13.0
+        specifier: ^1.15.2
         version: 1.15.2
       xlsx:
         specifier: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
