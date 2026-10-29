@@ -869,62 +869,31 @@ html[data-theme="dark"] {
   }
 }
 
-.variant-card-meta,
-.variant-card-aside {
+.variant-card-meta {
   color: c(muted-foreground);
   font-size: 0.9rem;
 }
 
-.variant-card-verdict {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.3rem;
-  text-align: right;
-  max-width: 16rem;
-}
+// VIP classification of a consequence: a small coloured dot before the label, no badge.
 
-.class-badge {
-  border-radius: $radius;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 0.3rem 0.9rem;
-  text-decoration: none;
-  white-space: nowrap;
-
-  &:hover {
-    color: #fff;
-    opacity: 0.85;
+.variant-card-consequences {
+  td {
+    vertical-align: middle;
   }
 
-  &--pathogenic {
-    background-color: hsl(0 72% 51%);
-  }
+  .row-action {
+    text-align: right;
 
-  &--likely-pathogenic {
-    background-color: hsl(25 95% 53%);
-  }
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: c(muted-foreground);
+      text-decoration: none;
 
-  &--uncertain {
-    background-color: hsl(240 4% 46%);
-  }
-
-  &--likely-benign {
-    background-color: hsl(160 84% 39%);
-  }
-
-  &--benign {
-    background-color: hsl(163 94% 24%);
-  }
-
-  &--other {
-    background-color: transparent;
-    border: 1px solid c(border);
-    color: c(foreground);
-
-    &:hover {
-      color: c(foreground);
+      &:hover {
+        color: c(foreground);
+      }
     }
   }
 }
@@ -1296,4 +1265,246 @@ html:has(.variants-layout) {
     flex-shrink: 0;
     overflow: visible;
   }
+}
+
+// --- consequence page -------------------------------------------------------------------
+// Centred column: the classification flow first, the annotations grouped by subject below it.
+
+.consequence-page {
+  max-width: 64rem;
+  margin: 0 auto 2rem;
+}
+
+.consequence-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+}
+
+.consequence-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: c(muted-foreground);
+  font-size: 0.9rem;
+
+  a {
+    color: c(foreground);
+  }
+
+  .is-disabled {
+    opacity: 0.45;
+  }
+}
+
+.consequence-section {
+  margin-bottom: 1.75rem;
+}
+
+.consequence-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.consequence-section-title {
+  margin-bottom: 0.75rem;
+  color: c(foreground);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.consequence-flows {
+  display: grid;
+  grid-template-columns: minmax(0, 36rem);
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+
+  &.is-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// Decision path as a vertical timeline: each step shows the question and the answer that was taken.
+.decision-flow {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.decision-flow-step {
+  position: relative;
+  padding: 0 0 1.25rem 1.75rem;
+
+  // connector to the next step
+  &::before {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    bottom: 0;
+    left: 0.4rem;
+    width: 1px;
+    background-color: c(border);
+  }
+
+  // step marker
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0.35rem;
+    left: 0.1rem;
+    width: 0.65rem;
+    height: 0.65rem;
+    border: 1.5px solid c(muted-foreground);
+    border-radius: 50%;
+    background-color: c(card);
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  &.is-leaf {
+    &::after {
+      border-color: c(foreground);
+      background-color: c(foreground);
+    }
+
+    .decision-flow-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.decision-flow-title {
+  color: c(foreground);
+  font-weight: 500;
+}
+
+.decision-flow-description {
+  color: c(muted-foreground);
+  font-size: 0.85rem;
+}
+
+.decision-flow-answer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+
+  code {
+    padding: 0.05rem 0.35rem;
+    border-radius: $radius;
+    background-color: c(secondary);
+    color: c(foreground);
+    font-size: 0.8rem;
+  }
+}
+
+.decision-flow-outcome {
+  font-weight: 600;
+
+  &::before {
+    content: "\2192\00a0";
+    color: c(muted-foreground);
+    font-weight: 400;
+  }
+}
+
+.decision-flow-rule-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: c(muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: c(foreground);
+  }
+}
+
+.decision-flow-rule {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  font-size: 0.85rem;
+
+  .card {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .card-content {
+    padding: 0;
+  }
+}
+
+// Annotation groups flow into two columns, each group a small card of label/value rows.
+.annotation-groups {
+  columns: 2 22rem;
+  column-gap: 1.25rem;
+}
+
+.annotation-group {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+
+  dl > div {
+    display: grid;
+    grid-template-columns: minmax(8rem, 40%) minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.3rem 0;
+    border-top: 1px solid c(border, 0.5);
+
+    &:first-child {
+      border-top: 0;
+    }
+  }
+
+  dt {
+    color: c(muted-foreground);
+    font-size: 0.85rem;
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.annotation-group-title {
+  margin-bottom: 0.5rem;
+  color: c(muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
