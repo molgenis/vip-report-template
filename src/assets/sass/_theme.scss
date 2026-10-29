@@ -57,14 +57,14 @@ $sticky-top: $navbar-height + $breadcrumb-height;
 }
 
 @mixin dark-tokens {
-  --vip-background: 220 10% 5%;
+  --vip-background: 220 10% 7%;
   --vip-foreground: 0 0% 92%;
   --vip-card: 220 10% 5%;
   --vip-popover: 210 10% 16%;
   --vip-secondary: 210 8% 22%;
-  --vip-muted: 220 8% 8%;
-  --vip-subtle: 220 8% 11.5%;
-  --vip-surface: 220 8% 11%;
+  --vip-muted: 220 10% 7%;
+  --vip-subtle: 220 10% 5%;
+  --vip-surface: 220 10% 5%;
   --vip-muted-foreground: 0 0% 70%;
   --vip-border: 210 8% 25%;
   --vip-destructive: 0 75% 65%;
@@ -757,7 +757,7 @@ table.is-borderless td,
 @mixin dark-genome-browser {
   .genome-browser {
     border-color: hsl(210 8% 75%);
-    filter: invert(0.92) hue-rotate(180deg);
+    filter: invert(0.97) hue-rotate(180deg);
   }
 }
 
@@ -796,19 +796,19 @@ html:not([data-theme="dark"]) .theme-toggle-to-light {
   }
 
   .base-a {
-    background-color: hsl(120 45% 22%);
+    background-color: hsl(120, 44%, 28%);
   }
 
   .base-c {
-    background-color: hsl(214 50% 30%);
+    background-color: hsl(214, 50%, 38%);
   }
 
   .base-g {
-    background-color: hsl(42 70% 22%);
+    background-color: hsl(42, 67%, 37%);
   }
 
   .base-t {
-    background-color: hsl(352 50% 30%);
+    background-color: hsl(352, 51%, 41%);
   }
 
   .base-m,
