@@ -1,9 +1,7 @@
-import { Component, createSignal, Show } from "solid-js";
+import { Component, createSignal, For, Show } from "solid-js";
 import { MetadataContainer, SampleContainer } from "../utils/api.ts";
 import { VcfRecord } from "@molgenis/vip-report-vcf";
 import { DecisionTree, Item, Sample } from "@molgenis/vip-report-api";
-import { VariantInfoTable } from "./VariantInfoTable.tsx";
-import { VariantConsequenceTable } from "./VariantConsequenceTable.tsx";
 import { VariantTable } from "./VariantTable.tsx";
 import { DecisionTreePath } from "./tree/DecisionTreePath.tsx";
 import { getDecisionTreePath, getSampleTreePath } from "../utils/decisionTree.ts";
@@ -12,8 +10,20 @@ import { getPedigreeSamples } from "../utils/sample.ts";
 import { ConfigJson } from "../types/config";
 import { VariantGenotypeTable } from "./VariantGenotypeTable.tsx";
 import { initConfig } from "../utils/config/config.ts";
+import { initConfigCells } from "../utils/config/configCells.ts";
+import { ConfigCellInfo } from "../types/configCells";
 import { A } from "@solidjs/router";
+import { getInfoNestedField, getInfoValue, getInfoValueCount } from "../utils/vcf.ts";
+import { href } from "../utils/utils.ts";
+import { displayValue } from "./VariantContainer.tsx";
+import { AnnotationGroup, groupConsequenceFields } from "./ConsequenceAnnotations.tsx";
 
+// Part after the "transcript:" prefix of an HGVS notation.
+function shortHgvs(hgvs: string | null): string | null {
+  return hgvs ? (hgvs.split(":").pop() ?? hgvs) : null;
+}
+
+// Consequence page: why VIP classified this consequence the way it did, then all of its annotations by subject.
 export const VariantConsequenceContainer: Component<{
   config: ConfigJson;
   metadata: MetadataContainer;
@@ -29,8 +39,8 @@ export const VariantConsequenceContainer: Component<{
 
   const samples = (): Item<Sample>[] => (props.sample ? getPedigreeSamples(props.sample) : []);
   const hasDecisionTreePathMeta = () =>
-    Object.values(props.metadata.records.info.CSQ?.nested?.items || {}).some((csq) => csq.id === "VIPP");
-  const hasSampleTreePathMeta = () => props.metadata.records.format.VIPP_S != null;
+    Object.values(props.metadata.records.info["CSQ"]?.nested?.items || {}).some((csq) => csq.id === "VIPP");
+  const hasSampleTreePathMeta = () => props.metadata.records.format["VIPP_S"] != null;
   const showSampleTree = () => {
     if (props.sample) {
       const treePath = getSampleTreePath(props.metadata.records, props.sample, props.record, props.consequenceId);
@@ -38,85 +48,152 @@ export const VariantConsequenceContainer: Component<{
     }
     return false;
   };
-  const [showEmptyInfo, setShowEmptyInfo] = createSignal(false);
-  const toggleShowEmptyInfo = () => setShowEmptyInfo((isShow) => !isShow);
-  const [showEmptyCsq, setShowEmptyCsq] = createSignal(false);
-  const toggleShowEmptyCsq = () => setShowEmptyCsq((isShow) => !isShow);
+  const showVariantTree = () => props.decisionTree !== null && hasDecisionTreePathMeta();
+  const [showEmpty, setShowEmpty] = createSignal(false);
+
+  const csqField = (id: string) => getInfoNestedField(props.metadata.records, "CSQ", id);
+  const csq = (id: string) => displayValue(getInfoValue(props.record, props.consequenceId, csqField(id)));
+  const csqCount = () => {
+    const field = csqField("Consequence") ?? csqField("Allele");
+    return field ? getInfoValueCount(props.record, field) : 0;
+  };
+  const variantHref = (...parts: (string | number)[]) =>
+    href([
+      ...(props.sample ? ["samples", props.sample.item.id] : []),
+      "variants",
+      props.variantType.id,
+      "variant",
+      props.record.id,
+      ...parts,
+    ]);
+  const variantId = () => {
+    const data = props.record.data;
+    return `${data.c}:${data.p} ${data.r}>${data.a.map((alt) => alt ?? ".").join(",")}`;
+  };
+
+  const csqFields = () =>
+    initConfigCells([{ type: "info", name: "CSQ/.*" }], props.variantType, props.metadata, null, props.reportId).filter(
+      (configCell) => configCell.type !== "group",
+    ) as ConfigCellInfo[];
+  const infoFields = () =>
+    initConfigCells(
+      [{ type: "info", name: "((?!CSQ).)*" }],
+      props.variantType,
+      props.metadata,
+      null,
+      props.reportId,
+    ).filter((configCell) => configCell.type !== "group") as ConfigCellInfo[];
 
   return (
-    <div class="columns">
-      <div class="column is-4">
+    <div class="consequence-page">
+      <header class="consequence-header">
         <div>
-          <h1 class="title is-5">
-            Info
-            <A href="#" onClick={toggleShowEmptyInfo} class="small-blue-link">
-              {showEmptyInfo() ? "(Hide empty fields)" : "(Show empty fields)"}
-            </A>
-          </h1>
-          <VariantInfoTable
-            variantType={props.variantType}
-            metadata={props.metadata}
-            record={props.record}
-            isShowEmpty={showEmptyInfo()}
-            reportId={props.reportId}
-          />
+          <div class="variant-card-id">{variantId()}</div>
+          <div class="variant-card-gene">
+            <Show when={csq("SYMBOL")}>
+              <em>{csq("SYMBOL")}</em>{" "}
+            </Show>
+            {[shortHgvs(csq("HGVSc")), shortHgvs(csq("HGVSp"))].filter(Boolean).join(" ")}
+          </div>
+          <div class="variant-card-meta">
+            {[csq("Consequence"), csq("IMPACT") && `${csq("IMPACT")} impact`, csq("Feature")]
+              .filter(Boolean)
+              .join(" · ")}
+          </div>
         </div>
-        <div class="mt-3">
-          <h1 class="title is-5">
-            Consequence
-            <A href="#" onClick={toggleShowEmptyCsq} class="small-blue-link">
-              {showEmptyCsq() ? "(Hide empty fields)" : "(Show empty fields)"}
-            </A>
-          </h1>
-          <VariantConsequenceTable
-            variantType={props.variantType}
-            metadata={props.metadata}
-            record={props.record}
-            consequenceId={props.consequenceId}
-            isShowEmpty={showEmptyCsq()}
-          />
+        <nav class="consequence-nav">
+          <Show when={csqCount() > 1}>
+            <Show when={props.consequenceId > 0} fallback={<span class="is-disabled">‹ Previous</span>}>
+              <A href={variantHref("consequences", props.consequenceId - 1)}>‹ Previous</A>
+            </Show>
+            <span>
+              Consequence {props.consequenceId + 1} of {csqCount()}
+            </span>
+            <Show when={props.consequenceId < csqCount() - 1} fallback={<span class="is-disabled">Next ›</span>}>
+              <A href={variantHref("consequences", props.consequenceId + 1)}>Next ›</A>
+            </Show>
+          </Show>
+          <A href={variantHref()}>All consequences</A>
+        </nav>
+      </header>
+
+      <Show when={showVariantTree() || showSampleTree()}>
+        <section class="consequence-section">
+          <h2 class="consequence-section-title">Why this classification</h2>
+          <div class="consequence-flows" classList={{ "is-pair": showVariantTree() && showSampleTree() }}>
+            <Show when={showVariantTree() && props.decisionTree}>
+              {(decisionTree) => (
+                <div>
+                  <h3 class="annotation-group-title">Variant classification</h3>
+                  <DecisionTreePath
+                    decisionTree={decisionTree()}
+                    path={getDecisionTreePath(props.metadata.records, props.record, props.consequenceId)}
+                  />
+                </div>
+              )}
+            </Show>
+            <Show when={showSampleTree() && hasSampleTreePathMeta() && props.sampleTree && props.sample}>
+              {(sample) => (
+                <div>
+                  <h3 class="annotation-group-title">Sample classification</h3>
+                  <DecisionTreePath
+                    decisionTree={props.sampleTree!}
+                    path={getSampleTreePath(props.metadata.records, sample(), props.record, props.consequenceId)}
+                  />
+                </div>
+              )}
+            </Show>
+          </div>
+        </section>
+      </Show>
+
+      <Show when={config().variant.samplesCells}>
+        {(samplesCells) => (
+          <section class="consequence-section">
+            <h2 class="consequence-section-title">Samples</h2>
+            <VariantGenotypeTable
+              config={samplesCells()}
+              samples={samples()}
+              metadata={props.metadata}
+              variantType={props.variantType}
+              record={props.record}
+            />
+          </section>
+        )}
+      </Show>
+
+      <section class="consequence-section">
+        <div class="consequence-section-header">
+          <h2 class="consequence-section-title">Annotations</h2>
+          <button type="button" class="decision-flow-rule-toggle" onClick={() => setShowEmpty((show) => !show)}>
+            {showEmpty() ? "Hide empty fields" : "Show empty fields"}
+          </button>
         </div>
-        <div class="mt-3">
-          <h1 class="title is-5">Record</h1>
-          <VariantTable variant={props.record.data} />
-        </div>
-      </div>
-      <div class="column is-8">
-        <Show when={config().variant.samplesCells}>
-          {(samplesCells) => (
-            <div class="column">
-              <h1 class="title is-5">Samples</h1>
-              <VariantGenotypeTable
-                config={samplesCells()}
-                samples={samples()}
-                metadata={props.metadata}
-                variantType={props.variantType}
+        <div class="annotation-groups">
+          <For each={groupConsequenceFields(csqFields())}>
+            {(group) => (
+              <AnnotationGroup
+                title={group.title}
+                fields={group.fields}
                 record={props.record}
+                valueIndex={props.consequenceId}
+                isShowEmpty={showEmpty()}
               />
-            </div>
-          )}
-        </Show>
-        <div class="columns mt-3">
-          {props.decisionTree !== null && hasDecisionTreePathMeta() && (
-            <div class="column is-6">
-              <h1 class="title is-5">Variant classification tree path</h1>
-              <DecisionTreePath
-                decisionTree={props.decisionTree}
-                path={getDecisionTreePath(props.metadata.records, props.record, props.consequenceId)}
-              />
-            </div>
-          )}
-          {showSampleTree() && props.sampleTree !== null && hasSampleTreePathMeta() && props.sample && (
-            <div class="column is-6">
-              <h1 class="title is-5">Sample classification tree path</h1>
-              <DecisionTreePath
-                decisionTree={props.sampleTree}
-                path={getSampleTreePath(props.metadata.records, props.sample, props.record, props.consequenceId)}
-              />
-            </div>
-          )}
+            )}
+          </For>
+          <AnnotationGroup
+            title="Variant (INFO)"
+            fields={infoFields()}
+            record={props.record}
+            valueIndex={null}
+            isShowEmpty={showEmpty()}
+          />
+          <section class="annotation-group">
+            <h3 class="annotation-group-title">Record</h3>
+            <VariantTable variant={props.record.data} />
+          </section>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

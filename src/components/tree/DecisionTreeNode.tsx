@@ -7,8 +7,9 @@ import { DecisionTreeNodeCategorical } from "./DecisionTreeNodeCategorical";
 import { DecisionTreeNodeExists } from "./DecisionTreeNodeExists";
 import { DecisionTreeNodeLeaf } from "./DecisionTreeNodeLeaf";
 
-export const DecisionTreeNode: Component<{ nodeId: string; node: Node | undefined }> = (props) => {
-  const [collapsed, setCollapsed]: Signal<boolean> = createSignal(true);
+export const DecisionTreeNode: Component<{ nodeId: string; node: Node | undefined; expanded?: boolean }> = (props) => {
+  // eslint-disable-next-line solid/reactivity -- initial state only
+  const [collapsed, setCollapsed]: Signal<boolean> = createSignal(props.expanded !== true);
 
   function toggleCollapse() {
     setCollapsed(!collapsed());
@@ -25,7 +26,7 @@ export const DecisionTreeNode: Component<{ nodeId: string; node: Node | undefine
     >
       {(node) => (
         <div classList={{ card: true, "has-background-success": node().type === "LEAF" }}>
-          <header class="card-header">
+          <header class="card-header" classList={{ "is-hidden": props.expanded === true }}>
             <p class="card-header-title">
               <span>{node().label}</span>
               {node().description && <span class="ml-1">({node().description})</span>}

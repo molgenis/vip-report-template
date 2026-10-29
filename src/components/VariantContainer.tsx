@@ -15,15 +15,6 @@ import { A } from "@solidjs/router";
 import { FieldValue, getInfoNestedField, getInfoValue, getInfoValueCount, ValueCategorical } from "../utils/vcf.ts";
 import { href } from "../utils/utils.ts";
 
-// VIP classification codes to badge styles (see _theme.scss .class-badge--*)
-const CLASS_BADGE: Record<string, string> = {
-  P: "pathogenic",
-  LP: "likely-pathogenic",
-  VUS: "uncertain",
-  LB: "likely-benign",
-  B: "benign",
-};
-
 // Consequence fields shown as key facts, in this order, when the VCF has them.
 const KEY_FIELDS: { id: string; label: string }[] = [
   { id: "Consequence", label: "Effect" },
@@ -127,21 +118,29 @@ export const VariantContainer: Component<{
     const alts = data.a.map((alt) => alt ?? ".").join(",");
     return `${data.c}:${data.p} ${data.r}>${alts}`;
   };
-  const vipC = () => {
-    const value = csqCount() > 0 ? csqRaw("VIPC", picked()) : undefined;
+  const vipC = (index: number) => {
+    const value = csqRaw("VIPC", index);
     return isCategorical(value) ? (value as NonNullable<ValueCategorical>) : null;
   };
-  const consequenceHref = () => {
+  const consequences = () => {
+    const rows = [];
+    for (let index = 0; index < csqCount(); index++) {
+      rows.push({
+        index,
+        gene: displayValue(csqRaw("SYMBOL", index)),
+        effect: displayValue(csqRaw("Consequence", index)),
+        impact: displayValue(csqRaw("IMPACT", index)),
+        transcript: displayValue(csqRaw("Feature", index)),
+        hgvsc: shortHgvs(displayValue(csqRaw("HGVSc", index))),
+        hgvsp: shortHgvs(displayValue(csqRaw("HGVSp", index))),
+        vipC: vipC(index),
+      });
+    }
+    return rows;
+  };
+  const consequenceHref = (index: number) => {
     const components: (string | number)[] = props.sample ? ["samples", props.sample.item.id] : [];
-    return href([
-      ...components,
-      "variants",
-      props.variantType.id,
-      "variant",
-      props.record.id,
-      "consequences",
-      picked(),
-    ]);
+    return href([...components, "variants", props.variantType.id, "variant", props.record.id, "consequences", index]);
   };
   const keyFacts = () =>
     KEY_FIELDS.map((field) => ({ label: field.label, value: csq(field.id) })).filter((fact) => fact.value !== null);
@@ -159,36 +158,66 @@ export const VariantContainer: Component<{
               {shortHgvs(csq("HGVSc"))} {shortHgvs(csq("HGVSp"))}
             </div>
           </Show>
-          <div class="variant-card-meta">
-            {[csq("Consequence"), csq("IMPACT") && `${csq("IMPACT")} impact`, csq("Feature")]
-              .filter(Boolean)
-              .join(" · ")}
-            <Show when={csqCount() > 1}>{` · consequence ${picked() + 1} of ${csqCount()}`}</Show>
-          </div>
-        </div>
-        <div class="variant-card-verdict">
-          <Show when={vipC()}>
-            {(vipC) => (
-              <A
-                href={consequenceHref()}
-                class={`class-badge class-badge--${CLASS_BADGE[vipC().value ?? ""] ?? "other"}`}
-                title="VIP classification of this consequence; open to see the decision tree path"
-              >
-                {vipC().label}
-              </A>
-            )}
-          </Show>
-          <Show when={csq("clinVar_CLNSIG")}>
-            <span class="variant-card-aside">ClinVar: {csq("clinVar_CLNSIG")}</span>
-          </Show>
-          <Show when={csq("VKGL_CL")}>
-            <span class="variant-card-aside">VKGL: {csq("VKGL_CL")}</span>
+          <Show when={csq("clinVar_CLNSIG") || csq("VKGL_CL")}>
+            <div class="variant-card-meta">
+              {[
+                csq("clinVar_CLNSIG") && `ClinVar: ${csq("clinVar_CLNSIG")}`,
+                csq("VKGL_CL") && `VKGL: ${csq("VKGL_CL")}`,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </div>
           </Show>
         </div>
       </div>
 
+      <Show when={csqCount() > 0}>
+        <Section title={`Consequences (${csqCount()})`}>
+          <div class="table-container">
+            <table class="table is-narrow variant-card-consequences">
+              <thead>
+                <tr>
+                  <th>Gene</th>
+                  <th>Effect</th>
+                  <th>Impact</th>
+                  <th>Transcript</th>
+                  <th>HGVS</th>
+                  <th>VIP classification</th>
+                  <th>
+                    <span class="is-sr-only">Details</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <For each={consequences()}>
+                  {(consequence) => (
+                    <tr>
+                      <td>
+                        <em>{consequence.gene}</em>
+                      </td>
+                      <td>{consequence.effect}</td>
+                      <td>{consequence.impact}</td>
+                      <td>{consequence.transcript}</td>
+                      <td>{[consequence.hgvsc, consequence.hgvsp].filter(Boolean).join(" ")}</td>
+                      <td>
+                        <Show when={consequence.vipC}>{(vipC) => vipC().value}</Show>
+                      </td>
+                      <td class="row-action">
+                        <A href={consequenceHref(consequence.index)}>
+                          Details <span class="chevron" />
+                        </A>
+                      </td>
+                    </tr>
+                  )}
+                </For>
+              </tbody>
+            </table>
+          </div>
+        </Section>
+      </Show>
+
       <Show when={keyFacts().length > 0}>
-        <Section title="Key annotations">
+        <Section title={csqCount() > 1 ? `Key annotations (consequence ${picked() + 1})` : "Key annotations"}>
           <dl class="variant-card-facts">
             <For each={keyFacts()}>
               {(fact) => (
@@ -216,11 +245,11 @@ export const VariantContainer: Component<{
         )}
       </Show>
 
-      <Section title={`Consequences (${csqCount() || 1})`} open={false}>
+      <Section title="All consequence fields" open={false}>
         <RecordsTable fieldConfigs={config().variant.cells} records={[props.record]} verticalHeaders={true} />
       </Section>
 
-      <Section title="Genome browser" open={false}>
+      <Section title="Genome browser" open={true}>
         <GenomeBrowser metadata={props.metadata} samples={samples()} record={props.record} />
       </Section>
 
