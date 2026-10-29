@@ -1,12 +1,15 @@
 .filter {
-  padding: 0 0 1rem;
+  padding: 0 0 0.5rem;
 }
 
 .filter-header {
   display: flex;
-  align-items: stretch;
-  padding: 0 0 0.5rem;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0;
   border-bottom: 1px solid var(--bulma-hr-background-color);
+  cursor: pointer;
+  user-select: none;
 }
 
 .filter-header-title {
@@ -15,9 +18,9 @@
 }
 
 .filter-header-icon {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .filter-container {
-  padding: 0.5rem 0 0;
+  padding: 0.5rem 0 0.5rem;
 }

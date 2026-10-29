@@ -1,0 +1,1510 @@
+// Minimal theme: neutral palette, thin borders, small radii, Geist type.
+// Colour tokens live in --vip-* custom properties (HSL triplets) so light and dark
+// mode only swap the tokens; the Bulma bridge and component rules below read them.
+
+@font-face {
+  font-family: "Geist Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/geist/geist-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+$radius: 3px;
+$navbar-height: 3.5rem;
+$breadcrumb-height: 2.25rem;
+// everything pinned while scrolling sits below the navbar and the breadcrumb bar
+$sticky-top: $navbar-height + $breadcrumb-height;
+
+@mixin light-tokens {
+  --vip-background: 45 50% 96%;
+  --vip-foreground: 20 35% 16%;
+  --vip-card: 0 0% 100%;
+  --vip-popover: 45 50% 98%;
+  --vip-secondary: 45 35% 90%;
+  --vip-muted: 45 30% 92%;
+  --vip-subtle: 45 60% 99%;
+  --vip-surface: 0 0% 100%;
+  --vip-muted-foreground: 215 15% 40%;
+  --vip-border: 210 20% 85%;
+  --vip-destructive: 0 75% 45%;
+  --vip-success: 152 55% 30%;
+  --vip-warning: 35 90% 38%;
+  --vip-ring: 215 85% 45%;
+  --vip-overlay: 20 35% 16% / 0.35;
+
+  // Bulma bridge: tint Bulma's greys with the same hue so anything not restyled
+  // below still sits on the palette.
+  --bulma-scheme-h: 45;
+  --bulma-scheme-s: 30%;
+  --bulma-scheme-main-l: 96%;
+  --bulma-scheme-main-bis-l: 94%;
+  --bulma-scheme-main-ter-l: 92%;
+  --bulma-background-l: 92%;
+  --bulma-border-weak-l: 89%;
+  --bulma-border-l: 85%;
+  --bulma-text-weak-l: 40%;
+  --bulma-text-l: 16%;
+  --bulma-text-strong-l: 14%;
+  --bulma-text-title-l: 12%;
+  --bulma-link-h: 20;
+  --bulma-link-s: 35%;
+  --bulma-link-l: 16%;
+  color-scheme: light;
+}
+
+@mixin dark-tokens {
+  --vip-background: 220 10% 7%;
+  --vip-foreground: 0 0% 92%;
+  --vip-card: 220 10% 5%;
+  --vip-popover: 210 10% 16%;
+  --vip-secondary: 210 8% 22%;
+  --vip-muted: 220 10% 7%;
+  --vip-subtle: 220 10% 5%;
+  --vip-surface: 220 10% 5%;
+  --vip-muted-foreground: 0 0% 70%;
+  --vip-border: 210 8% 25%;
+  --vip-destructive: 0 75% 65%;
+  --vip-success: 152 45% 55%;
+  --vip-warning: 38 90% 60%;
+  --vip-ring: 0 0% 75%;
+  --vip-overlay: 0 0% 0% / 0.6;
+
+  --bulma-scheme-h: 220;
+  --bulma-scheme-s: 10%;
+  --bulma-scheme-main-l: 5%;
+  --bulma-scheme-main-bis-l: 8%;
+  --bulma-scheme-main-ter-l: 10%;
+  --bulma-background-l: 10%;
+  --bulma-border-weak-l: 18%;
+  --bulma-border-l: 25%;
+  --bulma-text-weak-l: 70%;
+  --bulma-text-l: 92%;
+  --bulma-text-strong-l: 95%;
+  --bulma-text-title-l: 98%;
+  --bulma-link-h: 0;
+  --bulma-link-s: 0%;
+  --bulma-link-l: 92%;
+  color-scheme: dark;
+}
+
+// The page follows the system setting until the theme toggle sets data-theme.
+:root,
+html[data-theme="light"] {
+  @include light-tokens;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    @include dark-tokens;
+  }
+}
+
+html[data-theme="dark"] {
+  @include dark-tokens;
+}
+
+@function c($token, $alpha: null) {
+  @if $alpha {
+    @return hsl(var(--vip-#{$token}) / $alpha);
+  }
+  @return hsl(var(--vip-#{$token}));
+}
+
+// --- base -----------------------------------------------------------------------
+
+html,
+body {
+  background-color: c(background);
+  color: c(foreground);
+  font-family:
+    "Geist Variable",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: c(foreground, 0.15);
+}
+
+a {
+  color: c(foreground);
+  text-decoration: underline;
+  text-decoration-color: c(muted-foreground, 0.45);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s ease;
+
+  &:hover {
+    color: c(foreground);
+    text-decoration-color: c(foreground);
+  }
+}
+
+abbr[title] {
+  text-decoration-color: c(muted-foreground, 0.6);
+  text-underline-offset: 2px;
+}
+
+hr {
+  background-color: c(border);
+  height: 1px;
+}
+
+strong,
+.title,
+.label,
+.heading,
+.subtitle strong {
+  color: c(foreground);
+}
+
+.title {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.subtitle {
+  color: c(muted-foreground);
+}
+
+.title.is-2 {
+  font-size: 2rem;
+}
+
+.title.is-3 {
+  font-size: 1.6rem;
+}
+
+.title.is-4 {
+  font-size: 1.3rem;
+}
+
+.title.is-5 {
+  font-size: 1.1rem;
+}
+
+.has-text-grey-light,
+.help {
+  color: c(muted-foreground) !important;
+}
+
+.has-text-info {
+  color: c(muted-foreground) !important;
+}
+
+.has-text-danger {
+  color: c(destructive) !important;
+}
+
+.has-text-warning {
+  color: c(warning) !important;
+}
+
+.has-background-light {
+  background-color: c(muted) !important;
+}
+
+:focus-visible {
+  outline: 1px solid c(ring);
+  outline-offset: 1px;
+}
+
+// --- navbar ---------------------------------------------------------------------
+
+.navbar,
+.navbar.is-light {
+  background-color: c(muted);
+  min-height: $navbar-height;
+  color: c(foreground);
+}
+
+.navbar-brand,
+.navbar-tabs {
+  min-height: $navbar-height;
+}
+
+body.has-navbar-fixed-top,
+html.has-navbar-fixed-top {
+  padding-top: $navbar-height;
+}
+
+.navbar-item,
+.navbar-link,
+.navbar.is-light .navbar-item,
+.navbar.is-light .navbar-link {
+  color: c(foreground);
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.navbar .navbar-item,
+.navbar .navbar-link {
+  font-size: 1.1rem;
+}
+
+.navbar-brand .navbar-item,
+.navbar.is-light .navbar-brand > a.navbar-item,
+.navbar.is-light .navbar-brand > a.navbar-item.active {
+  background-color: transparent;
+  color: c(foreground);
+  font-size: 1.2rem;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+}
+
+a.navbar-item:hover,
+a.navbar-item.is-active,
+.navbar-link:hover,
+.navbar-item.has-dropdown:hover > .navbar-link,
+.navbar.is-light a.navbar-item:hover,
+.navbar.is-light .navbar-item.has-dropdown:hover .navbar-link {
+  background-color: c(secondary) !important;
+  color: c(foreground) !important;
+}
+
+.navbar-link:not(.is-arrowless)::after,
+.navbar.is-light .navbar-link::after {
+  border-color: c(muted-foreground);
+  border-width: 1px;
+  height: 0.5em;
+  width: 0.5em;
+  margin-top: -0.35em;
+}
+
+.navbar-dropdown,
+.navbar.is-light .navbar-dropdown {
+  background-color: c(popover);
+  border: 1px solid c(border);
+  border-radius: 0 0 $radius $radius;
+  box-shadow: none;
+  padding: 0.25rem 0;
+
+  .navbar-item {
+    font-size: 1rem;
+    padding: 0.45rem 1rem;
+  }
+}
+
+.navbar.is-light .navbar-dropdown .navbar-item,
+.navbar.is-light .navbar-dropdown a.navbar-item.active {
+  background-color: transparent;
+  color: c(foreground);
+}
+
+.navbar.is-light .navbar-dropdown a.navbar-item:hover {
+  background-color: c(secondary);
+  color: c(foreground);
+}
+
+.navbar-divider {
+  background-color: c(border);
+  height: 1px;
+  margin: 0.25rem 0;
+}
+
+.theme-toggle {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+// --- breadcrumb -----------------------------------------------------------------
+
+.breadcrumb {
+  font-size: 0.9rem;
+
+  a {
+    color: c(muted-foreground);
+    text-decoration: none;
+    padding: 0 0.5em;
+
+    &:hover {
+      color: c(foreground);
+    }
+  }
+
+  li:first-child a {
+    padding-left: 0;
+  }
+
+  li.is-active a {
+    color: c(foreground);
+    font-weight: 500;
+  }
+
+  &.has-succeeds-separator li + li::before {
+    color: c(border);
+  }
+}
+
+// --- buttons --------------------------------------------------------------------
+
+.button {
+  --bulma-button-h: 0;
+  background-color: transparent;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  color: c(foreground);
+  font-weight: 500;
+  box-shadow: none;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+
+  &:hover,
+  &.is-hovered {
+    background-color: c(secondary);
+    border-color: c(border);
+    color: c(foreground);
+  }
+
+  &:focus-visible,
+  &:active {
+    border-color: c(muted-foreground);
+    box-shadow: none;
+  }
+
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: transparent;
+    border-color: c(border);
+    opacity: 0.5;
+  }
+
+  &.is-info,
+  &.is-link,
+  &.is-light,
+  &.is-info[disabled],
+  &.is-link[disabled],
+  &.is-light[disabled] {
+    background-color: transparent;
+    border-color: c(border);
+    color: c(foreground);
+
+    &:hover {
+      background-color: c(secondary);
+      color: c(foreground);
+    }
+  }
+
+  // Primary actions invert: foreground colour as fill.
+  &.is-primary {
+    background-color: c(foreground);
+    border-color: c(foreground);
+    color: c(background);
+
+    &:hover,
+    &:focus-visible {
+      background-color: c(foreground);
+      border-color: c(foreground);
+      color: c(background);
+      opacity: 0.8;
+    }
+
+    &[disabled] {
+      background-color: c(foreground);
+      border-color: c(foreground);
+      opacity: 0.4;
+    }
+  }
+
+  &.is-ghost {
+    border-color: transparent;
+    color: c(muted-foreground);
+
+    &:hover {
+      background-color: c(secondary);
+      color: c(foreground);
+    }
+  }
+
+  &.is-small {
+    border-radius: $radius;
+    font-size: 0.85rem;
+  }
+
+  &.is-large {
+    font-size: 1.15rem;
+    border-radius: $radius;
+  }
+}
+
+// --- forms ----------------------------------------------------------------------
+
+.input,
+.textarea,
+.select select {
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+  box-shadow: none;
+  color: c(foreground);
+
+  &::placeholder {
+    color: c(muted-foreground, 0.7);
+  }
+
+  &:hover {
+    border-color: c(muted-foreground, 0.5);
+  }
+
+  &:focus,
+  &:focus-within,
+  &:active {
+    border-color: c(muted-foreground);
+    box-shadow: none;
+  }
+}
+
+.textarea {
+  font-family: inherit;
+}
+
+.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: c(muted-foreground);
+  border-width: 1px;
+}
+
+.select select:not([multiple]) {
+  padding-right: 2.25em;
+}
+
+option {
+  background-color: c(popover);
+  color: c(foreground);
+}
+
+.field.has-addons .control:first-child:not(:only-child) .input,
+.field.has-addons .control:first-child:not(:only-child) .button,
+.field.has-addons .control:first-child:not(:only-child) .select select {
+  border-radius: $radius 0 0 $radius;
+}
+
+.field.has-addons .control:last-child:not(:only-child) .input,
+.field.has-addons .control:last-child:not(:only-child) .button,
+.field.has-addons .control:last-child:not(:only-child) .select select {
+  border-radius: 0 $radius $radius 0;
+}
+
+.label {
+  font-weight: 500;
+}
+
+// Minimal square checkbox: 1px border, filled with the foreground colour when checked.
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-grid;
+  place-content: center;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin: 0 0.4rem 0 0;
+  vertical-align: -0.15rem;
+  border: 1px solid c(muted-foreground, 0.6);
+  border-radius: 2px;
+  background-color: c(card);
+  cursor: pointer;
+  transition:
+    background-color 0.1s ease,
+    border-color 0.1s ease;
+
+  &::before {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    background-color: c(background);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transition: transform 0.1s ease;
+  }
+
+  &:checked {
+    background-color: c(foreground);
+    border-color: c(foreground);
+
+    &::before {
+      transform: scale(1);
+    }
+  }
+
+  &:hover {
+    border-color: c(foreground);
+  }
+
+  &:focus-visible {
+    outline: 1px solid c(ring);
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.checkbox {
+  color: c(foreground);
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.6;
+
+  input[type="checkbox"] {
+    margin-right: 0.4rem !important;
+  }
+
+  &:hover {
+    color: c(foreground);
+  }
+}
+
+// --- tables ---------------------------------------------------------------------
+
+.table,
+.table-container {
+  background-color: transparent;
+  color: c(foreground);
+}
+
+.table {
+  th {
+    color: c(muted-foreground);
+    font-weight: 500;
+    border-color: c(border);
+    border-width: 0 0 1px;
+  }
+
+  thead th,
+  thead td {
+    border-color: c(border);
+    border-width: 0 0 1px;
+    color: c(muted-foreground);
+  }
+
+  td {
+    border-color: c(border, 0.6);
+    border-width: 0 0 1px;
+  }
+
+  tbody tr:last-child td,
+  tbody tr:last-child th {
+    border-bottom-width: 0;
+  }
+
+  &.is-hoverable tbody tr:not(.is-selected):hover,
+  &.is-hoverable.is-striped tbody tr:not(.is-selected):hover {
+    background-color: c(muted);
+  }
+
+  &.is-striped tbody tr:not(.is-selected):nth-child(even) {
+    background-color: c(muted, 0.6);
+  }
+
+  td a {
+    text-decoration-color: c(muted-foreground, 0.35);
+  }
+}
+
+table.is-borderless td,
+.table.is-borderless th {
+  border: 0;
+}
+
+// --- surfaces -------------------------------------------------------------------
+
+.box,
+.card {
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+  box-shadow: none;
+  color: c(foreground);
+}
+
+.card-header {
+  box-shadow: none;
+  border-bottom: 1px solid c(border);
+}
+
+.card-header-title {
+  color: c(foreground);
+  font-weight: 500;
+}
+
+.notification {
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-left-width: 3px;
+  border-radius: $radius;
+  color: c(foreground);
+
+  &.is-danger,
+  &.is-danger.is-light {
+    background-color: c(destructive, 0.08);
+    border-color: c(destructive, 0.35);
+    border-left-color: c(destructive);
+    color: c(foreground);
+  }
+
+  &.is-success,
+  &.is-success.is-light {
+    background-color: c(success, 0.08);
+    border-color: c(success, 0.35);
+    border-left-color: c(success);
+    color: c(foreground);
+  }
+
+  .delete {
+    background-color: c(muted-foreground, 0.4);
+  }
+}
+
+.has-background-dark.tooltip,
+.tooltip {
+  background-color: c(popover) !important;
+  color: c(foreground) !important;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  font-size: 0.9rem;
+  max-width: 28rem;
+  box-shadow: 0 4px 16px c(foreground, 0.12);
+
+  a {
+    color: c(foreground);
+  }
+}
+
+.modal-background {
+  background-color: hsl(var(--vip-overlay));
+}
+
+.modal-close {
+  background-color: c(foreground, 0.6);
+
+  &:hover {
+    background-color: c(foreground, 0.8);
+  }
+}
+
+// --- pagination -----------------------------------------------------------------
+
+.pagination-link,
+.pagination-previous,
+.pagination-next {
+  background-color: transparent;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  color: c(foreground);
+  text-decoration: none;
+  min-width: 2.25em;
+
+  &:hover {
+    background-color: c(secondary);
+    border-color: c(border);
+    color: c(foreground);
+  }
+
+  &.is-current {
+    background-color: c(foreground);
+    border-color: c(foreground);
+    color: c(background);
+  }
+}
+
+.pagination-ellipsis {
+  color: c(muted-foreground);
+}
+
+// --- report specific --------------------------------------------------------------
+
+// Nucleotide colours keep their meaning in both themes; the letters stay dark.
+.base,
+.phase {
+  color: hsl(20 35% 12%);
+  border-radius: 1px;
+}
+
+.small-blue-link {
+  color: c(muted-foreground);
+  text-decoration: underline;
+  text-decoration-color: c(muted-foreground, 0.4);
+
+  &:hover {
+    color: c(foreground);
+  }
+}
+
+// IGV draws its own light UI on canvases that CSS cannot recolour. In dark mode the whole
+// panel is inverted, and hue-rotated back so nucleotide and track colours keep their hue.
+.genome-browser {
+  background-color: #fff;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  color: #1f1f1f;
+  color-scheme: light;
+  overflow: hidden;
+}
+
+@mixin dark-genome-browser {
+  .genome-browser {
+    border-color: hsl(210 8% 75%);
+    filter: invert(0.97) hue-rotate(180deg);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    @include dark-genome-browser;
+  }
+}
+
+html[data-theme="dark"] {
+  @include dark-genome-browser;
+}
+
+html[data-theme="dark"] .theme-toggle-to-dark,
+html:not([data-theme="dark"]) .theme-toggle-to-light {
+  display: none;
+}
+
+// Decision tree outcome node
+.card.has-background-success {
+  background-color: c(success, 0.12) !important;
+  border-color: c(success, 0.5);
+
+  .card-header-title,
+  .card-header-icon {
+    color: c(foreground);
+  }
+}
+
+// Nucleotide chips are dimmed in dark mode so they do not glare; light text keeps them legible.
+@mixin dark-bases {
+  .base,
+  .phase {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .base-a {
+    background-color: hsl(120, 44%, 28%);
+  }
+
+  .base-c {
+    background-color: hsl(214, 50%, 38%);
+  }
+
+  .base-g {
+    background-color: hsl(42, 67%, 37%);
+  }
+
+  .base-t {
+    background-color: hsl(352, 51%, 41%);
+  }
+
+  .base-m,
+  .base-n {
+    background-color: hsl(0 0% 22%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    @include dark-bases;
+  }
+}
+
+html[data-theme="dark"] {
+  @include dark-bases;
+}
+
+// --- variant card -------------------------------------------------------------------
+
+.variant-card {
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+  padding: 1.25rem 1.5rem;
+  margin-top: 0.5rem;
+  min-width: 0;
+
+  > * + * {
+    margin-top: 1.25rem;
+  }
+}
+
+.variant-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1rem;
+}
+
+.variant-card-identity > * + * {
+  margin-top: 0.25rem;
+}
+
+.variant-card-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.2rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.variant-card-gene {
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+
+  em {
+    font-weight: 500;
+  }
+}
+
+.variant-card-meta {
+  color: c(muted-foreground);
+  font-size: 0.9rem;
+}
+
+// VIP classification of a consequence: a small coloured dot before the label, no badge.
+
+.variant-card-consequences {
+  td {
+    vertical-align: middle;
+  }
+
+  .row-action {
+    text-align: right;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: c(muted-foreground);
+      text-decoration: none;
+
+      &:hover {
+        color: c(foreground);
+      }
+    }
+  }
+}
+
+.variant-card-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: c(foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+.variant-card-section-body {
+  margin-top: 0.6rem;
+  overflow-x: auto;
+}
+
+.chevron {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.5px solid c(muted-foreground);
+  border-bottom: 1.5px solid c(muted-foreground);
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+
+  &.is-open {
+    transform: translateY(-2px) rotate(45deg);
+  }
+}
+
+.variant-card-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.75rem 1.5rem;
+
+  dt {
+    color: c(muted-foreground);
+    font-size: 0.85rem;
+  }
+
+  dd {
+    margin: 0.1rem 0 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+// --- collapsible filter sidebar -------------------------------------------------------
+
+// Icon-only panel buttons, as in the variant interpreter.
+.sidebar-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: $radius;
+  background: transparent;
+  color: c(muted-foreground);
+  cursor: pointer;
+
+  &:hover {
+    background-color: c(secondary);
+    color: c(foreground);
+  }
+
+  &:focus-visible {
+    outline: 2px solid c(ring);
+    outline-offset: 1px;
+  }
+}
+
+// Sidebar title row with the hide button; stays at the top while the filters scroll.
+.variants-sidebar-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.85rem 0 0.25rem;
+  background-color: c(background);
+  color: c(muted-foreground);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+// Collapsed sidebar: a narrow rail holding the show button, so the results keep their own column.
+.sidebar-rail {
+  flex-shrink: 0;
+  width: 1.75rem;
+  padding: 0.75rem 0.5rem 0 0.75rem;
+  border-right: 1px solid c(border);
+  box-sizing: content-box;
+}
+
+// Filters sidebar: resizable by dragging its right edge, scrolls on its own below the fixed navbar.
+// On the variants pages the page itself does not scroll: the layout fills the window below the
+// breadcrumb bar and only the filters and the results table scroll, each in its own pane.
+html:has(.variants-layout) {
+  overflow: hidden;
+}
+
+// The sidebar runs edge to edge (breadcrumb bar to window bottom, flush left) so its divider
+// meets the breadcrumb bar; only the results panel keeps the page padding around it.
+.variants-layout {
+  display: flex;
+  align-items: stretch;
+  height: calc(100vh - #{$sticky-top});
+  margin: -0.75rem -1.75rem 0 -1.25rem;
+}
+
+.variants-sidebar {
+  position: relative;
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+  transition: width 0.25s ease-in-out;
+
+  &.is-resizing {
+    transition: none;
+  }
+
+  &.is-collapsed {
+    visibility: hidden;
+  }
+}
+
+.variants-sidebar-inner {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  // no top padding: sticky children are inset by it and filters would show above the header
+  padding: 0 0.9rem 1rem 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: c(border) transparent;
+}
+
+// The divider between the sidebar and the results, with a wider invisible grab area around it.
+.sidebar-resizer {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 9px;
+  margin: 0 -4px;
+  cursor: col-resize;
+  touch-action: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4px;
+    width: 1px;
+    background-color: c(border);
+    transition:
+      background-color 0.15s ease,
+      left 0.15s ease,
+      width 0.15s ease;
+  }
+
+  &:hover::after,
+  &.is-active::after {
+    left: 3px;
+    width: 3px;
+    background-color: c(muted-foreground, 0.55);
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    &::after {
+      left: 3px;
+      width: 3px;
+      background-color: c(ring);
+    }
+  }
+}
+
+// Results: everything right of the sidebar sits on a white (dark grey) surface, out to the window edges.
+.variants-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 1rem 1.75rem 1.25rem 1.5rem;
+  background-color: c(surface);
+
+  .input,
+  .select select {
+    background-color: c(surface);
+  }
+
+  // results: the second row of VariantResults holds the table and fills the remaining height
+  > .columns:last-child {
+    flex: 1;
+    min-height: 0;
+    margin-bottom: 0;
+
+    > .column {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      height: 100%;
+
+      > div:first-child {
+        // shrinks to fit the window when long, sits right above the per-page control when short
+        flex: 0 1 auto;
+        min-height: 0;
+        grid-template-rows: minmax(0, 1fr);
+      }
+
+      > .columns {
+        flex-shrink: 0;
+        margin: 0.5rem 0 0;
+      }
+    }
+  }
+}
+
+.filter-header:hover .filter-header-title {
+  color: c(foreground);
+}
+
+.filter-header-icon {
+  border: 0;
+  background: none;
+  color: c(muted-foreground);
+  padding: 0;
+}
+
+.filter-active-dot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-left: 0.4rem;
+  border-radius: 50%;
+  background-color: c(foreground);
+  vertical-align: 0.15em;
+}
+
+// Page gutter: Bulma's fluid container only pads 8px, which runs tables into the window edge.
+.container.is-fluid {
+  padding-left: 1.25rem;
+  padding-right: 1.75rem;
+}
+
+// Variant results: the table scrolls in its own pane so its header row stays visible.
+.variants-main .table-container {
+  align-self: start;
+  max-height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  scrollbar-width: thin;
+  scrollbar-color: c(border) transparent;
+  background-color: c(surface);
+
+  .table {
+    background-color: transparent;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: c(surface);
+    box-shadow: inset 0 -1px 0 c(border);
+  }
+}
+
+// Breadcrumb bar: pinned under the navbar, ruled off from the sidebar and results below it.
+.breadcrumb-bar.columns {
+  position: sticky;
+  top: $navbar-height;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  height: $breadcrumb-height;
+  margin: -8px -1.75rem 0.75rem -1.25rem !important;
+  padding: 0 1.75rem 0 1.25rem;
+  background-color: c(subtle);
+  box-shadow: 0 1px 0 c(border, 0.55);
+
+  .breadcrumb {
+    margin: 0;
+  }
+}
+
+// Sample rows open the sample's variants; the trailing "Variants ›" says so without a button.
+.table tr.is-clickable-row {
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    &,
+    .row-action {
+      background-color: c(secondary);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid c(ring);
+    outline-offset: -2px;
+  }
+
+  // pinned to the right edge so it stays in view when the table scrolls sideways
+  .row-action {
+    position: sticky;
+    right: 0;
+    white-space: nowrap;
+    text-align: right;
+    background-color: c(background);
+    box-shadow: -8px 0 8px -8px c(foreground, 0.25);
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: c(muted-foreground);
+      text-decoration: none;
+    }
+
+    .chevron {
+      transition: transform 0.15s ease;
+    }
+  }
+
+  &:hover .row-action a,
+  &:focus-visible .row-action a {
+    color: c(foreground);
+
+    .chevron {
+      border-color: c(foreground);
+      transform: translateX(2px) rotate(-45deg);
+    }
+  }
+}
+
+// Phenotype lists wrap instead of pushing the row action out of view.
+.table tr.is-clickable-row td:nth-child(8) {
+  min-width: 12rem;
+  white-space: normal;
+}
+
+// Search fields: the input gives way so the search button is never clipped.
+.field.has-addons {
+  > .control.is-expanded {
+    min-width: 0;
+  }
+
+  > .control:not(.is-expanded) {
+    flex-shrink: 0;
+    overflow: visible;
+  }
+}
+
+// --- consequence page -------------------------------------------------------------------
+// Centred column: the classification flow first, the annotations grouped by subject below it.
+
+.consequence-page {
+  max-width: 64rem;
+  margin: 0 auto 2rem;
+}
+
+.consequence-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+}
+
+.consequence-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: c(muted-foreground);
+  font-size: 0.9rem;
+
+  a {
+    color: c(foreground);
+  }
+
+  .is-disabled {
+    opacity: 0.45;
+  }
+}
+
+.consequence-section {
+  margin-bottom: 1.75rem;
+}
+
+.consequence-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.consequence-section-title {
+  margin-bottom: 0.75rem;
+  color: c(foreground);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.consequence-flows {
+  display: grid;
+  grid-template-columns: minmax(0, 36rem);
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+
+  &.is-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// Decision path as a vertical timeline: each step shows the question and the answer that was taken.
+.decision-flow {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.decision-flow-step {
+  position: relative;
+  padding: 0 0 1.25rem 1.75rem;
+
+  // connector to the next step
+  &::before {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    bottom: 0;
+    left: 0.4rem;
+    width: 1px;
+    background-color: c(border);
+  }
+
+  // step marker
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0.35rem;
+    left: 0.1rem;
+    width: 0.65rem;
+    height: 0.65rem;
+    border: 1.5px solid c(muted-foreground);
+    border-radius: 50%;
+    background-color: c(card);
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  &.is-leaf {
+    &::after {
+      border-color: c(foreground);
+      background-color: c(foreground);
+    }
+
+    .decision-flow-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.decision-flow-title {
+  color: c(foreground);
+  font-weight: 500;
+}
+
+.decision-flow-description {
+  color: c(muted-foreground);
+  font-size: 0.85rem;
+}
+
+.decision-flow-answer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+
+  code {
+    padding: 0.05rem 0.35rem;
+    border-radius: $radius;
+    background-color: c(secondary);
+    color: c(foreground);
+    font-size: 0.8rem;
+  }
+}
+
+.decision-flow-outcome {
+  font-weight: 600;
+
+  &::before {
+    content: "\2192\00a0";
+    color: c(muted-foreground);
+    font-weight: 400;
+  }
+}
+
+.decision-flow-rule-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: c(muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: c(foreground);
+  }
+}
+
+.decision-flow-rule {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid c(border);
+  border-radius: $radius;
+  font-size: 0.85rem;
+
+  .card {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .card-content {
+    padding: 0;
+  }
+}
+
+// Annotation groups flow into two columns, each group a small card of label/value rows.
+.annotation-groups {
+  columns: 2 22rem;
+  column-gap: 1.25rem;
+}
+
+.annotation-group {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  background-color: c(card);
+  border: 1px solid c(border);
+  border-radius: $radius;
+
+  dl > div {
+    display: grid;
+    grid-template-columns: minmax(8rem, 40%) minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.3rem 0;
+    border-top: 1px solid c(border, 0.5);
+
+    &:first-child {
+      border-top: 0;
+    }
+  }
+
+  dt {
+    color: c(muted-foreground);
+    font-size: 0.85rem;
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.annotation-group-title {
+  margin-bottom: 0.5rem;
+  color: c(muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

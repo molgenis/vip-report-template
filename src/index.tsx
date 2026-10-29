@@ -42,6 +42,9 @@ import { SampleVariants } from "./views/SampleVariants.tsx";
 import { SampleVariantsRedirect } from "./views/SampleVariantsRedirect.tsx";
 import { Variants } from "./views/Variants.tsx";
 import { ErrorNotification } from "./components/ErrorNotification.tsx";
+import { initTheme } from "./utils/theme.ts";
+
+initTheme();
 
 library.add(
   faAngleDown,

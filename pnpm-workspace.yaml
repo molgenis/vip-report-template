@@ -8,6 +8,3 @@ minimumReleaseAgeExclude:
   - "@molgenis/vip-report-vcf"
   - "@molgenis/vite-plugin-inline"
 trustPolicy: no-downgrade
-overrides:
-  chokidar: 5.0.0
-  semver: 7.8.5

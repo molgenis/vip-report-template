@@ -143,5 +143,5 @@ export const GenomeBrowser: Component<{
     }
   });
   // noinspection JSUnusedAssignment
-  return <div ref={divRef!} />;
+  return <div class="genome-browser" ref={divRef!} />;
 };

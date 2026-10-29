@@ -1,9 +1,23 @@
 @charset "utf-8";
 
-@use "bulma/sass" with(
-  $gap: 8px,
-  $notification-padding: 0.75rem 0.75rem,
-);
+@use "bulma/sass"
+  with(
+    $gap: 8px,
+    $notification-padding: 0.75rem 0.75rem,
+    $family-primary: (
+      "Geist Variable",
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif,
+    ),
+    $radius-small: 2px,
+    $radius: 3px,
+    $radius-medium: 3px,
+    $radius-large: 3px
+  );
+@use "theme";
 
 html {
   font-size: 13px;
@@ -78,7 +92,7 @@ table.is-borderless td,
 }
 
 .inline-control-text {
-  line-height: 32.5px
+  line-height: 32.5px;
 }
 
 .tooltip {
@@ -98,8 +112,6 @@ table.is-borderless td,
 .small-blue-link {
   display: inline;
   font-size: 0.8rem;
-  color: #1d4ed8;
-  text-decoration: none;
   font-weight: normal;
 }
 
@@ -121,8 +133,10 @@ table.is-borderless td,
   max-width: calc(100vw - 40px);
   max-height: calc(100vh - 40px);
   overflow-y: auto;
-  background: white;
-  border-radius: 6px;
+  background: hsl(var(--vip-card));
+  color: hsl(var(--vip-foreground));
+  border: 1px solid hsl(var(--vip-border));
+  border-radius: 3px;
   padding: 1.5rem;
 }
 
@@ -144,16 +158,17 @@ table.is-borderless td,
   bottom: 100%;
   left: 50%;
   margin-bottom: 6px;
-  background: #363636;
-  color: white;
+  background: hsl(var(--vip-popover));
+  color: hsl(var(--vip-foreground));
+  border: 1px solid hsl(var(--vip-border));
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
+  border-radius: 3px;
   white-space: pre-line;
   width: max-content;
   max-width: 320px;
   font-size: 0.85rem;
   z-index: 20;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
 }
 
 .notes-tooltip-entry + .notes-tooltip-entry {
@@ -168,15 +183,15 @@ table.is-borderless td,
 .notes-modal-header {
   margin: -1.5rem -1.5rem 1.25rem;
   padding: 1.25rem 1.5rem;
-  background: #fafafa;
-  border-bottom: 1px solid #eee;
-  border-radius: 6px 6px 0 0;
+  background: hsl(var(--vip-muted));
+  border-bottom: 1px solid hsl(var(--vip-border));
+  border-radius: 3px 3px 0 0;
 }
 
 .notes-modal-title {
   font-size: 1.15rem;
   font-weight: 600;
-  color: #363636;
+  color: hsl(var(--vip-foreground));
   margin: 0;
   padding-right: 2.5rem; /* keep clear of the close button */
 }
@@ -186,7 +201,7 @@ table.is-borderless td,
 }
 
 .notes-modal-section + .notes-modal-section {
-  border-top: 1px solid #eee;
+  border-top: 1px solid hsl(var(--vip-border));
 }
 
 .notes-modal-section-title {
@@ -194,6 +209,6 @@ table.is-borderless td,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #7a7a7a;
+  color: hsl(var(--vip-muted-foreground));
   margin: 0 0 0.75rem;
 }

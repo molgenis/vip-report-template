@@ -81,7 +81,7 @@ export const Samples: Component = () => {
     <>
       <Breadcrumb items={[{ text: "Samples" }]} />
       <div class="columns is-centered">
-        <div class="column is-three-quarters-widescreen">
+        <div class="column">
           <p class="title is-2">Samples</p>
           <p class="subtitle is-4">Explore samples and sample variants</p>
           <Show when={samples()} fallback={<Loader />} keyed>

@@ -2,7 +2,6 @@ import { ConfigFilter } from "./configFilter";
 import { ConfigCell } from "./configCells";
 import { ConfigSort } from "./configSort";
 import { FieldMetadataWrapper } from "../utils/vcf.ts";
-import { ComposedQueryOperator } from "@molgenis/vip-report-api";
 
 export interface Describable {
   // overwrites existing label
@@ -81,8 +80,6 @@ export type ConfigJsonField = ConfigJsonFieldItem | ConfigJsonFieldItemGroup;
 
 export interface DescribableFilter extends Describable {
   defaultValue?: string;
-  defaultComposedOperator?: ComposedQueryOperator;
-  showComposedOperator?: boolean;
 }
 
 export interface ConfigJsonFilterFixed extends DescribableFilter {

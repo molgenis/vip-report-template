@@ -59,7 +59,7 @@ function createQueryFilter(filterConfig: ConfigFilter, filterValue: FilterValue)
   return query;
 }
 
-export function createQueryFilterStringOr(
+export function createQueryFilterString(
   selector: Selector,
   filterValue: FilterValueString,
   multiValue: boolean,
@@ -74,35 +74,6 @@ export function createQueryFilterStringOr(
     queryParts.push({
       selector,
       operator: "in",
-      args: filterValues,
-    });
-  }
-
-  if (multiValue && filterValues.findIndex((value) => value === null) !== -1) {
-    queryParts.push({
-      selector,
-      operator: "==",
-      args: multiValue ? [] : null,
-    });
-  }
-  return createQueryComposed(queryParts, "or");
-}
-
-export function createQueryFilterStringAnd(
-  selector: Selector,
-  filterValue: FilterValueString,
-  multiValue: boolean,
-): Query {
-  // null values
-  // multi=false --> value=null
-  // multi=true  --> value=[] or value=[..., null, ...]
-  const filterValues = filterValue.map((value) => (value !== "__null" ? value : null));
-
-  const queryParts: Query[] = [];
-  if (filterValues.length > 0) {
-    queryParts.push({
-      selector,
-      operator: "has_all",
       args: filterValues,
     });
   }
