@@ -228,8 +228,6 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
         label: { type: "string" },
         description: { type: "string" },
         defaultValue: { type: "string" },
-        showComposedOperator:  { type: "boolean" },
-        defaultComposedOperator: { enum: ["and", "or"] }
       },
     },
     format: {
@@ -240,8 +238,6 @@ const schemaConfigJsonFilter: JTDSchemaType<ConfigJsonFilter> = {
         label: { type: "string" },
         description: { type: "string" },
         defaultValue: { type: "string" },
-        showComposedOperator:  { type: "boolean" },
-        defaultComposedOperator: { enum: ["and", "or"] }
       },
     },
     genotype: {

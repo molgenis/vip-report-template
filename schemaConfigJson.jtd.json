@@ -995,15 +995,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1022,15 +1013,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1126,15 +1108,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1153,15 +1126,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1257,15 +1221,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1284,15 +1239,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1388,15 +1334,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -1415,15 +1352,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3409,15 +3337,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3436,15 +3355,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3540,15 +3450,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3567,15 +3468,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3671,15 +3563,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3698,15 +3581,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3802,15 +3676,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },
@@ -3829,15 +3694,6 @@
                       },
                       "defaultValue": {
                         "type": "string"
-                      },
-                      "showComposedOperator": {
-                        "type": "boolean"
-                      },
-                      "defaultComposedOperator": {
-                        "enum": [
-                          "and",
-                          "or"
-                        ]
                       }
                     }
                   },

@@ -1,7 +1,6 @@
 import { ConfigFilterComposed, FilterValueComposed } from "./configFilterComposed";
 import { SampleContainer } from "../utils/api.ts";
 import { FieldMetadataWrapper } from "../utils/vcf.ts";
-import { ComposedQueryOperator } from "@molgenis/vip-report-api";
 
 export type FilterId = string;
 export type FilterType = "fixed" | "info" | "genotype" | "composed";
@@ -11,7 +10,8 @@ export type FilterCategory = {
   label: string;
   count?: number;
 };
-export type FilterValueCategorical = { categories: FilterCategoryId[]; operator?: ComposedQueryOperator };
+
+export type FilterValueCategorical = FilterCategoryId[];
 export type FilterValueString = string[];
 export type ValueNumber = number | undefined;
 export type FilterValueFlag = FilterValueCategorical;
@@ -58,8 +58,6 @@ export interface ConfigFilterBase {
   type: FilterType;
   id: FilterId;
   defaultValue?: string;
-  showComposedOperator?: boolean;
-  defaultComposedOperator?: ComposedQueryOperator;
   label: () => string;
   description: () => string | null;
 }

@@ -1,19 +1,17 @@
 import {
   ConfigFilterBase,
   ConfigFilterField,
-  ConfigFilterFormat,
-  FilterCategoryId,
+  ConfigFilterFormat, FilterCategoryId,
   FilterValueCategorical,
   FilterValueFlag,
 } from "./configFilter";
 import { SampleContainer } from "../utils/api.ts";
 import { FieldMetadataWrapper } from "../utils/vcf.ts";
-import { ComposedQueryOperator } from "@molgenis/vip-report-api";
 
 export type ChromosomeId = string;
 export type FilterValueHpo = FilterValueCategorical;
 export type FilterValuePick = FilterValueCategorical;
-export type FilterValueClassification = { values: FilterCategoryId[]; ids: number[]; report: string };
+export type FilterValueClassification = { values: FilterCategoryId[], ids: number[]; report: string };
 export type FilterValueLocus = { chromosome: ChromosomeId; start?: number; end?: number };
 export type FilterValueVipC = FilterValueCategorical;
 export type FilterValueVipCS = FilterValueCategorical;
@@ -32,10 +30,7 @@ export type ConfigFilterComposed =
   | ConfigFilterVipCS
   | ConfigFilterClassification;
 
-export interface ConfigFilterHpo extends ConfigFilterField {
-  defaultComposedOperator: ComposedQueryOperator;
-  showComposedOperator: boolean;
-}
+export type ConfigFilterHpo = ConfigFilterField;
 export type ConfigFilterPick = ConfigFilterField;
 export interface ConfigFilterClassification extends ConfigFilterBase {
   sample: SampleContainer;
