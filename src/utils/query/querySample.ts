@@ -14,7 +14,7 @@ export function createQuerySample(config: ConfigVip, sample: SampleContainer, me
   const filterSelector = createSelectorSample(sample, filterField);
   const classFilter = createQueryFilterFieldCategorical(filterSelector, filterField, filterValues);
   const filters = [classFilter];
-  if (meta.records.format.GT !== undefined) {
+  if (meta.records.format["GT"] !== undefined) {
     const gtFilter = {
       selector: ["s", sample.item.id, "GT_type"],
       operator: "!in",
@@ -28,5 +28,5 @@ export function createQuerySample(config: ConfigVip, sample: SampleContainer, me
 function getFilterValues(config: ConfigVip): FilterValueCategorical {
   const filterSamplesClasses = config.params.vcf.filter_samples.classes.split(",");
   // add null values to make query match with records that do not have a value for the field
-  return [...filterSamplesClasses, "__null"];
+  return { categories: [...filterSamplesClasses, "__null"], operator: "or" };
 }

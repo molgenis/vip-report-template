@@ -9,7 +9,7 @@ import {
   ConfigFilterQual,
   ConfigFilterRef,
 } from "../../../src/types/configFilter";
-import { createQueryFilterClosedInterval, createQueryFilterString } from "../../../src/utils/query/queryFilter.ts";
+import { createQueryFilterClosedInterval, createQueryFilterStringOr } from "../../../src/utils/query/queryFilter.ts";
 import { Query } from "@molgenis/vip-report-api";
 
 describe("query filter fixed", () => {
@@ -25,9 +25,9 @@ describe("query filter fixed", () => {
     test("chrom", () => {
       const config = { type: "fixed", id: "fixed/chrom" } as ConfigFilterChrom;
       const value = ["chr1"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["c"], value, false);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["c"], value, false);
     });
 
     test("pos", () => {
@@ -41,25 +41,25 @@ describe("query filter fixed", () => {
     test("id", () => {
       const config = { type: "fixed", id: "fixed/id" } as ConfigFilterId;
       const value = ["id0"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["i"], value, true);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["i"], value, true);
     });
 
     test("ref", () => {
       const config = { type: "fixed", id: "fixed/ref" } as ConfigFilterRef;
       const value = ["C"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["r"], value, false);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["r"], value, false);
     });
 
     test("alt", () => {
       const config = { type: "fixed", id: "fixed/alt" } as ConfigFilterAlt;
       const value = ["C"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["a"], value, true);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["a"], value, true);
     });
 
     test("qual", () => {
@@ -73,9 +73,9 @@ describe("query filter fixed", () => {
     test("id", () => {
       const config = { type: "fixed", id: "fixed/filter" } as ConfigFilterFilter;
       const value = ["filter0"];
-      vi.mocked(createQueryFilterString).mockReturnValue(query);
+      vi.mocked(createQueryFilterStringOr).mockReturnValue(query);
       expect(createQueryFilterFixed(config, value)).toStrictEqual(query);
-      expect(createQueryFilterString).toHaveBeenCalledWith(["f"], value, true);
+      expect(createQueryFilterStringOr).toHaveBeenCalledWith(["f"], value, true);
     });
 
     test("invalid", () => {
