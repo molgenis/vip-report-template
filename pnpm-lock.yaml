@@ -19,11 +19,11 @@ importers:
         specifier: ^7.3.1
         version: 7.3.1
       '@molgenis/vip-report-api':
-        specifier: ^7.2.0
-        version: 7.2.0
+        specifier: ^7.2.1
+        version: 7.2.1
       '@molgenis/vip-report-vcf':
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^4.0.10
+        version: 4.0.10
       '@solidjs/router':
         specifier: ^1.0.0
         version: 1.0.0(solid-js@1.9.17)
@@ -92,7 +92,7 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       typescript-eslint:
-        specifier: ^8.67.0
+        specifier: ^8.72.1
         version: 8.72.1(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       vite:
         specifier: ^8.3.5
@@ -497,12 +497,12 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@molgenis/vip-report-api@7.2.0':
-    resolution: {integrity: sha512-5p741qvGGBSbWKcTRpZvEs0Aomjqvnrv8xSzUPcFRhYLANIxdDkKewpuwWElOPChil9mVv3edpAxWm45vfiBjA==}
+  '@molgenis/vip-report-api@7.2.1':
+    resolution: {integrity: sha512-K+5yS94yEz5gQ847aJ1dj21OPui+1RBwqqt71pWDkNAda9CQzdjOyLWBaRWPpsoY1S058rvxhGqAhf31QhsFqQ==}
     engines: {node: '24', pnpm: '10'}
 
-  '@molgenis/vip-report-vcf@4.0.9':
-    resolution: {integrity: sha512-jToSEVd9vs18uzRQIf8EX7AWTENmG1yz+rj/UWyw9uj3qegXEcudOVjWCqelcCBqZhTcJUXH5JJhjiNTLpledg==}
+  '@molgenis/vip-report-vcf@4.0.10':
+    resolution: {integrity: sha512-u0wVVHDZ89QCVnxmpIcmXYp690iOoBUhGfgrTTlKsmDCcKMDxp5MF6vTFMfj7190Bwjznbcc8JUSmILduYZnkg==}
     engines: {node: '24', pnpm: '10'}
 
   '@molgenis/vite-plugin-inline@2.0.4':
@@ -2036,12 +2036,12 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@molgenis/vip-report-api@7.2.0':
+  '@molgenis/vip-report-api@7.2.1':
     dependencies:
-      '@molgenis/vip-report-vcf': 4.0.9
+      '@molgenis/vip-report-vcf': 4.0.10
       sql.js: 1.15.2
 
-  '@molgenis/vip-report-vcf@4.0.9': {}
+  '@molgenis/vip-report-vcf@4.0.10': {}
 
   '@molgenis/vite-plugin-inline@2.0.4(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(sass@1.106.1))':
     dependencies:
