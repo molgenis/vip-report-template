@@ -7,7 +7,7 @@ export const Breadcrumb: Component<{
   items: BreadcrumbItem[];
 }> = (props) => {
   return (
-    <div class="columns is-gapless">
+    <div class="columns is-gapless breadcrumb-bar">
       <div class="column">
         <nav class="breadcrumb has-succeeds-separator">
           <ul>

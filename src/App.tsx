@@ -8,6 +8,7 @@ import { HtsFileMetadata } from "@molgenis/vip-report-api";
 import { getNotesApi } from "./api/NotesApiFactory.tsx";
 import { createFileApi } from "./api/FileApi.tsx";
 import { Upload } from "./components/form/Upload.tsx";
+import { ThemeToggle } from "./components/ThemeToggle.tsx";
 
 // export for development purposes
 export function init(navigate: Navigator, location?: Location) {
@@ -140,6 +141,7 @@ const App: ParentComponent = (props) => {
             </div>
           )}
           <div class="navbar-end">
+            <ThemeToggle />
             <A class="navbar-item" href={"/help"} end={true}>
               Help
             </A>

@@ -25,6 +25,14 @@ export default defineConfig(({ command }) => ({
     // unclear how to migrate to new default Oxc e.g. esbuild.charset and esbuild.pure
     minify: "esbuild",
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // Bulma 1.0.x still uses the deprecated Sass if() function; hide warnings from dependencies only
+        quietDeps: true,
+      },
+    },
+  },
   assetsInclude: "**/*.blob",
   test: {
     coverage: {
